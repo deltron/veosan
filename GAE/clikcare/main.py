@@ -37,10 +37,11 @@ class FindHealth(webapp.RequestHandler):
         #    url_linktext = 'Login'
 
         template_values = {
-            'specialty': cgi.escape(self.request.get("selectSpecialty")),
-            #'url': url,
-            #'url_linktext': url_linktext,
-        }
+            'what': cgi.escape(self.request.get("what")),
+            'where': cgi.escape(self.request.get("where")),
+            'when': cgi.escape(self.request.get("when")),
+            'who': cgi.escape(self.request.get("who"))
+            }
         path = os.path.join(os.path.dirname(__file__), 'fr/findhealth.html')
         self.response.out.write(template.render(path, template_values))
         
