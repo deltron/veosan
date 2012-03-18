@@ -9,7 +9,7 @@ from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext.webapp import template
 import cgi
 import logging
-
+import db.PatientRequest
 
 
 
@@ -22,19 +22,13 @@ class MainPage(webapp.RequestHandler):
 
 class FindHealth(webapp.RequestHandler):
     def post(self):
-        logging.info('findHealth:' + str(self.request))
-        
-        #guestbook_name=self.request.get('guestbook_name')
-        #greetings_query = Greeting.all().ancestor(
-        #    guestbook_key(guestbook_name)).order('-date')
-        #greetings = greetings_query.fetch(10)
-
-        #if users.get_current_user():
-        #    url = users.create_logout_url(self.request.uri)
-        #    url_linktext = 'Logout'
-        #else:
-        #    url = users.create_login_url(self.request.uri)
-        #    url_linktext = 'Login'
+        #logging.info('findHealth:' + str(self.request))
+        pr = PatientRequest()
+        pr.specialty = cgi.escape(self.request.get("what"))
+        pr.location = cgi.escape(self.request.get("where"))
+        pr.when = cgi.escape(self.request.get("when"))
+        pr.who = cgi.escape(self.request.get("who"))
+        pr.put()
 
         template_values = {
             'what': cgi.escape(self.request.get("what")),
