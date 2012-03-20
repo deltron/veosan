@@ -27,7 +27,8 @@ class FindHealth(webapp.RequestHandler):
         pr = PatientRequest()
         pr.specialty = cgi.escape(self.request.get("what"))
         pr.location = cgi.escape(self.request.get("where"))
-        pr.when = cgi.escape(self.request.get("when"))
+        pr.whenDate = cgi.escape(self.request.get("whenDate"))
+        pr.whenTime = cgi.escape(self.request.get("whenTime"))
         pr.who = cgi.escape(self.request.get("who"))
         pr.put()
         
@@ -35,10 +36,11 @@ class FindHealth(webapp.RequestHandler):
         prs = db.GqlQuery("SELECT * FROM PatientRequest ORDER BY createdOn DESC LIMIT 10")
 
         template_values = {
-            'what': cgi.escape(self.request.get("what")),
-            'where': cgi.escape(self.request.get("where")),
-            'when': cgi.escape(self.request.get("when")),
-            'who': cgi.escape(self.request.get("who")),
+            'specialty': pr.specialty,
+            'location': pr.location,
+            'whenDate': pr.whenDate,
+            'whenTime': pr.whenTime,
+            'who': pr.who,
             'prs': prs
             }
         path = os.path.join(os.path.dirname(__file__), 'fr/findhealth.html')

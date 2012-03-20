@@ -14,6 +14,7 @@ class PatientRequest(db.Model):
     #author = db.UserProperty()
     specialty = db.StringProperty()
     location = db.StringProperty()
-    when = db.StringProperty()
+    whenDate = db.StringProperty()
+    whenTime = db.StringProperty()
     who = db.StringProperty()
         
