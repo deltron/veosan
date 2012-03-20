@@ -7,6 +7,7 @@ use_library('django', '1.2')
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext.webapp import template
+from google.appengine.ext import db
 import cgi
 import logging
 from db import PatientRequest
@@ -29,12 +30,16 @@ class FindHealth(webapp.RequestHandler):
         pr.when = cgi.escape(self.request.get("when"))
         pr.who = cgi.escape(self.request.get("who"))
         pr.put()
+        
+        # get latest requests
+        prs = db.GqlQuery("SELECT * FROM PatientRequest ORDER BY createdOn DESC LIMIT 10")
 
         template_values = {
             'what': cgi.escape(self.request.get("what")),
             'where': cgi.escape(self.request.get("where")),
             'when': cgi.escape(self.request.get("when")),
-            'who': cgi.escape(self.request.get("who"))
+            'who': cgi.escape(self.request.get("who")),
+            'prs': prs
             }
         path = os.path.join(os.path.dirname(__file__), 'fr/findhealth.html')
         self.response.out.write(template.render(path, template_values))

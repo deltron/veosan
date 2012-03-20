@@ -32,16 +32,21 @@
 
   <body>
   
-      <div class="container">	
+    <div class="container">	
 
       <div class="hero-unit">
         <h1>Nous cherchons vos soins</h1>
         <br>     
         <p>Vous cherchez un {{what}} pr&egrave;s {{where}} &agrave; {{when}} pour {{who}} </p>
-   
-    </div>
+
+   	  </div> <!-- hero-unit -->
 
 
+
+		<h2>10 latest requests</h2>
+		{% for pr in prs %}
+	        <p> <b>{{ pr.specialty }}</b> created {{ pr.createdOn }} by {{ pr.who }} </p>
+	    {% endfor %}
 
 
 
