@@ -1,7 +1,10 @@
 {% extends "/layout/base.html" %}
 
+{% block subhead %}Trouvez des soins.{% endblock %}
+{% block lead %}Subhead.{% endblock %}
+
 {% block content %}
-<form class="form-horizontal" action="/findhealth" method="post">
+<form class="form-horizontal" action="/patient/book" method="post">
 	<fieldset>
 		<div class="control-group">
 			<label class="control-label" for="selectSpecialty"><strong>Cat&eacute;gorie</strong></label>

@@ -14,6 +14,19 @@ class IndexHandler(BaseHandler):
     def get(self):
         self.render_template('index.html', name=self.request.get('name'))
     
+class PatientBookHandler(BaseHandler):
+    def post(self):
+        # get latest requests
+        # prs = db.GqlQuery("SELECT * FROM PatientRequest ORDER BY createdOn DESC LIMIT 10")
+
+        template_values = {
+            'specialty': self.request.get("what"),
+            'location': self.request.get("where"),
+            'whenDate': self.request.get("whenDate"),
+            'whenTime': self.request.get("whenTime"),
+            'who': self.request.get("who")
+        }
+        self.render_template('patient/book.html', tv=template_values) 
     
 class PatientNewHandler(BaseHandler):
     def get(self):
@@ -34,6 +47,7 @@ class ProviderTermsHandler(BaseHandler):
     
 application = webapp2.WSGIApplication([
                                        ('/', IndexHandler),
+                                       ('/patient/book', PatientBookHandler),
                                        ('/patient/new', PatientNewHandler),
                                        ('/provider/schedule', ProviderScheduleHandler),
                                        ('/provider/profile', ProviderProfileHandler),
@@ -65,13 +79,6 @@ class FindHealth(webapp2.RequestHandler):
             'prs': prs
             }
         template = jinja_environment.get_template('fr/findhealth.html')
-        self.response.out.write(template.render(template_values))
-
-        
-class NewPatient(webapp2.RequestHandler):
-    def get(self):
-        template_values = {}
-        template = jinja_environment.get_template('fr/new.html')
         self.response.out.write(template.render(template_values))
 
 """
