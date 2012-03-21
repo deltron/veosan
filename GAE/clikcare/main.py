@@ -52,18 +52,33 @@ class NewPatient(webapp.RequestHandler):
         path = os.path.join(os.path.dirname(__file__), 'fr/new.html')
         self.response.out.write(template.render(path, template_values))
 
-class Schedule(webapp.RequestHandler):
+class ProviderProfile(webapp.RequestHandler):
     def get(self):
         template_values = {}
-        path = os.path.join(os.path.dirname(__file__), 'fr/schedule.html')
+        path = os.path.join(os.path.dirname(__file__), 'fr/provider/profile.html')
         self.response.out.write(template.render(path, template_values))
 
+
+class ProviderSchedule(webapp.RequestHandler):
+    def get(self):
+        template_values = {}
+        path = os.path.join(os.path.dirname(__file__), 'fr/provider/schedule.html')
+        self.response.out.write(template.render(path, template_values))
+
+class ProviderTerms(webapp.RequestHandler):
+    def get(self):
+        template_values = {}
+        path = os.path.join(os.path.dirname(__file__), 'fr/provider/terms.html')
+        self.response.out.write(template.render(path, template_values))
 
 
 application = webapp.WSGIApplication([('/', MainPage),
                                       ('/findhealth', FindHealth),
-                                      ('/new', NewPatient),
-                                      ('/schedule', Schedule)], 
+                                      ('/patient', NewPatient),
+                                      
+                                      ('/provider/terms', ProviderTerms),
+                                      ('/provider/schedule', ProviderSchedule), 
+                                      ('/provider/profile', ProviderProfile)], 
                                      debug=True)
 
 
