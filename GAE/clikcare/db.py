@@ -6,15 +6,40 @@ Created on Mar 17, 2012
 
 from google.appengine.ext import db
 
-class PatientRequest(db.Model):
+
+
+class Patient(db.Model):
+    '''
+    A patient
+    '''
+    createdOn = db.DateTimeProperty(auto_now_add=True)
+    firstName = db.StringProperty()
+    lastName = db.StringProperty()
+    email = db.StringProperty()
+    phone = db.StringProperty()
+
+
+class Provider(db.Model):
+    '''
+    A patient
+    '''
+    createdOn = db.DateTimeProperty(auto_now_add=True)
+    firstName = db.StringProperty()
+    lastName = db.StringProperty()
+    email = db.StringProperty()
+    phone = db.StringProperty()    
+    specialty = db.StringProperty()
+    
+class Booking(db.Model):
     '''
     A patient request to see a health-care professional
     '''
     createdOn = db.DateTimeProperty(auto_now_add=True)
     #author = db.UserProperty()
-    specialty = db.StringProperty()
-    location = db.StringProperty()
-    whenDate = db.StringProperty()
-    whenTime = db.StringProperty()
-    who = db.StringProperty()
+    requestSpecialty = db.StringProperty()
+    requestLocation = db.StringProperty()
+    requestDate = db.StringProperty()
+    requestTime = db.StringProperty()
+    requestContact = db.StringProperty()
+        
         
