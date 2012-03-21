@@ -13,8 +13,7 @@ class BaseHandler(webapp2.RequestHandler):
 
 class BookingForm(Form):
     email = TextField('Courriel', [
-                                   validators.Length(min=6, max=120, message='Little short for an email address?'),
-                                   validators.Email(message='That\'s not a valid email address.')
+                                   validators.Email(message='Addresse de courriel invalide.')
                                 ])
     
 
@@ -34,7 +33,7 @@ class IndexHandler(BaseHandler):
                                'time': self.request.get("time"),
                                'email': form.email.data
             }
-            self.render_template('patient/book.html', tv=template_values) 
+            self.render_template('patient/new.html', tv=template_values) 
         else:
             self.render_template('index.html', form=form)
 
@@ -65,7 +64,7 @@ class ProviderTermsHandler(BaseHandler):
 
 application = webapp2.WSGIApplication([
                                        ('/', IndexHandler),
-                                       ('/patient/new', PatientNewHandler),
+                                     #  ('/patient/book', PatientBookHandler),
                                        ('/provider/schedule', ProviderScheduleHandler),
                                        ('/provider/profile', ProviderProfileHandler),
                                        ('/provider/terms', ProviderTermsHandler)

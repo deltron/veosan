@@ -59,19 +59,15 @@
 				</p>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label" for="email"><strong> {{ form.email.label }}</strong></label>
+		<div class="control-group {% if form.email.errors %} error {% endif %}">
+			{{ form.email.label }}
 			<div class="controls">
 				{{ form.email(class="input-xlarge") }}
 				<p class="help-block">
 					{% if form.email.errors %}
-					<ul class="errors">
-						{% for error in form.email.errors %}
-						<li>
-							{{ error }}
-						</li>
+						{% for error in form.email.errors %} 
+							<span class="label label-important">Erreur</span> {{ error }}<br>
 						{% endfor %}
-					</ul>
 					{% else %}
 						Votre addresse courriel pour confirmer le rendez-vous.
 					{% endif %}
