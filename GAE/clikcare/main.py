@@ -1,89 +1,62 @@
-# use django 1.2
 import os
-os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
-from google.appengine.dist import use_library
-use_library('django', '1.2')
+import webapp2
+from webapp2_extras import jinja2
 
-from google.appengine.ext import webapp
-from google.appengine.ext.webapp.util import run_wsgi_app
-from google.appengine.ext.webapp import template
-from google.appengine.ext import db
-import cgi
-import logging
-from db import Booking
+class BaseHandler(webapp2.RequestHandler):
+  @webapp2.cached_property
+  def jinja2(self):
+        return jinja2.get_jinja2(app=self.app)
 
+  def render_template(self, filename, **template_args):
+        self.response.write(self.jinja2.render_template(filename, **template_args))
 
-
-class MainPage(webapp.RequestHandler):
+class IndexHandler(BaseHandler):
     def get(self):
-        template_values = {}
-        path = os.path.join(os.path.dirname(__file__), 'fr/form.html')
-        self.response.out.write(template.render(path, template_values))
-
-
-class FindHealth(webapp.RequestHandler):
+        self.render_template('index.html', name=self.request.get('name'))
+    
+class PatientBookHandler(BaseHandler):
     def post(self):
-        #logging.info('findHealth:' + str(self.request))
-        booking = Booking()
-        booking.requestSpecialty = cgi.escape(self.request.get("what"))
-        booking.requestLocation = cgi.escape(self.request.get("where"))
-        booking.requestDate = cgi.escape(self.request.get("whenDate"))
-        booking.requestTime = cgi.escape(self.request.get("whenTime"))
-        booking.requestContact = cgi.escape(self.request.get("who"))
-        booking.put()
-        
         # get latest requests
-        prs = db.GqlQuery("SELECT * FROM Booking ORDER BY createdOn DESC LIMIT 10")
-
+        # prs = db.GqlQuery("SELECT * FROM PatientRequest ORDER BY createdOn DESC LIMIT 10")
         template_values = {
-            'specialty': booking.requestSpecialty,
-            'location': booking.requestLocation,
-            'whenDate': booking.requestDate,
-            'whenTime': booking.requestTime,
-            'who': booking.requestContact,
-            'prs': prs
-            }
-        path = os.path.join(os.path.dirname(__file__), 'fr/findhealth.html')
-        self.response.out.write(template.render(path, template_values))
-        
-class NewPatient(webapp.RequestHandler):
+            'what': self.request.get("what"),
+            'where': self.request.get("where"),
+            'date': self.request.get("date"),
+            'time': self.request.get("time"),
+            'email': self.request.get("email")
+        }
+ 
+        self.render_template('patient/book.html', tv=template_values) 
+    
+class PatientNewHandler(BaseHandler):
+    def post(self):
+        template_values = {
+            'what': self.request.get("what"),
+            'where': self.request.get("where"),
+            'date': self.request.get("date"),
+            'time': self.request.get("time"),
+            'email': self.request.get("email")
+        }
+          
+        self.render_template('patient/new.html', tv=template_values)
+
+class ProviderProfileHandler(BaseHandler):
     def get(self):
-        template_values = {}
-        path = os.path.join(os.path.dirname(__file__), 'fr/new.html')
-        self.response.out.write(template.render(path, template_values))
+        self.render_template('provider/profile.html', name=self.request.get('name'))
 
-class ProviderProfile(webapp.RequestHandler):
+class ProviderScheduleHandler(BaseHandler):
     def get(self):
-        template_values = {}
-        path = os.path.join(os.path.dirname(__file__), 'fr/provider/profile.html')
-        self.response.out.write(template.render(path, template_values))
+        self.render_template('provider/schedule.html', name=self.request.get('name'))
 
-
-class ProviderSchedule(webapp.RequestHandler):
+class ProviderTermsHandler(BaseHandler):
     def get(self):
-        template_values = {}
-        path = os.path.join(os.path.dirname(__file__), 'fr/provider/schedule.html')
-        self.response.out.write(template.render(path, template_values))
+        self.render_template('provider/terms.html', name=self.request.get('name'))
 
-class ProviderTerms(webapp.RequestHandler):
-    def get(self):
-        template_values = {}
-        path = os.path.join(os.path.dirname(__file__), 'fr/provider/terms.html')
-        self.response.out.write(template.render(path, template_values))
-
-
-application = webapp.WSGIApplication([('/', MainPage),
-                                      ('/findhealth', FindHealth),
-                                      ('/patient', NewPatient),
-                                      
-                                      ('/provider/terms', ProviderTerms),
-                                      ('/provider/schedule', ProviderSchedule), 
-                                      ('/provider/profile', ProviderProfile)], 
-                                     debug=True)
-
-
-def main():
-    run_wsgi_app(application)
-
-if __name__ == "__main__":
-    main()
+application = webapp2.WSGIApplication([
+                                       ('/', IndexHandler),
+                                       ('/patient/book', PatientBookHandler),
+                                       ('/patient/new', PatientNewHandler),
+                                       ('/provider/schedule', ProviderScheduleHandler),
+                                       ('/provider/profile', ProviderProfileHandler),
+                                       ('/provider/terms', ProviderTermsHandler)
+                                       ], debug=True)
