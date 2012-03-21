@@ -18,7 +18,6 @@ class PatientBookHandler(BaseHandler):
     def post(self):
         # get latest requests
         # prs = db.GqlQuery("SELECT * FROM PatientRequest ORDER BY createdOn DESC LIMIT 10")
-
         template_values = {
             'specialty': self.request.get("what"),
             'location': self.request.get("where"),
@@ -26,11 +25,20 @@ class PatientBookHandler(BaseHandler):
             'whenTime': self.request.get("whenTime"),
             'who': self.request.get("who")
         }
+ 
         self.render_template('patient/book.html', tv=template_values) 
     
 class PatientNewHandler(BaseHandler):
-    def get(self):
-        self.render_template('patient/new.html', name=self.request.get('name'))
+    def post(self):
+        template_values = {
+            'specialty': self.request.get("what"),
+            'location': self.request.get("where"),
+            'whenDate': self.request.get("whenDate"),
+            'whenTime': self.request.get("whenTime"),
+            'who': self.request.get("who")
+        }
+          
+        self.render_template('patient/new.html', tv=template_values)
 
 class ProviderProfileHandler(BaseHandler):
     def get(self):
