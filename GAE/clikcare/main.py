@@ -26,7 +26,7 @@ class IndexHandler(BaseHandler):
     def post(self):
         form = BookingForm(self.request.POST)
 
-        if self.request.method == 'POST' and form.validate():
+        if form.validate():
             template_values = {
                                'what': self.request.get("what"),
                                'where': self.request.get("where"),
