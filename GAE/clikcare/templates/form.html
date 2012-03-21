@@ -1,0 +1,175 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+   <head>
+    <meta charset="utf-8">
+    <title>cliksant&eacute;! Trouver des soins de sant&eacute;</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="/assets/css/bootstrap.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+    </style>
+    <link href="/assets/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="/assets/css/datepicker.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" href="./">cliksant&eacute</a>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+                    <li class="divider-vertical"></li>
+                    <li class="dropdown">
+                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Mon Compte <b class="caret"></b></a>
+
+	                 <ul class="dropdown-menu">
+                            <li><a href="#">Mes Coordonn&eacute;es</a></li>
+                            <li><a href="schedule.html">Mes Disponibilit&eacute;s</a></li>
+                            <li><a href="#">Conditions</a></li>
+                        </ul>
+                    </li>
+                    <li class="divider-vertical"></li>
+                    <li><a href="#">Contact</a></li>
+                    <li class="divider-vertical"></li>
+                    <li><a href="#">English</a></li>
+                    <li class="divider-vertical"></li>
+                </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div class="container">
+        <header class="jumbotron subhead">
+            <h1>Trouver des soins</h1>
+            <p class="lead">Obtenir un rendez-vous avec un partenaire de sant&eacute; pr&egrave;s de chez vous.</p>
+        </header>
+
+
+	<hr>
+        <form class="form-horizontal" action="/findhealth" method="post">
+		  <fieldset>
+		    <div class="control-group">
+	            <label class="control-label" for="selectSpecialty"><strong>Cat&eacute;gorie</strong></label>
+	            <div class="controls">
+	              <select name="what" id="selectSpecialty">
+	                <option>Physioth&eacute;rapeute</option>
+	                <option>Orthoth&eacute;rapeute</option>
+	                <option>Chiropracticien</option>
+	                <option>Ost&eacute;opathe</option>
+	              </select>
+	              <p class="help-block">Nous avons des centaines de professionnels dans notre r&eacute;seau.</p>
+	            </div>
+	          </div>
+		    
+		    <div class="control-group">
+		      <label class="control-label" for="input01"><strong>Quand</strong></label>
+		      <div class="controls">
+	                  <select name="whenDate" id="select01">
+	                      <option>19 Mars, 2012</option>
+	                      <option>20 Mars, 2012</option>
+	                      <option>21 Mars, 2012</option>
+	                      <option>22 Mars, 2012</option>
+	                      <option>23 Mars, 2012</option>
+	                      <option>24 Mars, 2012</option>
+	                      <option>25 Mars, 2012</option>
+	                  </select>
+
+	                  <select name="whenTime" id="select01">
+	                      <option>7h00 &agrave; 8h00</option>
+	                      <option>8h00 &agrave; 9h00</option>
+	                      <option>9h00 &agrave; 10h00</option>
+	                      <option>10h00 &agrave; 11h00</option>
+	                      <option>11h00 &agrave; 12h00</option>
+	                      <option>12h00 &agrave; 13h00</option>
+	                      <option>13h00 &agrave; 14h00</option>
+	                  </select>
+
+		        <p class="help-block">La date et l'heure d&eacute;sir&eacute;e, votre rendez-vous est garantie!</p>
+		      </div>
+		    </div>
+
+
+		    <div class="control-group">
+		      <label class="control-label" for="selectWhere"><strong>Lieu</strong></label>
+		      <div class="controls">
+	                <select name="where" id="selectWhere">
+	                    <option>Montr&eacute;al - Centre-Ville</option>
+	                    <option>Montr&eacute;al - Ouest de l'ile</option>
+	                    <option>etc.</option>
+	                </select>
+		        <p class="help-block">L'endroit de votre rendez-vous.</p>
+		      </div>
+		    </div>
+		    
+		    <div class="control-group">
+		      <label class="control-label" for="input01"><strong>Contact</strong></label>
+		      <div class="controls">
+                        <input name="who" type="text">
+		        <p class="help-block">Votre addresse courriel pour confirmer le rendez-vous.</p>
+		      </div>
+		    </div>
+
+		    		    
+		  <!-- <div class="form-actions">
+	                   <a class="btn btn-primary btn-large" href="./findhealth">
+                                R&eacute;servez Maintenant
+                           </a>
+	           </div>
+	          --> 
+
+
+		<div class="control-group">
+		   	<div class="controls">
+	            <button type="submit" class="btn btn-primary btn-large">R&eacute;servez Maintenant</button>
+		       </div>
+	       </div>
+	       
+
+
+		  </fieldset>
+		</form>
+      
+    </div> <!-- /container -->
+
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/assets/js/jquery.js"></script>
+    <script src="/assets/js/bootstrap-button.js"></script>
+    <script src="/assets/js/bootstrap-dropdown.js"></script>
+    <script src="/assets/js/bootstrap-collapse.js"></script>
+  </body>
+</html>
