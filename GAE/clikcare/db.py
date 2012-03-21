@@ -21,7 +21,7 @@ class Patient(db.Model):
 
 class Provider(db.Model):
     '''
-    A patient
+    A provider
     '''
     createdOn = db.DateTimeProperty(auto_now_add=True)
     firstName = db.StringProperty()
@@ -32,7 +32,7 @@ class Provider(db.Model):
     
 class Booking(db.Model):
     '''
-    A patient request to see a health-care professional
+    A booking
     '''
     createdOn = db.DateTimeProperty(auto_now_add=True)
     #author = db.UserProperty()
