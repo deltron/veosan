@@ -1,24 +1,47 @@
-# use django 1.2
-import os
-
-import jinja2
 import os
 import webapp2
+from webapp2_extras import jinja2
 
-jinja_environment = jinja2.Environment(loader=jinja2.FileSystemLoader(os.path.dirname(__file__)))
+class BaseHandler(webapp2.RequestHandler):
+  @webapp2.cached_property
+  def jinja2(self):
+        return jinja2.get_jinja2(app=self.app)
 
-# This causes error 500 in GAE
-#from db import PatientRequest
+  def render_template(self, filename, **template_args):
+        self.response.write(self.jinja2.render_template(filename, **template_args))
 
-
-
-class MainPage(webapp2.RequestHandler):
+class IndexHandler(BaseHandler):
     def get(self):
-        template_values = {}
-        template = jinja_environment.get_template('fr/form.html')
-        self.response.out.write(template.render(template_values))
+        self.render_template('index.html', name=self.request.get('name'))
+    
+    
+class PatientNewHandler(BaseHandler):
+    def get(self):
+        self.render_template('patient/new.html', name=self.request.get('name'))
 
+class ProviderProfileHandler(BaseHandler):
+    def get(self):
+        self.render_template('provider/profile.html', name=self.request.get('name'))
 
+class ProviderScheduleHandler(BaseHandler):
+    def get(self):
+        self.render_template('provider/schedule.html', name=self.request.get('name'))
+
+class ProviderTermsHandler(BaseHandler):
+    def get(self):
+        self.render_template('provider/terms.html', name=self.request.get('name'))
+
+    
+application = webapp2.WSGIApplication([
+                                       ('/', IndexHandler),
+                                       ('/patient/new', PatientNewHandler),
+                                       ('/provider/schedule', ProviderScheduleHandler),
+                                       ('/provider/profile', ProviderProfileHandler),
+                                       ('/provider/terms', ProviderTermsHandler)
+                                       ], debug=True)
+    
+    
+"""
 class FindHealth(webapp2.RequestHandler):
     def post(self):
         #logging.info('findHealth:' + str(self.request))
@@ -51,30 +74,4 @@ class NewPatient(webapp2.RequestHandler):
         template = jinja_environment.get_template('fr/new.html')
         self.response.out.write(template.render(template_values))
 
-class ProviderProfile(webapp2.RequestHandler):
-    def get(self):
-        template_values = {}
-        template = jinja_environment.get_template('fr/provider/profile.html')
-        self.response.out.write(template.render(template_values))
-
-
-class ProviderSchedule(webapp2.RequestHandler):
-    def get(self):
-        template_values = {}
-        template = jinja_environment.get_template('fr/provider/schedule.html')
-        self.response.out.write(template.render(template_values))
-
-class ProviderTerms(webapp2.RequestHandler):
-    def get(self):
-        template_values = {}
-        template = jinja_environment.get_template('fr/provider/terms.html')
-        self.response.out.write(template.render(template_values))
-
-
-app = webapp2.WSGIApplication([('/', MainPage),
-                                      ('/findhealth', FindHealth),
-                                      ('/patient', NewPatient),
-                                      ('/provider/terms', ProviderTerms),
-                                      ('/provider/schedule', ProviderSchedule),
-                                      ('/provider/profile', ProviderProfile)],
-                                     debug=True)
+"""

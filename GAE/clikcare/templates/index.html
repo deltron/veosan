@@ -1,0 +1,77 @@
+{% extends "/layout/base.html" %}
+
+{% block content %}
+<form class="form-horizontal" action="/findhealth" method="post">
+	<fieldset>
+		<div class="control-group">
+			<label class="control-label" for="selectSpecialty"><strong>Cat&eacute;gorie</strong></label>
+			<div class="controls">
+				<select name="what" id="selectSpecialty">
+					<option>Physioth&eacute;rapeute</option>
+					<option>Orthoth&eacute;rapeute</option>
+					<option>Chiropracticien</option>
+					<option>Ost&eacute;opathe</option>
+				</select>
+				<p class="help-block">
+					Nous avons des centaines de professionnels dans notre r&eacute;seau.
+				</p>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="input01"><strong>Quand</strong></label>
+			<div class="controls">
+				<select name="whenDate" id="select01">
+					<option>19 Mars, 2012</option>
+					<option>20 Mars, 2012</option>
+					<option>21 Mars, 2012</option>
+					<option>22 Mars, 2012</option>
+					<option>23 Mars, 2012</option>
+					<option>24 Mars, 2012</option>
+					<option>25 Mars, 2012</option>
+				</select>
+				<select name="whenTime" id="select01">
+					<option>7h00 &agrave; 8h00</option>
+					<option>8h00 &agrave; 9h00</option>
+					<option>9h00 &agrave; 10h00</option>
+					<option>10h00 &agrave; 11h00</option>
+					<option>11h00 &agrave; 12h00</option>
+					<option>12h00 &agrave; 13h00</option>
+					<option>13h00 &agrave; 14h00</option>
+				</select>
+				<p class="help-block">
+					La date et l'heure d&eacute;sir&eacute;e, votre rendez-vous est garantie!
+				</p>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="selectWhere"><strong>Lieu</strong></label>
+			<div class="controls">
+				<select name="where" id="selectWhere">
+					<option>Montr&eacute;al - Centre-Ville</option>
+					<option>Montr&eacute;al - Ouest de l'ile</option>
+					<option>etc.</option>
+				</select>
+				<p class="help-block">
+					L'endroit de votre rendez-vous.
+				</p>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="input01"><strong>Contact</strong></label>
+			<div class="controls">
+				<input name="who" type="text">
+				<p class="help-block">
+					Votre addresse courriel pour confirmer le rendez-vous.
+				</p>
+			</div>
+		</div>
+		<div class="control-group">
+			<div class="controls">
+				<button type="submit" class="btn btn-primary btn-large">
+					R&eacute;servez Maintenant
+				</button>
+			</div>
+		</div>
+	</fieldset>
+</form>
+{% endblock content %} 
