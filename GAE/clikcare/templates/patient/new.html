@@ -6,10 +6,10 @@
 {% block content %}
 <form class="form-horizontal" action="/patient/book" method="post">
 	<fieldset>
-		<input type="hidden" name="what" value="{{ tv.specialty }}">
-		<input type="hidden" name="where" value="{{ tv.location }}">
-		<input type="hidden" name="whenDate" value="{{ tv.whenDate }}">
-		<input type="hidden" name="whenTime" value="{{ tv.whenTime }}">
+		<input type="hidden" name="what" value="{{ tv.what }}">
+		<input type="hidden" name="where" value="{{ tv.where }}">
+		<input type="hidden" name="whenDate" value="{{ tv.date }}">
+		<input type="hidden" name="whenTime" value="{{ tv.time }}">
 
 		<div class="control-group">
 			<label class="control-label" for="input01"><strong>Pr&eacute;nom</strong></label>
@@ -26,7 +26,7 @@
 		<div class="control-group">
 			<label class="control-label" for="input01"><strong>Courriel</strong></label>
 			<div class="controls">
-				<input class="input-xlarge disabled" id="disabledInput" type="text" placeholder="{{ tv.who }}" disabled="">
+				<input class="input-xlarge disabled" id="disabledInput" type="text" placeholder="{{ tv.email }}" disabled="">
 			</div>
 		</div>
 		<div class="control-group">

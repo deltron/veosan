@@ -19,11 +19,11 @@ class PatientBookHandler(BaseHandler):
         # get latest requests
         # prs = db.GqlQuery("SELECT * FROM PatientRequest ORDER BY createdOn DESC LIMIT 10")
         template_values = {
-            'specialty': self.request.get("what"),
-            'location': self.request.get("where"),
-            'whenDate': self.request.get("whenDate"),
-            'whenTime': self.request.get("whenTime"),
-            'who': self.request.get("who")
+            'what': self.request.get("what"),
+            'where': self.request.get("where"),
+            'date': self.request.get("date"),
+            'time': self.request.get("time"),
+            'email': self.request.get("email")
         }
  
         self.render_template('patient/book.html', tv=template_values) 
@@ -31,11 +31,11 @@ class PatientBookHandler(BaseHandler):
 class PatientNewHandler(BaseHandler):
     def post(self):
         template_values = {
-            'specialty': self.request.get("what"),
-            'location': self.request.get("where"),
-            'whenDate': self.request.get("whenDate"),
-            'whenTime': self.request.get("whenTime"),
-            'who': self.request.get("who")
+            'what': self.request.get("what"),
+            'where': self.request.get("where"),
+            'date': self.request.get("date"),
+            'time': self.request.get("time"),
+            'email': self.request.get("email")
         }
           
         self.render_template('patient/new.html', tv=template_values)
@@ -52,7 +52,6 @@ class ProviderTermsHandler(BaseHandler):
     def get(self):
         self.render_template('provider/terms.html', name=self.request.get('name'))
 
-    
 application = webapp2.WSGIApplication([
                                        ('/', IndexHandler),
                                        ('/patient/book', PatientBookHandler),
@@ -61,32 +60,3 @@ application = webapp2.WSGIApplication([
                                        ('/provider/profile', ProviderProfileHandler),
                                        ('/provider/terms', ProviderTermsHandler)
                                        ], debug=True)
-    
-    
-"""
-class FindHealth(webapp2.RequestHandler):
-    def post(self):
-        #logging.info('findHealth:' + str(self.request))
-        pr = PatientRequest()
-        pr.specialty = cgi.escape(self.request.get("what"))
-        pr.location = cgi.escape(self.request.get("where"))
-        pr.whenDate = cgi.escape(self.request.get("whenDate"))
-        pr.whenTime = cgi.escape(self.request.get("whenTime"))
-        pr.who = cgi.escape(self.request.get("who"))
-        pr.put()
-        
-        # get latest requests
-        prs = db.GqlQuery("SELECT * FROM PatientRequest ORDER BY createdOn DESC LIMIT 10")
-
-        template_values = {
-            'specialty': pr.specialty,
-            'location': pr.location,
-            'whenDate': pr.whenDate,
-            'whenTime': pr.whenTime,
-            'who': pr.who,
-            'prs': prs
-            }
-        template = jinja_environment.get_template('fr/findhealth.html')
-        self.response.out.write(template.render(template_values))
-
-"""
