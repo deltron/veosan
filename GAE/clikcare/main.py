@@ -10,7 +10,7 @@ from google.appengine.ext.webapp import template
 from google.appengine.ext import db
 import cgi
 import logging
-from db import PatientRequest
+from db import Booking
 
 
 
@@ -24,23 +24,23 @@ class MainPage(webapp.RequestHandler):
 class FindHealth(webapp.RequestHandler):
     def post(self):
         #logging.info('findHealth:' + str(self.request))
-        pr = PatientRequest()
-        pr.specialty = cgi.escape(self.request.get("what"))
-        pr.location = cgi.escape(self.request.get("where"))
-        pr.whenDate = cgi.escape(self.request.get("whenDate"))
-        pr.whenTime = cgi.escape(self.request.get("whenTime"))
-        pr.who = cgi.escape(self.request.get("who"))
-        pr.put()
+        booking = Booking()
+        booking.requestSpecialty = cgi.escape(self.request.get("what"))
+        booking.requestLocation = cgi.escape(self.request.get("where"))
+        booking.requestDate = cgi.escape(self.request.get("whenDate"))
+        booking.requestTime = cgi.escape(self.request.get("whenTime"))
+        booking.requestContact = cgi.escape(self.request.get("who"))
+        booking.put()
         
         # get latest requests
-        prs = db.GqlQuery("SELECT * FROM PatientRequest ORDER BY createdOn DESC LIMIT 10")
+        prs = db.GqlQuery("SELECT * FROM Booking ORDER BY createdOn DESC LIMIT 10")
 
         template_values = {
-            'specialty': pr.specialty,
-            'location': pr.location,
-            'whenDate': pr.whenDate,
-            'whenTime': pr.whenTime,
-            'who': pr.who,
+            'specialty': booking.requestSpecialty,
+            'location': booking.requestLocation,
+            'whenDate': booking.requestDate,
+            'whenTime': booking.requestTime,
+            'who': booking.requestContact,
             'prs': prs
             }
         path = os.path.join(os.path.dirname(__file__), 'fr/findhealth.html')
