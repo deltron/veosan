@@ -4,7 +4,7 @@
 {% block lead %}Subhead.{% endblock %}
 
 {% block content %}
-<form class="form-horizontal" action="/patient/new" method="post">
+<form class="form-horizontal" action="/" method="post">
 	<fieldset>
 		<div class="control-group">
 			<label class="control-label" for="selectSpecialty"><strong>Cat&eacute;gorie</strong></label>
@@ -60,11 +60,21 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label" for="email"><strong>Contact</strong></label>
+			<label class="control-label" for="email"><strong> {{ form.email.label }}</strong></label>
 			<div class="controls">
-				<input name="email" type="text">
+				{{ form.email(class="input-xlarge") }}
 				<p class="help-block">
-					Votre addresse courriel pour confirmer le rendez-vous.
+					{% if form.email.errors %}
+					<ul class="errors">
+						{% for error in form.email.errors %}
+						<li>
+							{{ error }}
+						</li>
+						{% endfor %}
+					</ul>
+					{% else %}
+						Votre addresse courriel pour confirmer le rendez-vous.
+					{% endif %}
 				</p>
 			</div>
 		</div>
