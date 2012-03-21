@@ -62,7 +62,6 @@
 				</div>
 			</div>
 		</div>
-		
 		<div class="container">
 			<header class="jumbotron subhead">
 				<h1>Votre Profile</h1>
@@ -71,59 +70,155 @@
 				</p>
 			</header>
 			<hr>
-			<form class="form-horizontal">
-				<fieldset>
-					<div class="control-group">
-						<label class="control-label" for="input01"><strong>Pr&eacute;nom</strong></label>
-						<div class="controls">
-							<input type="text" class="input-xlarge">
-						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label" for="input01"><strong>Nom</strong></label>
-						<div class="controls">
-							<input type="text" class="input-xlarge">
-						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label" for="input01"><strong>Courriel</strong></label>
-						<div class="controls">
-							<input class="input-xlarge disabled" id="disabledInput" type="text" placeholder="abc@videtron.ca" disabled="">
-						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label" for="input01"><strong>T&eacute;l&eacute;phone</strong></label>
-						<div class="controls">
-							<input type="text" class="input-xlarge">
-						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label" for="input01"><strong>Confirmation</strong></label>
-						<div class="controls">
-							<label class="checkbox">
-								<input type="checkbox">
-								Je d&eacute;sir avoir une confirmation de rendez-vous par t&eacute;l&eacute;phone en plus d'un courriel </label>
-						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label" for="input01"><strong>Commentaires</strong></label>
-						<div class="controls">
-							<p class="help-block">
-								Informations suppl&eacute;mentaires que vous d&eacute;sirez communiquer avant le rendez-vous.
-							</p>
-							<textarea class="input-xlarge" id="textarea" rows="3"></textarea>
-						</div>
-					</div>
-					<div class="form-actions">
-						<button type="submit" class="btn btn-primary">
-							Sauvegarder
-						</button>
-						<button type="submit" class="btn">
-							Annuler
-						</button>
-					</div>
-				</fieldset>
-			</form>
+			<div class="row">
+				<div class="span1" align="center">
+					<img src="/assets/img/default-profile.png" width="100" height="100">
+					<br>
+					<a href="#">T&eacute;l&eacute;charger</a>
+				</div>
+				<div class="span4">
+					<form class="form-horizontal">
+						<fieldset>
+							<div class="control-group">
+								<label class="control-label" for="selectSpecialty"><strong>Cat&eacute;gorie</strong></label>
+								<div class="controls">
+									<select name="what" id="selectSpecialty">
+										<option>Physioth&eacute;rapeute</option>
+										<option>Orthoth&eacute;rapeute</option>
+										<option>Chiropracticien</option>
+										<option>Ost&eacute;opathe</option>
+									</select>
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label" for="selectSpecialty"><strong>Specialites</strong></label>
+								<div class="controls">
+									<label class="checkbox">
+										<input type="checkbox" name="a" value="a">
+										Cardiologie</label>
+									<label class="checkbox">
+										<input type="checkbox" name="a" value="a">
+										Pneumologie</label>
+									<label class="checkbox">
+										<input type="checkbox" name="a" value="a">
+										Orthopédie</label>
+									<label class="checkbox">
+										<input type="checkbox" name="a" value="a">
+										Sportive</label>
+									<label class="checkbox">
+										<input type="checkbox" name="a" value="a">
+										Neurologie</label>
+									<label class="checkbox">
+										<input type="checkbox" name="a" value="a">
+										Pédiatrie</label>
+									<label class="checkbox">
+										<input type="checkbox" name="a" value="a">
+										Gériatrie</label>
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label" for="selectSpecialty"><strong>&Eacute;cole</strong></label>
+								<div class="controls">
+									<select name="what" id="selectSpecialty">
+										<option>Concordia</option>
+										<option>McGill</option>
+										<option>Universit&eacute; de Montr&eacute;al</option>
+										<option>etc.</option>
+										<option>Autre</option>
+									</select>
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label" for="selectSpecialty"><strong>Niveau de scolarit&eacute;</strong></label>
+								<div class="controls">
+									<select name="what" id="selectSpecialty">
+										<option>Bac</option>
+										<option>Maitrise</option>
+										<option>Doctorat</option>
+									</select>
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label" for="selectSpecialty"><strong>Ann&eacute;e d'obtention</strong></label>
+								<div class="controls">
+									<input type="text" class="input-min">
+								</div>
+							</div>
+						</fieldset>
+					</form>
+				</div>
+				<div class="span1">
+					&nbsp;
+				</div>
+				<div class="span4">
+					<form class="form-horizontal">
+						<fieldset>
+							<div class="control-group">
+								<label class="control-label" for="input01"><strong>Pr&eacute;nom</strong></label>
+								<div class="controls">
+									<input type="text" class="input-xlarge">
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label" for="input01"><strong>Nom</strong></label>
+								<div class="controls">
+									<input type="text" class="input-xlarge">
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label" for="input01"><strong>Courriel</strong></label>
+								<div class="controls">
+									<input type="text" class="input-xlarge">
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label" for="input01"><strong>T&eacute;l&eacute;phone</strong></label>
+								<div class="controls">
+									<input type="text" class="input-xlarge">
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label" for="selectWhere"><strong>Lieu</strong></label>
+								<div class="controls">
+									<select name="where" id="selectWhere">
+										<option>Montr&eacute;al - Centre-Ville</option>
+										<option>Montr&eacute;al - Ouest de l'ile</option>
+										<option>etc.</option>
+									</select>
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label" for="input01"><strong>Addresse</strong></label>
+								<div class="controls">
+									<input type="text" class="input-xlarge">
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label" for="input01"><strong>Ville</strong></label>
+								<div class="controls">
+									<input type="text" class="input-xlarge">
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label" for="input01"><strong>Code Postal</strong></label>
+								<div class="controls">
+									<input type="text" class="input-xlarge">
+								</div>
+							</div>
+						</fieldset>
+					</form>
+				</div>
+				<div class="span1"></div>
+				<div class="span1"></div>
+			</div>
+			<div class="form-actions">
+				<button type="submit" class="btn btn-primary">
+					Sauvegarder
+				</button>
+				<button type="submit" class="btn">
+					Annuler
+				</button>
+			</div>
 		</div>
 		<!-- /container -->
 		<!-- Le javascript
