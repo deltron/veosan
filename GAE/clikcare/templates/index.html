@@ -4,16 +4,16 @@
 {% block lead %}Subhead.{% endblock %}
 
 {% block content %}
+
 <form class="form-horizontal" action="/patient/new" method="post">
 	<fieldset>
 		<div class="control-group">
 			<label class="control-label" for="selectSpecialty"><strong>Cat&eacute;gorie</strong></label>
 			<div class="controls">
 				<select name="what" id="selectSpecialty">
-					<option>Physioth&eacute;rapeute</option>
-					<option>Orthoth&eacute;rapeute</option>
-					<option>Chiropracticien</option>
-					<option>Ost&eacute;opathe</option>
+					{% for sp in specialties %}
+					<option> {{ sp }} </option>
+					{% endfor %}
 				</select>
 				<p class="help-block">
 					Nous avons des centaines de professionnels dans notre r&eacute;seau.
@@ -50,9 +50,9 @@
 			<label class="control-label" for="whereSelect"><strong>Lieu</strong></label>
 			<div class="controls">
 				<select name="where" id="whereSelect">
-					<option>Montr&eacute;al - Centre-Ville</option>
-					<option>Montr&eacute;al - Ouest de l'ile</option>
-					<option>etc.</option>
+					{% for region in regions %}
+					<option> {{ region }} </option>
+					{% endfor %}
 				</select>
 				<p class="help-block">
 					L'endroit de votre rendez-vous.
