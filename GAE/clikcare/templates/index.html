@@ -4,84 +4,106 @@
 {% block lead %}Subhead.{% endblock %}
 
 {% block content %}
-
-<form class="form-horizontal" action="/" method="post">
-	<fieldset>
-		<div class="control-group">
-			<label class="control-label" for="selectSpecialty"><strong>Cat&eacute;gorie</strong></label>
-			<div class="controls">
-				<select name="what" id="selectSpecialty">
-					<option>Physioth&eacute;rapeute</option>
-					<option>Orthoth&eacute;rapeute</option>
-					<option>Chiropracticien</option>
-					<option>Ost&eacute;opathe</option>
-				</select>
-				<p class="help-block">
-					Nous avons des centaines de professionnels dans notre r&eacute;seau.
-				</p>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label" for="dateSelect"><strong>Quand</strong></label>
-			<div class="controls">
-				<select name="date" id="dateSelect">
-					<option>19 Mars, 2012</option>
-					<option>20 Mars, 2012</option>
-					<option>21 Mars, 2012</option>
-					<option>22 Mars, 2012</option>
-					<option>23 Mars, 2012</option>
-					<option>24 Mars, 2012</option>
-					<option>25 Mars, 2012</option>
-				</select>
-				<select name="time" id="timeSelect">
-					<option>7h00 &agrave; 8h00</option>
-					<option>8h00 &agrave; 9h00</option>
-					<option>9h00 &agrave; 10h00</option>
-					<option>10h00 &agrave; 11h00</option>
-					<option>11h00 &agrave; 12h00</option>
-					<option>12h00 &agrave; 13h00</option>
-					<option>13h00 &agrave; 14h00</option>
-				</select>
-				<p class="help-block">
-					La date et l'heure d&eacute;sir&eacute;e, votre rendez-vous est garantie!
-				</p>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label" for="whereSelect"><strong>Lieu</strong></label>
-			<div class="controls">
-				<select name="where" id="whereSelect">
-					<option>Montr&eacute;al - Centre-Ville</option>
-					<option>Montr&eacute;al - Ouest de l'ile</option>
-					<option>etc.</option>
-				</select>
-				<p class="help-block">
-					L'endroit de votre rendez-vous.
-				</p>
-			</div>
-		</div>
-		<div class="control-group {% if form.email.errors %} error {% endif %}">
-			{{ form.email.label(class="control-label") }}
-			<div class="controls">
-				{{ form.email(class="input-xlarge") }}
-				<p class="help-block">
-					{% if form.email.errors %}
-						{% for error in form.email.errors %} 
-							<span class="label label-important">Erreur</span> {{ error }}<br>
-						{% endfor %}
-					{% else %}
-						Votre addresse courriel pour confirmer le rendez-vous.
-					{% endif %}
-				</p>
-			</div>
-		</div>
-		<div class="control-group">
-			<div class="controls">
-				<button type="submit" class="btn btn-primary btn-large">
-					R&eacute;servez Maintenant
-				</button>
-			</div>
-		</div>
-	</fieldset>
-</form>
+<div class="span6">
+	<div class="well">
+		<form action="/" method="post">
+			<fieldset>
+				<div class="control-group">
+					<label class="control-label" for="selectSpecialty"><strong>Cat&eacute;gorie</strong></label>
+					<div class="controls">
+						<select name="what" id="selectSpecialty">
+							<option>Physioth&eacute;rapeute</option>
+							<option>Orthoth&eacute;rapeute</option>
+							<option>Chiropracticien</option>
+							<option>Ost&eacute;opathe</option>
+						</select>
+						<p class="help-block">
+							Nous avons des centaines de professionnels dans notre r&eacute;seau.
+						</p>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="dateSelect"><strong>Quand</strong></label>
+					<div class="controls">
+						<select name="date" id="dateSelect">
+							<option>19 Mars, 2012</option>
+							<option>20 Mars, 2012</option>
+							<option>21 Mars, 2012</option>
+							<option>22 Mars, 2012</option>
+							<option>23 Mars, 2012</option>
+							<option>24 Mars, 2012</option>
+							<option>25 Mars, 2012</option>
+						</select>
+						<select name="time" id="timeSelect">
+							<option>7h00 &agrave; 8h00</option>
+							<option>8h00 &agrave; 9h00</option>
+							<option>9h00 &agrave; 10h00</option>
+							<option>10h00 &agrave; 11h00</option>
+							<option>11h00 &agrave; 12h00</option>
+							<option>12h00 &agrave; 13h00</option>
+							<option>13h00 &agrave; 14h00</option>
+						</select>
+						<p class="help-block">
+							La date et l'heure d&eacute;sir&eacute;e, votre rendez-vous est garantie!
+						</p>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="whereSelect"><strong>Lieu</strong></label>
+					<div class="controls">
+						<select name="where" id="whereSelect">
+							<option>Montr&eacute;al - Centre-Ville</option>
+							<option>Montr&eacute;al - Ouest de l'ile</option>
+							<option>etc.</option>
+						</select>
+						<p class="help-block">
+							L'endroit de votre rendez-vous.
+						</p>
+					</div>
+				</div>
+				<div class="control-group {% if form.email.errors %} error {% endif %}">
+					{{ form.email.label(class="control-label") }}
+					<div class="controls">
+						{{ form.email(class="input-xlarge") }}
+						<p class="help-block">
+							{% if form.email.errors %}
+							{% for error in form.email.errors %} <span class="label label-important">Erreur</span> {{ error }}
+							<br>
+							{% endfor %}
+							{% else %}
+							Votre addresse courriel pour confirmer le rendez-vous.
+							{% endif %}
+						</p>
+					</div>
+				</div>
+				<div class="control-group">
+					<div class="controls">
+						<button type="submit" class="btn btn-primary btn-large">
+							R&eacute;servez Maintenant
+						</button>
+					</div>
+				</div>
+			</fieldset>
+		</form>
+	</div>
+</div>
+<div class="span6">
+	<h1>Carousel for profiles</h1>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<h1>Carousel for quotes</h1>
+</div>
 {% endblock content %} 
