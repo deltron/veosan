@@ -1,6 +1,7 @@
 import os
 import webapp2
 from webapp2_extras import jinja2
+from wtforms import Form, TextField, validators
 
 class BaseHandler(webapp2.RequestHandler):
   @webapp2.cached_property
@@ -10,25 +11,34 @@ class BaseHandler(webapp2.RequestHandler):
   def render_template(self, filename, **template_args):
         self.response.write(self.jinja2.render_template(filename, **template_args))
 
+class BookingForm(Form):
+    email = TextField('Courriel', [
+                                   validators.Email(message='Addresse de courriel invalide.')
+                                ])
+    
+
 class IndexHandler(BaseHandler):
-    def get(self):
-        self.render_template('index.html', name=self.request.get('name'))
+    def get(self):   
+        form = BookingForm(self.request.GET)
+        self.render_template('index.html', form=form)
+        
+    def post(self):
+        form = BookingForm(self.request.POST)
+
+        if form.validate():
+            template_values = {
+                               'what': self.request.get("what"),
+                               'where': self.request.get("where"),
+                               'date': self.request.get("date"),
+                               'time': self.request.get("time"),
+                               'email': form.email.data
+            }
+            self.render_template('patient/new.html', tv=template_values) 
+        else:
+            self.render_template('index.html', form=form)
+
     
 class PatientBookHandler(BaseHandler):
-    def post(self):
-        # get latest requests
-        # prs = db.GqlQuery("SELECT * FROM PatientRequest ORDER BY createdOn DESC LIMIT 10")
-        template_values = {
-            'what': self.request.get("what"),
-            'where': self.request.get("where"),
-            'date': self.request.get("date"),
-            'time': self.request.get("time"),
-            'email': self.request.get("email")
-        }
- 
-        self.render_template('patient/book.html', tv=template_values) 
-    
-class PatientNewHandler(BaseHandler):
     def post(self):
         template_values = {
             'what': self.request.get("what"),
@@ -38,7 +48,7 @@ class PatientNewHandler(BaseHandler):
             'email': self.request.get("email")
         }
           
-        self.render_template('patient/new.html', tv=template_values)
+        self.render_template('patient/book.html', tv=template_values)
 
 class ProviderProfileHandler(BaseHandler):
     def get(self):
@@ -55,7 +65,6 @@ class ProviderTermsHandler(BaseHandler):
 application = webapp2.WSGIApplication([
                                        ('/', IndexHandler),
                                        ('/patient/book', PatientBookHandler),
-                                       ('/patient/new', PatientNewHandler),
                                        ('/provider/schedule', ProviderScheduleHandler),
                                        ('/provider/profile', ProviderProfileHandler),
                                        ('/provider/terms', ProviderTermsHandler)
