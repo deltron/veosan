@@ -2,6 +2,8 @@ import os
 import webapp2
 from webapp2_extras import jinja2
 from wtforms import Form, TextField, validators
+import util
+import logging
 
 class BaseHandler(webapp2.RequestHandler):
   @webapp2.cached_property
@@ -18,9 +20,19 @@ class BookingForm(Form):
     
 
 class IndexHandler(BaseHandler):
-    def get(self):   
+    def get(self):
+        # setup variable for main booking form
+        # specialties
+        # Next 2 weeks of dates
+        # regions
         form = BookingForm(self.request.GET)
-        self.render_template('index.html', form=form)
+        template_values = {
+            'regions': util.getAllRegions(),
+            'specialties': util.getAllSpecialties(),
+            'form': form
+        }
+        self.render_template('index.html', **template_values)
+        
         
     def post(self):
         form = BookingForm(self.request.POST)

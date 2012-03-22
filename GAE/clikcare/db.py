@@ -30,6 +30,7 @@ class Provider(db.Model):
     phone = db.StringProperty()    
     specialty = db.StringProperty()
     
+    
 class Booking(db.Model):
     '''
     A booking
