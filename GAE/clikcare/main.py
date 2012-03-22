@@ -54,6 +54,10 @@ class ProviderProfileHandler(BaseHandler):
     def get(self):
         self.render_template('provider/profile.html', name=self.request.get('name'))
 
+class ProviderAddressHandler(BaseHandler):
+    def get(self):
+        self.render_template('provider/address.html', name=self.request.get('name'))
+
 class ProviderScheduleHandler(BaseHandler):
     def get(self):
         self.render_template('provider/schedule.html', name=self.request.get('name'))
@@ -66,6 +70,7 @@ application = webapp2.WSGIApplication([
                                        ('/', IndexHandler),
                                        ('/patient/book', PatientBookHandler),
                                        ('/provider/schedule', ProviderScheduleHandler),
+                                       ('/provider/address', ProviderAddressHandler),
                                        ('/provider/profile', ProviderProfileHandler),
                                        ('/provider/terms', ProviderTermsHandler)
                                        ], debug=True)
