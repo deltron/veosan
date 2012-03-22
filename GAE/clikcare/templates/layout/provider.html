@@ -1,0 +1,18 @@
+{% extends "/layout/base.html" %}
+
+{% block subnav %}
+<ul class="nav nav-tabs">
+	<li id="schedule" {% if "schedule" == active_page %} class="active" {% endif %}>
+		<a href="/provider/schedule">Horaire</a>
+	</li>
+	<li id="profile" {% if  "profile" == active_page %} class="active" {% endif %}>
+		<a href="/provider/profile">Profile</a>
+	</li>
+	<li id="address" {% if  "address" == active_page %} class="active" {% endif %}>
+		<a href="/provider/address">Addresse</a>
+	</li>
+	<li id="terms" {% if  "terms" == active_page %} class="active" {% endif %}>
+		<a href="/provider/terms">Conditions</a>
+	</li>
+</ul>
+{% endblock %}
