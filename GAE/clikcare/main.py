@@ -38,7 +38,7 @@ class IndexHandler(BaseHandler):
             self.render_template('index.html', form=form)
 
     
-class PatientNewHandler(BaseHandler):
+class PatientBookHandler(BaseHandler):
     def post(self):
         template_values = {
             'what': self.request.get("what"),
@@ -48,7 +48,7 @@ class PatientNewHandler(BaseHandler):
             'email': self.request.get("email")
         }
           
-        self.render_template('patient/new.html', tv=template_values)
+        self.render_template('patient/book.html', tv=template_values)
 
 class ProviderProfileHandler(BaseHandler):
     def get(self):
@@ -64,7 +64,7 @@ class ProviderTermsHandler(BaseHandler):
 
 application = webapp2.WSGIApplication([
                                        ('/', IndexHandler),
-                                     #  ('/patient/book', PatientBookHandler),
+                                       ('/patient/book', PatientBookHandler),
                                        ('/provider/schedule', ProviderScheduleHandler),
                                        ('/provider/profile', ProviderProfileHandler),
                                        ('/provider/terms', ProviderTermsHandler)
