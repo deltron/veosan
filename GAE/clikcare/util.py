@@ -1,6 +1,4 @@
 
-import dateutil.relativedelta as R
-import dateutil.parser as P
 from datetime import date, timedelta
 
 def getAllRegions():
