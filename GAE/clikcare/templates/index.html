@@ -12,9 +12,8 @@
 					<label class="control-label" for="selectSpecialty"><strong>Cat&eacute;gorie</strong></label>
 					<div class="controls">
 						<select name="what" id="selectSpecialty">
-					{% for sp in specialties %}
-					<option> {{ sp }} </option>
-					{% endfor %}
+							{% for sp in specialties %} <option> {{ sp }} </option>
+							{% endfor %}
 						</select>
 						<p class="help-block">
 							Nous avons des centaines de professionnels dans notre r&eacute;seau.
@@ -51,9 +50,8 @@
 					<label class="control-label" for="whereSelect"><strong>Lieu</strong></label>
 					<div class="controls">
 						<select name="where" id="whereSelect">
-					{% for region in regions %}
-					<option> {{ region }} </option>
-					{% endfor %}
+							{% for region in regions %} <option> {{ region }} </option>
+							{% endfor %}
 						</select>
 						<p class="help-block">
 							L'endroit de votre rendez-vous.
@@ -62,7 +60,6 @@
 				</div>
 				<div class="control-group {% if form.email.errors %} error {% endif %}">
 					<h3>Courriel</h3>
-					
 					<!-- form labels don't look good
 					{{ form.email.label(class="control-label") }}
 					-->
@@ -91,22 +88,99 @@
 	</div>
 </div>
 <div class="span6">
-	<h1>Carousel for profiles</h1>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<h1>Carousel for quotes</h1>
+	<div id="carouselProfile" class="carousel">
+		<!-- Carousel items -->
+		<div class="carousel-inner">
+			<div class="active item">
+				<h1>Profile 1</h1>
+				abc
+				<br>
+				<br>
+				<br>
+				<br>
+				<br>
+				<br>
+				<br>
+				<br>
+				<br>
+			</div>
+			<div class="item">
+				<h1>Profile 2</h1>
+				def
+				<br>
+				<br>
+				<br>
+				<br>
+				<br>
+				<br>
+				<br>
+				<br>
+				<br>
+			</div>
+			<div class="item">
+				<h1>Profile 3</h1>
+				ghi
+				<br>
+				<br>
+				<br>
+				<br>
+				<br>
+				<br>
+				<br>
+				<br>
+				<br>
+			</div>
+		</div>
+		<!-- Carousel nav -->
+		<a class="carousel-control left" href="#carouselProfile" data-slide="prev">&lsaquo;</a>
+		<a class="carousel-control right" href="#carouselProfile" data-slide="next">&rsaquo;</a>
+	</div>
+	<div id="carouselQuote" class="carousel">
+		<!-- Carousel items -->
+		<div class="carousel-inner">
+			<div class="active item">
+				<h1>Quote 1</h1>
+				abc
+				<br>
+				<br>
+				<br>
+				<br>
+				<br>
+				<br>
+				<br>
+				<br>
+				<br>
+			</div>
+			<div class="item">
+				<h1>Quote 2</h1>
+				def
+				<br>
+				<br>
+				<br>
+				<br>
+				<br>
+				<br>
+				<br>
+				<br>
+				<br>
+			</div>
+			<div class="item">
+				<h1>Quote 3</h1>
+				ghi
+				<br>
+				<br>
+				<br>
+				<br>
+				<br>
+				<br>
+				<br>
+				<br>
+				<br>
+			</div>
+		</div>
+		<!-- Carousel nav -->
+		<a class="carousel-control left" href="#carouselQuote" data-slide="prev">&lsaquo;</a>
+		<a class="carousel-control right" href="#carouselQuote" data-slide="next">&rsaquo;</a>
+	</div>
 </div>
 {% endblock content %} 
