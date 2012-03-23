@@ -15,7 +15,33 @@ def getAllCategories():
             ("chiropractor", "Chiropracticien"),
             ("osteopath", "Osteopathe")
         ]
-    
+
+# key, value
+def getAllSpecialities():
+    return [("cardiology", "Cardiologie"),
+            ("pneumology", "Pneumologie"),
+            ("orthopedic", "Orthopédie"),
+            ("sports", "Sportive"),
+            ("neurology", "Neurologie"),
+            ("pediatric", "Pédiatrie"),
+            ("geriatric", "Gériatrie")
+        ]
+
+def getAllSchools():
+    return [("concordia", "Concordia University"),
+            ("mcgill", "McGill University"),
+            ("udem", "Universit&eacute; de Montr&eacute;al"),
+            ("uqtr", "Universit&eacute; de Qu&ebec &agrave; Trois-Rivieres"),
+            ("usherb", "Universit&eacute; de Sherbrooke")
+        ]
+
+def getAllDiplomas():
+    return [("bachelors", "Baccalaureat"),
+            ("masters", "Maitrise"),
+            ("doctor", "Doctorat")
+        ]
+
+
 def getDatesList():
     ''' Return a list of date from tomorrow to 3 weeks from now'''
     datesList = []
