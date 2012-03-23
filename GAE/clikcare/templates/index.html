@@ -11,10 +11,7 @@
 				<div class="control-group">
 					<label class="control-label" for="selectSpecialty"><strong>Cat&eacute;gorie</strong></label>
 					<div class="controls">
-						<select name="what" id="selectSpecialty">
-							{% for sp in specialties %} <option> {{ sp }} </option>
-							{% endfor %}
-						</select>
+						{{ form.categories }}
 						<p class="help-block">
 							Nous avons des centaines de professionnels dans notre r&eacute;seau.
 						</p>
@@ -49,20 +46,14 @@
 				<div class="control-group">
 					<label class="control-label" for="whereSelect"><strong>Lieu</strong></label>
 					<div class="controls">
-						<select name="where" id="whereSelect">
-							{% for region in regions %} <option> {{ region }} </option>
-							{% endfor %}
-						</select>
+						{{ form.regions }}
 						<p class="help-block">
 							L'endroit de votre rendez-vous.
 						</p>
 					</div>
 				</div>
 				<div class="control-group {% if form.email.errors %} error {% endif %}">
-					<h3>Courriel</h3>
-					<!-- form labels don't look good
 					{{ form.email.label(class="control-label") }}
-					-->
 					<div class="controls">
 						{{ form.email(class="input-xlarge") }}
 						<p class="help-block">

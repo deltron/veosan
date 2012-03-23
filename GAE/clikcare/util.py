@@ -1,15 +1,18 @@
 
 from datetime import date, timedelta
 
+# key, value
 def getAllRegions():
-    return ['Montreal - Centre-Ville',
-            'Montreal - Ouest de l''ile']
+    return [('mtl-downtown', 'Montreal - Centre-Ville'),
+            ('mtl-westisland', 'Montreal - Ouest de l''ile')
+            ]
     
-def getAllSpecialties():
-    return ["Physiotherapeute",
-             "Orthotherapeute",
-             "Chiropracticien",
-             "Osteopathe"]
+# key, value
+def getAllCategories():
+    return [("physiotherapy", "Physiotherapeute"),
+            ("chiropractor", "Chiropracticien"),
+            ("osteopath", "Osteopathe")
+        ]
     
 
 def getDatesList():
