@@ -2,11 +2,14 @@
 from datetime import date, timedelta
 import logging
 from babel.dates import format_date
+import gettext
 
 # key, value
 def getAllRegions():
-    return [('mtl-downtown', 'Montreal - Centre-Ville'),
-            ('mtl-westisland', 'Montreal - Ouest de l''ile')
+    t = gettext.translation('clikcare', 'locale', languages=['fr'], fallback=False)
+    _ = t.ugettext
+    return [('mtl-downtown', _('Montreal - Downtown')),
+            ('mtl-westisland', _('Montreal - West-Island'))  #'Montreal - Ouest de l''ile
             ]
     
 # key, value
