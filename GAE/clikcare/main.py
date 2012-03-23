@@ -33,7 +33,6 @@ class IndexHandler(BaseHandler):
     def get(self):
         self.render_template('index.html', form=BookingForm(self.request.GET))
         
-        
     def post(self):
         form = BookingForm(self.request.POST)
 
@@ -75,7 +74,7 @@ class ProviderTermsHandler(BaseHandler):
 
 
 jinja_filters = {}
-jinja_filters['formatdate'] = util.formatDate
+jinja_filters['formatdate'] = util.formatDateFR
 
 webapp2_config = {}
 webapp2_config['webapp2_extras.jinja2'] = {
