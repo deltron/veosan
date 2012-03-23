@@ -17,8 +17,8 @@ msgstr ""
 
 #: util.py:11
 msgid "Montreal - Downtown"
-msgstr "Montreal - Centre-Ville"
+msgstr "Montréal - Centre-Ville"
 
 #: util.py:12
 msgid "Montreal - West-Island"
-msgstr "Montreal - Ouest de l'ile"
+msgstr "Montréal - Ouest de l'ile"
