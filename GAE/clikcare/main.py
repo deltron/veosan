@@ -17,7 +17,7 @@ class BaseHandler(webapp2.RequestHandler):
 
 class BookingForm(Form):
     email = TextField('Courriel', [validators.Email(message='Addresse de courriel invalide.')])
-    categories = SelectField('Cat&eacute;gorie', choices=util.getAllCategories()) # TODO: should add validators.AnyOf to make sure matches keys
+    categories = SelectField('Cat&eacute;gorie', choices=util.getAllCategories())
     regions = SelectField('Lieu', choices=util.getAllRegions())
     dates = SelectField('Date', choices=util.getDatesList())
     times = SelectField('Heure', choices=util.getTimesList())

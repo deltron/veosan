@@ -24,13 +24,13 @@ def getDatesList():
     oneDay = timedelta(days=1)
     for n in range(21):
         d = d + oneDay
-        dateTuple = (d, formatDateFR(d))
+        dateTuple = (str(d), formatDateFR(d))
         datesList.append(dateTuple)
     return datesList
 
 def getTimesList():
     startTimeList = range(7,22)
-    timeStringList = map(lambda x: (x, formatTimeFR(x)), startTimeList)
+    timeStringList = map(lambda x: (str(x), formatTimeFR(x)), startTimeList)
     return timeStringList
 
 def formatDateFR(date):
