@@ -1,22 +1,22 @@
 # -*- coding: utf-8 -*-
 from datetime import date, timedelta
-import locale
 import logging
 from babel.dates import format_date
- 
+
+# key, value
 def getAllRegions():
-    return ['Montreal - Centre-Ville',
-            'Montreal - Ouest de l''ile',
-            'Montreal - Nord, Anjou, Ahuntsic',
-            'Montreal - Est de l''ile']
+    return [('mtl-downtown', 'Montreal - Centre-Ville'),
+            ('mtl-westisland', 'Montreal - Ouest de l''ile')
+            ]
     
-def getAllSpecialties():
-    return [u'Physiothérapeute',
-             "Orthotherapeute",
-             "Chiropracticien",
-             u"Ostéopathe"]
+# key, value
+def getAllCategories():
+    return [("physiotherapy", "Physiotherapeute"),
+            ("chiropractor", "Chiropracticien"),
+            ("osteopath", "Osteopathe")
+        ]
     
-def get3WeeksOfDates():
+def getDatesList():
     ''' Return a list of date from tomorrow to 3 weeks from now'''
     datesList = []
     d = date.today()

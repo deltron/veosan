@@ -63,7 +63,6 @@
 		</div>
 		<div class="container">
 			{% block subnav %}{% endblock %}
-			
 			<header class="jumbotron subhead">
 				<h1>{% block subhead %}{% endblock %}</h1>
 				<p class="lead">
@@ -89,19 +88,15 @@
 		<script src="/assets/js/bootstrap-transition.js"></script>
 		<script src="/assets/js/bootstrap-carousel.js"></script>
 		<script>
-						$(function() {
-			$('a[rel=tooltip]').tooltip();
-			});
 			$(function() {
-			$('a[rel=popover]').popover();
-			});
-			$(function() {
-			$('#carouselProfile').carousel(
-			interval: 120*1000;
-			);
-			$('#carouselQuote').carousel(
-			interval: 120*1000;
-			);
+				$('a[rel=tooltip]').tooltip();
+				$('a[rel=popover]').popover();
+				$('#carouselProfile').carousel({
+					interval: 120000
+				});
+				$('#carouselQuote').carousel({
+					interval: 120000
+				});
 			});</script>
 	</body>
 </html>
