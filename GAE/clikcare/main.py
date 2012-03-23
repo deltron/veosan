@@ -5,12 +5,14 @@ from wtforms import Form, TextField, validators
 import util
 import logging
 
+
 class BaseHandler(webapp2.RequestHandler):
-  @webapp2.cached_property
-  def jinja2(self):
+        
+    @webapp2.cached_property
+    def jinja2(self):
         return jinja2.get_jinja2(app=self.app)
 
-  def render_template(self, filename, **template_args):
+    def render_template(self, filename, **template_args):
         self.response.write(self.jinja2.render_template(filename, **template_args))
 
 class BookingForm(Form):
@@ -29,7 +31,9 @@ class IndexHandler(BaseHandler):
         template_values = {
             'regions': util.getAllRegions(),
             'specialties': util.getAllSpecialties(),
-            'form': form
+            'form': form,
+            'dates': util.get3WeeksOfDates(),
+            'times': util.getTimesList()
         }
         self.render_template('index.html', **template_values)
         
@@ -78,6 +82,20 @@ class ProviderTermsHandler(BaseHandler):
     def get(self):
         self.render_template('provider/terms.html', name=self.request.get('name'))
 
+
+
+
+
+
+
+jinja_filters = {}
+jinja_filters['formatdate'] = util.formatDate
+
+webapp2_config = {}
+webapp2_config['webapp2_extras.jinja2'] = {
+                                            'filters': jinja_filters
+                                            } 
+
 application = webapp2.WSGIApplication([
                                        ('/', IndexHandler),
                                        ('/patient/book', PatientBookHandler),
@@ -85,4 +103,5 @@ application = webapp2.WSGIApplication([
                                        ('/provider/address', ProviderAddressHandler),
                                        ('/provider/profile', ProviderProfileHandler),
                                        ('/provider/terms', ProviderTermsHandler)
-                                       ], debug=True)
+                                       ], debug=True,
+                                      config=webapp2_config)
