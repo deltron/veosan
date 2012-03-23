@@ -24,7 +24,8 @@ def getDatesList():
     oneDay = timedelta(days=1)
     for n in range(21):
         d = d + oneDay
-        datesList.append(d)
+        dateTuple = (d, formatDate(d))
+        datesList.append(dateTuple)
     return datesList
 
 def formatTime(startTime):

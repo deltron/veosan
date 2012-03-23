@@ -20,16 +20,8 @@
 				<div class="control-group">
 					<label class="control-label" for="dateSelect" style="font-size:large; font-weight:bold">Quand</label>
 					<div class="controls">
-						<select name="date" id="dateSelect">
-							{% for date in dates %}
-								<option value="{{date}}"> {{ date|formatdate }} </option>
-							{% endfor %}
-						</select>
-						<select name="time" id="timeSelect">
-							{% for time, formattedTime in times %}
-								<option value="{{time}}"> {{ formattedTime }} </option>
-							{% endfor %}
-						</select>
+						{{ form.dates }}
+						{{ form.times }}
 						<p class="help-block">
 							La date et l'heure d&eacute;sir&eacute;e, votre rendez-vous est garantie!
 						</p>
