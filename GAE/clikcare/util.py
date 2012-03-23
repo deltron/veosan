@@ -27,17 +27,17 @@ def getDatesList():
     oneDay = timedelta(days=1)
     for n in range(21):
         d = d + oneDay
-        dateTuple = (d, formatDate(d))
+        dateTuple = (str(d), formatDateFR(d))
         datesList.append(dateTuple)
     return datesList
 
-def formatTime(startTime):
-    return str(startTime) + 'h - ' + str(startTime+1) + 'h'
-
 def getTimesList():
     startTimeList = range(7,22)
-    timeStringList = map(lambda x: (x, formatTime(x)), startTimeList)
+    timeStringList = map(lambda x: (str(x), formatTimeFR(x)), startTimeList)
     return timeStringList
 
-def formatDate(date):
-    return format_date(date, "EEEE, d MMM yyyy", locale='fr')
+def formatDateFR(date):
+    return format_date(date, "d MMMM yyyy (EEEE)", locale='fr')
+
+def formatTimeFR(startTime):
+    return str(startTime) + 'h - ' + str(startTime+1) + 'h'

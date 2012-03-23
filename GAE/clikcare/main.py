@@ -17,7 +17,7 @@ class BaseHandler(webapp2.RequestHandler):
 
 class BookingForm(Form):
     email = TextField('Courriel', [validators.Email(message='Addresse de courriel invalide.')])
-    categories = SelectField('Cat&eacute;gorie', choices=util.getAllCategories()) # TODO: should add validators.AnyOf to make sure matches keys
+    categories = SelectField('Cat&eacute;gorie', choices=util.getAllCategories())
     regions = SelectField('Lieu', choices=util.getAllRegions())
     dates = SelectField('Date', choices=util.getDatesList())
     times = SelectField('Heure', choices=util.getTimesList())
@@ -32,7 +32,6 @@ class PatientForm(Form):
 class IndexHandler(BaseHandler):
     def get(self):
         self.render_template('index.html', form=BookingForm(self.request.GET))
-        
         
     def post(self):
         form = BookingForm(self.request.POST)
@@ -75,7 +74,7 @@ class ProviderTermsHandler(BaseHandler):
 
 
 jinja_filters = {}
-jinja_filters['formatdate'] = util.formatDate
+jinja_filters['formatdate'] = util.formatDateFR
 
 webapp2_config = {}
 webapp2_config['webapp2_extras.jinja2'] = {
