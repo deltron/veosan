@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from datetime import date, timedelta
 import logging
-from babel.dates import format_date
+from babel.dates import format_date, format_datetime
 import gettext
 
 # key, value
@@ -67,3 +67,7 @@ def formatDateFR(date):
 
 def formatTimeFR(startTime):
     return str(startTime) + 'h - ' + str(startTime+1) + 'h'
+
+def formatDateTimeNoSeconds(datetime):
+    return format_datetime(datetime, "d MMMM yyyy (EEEE) H:m", locale='en')
+
