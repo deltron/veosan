@@ -8,71 +8,7 @@
 {% block content %}
 <form class="form-horizontal">
 	<fieldset>
-		<div class="control-group">
-			<label class="control-label" for="selectSpecialty"><strong>Cat&eacute;gorie</strong></label>
-			<div class="controls">
-				<select name="what" id="selectSpecialty">
-					<option>Physioth&eacute;rapeute</option>
-					<option>Orthoth&eacute;rapeute</option>
-					<option>Chiropracticien</option>
-					<option>Ost&eacute;opathe</option>
-				</select>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label" for="selectSpecialty"><strong>Specialites</strong></label>
-			<div class="controls">
-				<label class="checkbox">
-					<input type="checkbox" name="a" value="a">
-					Cardiologie</label>
-				<label class="checkbox">
-					<input type="checkbox" name="a" value="a">
-					Pneumologie</label>
-				<label class="checkbox">
-					<input type="checkbox" name="a" value="a">
-					Orthopédie</label>
-				<label class="checkbox">
-					<input type="checkbox" name="a" value="a">
-					Sportive</label>
-				<label class="checkbox">
-					<input type="checkbox" name="a" value="a">
-					Neurologie</label>
-				<label class="checkbox">
-					<input type="checkbox" name="a" value="a">
-					Pédiatrie</label>
-				<label class="checkbox">
-					<input type="checkbox" name="a" value="a">
-					Gériatrie</label>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label" for="selectSpecialty"><strong>&Eacute;cole</strong></label>
-			<div class="controls">
-				<select name="what" id="selectSpecialty">
-					<option>Concordia</option>
-					<option>McGill</option>
-					<option>Universit&eacute; de Montr&eacute;al</option>
-					<option>etc.</option>
-					<option>Autre</option>
-				</select>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label" for="selectSpecialty"><strong>Niveau de scolarit&eacute;</strong></label>
-			<div class="controls">
-				<select name="what" id="selectSpecialty">
-					<option>Bac</option>
-					<option>Maitrise</option>
-					<option>Doctorat</option>
-				</select>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label" for="selectSpecialty"><strong>Ann&eacute;e d'obtention</strong></label>
-			<div class="controls">
-				<input type="text" class="input-min">
-			</div>
-		</div>
+		{{ makeStandardForm() }}
 	</fieldset>
 </form>
 
