@@ -1,4 +1,4 @@
-from wtforms import Form, TextField, SelectField, SelectMultipleField, validators, widgets
+from wtforms import Form, TextField, SelectField, SelectMultipleField, FileField, validators, widgets
 import util
 
 # WTF! WTF doesn't come with checkboxes out of the box
@@ -28,6 +28,7 @@ class PatientForm(Form):
 
 
 class ProviderAddressForm(Form):
+    profilePhoto = FileField('T&eacute;l&eacute;charger')
     firstName = TextField('Pr&eacute;nom', [validators.Length(min=1, message='Pr&eacute;nom requis.')])
     lastName = TextField('Nom', [validators.Length(min=1, message='Nom requis.')])
     email = TextField('Courriel', [validators.Email(message='Addresse de courriel invalide.')])
