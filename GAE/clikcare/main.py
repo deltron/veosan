@@ -25,7 +25,9 @@ class PatientBookHandler(BaseHandler):
         form = PatientForm(self.request.POST)
 
         if form.validate():
-            # Store Booking
+            logging.info('patient post:' + str(self.request))
+            # Store Patient liked to Booking
+            db.storePatient(self.request)
             self.render_template('patient/book.html', form=form) 
         else:
             self.render_template('patient/new.html', form=form)
@@ -67,6 +69,7 @@ class ProviderTermsHandler(BaseHandler):
 
 jinja_filters = {}
 jinja_filters['formatdate'] = util.formatDateFR
+jinja_filters['formatdatetime_noseconds'] = util.formatDateTimeNoSeconds
 
 webapp2_config = {}
 webapp2_config['webapp2_extras.jinja2'] = {
