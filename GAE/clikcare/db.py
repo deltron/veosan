@@ -13,6 +13,6 @@ def storeBooking(request):
     
 def storePatient(request):         
     patient = Patient()
-    patient.firstname = request.get('firstname')
-    patient.lastname = request.get('lastname')
+    patient.firstname = request.get('firstName')
+    patient.lastname = request.get('lastName')
     patient.put()
