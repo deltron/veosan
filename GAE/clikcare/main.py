@@ -6,6 +6,7 @@ import util
 import logging
 from base import BaseHandler
 import admin
+import db
 
 
 # WTF! WTF doesn't come with checkboxes out of the box
@@ -58,13 +59,9 @@ class IndexHandler(BaseHandler):
         
     def post(self):
         form = BookingForm(self.request.POST)
-        # validation
         if form.validate():
             logging.info('booking post:' + str(self.request))
-
-            db.storeBooking(request)
-
-            
+            db.storeBooking(self.request)
             self.render_template('patient/new.html', form=PatientForm(self.request.POST)) 
         else:
             self.render_template('index.html', form=form)
