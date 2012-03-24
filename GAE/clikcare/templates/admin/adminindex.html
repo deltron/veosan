@@ -7,7 +7,7 @@
 <div class="span6">
 	<div class="well">
 		{% for b in bookings %}
-			<li> {{b.createdOn}}  {{b.requestSpecialty}} </li>
+			<li> {{b.createdOn}} {{b.requestSpecialty}} {{b.requestLocation}}</li>
 		{% endfor %}
 	</div>
 </div>

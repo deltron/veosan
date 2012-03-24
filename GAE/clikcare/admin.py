@@ -12,4 +12,4 @@ class IndexHandler(BaseHandler):
 
         tv = { 'bookings': bookings }
         
-        self.render_template('admin/index.html', **tv)
+        self.render_template('admin/adminindex.html', **tv)
