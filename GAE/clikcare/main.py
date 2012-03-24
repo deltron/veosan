@@ -1,19 +1,11 @@
-import os
+
 import webapp2
-from webapp2_extras import jinja2
 from wtforms import Form, TextField, SelectField, validators
 import util
 import logging
+from base import BaseHandler
+import admin
 
-
-class BaseHandler(webapp2.RequestHandler):
-        
-    @webapp2.cached_property
-    def jinja2(self):
-        return jinja2.get_jinja2(app=self.app)
-
-    def render_template(self, filename, **template_args):
-        self.response.write(self.jinja2.render_template(filename, **template_args))
 
 class BookingForm(Form):
     email = TextField('Courriel', [validators.Email(message='Addresse de courriel invalide.')])
@@ -29,14 +21,20 @@ class PatientForm(Form):
     email = TextField('Courriel', [validators.Email(message='Addresse de courriel invalide.')])
     telephone = TextField('T&eacute;l&eacute;phone', [validators.Regexp(regex="^[2-9]\d{2}-\d{3}-\d{4}$", message='Format 514-555-1212')])
 
+
 class IndexHandler(BaseHandler):
     def get(self):
         self.render_template('index.html', form=BookingForm(self.request.GET))
         
     def post(self):
         form = BookingForm(self.request.POST)
-
+        # validation
         if form.validate():
+            logging.info('booking post:' + str(self.request))
+
+            db.storeBooking(request)
+
+            
             self.render_template('patient/new.html', form=PatientForm(self.request.POST)) 
         else:
             self.render_template('index.html', form=form)
@@ -47,6 +45,7 @@ class PatientBookHandler(BaseHandler):
         form = PatientForm(self.request.POST)
 
         if form.validate():
+            # Store Booking
             self.render_template('patient/book.html', form=form) 
         else:
             self.render_template('patient/new.html', form=form)
@@ -70,9 +69,6 @@ class ProviderTermsHandler(BaseHandler):
 
 
 
-
-
-
 jinja_filters = {}
 jinja_filters['formatdate'] = util.formatDateFR
 
@@ -87,6 +83,7 @@ application = webapp2.WSGIApplication([
                                        ('/provider/schedule', ProviderScheduleHandler),
                                        ('/provider/address', ProviderAddressHandler),
                                        ('/provider/profile', ProviderProfileHandler),
-                                       ('/provider/terms', ProviderTermsHandler)
+                                       ('/provider/terms', ProviderTermsHandler),
+                                       ('/admin', admin.IndexHandler)
                                        ], debug=True,
                                       config=webapp2_config)
