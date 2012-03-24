@@ -5,7 +5,7 @@ Created on Mar 17, 2012
 '''
 
 from google.appengine.ext import db
-
+from google.appengine.ext import blobstore
 
 '''
     stored data 
@@ -32,7 +32,8 @@ class Provider(db.Model):
     email = db.StringProperty()
     phone = db.StringProperty()    
     specialty = db.StringProperty()
-    
+    blob_key = blobstore.BlobReferenceProperty()
+
     
 class Booking(db.Model):
     '''
@@ -48,4 +49,4 @@ class Booking(db.Model):
     # link to patient
     patient = db.ReferenceProperty(Patient)
         
-        
+

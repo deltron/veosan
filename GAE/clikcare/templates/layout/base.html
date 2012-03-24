@@ -4,13 +4,18 @@
 		<div class="control-group {% if field.errors %} error {% endif %}">
 			{{ field.label(class="control-label") }}
 			
-			<div class="controls">				
-				{{ field(class="input-xlarge") }}
+			<div class="controls">		
+				{% if field.type == "MultiCheckboxField" %}
+					{{ field(class="checkbox") }}
+				{% else %}	
+					{{ field(class="input-xlarge") }}
+				{% endif %}
+				
 				<p class="help-block">
 					{% if field.errors %}
-					{% for error in field.errors %} 
-						 <i class="icon-exclamation-sign"></i> {{ error }} <br>
-					{% endfor %}
+						{% for error in field.errors %} 
+							 <i class="icon-exclamation-sign"></i> {{ error }} <br>
+						{% endfor %}
 					{% endif %}
 				</p>
 			</div>
@@ -59,13 +64,13 @@
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Mon Compte <b class="caret"></b></a>
 								<ul class="dropdown-menu">
 									<li>
+										<a href="/provider/schedule">Horaire</a>
+									</li>
+									<li>
 										<a href="/provider/profile">Profile</a>
 									</li>
 									<li>
 										<a href="/provider/address">Addresse</a>
-									</li>
-									<li>
-										<a href="/provider/schedule">Horaire</a>
 									</li>
 									<li>
 										<a href="/provider/terms">Conditions</a>

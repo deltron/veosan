@@ -17,17 +17,21 @@
 		</fieldset>
 	</form>
 </div>
-<div class="modal hide" id="uploadProfileModal" style="display: none;">
-	<div class="modal-header">
-		<a class="close" data-dismiss="modal">×</a>
-		<h3>T&eacute;l&eacute;charger</h3>
+<form action="{{ upload_url }}" method="post" enctype="multipart/form-data">
+	<div class="modal hide" id="uploadProfileModal" style="display: none;">
+		<div class="modal-header">
+			<a class="close" data-dismiss="modal">×</a>
+			<h3>T&eacute;l&eacute;charger</h3>
+		</div>
+		<div class="modal-body">
+			{{ uploadForm.profilePhoto }}
+		</div>
+		<div class="modal-footer">
+			<button type="submit" class="btn btn-primary">
+				Sauvegarder
+			</button>
+			<a class="btn" data-dismiss="modal">Annuler</a>
+		</div>
 	</div>
-	<div class="modal-body">
-		{{ form.profilePhoto }}
-	</div>
-	<div class="modal-footer">
-		<a href="#" class="btn">Close</a>
-		<a href="#" class="btn btn-primary">Save changes</a>
-	</div>
-</div>
+</form>
 {% endblock %} 
