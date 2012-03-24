@@ -1,9 +1,10 @@
 '''
     database access
 '''
+from data import Booking
             
-            
-            
-            booking = Booking()
-            booking.requestSpecialty = self.request.get('categories')
-            booking.put()
+def storeBooking(request):         
+    booking = Booking()
+    booking.requestSpecialty = request.get('categories')
+    booking.requestLocation = request.get('regions')
+    booking.put()
