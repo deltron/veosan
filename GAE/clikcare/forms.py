@@ -1,6 +1,25 @@
 from wtforms import Form, TextField, SelectField, SelectMultipleField, FileField, validators, widgets
 import util
 
+
+''' 
+need to write our own list widget so the <label> doesn't appear after
+the checkbox (which shows up on a new line and also makes the click target
+much smaller). 
+
+Bottom line: default behavior for checkboxes from WTForms makes no sense
+
+'''
+class CheckboxWidget(object):
+    def __call__(self, field, **kwargs):
+        kwargs.setdefault('id', field.id)
+        html = []
+
+        for subfield in field:
+            html.append(u'<label %s>%s %s</label>' % (widgets.html_params(**kwargs), unicode(subfield), unicode(subfield.label.text)))
+        return widgets.HTMLString(u''.join(html))
+
+
 # WTF! WTF doesn't come with checkboxes out of the box
 class MultiCheckboxField(SelectMultipleField):
     """
@@ -9,8 +28,11 @@ class MultiCheckboxField(SelectMultipleField):
     Iterating the field will produce subfields, allowing custom rendering of
     the enclosed checkbox fields.
     """
-    widget = widgets.ListWidget(prefix_label=False)
+    widget = CheckboxWidget()
     option_widget = widgets.CheckboxInput()
+    
+    
+    
 
 class BookingForm(Form):
     email = TextField('Courriel', [validators.Email(message='Addresse de courriel invalide.')])
