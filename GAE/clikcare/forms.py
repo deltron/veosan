@@ -50,7 +50,6 @@ class PatientForm(Form):
 
 
 class ProviderAddressForm(Form):
-    profilePhoto = FileField('T&eacute;l&eacute;charger')
     firstName = TextField('Pr&eacute;nom', [validators.Length(min=1, message='Pr&eacute;nom requis.')])
     lastName = TextField('Nom', [validators.Length(min=1, message='Nom requis.')])
     email = TextField('Courriel', [validators.Email(message='Addresse de courriel invalide.')])
@@ -59,6 +58,9 @@ class ProviderAddressForm(Form):
     address = TextField('Addresse', [validators.Length(min=10, message='Address requis.')])
     city = TextField('Ville', [validators.Length(min=10, message='Address requis.')])
     postalCode = TextField('Code Postal', [validators.Length(min=6, message='Address requis.')])
+    
+class ProviderPhotoForm(Form):
+    profilePhoto = FileField('T&eacute;l&eacute;charger')
 
 class ProviderProfileForm(Form):
     categories = SelectField('Cat&eacute;gorie', choices=util.getAllCategories())

@@ -8,3 +8,4 @@ def storeBooking(request):
     booking.requestSpecialty = request.get('categories')
     booking.requestLocation = request.get('regions')
     booking.put()
+ 
