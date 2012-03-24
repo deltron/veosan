@@ -5,32 +5,29 @@
 
 {% block content %}
 <div class="span8">
-	
 	<table class="table">
-	  <thead>
-	    <tr>
-	      <th>Patient</th>
-	      <th>Requested Specialty</th>
-	      <th>Requested Region</th>
-	      <th>created On</th>
-	    </tr>
-	  </thead>
-	  <tbody>
-	   {% for b in bookings %}
-	    <tr>
-	      <td>{{b.patient}}</td>
-	      <td>{{b.requestSpecialty}}</td>
-	      <td>{{b.requestLocation}}</td>
-	      <td>{{b.createdOn}}</td>
-	    </tr>
-	    {% endfor %}
-	  </tbody>
+		<thead>
+			<tr>
+				<th>Key</th>
+				<th>Patient</th>
+				<th>Requested Specialty</th>
+				<th>Requested Region</th>
+				<th>created On</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for b in bookings %}
+			<tr>
+				<td>{{b.key() }}</td>
+				<td>{{b.patient}}</td>
+				<td>{{b.requestSpecialty}}</td>
+				<td>{{b.requestLocation}}</td>
+				<td>{{b.createdOn|formatdatetime_noseconds}}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
 	</table>
-
-</div> <!-- span -->
-
-<div class="span4">
-
-
 </div>
+<!-- span -->
+<div class="span4"></div>
 {% endblock content %} 
