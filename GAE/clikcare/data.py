@@ -45,5 +45,7 @@ class Booking(db.Model):
     requestDate = db.StringProperty()
     requestTime = db.StringProperty()
     requestContact = db.StringProperty()
+    # link to patient
+    patient = db.ReferenceProperty(Patient)
         
         
