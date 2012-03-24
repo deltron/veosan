@@ -1,5 +1,6 @@
 {% macro makeStandardForm(name) -%}
 	{% for field in form %}
+		{% if field.type != "FileField" %}
 		<div class="control-group {% if field.errors %} error {% endif %}">
 			{{ field.label(class="control-label") }}
 			
@@ -14,6 +15,7 @@
 				</p>
 			</div>
 		</div>
+		{% endif %}
 	{% endfor %}
 {%- endmacro %}
 
@@ -106,6 +108,8 @@
 		<script src="/assets/js/bootstrap-popover.js"></script>
 		<script src="/assets/js/bootstrap-transition.js"></script>
 		<script src="/assets/js/bootstrap-carousel.js"></script>
+		<script src="/assets/js/bootstrap-modal.js"></script>
+
 		<script>
 			$(function() {
 				$('a[rel=tooltip]').tooltip();
@@ -116,6 +120,8 @@
 				$('#carouselQuote').carousel({
 					interval: 120000
 				});
-			});</script>
+				$('.uploadProfileModal').modal();
+			});
+		</script>
 	</body>
 </html>
