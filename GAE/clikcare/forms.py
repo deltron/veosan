@@ -1,4 +1,5 @@
-from wtforms import Form, TextField, SelectField, SelectMultipleField, FileField, validators, widgets
+from wtforms import Form, TextField, SelectField, SelectMultipleField, FileField, validators, widgets, HiddenField, IntegerField
+from wtforms.widgets import HiddenInput
 import util
 
 
@@ -47,6 +48,7 @@ class PatientForm(Form):
     lastName = TextField('Nom', [validators.Length(min=1, message='Nom requis.')])
     email = TextField('Courriel', [validators.Email(message='Addresse de courriel invalide.')])
     telephone = TextField('T&eacute;l&eacute;phone', [validators.Regexp(regex="^[2-9]\d{2}-\d{3}-\d{4}$", message='Format 514-555-1212')])
+    #booking = TextField('', widget=HiddenInput())
 
 
 class ProviderAddressForm(Form):
