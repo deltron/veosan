@@ -8,7 +8,7 @@
 	<table class="table">
 		<thead>
 			<tr>
-				<th>Key</th>
+				<!-- <th>Key</th> -->
 				<th>Patient</th>
 				<th>Requested Specialty</th>
 				<th>Requested Region</th>
@@ -18,8 +18,8 @@
 		<tbody>
 			{% for b in bookings %}
 			<tr>
-				<td>{{b.key() }}</td>
-				<td>{{b.patient}}</td>
+				<!-- <td>{{b.key() }}</td> -->
+				<td> <a href=""> {{b.patient.firstName}} {{b.patient.lastName}} </a> </td>
 				<td>{{b.requestSpecialty}}</td>
 				<td>{{b.requestLocation}}</td>
 				<td>{{b.createdOn|formatdatetime_noseconds}}</td>
