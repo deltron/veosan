@@ -18,8 +18,15 @@ class IndexHandler(BaseHandler):
         form = BookingForm(self.request.POST)
         if form.validate():
             logging.info('booking post:' + str(self.request))
-            db.storeBooking(self.request)
-            self.render_template('patient/new.html', form=PatientForm(self.request.POST)) 
+            booking_key = db.storeBooking(self.request)
+            booking_key_string = str(booking_key)
+            logging.info('created booking:' + booking_key_string)
+            #self.request.POST['booking'] = booking_key_string
+            tv = {
+                  'form': PatientForm(self.request.POST),
+                  'booking': booking_key_string
+                  }
+            self.render_template('patient/new.html', **tv)
         else:
             self.render_template('index.html', form=form)
 
