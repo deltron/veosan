@@ -32,7 +32,7 @@ class Provider(db.Model):
     email = db.StringProperty()
     phone = db.StringProperty()    
     specialty = db.StringProperty()
-    blob_key = blobstore.BlobReferenceProperty()
+    profilePhotoBlobKey = blobstore.BlobReferenceProperty()
 
     
 class Booking(db.Model):

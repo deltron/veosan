@@ -80,6 +80,19 @@ class ProviderAddressUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
     def post(self):
         uploadForm = ProviderPhotoForm(self.request.POST)
         upload_files = self.get_uploads(uploadForm.profilePhoto.name)[0]
+        
+        logging.info("Uploaded blob key: %s" % upload_files.key())
+        
+        # Pseudocode to implement when ready :
+        
+        # 1. get Provider ID from the session
+        # 2. store upload_files.key() in the Provider's record, update database        
+        # 3. render the address form again with the updated photo
+        
+        # provider.profilePhotoBlobKey = upload_files.key()
+        # data.storeProvider(provider)
+        # self.render_template('patient/address.html', form=form)
+        
         self.redirect('/serve/%s' % upload_files.key()) 
     #    self.render_template('patient/address.html', form=form) 
 
