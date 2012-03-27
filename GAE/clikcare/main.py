@@ -7,6 +7,7 @@ import admin
 import db
 from forms import BookingForm, PatientForm
 import provider
+import pprint
 
 
 class IndexHandler(BaseHandler):
@@ -43,9 +44,15 @@ class PatientBookHandler(BaseHandler):
 
 
 
+
+''' dump properties '''
+def dump(obj):  
+    return vars(obj)
+
 jinja_filters = {}
 jinja_filters['formatdate'] = util.formatDateFR
 jinja_filters['formatdatetime_noseconds'] = util.formatDateTimeNoSeconds
+jinja_filters['dump'] = dump
 
 webapp2_config = {}
 webapp2_config['webapp2_extras.jinja2'] = {
