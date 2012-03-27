@@ -11,10 +11,15 @@
 	<a class="btn btn-mini" data-toggle="modal" href="#uploadProfileModal" >T&eacute;l&eacute;charger</a>
 </div>
 <div class="span4">
-	<form class="form-horizontal">
+	<form method="post" action="/provider/address"  class="form-horizontal">
 		<fieldset>
 			{{ makeStandardForm() }}
 		</fieldset>
+		<div class="form-actions">
+			<button type="submit" class="btn btn-primary">
+				Sauvegarder
+			</button>
+		</div>		
 	</form>
 </div>
 <form action="{{ upload_url }}" method="post" enctype="multipart/form-data">
