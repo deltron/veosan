@@ -19,7 +19,7 @@ def storePatient(request):
     new_patient.firstName = request.get('firstName')
     new_patient.lastName = request.get('lastName')
     new_patient.email = request.get('email')
-    new_patient.phone = request.get('telephone')
+    new_patient.phone = request.get('phone')
     patient_key = new_patient.put()
     # link to booking
     booking_key = request.get('booking')
@@ -45,7 +45,7 @@ def storeProvider(request):
     provider.firstName = request.get('firstName')
     provider.lastName = request.get('lastName')
     provider.email = request.get('email')
-    provider.phone = request.get('telephone')
+    provider.phone = request.get('phone')
     provider.region = request.get('region')
     provider.address = request.get('address')
     provider.city = request.get('city')
