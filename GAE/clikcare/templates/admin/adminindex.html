@@ -21,16 +21,21 @@
 				<!-- <td>{{b.key() }}</td> -->
 				<td>
 					<a href="#" class="" rel="popover" title="{{b.patient.firstName}} {{b.patient.lastName}}" data-content="{{b.patient.phone}} <br> {{b.patient.email}} <br>">{{b.patient.firstName}} {{b.patient.lastName}}</a>
-				
 				  </td>
 				<td>
 					{{b.requestSpecialty}} <br>
 					{{b.requestLocation}} <br>
 					{{b.requestDate}}&nbsp;{{b.requestTime}}
 				</td>
-				<td>.</td>
 				<td>
-					.<a href="#" class="btn" rel="popover" title="{{b.patient.firstName}} {{b.patient.lastName}} @ [Provider Name]" data-content="{{b.comments}} <br> Telephone Confirmation: {{b.telephoneConfirmation}} <br> Created On: {{b.createdOn|formatdatetime_noseconds}}">+</a>
+					Provider X <br>
+					Specialty <br>
+					Region
+				</td>
+				
+				<td>
+					Appointment Address <br>
+					Appointment Time <a href="#" class="btn" rel="popover" title="{{b.patient.firstName}} {{b.patient.lastName}} @ [Provider Name]" data-content="{{b.comments}} <br> Telephone Confirmation: {{b.telephoneConfirmation}} <br> Created On: {{b.createdOn|formatdatetime_noseconds}}">+</a>
 				</td>
 			</tr>
 			{% endfor %}
@@ -38,5 +43,15 @@
 	</table>
 </div>
 <!-- span -->
-<div class="span4"></div>
+<div class="span4">
+	<a href="provider/address" class="btn">Create New Provider</a>
+	<br>
+	<br>
+	{% for p in providers %}
+		<a href="/provider/address?pk={{p.key()}}" >{{p.firstName}} {{p.lastName}}</a>
+		<!-- <form action="/provider/address" method="post"> <input name="provider" type="hidden" value="{{p.key()}}"/> <button type="submit" class="btn">{{p.firstName}} {{p.lastName}}</button> </form>
+		-->
+	{% endfor %}
+	
+</div>
 {% endblock content %} 
