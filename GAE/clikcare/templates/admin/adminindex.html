@@ -4,7 +4,7 @@
 {% block lead %} {% endblock %}
 
 {% block content %}
-<div class="span8">
+<div class="span6">
 	<table class="table">
 		<thead>
 			<tr>
@@ -48,7 +48,15 @@
 	<br>
 	<br>
 	{% for p in providers %}
-		<p> </p><a href="/provider/address?pk={{p.key()}}" >{{p.firstName}} {{p.lastName}}</a> </p>
+		<p> </p>
+				<a 
+					href="/provider/address?key={{p.key()}}"
+					rel="popover"
+					title="{{p.firstName}} {{p.lastName}}"
+					data-content="{{p|dump}}">
+				 	{{p.firstName}} {{p.lastName}}
+			 	</a>
+		 	</p>
 		<!-- <form action="/provider/address" method="post"> <input name="provider" type="hidden" value="{{p.key()}}"/> <button type="submit" class="btn">{{p.firstName}} {{p.lastName}}</button> </form>
 		-->
 	{% endfor %}
