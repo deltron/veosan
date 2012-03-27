@@ -8,14 +8,15 @@
 {% block content %}
 <form class="form-horizontal">
 	<div class="row">
-		<div class="span1" align="center">
-			<img src="/assets/img/default-profile.png" width="100" height="100">
-			<a class="btn btn-mini" data-toggle="modal" href="#uploadProfileModal" >T&eacute;l&eacute;charger</a>
-		</div>
 		<div class="span4">
 			<fieldset>
 				{{ makeStandardForm() }}
 			</fieldset>
+		</div>
+		<div class="span8" align="center">
+			<img src="/assets/img/default-profile.png" width="100" height="100">
+			<br>
+			<a class="btn btn-mini" data-toggle="modal" href="#uploadProfileModal" >T&eacute;l&eacute;charger</a>
 		</div>
 	</div>
 	<div class="row">
