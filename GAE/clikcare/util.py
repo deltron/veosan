@@ -23,11 +23,11 @@ def getAllCategories():
 def getAllSpecialities():
     return [("cardiology", "Cardiologie"),
             ("pneumology", "Pneumologie"),
-            ("orthopedic", "Orthopédie"),
+            ("orthopedic", "Orthop&eacute;die"),
             ("sports", "Sportive"),
             ("neurology", "Neurologie"),
-            ("pediatric", "Pédiatrie"),
-            ("geriatric", "Gériatrie")
+            ("pediatric", "P&eacute;diatrie"),
+            ("geriatric", "G&eacute;riatrie")
         ]
 
 def getAllSchools():
