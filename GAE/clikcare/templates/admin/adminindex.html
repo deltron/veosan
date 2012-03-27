@@ -48,7 +48,7 @@
 	<br>
 	<br>
 	{% for p in providers %}
-		<a href="/provider/address?pk={{p.key()}}" >{{p.firstName}} {{p.lastName}}</a>
+		<p> </p><a href="/provider/address?pk={{p.key()}}" >{{p.firstName}} {{p.lastName}}</a> </p>
 		<!-- <form action="/provider/address" method="post"> <input name="provider" type="hidden" value="{{p.key()}}"/> <button type="submit" class="btn">{{p.firstName}} {{p.lastName}}</button> </form>
 		-->
 	{% endfor %}
