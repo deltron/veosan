@@ -8,6 +8,8 @@ from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
 from data import Provider
 
+import pprint
+
 
 class ProviderProfileHandler(BaseHandler):
     def get(self):
@@ -27,16 +29,17 @@ class ProviderAddressHandler(BaseHandler):
         key = self.request.get('key')
         if (key):
             # edit provider
-            logging.info("Edit provider. key:" + key)
+            logging.info("Edit provider. key:" + str(key))
             provider = Provider.get(key)
-            # TODO make this work
-            form = ProviderAddressForm(provider)
+            logging.info("pprint:" + str(vars(provider)))
+            logging.info('Editing provider: ' + str(provider))
+            form = ProviderAddressForm(obj=provider)
         else:
             # new provider
             logging.info("Blank form for new provider")
             form = ProviderAddressForm(self.request.GET)
-            upload_url = blobstore.create_upload_url('/provider/address/upload')
-            uploadForm = ProviderPhotoForm(self.request.GET)
+        upload_url = blobstore.create_upload_url('/provider/address/upload')
+        uploadForm = ProviderPhotoForm(self.request.GET)
         self.render_template('provider/address.html', form=form, uploadForm=uploadForm, upload_url=upload_url)
         
     def post(self):
@@ -86,3 +89,6 @@ class ProviderScheduleHandler(BaseHandler):
 class ProviderTermsHandler(BaseHandler):
     def get(self):
         self.render_template('provider/terms.html', name=self.request.get('name'))
+        
+        
+        
