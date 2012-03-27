@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from wtforms import Form, TextField, SelectField, SelectMultipleField, FileField, validators, widgets, HiddenField, IntegerField
-from wtforms.widgets import HiddenInput
 import util
 
 
@@ -53,11 +52,11 @@ class PatientForm(Form):
 
 
 class ProviderAddressForm(Form):
-    firstName = TextField('Pr&eacute;nom', [validators.Length(min=1, message='Pr&eacute;nom requis.')])
-    lastName = TextField('Nom', [validators.Length(min=1, message='Nom requis.')])
-    email = TextField('Courriel', [validators.Email(message='Addresse de courriel invalide.')])
-    telephone = TextField('T&eacute;l&eacute;phone', [validators.Regexp(regex="^[2-9]\d{2}-\d{3}-\d{4}$", message='Format 514-555-1212')])
-    regions = SelectField('Lieu', choices=util.getAllRegions())
+    firstName = TextField('firstName', [validators.Length(min=1, message='Pr&eacute;nom requis.')])
+    lastName = TextField('lastName', [validators.Length(min=1, message='Nom requis.')])
+    email = TextField('email', [validators.Email(message='Addresse de courriel invalide.')])
+    phone = TextField('T&eacute;l&eacute;phone', [validators.Regexp(regex="^[2-9]\d{2}-\d{3}-\d{4}$", message='Format 514-555-1212')])
+    region = SelectField('Lieu', choices=util.getAllRegions())
     address = TextField('Addresse', [validators.Length(min=5, message='Address requis.')])
     city = TextField('Ville', [validators.Length(min=3, message='Address requis.')])
     postalCode = TextField('Code Postal', [validators.Length(min=6, message='Address requis.')])
