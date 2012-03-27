@@ -4,151 +4,152 @@
 {% block lead %}Subhead.{% endblock %}
 
 {% block content %}
-<div class="span6">
-	<div class="well">
-		<form action="/" method="post">
-			<fieldset>
-				<div class="control-group">
-					{{ form.categories.label(class="control-label",style="font-size:large; font-weight:bold") }}
-					<div class="controls">
-						{{ form.categories }}
-						<p class="help-block">
-							Nous avons des centaines de professionnels dans notre r&eacute;seau.
-						</p>
+<div class="row">
+	<div class="span6">
+		<div class="well">
+			<form action="/" method="post">
+				<fieldset>
+					<div class="control-group">
+						{{ form.categories.label(class="control-label",style="font-size:large; font-weight:bold") }}
+						<div class="controls">
+							{{ form.categories }}
+							<p class="help-block">
+								Nous avons des centaines de professionnels dans notre r&eacute;seau.
+							</p>
+						</div>
 					</div>
-				</div>
-				<div class="control-group">
-					<label class="control-label" for="dateSelect" style="font-size:large; font-weight:bold">Quand</label>
-					<div class="controls">
-						{{ form.dates }}
-						{{ form.times }}
-						<p class="help-block">
-							La date et l'heure d&eacute;sir&eacute;e, votre rendez-vous est garantie!
-						</p>
+					<div class="control-group">
+						<label class="control-label" for="dateSelect" style="font-size:large; font-weight:bold">Quand</label>
+						<div class="controls">
+							{{ form.dates }}
+							{{ form.times }}
+							<p class="help-block">
+								La date et l'heure d&eacute;sir&eacute;e, votre rendez-vous est garantie!
+							</p>
+						</div>
 					</div>
-				</div>
-				<div class="control-group">
-					{{ form.regions.label(class="control-label", style="font-size:large; font-weight:bold") }}
-					<div class="controls">
-						{{ form.regions }}
+					<div class="control-group">
+						{{ form.regions.label(class="control-label", style="font-size:large; font-weight:bold") }}
+						<div class="controls">
+							{{ form.regions }}
+						</div>
 					</div>
-				</div>
-				<div class="control-group {% if form.email.errors %} error {% endif %}">
-					{{ form.email.label(class="control-label", style="font-size:large; font-weight:bold") }}
-					{% if form.email.errors %}
-							{% for error in form.email.errors %}
-								 <i class="icon-exclamation-sign"></i> {{ error }}
-							{% endfor %}
-					{% endif %}
-					<div class="controls">
-						{{ form.email(class="input-xlarge") }}
+					<div class="control-group {% if form.email.errors %} error {% endif %}">
+						{{ form.email.label(class="control-label", style="font-size:large; font-weight:bold") }}
+						{% if form.email.errors %}
+						{% for error in form.email.errors %} <i class="icon-exclamation-sign"></i> {{ error }}
+						{% endfor %}
+						{% endif %}
+						<div class="controls">
+							{{ form.email(class="input-xlarge") }}
+						</div>
 					</div>
-				</div>
-				<div class="control-group">
-					<div class="controls">
-						<button type="submit" class="btn btn-primary btn-large">
-							R&eacute;servez Maintenant
-						</button>
+					<div class="control-group">
+						<div class="controls">
+							<button type="submit" class="btn btn-primary btn-large">
+								R&eacute;servez Maintenant
+							</button>
+						</div>
 					</div>
-				</div>
-			</fieldset>
-		</form>
-	</div>
-</div>
-<div class="span6">
-	<div id="carouselProfile" class="carousel">
-		<!-- Carousel items -->
-		<div class="carousel-inner">
-			<div class="active item">
-				<h1>Profile 1</h1>
-				abc
-				<br>
-				<br>
-				<br>
-				<br>
-				<br>
-				<br>
-				<br>
-				<br>
-				<br>
-			</div>
-			<div class="item">
-				<h1>Profile 2</h1>
-				def
-				<br>
-				<br>
-				<br>
-				<br>
-				<br>
-				<br>
-				<br>
-				<br>
-				<br>
-			</div>
-			<div class="item">
-				<h1>Profile 3</h1>
-				ghi
-				<br>
-				<br>
-				<br>
-				<br>
-				<br>
-				<br>
-				<br>
-				<br>
-				<br>
-			</div>
+				</fieldset>
+			</form>
 		</div>
-		<!-- Carousel nav -->
-		<a class="carousel-control left" href="#carouselProfile" data-slide="prev">&lsaquo;</a>
-		<a class="carousel-control right" href="#carouselProfile" data-slide="next">&rsaquo;</a>
 	</div>
-	<div id="carouselQuote" class="carousel">
-		<!-- Carousel items -->
-		<div class="carousel-inner">
-			<div class="active item">
-				<h1>Quote 1</h1>
-				abc
-				<br>
-				<br>
-				<br>
-				<br>
-				<br>
-				<br>
-				<br>
-				<br>
-				<br>
+	<div class="span6">
+		<div id="carouselProfile" class="carousel">
+			<!-- Carousel items -->
+			<div class="carousel-inner">
+				<div class="active item">
+					<h1>Profile 1</h1>
+					abc
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+				</div>
+				<div class="item">
+					<h1>Profile 2</h1>
+					def
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+				</div>
+				<div class="item">
+					<h1>Profile 3</h1>
+					ghi
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+				</div>
 			</div>
-			<div class="item">
-				<h1>Quote 2</h1>
-				def
-				<br>
-				<br>
-				<br>
-				<br>
-				<br>
-				<br>
-				<br>
-				<br>
-				<br>
-			</div>
-			<div class="item">
-				<h1>Quote 3</h1>
-				ghi
-				<br>
-				<br>
-				<br>
-				<br>
-				<br>
-				<br>
-				<br>
-				<br>
-				<br>
-			</div>
+			<!-- Carousel nav -->
+			<a class="carousel-control left" href="#carouselProfile" data-slide="prev">&lsaquo;</a>
+			<a class="carousel-control right" href="#carouselProfile" data-slide="next">&rsaquo;</a>
 		</div>
-		<!-- Carousel nav -->
-		<a class="carousel-control left" href="#carouselQuote" data-slide="prev">&lsaquo;</a>
-		<a class="carousel-control right" href="#carouselQuote" data-slide="next">&rsaquo;</a>
+		<div id="carouselQuote" class="carousel">
+			<!-- Carousel items -->
+			<div class="carousel-inner">
+				<div class="active item">
+					<h1>Quote 1</h1>
+					abc
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+				</div>
+				<div class="item">
+					<h1>Quote 2</h1>
+					def
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+				</div>
+				<div class="item">
+					<h1>Quote 3</h1>
+					ghi
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+				</div>
+			</div>
+			<!-- Carousel nav -->
+			<a class="carousel-control left" href="#carouselQuote" data-slide="prev">&lsaquo;</a>
+			<a class="carousel-control right" href="#carouselQuote" data-slide="next">&rsaquo;</a>
+		</div>
 	</div>
 </div>
 {% endblock content %} 
