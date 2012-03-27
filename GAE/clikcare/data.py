@@ -30,7 +30,11 @@ class Provider(db.Model):
     firstName = db.StringProperty()
     lastName = db.StringProperty()
     email = db.StringProperty()
-    phone = db.StringProperty()    
+    phone = db.StringProperty()   
+    region = db.StringProperty()
+    city = db.StringProperty()
+    postalCode = db.StringProperty()
+    # under this - not saved yet
     specialty = db.StringProperty()
     profilePhotoBlobKey = blobstore.BlobReferenceProperty()
 
