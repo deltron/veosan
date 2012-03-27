@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import webapp2
 import util
 import logging
@@ -8,6 +9,7 @@ from forms import BookingForm, PatientForm, ProviderProfileForm, ProviderAddress
 import urllib
 from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
+from data import Provider
 
 
 class IndexHandler(BaseHandler):
@@ -34,7 +36,6 @@ class IndexHandler(BaseHandler):
 class PatientBookHandler(BaseHandler):
     def post(self):
         form = PatientForm(self.request.POST)
-
         if form.validate():
             logging.info('patient post:' + str(self.request))
             # Store Patient liked to Booking
@@ -43,37 +44,48 @@ class PatientBookHandler(BaseHandler):
         else:
             self.render_template('patient/new.html', form=form)
 
+
 class ProviderProfileHandler(BaseHandler):
     def get(self):
         form = ProviderProfileForm(self.request.POST)
-
         self.render_template('provider/profile.html', form=form)
     
     def post(self):
         form = ProviderProfileForm(self.request.POST)
-
         if form.validate():
             self.render_template('patient/profile.html', form=form) 
         else:
             self.render_template('patient/profile.html', form=form)
 
+
 class ProviderAddressHandler(BaseHandler):
     def get(self):
-        form = ProviderAddressForm(self.request.GET)
-        upload_url = blobstore.create_upload_url('/provider/address/upload')
-        uploadForm = ProviderPhotoForm(self.request.GET)
+        key = self.request.get('key')
+        if (key):
+            # edit provider
+            logging.info("Edit provider. key:" + key)
+            provider = Provider.get(key)
+            # TODO make this work
+            form = ProviderAddressForm(provider)
+        else:
+            # new provider
+            logging.info("Blank form for new provider")
+            form = ProviderAddressForm(self.request.GET)
+            upload_url = blobstore.create_upload_url('/provider/address/upload')
+            uploadForm = ProviderPhotoForm(self.request.GET)
         self.render_template('provider/address.html', form=form, uploadForm=uploadForm, upload_url=upload_url)
         
     def post(self):
         form = ProviderAddressForm(self.request.POST)
-
+        upload_url = blobstore.create_upload_url('/provider/address/upload')
+        uploadForm = ProviderPhotoForm(self.request.POST)
         if form.validate():
-            # save to database
-            
-            self.render_template('patient/address.html', form=form) 
+            # Store Provider Address
+            db.storeProvider(self.request)
+            self.render_template('provider/address.html', form=form, uploadForm=uploadForm, upload_url=upload_url) 
         else:
             # show errors
-            self.render_template('patient/address.html', form=form)
+            self.render_template('provider/address.html', form=form, uploadForm=uploadForm, upload_url=upload_url)
 
 
 class ProviderAddressUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
