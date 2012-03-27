@@ -1,27 +1,25 @@
 {% macro makeStandardForm(name) -%}
-	{% for field in form %}
-		{% if field.type != "FileField" %}
-		<div class="control-group {% if field.errors %} error {% endif %}">
-			{{ field.label(class="control-label") }}
-			
-			<div class="controls">		
-				{% if field.type == "MultiCheckboxField" %}
-					{{ field(class="checkbox") }}
-				{% else %}	
-					{{ field(class="input-xlarge") }}
-				{% endif %}
-				
-				<p class="help-block">
-					{% if field.errors %}
-						{% for error in field.errors %} 
-							 <i class="icon-exclamation-sign"></i> {{ error }} <br>
-						{% endfor %}
-					{% endif %}
-				</p>
-			</div>
-		</div>
+{% for field in form %}
+{% if field.type != "FileField" %}
+<div class="control-group {% if field.errors %} error {% endif %}">
+	{{ field.label(class="control-label") }}
+	<div class="controls">
+		{% if field.type == "MultiCheckboxField" %}
+		{{ field(class="checkbox") }}
+		{% else %}
+		{{ field(class="input-xlarge") }}
 		{% endif %}
-	{% endfor %}
+		<p class="help-block">
+			{% if field.errors %}
+			{% for error in field.errors %} <i class="icon-exclamation-sign"></i> {{ error }}
+			<br>
+			{% endfor %}
+			{% endif %}
+		</p>
+	</div>
+</div>
+{% endif %}
+{% endfor %}
 {%- endmacro %}
 
 <!DOCTYPE html>
@@ -96,10 +94,8 @@
 				</p>
 			</header>
 			<hr>
-			<div class="row">
-				<!-- content goes here -->
-				{% block content %}{% endblock %}
-			</div>
+			<!-- content goes here -->
+			{% block content %}{% endblock %}
 		</div>
 		<!-- /container -->
 		<!-- Le javascript
@@ -114,19 +110,19 @@
 		<script src="/assets/js/bootstrap-transition.js"></script>
 		<script src="/assets/js/bootstrap-carousel.js"></script>
 		<script src="/assets/js/bootstrap-modal.js"></script>
-
 		<script>
 			$(function() {
 				$('a[rel=tooltip]').tooltip();
 				$('a[rel=popover]').popover();
 				$('#carouselProfile').carousel({
-					interval: 120000
+					interval : 120000
 				});
 				$('#carouselQuote').carousel({
-					interval: 120000
+					interval : 120000
 				});
 				$('.uploadProfileModal').modal();
 			});
+
 		</script>
 	</body>
 </html>

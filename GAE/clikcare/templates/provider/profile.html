@@ -6,10 +6,21 @@
 {% block lead %}Votre profile.{% endblock %}
 
 {% block content %}
-<form class="form-horizontal">
-	<fieldset>
-		{{ makeStandardForm() }}
-	</fieldset>
-</form>
-
+<div class="row">
+	<div class="span12">
+		<form class="form-horizontal">
+			<fieldset>
+				{{ makeStandardForm() }}
+			</fieldset>
+			<div class="form-actions">
+				<button type="submit" class="btn btn-primary">
+					Sauvegarder
+				</button>
+				<button type="submit" class="btn">
+					Annuler
+				</button>
+			</div>
+		</form>
+	</div>
+</div>
 {% endblock %} 

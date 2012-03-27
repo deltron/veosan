@@ -4,43 +4,44 @@
 {% block lead %}Completez votre profile.{% endblock %}
 
 {% block content %}
-<form class="form-horizontal" action="/patient/book" method="post">
-	<fieldset>
-		{{ makeStandardForm() }}
-		
-		<div class="control-group">
-			<label class="control-label" for="input01"><strong>Confirmation</strong></label>
-			<div class="controls">
-				<label class="checkbox">
-					<input name="telephoneConfirmation" type="checkbox">
-					Je d&eacute;sir avoir une confirmation de rendez-vous par t&eacute;l&eacute;phone en plus d'un courriel </label>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label" for="input01"><strong>Commentaires</strong></label>
-			<div class="controls">
-				<p class="help-block">
-					Informations suppl&eacute;mentaires que vous d&eacute;sirez communiquer avant le rendez-vous.
-				</p>
-				<textarea name="comments" class="input-xlarge" id="textarea" rows="3"></textarea>
-			</div>
-		</div>
-		
-		<div class="control-group ">
-			<!-- <label class="control-label" for="booking"></label> -->
-			<div class="controls">	
-				<input class="input-xlarge" id="booking" name="booking" type="hidden" value="{{ booking }}">
-			</div>
-		</div>
-		
-		<div class="form-actions">
-			<button type="submit" class="btn btn-primary">
-				Continuer
-			</button>
-			<button type="submit" class="btn">
-				Annuler
-			</button>
-		</div>
-	</fieldset>
-</form>
+<div class="row">
+	<div class="span12">
+		<form class="form-horizontal" action="/patient/book" method="post">
+			<fieldset>
+				{{ makeStandardForm() }}
+				<div class="control-group">
+					<label class="control-label" for="input01"><strong>Confirmation</strong></label>
+					<div class="controls">
+						<label class="checkbox">
+							<input name="telephoneConfirmation" type="checkbox">
+							Je d&eacute;sir avoir une confirmation de rendez-vous par t&eacute;l&eacute;phone en plus d'un courriel </label>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="input01"><strong>Commentaires</strong></label>
+					<div class="controls">
+						<p class="help-block">
+							Informations suppl&eacute;mentaires que vous d&eacute;sirez communiquer avant le rendez-vous.
+						</p>
+						<textarea name="comments" class="input-xlarge" id="textarea" rows="3"></textarea>
+					</div>
+				</div>
+				<div class="control-group ">
+					<!-- <label class="control-label" for="booking"></label> -->
+					<div class="controls">
+						<input class="input-xlarge" id="booking" name="booking" type="hidden" value="{{ booking }}">
+					</div>
+				</div>
+				<div class="form-actions">
+					<button type="submit" class="btn btn-primary">
+						Continuer
+					</button>
+					<button type="submit" class="btn">
+						Annuler
+					</button>
+				</div>
+			</fieldset>
+		</form>
+	</div>
+</div>
 {% endblock content %}
