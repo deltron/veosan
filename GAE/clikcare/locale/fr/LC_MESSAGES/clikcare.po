@@ -15,10 +15,111 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: util.py:11
+# Navbar
+
+msgid "My Account"
+msgstr "Mon Compte"
+
+msgid "Schedule"
+msgstr "Horaire"
+
+msgid "Profile"
+msgstr "Profile"
+
+msgid "Address"
+msgstr "Adresse"
+
+msgid "Terms"
+msgstr "Conditions"
+
+msgid "Logout"
+msgstr "Déconnexion"
+
+msgid "Contact"
+msgstr "Contact"
+
+
+# Index page
+
+msgid "Find Care"
+msgstr "Trouvez des soins"
+
+msgid "Category"
+msgstr "Catégorie"
+
+msgid "We have hundreds of professionals in our network."
+msgstr "Nous avons des centaines de professionnels dans notre réseau."
+
+msgid "When"
+msgstr "Quand"
+
+msgid "Your appointment is guaranteed."
+msgstr "Votre rendez-vous est garantie."
+
+msgid "Location"
+msgstr "Endroit"
+
+msgid "E-mail Address"
+msgstr "Adresse Courriel"
+
+msgid "Reserve Now"
+msgstr "Réservez Maintenant"
+
+
+# Categories
+msgid "Physiotherapy"
+msgstr "Physiothérapie"
+
+msgid "Physiotherapist"
+msgstr "Physiothérapeute"
+
+msgid "Osteopathy"
+msgstr "Ostéopathie"
+
+msgid "Osteopath"
+msgstr "Ostéopathe"
+
+msgid "Save"
+msgstr "Sauvegarder"
+
+msgid "Cancel"
+msgstr "Annuler"
+
+#################
+# Regions
+#################
+
 msgid "Montreal - Downtown"
 msgstr "Montréal - Centre-Ville"
 
-#: util.py:12
 msgid "Montreal - West-Island"
 msgstr "Montréal - Ouest de l'ile"
+
+
+# Degrees
+
+msgid "Bachelor's"
+msgstr "Baccalauréat"
+
+msgid "Master's"
+msgstr "Maîtrise"
+
+msgid "Ph.D"
+msgstr "Doctorat"
+
+
+# Specialities
+
+
+# Universities
+msgid "McGill University"
+msgstr "Université McGill"
+
+msgid "Université de Montréal "
+msgstr "Université de Montréal "
+
+msgid "Université Laval"
+msgstr "Université Laval"
+
+msgid "Concordia University"
+msgstr "Université Concordia"
