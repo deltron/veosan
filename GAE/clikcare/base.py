@@ -9,7 +9,7 @@ import gettext
 # change to en and everything is english!
 # todo: do we do /en/ /fr/ for every address or read it in the session somewhere?
 
-lang = 'en'
+lang = 'fr'
 t = gettext.translation('clikcare', 'locale', languages=[lang], fallback='en')
 t.install()
 

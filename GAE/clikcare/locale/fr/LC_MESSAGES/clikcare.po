@@ -170,19 +170,19 @@ msgstr "Gériatrie"
 msgid "McGill University"
 msgstr "Université McGill"
 
-msgid "Université de Montréal"
+msgid "Universite de Montréal"
 msgstr "Université de Montréal"
 
-msgid "Université de Sherbrooke"
+msgid "Universite de Sherbrooke"
 msgstr "Université de Sherbrooke"
 
-msgid "Université Laval"
+msgid "Universite Laval"
 msgstr "Université Laval"
 
 msgid "Concordia University"
 msgstr "Université Concordia"
 
-msgid "Université de Québec à Trois-Rivières"
+msgid "Universite de Québec a Trois-Rivieres"
 msgstr "Université de Québec à Trois-Rivières"
 
 

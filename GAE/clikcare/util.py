@@ -1,3 +1,4 @@
+#!/usr/local/bin/python
 # -*- coding: utf-8 -*-
 
 from datetime import date, timedelta
@@ -32,9 +33,9 @@ def getAllSpecialities():
 def getAllSchools():
     return [("concordia", _(u"Concordia University").decode("UTF-8")),
             ("mcgill", _(u"McGill University").decode("UTF-8")),
-            ("udem", _(u"Université de Montréal").decode("UTF-8")),
-            ("uqtr", _(u"Université de Québec à Trois-Rivières").decode("UTF-8")),
-            ("usherb", _(u"Université de Sherbrooke").decode("UTF-8"))
+            ("udem", _(u"Universite de Montreal").decode("UTF-8")),
+            ("uqtr", _(u"Universite de Quebec a Trois-Rivieres").decode("UTF-8")),
+            ("usherb", _(u"Universite de Sherbrooke").decode("UTF-8"))
         ]
 
 def getAllDiplomas():
