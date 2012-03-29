@@ -3,7 +3,7 @@
 from datetime import date, timedelta
 import logging
 from babel.dates import format_date, format_datetime
-
+from base import lang
 
 # key, value
 def getAllRegions():
@@ -52,22 +52,24 @@ def getDatesList():
     oneDay = timedelta(days=1)
     for n in range(21):
         d = d + oneDay
-        dateTuple = (unicode(d), formatDateFR(d))
+        dateTuple = (unicode(d), formatDate(d))
         datesList.append(dateTuple)
     return datesList
 
 def getTimesList():
-    startTimeList = range(7, 22)
+    # this doesn't work for am/pm in english
+    
+    startTimeList = range(7, 21)
     timeStringList = map(lambda x: (unicode(x), formatTimeFR(x)), startTimeList)
+    
     return timeStringList
 
-def formatDateFR(date):
-    return format_date(date, u"d MMMM yyyy (EEEE)", locale='fr')
+def formatDate(date):
+    return format_date(date, u"d MMMM yyyy (EEEE)", locale=lang)
 
 def formatTimeFR(startTime):
-    return unicode(startTime) + 'h - ' + str(startTime + 1) + 'h'
+    return unicode(startTime) + u'h - ' + unicode(startTime + 1) + u'h'
 
 # is this method used anywhere?
 def formatDateTimeNoSeconds(datetime):
     return format_datetime(datetime, u"d MMMM yyyy (EEEE) H:m", locale='en')
-

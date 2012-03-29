@@ -52,7 +52,7 @@ def dump(obj):
     # todo split at the comma (replace with <br>)
 
 jinja_filters = {}
-jinja_filters['formatdate'] = util.formatDateFR
+jinja_filters['formatdate'] = util.formatDate
 jinja_filters['formatdatetime_noseconds'] = util.formatDateTimeNoSeconds
 jinja_filters['dump'] = dump
 

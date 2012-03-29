@@ -8,9 +8,10 @@ import gettext
 
 # change to en and everything is english!
 # todo: do we do /en/ /fr/ for every address or read it in the session somewhere?
-t = gettext.translation('clikcare', 'locale', languages=['fr'], fallback='en')
-t.install()
 
+lang = 'en'
+t = gettext.translation('clikcare', 'locale', languages=[lang], fallback='en')
+t.install()
 
 class BaseHandler(webapp2.RequestHandler):        
     @webapp2.cached_property
