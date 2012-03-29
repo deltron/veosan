@@ -64,11 +64,17 @@ jinja_environment_args = {
             'jinja2.ext.i18n'   
         ]}
 
+
 webapp2_config = {}
 webapp2_config['webapp2_extras.jinja2'] = {
                                             'filters': jinja_filters,
                                             'environment_args': jinja_environment_args
                                             } 
+
+webapp2_config['webapp2_extras.i18n'] = {
+                                         'translations_path': 'locale',
+                                         'default_locale': 'fr'
+                                         }
 application = webapp2.WSGIApplication([
                                        ('/', IndexHandler),
                                        ('/patient/book', PatientBookHandler),

@@ -3,10 +3,7 @@
 from datetime import date, timedelta
 import logging
 from babel.dates import format_date, format_datetime
-import gettext
 
-t = gettext.translation('clikcare', 'locale', languages=['fr'], fallback=False)
-t.install()
 
 # key, value
 def getAllRegions():
