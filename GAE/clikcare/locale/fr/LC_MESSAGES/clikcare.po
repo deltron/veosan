@@ -15,7 +15,20 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#################
+# Title & brand
+#################
+
+msgid "clikcare! find a health care professional today"
+msgstr "cliksanté! trouvez des soins aujourd'hui"
+
+msgid "clikcare"
+msgstr "cliksanté"
+
+
+#################
 # Navbar
+#################
 
 msgid "My Account"
 msgstr "Mon Compte"
@@ -39,7 +52,9 @@ msgid "Contact"
 msgstr "Contact"
 
 
+#################
 # Index page
+#################
 
 msgid "Find Care"
 msgstr "Trouvez des soins"
@@ -47,14 +62,11 @@ msgstr "Trouvez des soins"
 msgid "Category"
 msgstr "Catégorie"
 
-msgid "We have hundreds of professionals in our network."
-msgstr "Nous avons des centaines de professionnels dans notre réseau."
+msgid "Your appointment with a professional from our network is guaranteed!"
+msgstr "Votre rendez-vous avec un des professionnels dans notre réseau est garantie!"
 
 msgid "When"
 msgstr "Quand"
-
-msgid "Your appointment is guaranteed."
-msgstr "Votre rendez-vous est garantie."
 
 msgid "Location"
 msgstr "Endroit"
@@ -69,7 +81,11 @@ msgid "Reserve Now"
 msgstr "Réservez Maintenant"
 
 
+
+#################
 # Categories
+#################
+
 msgid "Physiotherapy"
 msgstr "Physiothérapie"
 
@@ -91,6 +107,7 @@ msgstr "Sauvegarder"
 msgid "Cancel"
 msgstr "Annuler"
 
+
 #################
 # Regions
 #################
@@ -102,7 +119,11 @@ msgid "Montreal - West-Island"
 msgstr "Montréal - Ouest de l'ile"
 
 
+
+
+#################
 # Degrees
+#################
 
 msgid "Bachelor's"
 msgstr "Baccalauréat"
@@ -114,7 +135,11 @@ msgid "Ph.D"
 msgstr "Doctorat"
 
 
+
+#################
 # Specialities
+#################
+
 msgid "Cardiology"
 msgstr "Cardiologie"
 
@@ -137,7 +162,11 @@ msgid "Geriatric"
 msgstr "Gériatrie"
 
 
+
+#################
 # Universities
+#################
+
 msgid "McGill University"
 msgstr "Université McGill"
 

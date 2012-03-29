@@ -1,7 +1,7 @@
 {% extends "/layout/base.html" %}
 
-{% block subhead %}Trouvez des soins.{% endblock %}
-{% block lead %}Subhead.{% endblock %}
+{% block subhead %}{{ _('Find Care') }}{% endblock %}
+{% block lead %}{{ _('Your appointment with a professional from our network is guaranteed!') }}{% endblock %}
 
 {% block content %}
 <div class="row">
@@ -13,9 +13,6 @@
 						{{ form.categories.label(class="control-label",style="font-size:large; font-weight:bold") }}
 						<div class="controls">
 							{{ form.categories }}
-							<p class="help-block">
-								Nous avons des centaines de professionnels dans notre r&eacute;seau.
-							</p>
 						</div>
 					</div>
 					<div class="control-group">
@@ -23,9 +20,6 @@
 						<div class="controls">
 							{{ form.dates }}
 							{{ form.times }}
-							<p class="help-block">
-								La date et l'heure d&eacute;sir&eacute;e, votre rendez-vous est garantie!
-							</p>
 						</div>
 					</div>
 					<div class="control-group">
@@ -37,8 +31,9 @@
 					<div class="control-group {% if form.email.errors %} error {% endif %}">
 						{{ form.email.label(class="control-label", style="font-size:large; font-weight:bold") }}
 						{% if form.email.errors %}
-						{% for error in form.email.errors %} <i class="icon-exclamation-sign"></i> {{ error }}
-						{% endfor %}
+							{% for error in form.email.errors %} 
+								<i class="icon-exclamation-sign"></i> {{ error }}
+							{% endfor %}
 						{% endif %}
 						<div class="controls">
 							{{ form.email(class="input-xlarge") }}
