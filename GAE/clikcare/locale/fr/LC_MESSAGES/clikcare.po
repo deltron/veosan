@@ -79,6 +79,9 @@ msgstr "Ostéopathie"
 msgid "Osteopath"
 msgstr "Ostéopathe"
 
+msgid "Chiropractor"
+msgstr "Chiropracticien"
+
 msgid "Save"
 msgstr "Sauvegarder"
 
@@ -109,17 +112,46 @@ msgstr "Doctorat"
 
 
 # Specialities
+msgid "Cardiology"
+msgstr "Cardiologie"
+
+msgid "Pneumology"
+msgstr "Pneumologie"
+
+msgid "Orthopedic"
+msgstr "Orthopédie"
+
+msgid "Sports"
+msgstr "Sportive"
+
+msgid "Neurology"
+msgstr "Neurologie"
+
+msgid "Pediatric"
+msgstr "Pédiatrie"
+
+msgid "Geriatric"
+msgstr "Gériatrie"
 
 
 # Universities
 msgid "McGill University"
 msgstr "Université McGill"
 
-msgid "Université de Montréal "
-msgstr "Université de Montréal "
+msgid "Université de Montréal"
+msgstr "Université de Montréal"
+
+msgid "Université de Sherbrooke"
+msgstr "Université de Sherbrooke"
 
 msgid "Université Laval"
 msgstr "Université Laval"
 
 msgid "Concordia University"
 msgstr "Université Concordia"
+
+msgid "Université de Québec à Trois-Rivières"
+msgstr "Université de Québec à Trois-Rivières"
+
+
+
