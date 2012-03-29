@@ -6,6 +6,8 @@ import webapp2
 from webapp2_extras import jinja2
 import gettext
 
+# change to en and everything is english!
+# todo: do we do /en/ /fr/ for every address or read it in the session somewhere?
 t = gettext.translation('clikcare', 'locale', languages=['fr'], fallback='en')
 t.install()
 
