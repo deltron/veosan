@@ -41,7 +41,14 @@ def getOrCreateProvider(provider_key):
     return provider
 
 def storeProvider(request):
-    provider = getOrCreateProvider(request.get('provider'))
+    provider = getOrCreateProvider(request.get('provider_key'))
+    # profile
+    provider.category = request.get('category', provider.category)
+    provider.specialty = request.get('lastName', provider.specialty)
+    provider.school = request.get('school', provider.school)
+    provider.degree = request.get('degree', provider.degree)
+    provider.startYear = request.get('startYear')
+    # address
     provider.firstName = request.get('firstName')
     provider.lastName = request.get('lastName')
     provider.email = request.get('email')
@@ -49,8 +56,11 @@ def storeProvider(request):
     provider.region = request.get('region')
     provider.address = request.get('address')
     provider.city = request.get('city')
-    provider.postalcode = request.get('postalcode')
+    provider.postalCode = request.get('postalCode')
+    # store
     provider_key = provider.put()
     logging.info('Saved provider key:' + str(provider_key))
+    logging.info(vars(provider))
+    return provider_key
     
     

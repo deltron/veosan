@@ -49,6 +49,7 @@ class PatientBookHandler(BaseHandler):
 ''' dump properties '''
 def dump(obj):  
     return vars(obj)
+    # todo split at the comma (replace with <br>)
 
 jinja_filters = {}
 jinja_filters['formatdate'] = util.formatDateFR
@@ -71,12 +72,18 @@ webapp2_config['webapp2_extras.jinja2'] = {
 application = webapp2.WSGIApplication([
                                        ('/', IndexHandler),
                                        ('/patient/book', PatientBookHandler),
-                                       ('/provider/schedule', provider.ProviderScheduleHandler),
-                                       ('/provider/address', provider.ProviderAddressHandler),
+                                       # provider
+                                       ('/provider/new', provider.ProviderNewHandler),
+                                       ('/provider/new/profile', provider.ProviderNewHandler),
+                                       ('/provider/new/address', provider.ProviderNewHandler),
+                                       
+                                       ('/provider/profile', provider.ProviderEditProfileHandler),
+                                       ('/provider/address', provider.ProviderEditAddressHandler),
                                        ('/provider/address/upload', provider.ProviderAddressUploadHandler),
-                                       ('/provider/profile', provider.ProviderProfileHandler),
+                                       ('/provider/schedule', provider.ProviderScheduleHandler),
                                        ('/provider/terms', provider.ProviderTermsHandler),
                                        ('/serve/([^/]+)?', provider.ServeHandler), # temporary - to test file uploads
+                                       # admin
                                        ('/admin', admin.IndexHandler)        
                                       ], debug=True,
                                       config=webapp2_config)

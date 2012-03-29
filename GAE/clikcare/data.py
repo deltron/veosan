@@ -27,6 +27,13 @@ class Provider(db.Model):
     A provider
     '''
     createdOn = db.DateTimeProperty(auto_now_add=True)
+    # profile
+    category = db.StringProperty()
+    specialty = db.StringProperty()
+    school = db.StringProperty()
+    degree = db.StringProperty()
+    startYear = db.StringProperty()
+    # address
     firstName = db.StringProperty()
     lastName = db.StringProperty()
     email = db.StringProperty()
@@ -34,8 +41,6 @@ class Provider(db.Model):
     region = db.StringProperty()
     city = db.StringProperty()
     postalCode = db.StringProperty()
-    # under this - not saved yet
-    specialty = db.StringProperty()
     profilePhotoBlobKey = blobstore.BlobReferenceProperty()
 
     

@@ -60,13 +60,15 @@ class ProviderAddressForm(Form):
     address = TextField('Addresse', [validators.Length(min=5, message='Address requis.')])
     city = TextField('Ville', [validators.Length(min=3, message='Address requis.')])
     postalCode = TextField('Code Postal', [validators.Length(min=6, message='Address requis.')])
+    #key = TextField('key')
     
 class ProviderPhotoForm(Form):
     profilePhoto = FileField('T&eacute;l&eacute;charger')
 
 class ProviderProfileForm(Form):
-    categories = SelectField('Cat&eacute;gorie', choices=util.getAllCategories())
-    specialties = MultiCheckboxField('Sp&eacute;cialit&eacute;s', choices=util.getAllSpecialities())
-    schools = SelectField('&Eacute;cole', choices=util.getAllSchools())
+    categoriy = SelectField('Cat&eacute;gorie', choices=util.getAllCategories())
+    specialty = MultiCheckboxField('Sp&eacute;cialit&eacute;s', choices=util.getAllSpecialities())
+    school = SelectField('&Eacute;cole', choices=util.getAllSchools())
     degree = MultiCheckboxField('Diplome(s)', choices=util.getAllDiplomas())
-    startYear = TextField('En pratique depuis', [validators.Length(min=4, max=4, message='Requis.')])
+    startYear = TextField('En pratique depuis', [validators.Length(min=2, max=4, message='Your first year of practice')])
+    #key = TextField('key')

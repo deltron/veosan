@@ -8,16 +8,22 @@
 {% block content %}
 <div class="row">
 	<div class="span12">
-		<form class="form-horizontal">
+		{% if flow == 'new' %}
+		<form method="post" action="/provider/new/address" class="form-horizontal">
+		{% else %}
+		<form method="post" action="/provider/profile" class="form-horizontal">
+		{% endif %}
 			<fieldset>
 				{{ makeStandardForm() }}
 			</fieldset>
+			<input type="hidden" name="flow" value="{{flow}}" />
 			<div class="form-actions">
 				<button type="submit" class="btn btn-primary">
-					Sauvegarder
-				</button>
-				<button type="submit" class="btn">
-					Annuler
+					{% if flow == 'new' %}
+						Next
+					{% else %}
+						Sauvegarder
+					{% endif %}
 				</button>
 			</div>
 		</form>
