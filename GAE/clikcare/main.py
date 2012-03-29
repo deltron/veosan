@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 import webapp2
 import util
 import logging
@@ -8,7 +9,7 @@ import db
 from forms import BookingForm, PatientForm
 import provider
 import pprint
-
+from pytz.gae import pytz
 
 class IndexHandler(BaseHandler):
     def get(self):
@@ -17,9 +18,9 @@ class IndexHandler(BaseHandler):
     def post(self):
         form = BookingForm(self.request.POST)
         if form.validate():
-            logging.info('booking post:' + str(self.request))
+            logging.info('booking post:' + unicode(self.request))
             booking_key = db.storeBooking(self.request)
-            booking_key_string = str(booking_key)
+            booking_key_string = unicode(booking_key)
             logging.info('created booking:' + booking_key_string)
             #self.request.POST['booking'] = booking_key_string
             tv = {
@@ -54,9 +55,18 @@ jinja_filters['formatdate'] = util.formatDateFR
 jinja_filters['formatdatetime_noseconds'] = util.formatDateTimeNoSeconds
 jinja_filters['dump'] = dump
 
+jinja_environment_args = {
+        'autoescape': True,
+        'extensions': [
+            'jinja2.ext.autoescape',
+            'jinja2.ext.with_',
+            'jinja2.ext.i18n'   
+        ]}
+
 webapp2_config = {}
 webapp2_config['webapp2_extras.jinja2'] = {
-                                            'filters': jinja_filters
+                                            'filters': jinja_filters,
+                                            'environment_args': jinja_environment_args
                                             } 
 application = webapp2.WSGIApplication([
                                        ('/', IndexHandler),
@@ -68,6 +78,6 @@ application = webapp2.WSGIApplication([
                                        ('/provider/terms', provider.ProviderTermsHandler),
                                        ('/serve/([^/]+)?', provider.ServeHandler), # temporary - to test file uploads
                                        ('/admin', admin.IndexHandler)        
-                                       ], debug=True,
+                                      ], debug=True,
                                       config=webapp2_config)
 
