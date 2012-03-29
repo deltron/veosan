@@ -62,6 +62,9 @@ msgstr "Endroit"
 msgid "E-mail Address"
 msgstr "Adresse Courriel"
 
+msgid "Invalid email address."
+msgstr "Addresse courriel invalide."
+
 msgid "Reserve Now"
 msgstr "Réservez Maintenant"
 
