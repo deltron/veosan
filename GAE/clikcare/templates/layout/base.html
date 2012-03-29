@@ -5,15 +5,15 @@
 	{{ field.label(class="control-label") }}
 	<div class="controls">
 		{% if field.type == "MultiCheckboxField" %}
-		{{ field(class="checkbox") }}
+			{{ field(class="checkbox") }}
 		{% else %}
-		{{ field(class="input-xlarge") }}
+			{{ field(class="input-xlarge") }}
 		{% endif %}
 		<p class="help-block">
 			{% if field.errors %}
-			{% for error in field.errors %} <i class="icon-exclamation-sign"></i> {{ error }}
-			<br>
-			{% endfor %}
+				{% for error in field.errors %} <i class="icon-exclamation-sign"></i> {{ error }}
+				<br>
+				{% endfor %}
 			{% endif %}
 		</p>
 	</div>
