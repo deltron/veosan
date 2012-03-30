@@ -7,6 +7,7 @@ import urllib
 from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
 from data import Provider
+import util
 
 def parseRefererSection(request):
     referer = request.environ['HTTP_REFERER']
@@ -135,7 +136,9 @@ class ServeHandler(blobstore_handlers.BlobstoreDownloadHandler):
 
 class ProviderScheduleHandler(BaseHandler):
     def get(self):
-        self.render_template('provider/schedule.html', name=self.request.get('name'))
+        hours = util.getTimesList()
+        days = util.getWeekdays()
+        self.render_template('provider/schedule.html', hours=hours, days=days)
 
 class ProviderTermsHandler(BaseHandler):
     def get(self):

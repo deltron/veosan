@@ -16,7 +16,10 @@
 			<fieldset>
 				{{ makeStandardForm() }}
 			</fieldset>
+			
 			<input type="hidden" name="flow" value="{{flow}}" />
+			<input type="hidden" name="provider_key" value="{{provider_key}}" />
+			
 			<div class="form-actions">
 				<button type="submit" class="btn btn-primary">
 					{% if flow == 'new' %}
@@ -29,4 +32,4 @@
 		</form>
 	</div>
 </div>
-{% endblock %} 
+{% endblock %}

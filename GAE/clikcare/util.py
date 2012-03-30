@@ -4,6 +4,7 @@
 from datetime import date, timedelta
 import logging
 from babel.dates import format_date, format_datetime
+from babel import Locale
 from base import lang
 
 # key, value
@@ -59,11 +60,15 @@ def getDatesList():
 
 def getTimesList():
     # this doesn't work for am/pm in english
-    
     startTimeList = range(7, 21)
     timeStringList = map(lambda x: (unicode(x), formatTimeFR(x)), startTimeList)
-    
     return timeStringList
+
+def getWeekdays():
+    locale = Locale('fr')
+    weekdays = locale.days['format']['wide'].items()
+    logging.info( str(weekdays) )
+    return weekdays
 
 def formatDate(date):
     return format_date(date, u"d MMMM yyyy (EEEE)", locale=lang)

@@ -48,156 +48,38 @@
 					<a href="#" class="btn btn-mini" rel="tooltip" title="Journ&eacute;e Libre"> <i class="icon-ok-circle"></i> </a>
 				</div></th>
 			</thead>
+			{% for hour in hours %}
 			<tr>
-				<td rowspan="2">7h</td>
-				<td>00</td>
+				<td rowspan="1">{{hour[0]}}h</td>
+				<td></td>
+				
+				{% for day in days %}
 				<td>
-				<div class="btn-group" data-toggle="buttons-radio">
-					<a href="#" class="btn btn-mini btn-success" rel="popover" title="Rendez-Vous" data-content="Jean Smith"><i class="icon-time"></i> </a>
-				</div></td>
-				<td>
-				<div class="btn-group" data-toggle="buttons-radio">
-					<a href="#" class="btn btn-mini" rel="tooltip" title="Non-Disponble"> <i class="icon-ban-circle"></i> </a>
-					<a href="#" class="btn btn-mini btn-warning" rel="tooltip" title="Libre"> <i class="icon-ok-circle"></i> </a>
-				</div></td>
-				<td>
-				<div class="btn-group" data-toggle="buttons-radio">
-					<a href="#" class="btn btn-mini btn-danger" rel="tooltip" title="Non-Disponble"> <i class="icon-ban-circle"></i> </a>
-					<a href="#" class="btn btn-mini" rel="tooltip" title="Libre"> <i class="icon-ok-circle"></i> </a>
-				</div></td>
-				<td>
-				<div class="btn-group" data-toggle="buttons-radio">
-					<a href="#" class="btn btn-mini" rel="tooltip" title="Non-Disponble"> <i class="icon-ban-circle"></i> </a>
-					<a href="#" class="btn btn-mini btn-warning" rel="tooltip" title="Libre"> <i class="icon-ok-circle"></i> </a>
-				</div></td>
-				<td>
-				<div class="btn-group" data-toggle="buttons-radio">
-					<a href="#" class="btn btn-mini" rel="tooltip" title="Non-Disponble"> <i class="icon-ban-circle"></i> </a>
-					<a href="#" class="btn btn-mini btn-warning" rel="tooltip" title="Libre"> <i class="icon-ok-circle"></i> </a>
-				</div></td>
-				<td>
-				<div class="btn-group" data-toggle="buttons-radio">
-					<a href="#" class="btn btn-mini" rel="tooltip" title="Non-Disponble"> <i class="icon-ban-circle"></i> </a>
-					<a href="#" class="btn btn-mini btn-warning" rel="tooltip" title="Libre"> <i class="icon-ok-circle"></i> </a>
-				</div></td>
-				<td>
-				<div class="btn-group" data-toggle="buttons-radio">
-					<a href="#" class="btn btn-mini" rel="tooltip" title="Non-Disponble"> <i class="icon-ban-circle"></i> </a>
-					<a href="#" class="btn btn-mini btn-warning" rel="tooltip" title="Libre"> <i class="icon-ok-circle"></i> </a>
-				</div></td>
+					<div class="btn-group" data-toggle="buttons-radio">
+						<a href="#" class="btn btn-mini btn-success" rel="popover" title="Rendez-Vous" data-content="Jean Smith"><i class="icon-time"></i> </a>
+						<a href="#" class="btn btn-mini" rel="tooltip" title="Non-Disponble"> <i class="icon-ban-circle"></i> </a>
+						<a href="#" class="btn btn-mini btn-warning" rel="tooltip" title="Libre"> <i class="icon-ok-circle"></i> </a>
+					</div>
+				</td>
+				{% endfor %}
+
 			</tr>
 			<tr>
-				<td>30</td>
+				<td rowspan="1">{{hour[0]}}h30</td>
+				<td></td>
+				
+				{% for day in days %}
 				<td>
-				<div class="btn-group" data-toggle="buttons-radio">
-					<a href="#" class="btn btn-mini" rel="tooltip" title="Non-Disponble"> <i class="icon-ban-circle"></i> </a>
-					<a href="#" class="btn btn-mini btn-warning" rel="tooltip" title="Libre"> <i class="icon-ok-circle"></i> </a>
-				</div></td>
-				<td>
-				<div class="btn-group" data-toggle="buttons-radio">
-					<a href="#" class="btn btn-mini btn-success" rel="popover" title="Rendez-Vous" data-content="Jean Smith"><i class="icon-time"></i> </a>
-				</div></td>
-				<td>
-				<div class="btn-group" data-toggle="buttons-radio">
-					<a href="#" class="btn btn-mini btn-danger" rel="tooltip" title="Non-Disponble"> <i class="icon-ban-circle"></i> </a>
-					<a href="#" class="btn btn-mini" rel="tooltip" title="Libre"> <i class="icon-ok-circle"></i> </a>
-				</div></td>
-				<td>
-				<div class="btn-group" data-toggle="buttons-radio">
-					<a href="#" class="btn btn-mini" rel="tooltip" title="Non-Disponble"> <i class="icon-ban-circle"></i> </a>
-					<a href="#" class="btn btn-mini btn-warning" rel="tooltip" title="Libre"> <i class="icon-ok-circle"></i> </a>
-				</div></td>
-				<td>
-				<div class="btn-group" data-toggle="buttons-radio">
-					<a href="#" class="btn btn-mini" rel="tooltip" title="Non-Disponble"> <i class="icon-ban-circle"></i> </a>
-					<a href="#" class="btn btn-mini btn-warning" rel="tooltip" title="Libre"> <i class="icon-ok-circle"></i> </a>
-				</div></td>
-				<td>
-				<div class="btn-group" data-toggle="buttons-radio">
-					<a href="#" class="btn btn-mini" rel="tooltip" title="Non-Disponble"> <i class="icon-ban-circle"></i> </a>
-					<a href="#" class="btn btn-mini btn-warning" rel="tooltip" title="Libre"> <i class="icon-ok-circle"></i> </a>
-				</div></td>
-				<td>
-				<div class="btn-group" data-toggle="buttons-radio">
-					<a href="#" class="btn btn-mini" rel="tooltip" title="Non-Disponble"> <i class="icon-ban-circle"></i> </a>
-					<a href="#" class="btn btn-mini btn-warning" rel="tooltip" title="Libre"> <i class="icon-ok-circle"></i> </a>
-				</div></td>
+					<div class="btn-group" data-toggle="buttons-radio">
+						<a href="#" class="btn btn-mini btn-success" rel="popover" title="Rendez-Vous" data-content="Jean Smith"><i class="icon-time"></i> </a>
+						<a href="#" class="btn btn-mini" rel="tooltip" title="Non-Disponble"> <i class="icon-ban-circle"></i> </a>
+						<a href="#" class="btn btn-mini btn-warning" rel="tooltip" title="Libre"> <i class="icon-ok-circle"></i> </a>
+					</div>
+				</td>
+				{% endfor %}
+				
 			</tr>
-			<tr>
-				<td rowspan="2">8h</td>
-				<td>00</td>
-				<td>
-				<div class="btn-group" data-toggle="buttons-radio">
-					<a href="#" class="btn btn-mini btn-success" rel="popover" title="Rendez-Vous" data-content="Jean Smith"><i class="icon-time"></i> </a>
-				</div></td>
-				<td>
-				<div class="btn-group" data-toggle="buttons-radio">
-					<a href="#" class="btn btn-mini" rel="tooltip" title="Non-Disponble"> <i class="icon-ban-circle"></i> </a>
-					<a href="#" class="btn btn-mini btn-warning" rel="tooltip" title="Libre"> <i class="icon-ok-circle"></i> </a>
-				</div></td>
-				<td>
-				<div class="btn-group" data-toggle="buttons-radio">
-					<a href="#" class="btn btn-mini btn-danger" rel="tooltip" title="Non-Disponble"> <i class="icon-ban-circle"></i> </a>
-					<a href="#" class="btn btn-mini" rel="tooltip" title="Libre"> <i class="icon-ok-circle"></i> </a>
-				</div></td>
-				<td>
-				<div class="btn-group" data-toggle="buttons-radio">
-					<a href="#" class="btn btn-mini" rel="tooltip" title="Non-Disponble"> <i class="icon-ban-circle"></i> </a>
-					<a href="#" class="btn btn-mini btn-warning" rel="tooltip" title="Libre"> <i class="icon-ok-circle"></i> </a>
-				</div></td>
-				<td>
-				<div class="btn-group" data-toggle="buttons-radio">
-					<a href="#" class="btn btn-mini" rel="tooltip" title="Non-Disponble"> <i class="icon-ban-circle"></i> </a>
-					<a href="#" class="btn btn-mini btn-warning" rel="tooltip" title="Libre"> <i class="icon-ok-circle"></i> </a>
-				</div></td>
-				<td>
-				<div class="btn-group" data-toggle="buttons-radio">
-					<a href="#" class="btn btn-mini" rel="tooltip" title="Non-Disponble"> <i class="icon-ban-circle"></i> </a>
-					<a href="#" class="btn btn-mini btn-warning" rel="tooltip" title="Libre"> <i class="icon-ok-circle"></i> </a>
-				</div></td>
-				<td>
-				<div class="btn-group" data-toggle="buttons-radio">
-					<a href="#" class="btn btn-mini" rel="tooltip" title="Non-Disponble"> <i class="icon-ban-circle"></i> </a>
-					<a href="#" class="btn btn-mini btn-warning" rel="tooltip" title="Libre"> <i class="icon-ok-circle"></i> </a>
-				</div></td>
-			</tr>
-			<tr>
-				<td>30</td>
-				<td>
-				<div class="btn-group" data-toggle="buttons-radio">
-					<a href="#" class="btn btn-mini" rel="tooltip" title="Non-Disponble"> <i class="icon-ban-circle"></i> </a>
-					<a href="#" class="btn btn-mini btn-warning" rel="tooltip" title="Libre"> <i class="icon-ok-circle"></i> </a>
-				</div></td>
-				<td>
-				<div class="btn-group" data-toggle="buttons-radio">
-					<a href="#" class="btn btn-mini btn-success" rel="popover" title="Rendez-Vous" data-content="Jean Smith"><i class="icon-time"></i> </a>
-				</div></td>
-				<td>
-				<div class="btn-group" data-toggle="buttons-radio">
-					<a href="#" class="btn btn-mini btn-danger" rel="tooltip" title="Non-Disponble"> <i class="icon-ban-circle"></i> </a>
-					<a href="#" class="btn btn-mini" rel="tooltip" title="Libre"> <i class="icon-ok-circle"></i> </a>
-				</div></td>
-				<td>
-				<div class="btn-group" data-toggle="buttons-radio">
-					<a href="#" class="btn btn-mini" rel="tooltip" title="Non-Disponble"> <i class="icon-ban-circle"></i> </a>
-					<a href="#" class="btn btn-mini btn-warning" rel="tooltip" title="Libre"> <i class="icon-ok-circle"></i> </a>
-				</div></td>
-				<td>
-				<div class="btn-group" data-toggle="buttons-radio">
-					<a href="#" class="btn btn-mini" rel="tooltip" title="Non-Disponble"> <i class="icon-ban-circle"></i> </a>
-					<a href="#" class="btn btn-mini btn-warning" rel="tooltip" title="Libre"> <i class="icon-ok-circle"></i> </a>
-				</div></td>
-				<td>
-				<div class="btn-group" data-toggle="buttons-radio">
-					<a href="#" class="btn btn-mini" rel="tooltip" title="Non-Disponble"> <i class="icon-ban-circle"></i> </a>
-					<a href="#" class="btn btn-mini btn-warning" rel="tooltip" title="Libre"> <i class="icon-ok-circle"></i> </a>
-				</div></td>
-				<td>
-				<div class="btn-group" data-toggle="buttons-radio">
-					<a href="#" class="btn btn-mini" rel="tooltip" title="Non-Disponble"> <i class="icon-ban-circle"></i> </a>
-					<a href="#" class="btn btn-mini btn-warning" rel="tooltip" title="Libre"> <i class="icon-ok-circle"></i> </a>
-				</div></td>
-			</tr>
+			{% endfor %}
 		</table>
 		<label class="checkbox">
 			<input type="checkbox">
@@ -205,3 +87,36 @@
 	</div>
 </div>
 {% endblock %} 
+
+				<!--
+				<td>
+				<div class="btn-group" data-toggle="buttons-radio">
+					<a href="#" class="btn btn-mini" rel="tooltip" title="Non-Disponble"> <i class="icon-ban-circle"></i> </a>
+					<a href="#" class="btn btn-mini btn-warning" rel="tooltip" title="Libre"> <i class="icon-ok-circle"></i> </a>
+				</div></td>
+				<td>
+				<div class="btn-group" data-toggle="buttons-radio">
+					<a href="#" class="btn btn-mini btn-danger" rel="tooltip" title="Non-Disponble"> <i class="icon-ban-circle"></i> </a>
+					<a href="#" class="btn btn-mini" rel="tooltip" title="Libre"> <i class="icon-ok-circle"></i> </a>
+				</div></td>
+				<td>
+				<div class="btn-group" data-toggle="buttons-radio">
+					<a href="#" class="btn btn-mini" rel="tooltip" title="Non-Disponble"> <i class="icon-ban-circle"></i> </a>
+					<a href="#" class="btn btn-mini btn-warning" rel="tooltip" title="Libre"> <i class="icon-ok-circle"></i> </a>
+				</div></td>
+				<td>
+				<div class="btn-group" data-toggle="buttons-radio">
+					<a href="#" class="btn btn-mini" rel="tooltip" title="Non-Disponble"> <i class="icon-ban-circle"></i> </a>
+					<a href="#" class="btn btn-mini btn-warning" rel="tooltip" title="Libre"> <i class="icon-ok-circle"></i> </a>
+				</div></td>
+				<td>
+				<div class="btn-group" data-toggle="buttons-radio">
+					<a href="#" class="btn btn-mini" rel="tooltip" title="Non-Disponble"> <i class="icon-ban-circle"></i> </a>
+					<a href="#" class="btn btn-mini btn-warning" rel="tooltip" title="Libre"> <i class="icon-ok-circle"></i> </a>
+				</div></td>
+				<td>
+				<div class="btn-group" data-toggle="buttons-radio">
+					<a href="#" class="btn btn-mini" rel="tooltip" title="Non-Disponble"> <i class="icon-ban-circle"></i> </a>
+					<a href="#" class="btn btn-mini btn-warning" rel="tooltip" title="Libre"> <i class="icon-ok-circle"></i> </a>
+				</div></td>
+				-->
