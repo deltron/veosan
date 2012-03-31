@@ -8,7 +8,6 @@ import admin
 import db
 from forms import BookingForm, PatientForm
 import provider
-import pprint
 from pytz.gae import pytz
 
 class IndexHandler(BaseHandler):
@@ -45,16 +44,12 @@ class PatientBookHandler(BaseHandler):
 
 
 
-
-''' dump properties '''
-def dump(obj):  
-    return vars(obj)
-    # todo split at the comma (replace with <br>)
-
 jinja_filters = {}
 jinja_filters['formatdate'] = util.formatDate
 jinja_filters['formatdatetime_noseconds'] = util.formatDateTimeNoSeconds
-jinja_filters['dump'] = dump
+jinja_filters['format_hour'] = util.format_hour
+jinja_filters['format_30min_period'] = util.format_30min_period
+jinja_filters['dump'] = util.dump
 
 jinja_environment_args = {
         'autoescape': True,

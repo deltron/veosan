@@ -61,11 +61,11 @@ def getDatesList():
 def getTimesList():
     # this doesn't work for am/pm in english
     startTimeList = range(7, 21)
-    timeStringList = map(lambda x: (unicode(x), formatTimeFR(x)), startTimeList)
+    timeStringList = map(lambda x: (unicode(x), formatTimeToOneHourPeriod(x)), startTimeList)
     return timeStringList
 
 def getWeekdays():
-    locale = Locale('fr')
+    locale = Locale(lang)
     weekdays = locale.days['format']['wide'].items()
     logging.info( str(weekdays) )
     return weekdays
@@ -73,9 +73,41 @@ def getWeekdays():
 def formatDate(date):
     return format_date(date, u"d MMMM yyyy (EEEE)", locale=lang)
 
-def formatTimeFR(startTime):
-    return unicode(startTime) + u'h - ' + unicode(startTime + 1) + u'h'
+def format_hour(hour):
+    '''take a number in 24-hour format and return 13h or 1 PM'''
+    if (lang == 'fr'):
+        return hour + u'h'
+    else :
+        AMPM = u'AM'
+        if (hour > 12):
+            hour_en = hour - 12
+            AMPM = u'PM'
+        return unicode(hour_en) + u' ' + AMPM
+
+def formatTimeToOneHourPeriod(startTime):
+    endTime = startTime + 1
+    if (lang == 'fr'):
+        return unicode(startTime) + u'h - ' + unicode(endTime) + u'h'
+    else:
+        startAMPM = u'AM'
+        if (startTime > 12):
+            startTimeEN = startTime - 12
+            startAMPM = u'PM'
+        endAMPM = u'AM'
+        if (endTime > 12):
+            endTimeEN = endTime - 12
+            endAMPM = u'PM'
+        return unicode(startTimeEN) + u' ' + startAMPM + u' - ' + unicode(endTimeEN) + u' ' + endAMPM
+    
+def format_30min_period(startTime, startMinutes):
+    return u'START - END [placeholder]'
 
 # is this method used anywhere?
 def formatDateTimeNoSeconds(datetime):
-    return format_datetime(datetime, u"d MMMM yyyy (EEEE) H:m", locale='en')
+    return format_datetime(datetime, u"d MMMM yyyy (EEEE) H:m", locale=lang)
+
+
+''' dump properties '''
+def dump(obj):  
+    return vars(obj)
+    # todo split at the comma (replace with <br>)
