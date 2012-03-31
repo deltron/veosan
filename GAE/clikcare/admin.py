@@ -29,6 +29,7 @@ class NewProviderInitHandler(BaseHandler):
         This allows the admin to login with their ID to fill out and customize the profile
     '''
     def get(self):
+        logging.info('initialize new provider with id : %s' % u'1234')
         self.render_template('admin/adminindex.html')        
         
 class NewProviderSolicitHandler(BaseHandler):
