@@ -99,10 +99,10 @@ class ProviderPhotoForm(Form):
     profilePhoto = FileField('T&eacute;l&eacute;charger')
 
 class ProviderProfileForm(Form):
-    categoriy = SelectField('Cat&eacute;gorie', choices=util.getAllCategories())
-    specialty = MultiCheckboxField('Sp&eacute;cialit&eacute;s', choices=util.getAllSpecialities())
-    school = SelectField('&Eacute;cole', choices=util.getAllSchools())
-    degree = MultiCheckboxField('Diplome(s)', choices=util.getAllDiplomas())
-    startYear = TextField('En pratique depuis', [validators.Length(min=2, max=4, message='Your first year of practice')])
-    homeVisits = CustomBooleanField('J\'accepte de visite les patients a leur domicile')
+    categoriy = SelectField(_(u'Category'), choices=util.getAllCategories())
+    specialty = MultiCheckboxField(_(u'Specialties'), choices=util.getAllSpecialities())
+    school = SelectField(_(u'School'), choices=util.getAllSchools())
+    degree = MultiCheckboxField(_(u'Diploma'), choices=util.getAllDiplomas())
+    startYear = TextField(_(u'Member of order since'), [validators.Length(min=2, max=4, message='Your first year of practice')])
+    homeVisits = CustomBooleanField(_(u'I am willing to do on-site visits'))
     #key = TextField('key')
