@@ -53,6 +53,26 @@ msgstr "Contact"
 
 
 #################
+# Form navigation
+#################
+
+msgid "Save"
+msgstr "Sauvegarder"
+
+msgid "Cancel"
+msgstr "Annuler"
+
+msgid "Next"
+msgstr "Suivant"
+
+msgid "Back"
+msgstr "Précédent"
+
+msgid "Upload"
+msgstr "Télécharger"
+
+
+#################
 # Index page
 #################
 
@@ -81,6 +101,64 @@ msgid "Reserve Now"
 msgstr "Réservez Maintenant"
 
 
+#################
+# Profile Page
+#################
+
+msgid "Fill out your profile for better patient matches."
+msgstr "Remplissez votre profile afin de cibler des meilleurs patients."
+
+msgid "Specialties"
+msgstr "Spécialités"
+
+msgid "School"
+msgstr "École"
+
+msgid "Diploma"
+msgstr "Diplôme"
+
+msgid "Member of order since"
+msgstr "Membre de l'ordre depuis"
+
+msgid "I am willing to do on-site visits"
+msgstr "J'accepte de faire des visites chez les clients"
+
+#################
+# Address Page
+#################
+
+msgid "Get patients in your neighborhood by completing your contact information."
+msgstr "Trouvez des patients dans vôtre quartier en fournissant vos coordonées."
+
+
+
+#################
+# Schedule Page
+#################
+
+msgid "See your appointments and organize your time."
+msgstr "Voir vos rendez-vous et organiser votre horaire."
+
+msgid "Busy All Day"
+msgstr "Journée entièrement non-disponible"
+
+msgid "Free All Day"
+msgstr "Journée entièrement disponible"
+
+msgid "Free"
+msgstr "Disponible"
+
+msgid "Busy"
+msgstr "Non-disponible"
+
+msgid "Appointment"
+msgstr "Rendez-vous"
+
+
+
+####################################################################
+# Lists of things
+####################################################################
 
 #################
 # Categories
@@ -100,12 +178,6 @@ msgstr "Ostéopathe"
 
 msgid "Chiropractor"
 msgstr "Chiropracticien"
-
-msgid "Save"
-msgstr "Sauvegarder"
-
-msgid "Cancel"
-msgstr "Annuler"
 
 
 #################
