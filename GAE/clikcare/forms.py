@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from wtforms import Form, TextField, SelectField, SelectMultipleField, FileField, validators, widgets, HiddenField, IntegerField
+from wtforms import Form, Field, TextField, SelectField, SelectMultipleField, FileField, BooleanField
+from wtforms import validators, widgets
+from cgi import escape
 import util
-
 
 ''' 
 need to write our own list widget so the <label> doesn't appear after
@@ -12,7 +13,7 @@ much smaller).
 Bottom line: default behavior for checkboxes from WTForms makes no sense
 
 '''
-class CheckboxWidget(object):
+class MultipleCheckboxWidget(object):
     def __call__(self, field, **kwargs):
         kwargs.setdefault('id', field.id)
         html = []
@@ -20,6 +21,26 @@ class CheckboxWidget(object):
         for subfield in field:
             html.append(u'<label %s>%s %s</label>' % (widgets.html_params(**kwargs), unicode(subfield), unicode(subfield.label.text)))
         return widgets.HTMLString(u''.join(html))
+
+class CustomCheckboxInput(widgets.Input):
+    input_type = 'checkbox'
+    
+    html_params = staticmethod(widgets.html_params)
+
+    def __call__(self, field, **kwargs):
+        if getattr(field, 'checked', field.data):
+            kwargs['checked'] = True
+
+        kwargs.setdefault('id', field.id)
+        kwargs.setdefault('type', self.input_type)
+        if 'value' not in kwargs:
+            kwargs['value'] = field._value()
+            
+        label_class = u' '
+        if 'class' in kwargs:
+            label_class = (u'%s="%s"' % (unicode('class'), escape(unicode(kwargs['class']), quote=True)))
+
+        return widgets.HTMLString(u'<label %s><input %s> %s</label>' % (label_class, widgets.html_params(name=field.name, **kwargs), field.label.text))
 
 
 # WTF! WTF doesn't come with checkboxes out of the box
@@ -30,12 +51,23 @@ class MultiCheckboxField(SelectMultipleField):
     Iterating the field will produce subfields, allowing custom rendering of
     the enclosed checkbox fields.
     """
-    widget = CheckboxWidget()
+    widget = MultipleCheckboxWidget()
     option_widget = widgets.CheckboxInput()
     
-    
-    
 
+# Custom boolean field that shows up as :
+#   [] Boolean field label
+# 
+# instead of the default behavior from WTForms which is
+#   Boolean field label []
+class CustomBooleanField(BooleanField):
+    """
+    Represents an ``<label><input type="checkbox"> label text</label>``.
+    """
+    widget = CustomCheckboxInput()
+
+
+  
 class BookingForm(Form):
     email = TextField(_(u'E-mail Address').decode("UTF-8"), [validators.Email(message=_(u'Invalid email address.').decode("UTF-8"))])
     categories = SelectField(_(u'Category').decode("UTF-8"), choices=util.getAllCategories())
@@ -72,4 +104,5 @@ class ProviderProfileForm(Form):
     school = SelectField('&Eacute;cole', choices=util.getAllSchools())
     degree = MultiCheckboxField('Diplome(s)', choices=util.getAllDiplomas())
     startYear = TextField('En pratique depuis', [validators.Length(min=2, max=4, message='Your first year of practice')])
+    homeVisits = CustomBooleanField('J\'accepte de visite les patients a leur domicile')
     #key = TextField('key')
