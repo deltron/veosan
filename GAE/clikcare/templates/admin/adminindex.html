@@ -4,62 +4,77 @@
 {% block lead %} {% endblock %}
 
 {% block content %}
-<div class="span6">
-	<table class="table">
-		<thead>
-			<tr>
-				<!-- <th>Key</th> -->
-				<th>Patient</th>
-				<th>Request</th>
-				<th>Provider</th>
-				<th>Time and Place</th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for b in bookings %}
-			<tr>
-				<!-- <td>{{b.key() }}</td> -->
-				<td>
-					<a href="#" class="" rel="popover" title="{{b.patient.firstName}} {{b.patient.lastName}}" data-content="{{b.patient.phone}} <br> {{b.patient.email}} <br>">{{b.patient.firstName}} {{b.patient.lastName}}</a>
-				  </td>
-				<td>
-					{{b.requestSpecialty}} <br>
-					{{b.requestLocation}} <br>
-					{{b.requestDate}}&nbsp;{{b.requestTime}}
-				</td>
-				<td>
-					Provider X <br>
-					Specialty <br>
-					Region
-				</td>
-				
-				<td>
-					Appointment Address <br>
-					Appointment Time <a href="#" class="btn" rel="popover" title="{{b.patient.firstName}} {{b.patient.lastName}} @ [Provider Name]" data-content="{{b.comments}} <br> Telephone Confirmation: {{b.telephoneConfirmation}} <br> Created On: {{b.createdOn|formatdatetime_noseconds}}">+</a>
-				</td>
-			</tr>
-			{% endfor %}
-		</tbody>
-	</table>
-</div>
-<!-- span -->
-<div class="span4">
-	<a href="provider/new/profile" target="_blank" class="btn">Create New Provider</a>
-	<br>
-	<br>
-	{% for p in providers %}
-		<p> </p>
-				<a 
-					href="/provider/address?key={{p.key()}}"
-					rel="popover"
-					title="{{p.firstName}} {{p.lastName}}"
-					data-content="{{p|dump}}">
-				 	{{p.firstName}} {{p.lastName}}
-			 	</a>
-		 	</p>
-		<!-- <form action="/provider/address" method="post"> <input name="provider" type="hidden" value="{{p.key()}}"/> <button type="submit" class="btn">{{p.firstName}} {{p.lastName}}</button> </form>
+<div class="row">
+	<div class="span6">
+		<table class="table">
+			<thead>
+				<tr>
+					<!-- <th>Key</th> -->
+					<th>Patient</th>
+					<th>Request</th>
+					<th>Provider</th>
+					<th>Time and Place</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for b in bookings %}
+				<tr>
+					<!-- <td>{{b.key() }}</td> -->
+					<td><a href="#" class="" rel="popover" title="{{b.patient.firstName}} {{b.patient.lastName}}" data-content="{{b.patient.phone}} <br> {{b.patient.email}} <br>">{{b.patient.firstName}} {{b.patient.lastName}}</a></td>
+					<td> {{b.requestSpecialty}}
+					<br>
+					{{b.requestLocation}}
+					<br>
+					{{b.requestDate}}&nbsp;{{b.requestTime}} </td>
+					<td> Provider X
+					<br>
+					Specialty
+					<br>
+					Region </td>
+					<td> Appointment Address
+					<br>
+					Appointment Time <a href="#" class="btn" rel="popover" title="{{b.patient.firstName}} {{b.patient.lastName}} @ [Provider Name]" data-content="{{b.comments}} <br> Telephone Confirmation: {{b.telephoneConfirmation}} <br> Created On: {{b.createdOn|formatdatetime_noseconds}}">+</a></td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+	<!-- span -->
+	<div class="span4">
+		<a href="provider/new/profile" target="_blank" class="btn">Create New Provider</a>
+		<br>
+		<br>
+		{% for p in providers %} <p></p>
+		<a
+		href="/provider/address?key={{p.key()}}"
+		rel="popover"
+		title="{{p.firstName}} {{p.lastName}}"
+		data-content="{{p|dump}}"> {{p.firstName}} {{p.lastName}} </a>
+		</p> <!-- <form action="/provider/address" method="post"> <input name="provider" type="hidden" value="{{p.key()}}"/> <button type="submit" class="btn">{{p.firstName}} {{p.lastName}}</button> </form>
 		-->
-	{% endfor %}
+		{% endfor %}
+	</div>
+</div>
+<hr>
+<div class="row">
+	<h3>Create new provider</h3>
+	<form method="post" action="/admin/provider/init" class="well form-inline">
+		<fieldset>
+			<input class="input-xlarge" id="providerEmail" name="providerEmail" type="text" placeholder="New Provider's Email Address">
+			<button type="submit" class="btn btn-primary">
+				Initialize New Provider
+			</button>
+		</fieldset>
+	</form>
 	
+	<h3>Solicit a provider</h3>
+	<form method="post" action="/admin/provider/solicit" class="well form-inline">
+		<fieldset>
+			<input class="input-xlarge" id="providerEmail" name="providerEmail" type="text" placeholder="Email Address of Provider to Solicit">
+			<button type="submit" class="btn btn-primary">
+				Solicit Provider
+			</button>
+		</fieldset>
+	</form>
 </div>
 {% endblock content %} 

@@ -85,6 +85,8 @@ application = webapp2.WSGIApplication([
                                        ('/provider/terms', provider.ProviderTermsHandler),
                                        ('/serve/([^/]+)?', provider.ServeHandler), # temporary - to test file uploads
                                        # admin
+                                       ('/admin/provider/init', admin.NewProviderInitHandler),
+                                       ('/admin/provider/solicit', admin.NewProviderSolicitHandler),
                                        ('/admin', admin.IndexHandler)        
                                       ], debug=True,
                                       config=webapp2_config)
