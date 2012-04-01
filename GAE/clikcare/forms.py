@@ -13,8 +13,6 @@ much smaller).
 Bottom line: default behavior for checkboxes from WTForms makes no sense
 
 '''
-# TODO code in some kind of handling for default options
-
 class MultipleCheckboxWidget(object):
     def __call__(self, field, **kwargs):
         kwargs.setdefault('id', field.id)
