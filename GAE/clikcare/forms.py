@@ -22,7 +22,7 @@ class MultipleCheckboxWidget(object):
         html = []
 
         for subfield in field:
-            if subfield.data in field.default:
+            if field.default is not None and subfield.data in field.default:
                 subfield.checked = True
 
             html.append(u'<label %s>%s %s</label>' % (widgets.html_params(**kwargs), unicode(subfield), unicode(subfield.label.text)))
