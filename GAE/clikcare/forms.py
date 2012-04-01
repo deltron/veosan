@@ -81,12 +81,12 @@ class BookingForm(Form):
 
 
 class PatientForm(Form):
-    firstName = TextField(_(u'First Name'), [validators.Length(min=1, message='Pr&eacute;nom requis.')])
-    lastName = TextField(_(u'Last Name'), [validators.Length(min=1, message='Nom requis.')])
-    email = TextField(_(u'E-mail Address'), [validators.Email(message='Addresse de courriel invalide.')])
-    telephone = TextField(_(u'Telephone'), [validators.Regexp(regex="^[2-9]\d{2}-\d{3}-\d{4}$", message='Format 514-555-1212')])
-    insurance = SelectField(_(u'Insurance'), choices=util.getAllInsurance())
-    confirmation = MultiCheckboxField(_(u'Confirmation'), choices=util.getAllConfirmation(), default=['email']) #default not implemented
+    firstName = TextField(_(u'First Name').decode("UTF-8"), [validators.Length(min=1, message='Pr&eacute;nom requis.')])
+    lastName = TextField(_(u'Last Name').decode("UTF-8"), [validators.Length(min=1, message='Nom requis.')])
+    email = TextField(_(u'E-mail Address').decode("UTF-8"), [validators.Email(message='Addresse de courriel invalide.')])
+    telephone = TextField(_(u'Telephone').decode("UTF-8"), [validators.Regexp(regex="^[2-9]\d{2}-\d{3}-\d{4}$", message='Format 514-555-1212')])
+    insurance = SelectField(_(u'Insurance').decode("UTF-8"), choices=util.getAllInsurance())
+    confirmation = MultiCheckboxField(_(u'Confirmation').decode("UTF-8"), choices=util.getAllConfirmation(), default=['email']) #default not implemented
     #booking = TextField('', widget=HiddenInput())
 
 
@@ -105,10 +105,10 @@ class ProviderPhotoForm(Form):
     profilePhoto = FileField('T&eacute;l&eacute;charger')
 
 class ProviderProfileForm(Form):
-    categoriy = SelectField(_(u'Category'), choices=util.getAllCategories())
-    specialty = MultiCheckboxField(_(u'Specialties'), choices=util.getAllSpecialities())
-    school = SelectField(_(u'School'), choices=util.getAllSchools())
-    degree = MultiCheckboxField(_(u'Diploma'), choices=util.getAllDiplomas())
-    startYear = TextField(_(u'Member of order since'), [validators.Length(min=2, max=4, message='Your first year of practice')])
-    homeVisits = CustomBooleanField(_(u'I am willing to do on-site visits'))
+    categoriy = SelectField(_(u'Category').decode("UTF-8"), choices=util.getAllCategories())
+    specialty = MultiCheckboxField(_(u'Specialties').decode("UTF-8"), choices=util.getAllSpecialities())
+    school = SelectField(_(u'School').decode("UTF-8"), choices=util.getAllSchools())
+    degree = MultiCheckboxField(_(u'Diploma').decode("UTF-8"), choices=util.getAllDiplomas())
+    startYear = TextField(_(u'Member of order since').decode("UTF-8"), [validators.Length(min=2, max=4, message='Your first year of practice')])
+    homeVisits = CustomBooleanField(_(u'I am willing to do on-site visits').decode("UTF-8"))
     #key = TextField('key')
