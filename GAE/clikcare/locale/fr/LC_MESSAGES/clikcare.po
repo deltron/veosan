@@ -56,6 +56,9 @@ msgstr "Contact"
 # Form navigation
 #################
 
+msgid "Confirm"
+msgstr "Confirmer"
+
 msgid "Save"
 msgstr "Sauvegarder"
 
@@ -92,7 +95,7 @@ msgid "Location"
 msgstr "Endroit"
 
 msgid "E-mail Address"
-msgstr "Adresse Courriel"
+msgstr "Adresse courriel"
 
 msgid "Invalid email address."
 msgstr "Addresse courriel invalide."
@@ -103,6 +106,15 @@ msgstr "Réservez Maintenant"
 #################
 # Patient Registration Page
 #################
+
+msgid "First Name"
+msgstr "Prénom"
+
+msgid "Last Name"
+msgstr "Nom"
+
+msgid "Telephone"
+msgstr "Téléphone"
 
 msgid "Insurance"
 msgstr "Type d'assurance"
@@ -121,6 +133,15 @@ msgstr "Pas certain ou je ne sais pas"
 
 msgid "Prefer not to answer"
 msgstr "Je préfère ne pas repondre"
+
+msgid "Please confirm by telephone instead of email"
+msgstr "SVP confirmer par téléphone et non par couriel"
+
+msgid "Confirmation"
+msgstr "Confirmation"
+
+msgid "Email"
+msgstr "Couriel"
 
 
 #################

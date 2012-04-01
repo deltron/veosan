@@ -18,7 +18,7 @@ Twitter Bootstrap horizontal form layout.
 		{{ field.label(class="control-label") }}
 	{% endif %}
 	<div class="controls">
-		{% if field.type == "MultiCheckboxField" or "BooleanField" %}
+		{% if field.type in ['MultiCheckboxField', 'BooleanField'] %}
 			{{ field(class="checkbox") }}	
 		{% else %}
 			{{ field(class="input-xlarge") }}

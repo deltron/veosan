@@ -52,6 +52,12 @@ def getAllInsurance():
             ("dontknow", _(u"Not sure or don't know").decode("UTF-8")),
             ("noanswer", _(u"Prefer not to answer").decode("UTF-8"))
         ]
+    
+def getAllConfirmation():
+    return [("email", _(u"Email").decode("UTF-8")),
+            ("telephone", _(u"Telephone").decode("UTF-8")),
+        ]
+
 
 def getDatesList():
     ''' Return a list of date from tomorrow to 3 weeks from now'''

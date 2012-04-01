@@ -13,12 +13,18 @@ much smaller).
 Bottom line: default behavior for checkboxes from WTForms makes no sense
 
 '''
+# TODO code in some kind of handling for default options
+
 class MultipleCheckboxWidget(object):
     def __call__(self, field, **kwargs):
         kwargs.setdefault('id', field.id)
+ 
         html = []
 
         for subfield in field:
+            if subfield.data in field.default:
+                subfield.checked = True
+
             html.append(u'<label %s>%s %s</label>' % (widgets.html_params(**kwargs), unicode(subfield), unicode(subfield.label.text)))
         return widgets.HTMLString(u''.join(html))
 
@@ -77,11 +83,12 @@ class BookingForm(Form):
 
 
 class PatientForm(Form):
-    firstName = TextField('Pr&eacute;nom', [validators.Length(min=1, message='Pr&eacute;nom requis.')])
-    lastName = TextField('Nom', [validators.Length(min=1, message='Nom requis.')])
-    email = TextField('Courriel', [validators.Email(message='Addresse de courriel invalide.')])
-    telephone = TextField('T&eacute;l&eacute;phone', [validators.Regexp(regex="^[2-9]\d{2}-\d{3}-\d{4}$", message='Format 514-555-1212')])
+    firstName = TextField(_(u'First Name'), [validators.Length(min=1, message='Pr&eacute;nom requis.')])
+    lastName = TextField(_(u'Last Name'), [validators.Length(min=1, message='Nom requis.')])
+    email = TextField(_(u'E-mail Address'), [validators.Email(message='Addresse de courriel invalide.')])
+    telephone = TextField(_(u'Telephone'), [validators.Regexp(regex="^[2-9]\d{2}-\d{3}-\d{4}$", message='Format 514-555-1212')])
     insurance = SelectField(_(u'Insurance'), choices=util.getAllInsurance())
+    confirmation = MultiCheckboxField(_(u'Confirmation'), choices=util.getAllConfirmation(), default=['email']) #default not implemented
     #booking = TextField('', widget=HiddenInput())
 
 
