@@ -81,6 +81,7 @@ class PatientForm(Form):
     lastName = TextField('Nom', [validators.Length(min=1, message='Nom requis.')])
     email = TextField('Courriel', [validators.Email(message='Addresse de courriel invalide.')])
     telephone = TextField('T&eacute;l&eacute;phone', [validators.Regexp(regex="^[2-9]\d{2}-\d{3}-\d{4}$", message='Format 514-555-1212')])
+    insurance = SelectField(_(u'Insurance'), choices=util.getAllInsurance())
     #booking = TextField('', widget=HiddenInput())
 
 

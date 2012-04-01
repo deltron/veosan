@@ -100,6 +100,28 @@ msgstr "Addresse courriel invalide."
 msgid "Reserve Now"
 msgstr "Réservez Maintenant"
 
+#################
+# Patient Registration Page
+#################
+
+msgid "Insurance"
+msgstr "Type d'assurance"
+
+msgid "Private insurance (ex: employer)"
+msgstr "Assurance privée (ex: employeur)"
+
+msgid "Public insurance (ex: CSST, SAAQ)"
+msgstr "Assurance publique (ex: CSST, SAAQ)"
+
+msgid "Other coverage"
+msgstr "Autre politique"
+
+msgid "Not sure or don't know"
+msgstr "Pas certain ou je ne sais pas"
+
+msgid "Prefer not to answer"
+msgstr "Je préfère ne pas repondre"
+
 
 #################
 # Profile Page

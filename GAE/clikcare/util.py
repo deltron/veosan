@@ -45,6 +45,13 @@ def getAllDiplomas():
             ("phd", _(u"Ph.D").decode("UTF-8"))
         ]
 
+def getAllInsurance():
+    return [("private", _(u"Private insurance (ex: employer)").decode("UTF-8")),
+            ("public", _(u"Public insurance (ex: CSST, SAAQ)").decode("UTF-8")),
+            ("other", _(u"Other coverage").decode("UTF-8")),
+            ("dontknow", _(u"Not sure or don't know").decode("UTF-8")),
+            ("noanswer", _(u"Prefer not to answer").decode("UTF-8"))
+        ]
 
 def getDatesList():
     ''' Return a list of date from tomorrow to 3 weeks from now'''
