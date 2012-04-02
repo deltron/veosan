@@ -2,35 +2,54 @@
     admin handlers
 '''
 
-from google.appengine.ext import db
+from google.appengine.ext import db as gdb
 from google.appengine.api import mail
 from base import BaseHandler
+import db
 import logging
+from data import Provider
 
-class IndexHandler(BaseHandler):
-    '''
-        Admin Index
-    '''
+
+class AdminBaseHandler(BaseHandler):
+    ''' Base functions for administration pages''' 
+    def render_providers(self, **tv):
+        providers = db.fetchProviders()
+        self.render_template('admin/admin_providers.html', providers=providers, **tv)
+
+
+
+class AdminIndexHandler(AdminBaseHandler):
+    '''Administration Index'''
     def get(self):
-        bookings = db.GqlQuery("SELECT * FROM Booking ORDER BY createdOn DESC LIMIT 10")
-        providers = db.GqlQuery("SELECT * from Provider ORDER BY lastName ASC LIMIT 50")
-        tv = {
-              'bookings': bookings,
-              'providers': providers 
-              }    
-        self.render_template('admin/adminindex.html', **tv)
+        self.redirect('/admin/bookings')
+
+
+class AdminBookingsHandler(AdminBaseHandler):
+    '''Administer Bookings'''
+    def get(self):
+        bookings = gdb.GqlQuery("SELECT * FROM Booking ORDER BY createdOn DESC LIMIT 10")
+        self.render_template('admin/admin_bookings.html', bookings=bookings)
+
+
+class AdminProvidersHandler(AdminBaseHandler):
+    ''' Administer Providers '''
+    def get(self):
+        self.render_providers()
+          
         
-        
-        
-class NewProviderInitHandler(BaseHandler):
+class NewProviderInitHandler(AdminBaseHandler):
     '''
         Create a unique ID for the new provider, initalize profile with defaults.
-        
         This allows the admin to login with their ID to fill out and customize the profile
     '''
-    def get(self):
-        logging.info('initialize new provider with id : %s' % u'1234')
-        self.render_template('admin/adminindex.html')        
+    def post(self):
+        provider_email = self.request.get('providerEmail')
+        provider_key = db.initProvider(provider_email)
+        provider = Provider.get(provider_key)
+        logging.info('initialized new provider with key : %s' % provider_key)
+        success_message = 'Initialized new provider for <a href="%s"> %s </a>' % (provider.get_edit_link(), provider_email)
+        self.render_providers(success_message=success_message)
+        
         
 class NewProviderSolicitHandler(BaseHandler):
     '''
