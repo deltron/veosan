@@ -29,34 +29,34 @@
 				{% for day in days %}
 				<td>
 					<div class="btn-group" data-toggle="buttons-radio">
-						<a href="#" class="btn btn-mini btn-success" rel="popover" title="Rendez-Vous" data-content="Jean Smith"><i class="icon-time"></i> </a>
-						<a href="#" class="btn btn-mini" rel="tooltip" title="Non-Disponble"> <i class="icon-ban-circle"></i> </a>
-						<a href="#" class="btn btn-mini btn-warning" rel="tooltip" title="Libre"> <i class="icon-ok-circle"></i> </a>
+						<!-- <a href="#" class="btn btn-mini btn-success" rel="popover" title="Rendez-Vous" data-content="Jean Smith"><i class="icon-time"></i> </a> -->
+						<a href="#" class="btn btn-mini btn-danger" rel="tooltip" title="Non-Disponble"> <i class="icon-ban-circle"></i> </a>
+						<!--<a href="#" class="btn btn-mini btn-success" rel="tooltip" title="Libre"> <i class="icon-ok-circle"></i> </a> -->
 					</div>
 				</td>
 				{% endfor %}
 
 			</tr>
+			
+			<!-- comment out :30 for now
 			<tr>
-				<td rowspan="1"> <!--blank :30 --> </td>
+				<td rowspan="1">  </td>
 				<td></td>
 				
 				{% for day in days %}
 				<td>
 					<div class="btn-group" data-toggle="buttons-radio">
 						<a href="#" class="btn btn-mini btn-success" rel="popover" title="Rendez-Vous" data-content="Jean Smith"><i class="icon-time"></i> </a>
-						<a href="#" class="btn btn-mini" rel="tooltip" title="Non-Disponble {{hour[0]|format_30min_period(30)}}"> <i class="icon-ban-circle"></i> </a>
+						<a href="#" class="btn btn-mini btn-danger" rel="tooltip" title="Non-Disponble {{hour[0]|format_30min_period(30)}}"> <i class="icon-ban-circle"></i> </a>
 						<a href="#" class="btn btn-mini btn-warning" rel="tooltip" title="Libre"> <i class="icon-ok-circle"></i> </a>
 					</div>
 				</td>
 				{% endfor %}
 				
 			</tr>
+			-->
 			{% endfor %}
 		</table>
-		<label class="checkbox">
-			<input type="checkbox">
-			J'accepte de visiter les patients &agrave; leur domicile. </label>
 	</div>
 </div>
 {% endblock %} 
