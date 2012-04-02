@@ -6,6 +6,7 @@ Created on Mar 17, 2012
 
 from google.appengine.ext import db
 from google.appengine.ext import blobstore
+import logging
 
 '''
     stored data 
@@ -39,9 +40,21 @@ class Provider(db.Model):
     email = db.StringProperty()
     phone = db.StringProperty()   
     region = db.StringProperty()
+    address = db.StringProperty()
     city = db.StringProperty()
     postalCode = db.StringProperty()
     profilePhotoBlobKey = blobstore.BlobReferenceProperty()
+    
+    def get_edit_link(self, section='address'):
+        return u'/provider/%s?key=%s' % (section, self.key())
+    
+    def get_html_summary(self):
+        s = u''
+        fields_dict = vars(self).iteritems()
+        for k, v in fields_dict:
+            if (k != '_entity'):
+                s += u'%s: %s <br>' % (k, v)
+        return s
 
     
 class Booking(db.Model):
