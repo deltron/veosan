@@ -3,16 +3,16 @@
 {% block subnav %}
 <ul class="nav nav-tabs">
 	<li id="profile" {% if  "profile" == active_page %} class="active" {% endif %}>
-		<a href="/provider/profile">{{ _('Profile') }}</a>
+		<a href="{{p.get_edit_link(section='profile')}}">{{ _('Profile') }}</a>
 	</li>
 	<li id="address" {% if  "address" == active_page %} class="active" {% endif %}>
-		<a href="/provider/address">{{ _('Address') }}</a>
+		<a href="{{p.get_edit_link(section='address')}}">{{ _('Address') }}</a>
 	</li>
 	<li id="schedule" {% if "schedule" == active_page %} class="active" {% endif %}>
-		<a href="/provider/schedule">{{ _('Schedule') }}</a>
+		<a href="{{p.get_edit_link(section='section')}}">{{ _('Schedule') }}</a>
 	</li>
 	<li id="terms" {% if  "terms" == active_page %} class="active" {% endif %}>
-		<a href="/provider/terms">{{ _('Terms') }}</a>
+		<a href="{{p.get_edit_link(section='terms')}}">{{ _('Terms') }}</a>
 	</li>
 </ul>
 {% endblock %}
