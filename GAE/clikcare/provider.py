@@ -15,96 +15,65 @@ def parseRefererSection(request):
     section = referer.split('/')[-1]
     return section
 
-class BaseProviderHandler(BaseHandler):
-    def render_profile(self, profile_form, **extra):
-        self.render_template('provider/profile.html', form=profile_form, **extra)
+class ProviderBaseHandler(BaseHandler):
+    def render_profile(self, provider, profile_form, **extra):
+        self.render_template('provider/profile.html', p=provider, form=profile_form, **extra)
     
-    def render_address(self, address_form, **extra):
+    def render_address(self, provider, address_form, **extra):
         upload_url = blobstore.create_upload_url('/provider/address/upload')
         uploadForm = ProviderPhotoForm(self.request.GET)
-        self.render_template('provider/address.html', form=address_form, uploadForm=uploadForm, upload_url=upload_url, **extra)
-        
-
-class ProviderNewHandler(BaseProviderHandler):
-    def get(self):
-        # todo: save referer url and redicrect there when new flow is finished
-        
-        #if (parseSection(self.request.) != 'profile'):
-        #    self.redirect('/provider/new/profile')
-        logging.info("Blank profile form for new provider")
-        profile_form = ProviderProfileForm(self.request.POST)
-        self.render_profile(profile_form, flow='new')
-        
-    def post(self):
-        section = parseRefererSection(self.request)
-        logging.info('Coming from section' + section)
-        if (section == 'profile'):
-            # step 1
-            profile_form = ProviderProfileForm(self.request.POST)
-            if profile_form.validate():
-                logging.info('profile form validated. going to step 2, address form')
-                # create provider and go to next page: address
-                provider_key = db.storeProvider(self.request)
-                address_form = ProviderAddressForm(self.request.POST)
-                self.render_address(address_form, provider_key=provider_key, flow='new')
-            else:
-                # validation failed. redraw profile form
-                self.render_profile(profile_form)
-        elif (section == 'address'):
-            # step 2
-            logging.info("Post of Address");
-            address_form = ProviderAddressForm(self.request.POST)
-            if address_form.validate():
-                # Store Provider Address
-                db.storeProvider(self.request)
-                # redirect to original referer
-                self.redirect('/admin')
-            else:
-                self.render_address(address_form, provider_key=provider_key, flow='new')
-            
+        self.render_template('provider/address.html', p=provider, form=address_form, uploadForm=uploadForm, upload_url=upload_url, **extra)
 
 
-class ProviderEditProfileHandler(BaseHandler):
-    def get(self):
-        form = ProviderProfileForm(self.request.POST)
-        self.render_template('provider/profile.html', form=form)
-    
-    def post(self):
-        form = ProviderProfileForm(self.request.POST)
-        if form.validate():
-            self.render_template('patient/profile.html', form=form) 
-        else:
-            self.render_template('patient/profile.html', form=form)
-          
-
-class ProviderEditAddressHandler(BaseHandler):
+class ProviderEditProfileHandler(ProviderBaseHandler):
     def get(self):
         key = self.request.get('key')
         if (key):
             # edit provider
-            logging.info("Edit provider. key:" + str(key))
             provider = Provider.get(key)
-            logging.info("pprint:" + str(vars(provider)))
-            logging.info('Editing provider: ' + str(provider))
-            form = ProviderAddressForm(obj=provider)
-            upload_url = blobstore.create_upload_url('/provider/address/upload')
-            uploadForm = ProviderPhotoForm(self.request.GET)
-            self.render_template('provider/address.html', form=form, uploadForm=uploadForm, upload_url=upload_url)
+            logging.info("provider dump before edit:" + str(vars(provider)))
+            form = ProviderProfileForm(obj=provider)
+            self.render_profile(provider, profile_form=form)
         else:
-            logging.info("Edit Address. Missing key")
+            logging.info("Missing key")
+            # Add error message on page
+    
+    def post(self):
+        form = ProviderProfileForm(self.request.POST)
+        if form.validate():
+            # Store Provider
+            key = db.storeProvider(self.request)
+            provider = Provider.get(key)
+            self.render_profile(provider, profile_form=form)
+        else:
+            # show error
+            self.render_profile(provider, profile_form=form)
+          
+
+class ProviderEditAddressHandler(ProviderBaseHandler):
+    def get(self):
+        key = self.request.get('key')
+        if (key):
+            # edit provider
+            provider = Provider.get(key)
+            logging.info("provider dump before edit:" + str(vars(provider)))
+            form = ProviderAddressForm(obj=provider)
+            self.render_address(provider, address_form=form)
+        else:
+            logging.info("Missing key")
             # missing key. Route to new ?
 
     def post(self):
         form = ProviderAddressForm(self.request.POST)
-        upload_url = blobstore.create_upload_url('/provider/address/upload')
-        uploadForm = ProviderPhotoForm(self.request.POST)
+        #provider = Provider.get(key)
         if form.validate():
-            # Store Provider Address
-            db.storeProvider(self.request)
-            self.render_template('provider/address.html', form=form, uploadForm=uploadForm, upload_url=upload_url) 
+            # Store Provider
+            key = db.storeProvider(self.request)
+            provider = Provider.get(key)
+            self.render_address(provider, address_form=form)
         else:
             # show errors
-            self.render_template('provider/address.html', form=form, uploadForm=uploadForm, upload_url=upload_url)
+            self.render_address(provider, address_form=form)
 
 
 class ProviderAddressUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
@@ -136,13 +105,13 @@ class ServeHandler(blobstore_handlers.BlobstoreDownloadHandler):
 
 
 # handle schedule changes like this http://tutorialzine.com/2011/04/app-engine-series-4-controllers/
-class ProviderScheduleHandler(BaseHandler):
+class ProviderScheduleHandler(ProviderBaseHandler):
     def get(self):
         hours = util.getTimesList()
         days = util.getWeekdays()
         self.render_template('provider/schedule.html', hours=hours, days=days)
 
-class ProviderTermsHandler(BaseHandler):
+class ProviderTermsHandler(ProviderBaseHandler):
     def get(self):
         self.render_template('provider/terms.html', name=self.request.get('name'))
         
