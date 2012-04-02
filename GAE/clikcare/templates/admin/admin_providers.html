@@ -7,9 +7,13 @@
 
 {% block content %}
 <div class="row">
-	<div class="alert alert-success">
-  	{{success_message}}
-	</div>
+	
+	{% if success_message %}
+		<div class="alert alert-success">
+  			{{success_message}}
+		</div>
+	{% endif %}
+	
 	<!-- span -->
 	<div class="span8">
 		<br>
@@ -19,7 +23,11 @@
 			href="{{p.get_edit_link()}}"
 			rel="popover"
 			title="{{p.firstName}} {{p.lastName}}"
-			data-content="{{p.get_html_summary()}}"> {{p.firstName}} {{p.lastName}} [{{p.email}}]</a>
+			data-content="{{p.get_html_summary()}}"> {{p.lastName}}, {{p.firstName}} [{{p.email}}]</a>
+			{% if p.recently_created() %}
+			<span class="label label-success">new</span>
+			{% endif %}
+			
 		</p> <!-- <form action="/provider/address" method="post"> <input name="provider" type="hidden" value="{{p.key()}}"/> <button type="submit" class="btn">{{p.firstName}} {{p.lastName}}</button> </form>
 		-->
 		{% endfor %}
