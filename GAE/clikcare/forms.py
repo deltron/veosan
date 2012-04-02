@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from wtforms import Form, TextField, SelectField, SelectMultipleField, FileField, validators, widgets, HiddenField, IntegerField
+from wtforms import Form, Field, TextField, SelectField, SelectMultipleField, FileField, BooleanField
+from wtforms import validators, widgets
+from cgi import escape
 import util
-
 
 ''' 
 need to write our own list widget so the <label> doesn't appear after
@@ -12,14 +13,38 @@ much smaller).
 Bottom line: default behavior for checkboxes from WTForms makes no sense
 
 '''
-class CheckboxWidget(object):
+class MultipleCheckboxWidget(object):
     def __call__(self, field, **kwargs):
         kwargs.setdefault('id', field.id)
+ 
         html = []
 
         for subfield in field:
+            if field.default is not None and subfield.data in field.default:
+                subfield.checked = True
+
             html.append(u'<label %s>%s %s</label>' % (widgets.html_params(**kwargs), unicode(subfield), unicode(subfield.label.text)))
         return widgets.HTMLString(u''.join(html))
+
+class CustomCheckboxInput(widgets.Input):
+    input_type = 'checkbox'
+    
+    html_params = staticmethod(widgets.html_params)
+
+    def __call__(self, field, **kwargs):
+        if getattr(field, 'checked', field.data):
+            kwargs['checked'] = True
+
+        kwargs.setdefault('id', field.id)
+        kwargs.setdefault('type', self.input_type)
+        if 'value' not in kwargs:
+            kwargs['value'] = field._value()
+            
+        label_class = u' '
+        if 'class' in kwargs:
+            label_class = (u'%s="%s"' % (unicode('class'), escape(unicode(kwargs['class']), quote=True)))
+
+        return widgets.HTMLString(u'<label %s><input %s> %s</label>' % (label_class, widgets.html_params(name=field.name, **kwargs), field.label.text))
 
 
 # WTF! WTF doesn't come with checkboxes out of the box
@@ -30,12 +55,23 @@ class MultiCheckboxField(SelectMultipleField):
     Iterating the field will produce subfields, allowing custom rendering of
     the enclosed checkbox fields.
     """
-    widget = CheckboxWidget()
+    widget = MultipleCheckboxWidget()
     option_widget = widgets.CheckboxInput()
     
-    
-    
 
+# Custom boolean field that shows up as :
+#   [] Boolean field label
+# 
+# instead of the default behavior from WTForms which is
+#   Boolean field label []
+class CustomBooleanField(BooleanField):
+    """
+    Represents an ``<label><input type="checkbox"> label text</label>``.
+    """
+    widget = CustomCheckboxInput()
+
+
+  
 class BookingForm(Form):
     email = TextField(_(u'E-mail Address').decode("UTF-8"), [validators.Email(message=_(u'Invalid email address.').decode("UTF-8"))])
     categories = SelectField(_(u'Category').decode("UTF-8"), choices=util.getAllCategories())
@@ -45,10 +81,12 @@ class BookingForm(Form):
 
 
 class PatientForm(Form):
-    firstName = TextField('Pr&eacute;nom', [validators.Length(min=1, message='Pr&eacute;nom requis.')])
-    lastName = TextField('Nom', [validators.Length(min=1, message='Nom requis.')])
-    email = TextField('Courriel', [validators.Email(message='Addresse de courriel invalide.')])
-    telephone = TextField('T&eacute;l&eacute;phone', [validators.Regexp(regex="^[2-9]\d{2}-\d{3}-\d{4}$", message='Format 514-555-1212')])
+    firstName = TextField(_(u'First Name').decode("UTF-8"), [validators.Length(min=1, message='Pr&eacute;nom requis.')])
+    lastName = TextField(_(u'Last Name').decode("UTF-8"), [validators.Length(min=1, message='Nom requis.')])
+    email = TextField(_(u'E-mail Address').decode("UTF-8"), [validators.Email(message='Addresse de courriel invalide.')])
+    telephone = TextField(_(u'Telephone').decode("UTF-8"), [validators.Regexp(regex="^[2-9]\d{2}-\d{3}-\d{4}$", message='Format 514-555-1212')])
+    insurance = SelectField(_(u'Insurance').decode("UTF-8"), choices=util.getAllInsurance())
+    confirmation = MultiCheckboxField(_(u'Confirmation').decode("UTF-8"), choices=util.getAllConfirmation(), default=['email']) #default not implemented
     #booking = TextField('', widget=HiddenInput())
 
 
@@ -67,9 +105,10 @@ class ProviderPhotoForm(Form):
     profilePhoto = FileField('T&eacute;l&eacute;charger')
 
 class ProviderProfileForm(Form):
-    categoriy = SelectField('Cat&eacute;gorie', choices=util.getAllCategories())
-    specialty = MultiCheckboxField('Sp&eacute;cialit&eacute;s', choices=util.getAllSpecialities())
-    school = SelectField('&Eacute;cole', choices=util.getAllSchools())
-    degree = MultiCheckboxField('Diplome(s)', choices=util.getAllDiplomas())
-    startYear = TextField('En pratique depuis', [validators.Length(min=2, max=4, message='Your first year of practice')])
+    categoriy = SelectField(_(u'Category').decode("UTF-8"), choices=util.getAllCategories())
+    specialty = MultiCheckboxField(_(u'Specialties').decode("UTF-8"), choices=util.getAllSpecialities())
+    school = SelectField(_(u'School').decode("UTF-8"), choices=util.getAllSchools())
+    degree = MultiCheckboxField(_(u'Diploma').decode("UTF-8"), choices=util.getAllDiplomas())
+    startYear = TextField(_(u'Member of order since').decode("UTF-8"), [validators.Length(min=2, max=4, message='Your first year of practice')])
+    homeVisits = CustomBooleanField(_(u'I am willing to do on-site visits').decode("UTF-8"))
     #key = TextField('key')

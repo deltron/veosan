@@ -2,8 +2,8 @@
 
 {% set active_page = "profile" %}
 
-{% block subhead %}Profile{% endblock %}
-{% block lead %}Votre profile.{% endblock %}
+{% block subhead %}{{ _('Profile') }}{% endblock %}
+{% block lead %}{{ _('Fill out your profile for better patient matches.') }}{% endblock %}
 
 {% block content %}
 <div class="row">
@@ -23,9 +23,9 @@
 			<div class="form-actions">
 				<button type="submit" class="btn btn-primary">
 					{% if flow == 'new' %}
-						Next
+						{{ _('Next') }}
 					{% else %}
-						Sauvegarder
+						{{ _('Save') }}
 					{% endif %}
 				</button>
 			</div>

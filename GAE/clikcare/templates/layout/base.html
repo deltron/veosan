@@ -1,11 +1,25 @@
+{# 
+
+Macro to generate a standard form.
+
+This will iterate over a WTForms form object and print out every
+field in the order it was created. Displays well inside the 
+Twitter Bootstrap horizontal form layout.
+	
+#}
+
 {% macro makeStandardForm(name) -%}
 {% for field in form %}
 {% if field.type != "FileField" %}
 <div class="control-group {% if field.errors %} error {% endif %}">
-	{{ field.label(class="control-label") }}
+	{% if field.type == "CustomBooleanField" %}
+		{# don't show the label on the left side for boolean #}
+	{% else %}
+		{{ field.label(class="control-label") }}
+	{% endif %}
 	<div class="controls">
-		{% if field.type == "MultiCheckboxField" %}
-			{{ field(class="checkbox") }}
+		{% if field.type in ['MultiCheckboxField', 'BooleanField'] %}
+			{{ field(class="checkbox") }}	
 		{% else %}
 			{{ field(class="input-xlarge") }}
 		{% endif %}
@@ -38,9 +52,8 @@
 				padding-top: 60px; /* causes extra space at top on ios */
 				padding-bottom: 40px;
 			}
-		<link href="/assets/css/bootstrap-responsive.css" rel="stylesheet">			
-			
 		</style>
+		<link href="/assets/css/bootstrap-responsive.css" rel="stylesheet">			
 		<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
 		<!--[if lt IE 9]>
 		<script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>

@@ -2,8 +2,8 @@
 
 {% set active_page = "schedule" %}
 
-{% block subhead %}Horaire{% endblock %}
-{% block lead %}Votre horaire.{% endblock %}
+{% block subhead %}{{ _('Schedule') }}{% endblock %}
+{% block lead %}{{ _('See your appointments and organize your time.') }}{% endblock %}
 
 {% block content %}
 <div class="row">
@@ -15,8 +15,8 @@
 				{% for day in days %}
 				<th style="min-width: 55px">{{day[1]}}
 				<div class="btn-group" data-toggle="buttons-radio">
-					<a href="#" class="btn btn-mini" rel="tooltip" title="Journ&eacute;e Non-Disponble"> <i class="icon-ban-circle"></i> </a>
-					<a href="#" class="btn btn-mini" rel="tooltip" title="Journ&eacute;e Libre"> <i class="icon-ok-circle"></i> </a>
+					<a href="#" class="btn btn-mini" rel="tooltip" title="{{ _('Busy All Day') }}"> <i class="icon-ban-circle"></i> </a>
+					<a href="#" class="btn btn-mini" rel="tooltip" title="{{ _('Free All Day') }}"> <i class="icon-ok-circle"></i> </a>
 				</div></th>
 				
 				{% endfor %}
@@ -29,9 +29,15 @@
 				{% for day in days %}
 				<td>
 					<div class="btn-group" data-toggle="buttons-radio">
+<<<<<<< HEAD
 						<!-- <a href="#" class="btn btn-mini btn-success" rel="popover" title="Rendez-Vous" data-content="Jean Smith"><i class="icon-time"></i> </a> -->
 						<a href="#" class="btn btn-mini btn-danger" rel="tooltip" title="Non-Disponble"> <i class="icon-ban-circle"></i> </a>
 						<!--<a href="#" class="btn btn-mini btn-success" rel="tooltip" title="Libre"> <i class="icon-ok-circle"></i> </a> -->
+=======
+						<a href="#" class="btn btn-mini btn-success" rel="popover" title="{{ _('Appointment') }}" data-content="Jean Smith"><i class="icon-time"></i> </a>
+						<a href="#" class="btn btn-mini" rel="tooltip" title="{{ _('Busy') }}"> <i class="icon-ban-circle"></i> </a>
+						<a href="#" class="btn btn-mini btn-warning" rel="tooltip" title="{{ _('Free') }}"> <i class="icon-ok-circle"></i> </a>
+>>>>>>> 54131b5e191d0ebfc806e4ec1dd97e61ddb4e905
 					</div>
 				</td>
 				{% endfor %}
@@ -46,9 +52,15 @@
 				{% for day in days %}
 				<td>
 					<div class="btn-group" data-toggle="buttons-radio">
+<<<<<<< HEAD
 						<a href="#" class="btn btn-mini btn-success" rel="popover" title="Rendez-Vous" data-content="Jean Smith"><i class="icon-time"></i> </a>
 						<a href="#" class="btn btn-mini btn-danger" rel="tooltip" title="Non-Disponble {{hour[0]|format_30min_period(30)}}"> <i class="icon-ban-circle"></i> </a>
 						<a href="#" class="btn btn-mini btn-warning" rel="tooltip" title="Libre"> <i class="icon-ok-circle"></i> </a>
+=======
+						<a href="#" class="btn btn-mini btn-success" rel="popover" title="{{ _('Appointment') }}" data-content="Jean Smith"><i class="icon-time"></i> </a>
+						<a href="#" class="btn btn-mini" rel="tooltip" title="{{ _('Busy') }} {{hour[0]|format_30min_period(30)}}"> <i class="icon-ban-circle"></i> </a>
+						<a href="#" class="btn btn-mini btn-warning" rel="tooltip" title="{{ _('Free') }}"> <i class="icon-ok-circle"></i> </a>
+>>>>>>> 54131b5e191d0ebfc806e4ec1dd97e61ddb4e905
 					</div>
 				</td>
 				{% endfor %}

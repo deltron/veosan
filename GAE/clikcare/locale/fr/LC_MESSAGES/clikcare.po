@@ -53,6 +53,29 @@ msgstr "Contact"
 
 
 #################
+# Form navigation
+#################
+
+msgid "Confirm"
+msgstr "Confirmer"
+
+msgid "Save"
+msgstr "Sauvegarder"
+
+msgid "Cancel"
+msgstr "Annuler"
+
+msgid "Next"
+msgstr "Suivant"
+
+msgid "Back"
+msgstr "Précédent"
+
+msgid "Upload"
+msgstr "Télécharger"
+
+
+#################
 # Index page
 #################
 
@@ -72,7 +95,7 @@ msgid "Location"
 msgstr "Endroit"
 
 msgid "E-mail Address"
-msgstr "Adresse Courriel"
+msgstr "Adresse courriel"
 
 msgid "Invalid email address."
 msgstr "Addresse courriel invalide."
@@ -80,7 +103,105 @@ msgstr "Addresse courriel invalide."
 msgid "Reserve Now"
 msgstr "Réservez Maintenant"
 
+#################
+# Patient Registration Page
+#################
 
+msgid "First Name"
+msgstr "Prénom"
+
+msgid "Last Name"
+msgstr "Nom"
+
+msgid "Telephone"
+msgstr "Téléphone"
+
+msgid "Insurance"
+msgstr "Type d'assurance"
+
+msgid "Private insurance (ex: employer)"
+msgstr "Assurance privée (ex: employeur)"
+
+msgid "Public insurance (ex: CSST, SAAQ)"
+msgstr "Assurance publique (ex: CSST, SAAQ)"
+
+msgid "Other coverage"
+msgstr "Autre politique"
+
+msgid "Not sure or don't know"
+msgstr "Pas certain ou je ne sais pas"
+
+msgid "Prefer not to answer"
+msgstr "Je préfère ne pas repondre"
+
+msgid "Please confirm by telephone instead of email"
+msgstr "SVP confirmer par téléphone et non par couriel"
+
+msgid "Confirmation"
+msgstr "Confirmation"
+
+msgid "Email"
+msgstr "Couriel"
+
+
+#################
+# Profile Page
+#################
+
+msgid "Fill out your profile for better patient matches."
+msgstr "Remplissez votre profile afin de cibler des meilleurs patients."
+
+msgid "Specialties"
+msgstr "Spécialités"
+
+msgid "School"
+msgstr "École"
+
+msgid "Diploma"
+msgstr "Diplôme"
+
+msgid "Member of order since"
+msgstr "Membre de l'ordre depuis"
+
+msgid "I am willing to do on-site visits"
+msgstr "J'accepte de faire des visites chez les clients"
+
+#################
+# Address Page
+#################
+
+msgid "Get patients in your neighborhood by completing your contact information."
+msgstr "Trouvez des patients dans vôtre quartier en fournissant vos coordonées."
+
+
+
+#################
+# Schedule Page
+#################
+
+msgid "See your appointments and organize your time."
+msgstr "Voir vos rendez-vous et organiser votre horaire."
+
+msgid "Busy All Day"
+msgstr "Journée entièrement non-disponible"
+
+msgid "Free All Day"
+msgstr "Journée entièrement disponible"
+
+msgid "Free"
+msgstr "Disponible"
+
+msgid "Busy"
+msgstr "Non-disponible"
+
+msgid "Appointment"
+msgstr "Rendez-vous"
+
+
+
+####################################################################
+# Lists of things
+####################################################################
 
 #################
 # Categories
@@ -100,12 +221,6 @@ msgstr "Ostéopathe"
 
 msgid "Chiropractor"
 msgstr "Chiropracticien"
-
-msgid "Save"
-msgstr "Sauvegarder"
-
-msgid "Cancel"
-msgstr "Annuler"
 
 
 #################
