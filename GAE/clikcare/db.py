@@ -1,6 +1,7 @@
 '''
     database access
 '''
+from google.appengine.ext import db as gdb
 import logging
 from data import Booking
 from data import Patient
@@ -31,6 +32,18 @@ def storePatient(request):
         booking.put()
     return patient_key
 
+
+def fetchProviders():
+    providers = gdb.GqlQuery("SELECT * from Provider ORDER BY lastName ASC LIMIT 50")
+    return providers
+
+def initProvider(provider_email):
+    ''' inititalize provider with email. return the provider's key '''
+    new_provider = Provider()
+    new_provider.email = provider_email
+    provider_key = new_provider.put()
+    return provider_key
+
 def getOrCreateProvider(provider_key):
     if (provider_key):
         logging.info('Getting existing provider with key:' + provider_key)
@@ -49,14 +62,14 @@ def storeProvider(request):
     provider.degree = request.get('degree', provider.degree)
     provider.startYear = request.get('startYear')
     # address
-    provider.firstName = request.get('firstName')
-    provider.lastName = request.get('lastName')
-    provider.email = request.get('email')
-    provider.phone = request.get('phone')
-    provider.region = request.get('region')
-    provider.address = request.get('address')
-    provider.city = request.get('city')
-    provider.postalCode = request.get('postalCode')
+    provider.firstName = request.get('firstName', provider.firstName)
+    provider.lastName = request.get('lastName', provider.lastName)
+    provider.email = request.get('email', provider.email)
+    provider.phone = request.get('phone', provider.phone)
+    provider.region = request.get('region', provider.region)
+    provider.address = request.get('address', provider.address)
+    provider.city = request.get('city', provider.city)
+    provider.postalCode = request.get('postalCode', provider.postalCode)
     # store
     provider_key = provider.put()
     logging.info('Saved provider key:' + str(provider_key))
