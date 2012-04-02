@@ -134,6 +134,8 @@ class ServeHandler(blobstore_handlers.BlobstoreDownloadHandler):
         blob_info = blobstore.BlobInfo.get(resource)
         self.send_blob(blob_info)
 
+
+# handle schedule changes like this http://tutorialzine.com/2011/04/app-engine-series-4-controllers/
 class ProviderScheduleHandler(BaseHandler):
     def get(self):
         hours = util.getTimesList()
