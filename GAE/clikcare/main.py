@@ -74,10 +74,6 @@ application = webapp2.WSGIApplication([
                                        ('/', IndexHandler),
                                        ('/patient/book', PatientBookHandler),
                                        # provider
-                                       ('/provider/new', provider.ProviderNewHandler),
-                                       ('/provider/new/profile', provider.ProviderNewHandler),
-                                       ('/provider/new/address', provider.ProviderNewHandler),
-                                       
                                        ('/provider/profile', provider.ProviderEditProfileHandler),
                                        ('/provider/address', provider.ProviderEditAddressHandler),
                                        ('/provider/address/upload', provider.ProviderAddressUploadHandler),
@@ -87,7 +83,9 @@ application = webapp2.WSGIApplication([
                                        # admin
                                        ('/admin/provider/init', admin.NewProviderInitHandler),
                                        ('/admin/provider/solicit', admin.NewProviderSolicitHandler),
-                                       ('/admin', admin.IndexHandler)        
+                                       ('/admin', admin.AdminIndexHandler),
+                                       ('/admin/bookings', admin.AdminBookingsHandler),
+                                       ('/admin/providers', admin.AdminProvidersHandler) 
                                       ], debug=True,
                                       config=webapp2_config)
 
