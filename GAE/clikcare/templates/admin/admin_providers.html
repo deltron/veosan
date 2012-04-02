@@ -1,0 +1,52 @@
+{% extends "/layout/admin.html" %}
+
+{% set active_page = "providers" %}
+
+{% block subhead %} <!-- Providers --> {% endblock %}
+{% block lead %} <!-- Provider administration --> {% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="alert alert-success">
+  	{{success_message}}
+	</div>
+	<!-- span -->
+	<div class="span8">
+		<br>
+		<br>
+		{% for p in providers %} <p></p>
+		<a
+			href="{{p.get_edit_link()}}"
+			rel="popover"
+			title="{{p.firstName}} {{p.lastName}}"
+			data-content="{{p.get_html_summary()}}"> {{p.firstName}} {{p.lastName}} [{{p.email}}]</a>
+		</p> <!-- <form action="/provider/address" method="post"> <input name="provider" type="hidden" value="{{p.key()}}"/> <button type="submit" class="btn">{{p.firstName}} {{p.lastName}}</button> </form>
+		-->
+		{% endfor %}
+	</div>
+</div>
+<hr>
+<div class="row">
+	<h3>Create new provider</h3>
+	<form method="post" action="/admin/provider/init" class="well form-inline">
+		Generate a new ID for provider. You will have to login with their ID to complete the profile.
+		<fieldset>
+			<input class="input-xlarge" id="providerEmail" name="providerEmail" type="text" placeholder="New Provider's Email Address">
+			<button type="submit" class="btn btn-primary">
+				Initialize New Provider
+			</button>
+		</fieldset>
+	</form>
+	
+	<h3>Solicit a provider</h3>
+	<form method="post" action="/admin/provider/solicit" class="well form-inline">
+		Make sure profile is completed before soliciting the provider to take over.
+		<fieldset>
+			<input class="input-xlarge" id="providerEmail" name="providerEmail" type="text" placeholder="Email Address of Provider to Solicit">
+			<button type="submit" class="btn btn-primary">
+				Solicit Provider
+			</button>
+		</fieldset>
+	</form>
+</div>
+{% endblock content %} 

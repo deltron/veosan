@@ -1,0 +1,43 @@
+{% extends "/layout/admin.html" %}
+
+{% set active_page = "bookings" %}
+
+{% block subhead %} <!-- Bookings --> {% endblock %}
+{% block lead %} <!-- View and administer bookings --> {% endblock %}
+
+{% block content %}
+<div>
+	<table class="table">
+		<thead>
+			<tr>
+				<!-- <th>Key</th> -->
+				<th>Patient</th>
+				<th>Request</th>
+				<th>Provider</th>
+				<th>Time and Place</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for b in bookings %}
+			<tr>
+				<!-- <td>{{b.key() }}</td> -->
+				<td><a href="#" class="" rel="popover" title="{{b.patient.firstName}} {{b.patient.lastName}}" data-content="{{b.patient.phone}} <br> {{b.patient.email}} <br>">{{b.patient.firstName}} {{b.patient.lastName}}</a></td>
+				<td> {{b.requestSpecialty}}
+				<br>
+				{{b.requestLocation}}
+				<br>
+				{{b.requestDate}}&nbsp;{{b.requestTime}} </td>
+				<td> Provider X
+				<br>
+				Specialty
+				<br>
+				Region </td>
+				<td> Appointment Address
+				<br>
+				Appointment Time <a href="#" class="btn" rel="popover" title="{{b.patient.firstName}} {{b.patient.lastName}} @ [Provider Name]" data-content="{{b.comments}} <br> Telephone Confirmation: {{b.telephoneConfirmation}} <br> Created On: {{b.createdOn|formatdatetime_noseconds}}">+</a></td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
+{% endblock content %} 
