@@ -7,6 +7,7 @@ Created on Mar 17, 2012
 from google.appengine.ext import db
 from google.appengine.ext import blobstore
 import logging
+from datetime import datetime, timedelta
 
 '''
     stored data 
@@ -55,7 +56,11 @@ class Provider(db.Model):
             if (k != '_entity'):
                 s += u'%s: %s <br>' % (k, v)
         return s
-
+    
+    def recently_created(self):
+        datetime_24h_ago = datetime.now() - timedelta(hours=24)
+        return self.createdOn > datetime_24h_ago
+    
     
 class Booking(db.Model):
     '''
