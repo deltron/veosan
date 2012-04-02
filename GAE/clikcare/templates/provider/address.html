@@ -12,10 +12,7 @@
 			<fieldset>
 				{{ makeStandardForm() }}
 			</fieldset>
-			
-			<input type="hidden" name="flow" value="{{flow}}" />
-			<input type="hidden" name="provider_key" value="{{provider_key}}" />
-			
+			<input type="hidden" name="provider_key" value="{{p.key()}}" />
 		</div>
 		<div class="span8" align="center">
 			<img src="/assets/img/default-profile.png" width="100" height="100">
@@ -27,11 +24,7 @@
 		<div class="span12">
 			<div class="form-actions">
 				<button type="submit" class="btn btn-primary">
-					{% if flow == 'new' %}
-						{{ _('Next') }}
-					{% else %}
 						{{ _('Save') }}
-					{% endif %}
 				</button>
 			</div>
 		</div>

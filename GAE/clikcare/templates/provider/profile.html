@@ -8,25 +8,14 @@
 {% block content %}
 <div class="row">
 	<div class="span12">
-		{% if flow == 'new' %}
-		<form method="post" action="/provider/new/address" class="form-horizontal">
-		{% else %}
-		<form method="post" action="/provider/profile" class="form-horizontal">
-		{% endif %}
+		<form method="post" action="" class="form-horizontal">
 			<fieldset>
 				{{ makeStandardForm() }}
 			</fieldset>
-			
-			<input type="hidden" name="flow" value="{{flow}}" />
-			<input type="hidden" name="provider_key" value="{{provider_key}}" />
-			
+			<input type="hidden" name="provider_key" value="{{p.key()}}" />
 			<div class="form-actions">
 				<button type="submit" class="btn btn-primary">
-					{% if flow == 'new' %}
-						{{ _('Next') }}
-					{% else %}
 						{{ _('Save') }}
-					{% endif %}
 				</button>
 			</div>
 		</form>
