@@ -23,7 +23,15 @@ class ProviderBaseHandler(BaseHandler):
         upload_url = blobstore.create_upload_url('/provider/address/upload')
         uploadForm = ProviderPhotoForm(self.request.GET)
         self.render_template('provider/address.html', p=provider, form=address_form, uploadForm=uploadForm, upload_url=upload_url, **extra)
-
+        
+    def render_schedule(self, provider, **extra):
+        hours = util.getTimesList()
+        days = util.getWeekdays()
+        self.render_template('provider/schedule.html', p=provider, hours=hours, days=days, **extra)
+        
+    def render_terms(self, provider, **extra):
+        self.render_template('provider/terms.html', p=provider, **extra)
+        
 
 class ProviderEditProfileHandler(ProviderBaseHandler):
     def get(self):
@@ -107,13 +115,32 @@ class ServeHandler(blobstore_handlers.BlobstoreDownloadHandler):
 # handle schedule changes like this http://tutorialzine.com/2011/04/app-engine-series-4-controllers/
 class ProviderScheduleHandler(ProviderBaseHandler):
     def get(self):
-        hours = util.getTimesList()
-        days = util.getWeekdays()
-        self.render_template('provider/schedule.html', hours=hours, days=days)
+        key = self.request.get('key')
+        if (key):
+            # edit provider
+            provider = Provider.get(key)
+            self.render_schedule(provider)
+        else:
+            logging.info("Missing key")
+            
+    def post(self):
+        # Store Provider
+        key = db.storeProvider(self.request)
+        provider = Provider.get(key)
+        self.render_schedule(provider)
+
 
 class ProviderTermsHandler(ProviderBaseHandler):
     def get(self):
-        self.render_template('provider/terms.html', name=self.request.get('name'))
+        key = self.request.get('key')
+        if (key):
+            # edit provider
+            provider = Provider.get(key)
+            self.render_terms(provider)
+        else:
+            logging.info("Missing key")
+            
+        
         
         
         
