@@ -73,7 +73,7 @@ def getDatesList():
 
 def getTimesList():
     # this doesn't work for am/pm in english
-    startTimeList = range(7, 21)
+    startTimeList = range(8, 21)
     timeStringList = map(lambda x: (unicode(x), formatTimeToOneHourPeriod(x)), startTimeList)
     return timeStringList
 
