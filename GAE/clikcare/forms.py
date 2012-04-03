@@ -112,3 +112,9 @@ class ProviderProfileForm(Form):
     startYear = TextField(_(u'Member of order since').decode("UTF-8"), [validators.Length(min=2, max=4, message='Your first year of practice')])
     homeVisits = CustomBooleanField(_(u'I am willing to do on-site visits').decode("UTF-8"))
     #key = TextField('key')
+    
+class ProviderTermsForm(Form):
+    # validate to must be true
+    iAgree = CustomBooleanField(_(u'I agree with the terms of the above').decode("UTF-8"))
+    # todo validate against exact firstName, lastName string
+    signature = TextField(_(u'Signature').decode("UTF-8"), [validators.Length(min=5, message='First name and last name as in address page')])

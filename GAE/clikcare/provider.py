@@ -2,7 +2,7 @@
 import logging
 from base import BaseHandler
 import db
-from forms import ProviderProfileForm, ProviderAddressForm, ProviderPhotoForm
+from forms import ProviderProfileForm, ProviderAddressForm, ProviderPhotoForm, ProviderTermsForm
 import urllib
 from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
@@ -29,8 +29,8 @@ class ProviderBaseHandler(BaseHandler):
         days = util.getWeekdays()
         self.render_template('provider/schedule.html', p=provider, hours=hours, days=days, **extra)
         
-    def render_terms(self, provider, **extra):
-        self.render_template('provider/terms.html', p=provider, **extra)
+    def render_terms(self, provider, terms_form, **extra):
+        self.render_template('provider/terms.html', p=provider, form=terms_form, **extra)
         
 
 class ProviderEditProfileHandler(ProviderBaseHandler):
@@ -136,7 +136,8 @@ class ProviderTermsHandler(ProviderBaseHandler):
         if (key):
             # edit provider
             provider = Provider.get(key)
-            self.render_terms(provider)
+            terms_form = ProviderTermsForm(obj=provider)
+            self.render_terms(provider, terms_form=terms_form)
         else:
             logging.info("Missing key")
             
