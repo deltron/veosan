@@ -6,13 +6,13 @@
 {% block lead %}Votre contrat avec nous.{% endblock %}
 
 {% block content %}
-<div class="well span6">
-	<h3>John Smith</h3>
-	Provider Address
+<div class="well span9">
+	<h3>{{p.firstName}} {{p.lastName}}</h3>
+	{{p.address}}
 	<br>
-	Provider Email
+	{{p.email}}
 	<br>
-	Provider Phone
+	{{p.phone}}
 	<br>
 	<br>
 	<ol>
@@ -39,5 +39,16 @@
 		</li>
 	</ol>
 	Date of agreement.
+	<form method="post" action="" class="form-horizontal">
+		<fieldset>
+			{{ makeStandardForm() }}
+		</fieldset>
+		<input type="hidden" name="provider_key" value="{{p.key()}}" />
+		<div class="form-actions">
+			<button type="submit" class="btn btn-primary">
+					{{ _('I Agree') }}
+			</button>
+		</div>
+	</form>
 </div>
 {% endblock content %}
