@@ -25,6 +25,11 @@
 				{% endfor %}
 			</thead>
 			{% for hour in hours %}
+			
+			{% if (hour[0] == "13" or hour[0] == "18") %}
+				<tr> <td colspan="7"> <br> </td></tr>	
+			{% endif %}
+			
 			<tr>
 				<td rowspan="1">{{hour[0]|format_hour}}</td>
 				<td></td>
