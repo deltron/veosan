@@ -76,6 +76,8 @@ Twitter Bootstrap horizontal form layout.
 							<li class="dropdown">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown"> {{ _('My Account') }} <b class="caret"></b></a>
 								<ul class="dropdown-menu">
+									<!-- Eventually replace with provider credentials check (is the provider logged in?) -->
+									{% if p %}
 									<li>
 										<a href="{{p.get_edit_link(section='schedule')}}">{{ _('Schedule') }}</a>
 									</li>
@@ -88,6 +90,11 @@ Twitter Bootstrap horizontal form layout.
 									<li>
 										<a href="{{p.get_edit_link(section='terms')}}">{{ _('Terms') }}</a>
 									</li>
+									{% else %}
+									<li>
+										<a href="/provider/login">{{ _('Login') }}</a>
+									</li>
+									{% endif %}
 								</ul>
 							</li>
 							<li class="divider-vertical"></li>
