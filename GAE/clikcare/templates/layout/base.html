@@ -1,11 +1,11 @@
-{# 
+{#
 
 Macro to generate a standard form.
 
 This will iterate over a WTForms form object and print out every
-field in the order it was created. Displays well inside the 
+field in the order it was created. Displays well inside the
 Twitter Bootstrap horizontal form layout.
-	
+
 #}
 
 {% macro makeStandardForm(name) -%}
@@ -13,21 +13,21 @@ Twitter Bootstrap horizontal form layout.
 {% if field.type != "FileField" %}
 <div class="control-group {% if field.errors %} error {% endif %}">
 	{% if field.type == "CustomBooleanField" %}
-		{# don't show the label on the left side for boolean #}
+	{# don't show the label on the left side for boolean #}
 	{% else %}
-		{{ field.label(class="control-label") }}
+	{{ field.label(class="control-label") }}
 	{% endif %}
 	<div class="controls">
 		{% if field.type in ['MultiCheckboxField', 'CustomBooleanField'] %}
-			{{ field(class="checkbox") }}	
+		{{ field(class="checkbox") }}
 		{% else %}
-			{{ field(class="input-xlarge") }}
+		{{ field(class="input-xlarge") }}
 		{% endif %}
 		<p class="help-block">
 			{% if field.errors %}
-				{% for error in field.errors %} <i class="icon-exclamation-sign"></i> {{ error }}
-				<br>
-				{% endfor %}
+			{% for error in field.errors %} <i class="icon-exclamation-sign"></i> {{ error }}
+			<br>
+			{% endfor %}
 			{% endif %}
 		</p>
 	</div>
@@ -53,7 +53,7 @@ Twitter Bootstrap horizontal form layout.
 				padding-bottom: 40px;
 			}
 		</style>
-		<link href="/assets/css/bootstrap-responsive.css" rel="stylesheet">			
+		<link href="/assets/css/bootstrap-responsive.css" rel="stylesheet">
 		<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
 		<!--[if lt IE 9]>
 		<script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -77,16 +77,16 @@ Twitter Bootstrap horizontal form layout.
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown"> {{ _('My Account') }} <b class="caret"></b></a>
 								<ul class="dropdown-menu">
 									<li>
-										<a href="/provider/schedule">{{ _('Schedule') }}</a>
+										<a href="{{p.get_edit_link(section='schedule')}}">{{ _('Schedule') }}</a>
 									</li>
 									<li>
-										<a href="/provider/profile">{{ _('Profile') }}</a>
+										<a href="{{p.get_edit_link(section='profile')}}">{{ _('Profile') }}</a>
 									</li>
 									<li>
-										<a href="/provider/address">{{ _('Address') }}</a>
+										<a href="{{p.get_edit_link(section='address')}}">{{ _('Address') }}</a>
 									</li>
 									<li>
-										<a href="/provider/terms">{{ _('Terms') }}</a>
+										<a href="{{p.get_edit_link(section='terms')}}">{{ _('Terms') }}</a>
 									</li>
 								</ul>
 							</li>
