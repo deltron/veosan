@@ -54,7 +54,7 @@ class Provider(db.Model):
         fields_dict = vars(self).iteritems()
         for k, v in fields_dict:
             if (k != '_entity'):
-                s += u'%s: %s <br>' % (k, v)
+                s += u'%s: %s <br>' % (k[1:], v)
         return s
     
     def recently_created(self):
