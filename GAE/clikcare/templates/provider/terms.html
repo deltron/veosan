@@ -6,49 +6,55 @@
 {% block lead %}Votre contrat avec nous.{% endblock %}
 
 {% block content %}
-<div class="well span9">
-	<h3>{{p.firstName}} {{p.lastName}}</h3>
-	{{p.address}}
-	<br>
-	{{p.email}}
-	<br>
-	{{p.phone}}
-	<br>
-	<br>
-	<ol>
-		<li>
-			Provider (“provider”) is licensed to practice X (“profession”) by association Y in the Province of Quebec.
-		</li>
-		<li>
-			Provider will charge clients at the rate of $90 per session, reflecting the established reasonable and customary rate from insurance co in area.
-		</li>
-		<li>
-			For each new customer referred, provider will be billed at $20 per referral. New customer defined as X (not visited in the previous year?), payment terms (once per month?).
-		</li>
-		<li>
-			For each recurring customer provider will be billed at $10 per referral. Recurring customer defined as X (visited in the previous year?)
-		</li>
-		<li>
-			For an initial period of 1 year, provider agrees to accept new clients in any time slot from 8am to 6pm.
-		</li>
-		<li>
-			The company retains the right of first refusal to provide external booking services, electronic patient records, loyalty programs, advertising campaigns, customer relationship management and more for an initial period of 2 years, subject to automatic renewal on condition of having no less than 10 new patients referred during this period.
-		</li>
-		<li>
-			Provider must maintain a valid license to practise their profession and be in good standing with all relevant professional organizations, insurance companies, etc.
-		</li>
-	</ol>
-	Date of agreement.
-	<form method="post" action="" class="form-horizontal">
-		<fieldset>
-			{{ makeStandardForm() }}
-		</fieldset>
-		<input type="hidden" name="provider_key" value="{{p.key()}}" />
-		<div class="form-actions">
-			<button type="submit" class="btn btn-primary">
-					{{ _('I Agree') }}
-			</button>
-		</div>
-	</form>
+<div class="row">
+	<div class="well span9">
+		<h3>{{p.firstName}} {{p.lastName}}</h3>
+		{{p.address}}
+		<br>
+		{{p.email}}
+		<br>
+		{{p.phone}}
+		<br>
+		<br>
+		<ol>
+			<li>
+				Provider (“provider”) is licensed to practice X (“profession”) by association Y in the Province of Quebec.
+			</li>
+			<li>
+				Provider will charge clients at the rate of $90 per session, reflecting the established reasonable and customary rate from insurance co in area.
+			</li>
+			<li>
+				For each new customer referred, provider will be billed at $20 per referral. New customer defined as X (not visited in the previous year?), payment terms (once per month?).
+			</li>
+			<li>
+				For each recurring customer provider will be billed at $10 per referral. Recurring customer defined as X (visited in the previous year?)
+			</li>
+			<li>
+				For an initial period of 1 year, provider agrees to accept new clients in any time slot from 8am to 6pm.
+			</li>
+			<li>
+				The company retains the right of first refusal to provide external booking services, electronic patient records, loyalty programs, advertising campaigns, customer relationship management and more for an initial period of 2 years, subject to automatic renewal on condition of having no less than 10 new patients referred during this period.
+			</li>
+			<li>
+				Provider must maintain a valid license to practise their profession and be in good standing with all relevant professional organizations, insurance companies, etc.
+			</li>
+		</ol>
+		Date of agreement.
+	</div>
 </div>
-{% endblock content %}
+<div class="row">
+	<div class="span9">
+		<form method="post" action="" class="form-horizontal">
+			<fieldset>
+				{{ makeStandardForm() }}
+			</fieldset>
+			<input type="hidden" name="provider_key" value="{{p.key()}}" />
+			<div class="form-actions">
+				<button type="submit" class="btn btn-primary">
+					{{ _('I Agree') }}
+				</button>
+			</div>
+		</form>
+	</div>
+</div>
+{% endblock content %} 
