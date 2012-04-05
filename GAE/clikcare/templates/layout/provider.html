@@ -14,5 +14,8 @@
 	<li id="terms" {% if  "terms" == active_page %} class="active" {% endif %}>
 		<a href="{{p.get_edit_link(section='terms')}}">{{ _('Terms') }}</a>
 	</li>
+	<li style="float:right;">
+		<a href="/">{{ _('Logout') }}</a>
+	</li>
 </ul>
 {% endblock %}
