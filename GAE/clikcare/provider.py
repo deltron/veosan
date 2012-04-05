@@ -2,7 +2,7 @@
 import logging
 from base import BaseHandler
 import db
-from forms import ProviderProfileForm, ProviderAddressForm, ProviderPhotoForm, ProviderTermsForm
+from forms import ProviderProfileForm, ProviderAddressForm, ProviderPhotoForm, ProviderTermsForm, ProviderLoginForm
 import urllib
 from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
@@ -31,6 +31,9 @@ class ProviderBaseHandler(BaseHandler):
         
     def render_terms(self, provider, terms_form, **extra):
         self.render_template('provider/terms.html', p=provider, form=terms_form, **extra)
+   
+    def render_login(self, provider, login_form, **extra):
+        self.render_template('provider/login.html', p=provider, form=login_form, **extra)
         
 
 class ProviderEditProfileHandler(ProviderBaseHandler):
@@ -141,6 +144,34 @@ class ProviderTermsHandler(ProviderBaseHandler):
         else:
             logging.info("Missing key")
             
+        
+
+class ProviderLoginHandler(ProviderBaseHandler):
+    def get(self):
+        key = self.request.get('key')
+        
+        provider = None;
+        
+        if (key):
+            # show provider name (from cookie?)
+            provider = Provider.get(key)
+           
+        login_form = ProviderLoginForm(obj=provider)
+        self.render_login(provider, login_form=login_form) 
+    
+    def post(self):
+        form = ProviderLoginForm(self.request.POST)
+
+        if form.validate():
+            # Retrieve Provider from email address
+            email = form.email.data
+            provider = db.getProviderFromEmail(email)
+            logging.info("provider dump before edit:" + str(vars(provider)))
+            profile_form = ProviderProfileForm(obj=provider)
+
+            self.render_profile(provider, profile_form=profile_form)   
+        
+        
         
         
         

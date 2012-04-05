@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from wtforms import Form, Field, TextField, SelectField, SelectMultipleField, FileField, BooleanField
+from wtforms import Form, Field, TextField, SelectField, SelectMultipleField, FileField, BooleanField, PasswordField
 from wtforms import validators, widgets
 from cgi import escape
 import util
@@ -118,3 +118,7 @@ class ProviderTermsForm(Form):
     iAgree = CustomBooleanField(_(u'I agree with the terms of the above').decode("UTF-8"))
     # todo validate against exact firstName, lastName string
     signature = TextField(_(u'Signature').decode("UTF-8"), [validators.Length(min=5, message='First name and last name as in address page')])
+
+class ProviderLoginForm(Form):
+    email = TextField(_(u'E-mail Address').decode("UTF-8"), [validators.Email(message=_(u'Invalid email address.').decode("UTF-8"))])
+    password = PasswordField('Password')

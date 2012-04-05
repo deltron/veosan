@@ -74,6 +74,7 @@ application = webapp2.WSGIApplication([
                                        ('/', IndexHandler),
                                        ('/patient/book', PatientBookHandler),
                                        # provider
+                                       ('/provider/login', provider.ProviderLoginHandler),
                                        ('/provider/profile', provider.ProviderEditProfileHandler),
                                        ('/provider/address', provider.ProviderEditAddressHandler),
                                        ('/provider/address/upload', provider.ProviderAddressUploadHandler),

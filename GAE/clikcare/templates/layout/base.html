@@ -8,7 +8,7 @@ Twitter Bootstrap horizontal form layout.
 
 #}
 
-{% macro makeStandardForm(name) -%}
+{% macro makeStandardForm(name, inputClass='input-xlarge') -%}
 {% for field in form %}
 {% if field.type != "FileField" %}
 <div class="control-group {% if field.errors %} error {% endif %}">
@@ -21,15 +21,16 @@ Twitter Bootstrap horizontal form layout.
 		{% if field.type in ['MultiCheckboxField', 'CustomBooleanField'] %}
 		{{ field(class="checkbox") }}
 		{% else %}
-		{{ field(class="input-xlarge") }}
+		{{ field(class=inputClass) }}
 		{% endif %}
+
+		{% if field.errors %}
 		<p class="help-block">
-			{% if field.errors %}
 			{% for error in field.errors %} <i class="icon-exclamation-sign"></i> {{ error }}
 			<br>
 			{% endfor %}
-			{% endif %}
 		</p>
+		{% endif %}
 	</div>
 </div>
 {% endif %}
