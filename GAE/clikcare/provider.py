@@ -167,9 +167,8 @@ class ProviderLoginHandler(ProviderBaseHandler):
             email = form.email.data
             provider = db.getProviderFromEmail(email)
             logging.info("provider dump before edit:" + str(vars(provider)))
-            profile_form = ProviderProfileForm(obj=provider)
 
-            self.render_profile(provider, profile_form=profile_form)   
+            self.render_schedule(provider)   
         
         
         
