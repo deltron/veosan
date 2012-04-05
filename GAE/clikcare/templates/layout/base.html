@@ -74,29 +74,8 @@ Twitter Bootstrap horizontal form layout.
 					<div class="nav-collapse">
 						<ul class="nav">
 							<li class="divider-vertical"></li>
-							<li class="dropdown">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown"> {{ _('My Account') }} <b class="caret"></b></a>
-								<ul class="dropdown-menu">
-									<!-- Eventually replace with provider credentials check (is the provider logged in?) -->
-									{% if p %}
-									<li>
-										<a href="{{p.get_edit_link(section='schedule')}}">{{ _('Schedule') }}</a>
-									</li>
-									<li>
-										<a href="{{p.get_edit_link(section='profile')}}">{{ _('Profile') }}</a>
-									</li>
-									<li>
-										<a href="{{p.get_edit_link(section='address')}}">{{ _('Address') }}</a>
-									</li>
-									<li>
-										<a href="{{p.get_edit_link(section='terms')}}">{{ _('Terms') }}</a>
-									</li>
-									{% else %}
-									<li>
-										<a href="/provider/login">{{ _('Login') }}</a>
-									</li>
-									{% endif %}
-								</ul>
+							<li>
+								<a href="{% if p %} # {% else %} /provider/login {% endif %}"> {{ _('My Account') }}</a>
 							</li>
 							<li class="divider-vertical"></li>
 							<li>
@@ -138,10 +117,10 @@ Twitter Bootstrap horizontal form layout.
 				$('a[rel=tooltip]').tooltip();
 				$('a[rel=popover]').popover();
 				$('#carouselProfile').carousel({
-					interval : 120000
+					interval : 15000
 				});
 				$('#carouselQuote').carousel({
-					interval : 120000
+					interval : 15000
 				});
 				$('.uploadProfileModal').modal();
 			});
