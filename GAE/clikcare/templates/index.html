@@ -31,9 +31,8 @@
 					<div class="control-group {% if form.email.errors %} error {% endif %}">
 						{{ form.email.label(class="control-label", style="font-size:large; font-weight:bold") }}
 						{% if form.email.errors %}
-							{% for error in form.email.errors %} 
-								<i class="icon-exclamation-sign"></i> {{ error }}
-							{% endfor %}
+						{% for error in form.email.errors %} <i class="icon-exclamation-sign"></i> {{ error }}
+						{% endfor %}
 						{% endif %}
 						<div class="controls">
 							{{ form.email(class="input-xlarge") }}
@@ -54,50 +53,21 @@
 		<div id="carouselProfile" class="carousel">
 			<!-- Carousel items -->
 			<div class="carousel-inner">
-				<div class="active item">
-					<h1>Profile 1</h1>
-					abc
-					<br>
-					<br>
-					<br>
-					<br>
-					<br>
-					<br>
-					<br>
-					<br>
-					<br>
+				<div class="item active" align="center">
+					<h3>Julie S.</h3>
+					<img src="assets/img/profile-2.jpg">
+					Lorem ipsum
 				</div>
-				<div class="item">
-					<h1>Profile 2</h1>
-					def
-					<br>
-					<br>
-					<br>
-					<br>
-					<br>
-					<br>
-					<br>
-					<br>
-					<br>
-				</div>
-				<div class="item">
-					<h1>Profile 3</h1>
-					ghi
-					<br>
-					<br>
-					<br>
-					<br>
-					<br>
-					<br>
-					<br>
-					<br>
-					<br>
+				<div class="item"  align="center">
+					<h3>Carla T.</h3>
+					<img src="assets/img/profile-3.jpg">
 				</div>
 			</div>
 			<!-- Carousel nav -->
 			<a class="carousel-control left" href="#carouselProfile" data-slide="prev">&lsaquo;</a>
 			<a class="carousel-control right" href="#carouselProfile" data-slide="next">&rsaquo;</a>
 		</div>
+		{#
 		<div id="carouselQuote" class="carousel">
 			<!-- Carousel items -->
 			<div class="carousel-inner">
@@ -145,6 +115,7 @@
 			<a class="carousel-control left" href="#carouselQuote" data-slide="prev">&lsaquo;</a>
 			<a class="carousel-control right" href="#carouselQuote" data-slide="next">&rsaquo;</a>
 		</div>
+		#}
 	</div>
 </div>
 {% endblock content %} 

@@ -5,23 +5,15 @@
 
 {% block content %}
 <div class="row">
-	<div class="span4">
-		<form action="/provider/login" method="post" class="form-horizontal">
-			<fieldset>
-				{{ makeStandardForm(inputClass="input-medium") }}
-				<div class="control-group">
-					<div class="controls">
-						<button type="submit" class="btn btn-primary">
-							{{ _('Login') }}
-						</button>
-					</div>
-				</div>
-			</fieldset>
-		</form>
-	</div>
-	<div class="span8">
-		<h3>Benefits of being a member</h3>
-		zzzasdf
-	</div>
+	<form action="/provider/login" method="post" class="form-horizontal">
+		<fieldset>
+			{{ makeStandardForm(inputClass="input-xlarge") }}
+			<div class="form-actions">
+				<button type="submit" class="btn btn-primary">
+					{{ _('Login') }}
+				</button>
+			</div>
+		</fieldset>
+	</form>
 </div>
 {% endblock content %} 
