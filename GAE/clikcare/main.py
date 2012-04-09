@@ -34,13 +34,20 @@ class IndexHandler(BaseHandler):
 class PatientBookHandler(BaseHandler):
     def post(self):
         form = PatientForm(self.request.POST)
+        tv = {
+                  'form': form ,
+                  'booking': self.request.POST['booking']
+         }
+
         if form.validate():
             logging.info('patient post:' + str(self.request))
-            # Store Patient liked to Booking
+            # Store Patient linked to Booking
             db.storePatient(self.request)
-            self.render_template('patient/book.html', form=form) 
+            self.render_template('patient/book.html', **tv) 
         else:
-            self.render_template('patient/new.html', form=form)
+            
+            # BUG this crashes on next submit because booking not present
+            self.render_template('patient/new.html', **tv)
 
 
 

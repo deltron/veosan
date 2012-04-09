@@ -143,6 +143,15 @@ msgstr "Confirmation"
 msgid "Email"
 msgstr "Couriel"
 
+msgid "First name is a required field"
+msgstr "Le prénom est un champs obligatoire"
+
+msgid "Last name is a required field"
+msgstr "Le nom de famille est un champs obligatoire"
+
+msgid "Please make sure phone number is in the following format: 514-555-1212"
+msgstr "Le numéro de téléphone doit être dans le format suivant: 514-555-1212"
+
 
 #################
 # Profile Page

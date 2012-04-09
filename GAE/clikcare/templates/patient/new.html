@@ -9,12 +9,7 @@
 		<form class="form-horizontal" action="/patient/book" method="post">
 			<fieldset>
 				{{ makeStandardForm() }}
-				<div class="control-group ">
-					<!-- <label class="control-label" for="booking"></label> -->
-					<div class="controls">
-						<input class="input-xlarge" id="booking" name="booking" type="hidden" value="{{ booking }}">
-					</div>
-				</div>
+				<input id="booking" name="booking" type="hidden" value="{{ booking }}">
 			</fieldset>
 			<div class="form-actions">
 				<button type="submit" class="btn btn-primary">
