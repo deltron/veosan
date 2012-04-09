@@ -127,10 +127,12 @@ class ProviderScheduleHandler(ProviderBaseHandler):
             logging.info("Missing key")
             
     def post(self):
-        # Store Provider
-        key = db.storeProvider(self.request)
-        provider = Provider.get(key)
-        self.render_schedule(provider)
+        key = self.request.get('provider_key')
+        dh = self.request.get('day_time')
+        logging.info("SAVE SCHEDULE: " + key + " " + dh)
+        #key = db.storeProvider(self.request)
+        #provider = Provider.get(key)
+        #self.render_schedule(provider)
 
 
 class ProviderTermsHandler(ProviderBaseHandler):
