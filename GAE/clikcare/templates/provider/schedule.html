@@ -42,7 +42,7 @@
 				
 				{% for day in days %}
 				<td>
-					<div class="btn-group" data-toggle="buttons-radio">
+					<div id="tt" class="btn-group" data-toggle="buttons-radio">
 						<a href="#" class="btn btn-mini btn-danger" rel="tooltip" title="{{ _('Busy') }}"> <i class="icon-ban-circle"></i> </a>
 						<!-- <a href="#" class="btn btn-mini btn-warning" rel="tooltip" title="{{ _('Free') }}"> <i class="icon-ok-circle"></i> </a> -->
 					</div>
@@ -76,7 +76,7 @@
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 
 <script>
-    $("a").click(function () {
+    $("#tt a").click(function () {
     	//alert("I am an alert box! " + $("#b14").attr("Class")); 
      	$(this).toggleClass("btn-success");
      	$(this).toggleClass("btn-danger");
