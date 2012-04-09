@@ -43,7 +43,7 @@
 				{% for day in days %}
 				<td>
 					<div id="tt" class="btn-group" data-toggle="buttons-radio">
-						<a href="#" class="btn btn-mini btn-danger" rel="tooltip" title="{{ _('Busy') }}"> <i class="icon-ban-circle"></i> </a>
+						<a id="{{day[0]}}-{{hour[0]}}" href="#" class="btn btn-mini btn-danger" rel="tooltip" title="{{ _('Busy') }}"> <i class="icon-ban-circle"></i> {{day[0]}}-{{hour[0]}} </a>
 						<!-- <a href="#" class="btn btn-mini btn-warning" rel="tooltip" title="{{ _('Free') }}"> <i class="icon-ok-circle"></i> </a> -->
 					</div>
 				</td>
@@ -73,6 +73,7 @@
 	</div>
 </div>
 
+<!-- Had to add this here to make below script work... weird, since it is included in Bootstrap -->
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 
 <script>
@@ -80,6 +81,13 @@
     	//alert("I am an alert box! " + $("#b14").attr("Class")); 
      	$(this).toggleClass("btn-success");
      	$(this).toggleClass("btn-danger");
+     	
+     	post_data = {
+     		provider_key: "{{p.key()}}",
+     		day_time: $(this).attr("id")
+     	}
+     	// post a save for the clicked schedule
+     	$.post('/provider/schedule', post_data)
     });
 </script>
 
