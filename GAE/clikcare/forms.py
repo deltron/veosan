@@ -87,9 +87,8 @@ class PatientForm(Form):
     telephone = TextField(_(u'Telephone').decode("UTF-8"), [validators.Regexp(regex="^[2-9]\d{2}-\d{3}-\d{4}$", message=_(u'Please make sure phone number is in the following format: 514-555-1212').decode("UTF-8"))])
     insurance = SelectField(_(u'Insurance').decode("UTF-8"), choices=util.getAllInsurance())
     confirmation = MultiCheckboxField(_(u'Confirmation').decode("UTF-8"), choices=util.getAllConfirmation(), default=['email'])
-    # booking = HiddenField()
 
-
+    
 class ProviderAddressForm(Form):
     firstName = TextField(_(u'First Name').decode("UTF-8"), [validators.Length(min=1, message=_(u'First name is a required field').decode("UTF-8"))])
     lastName = TextField(_(u'Last Name').decode("UTF-8"), [validators.Length(min=1, message=_(u'Last name is a required field').decode("UTF-8"))])

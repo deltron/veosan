@@ -7,6 +7,7 @@ from base import BaseHandler
 import admin
 import db
 from forms import BookingForm, PatientForm
+from db import Patient, Booking
 import provider
 from pytz.gae import pytz
 
@@ -15,38 +16,50 @@ class IndexHandler(BaseHandler):
         self.render_template('index.html', form=BookingForm(self.request.GET))
         
     def post(self):
-        form = BookingForm(self.request.POST)
-        if form.validate():
-            logging.info('booking post:' + unicode(self.request))
-            booking_key = db.storeBooking(self.request)
-            booking_key_string = unicode(booking_key)
-            logging.info('created booking:' + booking_key_string)
-            #self.request.POST['booking'] = booking_key_string
+        bookingform = BookingForm(self.request.POST)
+        if bookingform.validate():
+
             tv = {
                   'form': PatientForm(self.request.POST),
-                  'booking': booking_key_string
+                  'bookingForm': bookingform
                   }
+           
             self.render_template('patient/new.html', **tv)
         else:
-            self.render_template('index.html', form=form)
+            self.render_template('index.html', form=bookingform)
 
     
 class PatientBookHandler(BaseHandler):
     def post(self):
         form = PatientForm(self.request.POST)
+        bookingForm = BookingForm(self.request.POST)
+        
         tv = {
                   'form': form ,
-                  'booking': self.request.POST['booking']
+                  'bookingForm': bookingForm
+
          }
 
         if form.validate():
             logging.info('patient post:' + str(self.request))
-            # Store Patient linked to Booking
-            db.storePatient(self.request)
+            
+            # create booking
+            booking_key = db.storeBooking(self.request)
+            booking_key_string = unicode(booking_key)
+            logging.debug('created booking:' + booking_key_string)
+
+            # Store Patient 
+            patient_key = db.storePatient(self.request)
+            
+            # Link patient to booking
+            db.linkPatientToBooking(patient_key, booking_key)
+            
+            tv = {
+                  'patient' : Patient.get(patient_key),
+                  'booking' : Booking.get(booking_key)
+            }
             self.render_template('patient/book.html', **tv) 
         else:
-            
-            # BUG this crashes on next submit because booking not present
             self.render_template('patient/new.html', **tv)
 
 

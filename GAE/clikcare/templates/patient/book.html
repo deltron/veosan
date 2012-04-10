@@ -6,7 +6,12 @@
 {% block content %}
 <div class="row">
 	<div class="span12">
-		<b>{{ form.firstName.data }} {{ form.lastName.data }}</b>
+		<h3>Patient</h3>
+		{{ patient.__dict__ }}
+		
+		<h3>Booking</h3>
+		{{ booking.__dict__ }}
+
 	</div>
 </div>
 {% endblock %} 
