@@ -22,16 +22,17 @@ def storePatient(request):
     new_patient.email = request.get('email')
     new_patient.phone = request.get('phone')
     patient_key = new_patient.put()
-    # link to booking
-    booking_key = request.get('booking')
+    return patient_key
+
+def linkPatientToBooking(patient_key, booking_key):
+    new_patient = Patient.get(patient_key)
     if (booking_key != None):
         booking = Booking.get(booking_key)
         booking.patient = new_patient
-        booking.telephoneConfirmation = request.get('telephoneConfirmation') != ''
-        booking.comments = request.get('comments')
+        #  booking.telephoneConfirmation = request.get('telephoneConfirmation') != ''
+        #  booking.comments = request.get('comments')
         booking.put()
-    return patient_key
-
+   
 
 def fetchProviders():
     providers = gdb.GqlQuery("SELECT * from Provider ORDER BY lastName ASC LIMIT 50")
