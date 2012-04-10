@@ -45,6 +45,8 @@ class Provider(db.Model):
     city = db.StringProperty()
     postalCode = db.StringProperty()
     profilePhotoBlobKey = blobstore.BlobReferenceProperty()
+    # schedule
+    # see Schedule Class below
     
     def get_edit_link(self, section='address'):
         return u'/provider/%s?key=%s' % (section, self.key())
@@ -60,6 +62,16 @@ class Provider(db.Model):
     def recently_created(self):
         datetime_24h_ago = datetime.now() - timedelta(hours=24)
         return self.createdOn > datetime_24h_ago
+    
+    def isAvailable(self, day, time):
+        count =  self.schedule.filter('day = ', day).filter('time = ', time).count()
+        logging.info("is available? " + str(day) + " " + str(time) + " count:" + str(count))
+        return count > 0
+        
+class Schedule(db.Model):
+    provider = db.ReferenceProperty(Provider, collection_name='schedule')
+    day = db.IntegerProperty()
+    time = db.IntegerProperty()
     
     
 class Booking(db.Model):

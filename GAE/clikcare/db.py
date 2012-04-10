@@ -75,7 +75,7 @@ def storeProvider(request):
     logging.info('Saved provider key:' + str(provider_key))
     logging.info(vars(provider))
     return provider_key
-    
+
 
 def getProviderFromEmail(email):
     q = Provider.all()
