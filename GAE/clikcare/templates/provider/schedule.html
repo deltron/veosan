@@ -43,7 +43,11 @@
 				{% for day in days %}
 				<td>
 					<div id="tt" class="btn-group" data-toggle="buttons-radio">
-						<a id="{{day[0]}}-{{hour[0]}}" href="#" class="btn btn-mini btn-danger" rel="tooltip" title="{{ _('Busy') }}"> <i class="icon-ban-circle"></i> {{day[0]}}-{{hour[0]}} </a>
+						{% if p.isAvailable(day[0], hour[0]) %}
+							<a id="{{day[0]}}-{{hour[0]}}" href="#" class="btn btn-mini btn-success" rel="tooltip" title="{{ _('Free') }}"> <i class="icon-ok-circle"></i> {{day[0]}}-{{hour[0]}} </a>
+						{% else %}
+							<a id="{{day[0]}}-{{hour[0]}}" href="#" class="btn btn-mini btn-danger" rel="tooltip" title="{{ _('Busy') }}"> <i class="icon-ban-circle"></i> {{day[0]}}-{{hour[0]}} </a>
+						{% endif %}
 						<!-- <a href="#" class="btn btn-mini btn-warning" rel="tooltip" title="{{ _('Free') }}"> <i class="icon-ok-circle"></i> </a> -->
 					</div>
 				</td>
@@ -71,6 +75,11 @@
 			{% endfor %}
 		</table>
 	</div>
+	
+	<h3> Schedule Debug</h3>
+	{% for s in p.schedule %}
+		<li> {{s.day}}-{{s.time}} </li>
+	{% endfor %}
 </div>
 
 <!-- Had to add this here to make below script work... weird, since it is included in Bootstrap -->
@@ -82,9 +91,18 @@
      	$(this).toggleClass("btn-success");
      	$(this).toggleClass("btn-danger");
      	
+     	if ($(this).hasClass('btn-success')) {
+     		op = 'add'
+     	}
+     	else {
+     		op = 'remove'
+     	}
+     		 
+     	
      	post_data = {
      		provider_key: "{{p.key()}}",
-     		day_time: $(this).attr("id")
+     		day_time: $(this).attr("id"),
+     		operation: op
      	}
      	// post a save for the clicked schedule
      	$.post('/provider/schedule', post_data)
