@@ -6,7 +6,7 @@ from forms import ProviderProfileForm, ProviderAddressForm, ProviderPhotoForm, P
 import urllib
 from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
-from data import Provider
+from data import Provider, Schedule
 import util
 
 def parseRefererSection(request):
@@ -128,12 +128,23 @@ class ProviderScheduleHandler(ProviderBaseHandler):
             
     def post(self):
         key = self.request.get('provider_key')
-        dh = self.request.get('day_time')
-        logging.info("SAVE SCHEDULE: " + key + " " + dh)
-        #key = db.storeProvider(self.request)
-        #provider = Provider.get(key)
-        #self.render_schedule(provider)
-
+        day_time = self.request.get('day_time')
+        day = day_time[0]
+        time = day_time[2:]
+        operation = self.request.get('operation')
+        logging.info("SAVE SCHEDULE: " + key + " " + day + "-" + time + " " + operation)
+        
+        provider = Provider.get(key)
+        if (operation == 'add'):
+            s = Schedule()
+            s.provider = provider
+            s.day = int(day)
+            s.time = int(time)
+            s.put()
+        elif (operation == 'remove'):
+            provider.schedule.filter('day = ', day).filter('time = ', time).get().delete()
+        else:
+            logging.info('Wrong operation save schedule:' + operation)
 
 class ProviderTermsHandler(ProviderBaseHandler):
     def get(self):
