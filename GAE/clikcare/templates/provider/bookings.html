@@ -9,7 +9,7 @@
 <div class="row">
 	<div class="span9">
 		{% for b in bookings %}
-			<li>{{b.patient.firstName}}</li>
+			<li>{{b.patient.firstName}} {{b.patient.lastName}} - {{b.requestDate}} </li>
 		{% endfor %}
 	</div>	
 </div>
