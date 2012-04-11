@@ -63,6 +63,13 @@ class Provider(db.Model):
         datetime_24h_ago = datetime.now() - timedelta(hours=24)
         return self.createdOn > datetime_24h_ago
     
+    def getAvailableScheduleIds(self):
+        ids = list()
+        for s in self.schedule:
+            id = str(s.day) + '-' + str(s.time)
+            ids.append(id)
+        return ids
+    
     def isAvailable(self, day, time):
         count =  self.schedule.filter('day = ', day).filter('time = ', time).count()
         logging.info("is available? " + str(day) + " " + str(time) + " count:" + str(count))
