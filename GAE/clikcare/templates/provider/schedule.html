@@ -42,11 +42,12 @@
 				
 				{% for day in days %}
 				<td>
+					{% set button_id = day[0] ~ '-' ~ hour[0] %}
 					<div id="tt" class="btn-group" data-toggle="buttons-radio">
-						{% if p.isAvailable(day[0], hour[0]) %}
-							<a id="{{day[0]}}-{{hour[0]}}" href="#" class="btn btn-mini btn-success" rel="tooltip" title="{{ _('Free') }}"> <i class="icon-ok-circle"></i> {{day[0]}}-{{hour[0]}} </a>
+						{% if button_id in availableIds %}
+							<a id="{{button_id}}" href="#" class="btn btn-mini btn-success" rel="tooltip" title="{{ _('Free') }}"> <i class="icon-ok-circle"></i> {{day[0]}}-{{hour[0]}} </a>
 						{% else %}
-							<a id="{{day[0]}}-{{hour[0]}}" href="#" class="btn btn-mini btn-danger" rel="tooltip" title="{{ _('Busy') }}"> <i class="icon-ban-circle"></i> {{day[0]}}-{{hour[0]}} </a>
+							<a id="{{button_id}}" href="#" class="btn btn-mini btn-danger" rel="tooltip" title="{{ _('Busy') }}"> <i class="icon-ban-circle"></i> {{day[0]}}-{{hour[0]}} </a>
 						{% endif %}
 						<!-- <a href="#" class="btn btn-mini btn-warning" rel="tooltip" title="{{ _('Free') }}"> <i class="icon-ok-circle"></i> </a> -->
 					</div>
