@@ -54,9 +54,15 @@ class PatientBookHandler(BaseHandler):
             # Link patient to booking
             db.linkPatientToBooking(patient_key, booking_key)
             
+            # Link provider to booking
+            hardcodedProvider = db.getProviderFromEmail('tester@gmail.com')
+            provider_key = hardcodedProvider.key()
+            db.linkProviderToBooking(provider_key, booking_key)
+            
             tv = {
-                  'patient' : Patient.get(patient_key),
-                  'booking' : Booking.get(booking_key)
+                  'patient': Patient.get(patient_key),
+                  'booking': Booking.get(booking_key),
+                  'provider': hardcodedProvider
             }
             self.render_template('patient/book.html', **tv) 
         else:
