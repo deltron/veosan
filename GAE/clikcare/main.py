@@ -100,6 +100,7 @@ application = webapp2.WSGIApplication([
                                        ('/provider/address/upload', provider.ProviderAddressUploadHandler),
                                        ('/provider/schedule', provider.ProviderScheduleHandler),
                                        ('/provider/terms', provider.ProviderTermsHandler),
+                                       ('/provider/bookings', provider.ProviderBookingsHandler),
                                        ('/serve/([^/]+)?', provider.ServeHandler), # temporary - to test file uploads
                                        # admin
                                        ('/admin/provider/init', admin.NewProviderInitHandler),
