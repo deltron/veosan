@@ -1,0 +1,16 @@
+{% extends "/layout/provider.html" %}
+
+{% set active_page = "bookings" %}
+
+{% block subhead %}Bookings{% endblock %}
+{% block lead %}Your upcoming bookings{% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="span9">
+		{% for b in bookings %}
+			<li>{{b.patient.firstName}}</li>
+		{% endfor %}
+	</div>	
+</div>
+{% endblock content %} 
