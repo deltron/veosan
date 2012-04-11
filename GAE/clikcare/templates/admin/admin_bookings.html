@@ -22,19 +22,33 @@
 			<tr>
 				<!-- <td>{{b.key() }}</td> -->
 				<td><a href="#" class="" rel="popover" title="{{b.patient.firstName}} {{b.patient.lastName}}" data-content="{{b.patient.phone}} <br> {{b.patient.email}} <br>">{{b.patient.firstName}} {{b.patient.lastName}}</a></td>
-				<td> {{b.requestSpecialty}}
-				<br>
-				{{b.requestLocation}}
-				<br>
-				{{b.requestDate}}&nbsp;{{b.requestTime}} </td>
-				<td> Provider X
-				<br>
-				Specialty
-				<br>
-				Region </td>
-				<td> Appointment Address
-				<br>
-				Appointment Time <a href="#" class="btn" rel="popover" title="{{b.patient.firstName}} {{b.patient.lastName}} @ [Provider Name]" data-content="{{b.comments}} <br> Telephone Confirmation: {{b.telephoneConfirmation}} <br> Created On: {{b.createdOn|formatdatetime_noseconds}}">+</a></td>
+				<td>
+					{{b.requestSpecialty}}
+					<br>
+					{{b.requestLocation}}
+					<br>
+					{{b.requestDate}}&nbsp;{{b.requestTime}} 
+				</td>
+				<td>
+					{% set p = b.provider %}
+					{% if p %}
+						<a href="{{p.get_edit_link()}}"
+							rel="popover"
+							title="{{p.firstName}} {{p.lastName}}"
+							data-content="{{p.get_html_summary()}}"> {{p.lastName}}, {{p.firstName}} [{{p.email}}]</a>
+						<br>
+						{{b.provider.category}}
+						<br>
+						{{b.provider.region}} 
+					{% else %}
+						<p>No provider booked</p>
+					{% endif %}
+				</td>
+				<td>
+					Appointment Address
+					<br>
+					Appointment Time 
+					<a href="#" class="btn" rel="popover" title="{{b.patient.firstName}} {{b.patient.lastName}} @ [Provider Name]" data-content="{{b.comments}} <br> Telephone Confirmation: {{b.telephoneConfirmation}} <br> Created On: {{b.createdOn|formatdatetime_noseconds}}">+</a></td>
 			</tr>
 			{% endfor %}
 		</tbody>
