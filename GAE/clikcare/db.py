@@ -33,6 +33,12 @@ def linkPatientToBooking(patient_key, booking_key):
         #  booking.comments = request.get('comments')
         booking.put()
    
+def linkProviderToBooking(provider_key, booking_key):
+    provider_to_link = Provider.get(provider_key)
+    if (booking_key != None):
+        booking = Booking.get(booking_key)
+        booking.provider = provider_to_link
+        booking.put()
 
 def fetchProviders():
     providers = gdb.GqlQuery("SELECT * from Provider ORDER BY lastName ASC LIMIT 50")
