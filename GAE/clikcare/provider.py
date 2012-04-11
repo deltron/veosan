@@ -29,8 +29,8 @@ class ProviderBaseHandler(BaseHandler):
         days = util.getWeekdays()
         self.render_template('provider/schedule.html', p=provider, availableIds=availableIds, hours=hours, days=days, **extra)
     
-    def render_bookings(self, provider, **extra):
-        self.render_template('provider/bookings.html', p=provider, **extra)
+    def render_bookings(self, provider, bookings, **extra):
+        self.render_template('provider/bookings.html', p=provider, bookings=bookings, **extra)
             
     def render_terms(self, provider, terms_form, **extra):
         self.render_template('provider/terms.html', p=provider, form=terms_form, **extra)
@@ -173,7 +173,9 @@ class ProviderBookingsHandler(ProviderBaseHandler):
         key = self.request.get('key')
         if (key):
             provider = Provider.get(key)
-            self.render_bookings(provider)
+            bookings = provider.booking_set
+            logging.info('Bookings:' + str(bookings))
+            self.render_bookings(provider, bookings)
         else:
             logging.info("Missing provider key")
 
