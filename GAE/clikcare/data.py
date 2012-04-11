@@ -96,5 +96,6 @@ class Booking(db.Model):
     comments = db.StringProperty(multiline=True)
     # link to patient
     patient = db.ReferenceProperty(Patient)
-        
+    # link to provider
+    provider = db.ReferenceProperty(Provider)    
 
