@@ -28,7 +28,10 @@ class ProviderBaseHandler(BaseHandler):
         hours = util.getTimesList()
         days = util.getWeekdays()
         self.render_template('provider/schedule.html', p=provider, availableIds=availableIds, hours=hours, days=days, **extra)
-        
+    
+    def render_bookings(self, provider, **extra):
+        self.render_template('provider/bookings.html', p=provider, **extra)
+            
     def render_terms(self, provider, terms_form, **extra):
         self.render_template('provider/terms.html', p=provider, form=terms_form, **extra)
    
@@ -115,7 +118,6 @@ class ServeHandler(blobstore_handlers.BlobstoreDownloadHandler):
         self.send_blob(blob_info)
 
 
-# handle schedule changes like this http://tutorialzine.com/2011/04/app-engine-series-4-controllers/
 class ProviderScheduleHandler(ProviderBaseHandler):
     def get(self):
         key = self.request.get('key')
@@ -166,6 +168,15 @@ class ProviderTermsHandler(ProviderBaseHandler):
             logging.info("Missing key")
             
         
+class ProviderBookingsHandler(ProviderBaseHandler):
+    def get(self):
+        key = self.request.get('key')
+        if (key):
+            provider = Provider.get(key)
+            self.render_bookings(provider)
+        else:
+            logging.info("Missing provider key")
+
 
 class ProviderLoginHandler(ProviderBaseHandler):
     def get(self):
