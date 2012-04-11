@@ -24,10 +24,10 @@ class ProviderBaseHandler(BaseHandler):
         uploadForm = ProviderPhotoForm(self.request.GET)
         self.render_template('provider/address.html', p=provider, form=address_form, uploadForm=uploadForm, upload_url=upload_url, **extra)
         
-    def render_schedule(self, provider, **extra):
+    def render_schedule(self, provider, availableIds, **extra):
         hours = util.getTimesList()
         days = util.getWeekdays()
-        self.render_template('provider/schedule.html', p=provider, hours=hours, days=days, **extra)
+        self.render_template('provider/schedule.html', p=provider, availableIds=availableIds, hours=hours, days=days, **extra)
         
     def render_terms(self, provider, terms_form, **extra):
         self.render_template('provider/terms.html', p=provider, form=terms_form, **extra)
@@ -122,7 +122,9 @@ class ProviderScheduleHandler(ProviderBaseHandler):
         if (key):
             # edit provider
             provider = Provider.get(key)
-            self.render_schedule(provider)
+            availableIds = provider.getAvailableScheduleIds()
+            logging.info('available ids' + str(availableIds))
+            self.render_schedule(provider, availableIds)
         else:
             logging.info("Missing key")
             
@@ -142,7 +144,13 @@ class ProviderScheduleHandler(ProviderBaseHandler):
             s.time = int(time)
             s.put()
         elif (operation == 'remove'):
-            provider.schedule.filter('day = ', day).filter('time = ', time).get().delete()
+            s_to_delete = provider.schedule.filter('day = ', int(day)).filter('time = ', int(time)).get()
+            logging.info('deleting schedule' + str(s_to_delete))
+            if (s_to_delete):
+                s_to_delete.delete()
+            else:
+                logging.error("Can't find schedule to delete") 
+                
         else:
             logging.info('Wrong operation save schedule:' + operation)
 
