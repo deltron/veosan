@@ -6,11 +6,12 @@ import logging
 from data import Booking
 from data import Patient
 from data import Provider
-            
-def storeBooking(request):         
+  
+def storeBooking(r):
     booking = Booking()
-    booking.requestSpecialty = request.get('categories')
-    booking.requestLocation = request.get('regions')
+    booking.requestSpecialty = r['bookingCategory']
+    booking.requestLocation = r['bookingRegion']
+    booking.comments = r['comments']
     booking_key = booking.put()
     return booking_key
     

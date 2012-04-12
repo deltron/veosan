@@ -44,7 +44,7 @@ class PatientBookHandler(BaseHandler):
             logging.info('patient post:' + str(self.request))
             
             # create booking
-            booking_key = db.storeBooking(self.request)
+            booking_key = db.storeBooking(self.request.POST)
             booking_key_string = unicode(booking_key)
             logging.debug('created booking:' + booking_key_string)
 
