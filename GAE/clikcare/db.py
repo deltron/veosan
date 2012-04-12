@@ -7,40 +7,26 @@ from data import Booking
 from data import Patient
 from data import Provider
   
-def storeBooking(r):
+def storeBooking(r, patient, provider):
     booking = Booking()
     booking.requestSpecialty = r['bookingCategory']
     booking.requestLocation = r['bookingRegion']
     booking.comments = r['comments']
-    booking_key = booking.put()
-    return booking_key
+    booking.patient = patient
+    booking.provider = provider
+    booking.put()
+    return booking
     
-def storePatient(request):
-    # create new patient
-    new_patient = Patient()
-    new_patient.firstName = request.get('firstName')
-    new_patient.lastName = request.get('lastName')
-    new_patient.email = request.get('email')
-    new_patient.phone = request.get('phone')
-    patient_key = new_patient.put()
-    return patient_key
+def storePatient(r):
+    patient = Patient()
+    patient.firstName = r['firstName']
+    patient.lastName = r['lastName']
+    patient.email = r['email']
+    patient.telephone = r['telephone']
+    patient.put()
+    return patient
 
-def linkPatientToBooking(patient_key, booking_key):
-    new_patient = Patient.get(patient_key)
-    if (booking_key != None):
-        booking = Booking.get(booking_key)
-        booking.patient = new_patient
-        #  booking.telephoneConfirmation = request.get('telephoneConfirmation') != ''
-        #  booking.comments = request.get('comments')
-        booking.put()
    
-def linkProviderToBooking(provider_key, booking_key):
-    provider_to_link = Provider.get(provider_key)
-    if (booking_key != None):
-        booking = Booking.get(booking_key)
-        booking.provider = provider_to_link
-        booking.put()
-
 def fetchProviders():
     providers = gdb.GqlQuery("SELECT * from Provider ORDER BY lastName ASC LIMIT 50")
     return providers
@@ -90,7 +76,7 @@ def getProviderFromEmail(email):
     q.filter("email =", email)
     provider = q.get()
     
-    logging.info('Key for email %s is %s' % (email, provider))
+    logging.debug('Key for email %s is %s' % (email, unicode(provider.key())))
   
     return provider
     

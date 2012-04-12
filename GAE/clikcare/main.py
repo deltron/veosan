@@ -7,9 +7,7 @@ from base import BaseHandler
 import admin
 import db
 from forms import BookingForm, PatientForm
-from db import Patient, Booking
 import provider
-from pytz.gae import pytz
 
 class IndexHandler(BaseHandler):
     def get(self):
@@ -31,41 +29,34 @@ class IndexHandler(BaseHandler):
     
 class PatientBookHandler(BaseHandler):
     def post(self):
-        form = PatientForm(self.request.POST)
+        patientForm = PatientForm(self.request.POST)
         bookingForm = BookingForm(self.request.POST)
-        
-        tv = {
-                  'form': form ,
-                  'bookingForm': bookingForm
 
-         }
+        if patientForm.validate():
+            logging.debug('patientForm passed validation:' + str(self.request))
+            
+            # Store Patient 
+            patient = db.storePatient(self.request.POST)
 
-        if form.validate():
-            logging.info('patient post:' + str(self.request))
+            # Implement magic to choose a provider...
+            provider = db.getProviderFromEmail('tester@gmail.com')
             
             # create booking
-            booking_key = db.storeBooking(self.request.POST)
-            booking_key_string = unicode(booking_key)
-            logging.debug('created booking:' + booking_key_string)
-
-            # Store Patient 
-            patient_key = db.storePatient(self.request)
-            
-            # Link patient to booking
-            db.linkPatientToBooking(patient_key, booking_key)
-            
-            # Link provider to booking
-            hardcodedProvider = db.getProviderFromEmail('tester@gmail.com')
-            provider_key = hardcodedProvider.key()
-            db.linkProviderToBooking(provider_key, booking_key)
+            if (patient != None and provider != None):            
+                booking = db.storeBooking(self.request.POST, patient, provider)
+                logging.debug('created booking:' + unicode(booking.key()))
             
             tv = {
-                  'patient': Patient.get(patient_key),
-                  'booking': Booking.get(booking_key),
-                  'provider': hardcodedProvider
+                  'patient': patient,
+                  'booking': booking,
+                  'provider': provider
             }
             self.render_template('patient/book.html', **tv) 
-        else:
+        else:           
+            tv = {
+                  'form': patientForm ,
+                  'bookingForm': bookingForm
+                  }
             self.render_template('patient/new.html', **tv)
 
 

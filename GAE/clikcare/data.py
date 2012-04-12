@@ -21,7 +21,7 @@ class Patient(db.Model):
     firstName = db.StringProperty()
     lastName = db.StringProperty()
     email = db.StringProperty()
-    phone = db.StringProperty()
+    telephone = db.StringProperty()
     # insurance
     # age
 
