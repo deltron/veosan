@@ -79,7 +79,8 @@ class Schedule(db.Model):
     provider = db.ReferenceProperty(Provider, collection_name='schedule')
     day = db.IntegerProperty()
     time = db.IntegerProperty()
-    
+    startTime = db.IntegerProperty()
+    endTime = db.IntegerProperty()
     
 class Booking(db.Model):
     '''
