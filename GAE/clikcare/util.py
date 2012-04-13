@@ -77,9 +77,17 @@ def getTimesList():
     timeStringList = map(lambda x: (unicode(x), formatTimeToOneHourPeriod(x)), startTimeList)
     return timeStringList
 
+def getScheduleTimeslots():
+    # returns a list of list(name, start time, end time)
+    return ( ( _(u"Morning").decode("UTF-8"), '8', '13'),
+             ( _(u"Afternoon").decode("UTF-8"), '13', '18'),
+             ( _(u"Evening").decode("UTF-8"), '18', '21')
+            )
+
 def getWeekdays():
     locale = Locale(lang)
-    weekdays = locale.days['format']['wide'].items()
+    weekdays_lower = locale.days['format']['wide'].items()
+    weekdays = map( lambda s: (s[0], s[1].capitalize()), weekdays_lower)
     logging.info( str(weekdays) )
     return weekdays
 
