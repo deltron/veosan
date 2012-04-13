@@ -25,9 +25,9 @@ class ProviderBaseHandler(BaseHandler):
         self.render_template('provider/address.html', p=provider, form=address_form, uploadForm=uploadForm, upload_url=upload_url, **extra)
         
     def render_schedule(self, provider, availableIds, **extra):
-        hours = util.getTimesList()
+        timeslots = util.getScheduleTimeslots()
         days = util.getWeekdays()
-        self.render_template('provider/schedule.html', p=provider, availableIds=availableIds, hours=hours, days=days, **extra)
+        self.render_template('provider/schedule.html', p=provider, availableIds=availableIds, timeslots=timeslots, days=days, **extra)
     
     def render_bookings(self, provider, bookings, **extra):
         self.render_template('provider/bookings.html', p=provider, bookings=bookings, **extra)
