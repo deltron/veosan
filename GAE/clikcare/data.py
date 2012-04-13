@@ -21,8 +21,9 @@ class Patient(db.Model):
     firstName = db.StringProperty()
     lastName = db.StringProperty()
     email = db.StringProperty()
-    phone = db.StringProperty()
-
+    telephone = db.StringProperty()
+    # insurance
+    # age
 
 class Provider(db.Model):
     '''
@@ -83,20 +84,20 @@ class Schedule(db.Model):
     endTime = db.IntegerProperty()
     
 class Booking(db.Model):
-    '''
-    A booking
-    '''
     createdOn = db.DateTimeProperty(auto_now_add=True)
-    #author = db.UserProperty()
+    
     requestSpecialty = db.StringProperty()
     requestLocation = db.StringProperty()
+    
+    ''' should this be convertd into db.DateTime() instead? '''
     requestDate = db.StringProperty()
     requestTime = db.StringProperty()
-    requestContact = db.StringProperty()
-    telephoneConfirmation = db.BooleanProperty(default=False)
+    
     comments = db.StringProperty(multiline=True)
+    
     # link to patient
     patient = db.ReferenceProperty(Patient)
+    
     # link to provider
     provider = db.ReferenceProperty(Provider)    
 
