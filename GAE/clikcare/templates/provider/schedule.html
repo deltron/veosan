@@ -14,13 +14,12 @@
 		<!-- <a href="#" id="b14" class="btn btn-mini"> <i class="icon-ban-circle"></i> </a> -->
 		<!--<button class="btn btn-mini" onclick="changeClass()" >My Button</button> -->
 		
-		<table class="table table-striped table-condensed">
+		<table class="table table-striped table-condensed centered">
 			<thead>
 				<th></th>
-				<th></th>
 				{% for day in days %}
-				<th style="min-width: 55px">{{day[1]}}
-				
+				<th style="min-width: 55px; text-align: center">
+					{{day[1]}}
 				<!--
 				<div class="btn-group" data-toggle="buttons-radio">
 					<a href="#" class="btn btn-mini" rel="tooltip" title="{{ _('Busy All Day') }}"> <i class="icon-ban-circle"></i> </a>
@@ -30,49 +29,41 @@
 				</th>
 				{% endfor %}
 			</thead>
-			{% for hour in hours %}
 			
-			{% if (hour[0] == "13" or hour[0] == "18") %}
-				<tr> <td colspan="7"> <br> </td></tr>	
-			{% endif %}
-			
+			<!-- timeslots are (name, starttime, endtime) -->
+			{% for ts in timeslots %}
 			<tr>
-				<td rowspan="1">{{hour[0]|format_hour}}</td>
-				<td></td>
+				<td rowspan="1"> 
+					{{ts[0]}} <br>
+					<small>{{ts[1]|format_hour}}-{{ts[2]|format_hour}}</small>
+				</td>
 				
 				{% for day in days %}
-				<td>
-					{% set button_id = day[0] ~ '-' ~ hour[0] %}
-					<div id="tt" class="btn-group" data-toggle="buttons-radio">
-						{% if button_id in availableIds %}
-							<a id="{{button_id}}" href="#" class="btn btn-mini btn-success" rel="tooltip" title="{{ _('Free') }}"> <i class="icon-ok-circle"></i> {{day[0]}}-{{hour[0]}} </a>
-						{% else %}
-							<a id="{{button_id}}" href="#" class="btn btn-mini btn-danger" rel="tooltip" title="{{ _('Busy') }}"> <i class="icon-ban-circle"></i> {{day[0]}}-{{hour[0]}} </a>
-						{% endif %}
-						<!-- <a href="#" class="btn btn-mini btn-warning" rel="tooltip" title="{{ _('Free') }}"> <i class="icon-ok-circle"></i> </a> -->
-					</div>
+				<td style="text-align: center;">
+					{% set button_id = day[0] ~ '-' ~ ts[1] ~ '-' ~ ts[2] %}
+					{% if button_id in availableIds %}
+						<a id="{{button_id}}" href="#" class="btn btn-mini btn-success" rel="tooltip" title="{{ _('Free') }}"> <i class="icon-ok-circle"></i> 
+							<div> {{ts[0]}} </div> 
+						</a>
+					{% else %}
+						<a id="{{button_id}}" href="#" class="btn btn-mini" rel="tooltip" title="{{ _('Busy') }}" style="width: 70%">
+							<div style="width: 100%">
+								<strong>{{day[1]}} <br> 
+								{{ts[0]}}</strong> <br>
+								<br>
+								<i class="icon-ban-circle"></i> <br>
+								<!--{{ _('Busy') }}<br> -->
+								<br>
+								<small>{{ts[1]|format_hour}}-{{ts[2]|format_hour}}</small><br>
+								<code>{{button_id}}</code>
+							</div> 
+						</a>
+					{% endif %}
+					<!-- <a href="#" class="btn btn-mini btn-warning" rel="tooltip" title="{{ _('Free') }}"> <i class="icon-ok-circle"></i> </a> -->
 				</td>
 				{% endfor %}
-
 			</tr>
-			
-			<!-- comment out :30 for now
-			<tr>
-				<td rowspan="1">  </td>
-				<td></td>
-				
-				{% for day in days %}
-				<td>
-					<div class="btn-group" data-toggle="buttons-radio">
-						<a href="#" class="btn btn-mini btn-success" rel="popover" title="{{ _('Appointment') }}" data-content="Jean Smith"><i class="icon-time"></i> </a>
-						<a href="#" class="btn btn-mini" rel="tooltip" title="{{ _('Busy') }} {{hour[0]|format_30min_period(30)}}"> <i class="icon-ban-circle"></i> </a>
-						<a href="#" class="btn btn-mini btn-warning" rel="tooltip" title="{{ _('Free') }}"> <i class="icon-ok-circle"></i> </a>
-					</div>
-				</td>
-				{% endfor %}
-				
-			</tr>
-			-->
+			<tr> <td colspan="8"> <br> </td></tr>
 			{% endfor %}
 		</table>
 	</div>
