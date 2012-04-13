@@ -243,6 +243,18 @@ msgid "Montreal - West-Island"
 msgstr "Montréal - Ouest de l'ile"
 
 
+#################
+# Schedule Periods
+#################
+
+msgid "Morning"
+msgstr "Matin"
+
+msgid "Afternoon"
+msgstr "Après-midi"
+
+msgid "Evening"
+msgstr "Soirée"
 
 
 #################
