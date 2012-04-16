@@ -60,6 +60,7 @@ class ProviderEditProfileHandler(ProviderBaseHandler):
             provider = Provider.get(key)
             self.render_profile(provider, profile_form=form)
         else:
+            provider = db.getProvider(self.request)
             # show error
             self.render_profile(provider, profile_form=form)
           
