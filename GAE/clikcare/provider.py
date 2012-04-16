@@ -60,8 +60,8 @@ class ProviderEditProfileHandler(ProviderBaseHandler):
             provider = Provider.get(key)
             self.render_profile(provider, profile_form=form)
         else:
-            provider = db.getProvider(self.request)
             # show error
+            provider = db.getProvider(self.request)
             self.render_profile(provider, profile_form=form)
           
 
@@ -87,7 +87,8 @@ class ProviderEditAddressHandler(ProviderBaseHandler):
             provider = Provider.get(key)
             self.render_address(provider, address_form=form)
         else:
-            # show errors
+            # show error
+            provider = db.getProvider(self.request)
             self.render_address(provider, address_form=form)
 
 
@@ -152,8 +153,7 @@ class ProviderScheduleHandler(ProviderBaseHandler):
             if (s_to_delete):
                 s_to_delete.delete()
             else:
-                logging.error("Can't find schedule to delete") 
-                
+                logging.error("Can't find schedule to delete")  
         else:
             logging.info('Wrong operation save schedule:' + operation)
 
@@ -202,8 +202,7 @@ class ProviderLoginHandler(ProviderBaseHandler):
             email = form.email.data
             provider = db.getProviderFromEmail(email)
             logging.info("provider dump before edit:" + str(vars(provider)))
-
-            self.render_schedule(provider)   
+            self.render_schedule(provider)
         
         
         
