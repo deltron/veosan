@@ -95,15 +95,18 @@ def formatDate(date):
     return format_date(date, u"d MMMM yyyy (EEEE)", locale=lang)
 
 def format_hour(hour):
-    '''take a number in 24-hour format and return 13h or 1 PM'''
-    if (lang == 'fr'):
-        return hour + u'h'
-    else :
-        AMPM = u'AM'
-        if (hour > 12):
-            hour_en = hour - 12
-            AMPM = u'PM'
-        return unicode(hour_en) + u' ' + AMPM
+    if (hour):
+        '''take a number in 24-hour format and return 13h or 1 PM'''
+        if (lang == 'fr'):
+            return hour + u'h'
+        else :
+            AMPM = u'AM'
+            if (hour > 12):
+                hour_en = hour - 12
+                AMPM = u'PM'
+            return unicode(hour_en) + u' ' + AMPM
+    else:
+        return ""
 
 def formatTimeToOneHourPeriod(startTime):
     endTime = startTime + 1
