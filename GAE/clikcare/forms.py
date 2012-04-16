@@ -112,7 +112,7 @@ class ProviderPhotoForm(Form):
     profilePhoto = FileField('T&eacute;l&eacute;charger')
 
 class ProviderProfileForm(Form):
-    categoriy = SelectField(_(u'Category').decode("UTF-8"), choices=util.getAllCategories())
+    category = SelectField(_(u'Category').decode("UTF-8"), choices=util.getAllCategories())
     specialty = MultiCheckboxField(_(u'Specialties').decode("UTF-8"), choices=util.getAllSpecialities())
     school = SelectField(_(u'School').decode("UTF-8"), choices=util.getAllSchools())
     degree = MultiCheckboxField(_(u'Diploma').decode("UTF-8"), choices=util.getAllDiplomas())
