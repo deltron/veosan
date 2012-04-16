@@ -8,9 +8,12 @@ from data import Patient
 from data import Provider
   
 def storeBooking(r, patient, provider):
+    logging.info('Saving Booking from:' + str(r.__dict__))
     booking = Booking()
     booking.requestSpecialty = r['bookingCategory']
     booking.requestLocation = r['bookingRegion']
+    booking.requestDate = r['bookingDate']
+    booking.requestTime = r['bookingTime']
     booking.comments = r['comments']
     booking.patient = patient
     booking.provider = provider
@@ -38,6 +41,11 @@ def initProvider(provider_email):
     provider_key = new_provider.put()
     return provider_key
 
+def getProvider(request):
+    ''' get provider from a request dict, key = provider_key'''
+    provider_key = request.get('provider_key')
+    return Provider.get(provider_key)
+    
 def getOrCreateProvider(provider_key):
     if (provider_key):
         logging.info('Getting existing provider with key:' + provider_key)
@@ -51,7 +59,7 @@ def storeProvider(request):
     provider = getOrCreateProvider(request.get('provider_key'))
     # profile
     provider.category = request.get('category', provider.category)
-    provider.specialty = request.get('lastName', provider.specialty)
+    provider.specialty = request.get('specialty', provider.specialty)
     provider.school = request.get('school', provider.school)
     provider.degree = request.get('degree', provider.degree)
     provider.startYear = request.get('startYear')
