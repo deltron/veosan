@@ -67,7 +67,7 @@ class Provider(db.Model):
     def getAvailableScheduleIds(self):
         ids = list()
         for s in self.schedule:
-            id = str(s.day) + '-' + str(s.time)
+            id = str(s.day) + '-' + str(s.startTime) + '-' + str(s.endTime)
             ids.append(id)
         return ids
     
@@ -79,7 +79,7 @@ class Provider(db.Model):
 class Schedule(db.Model):
     provider = db.ReferenceProperty(Provider, collection_name='schedule')
     day = db.IntegerProperty()
-    time = db.IntegerProperty()
+    #time = db.IntegerProperty()
     startTime = db.IntegerProperty()
     endTime = db.IntegerProperty()
     
