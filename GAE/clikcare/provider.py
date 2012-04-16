@@ -133,17 +133,17 @@ class ProviderScheduleHandler(ProviderBaseHandler):
     def post(self):
         key = self.request.get('provider_key')
         day_time = self.request.get('day_time')
-        day = day_time[0]
-        time = day_time[2:]
+        day, startTime, endTime = day_time.split('-')
         operation = self.request.get('operation')
-        logging.info("SAVE SCHEDULE: " + key + " " + day + "-" + time + " " + operation)
+        logging.info("SAVE SCHEDULE: " + key + " " + day + "-" + startTime + "-" + endTime + " " + operation)
         
         provider = Provider.get(key)
         if (operation == 'add'):
             s = Schedule()
             s.provider = provider
             s.day = int(day)
-            s.time = int(time)
+            s.startTime = int(startTime)
+            s.endTime = int(endTime)
             s.put()
         elif (operation == 'remove'):
             s_to_delete = provider.schedule.filter('day = ', int(day)).filter('time = ', int(time)).get()
