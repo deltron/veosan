@@ -39,11 +39,20 @@
 				</td>
 				
 				{% for day in days %}
-				<td style="text-align: center;">
+				<td id="tt" style="text-align: center;">
 					{% set button_id = day[0] ~ '-' ~ ts[1] ~ '-' ~ ts[2] %}
 					{% if button_id in availableIds %}
-						<a id="{{button_id}}" href="#" class="btn btn-mini btn-success" rel="tooltip" title="{{ _('Free') }}"> <i class="icon-ok-circle"></i> 
-							<div> {{ts[0]}} </div> 
+						<a id="{{button_id}}" href="#" class="btn btn-mini btn-success" rel="tooltip" title="{{ _('Free') }}" style="width: 70%">
+							<div style="width: 100%">
+								<strong>{{day[1]}} <br> 
+								{{ts[0]}}</strong> <br>
+								<br>
+								<i class="icon-ok-circle"></i> <br>
+								<!--{{ _('Busy') }}<br> -->
+								<br>
+								<small>{{ts[1]|format_hour}}-{{ts[2]|format_hour}}</small><br>
+								<code>{{button_id}}</code>
+							</div> 
 						</a>
 					{% else %}
 						<a id="{{button_id}}" href="#" class="btn btn-mini" rel="tooltip" title="{{ _('Busy') }}" style="width: 70%">
@@ -55,7 +64,7 @@
 								<!--{{ _('Busy') }}<br> -->
 								<br>
 								<small>{{ts[1]|format_hour}}-{{ts[2]|format_hour}}</small><br>
-								<!-- <code>{{button_id}}</code> -->
+								<code>{{button_id}}</code>
 							</div> 
 						</a>
 					{% endif %}
@@ -70,7 +79,7 @@
 	
 	<h3> Schedule Debug</h3>
 	{% for s in p.schedule %}
-		<li> {{s.day}}-{{s.time}} </li>
+		<li> {{s.day}}-{{s.startTime}}-{{s.endTime}} </li>
 	{% endfor %}
 </div>
 
@@ -80,7 +89,7 @@
     $("#tt a").click(function () {
     	//alert("I am an alert box! " + $("#b14").attr("Class")); 
      	$(this).toggleClass("btn-success");
-     	$(this).toggleClass("btn-danger");
+     	// TODO change icon inside the <a>
      	
      	if ($(this).hasClass('btn-success')) {
      		op = 'add'
