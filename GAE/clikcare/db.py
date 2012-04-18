@@ -36,6 +36,8 @@ def findBestProviderForBooking(booking):
     'Returns provider that best matches: category, location, dateTime'
     category = booking.requestCategory
     providersQuery = gdb.GqlQuery('''Select * from Provider WHERE category = :1''', category)
+    providerCount = providersQuery.count(limit=10)
+    logging.info('Found {0} good provider matches. Narrowing down list...'.format(providerCount))
     providers = providersQuery.fetch(limit=1)
     if (len(providers) > 0):
         bestProvider = providers[0]
