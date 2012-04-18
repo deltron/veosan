@@ -34,17 +34,20 @@ class PatientBookHandler(BaseHandler):
 
         if patientForm.validate():
             logging.debug('patientForm passed validation:' + str(self.request))
-            
             # Store Patient 
             patient = db.storePatient(self.request.POST)
-
-            # Implement magic to choose a provider...
-            provider = db.getProviderFromEmail('tester@gmail.com')
-            
-            # create booking
-            if (patient != None and provider != None):            
-                booking = db.storeBooking(self.request.POST, patient, provider)
+            if (patient):
+                # Store booking without provider
+                booking = db.storeBooking(self.request.POST, patient, None)
                 logging.debug('created booking:' + unicode(booking.key()))
+                # Implement magic to choose a provider...
+                logging.info("Looking for best provider...")
+                provider = db.findBestProviderForBooking(booking)
+                logging.info("Provider found: " + provider)
+                booking.provider = provider
+                booking.put()
+            else:
+                logging.info("No booking saved because patient is None")
             
             tv = {
                   'patient': patient,
