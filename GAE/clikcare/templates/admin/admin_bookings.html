@@ -6,49 +6,40 @@
 {% block lead %} <!-- View and administer bookings --> {% endblock %}
 
 {% block content %}
-<div>
+<div class="span6">
 	<table class="table">
 		<thead>
 			<tr>
 				<!-- <th>Key</th> -->
+				<th>Booking</th>
 				<th>Patient</th>
-				<th>Request</th>
 				<th>Provider</th>
-				<th>Time and Place</th>
 			</tr>
 		</thead>
 		<tbody>
 			{% for b in bookings %}
 			<tr>
-				<!-- <td>{{b.key() }}</td> -->
-				<td><a href="#" class="" rel="popover" title="{{b.patient.firstName}} {{b.patient.lastName}}" data-content="{{b.patient.phone}} <br> {{b.patient.email}} <br>">{{b.patient.firstName}} {{b.patient.lastName}}</a></td>
+				<!-- Date (Booking) -->
 				<td>
-					{{b.requestSpecialty}}
-					<br>
-					{{b.requestLocation}}
-					<br>
-					{{b.requestDate}}&nbsp;{{b.requestTime}} 
+					<a href="/booking/detail"
+							rel="popover"
+							title="Booking Details"
+							data-content="{{b.get_html_summary()}}"> {{b.dateTime}} </a>
 				</td>
+				<!-- Patient -->
+				<td><a href="#" class="" rel="popover" title="{{b.patient.firstName}} {{b.patient.lastName}}" data-content="{{b.patient.phone}} <br> {{b.patient.email}} <br>">{{b.patient.firstName}} {{b.patient.lastName}}</a></td>
+				<!-- Provider -->
 				<td>
 					{% set p = b.provider %}
 					{% if p %}
 						<a href="{{p.get_edit_link()}}"
 							rel="popover"
 							title="{{p.firstName}} {{p.lastName}}"
-							data-content="{{p.get_html_summary()}}"> {{p.lastName}}, {{p.firstName}} [{{p.email}}]</a>
-						<br>
-						{{b.provider.category}}
-						<br>
-						{{b.provider.region}} 
+							data-content="{{p.get_html_summary()}}"> {{p.lastName}}, {{p.firstName}}</a>
 					{% else %}
 						<p>No provider booked</p>
 					{% endif %}
 				</td>
-				<td>
-					Appointment Address
-					<br>
-					Appointment Time 
-					<a href="#" class="btn" rel="popover" title="{{b.patient.firstName}} {{b.patient.lastName}} @ [Provider Name]" data-content="{{b.comments}} <br> Telephone Confirmation: {{b.telephoneConfirmation}} <br> Created On: {{b.createdOn|formatdatetime_noseconds}}">+</a></td>
 			</tr>
 			{% endfor %}
 		</tbody>
