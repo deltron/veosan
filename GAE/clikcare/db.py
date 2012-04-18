@@ -3,6 +3,7 @@
 '''
 from google.appengine.ext import db as gdb
 import logging
+from datetime import datetime
 from data import Booking
 from data import Patient
 from data import Provider
@@ -10,10 +11,12 @@ from data import Provider
 def storeBooking(r, patient, provider):
     logging.info('Saving Booking from:' + str(r.__dict__))
     booking = Booking()
-    booking.requestSpecialty = r['bookingCategory']
+    booking.requestCategory = r['bookingCategory']
     booking.requestLocation = r['bookingRegion']
-    booking.requestDate = r['bookingDate']
-    booking.requestTime = r['bookingTime']
+    requestDateString = r['bookingDate']
+    requestTimeString = r['bookingTime']
+    requestDateTime = datetime.strptime(requestDateString + " " + requestTimeString, '%Y-%m-%d %H')
+    booking.requestDateTime = requestDateTime
     booking.comments = r['comments']
     booking.patient = patient
     booking.provider = provider
@@ -29,6 +32,18 @@ def storePatient(r):
     patient.put()
     return patient
 
+def findBestProviderForBooking(booking):
+    'Returns provider that best matches: category, location, dateTime'
+    category = booking.requestCategory
+    providersQuery = gdb.GqlQuery('''Select * from Provider WHERE category = :1''', category)
+    providers = providersQuery.fetch(limit=1)
+    if (len(providers) > 0):
+        bestProvider = providers[0]
+        logging.info('Found Best Provider: ' + bestProvider.fullName())
+        return bestProvider
+    else:
+        logging.info('No Provider Found')
+        return None
    
 def fetchProviders():
     providers = gdb.GqlQuery("SELECT * from Provider ORDER BY lastName ASC LIMIT 50")
