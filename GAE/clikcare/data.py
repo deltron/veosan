@@ -49,6 +49,9 @@ class Provider(db.Model):
     # schedule
     # see Schedule Class below
     
+    def fullName(self):
+        return '{0} {1}, {2}'.format(self.firstName, self.lastName, self.category)
+    
     def get_edit_link(self, section='address'):
         return u'/provider/%s?key=%s' % (section, self.key())
     
@@ -84,19 +87,23 @@ class Schedule(db.Model):
     
 class Booking(db.Model):
     createdOn = db.DateTimeProperty(auto_now_add=True)
-    
-    requestSpecialty = db.StringProperty()
+    #request
+    requestCategory = db.StringProperty()
     requestLocation = db.StringProperty()
-    
-    ''' should this be convertd into db.DateTime() instead? '''
-    requestDate = db.StringProperty()
-    requestTime = db.StringProperty()
-    
+    requestDateTime = db.DateTimeProperty()
+    # actual appointment
+    dateTime = db.DateTimeProperty()
     comments = db.StringProperty(multiline=True)
-    
     # link to patient
     patient = db.ReferenceProperty(Patient)
-    
     # link to provider
-    provider = db.ReferenceProperty(Provider)    
+    provider = db.ReferenceProperty(Provider)
+    
+    def get_html_summary(self):
+        s = u''
+        fields_dict = vars(self).iteritems()
+        for k, v in fields_dict:
+            if (k != '_entity'):
+                s += u'%s: %s <br>' % (k[1:], v)
+        return s
 
