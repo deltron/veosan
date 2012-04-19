@@ -7,9 +7,8 @@ from data import Provider, Booking
 
 class DBTestCase(unittest.TestCase):
     def setUp(self):
+        print('setup ' + self._testMethodName)
         logging.basicConfig(level=logging.DEBUG)
-        logging.info("TEST LOGGING")
-        print('setup')
         # First, create an instance of the Testbed class.
         self.testbed = testbed.Testbed()
         # Then activate the testbed, which prepares the service stubs for use.
@@ -18,30 +17,60 @@ class DBTestCase(unittest.TestCase):
         self.testbed.init_datastore_v3_stub()
 
     def tearDown(self):
-        print('tearDown')
+        print('tearDown ' + self._testMethodName)
         self.testbed.deactivate()
+        print('-------------------------------')
 
     def testStoreBooking(self):
         values = { 'bookingCategory': 'physiotherapy',
-                   'bookingRegion': 'mtl-downtown' 
+                   'bookingRegion': 'mtl-downtown', 
+                   'bookingDate': '2012-04-17',
+                   'bookingTime': '10',
+                   'comments': 'no comments',
                  }
         key = db.storeBooking(values, None, None)
         print key
         
     def testFindBestProviderForBooking(self):
         testCategory = u'physiotherapy'
+        testRegion = u'montreal-west'
         # create provider
         p = Provider()
         p.firstName = 'Best-Test'
         p.lastName = 'Phys-Io'
         p.category = testCategory
+        p.region = testRegion
         pkey = p.put()
         # create booking
         b = Booking()
         b.requestCategory = testCategory
+        b.requestRegion = testRegion
         b.put();
         # test the matching
         bestProvider = db.findBestProviderForBooking(b)
         logging.info('best provider:' + str(bestProvider))
         # assert
         self.assertEqual(pkey, bestProvider.key(), 'provider keys should be equal')
+        
+        
+    def testCantFindProvider(self):
+        testCategory = u'physiotherapy'
+        testRegion = u'montreal-west'
+        otherRegion = u'montreal-downtown'
+        # create provider
+        p = Provider()
+        p.firstName = 'Best-Test'
+        p.lastName = 'Phys-Io'
+        p.category = testCategory
+        p.region = testRegion
+        pkey = p.put()
+        # create booking
+        b = Booking()
+        b.requestCategory = testCategory
+        b.requestRegion = otherRegion
+        b.put();
+        # test the matching
+        bestProvider = db.findBestProviderForBooking(b)
+        logging.info('best provider:' + str(bestProvider))
+        # assert
+        self.assertEqual(None, bestProvider, 'provider keys should be None')
