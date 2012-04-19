@@ -12,9 +12,13 @@
 		<h3>Booking</h3>
 		{{ booking.__dict__ }}
 		
-		<h3>{{provider.fullName()}}</h3>
-		<code>{{ provider.key() }}</code>
-		{{ provider.__dict__ }}
+		{% if (provider) %}
+			<h3>{{provider.fullName()}}</h3>
+			<code>{{ provider.key() }}</code>
+			{{ provider.__dict__ }}
+		{% else %}
+			<h3>No provider found for your request</h3>
+		{% endif %}
 
 	</div>
 </div>
