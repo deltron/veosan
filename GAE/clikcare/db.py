@@ -9,7 +9,7 @@ from data import Patient
 from data import Provider
   
 def storeBooking(r, patient, provider):
-    logging.info('Saving Booking from:' + str(r.__dict__))
+    logging.info('Saving Booking from:' + str(r))
     booking = Booking()
     booking.requestCategory = r['bookingCategory']
     booking.requestLocation = r['bookingRegion']
@@ -35,7 +35,8 @@ def storePatient(r):
 def findBestProviderForBooking(booking):
     'Returns provider that best matches: category, location, dateTime'
     category = booking.requestCategory
-    providersQuery = gdb.GqlQuery('''Select * from Provider WHERE category = :1''', category)
+    region = booking.requestRegion
+    providersQuery = gdb.GqlQuery('''Select * from Provider WHERE category = :1 AND region = :2''', category, region)
     providerCount = providersQuery.count(limit=10)
     logging.info('Found {0} good provider matches. Narrowing down list...'.format(providerCount))
     providers = providersQuery.fetch(limit=1)
