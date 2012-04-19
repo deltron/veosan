@@ -270,8 +270,22 @@ msgstr "Baccalauréat"
 msgid "Master's"
 msgstr "Maîtrise"
 
-msgid "Ph.D"
+msgid "Doctor"
 msgstr "Doctorat"
+
+
+#################
+# Associations
+#################
+
+msgid "Ordre professionnel de la physiotherapie du Quebec (OPPQ)"
+msgstr "Ordre professionnel de la physiothérapie du Québec (OPPQ)"
+
+msgid "Canadian Physiotherapy Association (CPA)"
+msgstr "Canadian Physiotherapy Association (CPA)"
+
+msgid "Canadian Academy of Manipulative Physiotherapy (CAMPT)"
+msgstr "Canadian Academy of Manipulative Physiotherapy (CAMPT)"
 
 
 
@@ -305,6 +319,9 @@ msgstr "Gériatrie"
 #################
 # Universities
 #################
+
+msgid "Not Applicable"
+msgstr "Non Applicable"
 
 msgid "McGill University"
 msgstr "Université McGill"

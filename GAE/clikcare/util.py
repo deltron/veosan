@@ -22,28 +22,45 @@ def getAllCategories():
 
 # key, value
 def getAllSpecialities():
-    return [("cardiology", _(u"Cardiology").decode("UTF-8")),
+    return [("sports", _(u"Sports").decode("UTF-8")),
+            ("geriatric", _(u"Geriatric").decode("UTF-8")),            
+            ("cardiology", _(u"Cardiology").decode("UTF-8")),
             ("pneumology", _(u"Pneumology").decode("UTF-8")),
             ("orthopedic", _(u"Orthopedic").decode("UTF-8")),
-            ("sports", _(u"Sports").decode("UTF-8")),
             ("neurology", _(u"Neurology").decode("UTF-8")),
-            ("pediatric", _(u"Pediatric").decode("UTF-8")),
-            ("geriatric", _(u"Geriatric").decode("UTF-8"))
+            ("pediatric", _(u"Pediatric").decode("UTF-8"))
         ]
+    
+def getAllSpecialitiesForPatient():
+    z = getAllSpecialities()
+    z.extend([ 
+            ("other", _(u"Other").decode("UTF-8")),
+            ("dontknow", _(u"Not sure or don't know").decode("UTF-8")),
+            ("noanswer", _(u"Prefer not to answer").decode("UTF-8"))
+        ])
+    return z
+
 
 def getAllSchools():
-    return [("concordia", _(u"Concordia University").decode("UTF-8")),
+    return [("na", _(u"Not Applicable").decode("UTF-8")),
+            ("concordia", _(u"Concordia University").decode("UTF-8")),
             ("mcgill", _(u"McGill University").decode("UTF-8")),
             ("udem", _(u"Universite de Montreal").decode("UTF-8")),
             ("uqtr", _(u"Universite de Quebec a Trois-Rivieres").decode("UTF-8")),
             ("usherb", _(u"Universite de Sherbrooke").decode("UTF-8"))
         ]
 
-def getAllDiplomas():
-    return [("bachelors", _(u"Bachelor's").decode("UTF-8")),
-            ("masters", _(u"Master's").decode("UTF-8")),
-            ("phd", _(u"Ph.D").decode("UTF-8"))
+def getAllAssociations():
+    return [("oppq", _(u"Ordre professionnel de la physiotherapie du Quebec (OPPQ)").decode("UTF-8")),
+            ("cpa", _(u"Canadian Physiotherapy Association (CPA)").decode("UTF-8")),
+            ("campt", _(u"Canadian Academy of Manipulative Physiotherapy (CAMPT)").decode("UTF-8"))
         ]
+
+def getAllCertifications():
+    return [("mckenzie", _(u"McKenzie Method").decode("UTF-8")),
+            ("art", _(u"Active Release Therapy (ART)").decode("UTF-8"))
+        ]
+
 
 def getAllInsurance():
     return [("private", _(u"Private insurance (ex: employer)").decode("UTF-8")),

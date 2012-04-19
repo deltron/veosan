@@ -18,18 +18,18 @@ Twitter Bootstrap horizontal form layout.
 	{{ field.label(class="control-label") }}
 	{% endif %}
 	<div class="controls">
-		{% if field.type in ['MultiCheckboxField', 'CustomBooleanField'] %}
-		{{ field(class="checkbox") }}
-		{% else %}
-		{{ field(class=inputClass) }}
-		{% endif %}
-
 		{% if field.errors %}
+		
 		<p class="help-block">
 			{% for error in field.errors %} <i class="icon-exclamation-sign"></i> {{ error }}
 			<br>
 			{% endfor %}
 		</p>
+		{% endif %}
+		{% if field.type in ['MultiCheckboxField', 'CustomBooleanField'] %}
+		{{ field(class="checkbox") }}
+		{% else %}
+		{{ field(class=inputClass) }}
 		{% endif %}
 	</div>
 </div>
