@@ -43,9 +43,12 @@ class PatientBookHandler(BaseHandler):
                 # Implement magic to choose a provider...
                 logging.info("Looking for best provider...")
                 provider = db.findBestProviderForBooking(booking)
-                logging.info("Provider found: " + provider.fullName())
-                booking.provider = provider
-                booking.put()
+                if (provider):
+                    logging.info("Provider found: " + provider.fullName())
+                    booking.provider = provider
+                    booking.put()
+                else:
+                    logging.warn('No provider found for booking:' + booking.key())
             else:
                 logging.info("No booking saved because patient is None")
             
