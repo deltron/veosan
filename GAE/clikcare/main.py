@@ -48,7 +48,7 @@ class PatientBookHandler(BaseHandler):
                     booking.provider = provider
                     booking.put()
                 else:
-                    logging.warn('No provider found for booking:' + booking.key())
+                    logging.warn('No provider found for booking:' + unicode(booking.key()))
             else:
                 logging.info("No booking saved because patient is None")
             
