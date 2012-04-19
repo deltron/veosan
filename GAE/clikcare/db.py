@@ -12,7 +12,7 @@ def storeBooking(r, patient, provider):
     logging.info('Saving Booking from:' + str(r))
     booking = Booking()
     booking.requestCategory = r['bookingCategory']
-    booking.requestLocation = r['bookingRegion']
+    booking.requestRegion = r['bookingRegion']
     requestDateString = r['bookingDate']
     requestTimeString = r['bookingTime']
     requestDateTime = datetime.strptime(requestDateString + " " + requestTimeString, '%Y-%m-%d %H')

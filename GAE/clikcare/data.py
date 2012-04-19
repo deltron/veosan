@@ -89,7 +89,7 @@ class Booking(db.Model):
     createdOn = db.DateTimeProperty(auto_now_add=True)
     #request
     requestCategory = db.StringProperty()
-    requestLocation = db.StringProperty()
+    requestRegion = db.StringProperty()
     requestDateTime = db.DateTimeProperty()
     # actual appointment
     dateTime = db.DateTimeProperty()
