@@ -1,9 +1,9 @@
 import unittest
 from google.appengine.ext import db as gdb
 from google.appengine.ext import testbed
-import db
-import logging, sys
-from data import Provider, Booking
+import db, logging
+from datetime import datetime
+from data import Provider, Booking, Schedule
 
 class DBTestCase(unittest.TestCase):
     def setUp(self):
@@ -34,6 +34,7 @@ class DBTestCase(unittest.TestCase):
     def testFindBestProviderForBooking(self):
         testCategory = u'physiotherapy'
         testRegion = u'montreal-west'
+        
         # create provider
         p = Provider()
         p.firstName = 'Best-Test'
@@ -41,15 +42,32 @@ class DBTestCase(unittest.TestCase):
         p.category = testCategory
         p.region = testRegion
         pkey = p.put()
+        # add a provider's schedule (Thursday Morning)
+        s = Schedule()
+        s.day = 3
+        s.startTime = 8
+        s.endTime = 12
+        s.provider = p
+        s.put()
+        # create provider with no schedule
+        p = Provider()
+        p.firstName = 'NoSchedule'
+        p.lastName = 'Phys-Io'
+        p.category = testCategory
+        p.region = testRegion
+        pkey2 = p.put()
+        
         # create booking
         b = Booking()
         b.requestCategory = testCategory
         b.requestRegion = testRegion
+        b.requestDateTime = datetime.strptime('2012-04-26 10', '%Y-%m-%d %H')
         b.put();
         # test the matching
         bestProvider = db.findBestProviderForBooking(b)
         logging.info('best provider:' + str(bestProvider))
         # assert
+        self.assertIsNotNone(bestProvider, 'provider should not be None')
         self.assertEqual(pkey, bestProvider.key(), 'provider keys should be equal')
         
         
