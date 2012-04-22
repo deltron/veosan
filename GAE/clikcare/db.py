@@ -36,10 +36,27 @@ def findBestProviderForBooking(booking):
     'Returns provider that best matches: category, location, dateTime'
     category = booking.requestCategory
     region = booking.requestRegion
+    date_time = booking.requestDateTime
+    logging.info("request date_time x:" + str(date_time))
+    day = date_time.weekday()
+    logging.info("day:" + str(day))
+    
+    
+    providers = []
     providersQuery = gdb.GqlQuery('''Select * from Provider WHERE category = :1 AND region = :2''', category, region)
-    providerCount = providersQuery.count(limit=10)
-    logging.info('Found {0} good provider matches. Narrowing down list...'.format(providerCount))
-    providers = providersQuery.fetch(limit=1)
+    providerCount = providersQuery.count(limit=50)
+    logging.info('Found {0} providers in category and region. Narrowing down list using schedule...'.format(providerCount))
+    for p in providersQuery:
+        scheduleQuery = gdb.GqlQuery('''Select * from Schedule WHERE day= :1 AND provider = :2''', day, p)
+        schedules = scheduleQuery.fetch(limit=1)
+        if (len(schedules) > 0):
+            s = schedules[0]
+            logging.info('Found schedule match for provider {0}, schedule {1}:'.format(p, s))
+            providers.append(p)
+        else:
+            logging.info('No schedule match for provider {0}'.format(p))
+    logging.info('providers:' + str(providers))
+    #providers = providersQuery.fetch(limit=1)
     if (len(providers) > 0):
         bestProvider = providers[0]
         logging.info('Found Best Provider: ' + bestProvider.fullName())
