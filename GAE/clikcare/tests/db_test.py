@@ -86,6 +86,7 @@ class DBTestCase(unittest.TestCase):
         b = Booking()
         b.requestCategory = testCategory
         b.requestRegion = otherRegion
+        b.requestDateTime = datetime.strptime('2012-04-26 10', '%Y-%m-%d %H')
         b.put();
         # test the matching
         bestProvider = db.findBestProviderForBooking(b)
