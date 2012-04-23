@@ -38,23 +38,27 @@ def findBestProviderForBooking(booking):
     region = booking.requestRegion
     date_time = booking.requestDateTime
     logging.info("request date_time x:" + str(date_time))
-    day = date_time.weekday()
-    logging.info("day:" + str(day))
-    
-    
+    requestDay = date_time.weekday()
+    requestStartTime = date_time.hour
+    requestEndTime = requestStartTime + 1
+    logging.info('Looking for {0} in {1} available on day:{2} from {3} to '.format(category, region, requestDay, requestStartTime, requestEndTime))
     providers = []
     providersQuery = gdb.GqlQuery('''Select * from Provider WHERE category = :1 AND region = :2''', category, region)
     providerCount = providersQuery.count(limit=50)
     logging.info('Found {0} providers in category and region. Narrowing down list using schedule...'.format(providerCount))
     for p in providersQuery:
-        scheduleQuery = gdb.GqlQuery('''Select * from Schedule WHERE day= :1 AND provider = :2''', day, p)
+        scheduleQuery = gdb.GqlQuery('''Select * from Schedule WHERE provider = :1 AND day = :2''', p, requestDay)
         schedules = scheduleQuery.fetch(limit=1)
         if (len(schedules) > 0):
             s = schedules[0]
-            logging.info('Found schedule match for provider {0}, schedule {1}:'.format(p, s))
-            providers.append(p)
+            # manually check if hours match (because of BadFilterError: "Only one property per query may have inequality filters")
+            if (requestStartTime >= s.startTime & requestEndTime <= s.endTime):
+                logging.info('Found schedule match for provider {0}, schedule {1}:'.format(p, s))
+                providers.append(p)
+            else:
+                logging.info('Schedule hours do not match {0}'.format(s))
         else:
-            logging.info('No schedule match for provider {0}'.format(p))
+            logging.info('No schedule match for provider {0} on day'.format(p, requestDay))
     logging.info('providers:' + str(providers))
     #providers = providersQuery.fetch(limit=1)
     if (len(providers) > 0):
