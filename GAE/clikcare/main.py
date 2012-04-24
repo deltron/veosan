@@ -1,13 +1,11 @@
 # -*- coding: utf-8 -*-
 
-import webapp2
-import util
-import logging
+# GAE
+import webapp2, logging
+# clik
+import admin, util, db, provider, mail
 from base import BaseHandler
-import admin
-import db
 from forms import BookingForm, PatientForm
-import provider
 
 class IndexHandler(BaseHandler):
     def get(self):
@@ -47,6 +45,8 @@ class PatientBookHandler(BaseHandler):
                     logging.info("Provider found: " + provider.fullName())
                     booking.provider = provider
                     booking.put()
+                    # booking succesfull, send email
+                    mail.emailBooking(booking)
                 else:
                     logging.warn('No provider found for booking:' + unicode(booking.key()))
             else:
