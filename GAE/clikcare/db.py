@@ -62,6 +62,7 @@ def findBestProviderForBooking(booking):
     logging.info('providers:' + str(providers))
     #providers = providersQuery.fetch(limit=1)
     if (len(providers) > 0):
+        # TODO use ordering clause or Round-robin to find the top provider when list is longer than 1, currently uses the first in the list
         bestProvider = providers[0]
         logging.info('Found Best Provider: ' + bestProvider.fullName())
         return bestProvider
