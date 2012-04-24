@@ -88,8 +88,7 @@ class PatientForm(Form):
     insurance = SelectField(_(u'Insurance').decode("UTF-8"), choices=util.getAllInsurance())
     
     # this should go into the booking object
-    z = util.getAllSpecialitiesForPatient()
-    specialty = SelectField(_(u'Needs').decode("UTF-8"), choices=z)
+    specialty = SelectField(_(u'Needs').decode("UTF-8"), choices=util.getAllSpecialitiesForPatient())
     comments = TextAreaField(_(u'Comments for your appointment').decode("UTF-8"))
     
     
