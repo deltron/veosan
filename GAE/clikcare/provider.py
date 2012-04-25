@@ -72,6 +72,7 @@ class ProviderEditAddressHandler(ProviderBaseHandler):
             # edit provider
             provider = Provider.get(key)
             logging.info("provider dump before edit:" + str(vars(provider)))
+            
             form = ProviderAddressForm(obj=provider)
             self.render_address(provider, address_form=form)
         else:
@@ -94,26 +95,26 @@ class ProviderEditAddressHandler(ProviderBaseHandler):
 
 class ProviderAddressUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
     def post(self):
+        key = self.request.get('key')
+        logging.info("Looking for provider key: %s " % key)
+        provider = Provider.get(key)
+        logging.info("Found provider: %s %s" % (provider.firstName, provider.lastName))
+
         uploadForm = ProviderPhotoForm(self.request.POST)
         upload_files = self.get_uploads(uploadForm.profilePhoto.name)[0]
+        logging.info("Uploaded blob key: %s " % upload_files.key())
         
-        logging.info("Uploaded blob key: %s" % upload_files.key())
-        
-        # Pseudocode to implement when ready :
-        
-        # 1. get Provider ID from the session
-        # 2. store upload_files.key() in the Provider's record, update database        
-        # 3. render the address form again with the updated photo
-        
-        # provider.profilePhotoBlobKey = upload_files.key()
-        # data.storeProvider(provider)
-        # self.render_template('patient/address.html', form=form)
-        
-        self.redirect('/serve/%s' % upload_files.key()) 
-    #    self.render_template('patient/address.html', form=form) 
+        provider.profilePhotoBlob = upload_files.key()
 
-# temporary - to test image upload
+        Provider.put(provider)
+        
+        # redirect to address edit page        
+        self.redirect('/provider/address?key=%s' % key) 
+
 class ServeHandler(blobstore_handlers.BlobstoreDownloadHandler):
+    ''' Serve a blob with key. call URL as
+            /serve/xxx   where xxx = blob store key
+    '''
     def get(self, resource):
         resource = str(urllib.unquote(resource))
         blob_info = blobstore.BlobInfo.get(resource)
