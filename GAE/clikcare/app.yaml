@@ -2,7 +2,7 @@ application: clikcare
 version: 1
 runtime: python27
 api_version: 1
-threadsafe: true
+threadsafe: yes
 
 libraries:
 - name: jinja2
@@ -18,3 +18,10 @@ handlers:
   
 - url: /.*
   script: main.application
+
+- url: /_ah/login_required
+  script: login.application
+
+- url: /admin/.*
+  script: main.application
+  login: admin
