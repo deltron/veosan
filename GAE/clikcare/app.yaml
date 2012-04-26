@@ -15,13 +15,13 @@ handlers:
 
 - url: /assets
   static_dir: assets
+
+- url: /admin/.*
+  script: main.application
+  login: admin
   
 - url: /.*
   script: main.application
 
 - url: /_ah/login_required
   script: login.application
-
-- url: /admin/.*
-  script: main.application
-  login: admin
