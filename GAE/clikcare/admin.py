@@ -4,6 +4,7 @@
 
 from google.appengine.ext import db as gdb
 from google.appengine.api import mail
+from google.appengine.api import users
 from base import BaseHandler
 import db
 import logging
@@ -27,8 +28,8 @@ class AdminIndexHandler(AdminBaseHandler):
 class AdminBookingsHandler(AdminBaseHandler):
     '''Administer Bookings'''
     def get(self):
-        bookings = gdb.GqlQuery("SELECT * FROM Booking ORDER BY createdOn DESC LIMIT 10")
-        self.render_template('admin/admin_bookings.html', bookings=bookings)
+            bookings = gdb.GqlQuery("SELECT * FROM Booking ORDER BY createdOn DESC LIMIT 10")
+            self.render_template('admin/admin_bookings.html', bookings=bookings)
 
 
 class AdminProvidersHandler(AdminBaseHandler):

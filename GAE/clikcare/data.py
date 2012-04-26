@@ -45,7 +45,7 @@ class Provider(db.Model):
     address = db.StringProperty()
     city = db.StringProperty()
     postalCode = db.StringProperty()
-    profilePhotoBlobKey = blobstore.BlobReferenceProperty()
+    profilePhotoBlob = blobstore.BlobReferenceProperty()
     # schedule
     # see Schedule Class below
     
