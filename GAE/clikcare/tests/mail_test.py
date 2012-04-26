@@ -23,10 +23,22 @@ class DBTestCase(unittest.TestCase):
         print('-------------------------------')
 
     def testEmailBooking(self):
+        testEmail = 'phil@gmail.com'
         patient = Patient()
-        patient.email = 'phil@gmail.com'
+        patient.email = testEmail
         patient.put()
+        provider = Provider()
+        provider.firstName = u"Robert (Test)"
+        provider.lastName = u"Lang"
+        provider.category = u"physiotherapy"
+        provider.put()
         booking = Booking()
         booking.patient = patient
+        booking.provider = provider
+        booking.dateTime = datetime.now()
         booking.put()
         mail.emailBooking(booking)
+        messages = self.mail_stub.get_sent_messages(to=testEmail)
+        logging.info("sent messages: " + str(messages))
+        self.assertEqual(1, len(messages))
+        self.assertEqual(testEmail, messages[0].to)
