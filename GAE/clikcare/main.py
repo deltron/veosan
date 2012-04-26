@@ -44,6 +44,8 @@ class PatientBookHandler(BaseHandler):
                 if (provider):
                     logging.info("Provider found: " + provider.fullName())
                     booking.provider = provider
+                    # todo return date during match in cases where exact datetime match cannot be found
+                    booking.dateTime = booking.requestDateTime
                     booking.put()
                     # booking succesfull, send email
                     mail.emailBooking(booking)
