@@ -21,13 +21,18 @@ def emailBooking(booking):
     message.sender = CLIK_SUPPORT_ADDRESS
     message.to = to_address
     message.subject = u'Cliksoin Reservation - %s' % _(category).decode("UTF-8").capitalize()
-    message.body = '''
+    # use template for email
+    message.body = u'''
 Your are booked for {0} with {1} on {2}
-
-{3}
-    '''.format(_(category), provider.fullName(), booking.dateTime, booking.__dict__)
-    # send message
-    message.send()
+    '''.format(_(category), provider.fullName(), booking.dateTime)
     
+    try:
+        # send to patient
+        message.send()
+        # send a copy to our booking email
+        message.to = CLIK_SUPPORT_ADDRESS
+        message.send()
+    except Exception as e:
+        logging.error('Email not send. %s' % e)
     
     #{:%Y-%m-%d %H:%M}
