@@ -145,7 +145,7 @@ def format_30min_period(startTime, startMinutes):
 
 # is this method used anywhere?
 def formatDateTimeNoSeconds(datetime):
-    return format_datetime(datetime, u"d MMMM yyyy (EEEE) H:m", locale=lang)
+    return format_datetime(datetime, u"d MMMM yyyy (EEEE) H:mm", locale=lang)
 
 
 ''' dump properties '''

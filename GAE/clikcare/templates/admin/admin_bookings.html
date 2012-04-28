@@ -24,7 +24,7 @@
 					<a href="/booking/detail"
 							rel="popover"
 							title="Booking Details"
-							data-content="{{b.get_html_summary()}}"> {{b.dateTime}} </a>
+							data-content="{{b.get_html_summary()}}"> {{b.dateTime|formatdatetime_noseconds}} </a>
 				</td>
 				<!-- Patient -->
 				<td><a href="#" class="" rel="popover" title="{{b.patient.firstName}} {{b.patient.lastName}}" data-content="{{b.patient.phone}} <br> {{b.patient.email}} <br>">{{b.patient.firstName}} {{b.patient.lastName}}</a></td>
