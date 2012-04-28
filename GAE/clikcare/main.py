@@ -2,10 +2,12 @@
 
 # GAE
 import webapp2, logging
+from google.appengine.api import users
 # clik
 import admin, util, db, provider, mail
 from base import BaseHandler
 from forms import BookingForm, PatientForm
+
 
 class IndexHandler(BaseHandler):
     def get(self):
@@ -38,7 +40,14 @@ class IndexHandler(BaseHandler):
 
 class PatientConfirmHandler(BaseHandler):
     def post(self):
-        pass
+        'We have a booking with a provider, we need to add the patient using the OpenID User'
+        user = users.get_current_user()
+        if (user):
+            logging.info('User:' + str(user.__dict__))
+            logging.info('User nickname:' + user.nickname())
+        else:
+            pass
+        
         
         # tv = {
         #       'form': PatientForm(self.request.POST),
