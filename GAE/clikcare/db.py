@@ -8,7 +8,7 @@ from data import Booking
 from data import Patient
 from data import Provider
   
-def storeBooking(r, patient, provider):
+def storeBooking(r, patient=None, provider=None):
     logging.info('Saving Booking from:' + str(r))
     booking = Booking()
     booking.requestCategory = r['bookingCategory']
@@ -17,7 +17,7 @@ def storeBooking(r, patient, provider):
     requestTimeString = r['bookingTime']
     requestDateTime = datetime.strptime(requestDateString + " " + requestTimeString, '%Y-%m-%d %H')
     booking.requestDateTime = requestDateTime
-    booking.comments = r['comments']
+    booking.comments = r.get('comments', '')
     booking.patient = patient
     booking.provider = provider
     booking.put()
@@ -41,7 +41,7 @@ def findBestProviderForBooking(booking):
     requestDay = date_time.weekday()
     requestStartTime = date_time.hour
     requestEndTime = requestStartTime + 1
-    logging.info('Looking for {0} in {1} available on day:{2} from {3} to '.format(category, region, requestDay, requestStartTime, requestEndTime))
+    logging.info('Looking for {0} in {1} available on day:{2} from {3} to {4}'.format(category, region, requestDay, requestStartTime, requestEndTime))
     providers = []
     providersQuery = gdb.GqlQuery('''Select * from Provider WHERE category = :1 AND region = :2''', category, region)
     providerCount = providersQuery.count(limit=50)
