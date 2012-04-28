@@ -73,11 +73,11 @@ class CustomBooleanField(BooleanField):
 
   
 class BookingForm(Form):
-    email = TextField(_(u'E-mail Address').decode("UTF-8"), [validators.Email(message=_(u'Invalid email address.').decode("UTF-8"))])
-    categories = SelectField(_(u'Category').decode("UTF-8"), choices=util.getAllCategories())
-    regions = SelectField(_(u'Location').decode("UTF-8"), choices=util.getAllRegions())
-    dates = SelectField(_(u'Date').decode("UTF-8"), choices=util.getDatesList())
-    times = SelectField(_(u'Time').decode("UTF-8"), choices=util.getTimesList())
+    #email = TextField(_(u'E-mail Address').decode("UTF-8"), [validators.Email(message=_(u'Invalid email address.').decode("UTF-8"))])
+    bookingCategory = SelectField(_(u'Category').decode("UTF-8"), choices=util.getAllCategories())
+    bookingRegion = SelectField(_(u'Location').decode("UTF-8"), choices=util.getAllRegions())
+    bookingDate = SelectField(_(u'Date').decode("UTF-8"), choices=util.getDatesList())
+    bookingTime = SelectField(_(u'Time').decode("UTF-8"), choices=util.getTimesList())
 
 
 class PatientForm(Form):
