@@ -16,6 +16,9 @@ handlers:
 - url: /assets
   static_dir: assets
 
+- url: /_ah/login_required
+  script: openid_login.application
+
 - url: /admin/.*
   script: main.application
   login: admin
@@ -27,5 +30,3 @@ handlers:
 - url: /.*
   script: main.application
 
-- url: /_ah/login_required
-  script: login.application
