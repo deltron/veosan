@@ -24,14 +24,37 @@ class IndexHandler(BaseHandler):
         else:
             self.render_template('index.html', form=bookingform)
 
+
+# Doesn't work
 class StaticHandler(BaseHandler):
     def __init__(self, template):
-         self.template = template
-#        self.template_name = template
- 
+        super(self, request=None, response=None)
+        self.template = template
+
     def get(self):
-         self.render_template(self.template)
-    
+        self.render_template(self.template)
+
+ 
+class AboutHandler(BaseHandler):
+    def get(self):
+        self.render_template("static/about.html")
+
+class TermsHandler(BaseHandler):
+    def get(self):
+        self.render_template("static/terms.html")
+
+class JobsHandler(BaseHandler):
+    def get(self):
+        self.render_template("static/jobs.html")
+
+class ContactHandler(BaseHandler):
+    def get(self):
+        self.render_template("static/contact.html")
+
+class PrivacyHandler(BaseHandler):
+    def get(self):
+        self.render_template("static/privacy.html")
+
     
 class PatientBookHandler(BaseHandler):
     def post(self):
@@ -109,8 +132,12 @@ application = webapp2.WSGIApplication([
                                        ('/patient/book', PatientBookHandler),
                                        # general static pages
                                 #       ('/about', StaticHandler(template="static/about.html")),
-                                       ('/about', StaticHandler),
-                                       
+                                       ('/about', AboutHandler),
+                                       ('/jobs', JobsHandler),
+                                       ('/terms', TermsHandler),
+                                       ('/contact', ContactHandler),
+                                       ('/privacy', PrivacyHandler),
+
                                        # provider
                                        ('/provider/login', provider.ProviderLoginHandler),
                                        ('/provider/profile', provider.ProviderEditProfileHandler),
