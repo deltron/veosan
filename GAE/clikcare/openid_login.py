@@ -4,7 +4,8 @@ import webapp2, logging
 
 class LoginHandler(webapp.RequestHandler):
     def get(self):
-        logging.info("LoginHandler Invoked")
+        logging.info("LoginHandler Invoked with get")
+        '''
         user = users.get_current_user()
         
         if user:
@@ -16,6 +17,10 @@ class LoginHandler(webapp.RequestHandler):
                         users.create_login_url("/"))
 
         self.response.out.write("<html><body>%s</body></html>" % greeting)
+     '''
+
+    def put(self):
+        logging.info("LoginHandler Invoked with put")
 
 webapp2_config = {}
 
@@ -24,6 +29,6 @@ webapp2_config['webapp2_extras.i18n'] = {
                                          'default_locale': 'fr'
                                          }
 
-login = webapp2.WSGIApplication([
+openid_login = webapp2.WSGIApplication([
                                        ('/_ah/login_required', LoginHandler)], debug=True,
                                       config=webapp2_config)

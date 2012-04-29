@@ -105,7 +105,13 @@ Twitter Bootstrap horizontal form layout.
 							<li>
 								<a href="#">{{ _('Contact') }}</a>
 							</li>
-							<li class="divider-vertical"></li>
+						</ul>
+						<ul class="nav pull-right">
+							{% if (user) %}
+							<li> <a href="{{logout_url}}">{{user.nickname()}} {{ _('Logout') }}</a> </li>
+							{% else %}
+							<li> <a  href="{{login_url}}">{{ _('Login') }}</a> </li>
+							{% endif %}
 						</ul>
 					</div>
 				</div>
