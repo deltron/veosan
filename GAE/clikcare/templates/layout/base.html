@@ -99,9 +99,17 @@ Twitter Bootstrap horizontal form layout.
 					<div class="nav-collapse">
 						<ul class="nav pull-right">
 							{% if (user) %}
-							<li> <a href="{{logout_url}}">{{user.nickname()}} {{ _('Logout') }}</a> </li>
+							<li>
+								<a href="#">{{ user.nickname() }}</a>
+							</li>
+							<li class="divider-vertical"></li>
+							<li>
+								<a href="{{logout_url}}">{{ _('Logout') }}</a>
+							</li>
 							{% else %}
-							<li> <a  href="{{login_url}}">{{ _('My Account') }}</a> </li>
+							<li>
+								<a  href="{{login_url}}">{{ _('My Account') }}</a>
+							</li>
 							{% endif %}
 						</ul>
 					</div>
