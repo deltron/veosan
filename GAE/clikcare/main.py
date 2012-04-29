@@ -6,6 +6,7 @@ import webapp2, logging
 import admin, util, db, provider, mail
 from base import BaseHandler
 from forms import BookingForm, PatientForm
+from webapp2 import Route
 
 class IndexHandler(BaseHandler):
     def get(self):
@@ -55,37 +56,12 @@ class PatientConfirmHandler(BaseHandler):
     
 
 
-# Doesn't work
 class StaticHandler(BaseHandler):
-    def __init__(self, template):
-        super(self, request=None, response=None)
-        self.template = template
-
     def get(self):
-        self.render_template(self.template)
+        template = "static/" + self.request.route.name + ".html"
+        self.render_template(template)
 
  
-class AboutHandler(BaseHandler):
-    def get(self):
-        self.render_template("static/about.html")
-
-class TermsHandler(BaseHandler):
-    def get(self):
-        self.render_template("static/terms.html")
-
-class JobsHandler(BaseHandler):
-    def get(self):
-        self.render_template("static/jobs.html")
-
-class ContactHandler(BaseHandler):
-    def get(self):
-        self.render_template("static/contact.html")
-
-class PrivacyHandler(BaseHandler):
-    def get(self):
-        self.render_template("static/privacy.html")
-
-    
 class PatientBookHandler(BaseHandler):
     def post(self):
         patientForm = PatientForm(self.request.POST)
@@ -161,13 +137,13 @@ application = webapp2.WSGIApplication([
                                        ('/', IndexHandler),
                                        ('/patient/book', PatientBookHandler),
                                        ('/patient/confirm', PatientConfirmHandler),
-                                       # general static pages
-                                #       ('/about', StaticHandler(template="static/about.html")),
-                                       ('/about', AboutHandler),
-                                       ('/jobs', JobsHandler),
-                                       ('/terms', TermsHandler),
-                                       ('/contact', ContactHandler),
-                                       ('/privacy', PrivacyHandler),
+
+                                       # Static Pages
+                                       Route('/about', handler=StaticHandler, name='about'),
+                                       Route('/contact', handler=StaticHandler, name='contact'),
+                                       Route('/jobs', handler=StaticHandler, name='jobs'),
+                                       Route('/terms', handler=StaticHandler, name='terms'),
+                                       Route('/privacy', handler=StaticHandler, name='privacy'),
 
                                        # provider
                                        ('/provider/login', provider.ProviderLoginHandler),
