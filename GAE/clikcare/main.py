@@ -5,7 +5,7 @@ import webapp2, logging
 # clik
 import admin, util, db, provider, mail
 from base import BaseHandler
-from forms import BookingForm, PatientForm
+from forms import BookingForm, PatientForm, ContactForm
 from webapp2 import Route
 
 class IndexHandler(BaseHandler):
@@ -60,6 +60,27 @@ class StaticHandler(BaseHandler):
     def get(self):
         template = "static/" + self.request.route.name + ".html"
         self.render_template(template)
+        
+
+class ContactHandler(BaseHandler):
+    def get(self):
+        self.render_template("contact.html", form=ContactForm(self.request.GET), sent=False)
+
+    def post(self):
+        contact_form = ContactForm(self.request.POST)
+        if contact_form.validate():
+            from_email = contact_form.email.data
+            subject = contact_form.subject.data
+            message = contact_form.message.data
+            
+            # send email
+            # show confirmation page
+            
+            logging.info('Feedback from %s | subject: %s\n\nMESSAGE\n=========\n%s' % (from_email, subject, message))
+            
+            self.render_template('contact.html', form=contact_form, sent=True)
+        else:
+            self.render_template('contact.html', form=contact_form, sent=False)
 
  
 class PatientBookHandler(BaseHandler):
@@ -134,17 +155,20 @@ webapp2_config['webapp2_extras.i18n'] = {
                                          }
 
 application = webapp2.WSGIApplication([
+                                       # General pages
                                        ('/', IndexHandler),
-                                       ('/patient/book', PatientBookHandler),
-                                       ('/patient/confirm', PatientConfirmHandler),
-
+                                       ('/contact', ContactHandler),
+                                       
                                        # Static Pages
                                        Route('/about', handler=StaticHandler, name='about'),
-                                       Route('/contact', handler=StaticHandler, name='contact'),
                                        Route('/careers', handler=StaticHandler, name='careers'),
                                        Route('/terms', handler=StaticHandler, name='terms'),
                                        Route('/privacy', handler=StaticHandler, name='privacy'),
-
+                                       
+                                       # Patient
+                                       ('/patient/book', PatientBookHandler),
+                                       ('/patient/confirm', PatientConfirmHandler),
+                                       
                                        # provider
                                        ('/provider/login', provider.ProviderLoginHandler),
                                        ('/provider/profile', provider.ProviderEditProfileHandler),
@@ -154,6 +178,7 @@ application = webapp2.WSGIApplication([
                                        ('/provider/terms', provider.ProviderTermsHandler),
                                        ('/provider/bookings', provider.ProviderBookingsHandler),
                                        ('/serve/([^/]+)?', provider.ServeHandler), # temporary - to test file uploads
+                                       
                                        # admin
                                        ('/admin/provider/init', admin.NewProviderInitHandler),
                                        ('/admin/provider/solicit', admin.NewProviderSolicitHandler),

@@ -1,0 +1,28 @@
+{% extends "/layout/base.html" %}
+
+{% block subhead %}{{ _('Contact') }}{% endblock %}
+{% block lead %}{{ _('Your feedback is important') }}{% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="span12">
+		{% if sent == False %}
+		<form method="post" action="/contact" class="form-horizontal">
+			<fieldset>
+				{{ makeStandardForm() }}
+			</fieldset>
+			<div class="form-actions">
+				<button type="submit" class="btn btn-primary">
+					{{ _('Send') }}
+				</button>
+			</div>
+		</form>
+		
+		{% else %}
+		
+			Message success!
+		
+		{% endif %}
+	</div>
+</div>
+{% endblock content %} 

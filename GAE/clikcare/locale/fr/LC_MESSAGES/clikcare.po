@@ -71,6 +71,9 @@ msgstr "Confirmer"
 msgid "Save"
 msgstr "Sauvegarder"
 
+msgid "Send"
+msgstr "Envoyer"
+
 msgid "Cancel"
 msgstr "Annuler"
 
