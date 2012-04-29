@@ -12,17 +12,47 @@ class IndexHandler(BaseHandler):
         self.render_template('index.html', form=BookingForm(self.request.GET))
         
     def post(self):
+        ''' Renders 2nd page: Result + Confirm button'''
         bookingform = BookingForm(self.request.POST)
         if bookingform.validate():
-
+            booking = db.storeBooking(self.request.POST, None, None)
+            logging.debug('Created booking:' + unicode(booking.key()))
+            logging.info("Looking for best provider...")
+            provider = db.findBestProviderForBooking(booking)
+            if (provider):
+                logging.info("Provider found: " + provider.fullName())
+                booking.provider = provider
+                booking.dateTime = booking.requestDateTime
+                booking.put()
+                # booking saved with provider, we need to get patient info
+            else:
+                logging.warn('No provider found for booking:' + unicode(booking.key()))
+            
             tv = {
-                  'form': PatientForm(self.request.POST),
-                  'bookingForm': bookingform
-                  }
-           
-            self.render_template('patient/new.html', **tv)
+                  'patient': None, 'booking': booking, 'provider': provider }    
+            self.render_template('patient/book.html', **tv) 
         else:
             self.render_template('index.html', form=bookingform)
+
+
+
+class PatientConfirmHandler(BaseHandler):
+    def post(self):
+        'We have a booking with a provider, we need to add the patient using the OpenID User'
+        user = users.get_current_user()
+        if (user):
+            logging.info('User:' + str(user.__dict__))
+        else:
+            pass
+        
+        
+        # tv = {
+        #       'form': PatientForm(self.request.POST),
+        #       'bookingForm': bookingform
+        #       }
+        # 
+        # self.render_template('patient/new.html', **tv)
+    
 
 
 # Doesn't work
@@ -130,6 +160,7 @@ webapp2_config['webapp2_extras.i18n'] = {
 application = webapp2.WSGIApplication([
                                        ('/', IndexHandler),
                                        ('/patient/book', PatientBookHandler),
+                                       ('/patient/confirm', PatientConfirmHandler),
                                        # general static pages
                                 #       ('/about', StaticHandler(template="static/about.html")),
                                        ('/about', AboutHandler),
