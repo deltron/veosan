@@ -27,9 +27,11 @@ Twitter Bootstrap horizontal form layout.
 		</p>
 		{% endif %}
 		{% if field.type in ['MultiCheckboxField', 'CustomBooleanField'] %}
-		{{ field(class="checkbox") }}
+			{{ field(class="checkbox") }}
+		{% elif field.type == 'TextAreaField' %}
+			{{ field(class="field span6", rows="10") }}
 		{% else %}
-		{{ field(class=inputClass) }}
+			{{ field(class=inputClass) }}
 		{% endif %}
 	</div>
 </div>
