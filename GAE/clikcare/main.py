@@ -24,6 +24,14 @@ class IndexHandler(BaseHandler):
         else:
             self.render_template('index.html', form=bookingform)
 
+class StaticHandler(BaseHandler):
+    def __init__(self, template):
+         self.template = template
+#        self.template_name = template
+ 
+    def get(self):
+         self.render_template(self.template)
+    
     
 class PatientBookHandler(BaseHandler):
     def post(self):
@@ -95,9 +103,14 @@ webapp2_config['webapp2_extras.i18n'] = {
                                          'translations_path': 'locale',
                                          'default_locale': 'fr'
                                          }
+
 application = webapp2.WSGIApplication([
                                        ('/', IndexHandler),
                                        ('/patient/book', PatientBookHandler),
+                                       # general static pages
+                                #       ('/about', StaticHandler(template="static/about.html")),
+                                       ('/about', StaticHandler),
+                                       
                                        # provider
                                        ('/provider/login', provider.ProviderLoginHandler),
                                        ('/provider/profile', provider.ProviderEditProfileHandler),
