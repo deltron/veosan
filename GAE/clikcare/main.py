@@ -141,7 +141,7 @@ application = webapp2.WSGIApplication([
                                        # Static Pages
                                        Route('/about', handler=StaticHandler, name='about'),
                                        Route('/contact', handler=StaticHandler, name='contact'),
-                                       Route('/jobs', handler=StaticHandler, name='jobs'),
+                                       Route('/careers', handler=StaticHandler, name='careers'),
                                        Route('/terms', handler=StaticHandler, name='terms'),
                                        Route('/privacy', handler=StaticHandler, name='privacy'),
 

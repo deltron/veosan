@@ -42,14 +42,23 @@ msgstr "Profile"
 msgid "Address"
 msgstr "Adresse"
 
+msgid "About"
+msgstr "À propos"
+
+msgid "Careers"
+msgstr "Carrières"
+
 msgid "Terms"
-msgstr "Conditions"
+msgstr "Conditions d'utilisation"
+
+msgid "Privacy"
+msgstr "Politique de confidentialité"
 
 msgid "Logout"
 msgstr "Déconnexion"
 
 msgid "Contact"
-msgstr "Contact"
+msgstr "Nous Joindre"
 
 
 #################
