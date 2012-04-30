@@ -58,7 +58,7 @@ msgid "Logout"
 msgstr "Déconnexion"
 
 msgid "Contact"
-msgstr "Nous Joindre"
+msgstr "Nous joindre"
 
 
 #################
@@ -86,6 +86,22 @@ msgstr "Précédent"
 msgid "Upload"
 msgstr "Télécharger"
 
+
+#################
+# Contact page
+#################
+
+msgid "Subject"
+msgstr "Sujet"
+
+msgid "Message"
+msgstr "Message"
+
+msgid "Your opinion matters!"
+msgstr "Votre opinion compte!"
+
+msgid "We want to know what you think about our service. If you have any feedback regarding the web site or the care you have received please let us know in the form below."
+msgstr "Nous voulons savoir ce que vous pensez de notre service. Si vous avez des commentaires au sujet du site web ou les soins que vous avez reçu, n'hésitez pas à nous en faire part dans le formulaire ci-dessous."
 
 #################
 # Index page
