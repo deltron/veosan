@@ -2,10 +2,12 @@
 
 # GAE
 import webapp2, logging
+from google.appengine.api import users
 # clik
 import admin, util, db, provider, mail
 from base import BaseHandler
 from forms import BookingForm, PatientForm
+from data import Booking
 
 class IndexHandler(BaseHandler):
     def get(self):
@@ -37,13 +39,28 @@ class IndexHandler(BaseHandler):
 
 
 class PatientConfirmHandler(BaseHandler):
-    def post(self):
+    def get(self):
         'We have a booking with a provider, we need to add the patient using the OpenID User'
+        booking_key = self.request.get('bk')
+        booking = Booking.get(booking_key)
+        # get patient from user
         user = users.get_current_user()
         if (user):
             logging.info('User:' + str(user.__dict__))
+            patient = db.getPatientFromUser(user)
+            if (patient):
+                logging.info('Patient exists, confirming booking.')
+                tv = {'patient': patient, 'booking': booking, 'provider': provider}
+                self.render_template('patient/book.html', **tv)
+            else:
+                logging.info('Patient does not exist, creating new patient.')
+                patientForm = PatientForm(self.request.POST)
+                # set email in form from openID user
+                patientForm.email.data = user.email()
+                tv = {'form': patientForm, 'booking': booking, 'provider': booking.provider}
+                self.render_template('patient/new.html', **tv)
         else:
-            pass
+            logging.info('User not logged in.')
         
         
         # tv = {
@@ -89,7 +106,7 @@ class PrivacyHandler(BaseHandler):
 class PatientBookHandler(BaseHandler):
     def post(self):
         patientForm = PatientForm(self.request.POST)
-        bookingForm = BookingForm(self.request.POST)
+        #bookingForm = BookingForm(self.request.POST)
 
         if patientForm.validate():
             logging.debug('patientForm passed validation:' + str(self.request))
@@ -124,7 +141,7 @@ class PatientBookHandler(BaseHandler):
         else:           
             tv = {
                   'form': patientForm ,
-                  'bookingForm': bookingForm
+                  # Add booking and provider
                   }
             self.render_template('patient/new.html', **tv)
 
