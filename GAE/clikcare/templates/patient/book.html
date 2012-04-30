@@ -22,8 +22,8 @@
 
 		<br>
 		
-		<form action="/patient/confirm" method="post">	
-			<input id="booking" name="booking" type="hidden" value="{{ booking.key() }}">
+		<form action="/patient/confirm" method="get">	
+			<input id="bk" name="bk" type="hidden" value="{{ booking.key() }}">
 			<div class="control-group">
 				<div class="controls">
 					<button type="submit" class="btn btn-primary btn-large">
