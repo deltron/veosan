@@ -32,6 +32,12 @@ def storePatient(r):
     patient.put()
     return patient
 
+def getPatientFromUser(user):
+    logging.info('Fetching patient from User: {0}' % user)
+    query = gdb.GqlQuery("SELECT * FROM Patient WHERE user = :1", user)
+    patient = query.get()
+    return patient
+
 def findBestProviderForBooking(booking):
     'Returns provider that best matches: category, location, dateTime'
     category = booking.requestCategory
