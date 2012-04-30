@@ -27,9 +27,11 @@ Twitter Bootstrap horizontal form layout.
 		</p>
 		{% endif %}
 		{% if field.type in ['MultiCheckboxField', 'CustomBooleanField'] %}
-		{{ field(class="checkbox") }}
+			{{ field(class="checkbox") }}
+		{% elif field.type == 'TextAreaField' %}
+			{{ field(class="field span6", rows="10") }}
 		{% else %}
-		{{ field(class=inputClass) }}
+			{{ field(class=inputClass) }}
 		{% endif %}
 	</div>
 </div>
@@ -56,6 +58,7 @@ Twitter Bootstrap horizontal form layout.
 
 			.foot {
 				font-size: x-small;
+				color: #aaaaaa;
 			}
 			.foot ul {
 				margin: 0;
@@ -96,21 +99,19 @@ Twitter Bootstrap horizontal form layout.
 					<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </a>
 					<a class="brand" href="/">{{ _('clikcare') }}</a>
 					<div class="nav-collapse">
-						<ul class="nav">
-							<li class="divider-vertical"></li>
-							<li>
-								<a href="{% if p %} # {% else %} /provider/login {% endif %}"> {{ _('My Account') }}</a>
-							</li>
-							<li class="divider-vertical"></li>
-							<li>
-								<a href="#">{{ _('Contact') }}</a>
-							</li>
-						</ul>
 						<ul class="nav pull-right">
 							{% if (user) %}
-							<li> <a href="{{logout_url}}">{{user.nickname()}} {{ _('Logout') }}</a> </li>
+							<li>
+								<a href="#">{{ user.nickname() }}</a>
+							</li>
+							<li class="divider-vertical"></li>
+							<li>
+								<a href="{{logout_url}}">{{ _('Logout') }}</a>
+							</li>
 							{% else %}
-							<li> <a  href="{{login_url}}">{{ _('Login') }}</a> </li>
+							<li>
+								<a  href="{{login_url}}">{{ _('My Account') }}</a>
+							</li>
 							{% endif %}
 						</ul>
 					</div>
@@ -135,19 +136,22 @@ Twitter Bootstrap horizontal form layout.
 				<hr>
 				<ul>
 					<li>
-						<a href="/about">À propos</a>
+						<a href="/about">{{ _('About') }}</a>
 					</li>
 					<li>
-						<a href="/contact">Nous joindre</a>
+						<a href="/contact">{{ _('Contact') }}</a>
 					</li>
 					<li>
-						<a href="/jobs">Emplois</a>
+						<a href="/careers">{{ _('Careers') }}</a>
 					</li>
 					<li>
-						<a href="/terms">Conditions d'utilisation</a>
+						<a href="/terms">{{ _('Terms') }}</a>
 					</li>
 					<li>
-						<a href="/privacy">Politique de confidentialité</a>
+						<a href="/privacy">{{ _('Privacy') }}</a>
+					</li>
+					<li class="pull-right">
+						&copy; 2012 Cliksante inc.
 					</li>
 				</ul>
 			</div>

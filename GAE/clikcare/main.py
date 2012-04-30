@@ -6,8 +6,8 @@ from google.appengine.api import users
 # clik
 import admin, util, db, provider, mail
 from base import BaseHandler
-from forms import BookingForm, PatientForm
-from data import Booking
+from forms import BookingForm, PatientForm, ContactForm
+from webapp2 import Route
 
 class IndexHandler(BaseHandler):
     def get(self):
@@ -72,37 +72,33 @@ class PatientConfirmHandler(BaseHandler):
     
 
 
-# Doesn't work
 class StaticHandler(BaseHandler):
-    def __init__(self, template):
-        super(self, request=None, response=None)
-        self.template = template
-
     def get(self):
-        self.render_template(self.template)
-
- 
-class AboutHandler(BaseHandler):
-    def get(self):
-        self.render_template("static/about.html")
-
-class TermsHandler(BaseHandler):
-    def get(self):
-        self.render_template("static/terms.html")
-
-class JobsHandler(BaseHandler):
-    def get(self):
-        self.render_template("static/jobs.html")
+        template = "static/" + self.request.route.name + ".html"
+        self.render_template(template)
+        
 
 class ContactHandler(BaseHandler):
     def get(self):
-        self.render_template("static/contact.html")
+        self.render_template("contact.html", form=ContactForm(self.request.GET), sent=False)
 
-class PrivacyHandler(BaseHandler):
-    def get(self):
-        self.render_template("static/privacy.html")
+    def post(self):
+        contact_form = ContactForm(self.request.POST)
+        if contact_form.validate():
+            from_email = contact_form.email.data
+            subject = contact_form.subject.data
+            message = contact_form.message.data
+            
+            # send email
+            # show confirmation page
+            
+            logging.info('Feedback from %s | subject: %s\n\nMESSAGE\n=========\n%s' % (from_email, subject, message))
+            
+            self.render_template('contact.html', form=contact_form, sent=True)
+        else:
+            self.render_template('contact.html', form=contact_form, sent=False)
 
-    
+ 
 class PatientBookHandler(BaseHandler):
     def post(self):
         patientForm = PatientForm(self.request.POST)
@@ -175,17 +171,20 @@ webapp2_config['webapp2_extras.i18n'] = {
                                          }
 
 application = webapp2.WSGIApplication([
+                                       # General pages
                                        ('/', IndexHandler),
+                                       ('/contact', ContactHandler),
+                                       
+                                       # Static Pages
+                                       Route('/about', handler=StaticHandler, name='about'),
+                                       Route('/careers', handler=StaticHandler, name='careers'),
+                                       Route('/terms', handler=StaticHandler, name='terms'),
+                                       Route('/privacy', handler=StaticHandler, name='privacy'),
+                                       
+                                       # Patient
                                        ('/patient/book', PatientBookHandler),
                                        ('/patient/confirm', PatientConfirmHandler),
-                                       # general static pages
-                                #       ('/about', StaticHandler(template="static/about.html")),
-                                       ('/about', AboutHandler),
-                                       ('/jobs', JobsHandler),
-                                       ('/terms', TermsHandler),
-                                       ('/contact', ContactHandler),
-                                       ('/privacy', PrivacyHandler),
-
+                                       
                                        # provider
                                        ('/provider/login', provider.ProviderLoginHandler),
                                        ('/provider/profile', provider.ProviderEditProfileHandler),
@@ -195,6 +194,7 @@ application = webapp2.WSGIApplication([
                                        ('/provider/terms', provider.ProviderTermsHandler),
                                        ('/provider/bookings', provider.ProviderBookingsHandler),
                                        ('/serve/([^/]+)?', provider.ServeHandler), # temporary - to test file uploads
+                                       
                                        # admin
                                        ('/admin/provider/init', admin.NewProviderInitHandler),
                                        ('/admin/provider/solicit', admin.NewProviderSolicitHandler),

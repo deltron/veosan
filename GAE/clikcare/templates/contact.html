@@ -1,0 +1,33 @@
+{% extends "/layout/base.html" %}
+
+{% block subhead %}{{ _('Contact') }}{% endblock %}
+{% block lead %}{{ _('Your opinion matters!') }}{% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="span12">
+		{% if sent == False %}
+
+		<div class=" well">
+			{{ _('We want to know what you think about our service. If you have any feedback regarding the web site or the care you have received please let us know in the form below.') }}
+		</div>
+
+		<form method="post" action="/contact" class="form-horizontal">
+			<fieldset>
+				{{ makeStandardForm() }}
+			</fieldset>
+			<div class="form-actions">
+				<button type="submit" class="btn btn-primary">
+					{{ _('Send') }}
+				</button>
+			</div>
+		</form>
+
+		{% else %}
+
+		Message success!
+
+		{% endif %}
+	</div>
+</div>
+{% endblock content %} 
