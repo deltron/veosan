@@ -3,11 +3,12 @@
 # GAE
 import webapp2, logging
 from google.appengine.api import users
+from webapp2 import Route
 # clik
 import admin, util, db, provider, mail
 from base import BaseHandler
 from forms import BookingForm, PatientForm, ContactForm
-from webapp2 import Route
+from data import Booking
 
 class IndexHandler(BaseHandler):
     def get(self):
