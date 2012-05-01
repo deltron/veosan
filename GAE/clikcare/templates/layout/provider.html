@@ -2,6 +2,9 @@
 
 {% block subnav %}
 <ul class="nav nav-tabs">
+	<li id="bookings" {% if "bookings" == active_page %} class="active" {% endif %}>
+		<a href="{{p.get_edit_link(section='bookings')}}">{{ _('Bookings') }}</a>
+	</li>
 	<li id="schedule" {% if "schedule" == active_page %} class="active" {% endif %}>
 		<a href="{{p.get_edit_link(section='schedule')}}">{{ _('Schedule') }}</a>
 	</li>
@@ -13,12 +16,6 @@
 	</li>
 	<li id="terms" {% if  "terms" == active_page %} class="active" {% endif %}>
 		<a href="{{p.get_edit_link(section='terms')}}">{{ _('Terms') }}</a>
-	</li>
-	<li id="bookings" {% if  "bookings" == active_page %} class="active" {% endif %}>
-		<a href="{{p.get_edit_link(section='bookings')}}">{{ _('Bookings') }}</a>
-	</li>
-	<li style="float:right;">
-		<a href="/">{{ _('Logout') }}</a>
 	</li>
 </ul>
 {% endblock %}

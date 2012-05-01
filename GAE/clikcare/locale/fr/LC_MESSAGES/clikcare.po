@@ -33,6 +33,9 @@ msgstr "cliksanté"
 msgid "My Account"
 msgstr "Mon Compte"
 
+msgid "Bookings"
+msgstr "Rendez-vous"
+
 msgid "Schedule"
 msgstr "Horaire"
 
