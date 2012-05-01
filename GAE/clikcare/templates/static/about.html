@@ -1,18 +1,59 @@
 {% extends "/layout/base.html" %}
 
 {% block subhead %}{{ _('About') }}{% endblock %}
-{% block lead %}{{ _('Why is your site so awesome?!') }}{% endblock %}
+{% block lead %}{{ _('Connected with care') }}{% endblock %}
 
 {% block content %}
 <div class="row">
 	<div class="span12">
-		<h2>Our Story</h2>
+		<h2>{{ _('Mission Statement') }}</h2>
+		<p>
+			{{ _('We believe the process of finding health care should be as simple as possible.') }}
+			
+			{{ _('ClikSante is designed to make it easy to connect with high-quality professionals.') }}
+			
+			No more guess-work and time-consuming research. Hundreds of qualified professionals are at your fingertips.
+		</p>
 
-		<h2>Founders</h2>
+		<h2> {{ _('Community') }}</h2>
+		<p>
+			ClikSante is committed to being a good corporate citizen and member of the health care community. We give a portion of our profits to foundations that support the development of healthcare initiatives in the areas we serve:
+		</p>
+		<ul class="unstyled">
+			<li style="display:inline">
+				<a href="http://fondationduchum.com"><img src="/assets/img/about/chum.gif"></a>
+			</li>
+			<li style="display:inline">
+				<a href="http://www.muhcfoundation.com"><img src="/assets/img/about/muhc.gif"></a>
+			</li>
+			<li style="display:inline">
+				<a href="http://www.jghfoundation.org"><img src="/assets/img/about/jgh.png"></a>
+			</li>
+			<li style="display:inline">
+				<a href="https://fqc.qc.ca/"><img src="/assets/img/about/fqc.png"></a>
+			</li>
+		</ul>
 
-		<h2>Awards</h2>
+		<h2>Founders and Advisors</h2>
+			<h3>David Leblanc</h3>
+			<h3>Philippe Caya</h3>
+			<h3>etc.?</h3>
 
-		<h2>Media</h2>
+		<h2>Awards and Press</h2>
+		<ul class="unstyled">
+			<li style="display:inline">
+				<a href="#"><img src="/assets/img/about/startupweekend.jpg"></a>
+			</li>
+			<li style="display:inline">
+				<a href="#"><img src="/assets/img/about/lapresse.jpg"></a>
+			</li>
+			<li style="display:inline">
+				<a href="#"><img src="/assets/img/about/thegazette.jpg"></a>
+			</li>
+			<li style="display:inline">
+				<a href="#"><img src="/assets/img/about/financialpost.jpg"></a>
+			</li>
+		</ul>
 
 	</div>
 </div>
