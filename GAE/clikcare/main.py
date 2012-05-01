@@ -10,12 +10,27 @@ from base import BaseHandler
 from forms import BookingForm, PatientForm, ContactForm
 from data import Booking
 
+
+class BaseBookingHandler(BaseHandler):
+    '''Common functions for all booking handlers'''
+    
+    def renderConfirmedBooking(self, booking):
+        tv = {'patient': booking.patient, 'booking': booking, 'provider': booking.provider}
+        self.render_template('patient/book.html', **tv)
+        
+    def renderNewPatientForm(self, patientForm, booking):
+        tv = {'form': patientForm, 'booking': booking, 'provider': booking.provider}
+        self.render_template('patient/new.html', **tv)
+                
+    
 class IndexHandler(BaseHandler):
     def get(self):
         self.render_template('index.html', form=BookingForm(self.request.GET))
         
     def post(self):
-        ''' Renders 2nd page: Result + Confirm button'''
+        ''' Renders 2nd page: Result + Confirm button
+            This handler is slightly confusing, because we are processing a POST at /, but rendering a /patient/book page
+        '''
         bookingform = BookingForm(self.request.POST)
         if bookingform.validate():
             booking = db.storeBooking(self.request.POST, None, None)
@@ -36,42 +51,7 @@ class IndexHandler(BaseHandler):
             self.render_template('patient/book.html', **tv) 
         else:
             self.render_template('index.html', form=bookingform)
-
-
-
-class PatientConfirmHandler(BaseHandler):
-    def get(self):
-        'We have a booking with a provider, we need to add the patient using the OpenID User'
-        booking_key = self.request.get('bk')
-        booking = Booking.get(booking_key)
-        # get patient from user
-        user = users.get_current_user()
-        if (user):
-            logging.info('User:' + str(user.__dict__))
-            patient = db.getPatientFromUser(user)
-            if (patient):
-                logging.info('Patient exists, confirming booking.')
-                tv = {'patient': patient, 'booking': booking, 'provider': provider}
-                self.render_template('patient/book.html', **tv)
-            else:
-                logging.info('Patient does not exist, creating new patient.')
-                patientForm = PatientForm(self.request.POST)
-                # set email in form from openID user
-                patientForm.email.data = user.email()
-                tv = {'form': patientForm, 'booking': booking, 'provider': booking.provider}
-                self.render_template('patient/new.html', **tv)
-        else:
-            logging.info('User not logged in.')
-        
-        
-        # tv = {
-        #       'form': PatientForm(self.request.POST),
-        #       'bookingForm': bookingform
-        #       }
-        # 
-        # self.render_template('patient/new.html', **tv)
     
-
 
 class StaticHandler(BaseHandler):
     def get(self):
@@ -100,47 +80,52 @@ class ContactHandler(BaseHandler):
             self.render_template('contact.html', form=contact_form, sent=False)
 
  
-class PatientBookHandler(BaseHandler):
-    def post(self):
-        patientForm = PatientForm(self.request.POST)
-        #bookingForm = BookingForm(self.request.POST)
-
-        if patientForm.validate():
-            logging.debug('patientForm passed validation:' + str(self.request))
-            # Store Patient 
-            patient = db.storePatient(self.request.POST)
+class PatientBookHandler(BaseBookingHandler):
+    def get(self):
+        'We have a booking with a provider, we need to add the patient using the OpenID User'
+        booking_key = self.request.get('bk')
+        booking = Booking.get(booking_key)
+        # get patient from user
+        user = users.get_current_user()
+        if (user):
+            logging.info('User:' + str(user.__dict__))
+            patient = db.getPatientFromUser(user)
             if (patient):
-                # Store booking without provider
-                booking = db.storeBooking(self.request.POST, patient, None)
-                logging.debug('created booking:' + unicode(booking.key()))
-                # Implement magic to choose a provider...
-                logging.info("Looking for best provider...")
-                provider = db.findBestProviderForBooking(booking)
-                if (provider):
-                    logging.info("Provider found: " + provider.fullName())
-                    booking.provider = provider
-                    # todo return date during match in cases where exact datetime match cannot be found
-                    booking.dateTime = booking.requestDateTime
-                    booking.put()
-                    # booking succesfull, send email
-                    mail.emailBooking(booking)
-                else:
-                    logging.warn('No provider found for booking:' + unicode(booking.key()))
+                logging.info('Patient exists, confirming booking.')
+                booking.patient = patient
+                booking.put()
+                self.renderConfirmedBooking(booking)
+            else:
+                logging.info('Patient does not exist, creating new patient.')
+                patientForm = PatientForm(self.request.POST)
+                # set email in form from openID user
+                patientForm.email.data = user.email()
+                self.renderNewPatientForm(patientForm, booking)
+        else:
+            logging.info('User not logged in.')
+    
+    def post(self):
+        '''This handler is for the New Patient Form'''
+        # create patient form for validation
+        patientForm = PatientForm(self.request.POST)
+        # fetch booking from bk
+        booking_key = self.request.get('bk')
+        logging.info('Fetching booking:' + str(booking_key))
+        booking = Booking.get(booking_key)
+        if patientForm.validate():
+            # Store New Patient 
+            user = users.get_current_user()
+            patient = db.storePatient(self.request.POST, user)
+            if (patient):
+                booking.patient = patient
+                booking.put()
+                # booking succesfull, send email
+                mail.emailBooking(booking)
             else:
                 logging.info("No booking saved because patient is None")
-            
-            tv = {
-                  'patient': patient,
-                  'booking': booking,
-                  'provider': provider
-            }
-            self.render_template('patient/book.html', **tv) 
+            self.renderConfirmedBooking(booking)
         else:           
-            tv = {
-                  'form': patientForm ,
-                  # Add booking and provider
-                  }
-            self.render_template('patient/new.html', **tv)
+            self.renderNewPatientForm(patientForm, booking)
 
 
 
@@ -184,7 +169,6 @@ application = webapp2.WSGIApplication([
                                        
                                        # Patient
                                        ('/patient/book', PatientBookHandler),
-                                       ('/patient/confirm', PatientConfirmHandler),
                                        
                                        # provider
                                        ('/provider/login', provider.ProviderLoginHandler),

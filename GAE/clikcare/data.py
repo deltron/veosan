@@ -18,7 +18,7 @@ class Patient(db.Model):
     A patient
     '''
     createdOn = db.DateTimeProperty(auto_now_add=True)
-    openid_user = db.UserProperty()
+    user = db.UserProperty()
     firstName = db.StringProperty()
     lastName = db.StringProperty()
     email = db.StringProperty()
