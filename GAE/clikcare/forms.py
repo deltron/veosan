@@ -97,8 +97,10 @@ class PatientForm(Form):
 
     
 class ProviderAddressForm(Form):
+    prefix = TextField(_(u'Prefix').decode("UTF-8"))
     firstName = TextField(_(u'First Name').decode("UTF-8"), [validators.Length(min=1, message=_(u'First name is a required field').decode("UTF-8"))])
     lastName = TextField(_(u'Last Name').decode("UTF-8"), [validators.Length(min=1, message=_(u'Last name is a required field').decode("UTF-8"))])
+    postfix = TextField(_(u'Postfix qualifications').decode("UTF-8"))
     email = TextField(_(u'E-mail Address').decode("UTF-8"), [validators.Email(message=_(u'Invalid email address.').decode("UTF-8"))])
     phone = TextField(_(u'Telephone').decode("UTF-8"), [validators.Regexp(regex="^[2-9]\d{2}-\d{3}-\d{4}$", message=_(u'Please make sure phone number is in the following format: 514-555-1212').decode("UTF-8"))])
     region = SelectField(_(u'Location').decode("UTF-8"), choices=util.getAllRegions())
@@ -117,6 +119,8 @@ class ProviderProfileForm(Form):
     masterDegree = SelectField(_(u'Masters\'s').decode("UTF-8"), choices=util.getAllSchools())
     doctorDegree = SelectField(_(u'Doctor').decode("UTF-8"), choices=util.getAllSchools())
     startYear = TextField(_(u'First year working in industry').decode("UTF-8"), [validators.Length(min=4, max=4, message='Your first year of practice')])
+    bio = TextAreaField(_(u'biography/description').decode("UTF-8"))
+    quote = TextAreaField(_(u'quote').decode("UTF-8"))
     associations = MultiCheckboxField(_(u'Associations').decode("UTF-8"), choices=util.getAllAssociations())
     certifications = MultiCheckboxField(_(u'Certifications').decode("UTF-8"), choices=util.getAllCertifications())
     homeVisits = CustomBooleanField(_(u'I am willing to do on-site visits').decode("UTF-8"))

@@ -40,6 +40,8 @@ class Provider(db.Model):
     # address
     firstName = db.StringProperty()
     lastName = db.StringProperty()
+    prefix = db.StringProperty()
+    postfix = db.StringProperty()
     email = db.StringProperty()
     phone = db.StringProperty()   
     region = db.StringProperty()
@@ -47,6 +49,8 @@ class Provider(db.Model):
     city = db.StringProperty()
     postalCode = db.StringProperty()
     profilePhotoBlob = blobstore.BlobReferenceProperty()
+    bio = db.StringProperty(multiline=True)
+    quote = db.StringProperty(multiline=True)
     # schedule
     # see Schedule Class below
     
