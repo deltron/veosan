@@ -95,7 +95,7 @@ msgstr "Télécharger"
 #################
 
 msgid "Connected with care"
-msgstr "Branché avec les soins"
+msgstr "Branché sur les soins"
 
 msgid "Mission Statement"
 msgstr "Mission d'entreprise"
