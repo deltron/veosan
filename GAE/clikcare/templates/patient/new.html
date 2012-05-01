@@ -16,19 +16,18 @@
 						<h3>Booking Info</h3>
 						{# TODO format this nicely #}
 						<ul>
-							<li>{{ bookingForm.categories.data }}</li>
-							<li>{{ bookingForm.regions.data }}</li>
-							<li>{{ bookingForm.dates.data }}</li>
-							<li>{{ bookingForm.times.data }}</li>
+							<li>{{ booking.requestCategory }}</li>
+							<li>{{ booking.requestRegion }}</li>
+							<li>{{ booking.requestDateTime|formatdatetime_noseconds }}</li>
 						</ul>
 					</div>
 				</div>
 				
 				{# repeat previously visible info in hidden format for the form #}
-				<input id="bookingCategory" name="bookingCategory" type="hidden" value="{{ bookingForm.categories.data }}">
-				<input id="bookingRegion" name="bookingRegion" type="hidden" value="{{ bookingForm.regions.data }}">
-				<input id="bookingDate" name="bookingDate" type="hidden" value="{{ bookingForm.dates.data }}">
-				<input id="bookingTime" name="bookingTime" type="hidden" value="{{ bookingForm.times.data }}">
+				<input id="bookingCategory" name="bookingCategory" type="hidden" value="{{ booking.category }}">
+				<input id="bookingRegion" name="bookingRegion" type="hidden" value="{{ booking.region }}">
+				<input id="bookingDate" name="bookingDate" type="hidden" value="{{ booking.date }}">
+				<input id="bookingTime" name="bookingTime" type="hidden" value="{{ booking.time }}">
 
 			</fieldset>
 			<div class="form-actions">
