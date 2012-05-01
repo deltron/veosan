@@ -23,18 +23,21 @@ def storeBooking(r, patient=None, provider=None):
     booking.put()
     return booking
     
-def storePatient(r):
+def storePatient(r, user):
     patient = Patient()
     patient.firstName = r['firstName']
     patient.lastName = r['lastName']
     patient.email = r['email']
     patient.telephone = r['telephone']
+    # link openIDuser
+    patient.user = user
     patient.put()
     return patient
 
 def getPatientFromUser(user):
-    logging.info('Fetching patient from User: {0}' % user)
+    logging.info('Fetching patient from User: %s' % user)
     query = gdb.GqlQuery("SELECT * FROM Patient WHERE user = :1", user)
+    logging.info("count:" + str(query.count()))
     patient = query.get()
     return patient
 
@@ -102,6 +105,7 @@ def getOrCreateProvider(provider_key):
     return provider
 
 def storeProvider(request):
+    logging.info("storing procider from request:" + str(request.POST.__dict__))
     provider = getOrCreateProvider(request.get('provider_key'))
     # profile
     provider.category = request.get('category', provider.category)
