@@ -47,8 +47,8 @@ class IndexHandler(BaseHandler):
                 logging.warn('No provider found for booking:' + unicode(booking.key()))
             
             tv = {
-                  'patient': None, 'booking': booking, 'provider': provider }    
-            self.render_template('patient/book.html', **tv) 
+                  'patient': None, 'booking': booking, 'p': provider }    
+            self.render_template('result.html', **tv) 
         else:
             self.render_template('index.html', form=bookingform)
     
