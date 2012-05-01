@@ -33,6 +33,9 @@ msgstr "cliksanté"
 msgid "My Account"
 msgstr "Mon Compte"
 
+msgid "Bookings"
+msgstr "Rendez-vous"
+
 msgid "Schedule"
 msgstr "Horaire"
 
@@ -86,6 +89,33 @@ msgstr "Précédent"
 msgid "Upload"
 msgstr "Télécharger"
 
+
+#################
+# About page
+#################
+
+msgid "Connected with care"
+msgstr "Branché avec les soins"
+
+msgid "Mission Statement"
+msgstr "Mission d'entreprise"
+
+msgid "Community"
+msgstr "Communauté"
+
+msgid "We believe the process of finding health care should be as simple as possible."
+msgstr "Nous croyons que trouver des soins de santé devrait être un processus simple."
+
+msgid "ClikSante is designed to make it easy to connect with high-quality professionals."
+msgstr "ClikSante a été conçu pour brancher les patients avec des professionels de de haut calibre."
+
+
+#################
+# Careers
+#################
+
+msgid "Join the team!"
+msgstr "Joignez-vous à l'équipe!"
 
 #################
 # Contact page
