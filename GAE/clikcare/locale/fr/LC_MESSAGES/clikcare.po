@@ -104,10 +104,10 @@ msgid "Community"
 msgstr "Communauté"
 
 msgid "We believe the process of finding health care should be as simple as possible."
-msgstr "Nous croyons que trouvez des soins de santé devrait être un processus simple."
+msgstr "Nous croyons que trouver des soins de santé devrait être un processus simple."
 
 msgid "ClikSante is designed to make it easy to connect with high-quality professionals."
-msgstr "ClikSante a été conçu pour brancher les patients avec des professionels de haut calibre."
+msgstr "ClikSante a été conçu pour brancher les patients avec des professionels de de haut calibre."
 
 
 #################
