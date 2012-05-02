@@ -29,7 +29,8 @@ class IndexHandler(BaseHandler):
         
     def post(self):
         ''' Renders 2nd page: Result + Confirm button
-            This handler is slightly confusing, because we are processing a POST at /, but rendering a /patient/book page
+        
+        TODO: Replace with passing booking properties and provider key, saving only after the patient logging ???
         '''
         bookingform = BookingForm(self.request.POST)
         if bookingform.validate():
@@ -46,8 +47,7 @@ class IndexHandler(BaseHandler):
             else:
                 logging.warn('No provider found for booking:' + unicode(booking.key()))
             
-            tv = {
-                  'patient': None, 'booking': booking, 'p': provider }    
+            tv = {'patient': None, 'booking': booking, 'p': provider }    
             self.render_template('result.html', **tv) 
         else:
             self.render_template('index.html', form=bookingform)
