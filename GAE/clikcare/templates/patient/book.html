@@ -1,25 +1,26 @@
 {% extends "/layout/base.html" %}
 
-{% block subhead %}R&eacute;servation{% endblock %}
-{% block lead %}Votre rendez-vous est maintenant sauvegarder.{% endblock %}
+{% block subhead %} {{ _('Confirmation') }} {% endblock %}
+{% block lead %}{% endblock %}
 
 {% block content %}
 <div class="row">
 	<div class="span12">
-		<h3>Patient</h3>
-		{{ patient.__dict__ }}
 		
-		<h3>Booking</h3>
-		{{ booking.__dict__ }}
 		
-		{% if (provider) %}
-			<h3>{{provider.fullName()}}</h3>
-			<code>{{ provider.key() }}</code>
-			{{ provider.__dict__ }}
-		{% else %}
-			<h3>No provider found for your request</h3>
-		{% endif %}
-
+		<h1><img src="/assets/img/confirmation-check.png" width="80" height="80"> Thank you {{patient.firstName}}!</h1>
+		<br>
+		
+		<h3>Your appointment is confirmed for {{booking.dateTime|format_datetime_full}} </h3>
+		<h3>with {{provider.prefix or ''}} {{provider.firstName or ''}} {{provider.lastName}} </h3>
+		<h3>at {{provider.address}} in {{provider.city}}</h3>
+		<br>
+		<br>
+		
+		<p><i class="icon-envelope"></i> You will receive an email shortly confirming your reservation.</p>
+		<p><i class="icon-user"></i> <a href="#">Contact us</a> for any questions relating to your appointment</p>
+		
+		
 		<br>
 		
 		
