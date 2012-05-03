@@ -84,7 +84,7 @@ def getDatesList():
     oneDay = timedelta(days=1)
     for n in range(21):
         d = d + oneDay
-        dateTuple = (unicode(d), formatDate(d))
+        dateTuple = (unicode(d), format_date_weekday_after(d))
         datesList.append(dateTuple)
     return datesList
 
@@ -108,8 +108,11 @@ def getWeekdays():
     logging.info( str(weekdays) )
     return weekdays
 
-def formatDate(date):
+def format_date_weekday_after(date):
     return format_date(date, u"d MMMM yyyy (EEEE)", locale=lang)
+
+def format_datetime_full(datetime):
+    return format_datetime(datetime, u"EEEE d MMMM yyyy", locale=lang) + " " +  _(u"at") + " " + format_datetime(datetime, u"H:mm", locale=lang)
 
 def format_hour(hour):
     if (hour):
