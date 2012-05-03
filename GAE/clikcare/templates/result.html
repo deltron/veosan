@@ -1,6 +1,6 @@
 {% extends "/layout/base.html" %}
 
-{% block subhead %}{{ _('Found') }}!{% endblock %}
+{% block subhead %}{% endblock %}
 {% block lead %}{{ _('We found a health-care professional for you!') }}{% endblock %}
 
 {% block content %}
@@ -9,24 +9,11 @@
 		<div class="well">
 			<!-- Replace form with results -->
 			
-			<h3>{{p.prefix or ''}} {{p.firstName or ''}} {{p.lastName|first}}.<span style="font-size:small; color:Grey;">{% if p.postfix %} {{p.postfix or ''}}{% endif %}</span>
-			</h3>
-			<br>
-			<p>{{p.bio}}</p>
+			<h1>{{p.prefix or ''}} {{p.firstName or ''}} {{p.lastName|first}}.<!--<span style="font-size:small; color:Grey;">{% if p.postfix %} {{p.postfix or ''}}{% endif %}</span>-->
+			is available</h1>
 			
-			<div class="row-fluid">
-				<blockquote>
-					<p>
-						{{p.quote}}
-					</p>
-				</blockquote>
-			</div>
+			<h3> on {{booking.dateTime|format_datetime_full}} at his clinic on {{p.address}} in {{p.city}}</h3>
 			
-			<h4>Appointment Info</h4>
-			<ul>
-				<li>{{ _('Date and Time') }}: {{booking.dateTime|formatdatetime_noseconds}}</li>
-				<li>{{ _('Location') }}: {{p.region}}</li>
-			</ul>
 		<br>
 		<br>
 		
@@ -48,13 +35,33 @@
 		<p><!-- Junk layout, Trash when reworking maybe with image for quality 
 			Maybe Simplyfy all this page: Appointment Info on Left, Bio and Quote on right--></p>
 	</div>
-	<div class="span5">
-		<h3>Clik means quality</h3>
-		<blockquote>
-			<p>Text about the quality and qualifications of our Health-care specialist database.
-			Maybe a text specific per category (All our Physiotherapists are members of the Ordre des Physiotherapist du Quebec, All Osteo are... etc.)
-			</p>
-		</blockquote>
+	
+	
+	<!-- Right hand side -->
+	<div class="span5">	
+		<div class="row">
+		  <div class="span2">
+		  		<img src="/assets/img/default-profile.png" width="100" height="100">
+		  </div>
+		  <div class="span3">
+			  	<div class="row-fluid">
+					<blockquote>
+						<p>
+							{{p.quote}}
+						</p>
+					</blockquote>
+				</div>
+		  </div>
+		</div>
+	
+		<div class="row">
+			<div class="span5">
+				<br>
+				<h4> {{ _('My Background') }} </h4>
+				<p>{{p.bio}}</p>
+			</div>
+		</div>
+		
 	</div>
 </div>
 {% endblock content %} 
