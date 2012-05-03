@@ -30,7 +30,7 @@ class IndexHandler(BaseHandler):
     def post(self):
         ''' Renders 2nd page: Result + Confirm button
         
-        TODO: Replace with passing booking properties and provider key, saving only after the patient logging ???
+        TODO: Replace with passing booking properties and provider key, saving only after the patient logging ??? 
         '''
         bookingform = BookingForm(self.request.POST)
         if bookingform.validate():
@@ -130,8 +130,9 @@ class PatientBookHandler(BaseBookingHandler):
 
 
 jinja_filters = {}
-jinja_filters['formatdate'] = util.formatDate
-jinja_filters['formatdatetime_noseconds'] = util.formatDateTimeNoSeconds
+jinja_filters['format_date_weekday_after'] = util.format_date_weekday_after
+jinja_filters['format_datetime_full'] = util.format_datetime_full
+jinja_filters['format_datetime_noseconds'] = util.formatDateTimeNoSeconds
 jinja_filters['format_hour'] = util.format_hour
 jinja_filters['format_30min_period'] = util.format_30min_period
 jinja_filters['dump'] = util.dump
