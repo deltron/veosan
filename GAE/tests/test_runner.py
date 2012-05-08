@@ -5,6 +5,10 @@ import os
 # Install the Python unittest2 package before you run this script.
 import unittest2
 
+
+# IN APTANA
+# Run -> Run As -> Python Run
+
 USAGE = """%prog SDK_PATH TEST_PATH
 Run unit tests for App Engine apps.
 
