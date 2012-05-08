@@ -15,18 +15,19 @@
 {% endif %} <!-- span -->
 <div class="row">
 	<div class="span12">
-		{% for p in providers %} <p></p>
-		<a
-		href="{{p.get_edit_link()}}"
-		rel="popover"
-		title="{{p.firstName}} {{p.lastName}}"
-		data-content="{{p.get_html_summary()}}"> {{p.lastName}}, {{p.firstName}} [{{p.email}}]</a>
-		{% if p.recently_created() %} <span class="label label-success">new</span>
-		{% endif %}
-
-		</p> <!-- <form action="/provider/address" method="post"> <input name="provider" type="hidden" value="{{p.key()}}"/> <button type="submit" class="btn">{{p.firstName}} {{p.lastName}}</button> </form>
-		-->
-		{% endfor %}
+		<ul class="unstyled">
+			{% for p in providers %}
+			<li>
+				<a
+				href="{{p.get_edit_link()}}"
+				rel="popover"
+				title="{{p.firstName}} {{p.lastName}}"
+				data-content="{{p.get_html_summary()}}"> {{p.lastName}}, {{p.firstName}} [{{p.email}}]</a>
+				{% if p.recently_created() %} <span class="label label-success">new</span>
+				{% endif %}
+			</li>
+			{% endfor %}
+		</ul>
 	</div>
 </div>
 <hr>
