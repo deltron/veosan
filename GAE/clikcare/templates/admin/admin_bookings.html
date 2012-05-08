@@ -2,47 +2,45 @@
 
 {% set active_page = "bookings" %}
 
-{% block subhead %} <!-- Bookings --> {% endblock %}
+{% block subhead %} <!-- Bookings -->
+{% endblock %}
 {% block lead %} <!-- View and administer bookings --> {% endblock %}
 
 {% block content %}
-<div class="span6">
-	<table class="table">
-		<thead>
-			<tr>
-				<!-- <th>Key</th> -->
-				<th>Booking</th>
-				<th>Patient</th>
-				<th>Provider</th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for b in bookings %}
-			<tr>
-				<!-- Date (Booking) -->
-				<td>
-					<a href="/booking/detail"
-							rel="popover"
-							title="Booking Details"
-							data-content="{{b.get_html_summary()}}"> {{b.dateTime|format_datetime_noseconds}} </a>
-				</td>
-				<!-- Patient -->
-				<td><a href="#" class="" rel="popover" title="{{b.patient.firstName}} {{b.patient.lastName}}" data-content="{{b.patient.phone}} <br> {{b.patient.email}} <br>">{{b.patient.firstName}} {{b.patient.lastName}}</a></td>
-				<!-- Provider -->
-				<td>
-					{% set p = b.provider %}
-					{% if p %}
-						<a href="{{p.get_edit_link()}}"
-							rel="popover"
-							title="{{p.firstName}} {{p.lastName}}"
-							data-content="{{p.get_html_summary()}}"> {{p.lastName}}, {{p.firstName}}</a>
-					{% else %}
-						<p>No provider booked</p>
-					{% endif %}
-				</td>
-			</tr>
-			{% endfor %}
-		</tbody>
-	</table>
+<div class="row">
+	<div class="span12">
+		<table class="table">
+			<thead>
+				<tr>
+					<!-- <th>Key</th> -->
+					<th>Booking</th>
+					<th>Patient</th>
+					<th>Provider</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for b in bookings %}
+				<tr>
+					<!-- Date (Booking) -->
+					<td><a href="/booking/detail"
+					rel="popover"
+					title="Booking Details"
+					data-content="{{b.get_html_summary()}}"> {{b.dateTime|format_datetime_noseconds}} </a></td>
+					<!-- Patient -->
+					<td><a href="#" class="" rel="popover" title="{{b.patient.firstName}} {{b.patient.lastName}}" data-content="{{b.patient.phone}} <br> {{b.patient.email}} <br>">{{b.patient.firstName}} {{b.patient.lastName}}</a></td>
+					<!-- Provider -->
+					<td> {% set p = b.provider %}
+					{% if p %} <a href="{{p.get_edit_link()}}"
+					rel="popover"
+					title="{{p.firstName}} {{p.lastName}}"
+					data-content="{{p.get_html_summary()}}"> {{p.lastName}}, {{p.firstName}}</a> {% else %}
+					<p>
+						No provider booked
+					</p> {% endif %} </td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
 </div>
 {% endblock content %} 
