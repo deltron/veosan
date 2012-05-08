@@ -29,6 +29,7 @@ def storePatient(r, user):
     patient.lastName = r['lastName']
     patient.email = r['email']
     patient.telephone = r['telephone']
+    patient.termsAgreement = r['termsAgreement']
     # link openIDuser
     patient.user = user
     patient.put()

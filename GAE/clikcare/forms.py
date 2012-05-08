@@ -86,7 +86,7 @@ class PatientForm(Form):
     email = TextField(_(u'E-mail Address').decode("UTF-8"), [validators.Email(message=_(u'Invalid email address.').decode("UTF-8"))])
     telephone = TextField(_(u'Telephone').decode("UTF-8"), [validators.Regexp(regex="^[2-9]\d{2}-\d{3}-\d{4}$", message=_(u'Please make sure phone number is in the following format: 514-555-1212').decode("UTF-8"))])
     insurance = SelectField(_(u'Insurance').decode("UTF-8"), choices=util.getAllInsurance())
-    
+    termsAgreement = CustomBooleanField(_(u'I agree with the Terms of Service').decode("UTF-8"))
     # this should go into the booking object
     specialty = SelectField(_(u'Needs').decode("UTF-8"), choices=util.getAllSpecialitiesForPatient())
     comments = TextAreaField(_(u'Comments for your appointment').decode("UTF-8"))

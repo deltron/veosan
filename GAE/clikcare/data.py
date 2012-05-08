@@ -23,6 +23,7 @@ class Patient(db.Model):
     lastName = db.StringProperty()
     email = db.StringProperty()
     telephone = db.StringProperty()
+    termsAgreement = db.StringProperty()
     # insurance
     # age
 
