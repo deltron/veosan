@@ -8,9 +8,15 @@
 {% block content %}
 <div class="row">
 	<div class="span9">
-		{% for b in bookings %}
-			<li>{{b.patient.firstName}} {{b.patient.lastName}} - {{b.requestDate}} </li>
-		{% endfor %}
+		{% if bookings|length > 0 %}
+			{% for b in bookings %}
+				<li>{{b.patient.firstName}} {{b.patient.lastName}} - {{b.requestDate}} </li>
+			{% endfor %}
+		{% else %}
+			<div class="alert alert-error">
+  				{{ _('No upcoming bookings.') }}
+			</div>
+		{% endif %}
 	</div>	
 </div>
 {% endblock content %} 

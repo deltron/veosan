@@ -2,12 +2,13 @@
 import logging
 from base import BaseHandler
 import db
-from forms import ProviderProfileForm, ProviderAddressForm, ProviderPhotoForm, ProviderTermsForm, ProviderLoginForm
 import urllib
+from forms import ProviderProfileForm, ProviderAddressForm, ProviderPhotoForm, ProviderTermsForm, ProviderLoginForm
 from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
 from data import Provider, Schedule
 import util
+from datetime import datetime, date, time
 
 def parseRefererSection(request):
     referer = request.environ['HTTP_REFERER']
@@ -175,7 +176,12 @@ class ProviderBookingsHandler(ProviderBaseHandler):
         key = self.request.get('key')
         if (key):
             provider = Provider.get(key)
-            bookings = provider.booking_set
+            # improve bookings to show only future bookings
+            bq = provider.booking_set
+            yesterday_at_midnight = datetime.combine(date.today(), time())
+            bq.filter("dateTime >", yesterday_at_midnight)
+            bq.order("dateTime")
+            bookings = bq.fetch(15)
             logging.info('Bookings:' + str(bookings))
             self.render_bookings(provider, bookings)
         else:
