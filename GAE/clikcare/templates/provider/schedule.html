@@ -77,10 +77,6 @@
 		</table>
 	</div>
 	
-	<h3> Schedule Debug</h3>
-	{% for s in p.schedule %}
-		<li> {{s.day}}-{{s.startTime}}-{{s.endTime}} </li>
-	{% endfor %}
 </div>
 
 <script src="/assets/js/jquery.js"></script>
@@ -90,12 +86,17 @@
     	//alert("I am an alert box! " + $("#b14").attr("Class")); 
      	$(this).toggleClass("btn-success");
      	// TODO change icon inside the <a>
+     	var $icon = $(this).find('div i');
      	
      	if ($(this).hasClass('btn-success')) {
      		op = 'add'
+     		$icon.addClass('icon-ok-circle')
+     		$icon.removeClass('icon-ban-circle')
      	}
      	else {
      		op = 'remove'
+     		$icon.addClass('icon-ban-circle')
+     		$icon.removeClass('icon-ok-circle')
      	}
      		 
      	
