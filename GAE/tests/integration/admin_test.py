@@ -34,6 +34,7 @@ class AdminTest(unittest.TestCase):
         self.assertEqual(response.status_int, 200)        
         response.mustcontain("Initialized new provider for unit_test@provider.com")
         response.mustcontain("None, None [unit_test@provider.com]")
+        #response.showbrowser()
         
 
     def test_fill_new_provider_profile_correctly(self):
