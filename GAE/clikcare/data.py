@@ -91,6 +91,10 @@ class Schedule(db.Model):
     startTime = db.IntegerProperty()
     endTime = db.IntegerProperty()
     
+    def repr(self):
+        # String representation for debuging, I'm too scared to override the __repr__() 
+        return '[Schedule day:%s from %s to %s]' % (self.day, self.startTime, self.endTime)
+    
 class Booking(db.Model):
     createdOn = db.DateTimeProperty(auto_now_add=True)
     #request

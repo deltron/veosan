@@ -58,15 +58,15 @@ def findBestProviderForBooking(booking):
     logging.info('Found {0} providers in category and region. Narrowing down list using schedule...'.format(providerCount))
     for p in providersQuery:
         scheduleQuery = gdb.GqlQuery('''Select * from Schedule WHERE provider = :1 AND day = :2''', p, requestDay)
-        schedules = scheduleQuery.fetch(limit=1)
-        if (len(schedules) > 0):
-            s = schedules[0]
-            # manually check if hours match (because of BadFilterError: "Only one property per query may have inequality filters")
-            if (requestStartTime >= s.startTime & requestEndTime <= s.endTime):
-                logging.info('Found schedule match for provider {0}, schedule {1}:'.format(p, s))
-                providers.append(p)
-            else:
-                logging.info('Schedule hours do not match {0}'.format(s))
+        schedulesCount = scheduleQuery.count(limit=48)
+        if (schedulesCount > 0):
+            for s in scheduleQuery:
+                # manually check if hours match (because of BadFilterError: "Only one property per query may have inequality filters")
+                if (requestStartTime >= s.startTime & requestEndTime <= s.endTime):
+                    logging.info('Found schedule match for provider {0}, schedule {1}:'.format(p, s.repr()))
+                    providers.append(p)
+                else:
+                    logging.info('Schedule hours do not match {0}'.format(s.repr()))
         else:
             logging.info('No schedule match for provider {0} on day'.format(p, requestDay))
     logging.info('providers:' + str(providers))
