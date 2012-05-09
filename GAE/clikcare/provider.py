@@ -59,7 +59,7 @@ class ProviderEditProfileHandler(ProviderBaseHandler):
             # Store Provider
             key = db.storeProvider(self.request)
             provider = Provider.get(key)
-            self.render_profile(provider, profile_form=form)
+            self.render_profile(provider, profile_form=form, success_message=util.saved_message)
         else:
             # show error
             provider = db.getProvider(self.request)
@@ -87,9 +87,9 @@ class ProviderEditAddressHandler(ProviderBaseHandler):
             # Store Provider
             key = db.storeProvider(self.request)
             provider = Provider.get(key)
-            self.render_address(provider, address_form=form)
+            self.render_address(provider, address_form=form, success_message=util.saved_message)
         else:
-            # show error
+            # show validation error
             provider = db.getProvider(self.request)
             self.render_address(provider, address_form=form)
 
@@ -150,7 +150,7 @@ class ProviderScheduleHandler(ProviderBaseHandler):
             s.endTime = int(endTime)
             s.put()
         elif (operation == 'remove'):
-            s_to_delete = provider.schedule.filter('day = ', int(day)).filter('time = ', int(time)).get()
+            s_to_delete = provider.schedule.filter('day = ', int(day)).filter('startTime = ', int(startTime)).get()
             logging.info('deleting schedule' + str(s_to_delete))
             if (s_to_delete):
                 s_to_delete.delete()

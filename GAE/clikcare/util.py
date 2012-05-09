@@ -7,6 +7,9 @@ from babel.dates import format_date, format_datetime
 from babel import Locale
 from base import lang
 
+# String used on many pages
+saved_message = _(u'Saved!').decode("UTF-8")
+
 # key, value
 def getAllRegions():
     return [('mtl-downtown', _(u'Montreal - Downtown').decode("UTF-8")),
