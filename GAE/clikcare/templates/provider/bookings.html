@@ -7,11 +7,35 @@
 
 {% block content %}
 <div class="row">
-	<div class="span9">
+	<div class="span6">
 		{% if bookings|length > 0 %}
-			{% for b in bookings %}
-				<li>{{b.patient.firstName}} {{b.patient.lastName}} - {{b.requestDate}} </li>
-			{% endfor %}
+			
+			<table class="table">
+			<thead>
+				<tr>
+					<!-- <th>Key</th> -->
+					<th>Date & Time</th>
+					<th>Patient</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for b in bookings %}
+					{% if b.patient %}
+					<tr>
+						<!-- Date (Booking) -->
+						<td><a href="/booking/detail"> {{b.dateTime|format_datetime_full}} </a></td>
+						<!-- Patient -->
+						<td><a href="#" class="" rel="popover" title="{{b.patient.firstName}} {{b.patient.lastName}}" data-content="{{b.patient.phone}} <br> {{b.patient.email}} <br>">{{b.patient.firstName}} {{b.patient.lastName}}</a></td>
+					</tr>
+					{% else %}
+						<!-- booking with a linked patient -->
+					{% endif%}
+				{% endfor %}
+			</tbody>
+			</table>
+			
+			
 		{% else %}
 			<div class="alert alert-error">
   				{{ _('No upcoming bookings.') }}
