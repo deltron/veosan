@@ -249,8 +249,8 @@ msgstr "Trouvez des patients dans vôtre quartier en fournissant vos coordonées
 # Schedule Page
 #################
 
-msgid "See your appointments and organize your time."
-msgstr "Voir vos rendez-vous et organiser votre horaire."
+msgid "Organize your time."
+msgstr "Organisez votre horaire."
 
 msgid "Busy All Day"
 msgstr "Journée entièrement non-disponible"
