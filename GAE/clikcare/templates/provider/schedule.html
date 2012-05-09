@@ -3,7 +3,7 @@
 {% set active_page = "schedule" %}
 
 {% block subhead %}{{ _('Schedule') }}{% endblock %}
-{% block lead %}{{ _('See your appointments and organize your time.') }}{% endblock %}
+{% block lead %}{{ _('Organize your time.') }}{% endblock %}
 
 {% block content %}
 
@@ -51,7 +51,7 @@
 								<!--{{ _('Busy') }}<br> -->
 								<br>
 								<small>{{ts[1]|format_hour}}-{{ts[2]|format_hour}}</small><br>
-								<code>{{button_id}}</code>
+								<!-- <code>{{button_id}}</code> -->
 							</div> 
 						</a>
 					{% else %}
@@ -64,7 +64,7 @@
 								<!--{{ _('Busy') }}<br> -->
 								<br>
 								<small>{{ts[1]|format_hour}}-{{ts[2]|format_hour}}</small><br>
-								<code>{{button_id}}</code>
+								<!-- <code>{{button_id}}</code> -->
 							</div> 
 						</a>
 					{% endif %}
@@ -92,11 +92,13 @@
      		op = 'add'
      		$icon.addClass('icon-ok-circle')
      		$icon.removeClass('icon-ban-circle')
+     		$this.attr('title', 'Free')
      	}
      	else {
      		op = 'remove'
      		$icon.addClass('icon-ban-circle')
      		$icon.removeClass('icon-ok-circle')
+     		$this.attr('title', 'Free')
      	}
      		 
      	
