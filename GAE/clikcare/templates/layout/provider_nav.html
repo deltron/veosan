@@ -14,8 +14,5 @@
 	<li id="address" {% if  "address" == active_page %} class="active" {% endif %}>
 		<a href="{{p.get_edit_link(section='address')}}">{{ _('Address') }}</a>
 	</li>
-	<li id="terms" {% if  "terms" == active_page %} class="active" {% endif %}>
-		<a href="{{p.get_edit_link(section='terms')}}">{{ _('Terms') }}</a>
-	</li>
 </ul>
 {% endblock %}
