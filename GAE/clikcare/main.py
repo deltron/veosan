@@ -43,12 +43,13 @@ class IndexHandler(BaseHandler):
                 booking.provider = provider
                 booking.dateTime = booking.requestDateTime
                 booking.put()
-                # booking saved with provider, we need to get patient info
+                # booking saved with provider, no patient info yet
+                tv = {'patient': None, 'booking': booking, 'p': provider }    
+                self.render_template('result.html', **tv) 
             else:
                 logging.warn('No provider found for booking:' + unicode(booking.key()))
-            
-            tv = {'patient': None, 'booking': booking, 'p': provider }    
-            self.render_template('result.html', **tv) 
+                tv = {'booking': booking}    
+                self.render_template('no_result.html', **tv) 
         else:
             self.render_template('index.html', form=bookingform)
     

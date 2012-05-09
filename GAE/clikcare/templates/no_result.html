@@ -1,0 +1,62 @@
+{% extends "/layout/base.html" %}
+
+{% block subhead %}{% endblock %}
+{% block lead %}{{ _('Ooops! We are fully booked.') }}{% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="span6">
+		<div class="well">
+			<h1>Fully Booked!</h1>
+			<h3>{{ _('We currently do not have a health-care professional available that matches your needs and schedule.') }}</h3>
+			<br>			
+			<h4>Please fill in your email below and we will contact you as soon as we have availability.</h4>
+			<br>
+			<br>
+			<form method="post" action="/" class="form-inline">
+				Help us help you:
+				<fieldset>
+					<input id="bk" name="bk" type="hidden" value="{{ booking.key() }}">
+					<input class="input-xlarge" id="patientEmail" name="patientEmail" type="text" placeholder=" Email address">
+					<button type="submit" class="btn btn-primary">
+						{{ _('Go!') }}
+					</button>
+				</fieldset>
+			</form>
+		</div>
+	</div>
+	<div class="span1">
+		<p><!-- SPAN1 SPACER
+			Junk layout, Trash when reworking maybe with image for quality 
+			Maybe Simplyfy all this page: Appointment Info on Left, Bio and Quote on right-->
+		</p>
+	</div>
+	
+	<!-- Right hand side -->
+	<div class="span5">	
+		<div class="row">
+		  <div class="span2">
+				<img src="/assets/img/default-profile.png" width="100" height="100">
+		  </div>
+		  <div class="span3">
+			  	<div class="row-fluid">
+					<blockquote>
+						<p>
+							Clikcare helps people like you!
+						</p>
+					</blockquote>
+				</div>
+		  </div>
+		</div>
+	
+		<div class="row">
+			<div class="span5">
+				<br>
+				<h4> {{ _('My Background') }} </h4>
+				<p>This is the success story of sommeone who was desperatly looking for a health care provider and found it throught clikcare.</p>
+			</div>
+		</div>
+		
+	</div>
+</div>
+{% endblock content %} 

@@ -7,13 +7,10 @@
 <div class="row">
 	<div class="span6">
 		<div class="well">
-			<!-- Replace form with results -->
-			
 			<h1>{{p.prefix or ''}} {{p.firstName or ''}} {{p.lastName|first}}.<!--<span style="font-size:small; color:Grey;">{% if p.postfix %} {{p.postfix or ''}}{% endif %}</span>-->
 			is available</h1>
 			
 			<h3> on {{booking.dateTime|format_datetime_full}} at his clinic on {{p.address}} in {{p.city}}</h3>
-			
 		<br>
 		<br>
 		
@@ -32,10 +29,11 @@
 		</div>
 	</div>
 	<div class="span1">
-		<p><!-- Junk layout, Trash when reworking maybe with image for quality 
-			Maybe Simplyfy all this page: Appointment Info on Left, Bio and Quote on right--></p>
+		<p><!-- SPAN1 SPACER
+			Junk layout, Trash when reworking maybe with image for quality 
+			Maybe Simplyfy all this page: Appointment Info on Left, Bio and Quote on right-->
+		</p>
 	</div>
-	
 	
 	<!-- Right hand side -->
 	<div class="span5">	
