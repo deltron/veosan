@@ -34,7 +34,7 @@ class Provider(db.Model):
     createdOn = db.DateTimeProperty(auto_now_add=True)
     # profile
     category = db.StringProperty()
-    specialty = db.StringProperty()
+    specialty = db.StringListProperty()
     startYear = db.StringProperty()
     # address
     firstName = db.StringProperty()
@@ -42,7 +42,7 @@ class Provider(db.Model):
     prefix = db.StringProperty()
     postfix = db.StringProperty()
     email = db.StringProperty()
-    phone = db.StringProperty()   
+    phone = db.StringProperty()
     region = db.StringProperty()
     address = db.StringProperty()
     city = db.StringProperty()
