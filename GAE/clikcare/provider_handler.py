@@ -82,7 +82,7 @@ class ProviderEditAddressHandler(ProviderBaseHandler):
         #provider = Provider.get(key)
         if form.validate():
             # Store Provider
-            key = db.storeProvider(self.request)
+            key = db.storeProvider(self.request.POST)
             provider = Provider.get(key)
             self.render_address(provider, address_form=form, success_message=util.saved_message)
         else:
