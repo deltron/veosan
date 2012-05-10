@@ -36,9 +36,6 @@ class ProviderBaseHandler(BaseHandler):
     def render_terms(self, provider, terms_form, **extra):
         self.render_template('provider/provider_terms.html', p=provider, form=terms_form, **extra)
    
-    def render_login(self, provider, login_form, **extra):
-        self.render_template('provider/login.html', p=provider, form=login_form, **extra)
-        
 
 class ProviderEditProfileHandler(ProviderBaseHandler):
     def get(self):
@@ -57,7 +54,7 @@ class ProviderEditProfileHandler(ProviderBaseHandler):
         form = ProviderProfileForm(self.request.POST)
         if form.validate():
             # Store Provider
-            key = db.storeProvider(self.request)
+            key = db.storeProvider(self.request.POST)
             provider = Provider.get(key)
             self.render_profile(provider, profile_form=form, success_message=util.saved_message)
         else:
