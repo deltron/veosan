@@ -79,7 +79,6 @@ class ProviderEditAddressHandler(ProviderBaseHandler):
 
     def post(self):
         form = ProviderAddressForm(self.request.POST)
-        #provider = Provider.get(key)
         if form.validate():
             # Store Provider
             key = db.storeProvider(self.request.POST)
