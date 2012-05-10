@@ -35,8 +35,6 @@ class Provider(db.Model):
     # profile
     category = db.StringProperty()
     specialty = db.StringProperty()
-    school = db.StringProperty()
-    degree = db.StringProperty()
     startYear = db.StringProperty()
     # address
     firstName = db.StringProperty()
