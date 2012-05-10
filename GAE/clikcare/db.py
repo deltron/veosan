@@ -8,6 +8,22 @@ from data import Booking
 from data import Patient
 from data import Provider
   
+def set_all_properties_on_entity_from_multidict(entity, multidict):
+    ''' fancy way to set all properties on an entity from a multidict (posted form '''
+    
+    for prop in iter(entity.properties()):
+        if multidict.has_key(prop):
+            logging.info("type for property " + prop + " is " + str(type(getattr(entity, prop))))
+            if isinstance(getattr(entity, prop), unicode):
+                logging.info("saving key->value : " + prop + "->" + multidict.getone(prop))
+                setattr(entity, prop, multidict.getone(prop))
+            elif isinstance(getattr(entity, prop), list):
+                logging.info("saving key->value:" + prop + " -> " + str(multidict.getall(prop)))
+                setattr(entity, prop, multidict.getall(prop))
+            else:
+                logging.info("Got a property of unknown instance: " + str(type(getattr(entity, prop))))
+        
+  
 def storeBooking(r, patient=None, provider=None):
     logging.info('Saving Booking from:' + str(r))
     booking = Booking()
@@ -105,26 +121,15 @@ def getOrCreateProvider(provider_key):
         provider = Provider()
     return provider
 
-def storeProvider(request):
-    logging.info("storing procider from request:" + str(request.POST.__dict__))
-    provider = getOrCreateProvider(request.get('provider_key'))
-    # profile
-    provider.category = request.get('category', provider.category)
-    provider.specialty = request.get('specialty', provider.specialty)
-    provider.startYear = request.get('startYear', provider.startYear)
-    provider.bio = request.get('bio', provider.bio)
-    provider.quote = request.get('quote', provider.quote)
-    # address
-    provider.prefix = request.get('prefix', provider.prefix)
-    provider.firstName = request.get('firstName', provider.firstName)
-    provider.lastName = request.get('lastName', provider.lastName)
-    provider.postfix = request.get('postfix', provider.postfix)
-    provider.email = request.get('email', provider.email)
-    provider.phone = request.get('phone', provider.phone)
-    provider.region = request.get('region', provider.region)
-    provider.address = request.get('address', provider.address)
-    provider.city = request.get('city', provider.city)
-    provider.postalCode = request.get('postalCode', provider.postalCode)
+
+def storeProvider(r):
+    # r is a MultiDict object from the request
+    logging.info("Storing provider profile from request:" + str(r.__dict__))
+    provider = getOrCreateProvider(r['provider_key'])
+    
+    # set all the properties
+    set_all_properties_on_entity_from_multidict(provider, r)
+    
     # store
     provider_key = provider.put()
     logging.info('Saved provider key:' + str(provider_key))
