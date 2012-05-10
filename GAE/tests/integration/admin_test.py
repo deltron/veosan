@@ -111,17 +111,34 @@ class AdminTest(unittest.TestCase):
         profile_form['bio'] = "Areas of interest include treatment and management of spinal conditions with an emphasis on manual therapy and rehabilitative exercise."
         
         # submit it
-        profile_form.submit()
+        response = profile_form.submit()
+        response.mustcontain("Saved!")
+
+        response.mustcontain("2002")
+        response.mustcontain("Areas of interest include treatment and management")
+
+        response.mustcontain('input checked id="specialty-0" name="specialty" type="checkbox" value="sports"')        
+        response.mustcontain('input checked id="specialty-2" name="specialty" type="checkbox" value="cardiology"')        
+        response.mustcontain('option selected value="osteopath"')
         
         # check values in database
         provider = db.getProviderFromEmail("unit_test@provider.com")
-        
         
         # iterate over every field item, find the match in the provider object and check its equality
         # possible we miss something here?
         for k in iter(profile_form.fields):
             if hasattr(provider, str(k)):
-                self.assertEquals(profile_form[k].value, getattr(provider, k))
+                value = getattr(provider, k)
+                if isinstance(value, str):
+                    self.assertEquals(profile_form[k].value, value)
+                #elif isinstance(value, list):   
+                    # TODO: how to check this automatically?
+                    #self.assertIn(profile_form[k].values, value)
+        
+        
+        self.assertIn('sports', provider.specialty)
+        self.assertIn('cardiology', provider.specialty)
+        self.assertNotIn('geriatric', provider.specialty)
 
 
     def test_upload_image_to_correct_address(self):
