@@ -116,9 +116,6 @@ class ProviderPhotoForm(Form):
 class ProviderProfileForm(Form):
     category = SelectField(_(u'Category').decode("UTF-8"), choices=util.getAllCategories())
     specialty = MultiCheckboxField(_(u'Specialties').decode("UTF-8"), choices=util.getAllSpecialities())
-    bacherlorDegree = SelectField(_(u'Bachelor\'s').decode("UTF-8"), choices=util.getAllSchools())
-    masterDegree = SelectField(_(u'Masters\'s').decode("UTF-8"), choices=util.getAllSchools())
-    doctorDegree = SelectField(_(u'Doctor').decode("UTF-8"), choices=util.getAllSchools())
     startYear = TextField(_(u'First year working in industry').decode("UTF-8"), [validators.Length(min=4, max=4, message='Your first year of practice')])
     bio = TextAreaField(_(u'biography/description').decode("UTF-8"))
     quote = TextAreaField(_(u'quote').decode("UTF-8"))
