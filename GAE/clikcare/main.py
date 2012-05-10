@@ -5,7 +5,7 @@ import webapp2, logging
 from google.appengine.api import users
 from webapp2 import Route
 # clik
-import admin, util, db, provider, mail
+import admin, util, db, provider_handler, mail
 from base import BaseHandler
 from forms import BookingForm, PatientForm, ContactForm
 from data import Booking
@@ -173,14 +173,14 @@ application = webapp2.WSGIApplication([
                                        ('/patient/book', PatientBookHandler),
                                        
                                        # provider
-                                       ('/provider/login', provider.ProviderLoginHandler),
-                                       ('/provider/profile', provider.ProviderEditProfileHandler),
-                                       ('/provider/address', provider.ProviderEditAddressHandler),
-                                       ('/provider/address/upload', provider.ProviderAddressUploadHandler),
-                                       ('/provider/schedule', provider.ProviderScheduleHandler),
-                                       ('/provider/terms', provider.ProviderTermsHandler),
-                                       ('/provider/bookings', provider.ProviderBookingsHandler),
-                                       ('/serve/([^/]+)?', provider.ServeHandler), # temporary - to test file uploads
+                                       ('/provider/login', provider_handler.ProviderLoginHandler),
+                                       ('/provider/profile', provider_handler.ProviderEditProfileHandler),
+                                       ('/provider/address', provider_handler.ProviderEditAddressHandler),
+                                       ('/provider/address/upload', provider_handler.ProviderAddressUploadHandler),
+                                       ('/provider/schedule', provider_handler.ProviderScheduleHandler),
+                                       ('/provider/terms', provider_handler.ProviderTermsHandler),
+                                       ('/provider/bookings', provider_handler.ProviderBookingsHandler),
+                                       ('/serve/([^/]+)?', provider_handler.ServeHandler), # temporary - to test file uploads
                                        
                                        # admin
                                        ('/admin/provider/init', admin.NewProviderInitHandler),
