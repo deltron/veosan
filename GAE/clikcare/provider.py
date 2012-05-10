@@ -34,7 +34,7 @@ class ProviderBaseHandler(BaseHandler):
         self.render_template('provider/bookings.html', p=provider, bookings=bookings, **extra)
             
     def render_terms(self, provider, terms_form, **extra):
-        self.render_template('provider/terms.html', p=provider, form=terms_form, **extra)
+        self.render_template('provider/provider_terms.html', p=provider, form=terms_form, **extra)
    
     def render_login(self, provider, login_form, **extra):
         self.render_template('provider/login.html', p=provider, form=login_form, **extra)
