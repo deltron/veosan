@@ -37,8 +37,8 @@ class AdminTest(unittest.TestCase):
         #response.showbrowser()
         
 
-    def test_fill_new_provider_profile_correctly(self):
-        ''' fill out the new provider's profile '''
+    def test_fill_new_provider_address_correctly(self):
+        ''' fill out the new provider's address '''
         
         # init a provider
         self.test_admin_provider_init()
@@ -56,19 +56,20 @@ class AdminTest(unittest.TestCase):
         self.assertEqual(address_form['email'].value, "unit_test@provider.com")
 
         # fill out the form
-        address_form['prefix'] = "Mr."
-        address_form['firstName'] = "Fantastic"
-        address_form['lastName'] = "Fox"
-        address_form['postfix'] = "Ph.D"
-        address_form['phone'] = "555-123-5678"
-        address_form['region'] = "mtl-downtown"
-        address_form['address'] = "123 Main St."
-        address_form['city'] = "Westmount"
-        address_form['postalCode'] = "H1B2C3"
+        address_form['prefix'] = u"Mr."
+        address_form['firstName'] = u"Fantastic"
+        address_form['lastName'] = u"Fox"
+        address_form['postfix'] = u"Ph.D"
+        address_form['phone'] = u"555-123-5678"
+        address_form['region'] = u"mtl-downtown"
+        address_form['address'] = u"123 Main St."
+        address_form['city'] = u"Westmount"
+        address_form['postalCode'] = u"H1B2C3"
         
         # submit it
-        address_form.submit()
-        
+        response = address_form.submit()
+        response.mustcontain("Saved!")
+
         # check values in database
         provider = db.getProviderFromEmail("unit_test@provider.com")
         
@@ -83,10 +84,50 @@ class AdminTest(unittest.TestCase):
         response.mustcontain("Fox, Fantastic [unit_test@provider.com]")
 
 
-    def test_upload_image_to_correct_profile(self):
+    def test_fill_new_provider_profile_correctly(self):
+        ''' fill out the new provider's profile '''
+        
+        # init a provider
+        self.test_admin_provider_init()
+        
+        # get the provider key
+        provider = db.getProviderFromEmail("unit_test@provider.com")
+        
+        # request the address page
+        request_variables = { 'key' : provider.key() }
+        response = self.testapp.get('/provider/profile', request_variables)
+         
+        profile_form = response.forms[0] # address form
+        
+       # print profile_form.fields.values()
+        
+        # fill out the form
+        profile_form['category'] = 'osteopath'
+        
+        
+        profile_form.set('specialty', True, 0) # Sports
+        profile_form.set('specialty', True, 2) # Cardio
+
+
+        profile_form['startYear'] = '2002'
+        profile_form['bio'] = "Areas of interest include treatment and management of spinal conditions with an emphasis on manual therapy and rehabilitative exercise."
+        
+        # submit it
+        profile_form.submit()
+        
+        # check values in database
+        provider = db.getProviderFromEmail("unit_test@provider.com")
+        
+        # check provider from database matches
+        provider.specialty
+        
+        # TODO .. not done
+
+
+    def test_upload_image_to_correct_address(self):
         ''' Upload a test image for the new provider '''
         
-        self.test_fill_new_provider_profile_correctly()
+        self.test_fill_new_provider_address_correctly()
         
         # get the provider key
         provider = db.getProviderFromEmail("unit_test@provider.com")
@@ -97,13 +138,12 @@ class AdminTest(unittest.TestCase):
         
         photo_form = response.forms[1] # photo form
         
-        print photo_form.fields.values()
-        
         photo_form['profilePhoto'] = ('profilePhoto', 'provider-test-image.png')
         
-        photo_form.submit()
+        # photo_form.submit()
         
         # hmm can't upload
+        # not possible to test blobstore yet...
         
         
 
