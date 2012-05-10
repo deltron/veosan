@@ -111,8 +111,6 @@ def storeProvider(request):
     # profile
     provider.category = request.get('category', provider.category)
     provider.specialty = request.get('specialty', provider.specialty)
-    provider.school = request.get('school', provider.school)
-    provider.degree = request.get('degree', provider.degree)
     provider.startYear = request.get('startYear', provider.startYear)
     provider.bio = request.get('bio', provider.bio)
     provider.quote = request.get('quote', provider.quote)
