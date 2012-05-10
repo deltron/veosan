@@ -104,10 +104,8 @@ class AdminTest(unittest.TestCase):
         # fill out the form
         profile_form['category'] = 'osteopath'
         
-        
         profile_form.set('specialty', True, 0) # Sports
         profile_form.set('specialty', True, 2) # Cardio
-
 
         profile_form['startYear'] = '2002'
         profile_form['bio'] = "Areas of interest include treatment and management of spinal conditions with an emphasis on manual therapy and rehabilitative exercise."
@@ -118,10 +116,12 @@ class AdminTest(unittest.TestCase):
         # check values in database
         provider = db.getProviderFromEmail("unit_test@provider.com")
         
-        # check provider from database matches
-        provider.specialty
         
-        # TODO .. not done
+        # iterate over every field item, find the match in the provider object and check its equality
+        # possible we miss something here?
+        for k in iter(profile_form.fields):
+            if hasattr(provider, str(k)):
+                self.assertEquals(profile_form[k].value, getattr(provider, k))
 
 
     def test_upload_image_to_correct_address(self):
