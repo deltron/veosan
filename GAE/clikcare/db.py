@@ -3,6 +3,7 @@
 '''
 from google.appengine.ext import db as gdb
 import logging
+import types
 from datetime import datetime
 from data import Booking
 from data import Patient
@@ -14,12 +15,15 @@ def set_all_properties_on_entity_from_multidict(entity, multidict):
     for prop in iter(entity.properties()):
         if multidict.has_key(prop):
             logging.info("type for property " + prop + " is " + str(type(getattr(entity, prop))))
-            if isinstance(getattr(entity, prop), unicode):
+            if isinstance(getattr(entity, prop), str):
                 logging.info("saving key->value : " + prop + "->" + multidict.getone(prop))
                 setattr(entity, prop, multidict.getone(prop))
             elif isinstance(getattr(entity, prop), list):
                 logging.info("saving key->value:" + prop + " -> " + str(multidict.getall(prop)))
                 setattr(entity, prop, multidict.getall(prop))
+            elif isinstance(getattr(entity, prop), types.NoneType):
+                logging.info("saving key->value for NoneType : " + prop + "->" + multidict.getone(prop))
+                setattr(entity, prop, multidict.getone(prop))
             else:
                 logging.info("Got a property of unknown instance: " + str(type(getattr(entity, prop))))
         
