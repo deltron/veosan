@@ -120,6 +120,7 @@ class ServeHandler(blobstore_handlers.BlobstoreDownloadHandler):
 
 class ProviderScheduleHandler(ProviderBaseHandler):
     def get(self):
+        logging.info('ProviderScheduleHandler GET')
         key = self.request.get('key')
         if (key):
             # edit provider
@@ -131,6 +132,7 @@ class ProviderScheduleHandler(ProviderBaseHandler):
             logging.info("Missing key")
             
     def post(self):
+        logging.info('ProviderScheduleHandler POST')
         key = self.request.get('provider_key')
         day_time = self.request.get('day_time')
         day, startTime, endTime = day_time.split('-')

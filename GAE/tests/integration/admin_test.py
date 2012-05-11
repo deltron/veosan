@@ -188,7 +188,10 @@ class AdminTest(unittest.TestCase):
         response = self.testapp.get('/provider/schedule', request_variables)
         
         provider = db.getProviderFromEmail("unit_test@provider.com")
-        self.assertEqual(provider.schedule.count(), 1, 'Provider should have a schedule')
+        schedule_count = provider.schedule.count()
+        print ('Provider has %s schedules' % schedule_count)
+
+        self.assertEqual(schedule_count , 1, 'Provider should have a schedule')
         monday_morning_a = html.find('a', attrs={'id': monday_morning_id})
         print 'Class:' + monday_morning_a['class']
         self.assertEqual(monday_morning_a['class'], 'btn btn-mini btn-success', 'Monday morning should be green')

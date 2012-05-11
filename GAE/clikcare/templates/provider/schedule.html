@@ -87,20 +87,25 @@
      	$(this).toggleClass("btn-success");
      	// TODO change icon inside the <a>
      	var $icon = $(this).find('div i');
+     	var $new_tooltip = ''
      	
      	if ($(this).hasClass('btn-success')) {
      		op = 'add'
      		$icon.addClass('icon-ok-circle')
      		$icon.removeClass('icon-ban-circle')
-     		$this.attr('title', 'Free')
+			$new_tooltip = '{{ _('Free') }}'
      	}
      	else {
      		op = 'remove'
      		$icon.addClass('icon-ban-circle')
      		$icon.removeClass('icon-ok-circle')
-     		$this.attr('title', 'Free')
+     		//$(this).attr('title', 'Not Free')
+     		$new_tooltip = '{{ _('Busy') }}'
      	}
-     		 
+     	// Weird workaround for tooltip change	
+     	$(this).attr('data-original-title', $new_tooltip).tooltip('fixTitle'); 	
+     	$(this).tooltip('toggle') 
+     	$(this).tooltip('toggle')
      	
      	post_data = {
      		provider_key: "{{p.key()}}",
@@ -112,38 +117,4 @@
     });
 </script>
 
-
-{% endblock %} 
-
-				<!--
-				<td>
-				<div class="btn-group" data-toggle="buttons-radio">
-					<a href="#" class="btn btn-mini" rel="tooltip" title="Non-Disponble"> <i class="icon-ban-circle"></i> </a>
-					<a href="#" class="btn btn-mini btn-warning" rel="tooltip" title="Libre"> <i class="icon-ok-circle"></i> </a>
-				</div></td>
-				<td>
-				<div class="btn-group" data-toggle="buttons-radio">
-					<a href="#" class="btn btn-mini btn-danger" rel="tooltip" title="Non-Disponble"> <i class="icon-ban-circle"></i> </a>
-					<a href="#" class="btn btn-mini" rel="tooltip" title="Libre"> <i class="icon-ok-circle"></i> </a>
-				</div></td>
-				<td>
-				<div class="btn-group" data-toggle="buttons-radio">
-					<a href="#" class="btn btn-mini" rel="tooltip" title="Non-Disponble"> <i class="icon-ban-circle"></i> </a>
-					<a href="#" class="btn btn-mini btn-warning" rel="tooltip" title="Libre"> <i class="icon-ok-circle"></i> </a>
-				</div></td>
-				<td>
-				<div class="btn-group" data-toggle="buttons-radio">
-					<a href="#" class="btn btn-mini" rel="tooltip" title="Non-Disponble"> <i class="icon-ban-circle"></i> </a>
-					<a href="#" class="btn btn-mini btn-warning" rel="tooltip" title="Libre"> <i class="icon-ok-circle"></i> </a>
-				</div></td>
-				<td>
-				<div class="btn-group" data-toggle="buttons-radio">
-					<a href="#" class="btn btn-mini" rel="tooltip" title="Non-Disponble"> <i class="icon-ban-circle"></i> </a>
-					<a href="#" class="btn btn-mini btn-warning" rel="tooltip" title="Libre"> <i class="icon-ok-circle"></i> </a>
-				</div></td>
-				<td>
-				<div class="btn-group" data-toggle="buttons-radio">
-					<a href="#" class="btn btn-mini" rel="tooltip" title="Non-Disponble"> <i class="icon-ban-circle"></i> </a>
-					<a href="#" class="btn btn-mini btn-warning" rel="tooltip" title="Libre"> <i class="icon-ok-circle"></i> </a>
-				</div></td>
-				-->
+{% endblock %}
