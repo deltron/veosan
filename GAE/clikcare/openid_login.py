@@ -1,26 +1,18 @@
 from google.appengine.api import users
 from google.appengine.ext import webapp
 import webapp2, logging
+from base import BaseHandler
 
-class LoginHandler(webapp.RequestHandler):
+class LoginHandler(BaseHandler):
     def get(self):
-        logging.info("LoginHandler Invoked with get")
-        '''
-        user = users.get_current_user()
         
-        if user:
-            greeting = ("Welcome, %s! (<a href=\"%s\">sign out</a>)" %
-                        (user.nickname(), users.create_logout_url("/")))
-            logging.info(greeting)
+        continue_url = self.request.GET.get('continue')
+        openid_url = self.request.GET.get('openid')
+        if not openid_url:
+            self.render_template('login.html', continue_url=continue_url)
         else:
-            greeting = ("<a href=\"%s\">Sign in or register</a>." %
-                        users.create_login_url("/"))
+            self.redirect(users.create_login_url(continue_url, None, openid_url))
 
-        self.response.out.write("<html><body>%s</body></html>" % greeting)
-     '''
-
-    def put(self):
-        logging.info("LoginHandler Invoked with put")
 
 webapp2_config = {}
 
