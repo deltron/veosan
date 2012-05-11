@@ -4,7 +4,7 @@ import sys
 import os
 # Install the Python unittest2 package before you run this script.
 import unittest2
-
+import BeautifulSoup
 
 # IN APTANA
 # Run -> Run As -> Python Run
@@ -20,6 +20,9 @@ def main(sdk_path, test_path):
     sys.path.insert(0, sdk_path)
     import dev_appserver
     dev_appserver.fix_sys_path()
+    
+    # Test Beautiful Soup import
+    print 'Using BeautifulSoup version ' + BeautifulSoup.__version__
     
     # TODO this is a hack
     # change directory to app root, otherwise templates won't be found...
