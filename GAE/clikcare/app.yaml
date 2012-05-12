@@ -19,6 +19,9 @@ handlers:
 - url: /_ah/login_required
   script: openid_login.application
 
+- url: /test_login
+  script: openid_login.application
+
 - url: /admin/.*
   script: main.application
   login: admin
