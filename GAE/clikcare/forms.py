@@ -79,6 +79,8 @@ class BookingForm(Form):
     bookingDate = SelectField(_(u'Date').decode("UTF-8"), choices=util.getDatesList())
     bookingTime = SelectField(_(u'Time').decode("UTF-8"), choices=util.getTimesList())
 
+class EmailOnlyBookingForm(Form):
+    email = TextField(_(u'E-mail Address').decode("UTF-8"), [validators.Email(message=_(u'Invalid email address.').decode("UTF-8"))])
 
 class PatientForm(Form):
     firstName = TextField(_(u'First Name').decode("UTF-8"), [validators.Length(min=1, message=_(u'First name is a required field').decode("UTF-8"))])

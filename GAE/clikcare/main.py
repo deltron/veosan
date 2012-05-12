@@ -7,7 +7,7 @@ from webapp2 import Route
 # clik
 import admin, util, db, provider_handler, mail
 from base import BaseHandler
-from forms import BookingForm, PatientForm, ContactForm
+from forms import BookingForm, PatientForm, ContactForm, EmailOnlyBookingForm
 from data import Booking
 
 
@@ -48,7 +48,8 @@ class IndexHandler(BaseHandler):
                 self.render_template('result.html', **tv) 
             else:
                 logging.warn('No provider found for booking:' + unicode(booking.key()))
-                tv = {'booking': booking}    
+                emailForm = EmailOnlyBookingForm()
+                tv = {'booking': booking, 'form': emailForm}    
                 self.render_template('no_result.html', **tv) 
         else:
             self.render_template('index.html', form=bookingform)
