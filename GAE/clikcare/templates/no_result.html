@@ -7,18 +7,22 @@
 <div class="row">
 	<div class="span6">
 		<div class="well">
-			<h1>Fully Booked!</h1>
+			
+			<h1><img src="/assets/img/blue-exclamation.png" width="80" height="80"> Fully Booked!</h1>
+			<br>
 			<h3>{{ _('We currently do not have a health-care professional available that matches your needs and schedule.') }}</h3>
 			<br>			
 			<h4>Please fill in your email below and we will contact you as soon as we have availability.</h4>
 			<br>
 			<br>
+			
 			<form method="post" action="/" class="form-inline">
-				Help us help you:
 				<fieldset>
 					<input id="bk" name="bk" type="hidden" value="{{ booking.key() }}">
-					<input class="input-xlarge" id="patientEmail" name="patientEmail" type="text" placeholder=" Email address">
-					<button type="submit" class="btn btn-primary">
+					<fieldset>
+						{{ makeStandardForm() }}
+					</fieldset>
+					<button type="submit" class="btn btn-primary btn-large">
 						{{ _('Go!') }}
 					</button>
 				</fieldset>
