@@ -33,15 +33,14 @@
 							<a href="#" class="" rel="popover" title="{{b.patient.firstName}} {{b.patient.lastName}}" data-content="{{b.patient.phone}} <br> {{b.patient.email}} <br>">
 							{{b.patient.firstName}} {{b.patient.lastName}}
 							</a>
-						{% endif %}
-						
-						{% if b.requestEmail %}
-							{{b.requestEmail}} <a href='#' rel="tooltip" title='User did not login'> <span class="badge badge-warning">!</span> </a>
-							
 						{% else %}
-							<a href='#' rel="tooltip" title='User dropped out before entering email'> <em>No Email</em> </a>
+							{% if b.requestEmail %}
+								{{b.requestEmail}} <a href='#' rel="tooltip" title='User did not login'> <span class="badge badge-warning">!</span> </a>
+								
+							{% else %}
+								<a href='#' rel="tooltip" title='User dropped out before entering email' style='color: grey;'> <em>No Email</em> </a>
+							{% endif %}
 						{% endif %}
-						
 					</td>
 					<!-- Provider -->
 					<td> {% set p = b.provider %}
