@@ -93,14 +93,14 @@
      		op = 'add'
      		$icon.addClass('icon-ok-circle')
      		$icon.removeClass('icon-ban-circle')
-			$new_tooltip = '{{ _('Free') }}'
+			$new_tooltip = '{{ _("Free") }}'
      	}
      	else {
      		op = 'remove'
      		$icon.addClass('icon-ban-circle')
      		$icon.removeClass('icon-ok-circle')
      		//$(this).attr('title', 'Not Free')
-     		$new_tooltip = '{{ _('Busy') }}'
+     		$new_tooltip = '{{ _("Busy") }}'
      	}
      	// Weird workaround for tooltip change	
      	$(this).attr('data-original-title', $new_tooltip).tooltip('fixTitle'); 	

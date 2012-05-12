@@ -3,6 +3,7 @@
 # GAE
 import webapp2, logging
 from google.appengine.api import users
+from google.appengine.api.users import User
 from webapp2 import Route
 # clik
 import admin, util, db, provider_handler, mail
@@ -21,15 +22,19 @@ class BaseBookingHandler(BaseHandler):
     def renderNewPatientForm(self, patientForm, booking):
         tv = {'form': patientForm, 'booking': booking, 'provider': booking.provider}
         self.render_template('patient/new.html', **tv)
-                
+        
+    def renderFullyBooked(self, booking, emailForm=None):
+        tv = {'booking': booking, 'form': emailForm}
+        self.render_template('no_result.html', **tv) 
+        
+        
     
-class IndexHandler(BaseHandler):
+class IndexHandler(BaseBookingHandler):
     def get(self):
         self.render_template('index.html', form=BookingForm(self.request.GET))
         
     def post(self):
         ''' Renders 2nd page: Result + Confirm button
-        
         TODO: Replace with passing booking properties and provider key, saving only after the patient logging ??? 
         '''
         bookingform = BookingForm(self.request.POST)
@@ -49,11 +54,27 @@ class IndexHandler(BaseHandler):
             else:
                 logging.warn('No provider found for booking:' + unicode(booking.key()))
                 emailForm = EmailOnlyBookingForm()
-                tv = {'booking': booking, 'form': emailForm}    
-                self.render_template('no_result.html', **tv) 
+                self.renderFullyBooked(booking, emailForm) 
         else:
             self.render_template('index.html', form=bookingform)
-    
+
+
+class FullyBookedHandler(BaseBookingHandler):
+    def get(self):
+        self.redirect
+        
+    def post(self):
+        emailForm = EmailOnlyBookingForm(self.request.POST)
+        booking_key = self.request.get('bk')
+        booking = Booking.get(booking_key)
+        if emailForm.validate():
+            ''' Stores email for Booking with No Result'''
+            booking.requestEmail = self.request.get('email')
+            booking.put()
+            self.renderFullyBooked(booking)
+        else:
+            self.renderFullyBooked(booking, emailForm)
+        
 
 class StaticHandler(BaseHandler):
     def get(self):
@@ -162,6 +183,7 @@ webapp2_config['webapp2_extras.i18n'] = {
 application = webapp2.WSGIApplication([
                                        # General pages
                                        ('/', IndexHandler),
+                                       ('/full', FullyBookedHandler),
                                        ('/contact', ContactHandler),
                                        
                                        # Static Pages

@@ -99,6 +99,8 @@ class Booking(db.Model):
     requestCategory = db.StringProperty()
     requestRegion = db.StringProperty()
     requestDateTime = db.DateTimeProperty()
+    # email for booking requests with no provider found
+    requestEmail = db.EmailProperty()
     # actual appointment
     dateTime = db.DateTimeProperty()
     comments = db.StringProperty(multiline=True)
