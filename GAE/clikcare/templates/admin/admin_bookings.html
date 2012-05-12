@@ -27,7 +27,22 @@
 					title="Booking Details"
 					data-content="{{b.get_html_summary()}}"> {{b.dateTime|format_datetime_noseconds}} </a></td>
 					<!-- Patient -->
-					<td><a href="#" class="" rel="popover" title="{{b.patient.firstName}} {{b.patient.lastName}}" data-content="{{b.patient.phone}} <br> {{b.patient.email}} <br>">{{b.patient.firstName}} {{b.patient.lastName}}</a></td>
+					
+					<td>
+						{% if b.patient %}
+							<a href="#" class="" rel="popover" title="{{b.patient.firstName}} {{b.patient.lastName}}" data-content="{{b.patient.phone}} <br> {{b.patient.email}} <br>">
+							{{b.patient.firstName}} {{b.patient.lastName}}
+							</a>
+						{% endif %}
+						
+						{% if b.requestEmail %}
+							{{b.requestEmail}} <a href='#' rel="tooltip" title='User did not login'> <span class="badge badge-warning">!</span> </a>
+							
+						{% else %}
+							<a href='#' rel="tooltip" title='User dropped out before entering email'> <em>No Email</em> </a>
+						{% endif %}
+						
+					</td>
 					<!-- Provider -->
 					<td> {% set p = b.provider %}
 					{% if p %} <a href="{{p.get_edit_link()}}"
