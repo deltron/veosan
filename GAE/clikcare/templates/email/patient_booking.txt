@@ -1,0 +1,7 @@
+Hi {{ patient.firstName }} {{ patient.lastName }},
+
+Your are booked for {{ provider.category }} with {{ provider.fullName() }} on {{ b.dateTime|format_datetime_full }}
+
+Thank you,
+
+Clikcare

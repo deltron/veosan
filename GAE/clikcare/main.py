@@ -143,7 +143,7 @@ class PatientBookHandler(BaseBookingHandler):
                 booking.patient = patient
                 booking.put()
                 # booking succesfull, send email
-                mail.emailBooking(booking)
+                mail.emailBookingToPatient(self.jinja2, booking)
             else:
                 logging.info("No booking saved because patient is None")
             self.renderConfirmedBooking(booking)
