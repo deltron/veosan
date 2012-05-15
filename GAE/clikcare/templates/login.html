@@ -6,13 +6,9 @@
 {% block content %}
 <div class="row">
 	<div class="span6">
-		<form method="get" action="/_ah/login_required">
-			{% if continue_url %}
-			<input type="text" name="continue" value="{{continue_url|escape}}" />
-			{% endif %}
-			<input type="text" name="openid" />
-			<input type="submit" value="Log In" />
-		</form>
+		{% for name, url in login_urls.items() %}
+			<a href="{{ url }}">{{ name }}</a>
+		{% endfor %}
 	</div>
 </div>
 {% endblock content %} 

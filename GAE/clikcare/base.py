@@ -1,10 +1,6 @@
-'''
-    base handler
-'''
-
+import gettext
 import webapp2
 from webapp2_extras import jinja2
-import gettext
 from google.appengine.api import users
 
 
