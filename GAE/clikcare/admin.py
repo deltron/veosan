@@ -3,10 +3,9 @@
 '''
 
 from google.appengine.ext import db as gdb
-from google.appengine.api import mail
 from google.appengine.api import users
 from base import BaseHandler
-import db
+import db, mail
 import logging
 from data import Provider
 
@@ -58,21 +57,17 @@ class NewProviderSolicitHandler(BaseHandler):
         the sollicitation email to the provider to reset password and agree to terms.
     '''
     def post(self):
-        # user_address = self.request.get("email_address")
-        user_address = "leblancd@gmail.com" #hardcode for now
-        if not mail.is_email_valid(user_address):
-            #  some error message
-            logging.info('invalid email address : %s' % user_address)
+        key = self.request.get('provider_key')
+        if (key):
+            # edit provider
+            provider = Provider.get(key)
+            # send email
+            mail.emailSolicitProvider(self.jinja2, provider)
+            # store Confirmation URL?
+            
+            # render the provider admin page
+            success_message='Solicit email sent to %s' % provider.email
+            self.render_template('provider/administration.html', p=provider, success_message=success_message)
         else:
-            confirmation_url = "http://www.google.com"
-            sender_address = "cliksante.com <mail@cliksante.com>"
-            subject = "Confirm your profile"
-            body = """
-Thank you for creating an account!  Please confirm your email address by
-clicking on the link below:
-
-%s
-""" % confirmation_url
-
-            mail.send_mail(sender_address, user_address, subject, body)
-            self.render_template('admin/adminindex.html')
+            logging.info("Missing key")
+            

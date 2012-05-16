@@ -203,6 +203,7 @@ application = webapp2.WSGIApplication([
                                        ('/provider/schedule', provider_handler.ProviderScheduleHandler),
                                        ('/provider/terms', provider_handler.ProviderTermsHandler),
                                        ('/provider/bookings', provider_handler.ProviderBookingsHandler),
+                                       ('/provider/administration', provider_handler.ProviderAdministrationHandler),
                                        ('/serve/([^/]+)?', provider_handler.ServeHandler), # temporary - to test file uploads
                                        
                                        # admin
