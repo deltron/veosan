@@ -6,6 +6,7 @@ import urllib
 from forms import ProviderProfileForm, ProviderAddressForm, ProviderPhotoForm, ProviderTermsForm, ProviderLoginForm
 from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
+from google.appengine.api import users
 from data import Provider, Schedule
 import util
 from datetime import datetime, date, time
@@ -35,7 +36,10 @@ class ProviderBaseHandler(BaseHandler):
             
     def render_terms(self, provider, terms_form, **extra):
         self.render_template('provider/provider_terms.html', p=provider, form=terms_form, **extra)
-   
+
+    def render_administration(self, provider, **extra):
+        self.render_template('provider/administration.html', p=provider, **extra)
+           
 
 class ProviderEditProfileHandler(ProviderBaseHandler):
     def get(self):
@@ -182,6 +186,19 @@ class ProviderBookingsHandler(ProviderBaseHandler):
             bookings = bq.fetch(15)
             logging.info('Bookings:' + str(bookings))
             self.render_bookings(provider, bookings)
+        else:
+            logging.info("Missing provider key")
+
+
+class ProviderAdministrationHandler(ProviderBaseHandler):
+    def get(self):
+        key = self.request.get('key')
+        if (key):
+            provider = Provider.get(key)
+            if users.is_current_user_admin():
+                self.render_administration(provider)
+            else:
+                logging.info("Not Admin: Can't see provider administration page")
         else:
             logging.info("Missing provider key")
 

@@ -1,0 +1,68 @@
+{% extends "/layout/provider_nav.html" %}
+
+{% set active_page = "administration" %}
+
+{% block subhead %}{{ _('Provider Administration') }}{% endblock %}
+{% block lead %} Administration functions for provider <strong>{{p.fullName()}}</strong> {% endblock %}
+
+{% block content %}
+<!-- Success Message -->
+{% if success_message %}
+<div class="alert alert-success">
+	{{success_message}}
+</div>
+{% endif %}
+<!-- Form -->
+
+<div class="row">
+	
+	<div class="span6">
+		<h2>Solicit</h2>
+		<form method="post" action="/admin/provider/solicit" class="well form-inline">
+			<p>Make sure profile is completed before sending the invitaion for the provider to agree to the terms and take over his profile.</p>
+			<fieldset>
+				<input type="hidden" name="provider_key" value="{{p.key()}}" />
+				<button type="submit" class="btn btn-primary">
+					Solicit Provider
+				</button>
+				<span>&lt;{{p.email}}&gt;</span>
+			</fieldset>
+		</form>
+	</div>
+	
+	<div class="span6">
+		<h2>Bio Preview</h2>
+		
+		<div class="well">
+					<!-- TODO: create a BIO block we can use here and in results page -->
+					
+					<div class="row">
+					  <div class="span2">
+				  		{% if p.profilePhotoBlob == None %}
+							<img src="/assets/img/default-profile.png" width="100" height="100">
+						{% else %}
+							<img src="/serve/{{ p.profilePhotoBlob.key() }}" width="100" height="100">
+						{% endif %}
+					  </div>
+					  <div class="span3">
+						  	<div class="row-fluid">
+								<blockquote>
+									<p>
+										{{p.quote}}
+									</p>
+								</blockquote>
+							</div>
+					  </div>
+					</div>
+					<div class="row">
+						<div class="span5">
+							<br>
+							<h4> {{ _('My Background') }} </h4>
+							<p>{{p.bio}}</p>
+						</div>
+					</div>
+			
+	    </div>
+	</div>
+</div>
+{% endblock %}
