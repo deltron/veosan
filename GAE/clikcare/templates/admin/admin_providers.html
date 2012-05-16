@@ -19,13 +19,14 @@
 		<ul class="unstyled">
 			{% for p in providers %}
 			<li>
-				<a
-				href="{{p.get_edit_link()}}"
-				rel="popover"
-				title="{{p.firstName}} {{p.lastName}}"
-				data-content="{{p.get_html_summary()}}">{{p.lastName}}, {{p.firstName}} [{{p.email}}]</a>
-				{% if p.recently_created() %} <span class="label label-success">new</span>
-				{% endif %}
+				<a href="{{p.get_edit_link()}}"
+					rel="popover"
+					title="{{p.firstName}} {{p.lastName}}"
+					data-content="{{p.get_html_summary()}}">
+					{{p.lastName}}, {{p.firstName}} [{{p.email}}]
+				</a>
+					{% if p.recently_created() %} <span class="label label-success">new</span>{% endif %}
+					{% if not p.termsAgreement %} <span class="label label-important">missing terms</span>{% endif %}
 			</li>
 			{% endfor %}
 		</ul>
