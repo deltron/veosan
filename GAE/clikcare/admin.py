@@ -64,7 +64,7 @@ class NewProviderSolicitHandler(BaseHandler):
             provider.put()
             # activation url
             url_obj = urlparse.urlparse(self.request.url)
-            activation_url = urlparse.urlunparse((url_obj.scheme, url_obj.netloc, '/activation/' + provider.activation_key, '', '', ''))
+            activation_url = urlparse.urlunparse((url_obj.scheme, url_obj.netloc, '/provider/activation/' + provider.activation_key, '', '', ''))
             logging.info('activation url:' + activation_url)
             # send email
             mail.emailSolicitProvider(self.jinja2, provider, activation_url)

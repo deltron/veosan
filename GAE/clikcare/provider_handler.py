@@ -172,6 +172,10 @@ class ProviderTermsHandler(ProviderBaseHandler):
         else:
             logging.info("Missing key")
             
+    def post(self):
+        ## TODO Write this to save signature and terms agreement
+        pass
+            
         
 class ProviderBookingsHandler(ProviderBaseHandler):
     def get(self):
@@ -206,27 +210,37 @@ class ProviderAdministrationHandler(ProviderBaseHandler):
 class ProviderLoginHandler(ProviderBaseHandler):
     def get(self):
         key = self.request.get('key')
-        
         provider = None;
-        
         if (key):
             # show provider name (from cookie?)
             provider = Provider.get(key)
-           
         login_form = ProviderLoginForm(obj=provider)
         self.render_login(provider, login_form=login_form) 
     
     def post(self):
         form = ProviderLoginForm(self.request.POST)
-
         if form.validate():
             # Retrieve Provider from email address
             email = form.email.data
             provider = db.getProviderFromEmail(email)
             logging.info("provider dump before edit:" + str(vars(provider)))
             self.render_schedule(provider)
+        else:
+            # TODO redisplay Login page on failed validation
+            logging.info('ProviderLoginForm validation failed')
+            pass
         
         
+class ProviderActivationHandler(ProviderBaseHandler):
+    def get(self, activation_key=None):
+        #parse URL to get activation key
+        if (activation_key):
+            provider = db.get_provider_from_activation_key(activation_key)
+            # show terms page
+            terms_form = ProviderTermsForm(obj=provider)
+            self.render_terms(provider, terms_form=terms_form)
+        else:
+            logging.info('No activation key')
         
         
         

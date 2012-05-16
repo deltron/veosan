@@ -145,8 +145,13 @@ def getProviderFromEmail(email):
     q = Provider.all()
     q.filter("email =", email)
     provider = q.get()
-    
     logging.debug('Key for email %s is %s' % (email, unicode(provider.key())))
-  
+    return provider   
+
+
+def get_provider_from_activation_key(activation_key):
+    q = Provider.all()
+    q.filter('activation_key = ', activation_key)
+    provider = q.get()
+    logging.debug('Found provider %s from activation_key: %s' % (provider, activation_key))
     return provider
-    

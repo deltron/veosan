@@ -204,6 +204,7 @@ application = webapp2.WSGIApplication([
                                        ('/provider/terms', provider_handler.ProviderTermsHandler),
                                        ('/provider/bookings', provider_handler.ProviderBookingsHandler),
                                        ('/provider/administration', provider_handler.ProviderAdministrationHandler),
+                                       Route('/provider/activation/<activation_key>', handler=provider_handler.ProviderActivationHandler),
                                        ('/serve/([^/]+)?', provider_handler.ServeHandler), # temporary - to test file uploads
                                        
                                        # admin
