@@ -8,6 +8,7 @@ from base import BaseHandler
 import db, mail
 import logging
 from data import Provider
+import random, sha, urlparse
 
 
 class AdminBaseHandler(BaseHandler):
@@ -16,13 +17,10 @@ class AdminBaseHandler(BaseHandler):
         providers = db.fetchProviders()
         self.render_template('admin/admin_providers.html', providers=providers, **tv)
 
-
-
 class AdminIndexHandler(AdminBaseHandler):
     '''Administration Index'''
     def get(self):
         self.redirect('/admin/bookings')
-
 
 class AdminBookingsHandler(AdminBaseHandler):
     '''Administer Bookings'''
@@ -30,13 +28,11 @@ class AdminBookingsHandler(AdminBaseHandler):
             bookings = gdb.GqlQuery("SELECT * FROM Booking ORDER BY createdOn DESC LIMIT 10")
             self.render_template('admin/admin_bookings.html', bookings=bookings)
 
-
 class AdminProvidersHandler(AdminBaseHandler):
     ''' Administer Providers '''
     def get(self):
         self.render_providers()
-          
-        
+                  
 class NewProviderInitHandler(AdminBaseHandler):
     '''
         Create a unique ID for the new provider, initalize profile with defaults.
@@ -61,10 +57,17 @@ class NewProviderSolicitHandler(BaseHandler):
         if (key):
             # edit provider
             provider = Provider.get(key)
+            # create and store activation key and url
+            salt = sha.new(str(random.random())).hexdigest()[:5]
+            activation_key = sha.new(salt + provider.firstName + provider.lastName).hexdigest()
+            provider.activation_key = activation_key
+            provider.put()
+            # activation url
+            url_obj = urlparse.urlparse(self.request.url)
+            activation_url = urlparse.urlunparse((url_obj.scheme, url_obj.netloc, '/activation/' + provider.activation_key, '', '', ''))
+            logging.info('activation url:' + activation_url)
             # send email
-            mail.emailSolicitProvider(self.jinja2, provider)
-            # store Confirmation URL?
-            
+            mail.emailSolicitProvider(self.jinja2, provider, activation_url)
             # render the provider admin page
             success_message='Solicit email sent to %s' % provider.email
             self.render_template('provider/administration.html', p=provider, success_message=success_message)

@@ -1,7 +1,7 @@
 Thank you {{p.firstName}} {{p.lastName}} for creating an account!  Please confirm your email address by
 clicking on the link below:
 
-{{confirm_url}}
+{{activation_url}}
 
 Thank you,
 Clikcare

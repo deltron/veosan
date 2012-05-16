@@ -3,7 +3,6 @@ import logging
 from babel import Locale
 from base import lang
 from google.appengine.api import mail
-import datetime
 
 CLIK_SUPPORT_ADDRESS = 'philippe.caya@gmail.com'
 
@@ -32,14 +31,13 @@ def emailBookingToPatient(jinja2, booking):
 
 
 
-def emailSolicitProvider(jinja2, provider):
+def emailSolicitProvider(jinja2, provider, activation_url):
     ''' Send solicitation email to provider '''
     message = mail.EmailMessage()
     message.sender = CLIK_SUPPORT_ADDRESS
     message.to = provider.email
     message.subject = u'Cliksoin - Confirm your profile %s' % provider.fullName()
-    confirm_url = 'http://confirmation.url'
-    tv = {'p': provider, 'confirm_url': confirm_url}
+    tv = {'p': provider, 'activation_url': activation_url}
     message.body = jinja2.render_template('email/provider_solicit.txt', **tv)
     try:
         message.send()

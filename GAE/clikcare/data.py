@@ -32,6 +32,8 @@ class Provider(db.Model):
     A provider
     '''
     createdOn = db.DateTimeProperty(auto_now_add=True)
+    activation_key = db.StringProperty()
+    termsAgreement = db.StringProperty()
     # profile
     category = db.StringProperty()
     specialty = db.StringListProperty()
