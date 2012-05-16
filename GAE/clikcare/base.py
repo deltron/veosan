@@ -24,5 +24,10 @@ class BaseHandler(webapp2.RequestHandler):
         template_args['user'] = user
         template_args['login_url'] = users.create_login_url()
         template_args['logout_url'] = users.create_logout_url("/")
+        # roles
+        roles = []
+        if users.is_current_user_admin():
+            roles.append('admin')
+        template_args['roles'] = roles
         
         self.response.write(self.jinja2.render_template(filename, **template_args))

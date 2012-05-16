@@ -100,14 +100,21 @@ Twitter Bootstrap horizontal form layout.
 					<a class="brand" href="/">{{ _('clikcare') }}</a>
 					<div class="nav-collapse">
 						<ul class="nav pull-right">
-							{% if (user) %}
-							<li>
-								<a href="#">{{ user.nickname() }}</a>
-							</li>
-							<li class="divider-vertical"></li>
-							<li>
-								<a href="{{logout_url}}">{{ _('Logout') }}</a>
-							</li>
+							{% if user %}
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ user.nickname() }} <b class="caret"></b></a>
+									<ul class="dropdown-menu">
+						                {% if 'admin' in roles %}
+										<li>
+											<a href="/admin">Administration</a>
+										</li>
+										{% endif%}
+						                <li class="divider"></li>
+						                <li>
+											<a href="{{logout_url}}">{{ _('Logout') }}</a>
+										</li>
+					                </ul>
+				               </li>
 							{% else %}
 							<li>
 								<a  href="/_ah/login_required">{{ _('My Account') }}</a>
