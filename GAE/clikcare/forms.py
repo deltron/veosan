@@ -128,10 +128,10 @@ class ProviderProfileForm(Form):
     #key = TextField('key')
     
 class ProviderTermsForm(Form):
-    # validate to must be true
-    iAgree = CustomBooleanField(_(u'I agree with the terms of the above').decode("UTF-8"))
+    # terms agreement (required)
+    termsAgreement = CustomBooleanField(_(u'I agree with the Terms of Service').decode("UTF-8"), [validators.Required(message=_(u'You must accept the terms to register').decode("UTF-8"))])
     # todo validate against exact firstName, lastName string
-    signature = TextField(_(u'Signature').decode("UTF-8"), [validators.Length(min=5, message='First name and last name as in address page')])
+    #signature = TextField(_(u'Signature').decode("UTF-8"), [validators.Length(min=5, message='First name and last name as in address page')])
 
 class ProviderLoginForm(Form):
     email = TextField(_(u'E-mail Address').decode("UTF-8"), [validators.Email(message=_(u'Invalid email address.').decode("UTF-8"))])

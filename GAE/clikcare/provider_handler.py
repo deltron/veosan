@@ -173,10 +173,25 @@ class ProviderTermsHandler(ProviderBaseHandler):
             logging.info("Missing key")
             
     def post(self):
-        ## TODO Write this to save signature and terms agreement
-        pass
+        key = self.request.get('provider_key')
+        if (key):
+            provider = Provider.get(key)
+            terms_form = ProviderTermsForm(self.request.POST)
+            if terms_form.validate():
+                # Save signature and terms agreement
+                provider.termsAgreement = self.request.get('termsAgreement')
+                provider.put()
+                # TODO Add Welcome Message and invitation to review profile and set schedule
+                redirect_url = provider.get_edit_link(section='profile')
+                logging.info(redirect_url)
+                self.redirect(redirect_url)
+            else:
+                self.render_terms(provider, terms_form=terms_form)
+        else:
+            logging.info("Missing provider key") 
             
         
+
 class ProviderBookingsHandler(ProviderBaseHandler):
     def get(self):
         key = self.request.get('key')
