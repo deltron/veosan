@@ -25,7 +25,7 @@ class AdminIndexHandler(AdminBaseHandler):
 class AdminBookingsHandler(AdminBaseHandler):
     '''Administer Bookings'''
     def get(self):
-            bookings = gdb.GqlQuery("SELECT * FROM Booking ORDER BY createdOn DESC LIMIT 10")
+            bookings = gdb.GqlQuery("SELECT * FROM Booking ORDER BY created_on DESC LIMIT 10")
             self.render_template('admin/admin_bookings.html', bookings=bookings)
 
 class AdminProvidersHandler(AdminBaseHandler):
@@ -59,7 +59,7 @@ class NewProviderSolicitHandler(BaseHandler):
             provider = Provider.get(key)
             # create and store activation key and url
             salt = sha.new(str(random.random())).hexdigest()[:5]
-            activation_key = sha.new(salt + provider.firstName + provider.lastName).hexdigest()
+            activation_key = sha.new(salt + provider.first_name + provider.last_name).hexdigest()
             provider.activation_key = activation_key
             provider.put()
             # activation url

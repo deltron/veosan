@@ -22,10 +22,10 @@
 			<input type="hidden" name="provider_key" value="{{p.key()}}" />
 		</div>
 		<div class="span8" align="center">
-			{% if p.profilePhotoBlob == None %}
+			{% if p.profile_photo_blob == None %}
 				<img src="/assets/img/default-profile.png" width="100" height="100">
 			{% else %}
-				<img src="/serve/{{ p.profilePhotoBlob.key() }}" width="300" height="400">
+				<img src="/serve/{{ p.profile_photo_blob.key() }}" width="300" height="400">
 			{% endif %}
 
 			<br>

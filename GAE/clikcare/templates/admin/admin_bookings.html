@@ -30,8 +30,8 @@
 					
 					<td>
 						{% if b.patient %}
-							<a href="#" class="" rel="popover" title="{{b.patient.firstName}} {{b.patient.lastName}}" data-content="{{b.patient.phone}} <br> {{b.patient.email}} <br>">
-							{{b.patient.firstName}} {{b.patient.lastName}}
+							<a href="#" class="" rel="popover" title="{{b.patient.first_name}} {{b.patient.last_name}}" data-content="{{b.patient.phone}} <br> {{b.patient.email}} <br>">
+							{{b.patient.first_name}} {{b.patient.last_name}}
 							</a>
 						{% else %}
 							{% if b.requestEmail %}
@@ -46,8 +46,8 @@
 					<td> {% set p = b.provider %}
 					{% if p %} <a href="{{p.get_edit_link()}}"
 					rel="popover"
-					title="{{p.firstName}} {{p.lastName}}"
-					data-content="{{p.get_html_summary()}}"> {{p.lastName}}, {{p.firstName}}</a> {% else %}
+					title="{{p.first_name}} {{p.last_name}}"
+					data-content="{{p.get_html_summary()}}"> {{p.last_name}}, {{p.first_name}}</a> {% else %}
 					<p>
 						No provider booked
 					</p> {% endif %} </td>

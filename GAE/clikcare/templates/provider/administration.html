@@ -6,7 +6,7 @@
 	{{p.fullName()}}
 	<!-- TODO: Make this a block, reuse on provider list -->
 	{% if p.recently_created() %} <span class="label label-success">new</span>{% endif %}
-	{% if not p.termsAgreement %} <span class="label label-important">missing terms</span>{% endif %}
+	{% if not p.terms_agreement %} <span class="label label-important">missing terms</span>{% endif %}
 {% endblock %}
 
 {% block lead %} {{ _('Provider Administration') }} {% endblock %}
