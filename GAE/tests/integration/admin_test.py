@@ -218,9 +218,12 @@ class AdminTest(unittest.TestCase):
         # Check the square is grayed out
         self.assertEqual(monday_morning_a['class'], 'btn btn-mini', 'Monday morning should be gray box')
 
+        # Check the tooltip unavailable
+        self.assertEqual(monday_morning_a['title'], 'Non-disponible', 'Monday morning should be non disponible')
+
         # Check the icon is a circle with cross
         monday_morning_i = response.html.find('i', attrs={'id': monday_morning_id})
-        self.assertEqual(monday_morning_i['class'], 'icon-ban-circle', 'Monday morning should be ok icon')
+        self.assertEqual(monday_morning_i['class'], 'icon-ban-circle', 'Monday morning should be ban icon')
 
 
         # Click to select Monday morning        
@@ -242,6 +245,9 @@ class AdminTest(unittest.TestCase):
         # check if square for day is green
         monday_morning_a = response.html.find('a', attrs={'id': monday_morning_id})
         self.assertEqual(monday_morning_a['class'], 'btn btn-mini btn-success', 'Monday morning should be green')
+
+        # Check the tooltip is now available
+        self.assertEqual(monday_morning_a['title'], 'Disponible', 'Monday morning should be disponible')
 
         # check if the icon changed
         monday_morning_i = response.html.find('i', attrs={'id': monday_morning_id})
