@@ -10,29 +10,26 @@ from data import Patient
 from data import Provider
   
 def set_all_properties_on_entity_from_multidict(entity, multidict):
-    ''' fancy way to set all properties on an entity from a multidict (posted form '''
+    ''' fancy way to set all properties on an entity from a multidict (posted form) '''
     
     for prop in iter(entity.properties()):
         if multidict.has_key(prop):
-            logging.info("type for property " + prop + " is " + str(type(getattr(entity, prop))))
-            if isinstance(getattr(entity, prop), str):
-                logging.info("saving key->value : " + prop + "->" + multidict.getone(prop))
+            property_data_type = entity.properties()[prop].data_type
+
+            if property_data_type == basestring:
+                logging.info("saving key->value for string : " + prop + "->" + multidict.getone(prop))
                 setattr(entity, prop, multidict.getone(prop))
-            elif isinstance(getattr(entity, prop), list):
-                logging.info("saving key->value:" + prop + " -> " + str(multidict.getall(prop)))
+            elif property_data_type == list:
+                logging.info("saving key->value for list :" + prop + " -> " + str(multidict.getall(prop)))
                 setattr(entity, prop, multidict.getall(prop))
-            elif isinstance(getattr(entity, prop), types.NoneType):
-                logging.info("saving key->value for NoneType : " + prop + "->" + multidict.getone(prop))
-                
-                # set a boolean, not detected as boolean from Entity...
+            elif property_data_type == bool:
+                logging.info("saving key->value for bool : " + prop + "->" + multidict.getone(prop))                
                 if multidict.getone(prop) == 'True':
                     setattr(entity, prop, True)
                 else:
-                    setattr(entity, prop, multidict.getone(prop))
+                    setattr(entity, prop, multidict.getone(prop))          
             else:
-                logging.info("Got a property of unknown instance: " + str(type(getattr(entity, prop))))
-        else:
-            logging.info("Property not found in request: " + str(prop))
+                logging.error("Got a property of unknown instance: " + str(property_data_type))
         
   
 def storeBooking(r, patient=None, provider=None):

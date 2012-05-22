@@ -5,6 +5,8 @@ from datetime import datetime, date
 import unittest
 
 class BookingTest(AdminTest):
+    ''' TODO: bug because this extends the admin_test it runs everything twice... '''
+    
     def test_booking_single_timeslot_not_available(self):
         AdminTest.test_complete_profile_creation(self)
         

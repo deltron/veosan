@@ -4,7 +4,54 @@ import unittest, db
 from base import BaseTest
 
 class AdminTest(BaseTest):
-    def test_admin_provider_init(self):
+   
+    def test_fill_new_provider_address_correctly(self):
+        ''' fill out the new provider's address '''
+        
+        # init a provider
+        self._test_admin_provider_init()
+        self._test_fill_new_provider_address_correctly_action()
+        
+    def test_fill_new_provider_profile_correctly(self):
+        ''' fill out the new provider's profile '''
+        
+        # init a provider
+        self._test_admin_provider_init()
+        self._test_fill_new_provider_profile_correctly_action()
+
+    def test_fill_new_provider_address_then_modify(self):
+        ''' fill out the new provider's address then modify it '''
+        
+        # init a provider
+        self._test_admin_provider_init()
+        self._test_fill_new_provider_address_correctly_action()
+        self._test_modify_provider_address_action()
+
+        
+    def test_provider_schedule_set_one_timeslot(self):
+        ''' Enable bookings in one timeslot '''
+        
+        # init a provider
+        self._test_admin_provider_init()
+        self._test_provider_schedule_set_one_timeslot_action()
+        
+        
+    def test_complete_profile_creation(self):
+        # init a provider
+        self._test_admin_provider_init()
+        
+        # fill all sections
+        self._test_fill_new_provider_address_correctly_action()
+        self._test_fill_new_provider_profile_correctly_action()
+        self._test_provider_schedule_set_one_timeslot_action()
+
+
+    ###################################################################
+    ## BELOW HERE ARE LOCAL / REUSABLE UTILITY METHODS THAT DO THE WORK
+    ###################################################################
+     
+     
+    def _test_admin_provider_init(self):
         ''' initialize a new provider '''
         
         request_variables = { 'providerEmail' : 'unit_test@provider.com' }
@@ -18,38 +65,6 @@ class AdminTest(BaseTest):
         response.mustcontain('<span class="label label-success">new</span>')
         response.mustcontain('<span class="label label-important">missing terms</span>')
 
-
-    def test_fill_new_provider_address_correctly(self):
-        ''' fill out the new provider's address '''
-        
-        # init a provider
-        self.test_admin_provider_init()
-        self._test_fill_new_provider_address_correctly_action()
-        
-    def test_fill_new_provider_profile_correctly(self):
-        ''' fill out the new provider's profile '''
-        
-        # init a provider
-        self.test_admin_provider_init()
-        self._test_fill_new_provider_profile_correctly_action()
-
-        
-    def test_provider_schedule_set_one_timeslot(self):
-        ''' Enable bookings in one timeslot '''
-        
-        # init a provider
-        self.test_admin_provider_init()
-        self._test_provider_schedule_set_one_timeslot_action()
-        
-        
-    def test_complete_profile_creation(self):
-        # init a provider
-        self.test_admin_provider_init()
-        
-        # fill all sections
-        self._test_fill_new_provider_address_correctly_action()
-        self._test_fill_new_provider_profile_correctly_action()
-        self._test_provider_schedule_set_one_timeslot_action()
 
         
     def _test_fill_new_provider_address_correctly_action(self):
@@ -92,6 +107,65 @@ class AdminTest(BaseTest):
         # go back to the admin page, check the name is updated
         response = self.testapp.get('/admin/providers')
         response.mustcontain("Fox, Fantastic [unit_test@provider.com]")
+
+
+    def _test_modify_provider_address_action(self):
+        # get the provider key
+        provider = db.getProviderFromEmail("unit_test@provider.com")
+        
+        # request the address page
+        request_variables = { 'key' : provider.key() }
+        response = self.testapp.get('/provider/address', request_variables)
+        
+        address_form = response.forms[0] # address form
+        
+        # check email address is pre-populated
+        self.assertEqual(address_form['email'].value, "unit_test@provider.com")
+
+        # verify form contains correct info
+        self.assertEqual(address_form['prefix'].value, u"Mr.")
+        self.assertEqual(address_form['first_name'].value, u"Fantastic")
+        self.assertEqual(address_form['last_name'].value, u"Fox")
+        self.assertEqual(address_form['postfix'].value, u"Ph.D")
+        self.assertEqual(address_form['phone'].value, u"555-123-5678")
+        self.assertEqual(address_form['region'].value, u"mtl-downtown")
+        self.assertEqual(address_form['address'].value, u"123 Main St.")
+        self.assertEqual(address_form['city'].value, u"Westmount")
+        self.assertEqual(address_form['postal_code'].value, u"H1B2C3")
+        
+        # iterate over every field item, find the match in the provider object and check its equality
+        # with database
+        for k in iter(address_form.fields):
+            if hasattr(provider, str(k)):
+                self.assertEquals(address_form[k].value, getattr(provider, k))
+
+        # make some changes to the form
+        address_form['prefix'] = u"Mrs."
+        address_form['first_name'] = u"Linda"
+        address_form['last_name'] = u"Otter"
+        address_form['postfix'] = u"M.Sc"
+        address_form['phone'] = u"555-987-6543"
+        address_form['region'] = u"mtl-westisland"
+        address_form['address'] = u"321 Primary St."
+        address_form['city'] = u"Outremont"
+        address_form['postal_code'] = u"C4B5C6"
+
+        # submit it
+        response = address_form.submit()
+        response.mustcontain("Saved!")
+
+        # check values in database
+        provider = db.getProviderFromEmail("unit_test@provider.com")
+        
+        # iterate over every field item, find the match in the provider object and check its equality
+        # possible we miss something here?
+        for k in iter(address_form.fields):
+            if hasattr(provider, str(k)):
+                self.assertEquals(address_form[k].value, getattr(provider, k))
+
+        # go back to the admin page, check the name is updated
+        response = self.testapp.get('/admin/providers')
+        response.mustcontain("Otter, Linda [unit_test@provider.com]")
 
 
         
