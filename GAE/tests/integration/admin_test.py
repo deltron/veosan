@@ -34,8 +34,11 @@ class AdminTest(unittest.TestCase):
         self.assertEqual(response.status_int, 200)        
         response.mustcontain("Initialized new provider for unit_test@provider.com")
         response.mustcontain("None, None [unit_test@provider.com]")
-        #response.showbrowser()
         
+        # check badges are present
+        response.mustcontain('<span class="label label-success">new</span>')
+        response.mustcontain('<span class="label label-important">missing terms</span>')
+
 
     def test_fill_new_provider_address_correctly(self):
         ''' fill out the new provider's address '''
@@ -57,14 +60,14 @@ class AdminTest(unittest.TestCase):
 
         # fill out the form
         address_form['prefix'] = u"Mr."
-        address_form['firstName'] = u"Fantastic"
-        address_form['lastName'] = u"Fox"
+        address_form['first_name'] = u"Fantastic"
+        address_form['last_name'] = u"Fox"
         address_form['postfix'] = u"Ph.D"
         address_form['phone'] = u"555-123-5678"
         address_form['region'] = u"mtl-downtown"
         address_form['address'] = u"123 Main St."
         address_form['city'] = u"Westmount"
-        address_form['postalCode'] = u"H1B2C3"
+        address_form['postal_code'] = u"H1B2C3"
         
         # submit it
         response = address_form.submit()
@@ -99,7 +102,7 @@ class AdminTest(unittest.TestCase):
          
         profile_form = response.forms[0] # address form
         
-       # print profile_form.fields.values()
+        # print profile_form.fields.values()
         
         # fill out the form
         profile_form['category'] = 'osteopath'
@@ -107,18 +110,37 @@ class AdminTest(unittest.TestCase):
         profile_form.set('specialty', True, 0) # Sports
         profile_form.set('specialty', True, 2) # Cardio
 
-        profile_form['startYear'] = '2002'
-        profile_form['bio'] = "Areas of interest include treatment and management of spinal conditions with an emphasis on manual therapy and rehabilitative exercise."
-        
+        profile_form.set('associations', True, 0) # Ordre professionnel de la physiothérapie du Québec (OPPQ)
+        profile_form.set('associations', True, 2) # Canadian Academy of Manipulative Physiotherapy (CAMPT)
+
+        profile_form.set('certifications', True, 1) # Active Release Therapy (ART)
+
+        profile_form.set('onsite', True, 0) # onsite visits
+
+
+        profile_form['start_year'] = '2002'
+        profile_form['bio'] = "Areas of interest include treatment and management of spinal conditions with an emphasis on manual therapy and rehabilitative exercise."        
+        profile_form['quote'] = "The quick brown fox jumped over the lazy dog."
+
         # submit it
         response = profile_form.submit()
         response.mustcontain("Saved!")
 
         response.mustcontain("2002")
         response.mustcontain("Areas of interest include treatment and management")
+        response.mustcontain("The quick brown fox jumped over the lazy dog")
 
+        # TODO - switch to Beautiful Soup to parse HTML?
         response.mustcontain('input checked id="specialty-0" name="specialty" type="checkbox" value="sports"')        
-        response.mustcontain('input checked id="specialty-2" name="specialty" type="checkbox" value="cardiology"')        
+        response.mustcontain('input checked id="specialty-2" name="specialty" type="checkbox" value="cardiology"')  
+
+        response.mustcontain('input checked id="associations-0" name="associations" type="checkbox" value="oppq"')        
+        response.mustcontain('input checked id="associations-2" name="associations" type="checkbox" value="campt"')
+        
+        response.mustcontain('input checked id="certifications-1" name="certifications" type="checkbox" value="art"')        
+
+        response.mustcontain('input checked class="checkbox" id="onsite" name="onsite" type="checkbox" value="True"')        
+
         response.mustcontain('option selected value="osteopath"')
         
         # check values in database
@@ -139,7 +161,15 @@ class AdminTest(unittest.TestCase):
         self.assertIn('sports', provider.specialty)
         self.assertIn('cardiology', provider.specialty)
         self.assertNotIn('geriatric', provider.specialty)
+        
+        self.assertIn('oppq', provider.associations)
+        self.assertIn('campt', provider.associations)
+        self.assertNotIn('cpa', provider.associations)
 
+        self.assertIn('art', provider.certifications)
+        self.assertNotIn('mckenzie', provider.certifications)
+
+        self.assertTrue(provider.onsite)
 
     def test_upload_image_to_correct_address(self):
         ''' Upload a test image for the new provider '''
@@ -165,37 +195,64 @@ class AdminTest(unittest.TestCase):
         
     def test_provider_schedule_set(self):
         ''' fill out the new provider's profile '''
+        
         # init a provider
         self.test_admin_provider_init()
+        
         # get the provider key
         provider = db.getProviderFromEmail("unit_test@provider.com")
+        
         # request the schedule page
         request_variables = { 'key' : provider.key() }
         response = self.testapp.get('/provider/schedule', request_variables)
+        
+        # TODO make this more comprehensible ie. monday-8-to-13
         monday_morning_id = '0-8-13'
-        html = response.html
+         
+        
         # Check a ids
-        monday_morning_a = html.find('a', attrs={'id': monday_morning_id})
+        monday_morning_a = response.html.find('a', attrs={'id': monday_morning_id})
         self.assertTrue(monday_morning_a != None, 'The tag a with id %s should exist'.format(monday_morning_id))
         response.mustcontain(monday_morning_id)
-        # Click to select Monday morning
-        #jquery_response = response.click(linkid=monday_morning_id, verbose=True)
         
-        post_data = {'provider_key': provider.key(), 'day_time': monday_morning_id, 'op': 'add'}
-        jquery_response = self.testapp.post('/provider/schedule', post_data)
-        # TODO check the jQuery response
+        # Check the square is grayed out
+        self.assertEqual(monday_morning_a['class'], 'btn btn-mini', 'Monday morning should be gray box')
+
+        # Check the tooltip unavailable
+        self.assertEqual(monday_morning_a['title'], 'Non-disponible', 'Monday morning should be non disponible')
+
+        # Check the icon is a circle with cross
+        monday_morning_i = response.html.find('i', attrs={'id': monday_morning_id})
+        self.assertEqual(monday_morning_i['class'], 'icon-ban-circle', 'Monday morning should be ban icon')
+
+
+        # Click to select Monday morning        
+        request_variables = {'provider_key': provider.key(), 'day_time': monday_morning_id, 'operation': 'add'}
+        response = self.testapp.post('/provider/schedule', request_variables)
+        
+        # no javascript interpretation for jquery so request the page again...
+        
         # reload page
-        response = self.testapp.get('/provider/schedule', request_variables)
+        request_variables = { 'key' : provider.key() }
+        response = self.testapp.get('/provider/schedule', request_variables)        
         
         provider = db.getProviderFromEmail("unit_test@provider.com")
-        schedule_count = provider.schedule.count()
-        print ('Provider has %s schedules' % schedule_count)
-
-        self.assertEqual(schedule_count , 1, 'Provider should have a schedule')
-        monday_morning_a = html.find('a', attrs={'id': monday_morning_id})
-        print 'Class:' + monday_morning_a['class']
-        self.assertEqual(monday_morning_a['class'], 'btn btn-mini btn-success', 'Monday morning should be green')
         
+        # check one schedule was saved in the database
+        schedule_count = provider.schedule.count()
+        self.assertEqual(schedule_count , 1, 'Provider should have a schedule')
+        
+        # check if square for day is green
+        monday_morning_a = response.html.find('a', attrs={'id': monday_morning_id})
+        self.assertEqual(monday_morning_a['class'], 'btn btn-mini btn-success', 'Monday morning should be green')
+
+        # Check the tooltip is now available
+        self.assertEqual(monday_morning_a['title'], 'Disponible', 'Monday morning should be disponible')
+
+        # check if the icon changed
+        monday_morning_i = response.html.find('i', attrs={'id': monday_morning_id})
+        self.assertEqual(monday_morning_i['class'], 'icon-ok-circle', 'Monday morning should be ok icon')
+
 
 if __name__ == "__main__":
     unittest.main()

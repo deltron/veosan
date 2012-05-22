@@ -30,15 +30,23 @@ class DBTestCase(unittest.TestCase):
                  }
         key = db.storeBooking(values, None, None)
         print key
+
+    def test_set_all_properties_on_entity_from_multidict_boolean(self):
+        entity = db.Provider
+        multidict = { 'onsite': 'y' }
         
+        db.set_all_properties_on_entity_from_multidict(entity, multidict)
+
+
+
     def testFindBestProviderForBooking(self):
         testCategory = u'physiotherapy'
         testRegion = u'montreal-west'
         
         # create provider
         p = Provider()
-        p.firstName = 'Best-Test'
-        p.lastName = 'Phys-Io'
+        p.first_name = 'Best-Test'
+        p.last_name = 'Phys-Io'
         p.category = testCategory
         p.region = testRegion
         pkey = p.put()
@@ -51,8 +59,8 @@ class DBTestCase(unittest.TestCase):
         s.put()
         # create provider with no schedule
         p = Provider()
-        p.firstName = 'NoSchedule'
-        p.lastName = 'Phys-Io'
+        p.first_name = 'NoSchedule'
+        p.last_name = 'Phys-Io'
         p.category = testCategory
         p.region = testRegion
         pkey2 = p.put()
@@ -77,8 +85,8 @@ class DBTestCase(unittest.TestCase):
         otherRegion = u'montreal-downtown'
         # create provider
         p = Provider()
-        p.firstName = 'Best-Test'
-        p.lastName = 'Phys-Io'
+        p.first_name = 'Best-Test'
+        p.last_name = 'Phys-Io'
         p.category = testCategory
         p.region = testRegion
         pkey = p.put()

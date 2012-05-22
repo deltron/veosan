@@ -21,12 +21,12 @@
 			<li>
 				<a href="{{p.get_edit_link()}}"
 					rel="popover"
-					title="{{p.firstName}} {{p.lastName}}"
+					title="{{p.first_name}} {{p.last_name}}"
 					data-content="{{p.get_html_summary()}}">
-					{{p.lastName}}, {{p.firstName}} [{{p.email}}]
+					{{p.last_name}}, {{p.first_name}} [{{p.email}}]
 				</a>
 					{% if p.recently_created() %} <span class="label label-success">new</span>{% endif %}
-					{% if not p.termsAgreement %} <span class="label label-important">missing terms</span>{% endif %}
+					{% if not p.terms_agreement %} <span class="label label-important">missing terms</span>{% endif %}
 			</li>
 			{% endfor %}
 		</ul>

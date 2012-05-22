@@ -6,7 +6,7 @@
 	{{p.fullName()}}
 	<!-- TODO: Make this a block, reuse on provider list -->
 	{% if p.recently_created() %} <span class="label label-success">new</span>{% endif %}
-	{% if not p.termsAgreement %} <span class="label label-important">missing terms</span>{% endif %}
+	{% if not p.terms_agreement %} <span class="label label-important">missing terms</span>{% endif %}
 {% endblock %}
 
 {% block lead %} {{ _('Provider Administration') }} {% endblock %}
@@ -44,10 +44,10 @@
 					
 					<div class="row">
 					  <div class="span2">
-				  		{% if p.profilePhotoBlob == None %}
+				  		{% if p.profile_photo_blob == None %}
 							<img src="/assets/img/default-profile.png" width="100" height="100">
 						{% else %}
-							<img src="/serve/{{ p.profilePhotoBlob.key() }}" width="100" height="100">
+							<img src="/serve/{{ p.profile_photo_blob.key() }}" width="100" height="100">
 						{% endif %}
 					  </div>
 					  <div class="span3">

@@ -99,13 +99,13 @@ class ProviderAddressUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
         key = self.request.get('key')
         logging.info("Looking for provider key: %s " % key)
         provider = Provider.get(key)
-        logging.info("Found provider: %s %s" % (provider.firstName, provider.lastName))
+        logging.info("Found provider: %s %s" % (provider.first_name, provider.last_name))
 
         uploadForm = ProviderPhotoForm(self.request.POST)
         upload_files = self.get_uploads(uploadForm.profilePhoto.name)[0]
         logging.info("Uploaded blob key: %s " % upload_files.key())
         
-        provider.profilePhotoBlob = upload_files.key()
+        provider.profile_photo_blob = upload_files.key()
 
         Provider.put(provider)
         
@@ -179,7 +179,7 @@ class ProviderTermsHandler(ProviderBaseHandler):
             terms_form = ProviderTermsForm(self.request.POST)
             if terms_form.validate():
                 # Save signature and terms agreement
-                provider.termsAgreement = self.request.get('termsAgreement')
+                provider.terms_agreement = self.request.get('terms_agreement')
                 provider.put()
                 # TODO Add Welcome Message and invitation to review profile and set schedule
                 redirect_url = provider.get_edit_link(section='profile')

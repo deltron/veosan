@@ -1,4 +1,4 @@
-Hi {{ patient.firstName }} {{ patient.lastName }},
+Hi {{ patient.first_name }} {{ patient.last_name }},
 
 Your are booked for {{ provider.category }} with {{ provider.fullName() }} on {{ b.dateTime|format_datetime_full }}
 

@@ -28,8 +28,8 @@ class DBTestCase(unittest.TestCase):
         patient.email = testEmail
         patient.put()
         provider = Provider()
-        provider.firstName = u"Robert (Test)"
-        provider.lastName = u"Lang"
+        provider.first_name = u"Robert (Test)"
+        provider.last_name = u"Lang"
         provider.category = u"physiotherapy"
         provider.put()
         booking = Booking()

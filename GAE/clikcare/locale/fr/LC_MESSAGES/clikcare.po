@@ -74,6 +74,9 @@ msgstr "Confirmer"
 msgid "Save"
 msgstr "Sauvegarder"
 
+msgid "Saved!"
+msgstr "Vos changements sont sauvegardés!"
+
 msgid "Send"
 msgstr "Envoyer"
 
@@ -230,11 +233,18 @@ msgstr "École"
 msgid "Diploma"
 msgstr "Diplôme"
 
+msgid "Biography"
+msgstr "Biographie"
+
 msgid "Member of order since"
 msgstr "Membre de l'ordre depuis"
 
 msgid "I am willing to do on-site visits"
 msgstr "J'accepte de faire des visites chez les clients"
+
+msgid "I am willing to do on-site visits"
+msgstr "J'accepte de faire des visites chez les clients"
+
 
 #################
 # Address Page

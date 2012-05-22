@@ -23,9 +23,16 @@ def set_all_properties_on_entity_from_multidict(entity, multidict):
                 setattr(entity, prop, multidict.getall(prop))
             elif isinstance(getattr(entity, prop), types.NoneType):
                 logging.info("saving key->value for NoneType : " + prop + "->" + multidict.getone(prop))
-                setattr(entity, prop, multidict.getone(prop))
+                
+                # set a boolean, not detected as boolean from Entity...
+                if multidict.getone(prop) == 'True':
+                    setattr(entity, prop, True)
+                else:
+                    setattr(entity, prop, multidict.getone(prop))
             else:
                 logging.info("Got a property of unknown instance: " + str(type(getattr(entity, prop))))
+        else:
+            logging.info("Property not found in request: " + str(prop))
         
   
 def storeBooking(r, patient=None, provider=None):
@@ -44,15 +51,22 @@ def storeBooking(r, patient=None, provider=None):
     return booking
     
 def storePatient(r, user):
+    # r is a MultiDict object from the request
+    logging.info("Storing patient profile from request:" + str(r.__dict__))
+    
     patient = Patient()
-    patient.firstName = r['firstName']
-    patient.lastName = r['lastName']
-    patient.email = r['email']
-    patient.telephone = r['telephone']
-    patient.termsAgreement = r['termsAgreement']
-    # link openIDuser
-    patient.user = user
-    patient.put()
+    
+    # set all the properties
+    set_all_properties_on_entity_from_multidict(patient, r)
+    
+    # store
+    patient_key = patient.put()
+    logging.info('Saved patient key:' + str(patient_key))
+    logging.info(vars(patient))
+    
+    # link openIDuser - is this still relevant?
+    #patient.user = user
+    
     return patient
 
 def getPatientFromUser(user):
@@ -101,7 +115,7 @@ def findBestProviderForBooking(booking):
         return None
    
 def fetchProviders():
-    providers = gdb.GqlQuery("SELECT * from Provider ORDER BY lastName ASC LIMIT 50")
+    providers = gdb.GqlQuery("SELECT * from Provider ORDER BY last_name ASC LIMIT 50")
     return providers
 
 def initProvider(provider_email):
