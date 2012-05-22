@@ -195,37 +195,58 @@ class AdminTest(unittest.TestCase):
         
     def test_provider_schedule_set(self):
         ''' fill out the new provider's profile '''
+        
         # init a provider
         self.test_admin_provider_init()
+        
         # get the provider key
         provider = db.getProviderFromEmail("unit_test@provider.com")
+        
         # request the schedule page
         request_variables = { 'key' : provider.key() }
         response = self.testapp.get('/provider/schedule', request_variables)
+        
+        # TODO make this more comprehensible ie. monday-8-to-13
         monday_morning_id = '0-8-13'
-        html = response.html
+         
+        
         # Check a ids
-        monday_morning_a = html.find('a', attrs={'id': monday_morning_id})
+        monday_morning_a = response.html.find('a', attrs={'id': monday_morning_id})
         self.assertTrue(monday_morning_a != None, 'The tag a with id %s should exist'.format(monday_morning_id))
         response.mustcontain(monday_morning_id)
-        # Click to select Monday morning
-        #jquery_response = response.click(linkid=monday_morning_id, verbose=True)
         
-        post_data = {'provider_key': provider.key(), 'day_time': monday_morning_id, 'op': 'add'}
-        jquery_response = self.testapp.post('/provider/schedule', post_data)
-        # TODO check the jQuery response
+        # Check the square is grayed out
+        self.assertEqual(monday_morning_a['class'], 'btn btn-mini', 'Monday morning should be gray box')
+
+        # Check the icon is a circle with cross
+        monday_morning_i = response.html.find('i', attrs={'id': monday_morning_id})
+        self.assertEqual(monday_morning_i['class'], 'icon-ban-circle', 'Monday morning should be ok icon')
+
+
+        # Click to select Monday morning        
+        request_variables = {'provider_key': provider.key(), 'day_time': monday_morning_id, 'operation': 'add'}
+        response = self.testapp.post('/provider/schedule', request_variables)
+        
+        # no javascript interpretation for jquery so request the page again...
+        
         # reload page
-        response = self.testapp.get('/provider/schedule', request_variables)
+        request_variables = { 'key' : provider.key() }
+        response = self.testapp.get('/provider/schedule', request_variables)        
         
         provider = db.getProviderFromEmail("unit_test@provider.com")
-        schedule_count = provider.schedule.count()
-        print ('Provider has %s schedules' % schedule_count)
-
-        self.assertEqual(schedule_count , 1, 'Provider should have a schedule')
-        monday_morning_a = html.find('a', attrs={'id': monday_morning_id})
-        print 'Class:' + monday_morning_a['class']
-        self.assertEqual(monday_morning_a['class'], 'btn btn-mini btn-success', 'Monday morning should be green')
         
+        # check one schedule was saved in the database
+        schedule_count = provider.schedule.count()
+        self.assertEqual(schedule_count , 1, 'Provider should have a schedule')
+        
+        # check if square for day is green
+        monday_morning_a = response.html.find('a', attrs={'id': monday_morning_id})
+        self.assertEqual(monday_morning_a['class'], 'btn btn-mini btn-success', 'Monday morning should be green')
+
+        # check if the icon changed
+        monday_morning_i = response.html.find('i', attrs={'id': monday_morning_id})
+        self.assertEqual(monday_morning_i['class'], 'icon-ok-circle', 'Monday morning should be ok icon')
+
 
 if __name__ == "__main__":
     unittest.main()
