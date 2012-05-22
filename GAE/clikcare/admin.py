@@ -19,6 +19,7 @@ class AdminBaseHandler(BaseHandler):
 
 class AdminIndexHandler(AdminBaseHandler):
     '''Administration Index'''
+
     def get(self):
         self.redirect('/admin/bookings')
 
@@ -30,6 +31,7 @@ class AdminBookingsHandler(AdminBaseHandler):
 
 class AdminProvidersHandler(AdminBaseHandler):
     ''' Administer Providers '''
+ 
     def get(self):
         self.render_providers()
                   

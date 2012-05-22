@@ -8,6 +8,9 @@ libraries:
 - name: jinja2
   version: "2.6"
   
+- name: webapp2
+  version: latest
+  
 handlers:
 - url: /favicon\.ico
   static_files: favicon.ico
@@ -15,21 +18,12 @@ handlers:
 
 - url: /assets
   static_dir: assets
-
-- url: /_ah/login_required
-  script: openid_login.application
-
-- url: /test_login
-  script: openid_login.application
-
+  
 - url: /admin/.*
   script: main.application
   login: admin
   
-- url: /patient/.*
-  script: main.application
-  login: required
-  
 - url: /.*
   script: main.application
+
 

@@ -5,8 +5,9 @@ import webapp2, logging
 from google.appengine.api import users
 from google.appengine.api.users import User
 from webapp2 import Route
+from webapp2_extras.routes import RedirectRoute
 # clik
-import admin, util, db, provider_handler, mail
+import admin, util, db, provider_handler, mail, auth_handler
 from base import BaseHandler
 from forms import BookingForm, PatientForm, ContactForm, EmailOnlyBookingForm
 from data import Booking
@@ -180,6 +181,10 @@ webapp2_config['webapp2_extras.i18n'] = {
                                          'default_locale': 'fr'
                                          }
 
+webapp2_config['webapp2_extras.sessions'] = {
+                                             'secret_key': '82374y6ii899hy8-89308847-21u9x676',
+                                             }
+
 application = webapp2.WSGIApplication([
                                        # General pages
                                        ('/', IndexHandler),
@@ -206,13 +211,17 @@ application = webapp2.WSGIApplication([
                                        ('/provider/administration', provider_handler.ProviderAdministrationHandler),
                                        Route('/provider/activation/<activation_key>', handler=provider_handler.ProviderActivationHandler),
                                        ('/serve/([^/]+)?', provider_handler.ServeHandler), # temporary - to test file uploads
-                                       
                                        # admin
                                        ('/admin/provider/init', admin.NewProviderInitHandler),
                                        ('/admin/provider/solicit', admin.NewProviderSolicitHandler),
                                        ('/admin', admin.AdminIndexHandler),
                                        ('/admin/bookings', admin.AdminBookingsHandler),
-                                       ('/admin/providers', admin.AdminProvidersHandler) 
+                                       ('/admin/providers', admin.AdminProvidersHandler),
+                                       # auth
+                                       ('/login', auth_handler.LoginHandler),
+                                       #('/create', auth_handler.CreateUserHandler),
+                                        #RedirectRoute('/login/', auth_handler.LoginHandler, name='login', strict_slash=True),
+                                        RedirectRoute('/logout/', auth_handler.LogoutHandler, name='logout', strict_slash=True),
                                       ], debug=True,
                                       config=webapp2_config)
 
