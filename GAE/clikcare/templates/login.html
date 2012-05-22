@@ -1,14 +1,30 @@
 {% extends "/layout/base.html" %}
 
-{% block subhead %}Log in with OpenID{% endblock %}
-{% block lead %}Which account would you like to use?{% endblock %}
+{% block subhead %}Log in to ClikCare{% endblock %}
+{% block lead %} {% endblock %}
 
 {% block content %}
+
+<!-- Error Message -->
+{% if error_message %}
+<div class="alert alert-error">
+	{{error_message}}
+</div>
+{% endif %}
+
 <div class="row">
 	<div class="span6">
-		{% for name, url in login_urls.items() %}
-			<a href="{{ url }}">{{ name }}</a>
-		{% endfor %}
+		
+		<form method="post" action="/login" class="form-horizontal">
+			<fieldset>
+				{{ makeStandardForm() }}
+			</fieldset>
+			<div class="form-actions">
+				<button type="submit" class="btn btn-primary">
+						{{ _('Login') }}
+				</button>
+			</div>
+		</form>
 	</div>
 </div>
 {% endblock content %} 

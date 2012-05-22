@@ -1,0 +1,14 @@
+{% extends "/layout/base.html" %}
+
+{% block subhead %}Log in with OpenID{% endblock %}
+{% block lead %}Which account would you like to use?{% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="span6">
+		{% for name, url in login_urls.items() %}
+			<a href="{{ url }}">{{ name }}</a>
+		{% endfor %}
+	</div>
+</div>
+{% endblock content %} 
