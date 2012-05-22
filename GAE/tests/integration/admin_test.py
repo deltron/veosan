@@ -1,30 +1,9 @@
 # -*- coding: utf-8 -*-
 
-import unittest, webtest
-from google.appengine.ext import testbed
-import main, db
+import unittest, db
+from base import BaseTest
 
-class AdminTest(unittest.TestCase):
-    ''' *** NOTE ***
-    
-    Settings in app.yaml are ignored by tests
-    App assumes login is "magically" handled properly
-    
-    '''
-
-    def setUp(self):
-        # Wrap the app with WebTest’s TestApp.
-        self.testapp = webtest.TestApp(main.application)
-        
-        self.testbed = testbed.Testbed()
-        self.testbed.activate()
-        self.testbed.init_datastore_v3_stub()
-        self.testbed.init_user_stub()
-        self.testbed.init_blobstore_stub()
-        
-    def tearDown(self):
-        self.testbed.deactivate()
-
+class AdminTest(BaseTest):
     def test_admin_provider_init(self):
         ''' initialize a new provider '''
         
@@ -45,7 +24,35 @@ class AdminTest(unittest.TestCase):
         
         # init a provider
         self.test_admin_provider_init()
+        self._test_fill_new_provider_address_correctly_action()
         
+    def test_fill_new_provider_profile_correctly(self):
+        ''' fill out the new provider's profile '''
+        
+        # init a provider
+        self.test_admin_provider_init()
+        self._test_fill_new_provider_profile_correctly_action()
+
+        
+    def test_provider_schedule_set_one_timeslot(self):
+        ''' Enable bookings in one timeslot '''
+        
+        # init a provider
+        self.test_admin_provider_init()
+        self._test_provider_schedule_set_one_timeslot_action()
+        
+        
+    def test_complete_profile_creation(self):
+        # init a provider
+        self.test_admin_provider_init()
+        
+        # fill all sections
+        self._test_fill_new_provider_address_correctly_action()
+        self._test_fill_new_provider_profile_correctly_action()
+        self._test_provider_schedule_set_one_timeslot_action()
+
+        
+    def _test_fill_new_provider_address_correctly_action(self):
         # get the provider key
         provider = db.getProviderFromEmail("unit_test@provider.com")
         
@@ -87,12 +94,9 @@ class AdminTest(unittest.TestCase):
         response.mustcontain("Fox, Fantastic [unit_test@provider.com]")
 
 
-    def test_fill_new_provider_profile_correctly(self):
-        ''' fill out the new provider's profile '''
         
-        # init a provider
-        self.test_admin_provider_init()
-        
+    def _test_fill_new_provider_profile_correctly_action(self):
+
         # get the provider key
         provider = db.getProviderFromEmail("unit_test@provider.com")
         
@@ -171,34 +175,9 @@ class AdminTest(unittest.TestCase):
 
         self.assertTrue(provider.onsite)
 
-    def test_upload_image_to_correct_address(self):
-        ''' Upload a test image for the new provider '''
         
-        self.test_fill_new_provider_address_correctly()
-        
-        # get the provider key
-        provider = db.getProviderFromEmail("unit_test@provider.com")
-        
-        # request the address page
-        request_variables = { 'key' : provider.key() }
-        response = self.testapp.get('/provider/address', request_variables)
-        
-        photo_form = response.forms[1] # photo form
-        
-        photo_form['profilePhoto'] = ('profilePhoto', 'provider-test-image.png')
-        
-        # photo_form.submit()
-        
-        # hmm can't upload
-        # not possible to test blobstore yet...
-        
-        
-    def test_provider_schedule_set(self):
-        ''' fill out the new provider's profile '''
-        
-        # init a provider
-        self.test_admin_provider_init()
-        
+    def _test_provider_schedule_set_one_timeslot_action(self):
+
         # get the provider key
         provider = db.getProviderFromEmail("unit_test@provider.com")
         
@@ -253,6 +232,29 @@ class AdminTest(unittest.TestCase):
         monday_morning_i = response.html.find('i', attrs={'id': monday_morning_id})
         self.assertEqual(monday_morning_i['class'], 'icon-ok-circle', 'Monday morning should be ok icon')
 
+
+    def test_upload_image_to_correct_address(self):
+        ''' Upload a test image for the new provider '''
+        
+        self.test_fill_new_provider_address_correctly()
+        
+        # get the provider key
+        provider = db.getProviderFromEmail("unit_test@provider.com")
+        
+        # request the address page
+        request_variables = { 'key' : provider.key() }
+        response = self.testapp.get('/provider/address', request_variables)
+        
+        photo_form = response.forms[1] # photo form
+        
+        photo_form['profilePhoto'] = ('profilePhoto', 'provider-test-image.png')
+        
+        # photo_form.submit()
+        
+        # hmm can't upload
+        # not possible to test blobstore yet...
+        
+   
 
 if __name__ == "__main__":
     unittest.main()

@@ -38,10 +38,10 @@ def set_all_properties_on_entity_from_multidict(entity, multidict):
 def storeBooking(r, patient=None, provider=None):
     logging.info('Saving Booking from:' + str(r))
     booking = Booking()
-    booking.requestCategory = r['bookingCategory']
-    booking.requestRegion = r['bookingRegion']
-    requestDateString = r['bookingDate']
-    requestTimeString = r['bookingTime']
+    booking.requestCategory = r['category']
+    booking.requestRegion = r['location']
+    requestDateString = r['booking_date']
+    requestTimeString = r['booking_time']
     requestDateTime = datetime.strptime(requestDateString + " " + requestTimeString, '%Y-%m-%d %H')
     booking.requestDateTime = requestDateTime
     booking.comments = r.get('comments', '')

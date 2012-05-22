@@ -10,22 +10,22 @@
 			<form action="/" method="post">
 				<fieldset>
 					<div class="control-group">
-						{{ form.bookingCategory.label(class="control-label",style="font-size:large; font-weight:bold") }}
+						{{ form.category.label(class="control-label",style="font-size:large; font-weight:bold") }}
 						<div class="controls">
-							{{ form.bookingCategory }}
+							{{ form.category }}
 						</div>
 					</div>
 					<div class="control-group">
 						<label class="control-label" for="dateSelect" style="font-size:large; font-weight:bold"> {{ _('When') }}</label>
 						<div class="controls">
-							{{ form.bookingDate }}
-							{{ form.bookingTime }}
+							{{ form.booking_date }}
+							{{ form.booking_time }}
 						</div>
 					</div>
 					<div class="control-group">
-						{{ form.bookingRegion.label(class="control-label", style="font-size:large; font-weight:bold") }}
+						{{ form.location.label(class="control-label", style="font-size:large; font-weight:bold") }}
 						<div class="controls">
-							{{ form.bookingRegion }}
+							{{ form.location }}
 						</div>
 					</div>
 					<div class="control-group">

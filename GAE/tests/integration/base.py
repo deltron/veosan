@@ -3,9 +3,8 @@
 import unittest, webtest
 from google.appengine.ext import testbed
 import main, db
-from admin_test import AdminTest
 
-class AdminTest(unittest.TestCase):
+class BaseTest(unittest.TestCase):
     ''' *** NOTE ***
     
     Settings in app.yaml are ignored by tests
@@ -26,12 +25,5 @@ class AdminTest(unittest.TestCase):
     def tearDown(self):
         self.testbed.deactivate()
 
-    def test_enable_all_time_slots(self):
-        pass
-        
-        
 
-if __name__ == "__main__":
-    unittest.main()
-    
     
