@@ -44,11 +44,39 @@ class AdminTest(BaseTest):
         self._test_fill_new_provider_address_correctly_action()
         self._test_fill_new_provider_profile_correctly_action()
         self._test_provider_schedule_set_one_timeslot_action()
+        
+        
+    def test_admin_provider_init_with_empty_email(self):
+        ''' initialize a new provider '''
+        
+        request_variables = { 'providerEmail' : '' }
+        response = self.testapp.post('/admin/provider/init', request_variables)
+
+        self.assertEqual(response.status_int, 200)        
+        
+        # this should fail with an error message
+        
+        # TODO: check for error message
+        
+        
+        
+        # if anything below here is in the response, it's not good!
+    
+        # Check signs of success
+        response.mustcontain("Initialized new provider for ")
+        response.mustcontain("None, None []")
+            
+        # check badges are present
+        response.mustcontain('<span class="label label-success">new</span>')
+        response.mustcontain('<span class="label label-important">missing terms</span>')
+
+        # if we got this far, it's because an empty provider was created
+        self.assertTrue(False, "A provider was created without an email address")
 
 
-    ###################################################################
-    ## BELOW HERE ARE LOCAL / REUSABLE UTILITY METHODS THAT DO THE WORK
-    ###################################################################
+    ######################################################################
+    ## BELOW HERE ARE LOCAL / REUSABLE UTILITY METHODS TO SET UP A PROFILE
+    ######################################################################
      
      
     def _test_admin_provider_init(self):
