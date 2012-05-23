@@ -53,7 +53,7 @@ class Provider(db.Model):
     postfix = db.StringProperty()
     email = db.StringProperty()
     phone = db.StringProperty()
-    region = db.StringProperty()
+    location = db.StringProperty()
     address = db.StringProperty()
     city = db.StringProperty()
     postal_code = db.StringProperty()
