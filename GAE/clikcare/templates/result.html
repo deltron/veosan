@@ -7,24 +7,33 @@
 <div class="row">
 	<div class="span6">
 		<div class="well">
-			<h1>{{p.prefix or ''}} {{p.first_name or ''}} {{p.last_name|first}}.<!--<span style="font-size:small; color:Grey;">{% if p.postfix %} {{p.postfix or ''}}{% endif %}</span>-->
+			<h1>{{p.prefix or ''}} {{p.first_name or ''}} 
+				{% if p.last_name %} 
+					{{p.last_name|first}}.
+				{% endif %} 
+				<!--<span style="font-size:small; color:Grey;">{% if p.postfix %} {{p.postfix or ''}}{% endif %}</span>-->
 			is available</h1>
 			
 			<h3> on {{booking.dateTime|format_datetime_full}} at his clinic on {{p.address}} in {{p.city}}</h3>
 		<br>
 		<br>
-		
-		<form action="/patient/book" method="get">	
-			<input id="bk" name="bk" type="hidden" value="{{ booking.key() }}">
-			<div class="control-group">
-				<div class="controls">
-					<button type="submit" class="btn btn-primary btn-large">
-						{{ _('Book Appointment') }}
-					</button>
-				</div>
-			</div>
+		<br>
+		<form action="/patient/book" method="post" class="form-inline">	
+			<fieldset>
+				<input id="bk" name="bk" type="hidden" value="{{ booking.key.urlsafe() }}">	
+				<input id='email' name='email' type="text" class="" placeholder="{{_('Email Address')}}">
+				
+				<button type="submit" class="btn btn-primary">
+					{{ _('Book Appointment') }}
+				</button>
+			</fieldset>
+			<br>
+			{% if form.email.errors %}
+				<div class="alert alert-error">
+					{% for error in form.email.errors %} {{ error }} {% endfor %}
+				</div>	
+			{% endif %}
 		</form>
-			
 			
 		</div>
 	</div>
@@ -39,10 +48,10 @@
 	<div class="span5">	
 		<div class="row">
 		  <div class="span2">
-	  		{% if p.profile_photo_blob == None %}
+			{% if not p.profile_photo_blob %}
 				<img src="/assets/img/default-profile.png" width="100" height="100">
 			{% else %}
-				<img src="/serve/{{ p.profile_photo_blob.key() }}" width="100" height="100">
+				<img src="/serve/{{ p.profile_photo_blob.key }}" width="100" height="100">
 			{% endif %}
 		  </div>
 		  <div class="span3">

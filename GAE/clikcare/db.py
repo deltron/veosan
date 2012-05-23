@@ -1,14 +1,23 @@
 '''
     database access
 '''
-from google.appengine.ext import db as gdb
+#from google.appengine.ext import db as gdb
+from google.appengine.ext import ndb
 import logging
 import types
 from datetime import datetime
 from data import Booking
 from data import Patient
 from data import Provider
-  
+from datetime import date, time
+
+
+def get_from_urlsafe_key(urlsafe_key):
+    logging.info('Getting from urlsafe key: %s' % urlsafe_key)
+    key = ndb.Key(urlsafe=urlsafe_key)
+    logging.info('Getting kind: %s and key: %s' % (key.kind(), key.id()))
+    return key.get()
+
 def set_all_properties_on_entity_from_multidict(entity, multidict):
     ''' fancy way to set all properties on an entity from a multidict (posted form '''
     
@@ -71,7 +80,8 @@ def storePatient(r, user):
 
 def getPatientFromUser(user):
     logging.info('Fetching patient from User: %s' % user)
-    query = gdb.GqlQuery("SELECT * FROM Patient WHERE user = :1", user)
+    query = Patient.query(Patient.user == user)
+    #query = gdb.GqlQuery("SELECT * FROM Patient WHERE user = :1", user)
     logging.info("count:" + str(query.count()))
     patient = query.get()
     return patient
@@ -87,11 +97,12 @@ def findBestProviderForBooking(booking):
     requestEndTime = requestStartTime + 1
     logging.info('Looking for {0} in {1} available on day:{2} from {3} to {4}'.format(category, region, requestDay, requestStartTime, requestEndTime))
     providers = []
-    providersQuery = gdb.GqlQuery('''Select * from Provider WHERE category = :1 AND region = :2''', category, region)
+    providersQuery = Provider.query(Provider.category==category, Provider.region==region)
+    #gdb.GqlQuery('''Select * from Provider WHERE category = :1 AND region = :2''', category, region)
     providerCount = providersQuery.count(limit=50)
     logging.info('Found {0} providers in category and region. Narrowing down list using schedule...'.format(providerCount))
     for p in providersQuery:
-        scheduleQuery = gdb.GqlQuery('''Select * from Schedule WHERE provider = :1 AND day = :2''', p, requestDay)
+        scheduleQuery = ndb.gql('''Select * from Schedule WHERE provider = :1 AND day = :2''', p.key, requestDay)
         schedulesCount = scheduleQuery.count(limit=48)
         if (schedulesCount > 0):
             for s in scheduleQuery:
@@ -115,8 +126,19 @@ def findBestProviderForBooking(booking):
         return None
    
 def fetchProviders():
-    providers = gdb.GqlQuery("SELECT * from Provider ORDER BY last_name ASC LIMIT 50")
+    # TODO add limit
+    providers = Provider.query().order(Provider.last_name)
+    #gdb.GqlQuery("SELECT * from Provider ORDER BY last_name ASC LIMIT 50")
     return providers
+
+def fetch_bookings():
+    return Booking.query().order(-Booking.created_on)
+
+def fetch_future_bookings(provider):
+    yesterday_at_midnight = datetime.combine(date.today(), time())
+    bookings = Booking.query(ancestor=provider.key).order(Booking.dateTime).fetch(50)
+    #, Booking.dateTime > yesterday_at_midnight
+    return bookings
 
 def initProvider(provider_email):
     ''' inititalize provider with email. return the provider's key '''
@@ -127,13 +149,12 @@ def initProvider(provider_email):
 
 def getProvider(request):
     ''' get provider from a request dict, key = provider_key'''
-    provider_key = request.get('provider_key')
-    return Provider.get(provider_key)
+    return get_from_urlsafe_key(request.get('provider_key'))
     
 def getOrCreateProvider(provider_key):
     if (provider_key):
         logging.info('Getting existing provider with key:' + provider_key)
-        provider = Provider.get(provider_key)
+        provider = get_from_urlsafe_key(provider_key)
     else:
         logging.info('Creating new provider')
         provider = Provider()
@@ -156,10 +177,8 @@ def storeProvider(r):
 
 
 def getProviderFromEmail(email):
-    q = Provider.all()
-    q.filter("email =", email)
-    provider = q.get()
-    logging.debug('Key for email %s is %s' % (email, unicode(provider.key())))
+    provider = Provider.query(Provider.email == email).get()
+    logging.debug('Provider for email %s is %s' % (email, provider))
     return provider   
 
 

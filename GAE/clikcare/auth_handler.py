@@ -8,6 +8,9 @@ from google.appengine.api import users
 # clik
 from forms import LoginForm
 
+
+
+
 def user_required(handler):
     '''
         Decorator

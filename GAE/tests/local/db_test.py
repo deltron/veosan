@@ -76,7 +76,7 @@ class DBTestCase(unittest.TestCase):
         logging.info('best provider:' + str(bestProvider))
         # assert
         self.assertIsNotNone(bestProvider, 'provider should not be None')
-        self.assertEqual(pkey, bestProvider.key(), 'provider keys should be equal')
+        self.assertEqual(pkey, bestProvider.key.urlsafe(), 'provider keys should be equal')
         
         
     def testCantFindProvider(self):

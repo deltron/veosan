@@ -22,7 +22,7 @@
 			{%else %}
 				<form method="post" action="/full" class="form-inline">
 					<fieldset>
-						<input id="bk" name="bk" type="hidden" value="{{ booking.key() }}">
+						<input id="bk" name="bk" type="hidden" value="{{ booking.key.urlsafe() }}">
 						<fieldset>
 							{{ makeStandardForm() }}
 						</fieldset>

@@ -50,7 +50,7 @@ class AdminTest(unittest.TestCase):
         provider = db.getProviderFromEmail("unit_test@provider.com")
         
         # request the address page
-        request_variables = { 'key' : provider.key() }
+        request_variables = { 'key' : provider.key.urlsafe() }
         response = self.testapp.get('/provider/address', request_variables)
         
         address_form = response.forms[0] # address form
@@ -97,7 +97,7 @@ class AdminTest(unittest.TestCase):
         provider = db.getProviderFromEmail("unit_test@provider.com")
         
         # request the address page
-        request_variables = { 'key' : provider.key() }
+        request_variables = { 'key' : provider.key.urlsafe() }
         response = self.testapp.get('/provider/profile', request_variables)
          
         profile_form = response.forms[0] # address form
@@ -180,7 +180,7 @@ class AdminTest(unittest.TestCase):
         provider = db.getProviderFromEmail("unit_test@provider.com")
         
         # request the address page
-        request_variables = { 'key' : provider.key() }
+        request_variables = { 'key' : provider.key.urlsafe() }
         response = self.testapp.get('/provider/address', request_variables)
         
         photo_form = response.forms[1] # photo form
@@ -227,13 +227,13 @@ class AdminTest(unittest.TestCase):
 
 
         # Click to select Monday morning        
-        request_variables = {'provider_key': provider.key(), 'day_time': monday_morning_id, 'operation': 'add'}
+        request_variables = {'provider_key': provider.key.urlsafe(), 'day_time': monday_morning_id, 'operation': 'add'}
         response = self.testapp.post('/provider/schedule', request_variables)
         
         # no javascript interpretation for jquery so request the page again...
         
         # reload page
-        request_variables = { 'key' : provider.key() }
+        request_variables = { 'key' : provider.key.urlsafe() }
         response = self.testapp.get('/provider/schedule', request_variables)        
         
         provider = db.getProviderFromEmail("unit_test@provider.com")

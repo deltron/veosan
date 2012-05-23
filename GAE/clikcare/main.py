@@ -41,19 +41,20 @@ class IndexHandler(BaseBookingHandler):
         bookingform = BookingForm(self.request.POST)
         if bookingform.validate():
             booking = db.storeBooking(self.request.POST, None, None)
-            logging.debug('Created booking:' + unicode(booking.key()))
+            logging.debug('Created booking: %s' % booking.key)
             logging.info("Looking for best provider...")
             provider = db.findBestProviderForBooking(booking)
             if (provider):
                 logging.info("Provider found: " + provider.fullName())
-                booking.provider = provider
+                booking.provider = provider.key
                 booking.dateTime = booking.requestDateTime
                 booking.put()
                 # booking saved with provider, no patient info yet
-                tv = {'patient': None, 'booking': booking, 'p': provider }    
+                email_form = EmailOnlyBookingForm()
+                tv = {'patient': None, 'booking': booking, 'p': provider, 'form': email_form }
                 self.render_template('result.html', **tv) 
             else:
-                logging.warn('No provider found for booking:' + unicode(booking.key()))
+                logging.warn('No provider found for booking: %s' % booking.key.urlsafe())
                 emailForm = EmailOnlyBookingForm()
                 self.renderFullyBooked(booking, emailForm) 
         else:
@@ -103,32 +104,61 @@ class ContactHandler(BaseHandler):
         else:
             self.render_template('contact.html', form=contact_form, sent=False)
 
- 
+
 class PatientBookHandler(BaseBookingHandler):
-    def get(self):
-        'We have a booking with a provider, we need to add the patient using the OpenID User'
-        booking_key = self.request.get('bk')
-        booking = Booking.get(booking_key)
-        # get patient from user
-        user = users.get_current_user()
-        if (user):
-            logging.info('User:' + str(user.__dict__))
-            patient = db.getPatientFromUser(user)
-            if (patient):
-                logging.info('Patient exists, confirming booking.')
-                booking.patient = patient
-                booking.put()
-                self.renderConfirmedBooking(booking)
+    '''
+        Handler to confirm the booking and create new patient record if user logged in
+    '''
+    def post(self):
+        'We have a booking with a provider, we need to add the patient using the User'
+        booking = db.get_from_urlsafe_key(self.request.get('bk')) 
+        email_form = EmailOnlyBookingForm(self.request.POST)
+        if email_form.validate():
+            # store email in booking as requestEmail
+            booking.request_email = self.request.get('email')
+            booking.put()
+            
+            # TODO Consider case where user is already logged in
+            
+            # existing or new patient
+            email = self.request.get('email')
+            # if we know this email, send to login
+            logging.info('email: %s' % email)
+            existing_user = self.auth.store.user_model.get_by_auth_id(email)
+            if existing_user:
+                patient = db.getPatientFromUser(existing_user)
+                if patient:
+                    # Existing patient
+                    logging.info('User exists, patient exists, confirming booking.')
+                    booking.patient = patient
+                    booking.put()
+                    self.renderConfirmedBooking(booking)
+                else:
+                    # user exists, but not patient!!!
+                    logging.error('User exists for %s but not patient' % email)
+                    # TODO missing render call for this odd situation
             else:
+                # New patient
                 logging.info('Patient does not exist, creating new patient.')
                 patientForm = PatientForm(self.request.POST)
-                # set email in form from openID user
-                patientForm.email.data = user.email()
+                # set email in form 
+                patientForm.email.data = email
                 self.renderNewPatientForm(patientForm, booking)
+
         else:
-            logging.info('User not logged in.')
-    
+            # email form validation failed
+            tv = {'patient': None, 'booking': booking, 'p': booking.provider, 'form': email_form }
+            self.render_template('result.html', **tv) 
+            
+            
+
+
+class PatientBookForNewHandler(BaseBookingHandler):
+    '''
+        Handler for New Patient Form
+    '''
     def post(self):
+        logging.info('post to /patient/new')
         '''This handler is for the New Patient Form'''
         # create patient form for validation
         patientForm = PatientForm(self.request.POST)
@@ -137,19 +167,28 @@ class PatientBookHandler(BaseBookingHandler):
         logging.info('Fetching booking:' + str(booking_key))
         booking = Booking.get(booking_key)
         if patientForm.validate():
-            # Store New Patient 
-            user = users.get_current_user()
-            patient = db.storePatient(self.request.POST, user)
-            if (patient):
-                booking.patient = patient
-                booking.put()
-                # booking succesfull, send email
-                mail.emailBookingToPatient(self.jinja2, booking)
+            # Create User in Auth system
+            email = self.request.get('email')
+            password = self.request.get('password')
+            user = self.create_user(email, password)
+            if user:
+                # Store New Patient
+                patient = db.storePatient(self.request.POST, user)
+                if (patient):
+                    booking.patient = patient
+                    booking.put()
+                    # booking succesfull, send email
+                    mail.emailBookingToPatient(self.jinja2, booking)
+                else:
+                    logging.error("No booking saved because patient is None")
             else:
-                logging.info("No booking saved because patient is None")
+                logging.error('User not created.')
+                # TODO add custom validation to tell user that email is already in use.
+                self.renderNewPatientForm(patientForm, booking)
             self.renderConfirmedBooking(booking)
         else:           
-            self.renderNewPatientForm(patientForm, booking)
+            self.renderNewPatientForm(patientForm, booking)     
+
 
 
 
@@ -198,6 +237,7 @@ application = webapp2.WSGIApplication([
                                        Route('/privacy', handler=StaticHandler, name='privacy'),
                                        
                                        # Patient
+                                       ('/patient/booknew', PatientBookForNewHandler),
                                        ('/patient/book', PatientBookHandler),
                                        
                                        # provider

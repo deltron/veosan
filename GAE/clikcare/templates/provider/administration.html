@@ -27,7 +27,7 @@
 		<form method="post" action="/admin/provider/solicit" class="well form-inline">
 			<p>Make sure profile is completed before sending the invitaion for the provider to agree to the terms and take over his profile.</p>
 			<fieldset>
-				<input type="hidden" name="provider_key" value="{{p.key()}}" />
+				<input type="hidden" name="provider_key" value="{{p.key.urlsafe()}}" />
 				<button type="submit" class="btn btn-primary">
 					Solicit Provider
 				</button>
@@ -47,7 +47,7 @@
 				  		{% if p.profile_photo_blob == None %}
 							<img src="/assets/img/default-profile.png" width="100" height="100">
 						{% else %}
-							<img src="/serve/{{ p.profile_photo_blob.key() }}" width="100" height="100">
+							<img src="/serve/{{ p.profile_photo_blob.key.urlsafe() }}" width="100" height="100">
 						{% endif %}
 					  </div>
 					  <div class="span3">

@@ -6,7 +6,7 @@
 {% block content %}
 <div class="row">
 	<div class="span12">
-		<form class="form-horizontal" action="/patient/book" method="post">
+		<form class="form-horizontal" action="/patient/booknew" method="post">
 			<fieldset>
 				<div class="row">
 					<div class="span6">
@@ -28,7 +28,7 @@
 				<input id="bookingRegion" name="bookingRegion" type="hidden" value="{{ booking.region }}">
 				<input id="bookingDate" name="bookingDate" type="hidden" value="{{ booking.date }}">
 				<input id="bookingTime" name="bookingTime" type="hidden" value="{{ booking.time }}">
-				<input id="bk" name="bk" type="hidden" value="{{ booking.key() }}">
+				<input id="bk" name="bk" type="hidden" value="{{ booking.key.urlsafe() }}">
 
 			</fieldset>
 			<div class="form-actions">

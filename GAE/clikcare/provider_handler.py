@@ -9,7 +9,6 @@ from google.appengine.ext.webapp import blobstore_handlers
 from google.appengine.api import users
 from data import Provider, Schedule
 import util
-from datetime import datetime, date, time
 
 def parseRefererSection(request):
     referer = request.environ['HTTP_REFERER']
@@ -43,23 +42,17 @@ class ProviderBaseHandler(BaseHandler):
 
 class ProviderEditProfileHandler(ProviderBaseHandler):
     def get(self):
-        key = self.request.get('key')
-        if (key):
-            # edit provider
-            provider = Provider.get(key)
-            logging.info("provider dump before edit:" + str(vars(provider)))
-            form = ProviderProfileForm(obj=provider)
-            self.render_profile(provider, profile_form=form)
-        else:
-            logging.info("Missing key")
-            # Add error message on page
+        provider = db.get_from_urlsafe_key(self.request.get('key'))
+        logging.info("provider dump before edit:" + str(vars(provider)))
+        form = ProviderProfileForm(obj=provider)
+        self.render_profile(provider, profile_form=form)
     
     def post(self):
         form = ProviderProfileForm(self.request.POST)
         if form.validate():
             # Store Provider
             key = db.storeProvider(self.request.POST)
-            provider = Provider.get(key)
+            provider = key.get()
             self.render_profile(provider, profile_form=form, success_message=util.saved_message)
         else:
             # show error
@@ -69,24 +62,17 @@ class ProviderEditProfileHandler(ProviderBaseHandler):
 
 class ProviderEditAddressHandler(ProviderBaseHandler):
     def get(self):
-        key = self.request.get('key')
-        if (key):
-            # edit provider
-            provider = Provider.get(key)
-            logging.info("provider dump before edit:" + str(vars(provider)))
-            
-            form = ProviderAddressForm(obj=provider)
-            self.render_address(provider, address_form=form)
-        else:
-            logging.info("Missing key")
-            # missing key. Route to new ?
+        provider = db.get_from_urlsafe_key(self.request.get('key'))
+        logging.info("provider dump before edit:" + str(vars(provider)))
+        form = ProviderAddressForm(obj=provider)
+        self.render_address(provider, address_form=form)
 
     def post(self):
         form = ProviderAddressForm(self.request.POST)
         if form.validate():
             # Store Provider
             key = db.storeProvider(self.request.POST)
-            provider = Provider.get(key)
+            provider = key.get()
             self.render_address(provider, address_form=form, success_message=util.saved_message)
         else:
             # show validation error
@@ -96,21 +82,15 @@ class ProviderEditAddressHandler(ProviderBaseHandler):
 
 class ProviderAddressUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
     def post(self):
-        key = self.request.get('key')
-        logging.info("Looking for provider key: %s " % key)
-        provider = Provider.get(key)
+        provider = db.get_from_urlsafe_key(self.request.get('key'))
         logging.info("Found provider: %s %s" % (provider.first_name, provider.last_name))
-
         uploadForm = ProviderPhotoForm(self.request.POST)
         upload_files = self.get_uploads(uploadForm.profilePhoto.name)[0]
         logging.info("Uploaded blob key: %s " % upload_files.key())
-        
         provider.profile_photo_blob = upload_files.key()
-
         Provider.put(provider)
-        
         # redirect to address edit page        
-        self.redirect('/provider/address?key=%s' % key) 
+        self.redirect(provider.get_edit_link('address')) 
 
 class ServeHandler(blobstore_handlers.BlobstoreDownloadHandler):
     ''' Serve a blob with key. call URL as
@@ -118,32 +98,26 @@ class ServeHandler(blobstore_handlers.BlobstoreDownloadHandler):
     '''
     def get(self, resource):
         resource = str(urllib.unquote(resource))
-        blob_info = blobstore.BlobInfo.get(resource)
+        blob_info = blobstore.BlobInfo(resource)
         self.send_blob(blob_info)
 
 
 class ProviderScheduleHandler(ProviderBaseHandler):
     def get(self):
-        logging.info('ProviderScheduleHandler GET')
-        key = self.request.get('key')
-        if (key):
-            # edit provider
-            provider = Provider.get(key)
-            availableIds = provider.getAvailableScheduleIds()
-            logging.info('available ids' + str(availableIds))
-            self.render_schedule(provider, availableIds)
-        else:
-            logging.info("Missing key")
+        provider = db.get_from_urlsafe_key(self.request.get('key'))
+        availableIds = provider.getAvailableScheduleIds()
+        logging.info('available ids' + str(availableIds))
+        self.render_schedule(provider, availableIds)
             
     def post(self):
         logging.info('ProviderScheduleHandler POST')
-        key = self.request.get('provider_key')
+        urlsafe_key = self.request.get('provider_key')
         day_time = self.request.get('day_time')
         day, startTime, endTime = day_time.split('-')
         operation = self.request.get('operation')
-        logging.info("SAVE SCHEDULE: " + key + " " + day + "-" + startTime + "-" + endTime + " " + operation)
+        logging.info("SAVE SCHEDULE: " + urlsafe_key + " " + day + "-" + startTime + "-" + endTime + " " + operation)
         
-        provider = Provider.get(key)
+        provider = db.get_from_urlsafe_key(self.request.get('provider_key'))
         if (operation == 'add'):
             s = Schedule()
             s.provider = provider
@@ -163,72 +137,45 @@ class ProviderScheduleHandler(ProviderBaseHandler):
 
 class ProviderTermsHandler(ProviderBaseHandler):
     def get(self):
-        key = self.request.get('key')
-        if (key):
-            # edit provider
-            provider = Provider.get(key)
-            terms_form = ProviderTermsForm(obj=provider)
-            self.render_terms(provider, terms_form=terms_form)
-        else:
-            logging.info("Missing key")
+        provider = db.get_from_urlsafe_key(self.request.get('key'))
+        terms_form = ProviderTermsForm(obj=provider)
+        self.render_terms(provider, terms_form=terms_form)
             
     def post(self):
-        key = self.request.get('provider_key')
-        if (key):
-            provider = Provider.get(key)
-            terms_form = ProviderTermsForm(self.request.POST)
-            if terms_form.validate():
-                # Save signature and terms agreement
-                provider.terms_agreement = self.request.get('terms_agreement')
-                provider.put()
-                # TODO Add Welcome Message and invitation to review profile and set schedule
-                redirect_url = provider.get_edit_link(section='profile')
-                logging.info(redirect_url)
-                self.redirect(redirect_url)
-            else:
-                self.render_terms(provider, terms_form=terms_form)
+        provider = db.get_from_urlsafe_key(self.request.get('provider_key'))
+        terms_form = ProviderTermsForm(self.request.POST)
+        if terms_form.validate():
+            # Save signature and terms agreement
+            provider.terms_agreement = self.request.get('terms_agreement')
+            provider.put()
+            # TODO Add Welcome Message and invitation to review profile and set schedule
+            redirect_url = provider.get_edit_link(section='profile')
+            logging.info(redirect_url)
+            self.redirect(redirect_url)
         else:
-            logging.info("Missing provider key") 
-            
-        
+            self.render_terms(provider, terms_form=terms_form)
+
 
 class ProviderBookingsHandler(ProviderBaseHandler):
     def get(self):
-        key = self.request.get('key')
-        if (key):
-            provider = Provider.get(key)
-            # improve bookings to show only future bookings
-            bq = provider.booking_set
-            yesterday_at_midnight = datetime.combine(date.today(), time())
-            bq.filter("dateTime >", yesterday_at_midnight)
-            bq.order("dateTime")
-            bookings = bq.fetch(15)
-            logging.info('Bookings:' + str(bookings))
-            self.render_bookings(provider, bookings)
-        else:
-            logging.info("Missing provider key")
+        provider = db.get_from_urlsafe_key(self.request.get('key'))
+        bookings = db.fetch_future_bookings(provider)   
+        logging.info('Bookings:' + str(bookings))
+        self.render_bookings(provider, bookings)
 
 
 class ProviderAdministrationHandler(ProviderBaseHandler):
     def get(self):
-        key = self.request.get('key')
-        if (key):
-            provider = Provider.get(key)
-            if users.is_current_user_admin():
-                self.render_administration(provider)
-            else:
-                logging.info("Not Admin: Can't see provider administration page")
+        provider = db.get_from_urlsafe_key(self.request.get('key'))   
+        if users.is_current_user_admin():
+            self.render_administration(provider)
         else:
-            logging.info("Missing provider key")
+            logging.info("Not Admin: Can't see provider administration page")
 
 
 class ProviderLoginHandler(ProviderBaseHandler):
     def get(self):
-        key = self.request.get('key')
-        provider = None;
-        if (key):
-            # show provider name (from cookie?)
-            provider = Provider.get(key)
+        provider = db.get_from_urlsafe_key(self.request.get('key'))
         login_form = ProviderLoginForm(obj=provider)
         self.render_login(provider, login_form=login_form) 
     

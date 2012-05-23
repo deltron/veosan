@@ -4,72 +4,74 @@ Created on Mar 17, 2012
 @author: phil
 '''
 
-from google.appengine.ext import db
+#from google.appengine.ext import db
+from google.appengine.ext import ndb
 from google.appengine.ext import blobstore
 import logging
 from datetime import datetime, timedelta
+from webapp2_extras.appengine.auth.models import User
 
 '''
     stored data 
 '''
 
-class Patient(db.Model):
+class Patient(ndb.Model):
     '''
     A patient
     '''
-    created_on = db.DateTimeProperty(auto_now_add=True)
-    user = db.UserProperty()
-    first_name = db.StringProperty()
-    last_name = db.StringProperty()
-    email = db.StringProperty()
-    telephone = db.StringProperty()
-    terms_agreement = db.BooleanProperty()
+    created_on = ndb.DateTimeProperty(auto_now_add=True)
+    #user = db.UserProperty()
+    user = ndb.KeyProperty(kind=User)
+    first_name = ndb.StringProperty()
+    last_name = ndb.StringProperty()
+    email = ndb.StringProperty()
+    telephone = ndb.StringProperty()
+    terms_agreement = ndb.BooleanProperty()
     # insurance
     # age
 
-class Provider(db.Model):
+class Provider(ndb.Model):
     '''
     A provider
     '''
-    created_on = db.DateTimeProperty(auto_now_add=True)
-    activation_key = db.StringProperty()
+    created_on = ndb.DateTimeProperty(auto_now_add=True)
+    activation_key = ndb.StringProperty()
     
     # terms
-    terms_agreement = db.BooleanProperty()
-    terms_date = db.DateProperty()
+    terms_agreement = ndb.BooleanProperty()
+    terms_date = ndb.DateProperty()
     
     # profile
-    category = db.StringProperty()
-    specialty = db.StringListProperty()
-    associations = db.StringListProperty()
-    certifications = db.StringListProperty()
-    onsite = db.BooleanProperty()
-    start_year = db.StringProperty()
+    category = ndb.StringProperty()
+    specialty = ndb.StringProperty(repeated=True)
+    associations = ndb.StringProperty(repeated=True)
+    certifications = ndb.StringProperty(repeated=True)
+    onsite = ndb.BooleanProperty()
+    start_year = ndb.StringProperty()
     
     # address
-    first_name = db.StringProperty()
-    last_name = db.StringProperty()
-    prefix = db.StringProperty()
-    postfix = db.StringProperty()
-    email = db.StringProperty()
-    phone = db.StringProperty()
-    region = db.StringProperty()
-    address = db.StringProperty()
-    city = db.StringProperty()
-    postal_code = db.StringProperty()
-    profile_photo_blob = blobstore.BlobReferenceProperty()
-    bio = db.StringProperty(multiline=True)
-    quote = db.StringProperty(multiline=True)
-    
-    
+    first_name = ndb.StringProperty()
+    last_name = ndb.StringProperty()
+    prefix = ndb.StringProperty()
+    postfix = ndb.StringProperty()
+    email = ndb.StringProperty()
+    phone = ndb.StringProperty()
+    region = ndb.StringProperty()
+    address = ndb.StringProperty()
+    city = ndb.StringProperty()
+    postal_code = ndb.StringProperty()
+    profile_photo_blob = ndb.BlobKeyProperty()
+    bio = ndb.TextProperty()
+    quote = ndb.TextProperty()
     # schedule
     # see Schedule Class below
+
     
     def fullName(self):
         return '{0} {1}, {2}'.format(self.first_name, self.last_name, self.category)
     
     def get_edit_link(self, section='address'):
-        return u'/provider/%s?key=%s' % (section, self.key())
+        return u'/provider/%s?key=%s' % (section, self.key.urlsafe())
     
     def get_html_summary(self):
         s = u''
@@ -95,31 +97,31 @@ class Provider(db.Model):
         logging.info("is available? " + str(day) + " " + str(time) + " count:" + str(count))
         return count > 0
         
-class Schedule(db.Model):
-    provider = db.ReferenceProperty(Provider, collection_name='schedule')
-    day = db.IntegerProperty()
-    startTime = db.IntegerProperty()
-    endTime = db.IntegerProperty()
+class Schedule(ndb.Model):
+    provider = ndb.KeyProperty(kind=Provider) # name='schedule'
+    day = ndb.IntegerProperty()
+    startTime = ndb.IntegerProperty()
+    endTime = ndb.IntegerProperty()
     
     def repr(self):
         # String representation for debuging, I'm too scared to override the __repr__() 
         return '[Schedule day:%s from %s to %s]' % (self.day, self.startTime, self.endTime)
     
-class Booking(db.Model):
-    created_on = db.DateTimeProperty(auto_now_add=True)
+class Booking(ndb.Model):
+    created_on = ndb.DateTimeProperty(auto_now_add=True)
     #request
-    requestCategory = db.StringProperty()
-    requestRegion = db.StringProperty()
-    requestDateTime = db.DateTimeProperty()
+    requestCategory = ndb.StringProperty()
+    requestRegion = ndb.StringProperty()
+    requestDateTime = ndb.DateTimeProperty()
     # email for booking requests with no provider found
-    requestEmail = db.EmailProperty()
+    request_email = ndb.StringProperty()
     # actual appointment
-    dateTime = db.DateTimeProperty()
-    comments = db.StringProperty(multiline=True)
+    dateTime = ndb.DateTimeProperty()
+    comments = ndb.TextProperty()
     # link to patient
-    patient = db.ReferenceProperty(Patient)
+    patient = ndb.KeyProperty(kind=Patient)
     # link to provider
-    provider = db.ReferenceProperty(Provider)
+    provider = ndb.KeyProperty(kind=Provider)
     
     def get_html_summary(self):
         s = u''

@@ -20,7 +20,7 @@
 			<fieldset>
 				{{ makeStandardForm() }}
 			</fieldset>
-			<input type="hidden" name="provider_key" value="{{p.key()}}" />
+			<input type="hidden" name="provider_key" value="{{p.key.urlsafe()}}" />
 			<div class="form-actions">
 				<button type="submit" class="btn btn-primary">
 						{{ _('Save') }}

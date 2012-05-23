@@ -43,14 +43,19 @@
 						{% endif %}
 					</td>
 					<!-- Provider -->
-					<td> {% set p = b.provider %}
-					{% if p %} <a href="{{p.get_edit_link()}}"
-					rel="popover"
-					title="{{p.first_name}} {{p.last_name}}"
-					data-content="{{p.get_html_summary()}}"> {{p.last_name}}, {{p.first_name}}</a> {% else %}
-					<p>
-						No provider booked
-					</p> {% endif %} </td>
+					<td>
+						{% if b.provider %}
+					 		{% set p = b.provider.get() %}
+							<a href="{{p.get_edit_link()}}"
+							rel="popover"
+							title="{{p.first_name}} {{p.last_name}}"
+							data-content="{{p.get_html_summary()}}"> {{p.last_name}}, {{p.first_name}}</a>
+						{% else %}
+						<p>
+							No provider booked
+						</p>
+						{% endif %}
+					 </td>
 				</tr>
 				{% endfor %}
 			</tbody>

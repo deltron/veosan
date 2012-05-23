@@ -26,7 +26,7 @@ class AdminIndexHandler(AdminBaseHandler):
 class AdminBookingsHandler(AdminBaseHandler):
     '''Administer Bookings'''
     def get(self):
-            bookings = gdb.GqlQuery("SELECT * FROM Booking ORDER BY created_on DESC LIMIT 10")
+            bookings = db.fetch_bookings()
             self.render_template('admin/admin_bookings.html', bookings=bookings)
 
 class AdminProvidersHandler(AdminBaseHandler):
