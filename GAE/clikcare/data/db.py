@@ -5,7 +5,7 @@
 from google.appengine.ext import ndb
 import logging
 import types
-from datetime import datetime
+from datetime import datetime, date, time
 from data.model import Booking, Patient, Provider
 import util
   
@@ -68,7 +68,7 @@ def findBestProviderForBooking(booking):
     requestEndTime = requestStartTime + 1
     logging.info('Looking for {0} in {1} available on day:{2} from {3} to {4}'.format(category, region, requestDay, requestStartTime, requestEndTime))
     providers = []
-    providersQuery = Provider.query(Provider.category==category, Provider.region==region)
+    providersQuery = Provider.query(Provider.category==category, Provider.location==region)
     #gdb.GqlQuery('''Select * from Provider WHERE category = :1 AND region = :2''', category, region)
     providerCount = providersQuery.count(limit=50)
     logging.info('Found {0} providers in category and region. Narrowing down list using schedule...'.format(providerCount))
