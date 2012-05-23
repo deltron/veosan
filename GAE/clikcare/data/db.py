@@ -5,32 +5,8 @@ from google.appengine.ext import db as gdb
 import logging
 import types
 from datetime import datetime
-from data import Booking
-from data import Patient
-from data import Provider
-  
-def set_all_properties_on_entity_from_multidict(entity, multidict):
-    ''' fancy way to set all properties on an entity from a multidict (posted form) '''
-    
-    for prop in iter(entity.properties()):
-        if multidict.has_key(prop):
-            property_data_type = entity.properties()[prop].data_type
-
-            if property_data_type == basestring:
-                logging.info("saving key->value for string : " + prop + "->" + multidict.getone(prop))
-                setattr(entity, prop, multidict.getone(prop))
-            elif property_data_type == list:
-                logging.info("saving key->value for list :" + prop + " -> " + str(multidict.getall(prop)))
-                setattr(entity, prop, multidict.getall(prop))
-            elif property_data_type == bool:
-                logging.info("saving key->value for bool : " + prop + "->" + multidict.getone(prop))                
-                if multidict.getone(prop) == 'True':
-                    setattr(entity, prop, True)
-                else:
-                    setattr(entity, prop, multidict.getone(prop))          
-            else:
-                logging.error("Got a property of unknown instance: " + str(property_data_type))
-        
+from data.model import Booking, Patient, Provider
+import util
   
 def storeBooking(r, patient=None, provider=None):
     logging.info('Saving Booking from:' + str(r))
@@ -54,7 +30,7 @@ def storePatient(r, user):
     patient = Patient()
     
     # set all the properties
-    set_all_properties_on_entity_from_multidict(patient, r)
+    util.set_all_properties_on_entity_from_multidict(patient, r)
     
     # store
     patient_key = patient.put()
@@ -143,7 +119,7 @@ def storeProvider(r):
     provider = getOrCreateProvider(r['provider_key'])
     
     # set all the properties
-    set_all_properties_on_entity_from_multidict(provider, r)
+    util.set_all_properties_on_entity_from_multidict(provider, r)
     
     # store
     provider_key = provider.put()

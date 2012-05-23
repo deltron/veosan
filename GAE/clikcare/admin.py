@@ -5,9 +5,9 @@
 from google.appengine.ext import db as gdb
 from google.appengine.api import users
 from base import BaseHandler
-import db, mail
+import data.db as db, mail
 import logging
-from data import Provider
+from data.model import Provider
 import random, sha, urlparse
 
 
