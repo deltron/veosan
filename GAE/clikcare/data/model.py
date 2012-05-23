@@ -87,9 +87,10 @@ class Provider(ndb.Model):
     
     def getAvailableScheduleIds(self):
         ids = list()
-        for s in self.schedule:
-            id = str(s.day) + '-' + str(s.startTime) + '-' + str(s.endTime)
-            ids.append(id)
+        sq = Schedule.query(ancestor=self.key)
+        for s in sq:
+            schedule_id = str(s.day) + '-' + str(s.startTime) + '-' + str(s.endTime)
+            ids.append(schedule_id)
         return ids
     
     def isAvailable(self, day, time):
