@@ -7,10 +7,10 @@ from google.appengine.api.users import User
 from webapp2 import Route
 from webapp2_extras.routes import RedirectRoute
 # clik
-import admin, util, db, provider_handler, mail, auth_handler
+import admin, util, data.db as db, provider_handler, mail, auth_handler
 from base import BaseHandler
 from forms import BookingForm, PatientForm, ContactForm, EmailOnlyBookingForm
-from data import Booking
+from data.model import Booking
 
 
 class BaseBookingHandler(BaseHandler):

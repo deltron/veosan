@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 import logging
 from base import BaseHandler
-import db
+import data.db as db
 import urllib
 from forms import ProviderProfileForm, ProviderAddressForm, ProviderPhotoForm, ProviderTermsForm, ProviderLoginForm
 from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
 from google.appengine.api import users
-from data import Provider, Schedule
+from data.model import Provider, Schedule
 import util
 
 def parseRefererSection(request):

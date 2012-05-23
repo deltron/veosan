@@ -24,11 +24,11 @@
 				</div>
 				
 				{# repeat previously visible info in hidden format for the form #}
-				<input id="bookingCategory" name="bookingCategory" type="hidden" value="{{ booking.category }}">
-				<input id="bookingRegion" name="bookingRegion" type="hidden" value="{{ booking.region }}">
-				<input id="bookingDate" name="bookingDate" type="hidden" value="{{ booking.date }}">
-				<input id="bookingTime" name="bookingTime" type="hidden" value="{{ booking.time }}">
-				<input id="bk" name="bk" type="hidden" value="{{ booking.key.urlsafe() }}">
+				<input id="category" name="category" type="hidden" value="{{ booking.category }}">
+				<input id="location" name="location" type="hidden" value="{{ booking.region }}">
+				<input id="booking_date" name="booking_date" type="hidden" value="{{ booking.date }}">
+				<input id="booking_time" name="booking_time" type="hidden" value="{{ booking.time }}">
+				<input id="bk" name="bk" type="hidden" value="{{ booking.key() }}">
 
 			</fieldset>
 			<div class="form-actions">

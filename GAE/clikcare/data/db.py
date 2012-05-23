@@ -6,51 +6,22 @@ from google.appengine.ext import ndb
 import logging
 import types
 from datetime import datetime
-from data import Booking
-from data import Patient
-from data import Provider
-from datetime import date, time
-
-
+from data.model import Booking, Patient, Provider
+import util
+  
 def get_from_urlsafe_key(urlsafe_key):
     logging.info('Getting from urlsafe key: %s' % urlsafe_key)
     key = ndb.Key(urlsafe=urlsafe_key)
     logging.info('Getting kind: %s and key: %s' % (key.kind(), key.id()))
     return key.get()
 
-def set_all_properties_on_entity_from_multidict(entity, multidict):
-    ''' fancy way to set all properties on an entity from a multidict (posted form '''
-    
-    for prop in iter(entity.properties()):
-        if multidict.has_key(prop):
-            logging.info("type for property " + prop + " is " + str(type(getattr(entity, prop))))
-            if isinstance(getattr(entity, prop), str):
-                logging.info("saving key->value : " + prop + "->" + multidict.getone(prop))
-                setattr(entity, prop, multidict.getone(prop))
-            elif isinstance(getattr(entity, prop), list):
-                logging.info("saving key->value:" + prop + " -> " + str(multidict.getall(prop)))
-                setattr(entity, prop, multidict.getall(prop))
-            elif isinstance(getattr(entity, prop), types.NoneType):
-                logging.info("saving key->value for NoneType : " + prop + "->" + multidict.getone(prop))
-                
-                # set a boolean, not detected as boolean from Entity...
-                if multidict.getone(prop) == 'True':
-                    setattr(entity, prop, True)
-                else:
-                    setattr(entity, prop, multidict.getone(prop))
-            else:
-                logging.info("Got a property of unknown instance: " + str(type(getattr(entity, prop))))
-        else:
-            logging.info("Property not found in request: " + str(prop))
-        
-  
 def storeBooking(r, patient=None, provider=None):
     logging.info('Saving Booking from:' + str(r))
     booking = Booking()
-    booking.requestCategory = r['bookingCategory']
-    booking.requestRegion = r['bookingRegion']
-    requestDateString = r['bookingDate']
-    requestTimeString = r['bookingTime']
+    booking.requestCategory = r['category']
+    booking.requestRegion = r['location']
+    requestDateString = r['booking_date']
+    requestTimeString = r['booking_time']
     requestDateTime = datetime.strptime(requestDateString + " " + requestTimeString, '%Y-%m-%d %H')
     booking.requestDateTime = requestDateTime
     booking.comments = r.get('comments', '')
@@ -66,7 +37,7 @@ def storePatient(r, user):
     patient = Patient()
     
     # set all the properties
-    set_all_properties_on_entity_from_multidict(patient, r)
+    util.set_all_properties_on_entity_from_multidict(patient, r)
     
     # store
     patient_key = patient.put()
@@ -167,7 +138,7 @@ def storeProvider(r):
     provider = getOrCreateProvider(r['provider_key'])
     
     # set all the properties
-    set_all_properties_on_entity_from_multidict(provider, r)
+    util.set_all_properties_on_entity_from_multidict(provider, r)
     
     # store
     provider_key = provider.put()

@@ -22,10 +22,10 @@ class DBTestCase(unittest.TestCase):
         print('-------------------------------')
 
     def testStoreBooking(self):
-        values = { 'bookingCategory': 'physiotherapy',
-                   'bookingRegion': 'mtl-downtown', 
-                   'bookingDate': '2012-04-17',
-                   'bookingTime': '10',
+        values = { 'category': 'physiotherapy',
+                   'location': 'mtl-downtown', 
+                   'booking_date': '2012-04-17',
+                   'booking_time': '10',
                    'comments': 'no comments',
                  }
         key = db.storeBooking(values, None, None)

@@ -56,7 +56,7 @@ class Provider(ndb.Model):
     postfix = ndb.StringProperty()
     email = ndb.StringProperty()
     phone = ndb.StringProperty()
-    region = ndb.StringProperty()
+    location = ndb.StringProperty()
     address = ndb.StringProperty()
     city = ndb.StringProperty()
     postal_code = ndb.StringProperty()
