@@ -2,7 +2,7 @@
 
 import unittest, webtest
 from google.appengine.ext import testbed
-import main, db
+import main, data.db as db
 
 class BaseTest(unittest.TestCase):
     ''' *** NOTE ***
