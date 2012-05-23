@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import unittest, db
+import unittest, data.db as db
 from base import BaseTest
 
 class AdminTest(BaseTest):
@@ -37,6 +37,8 @@ class AdminTest(BaseTest):
         
         
     def test_complete_profile_creation(self):
+        ''' Test init provider with address, profile and one timeslot together '''
+        
         # init a provider
         self._test_admin_provider_init()
         
@@ -47,7 +49,7 @@ class AdminTest(BaseTest):
         
         
     def test_admin_provider_init_with_empty_email(self):
-        ''' initialize a new provider '''
+        ''' initialize a new provider with no email address (should not be possible) '''
         
         request_variables = { 'providerEmail' : '' }
         response = self.testapp.post('/admin/provider/init', request_variables)
@@ -111,7 +113,7 @@ class AdminTest(BaseTest):
         address_form['last_name'] = u"Fox"
         address_form['postfix'] = u"Ph.D"
         address_form['phone'] = u"555-123-5678"
-        address_form['region'] = u"mtl-downtown"
+        address_form['location'] = u"mtl-downtown"
         address_form['address'] = u"123 Main St."
         address_form['city'] = u"Westmount"
         address_form['postal_code'] = u"H1B2C3"
@@ -150,7 +152,7 @@ class AdminTest(BaseTest):
         self.assertEqual(address_form['last_name'].value, u"Fox")
         self.assertEqual(address_form['postfix'].value, u"Ph.D")
         self.assertEqual(address_form['phone'].value, u"555-123-5678")
-        self.assertEqual(address_form['region'].value, u"mtl-downtown")
+        self.assertEqual(address_form['location'].value, u"mtl-downtown")
         self.assertEqual(address_form['address'].value, u"123 Main St.")
         self.assertEqual(address_form['city'].value, u"Westmount")
         self.assertEqual(address_form['postal_code'].value, u"H1B2C3")
@@ -167,7 +169,7 @@ class AdminTest(BaseTest):
         address_form['last_name'] = u"Otter"
         address_form['postfix'] = u"M.Sc"
         address_form['phone'] = u"555-987-6543"
-        address_form['region'] = u"mtl-westisland"
+        address_form['location'] = u"mtl-westisland"
         address_form['address'] = u"321 Primary St."
         address_form['city'] = u"Outremont"
         address_form['postal_code'] = u"C4B5C6"
