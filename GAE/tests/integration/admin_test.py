@@ -105,9 +105,6 @@ class AdminTest(BaseTest):
         
         address_form = response.forms[0] # address form
         
-        # check email address is pre-populated
-        self.assertEqual(address_form['email'].value, "unit_test@provider.com")
-
         # fill out the form
         address_form['prefix'] = u"Mr."
         address_form['first_name'] = u"Fantastic"
@@ -147,9 +144,6 @@ class AdminTest(BaseTest):
         
         address_form = response.forms[0] # address form
         
-        # check email address is pre-populated
-        self.assertEqual(address_form['email'].value, "unit_test@provider.com")
-
         # verify form contains correct info
         self.assertEqual(address_form['prefix'].value, u"Mr.")
         self.assertEqual(address_form['first_name'].value, u"Fantastic")
