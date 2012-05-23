@@ -110,13 +110,11 @@ class ProviderAddressForm(Form):
     first_name = TextField(_(u'First Name').decode("UTF-8"), [validators.Length(min=1, message=_(u'First name is a required field').decode("UTF-8"))])
     last_name = TextField(_(u'Last Name').decode("UTF-8"), [validators.Length(min=1, message=_(u'Last name is a required field').decode("UTF-8"))])
     postfix = TextField(_(u'Postfix qualifications').decode("UTF-8"))
-    email = TextField(_(u'E-mail Address').decode("UTF-8"), [validators.Email(message=_(u'Invalid email address.').decode("UTF-8"))])
     phone = TextField(_(u'Telephone').decode("UTF-8"), [validators.Regexp(regex="^[2-9]\d{2}-\d{3}-\d{4}$", message=_(u'Please make sure phone number is in the following format: 514-555-1212').decode("UTF-8"))])
     region = SelectField(_(u'Location').decode("UTF-8"), choices=util.getAllRegions())
-    address = TextField('Addresse', [validators.Length(min=5, message='Address requis.')])
-    city = TextField('Ville', [validators.Length(min=3, message='Address requis.')])
-    postal_code = TextField('Code Postal', [validators.Length(min=6, message='Address requis.')])
-    #key = TextField('key')
+    address = TextField(_(u'Addresse'), [validators.Length(min=5, message='Address requis.')])
+    city = TextField(_(u'City'), [validators.Length(min=3, message='Address requis.')])
+    postal_code = TextField(_(u'Postal Code'), [validators.Length(min=6, message='Address requis.')])
     
 class ProviderPhotoForm(Form):
     profilePhoto = FileField('T&eacute;l&eacute;charger')
