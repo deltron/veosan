@@ -33,8 +33,8 @@ class BaseHandler(webapp2.RequestHandler):
             Common template rendering function
         '''
         # add template arguments common to all templates
-        user = self.get_current_auth_user()
-        logging.info('User:' + str(user))
+        user = self.get_current_user()
+        logging.info('User: ' + str(user))
         # Eventually display the full name of the user (when linked to patient or provider profile)
         username = ''
         if user:
@@ -81,7 +81,7 @@ class BaseHandler(webapp2.RequestHandler):
                       'logout_url': self.uri_for('logout') }
         return auth_conf
 
-    def get_current_auth_user(self):
+    def get_current_user(self):
         ''' Get the current authenticated user from our internal auth system'''
         user = None
         user_session = self.auth.get_user_by_session()
@@ -89,3 +89,14 @@ class BaseHandler(webapp2.RequestHandler):
         if user_session:
             user, token_timestamp = self.auth.store.user_model.get_by_auth_token(user_session['user_id'], user_session['token'])
         return user
+    
+    def create_user(self, email, password):
+        # Passing password_raw=password will hash the password
+        user_created, new_user = self.auth.store.user_model.create_user(email, password_raw=password)
+        if user_created:
+            logging.info('Create new user: %s' % new_user)
+            return new_user
+        else:
+            logging.info('New user creation failed. Probably existing email: %s' % new_user)
+            return None
+                

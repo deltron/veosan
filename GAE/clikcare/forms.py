@@ -93,6 +93,7 @@ class PatientForm(Form):
     first_name = TextField(_(u'First Name').decode("UTF-8"), [validators.Length(min=1, message=_(u'First name is a required field').decode("UTF-8"))])
     last_name = TextField(_(u'Last Name').decode("UTF-8"), [validators.Length(min=1, message=_(u'Last name is a required field').decode("UTF-8"))])
     email = TextField(_(u'E-mail Address').decode("UTF-8"), [validators.Email(message=_(u'Invalid email address.').decode("UTF-8"))])
+    password = PasswordField(_(u'Password').decode("UTF-8"), [validators.Length(min=6, message='Password needs at least 6 characters')])
     telephone = TextField(_(u'Telephone').decode("UTF-8"), [validators.Regexp(regex="^[2-9]\d{2}-\d{3}-\d{4}$", message=_(u'Please make sure phone number is in the following format: 514-555-1212').decode("UTF-8"))])
     insurance = SelectField(_(u'Insurance').decode("UTF-8"), choices=util.getAllInsurance())
     # this should go into the booking object
@@ -150,6 +151,6 @@ class ContactForm(Form):
     message = TextAreaField(_(u'Message').decode("UTF-8"))
     
 class LoginForm(Form):
-    username = TextField(_(u'Username').decode("UTF-8"), [validators.Length(min=5, message='Username needs at least 5 characters')])
+    email = TextField(_(u'Email').decode("UTF-8"), [validators.Email(message=_(u'Invalid email address.').decode("UTF-8"))])
     password = PasswordField(_(u'Password').decode("UTF-8"), [validators.Length(min=6, message='Password needs at least 6 characters')])
     remember_me = CustomBooleanField(_(u'Remember Me').decode("UTF-8"))
