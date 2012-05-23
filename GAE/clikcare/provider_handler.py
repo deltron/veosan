@@ -120,16 +120,17 @@ class ProviderScheduleHandler(ProviderBaseHandler):
         provider = db.get_from_urlsafe_key(self.request.get('provider_key'))
         if (operation == 'add'):
             s = Schedule()
-            s.provider = provider
+            s.provider = provider.key
             s.day = int(day)
             s.startTime = int(startTime)
             s.endTime = int(endTime)
-            s.put()
+            new_schedule_key = s.put()
+            logging.info('New Schedule saved: %s' % new_schedule_key)
         elif (operation == 'remove'):
-            s_to_delete = provider.schedule.filter('day = ', int(day)).filter('startTime = ', int(startTime)).get()
-            logging.info('deleting schedule' + str(s_to_delete))
-            if (s_to_delete):
-                s_to_delete.delete()
+            schedule_to_delete = Schedule.query(Schedule.provider == provider.key, Schedule.day == int(day), Schedule.startTime == int(startTime)).get()
+            logging.info('deleting schedule' + str(schedule_to_delete))
+            if (schedule_to_delete):
+                schedule_to_delete.key.delete()
             else:
                 logging.error("Can't find schedule to delete")  
         else:

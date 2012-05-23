@@ -86,8 +86,10 @@ class Provider(ndb.Model):
         return self.created_on > datetime_24h_ago
     
     def getAvailableScheduleIds(self):
+        logging.info('Getting schedules for provider: %s' % self.key);
         ids = list()
-        sq = Schedule.query(ancestor=self.key)
+        sq = Schedule.query(Schedule.provider == self.key)
+        logging.info('schedule count %s' % sq.count())
         for s in sq:
             schedule_id = str(s.day) + '-' + str(s.startTime) + '-' + str(s.endTime)
             ids.append(schedule_id)
