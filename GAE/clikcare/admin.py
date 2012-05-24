@@ -43,7 +43,7 @@ class NewProviderInitHandler(AdminBaseHandler):
     def post(self):
         provider_email = self.request.get('providerEmail')
         provider_key = db.initProvider(provider_email)
-        provider = Provider.get(provider_key)
+        provider = provider_key.get()
         logging.info('initialized new provider with key : %s' % provider_key)
         success_message = 'Initialized new provider for %s' % (provider_email)
         self.render_providers(success_message=success_message)
