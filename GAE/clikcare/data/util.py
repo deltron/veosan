@@ -1,23 +1,30 @@
 import logging
+from google.appengine.ext.ndb import StringProperty, BooleanProperty, TextProperty
 
 def set_all_properties_on_entity_from_multidict(entity, multidict):
     ''' fancy way to set all properties on an entity from a multidict (posted form) '''
     
-    for prop in iter(entity.properties()):
+    for prop in iter(entity.to_dict()):
         if multidict.has_key(prop):
-            property_data_type = entity.properties()[prop].data_type
+            property_type = entity._properties[prop]
 
-            if property_data_type == basestring:
-                logging.info("saving key->value for string : " + prop + "->" + multidict.getone(prop))
+            if isinstance(property_type, StringProperty):
+                if property_type._repeated:
+                    logging.info("saving key->value for String List : " + prop + "->" + str(multidict.getall(prop)))
+                    setattr(entity, prop, multidict.getall(prop))    
+                else:
+                    logging.info("saving key->value for String : " + prop + "->" + multidict.getone(prop))
+                    setattr(entity, prop, multidict.getone(prop))
+
+            elif isinstance(property_type, TextProperty):
+                logging.info("saving key->value for Text : " + prop + "->" + multidict.getone(prop))
                 setattr(entity, prop, multidict.getone(prop))
-            elif property_data_type == list:
-                logging.info("saving key->value for list :" + prop + " -> " + str(multidict.getall(prop)))
-                setattr(entity, prop, multidict.getall(prop))
-            elif property_data_type == bool:
-                logging.info("saving key->value for bool : " + prop + "->" + multidict.getone(prop))                
+
+            elif isinstance(property_type, BooleanProperty):
+                logging.info("saving key->value for Boolean : " + prop + "->" + multidict.getone(prop))                
                 if multidict.getone(prop) == 'True':
                     setattr(entity, prop, True)
                 else:
                     setattr(entity, prop, multidict.getone(prop))          
             else:
-                logging.error("Got a property of unknown instance: " + str(property_data_type))
+                logging.error("Got a property of unknown instance: " + str(property_type))
