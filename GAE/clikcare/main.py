@@ -6,44 +6,8 @@ from webapp2 import Route
 from webapp2_extras.routes import RedirectRoute
 # clik
 import util
-from handler import booking, provider, auth, admin
-from  handler.base import BaseHandler
-from forms import ContactForm
+from handler import booking, provider, auth, admin, static
 
-
-
-class StaticHandler(BaseHandler):
-    def get(self):
-        template = "static/" + self.request.route.name + ".html"
-        self.render_template(template)
-        
-
-class ContactHandler(BaseHandler):
-    def get(self):
-        self.render_template("contact.html", form=ContactForm(self.request.GET), sent=False)
-
-    def post(self):
-        contact_form = ContactForm(self.request.POST)
-        if contact_form.validate():
-            from_email = contact_form.email.data
-            subject = contact_form.subject.data
-            message = contact_form.message.data
-            
-            # send email
-            # show confirmation page
-            
-            logging.info('Feedback from %s | subject: %s\n\nMESSAGE\n=========\n%s' % (from_email, subject, message))
-            
-            self.render_template('contact.html', form=contact_form, sent=True)
-        else:
-            self.render_template('contact.html', form=contact_form, sent=False)
-
-
-
-            
-            
-
- 
 
 jinja_filters = {}
 jinja_filters['format_date_weekday_after'] = util.format_date_weekday_after
@@ -81,13 +45,13 @@ application = webapp2.WSGIApplication([
                                        # General pages
                                        ('/', booking.IndexHandler),
                                        ('/full', booking.FullyBookedHandler),
-                                       ('/contact', ContactHandler),
+                                       ('/contact', static.ContactHandler),
                                        
                                        # Static Pages
-                                       Route('/about', handler=StaticHandler, name='about'),
-                                       Route('/careers', handler=StaticHandler, name='careers'),
-                                       Route('/terms', handler=StaticHandler, name='terms'),
-                                       Route('/privacy', handler=StaticHandler, name='privacy'),
+                                       Route('/about', handler=static.StaticHandler, name='about'),
+                                       Route('/careers', handler=static.StaticHandler, name='careers'),
+                                       Route('/terms', handler=static.StaticHandler, name='terms'),
+                                       Route('/privacy', handler=static.StaticHandler, name='privacy'),
                                        
                                        # Patient
                                        ('/patient/booknew', booking.PatientBookForNewHandler),
