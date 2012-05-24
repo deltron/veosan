@@ -141,7 +141,7 @@ class AdminTest(BaseTest):
         provider = db.getProviderFromEmail("unit_test@provider.com")
         
         # request the address page
-        request_variables = { 'key' : provider.key() }
+        request_variables = { 'key' : provider.key.urlsafe() }
         response = self.testapp.get('/provider/address', request_variables)
         
         address_form = response.forms[0] # address form
@@ -280,7 +280,7 @@ class AdminTest(BaseTest):
         provider = db.getProviderFromEmail("unit_test@provider.com")
         
         # request the schedule page
-        request_variables = { 'key' : provider.key() }
+        request_variables = { 'key' : provider.key.urlsafe() }
         response = self.testapp.get('/provider/schedule', request_variables)
         
         # TODO make this more comprehensible ie. monday-8-to-13
@@ -340,7 +340,7 @@ class AdminTest(BaseTest):
         provider = db.getProviderFromEmail("unit_test@provider.com")
         
         # request the address page
-        request_variables = { 'key' : provider.key() }
+        request_variables = { 'key' : provider.key.urlsafe() }
         response = self.testapp.get('/provider/address', request_variables)
         
         photo_form = response.forms[1] # photo form
