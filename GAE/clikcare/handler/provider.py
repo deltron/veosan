@@ -147,7 +147,7 @@ class ProviderTermsHandler(ProviderBaseHandler):
         terms_form = ProviderTermsForm(self.request.POST)
         if terms_form.validate():
             # Save signature and terms agreement
-            provider.terms_agreement = self.request.get('terms_agreement')
+            provider.terms_agreement = self.request.get('terms_agreement') == u'True'
             provider.put()
             # TODO Add Welcome Message and invitation to review profile and set schedule
             redirect_url = provider.get_edit_link(section='profile')
