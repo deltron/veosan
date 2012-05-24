@@ -316,7 +316,7 @@ class AdminTest(BaseTest):
         provider = db.getProviderFromEmail("unit_test@provider.com")
         
         # check one schedule was saved in the database
-        schedule_count = provider.schedule.count()
+        schedule_count = provider.get_schedule().count()
         self.assertEqual(schedule_count , 1, 'Provider should have a schedule')
         
         # check if square for day is green
