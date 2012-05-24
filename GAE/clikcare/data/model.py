@@ -85,6 +85,9 @@ class Provider(ndb.Model):
         datetime_24h_ago = datetime.now() - timedelta(hours=24)
         return self.created_on > datetime_24h_ago
     
+    def schedule(self):
+        return Schedule.query(Schedule.provider == self.key)
+    
     def getAvailableScheduleIds(self):
         logging.info('Getting schedules for provider: %s' % self.key);
         ids = list()
