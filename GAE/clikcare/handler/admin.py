@@ -54,24 +54,19 @@ class NewProviderSolicitHandler(BaseHandler):
         the sollicitation email to the provider to reset password and agree to terms.
     '''
     def post(self):
-        key = self.request.get('provider_key')
-        if (key):
-            # edit provider
-            provider = Provider.get(key)
-            # create and store activation key and url
-            salt = sha.new(str(random.random())).hexdigest()[:5]
-            activation_key = sha.new(salt + provider.first_name + provider.last_name).hexdigest()
-            provider.activation_key = activation_key
-            provider.put()
-            # activation url
-            url_obj = urlparse.urlparse(self.request.url)
-            activation_url = urlparse.urlunparse((url_obj.scheme, url_obj.netloc, '/provider/activation/' + provider.activation_key, '', '', ''))
-            logging.info('activation url:' + activation_url)
-            # send email
-            mail.emailSolicitProvider(self.jinja2, provider, activation_url)
-            # render the provider admin page
-            success_message='Solicit email sent to %s' % provider.email
-            self.render_template('provider/administration.html', p=provider, success_message=success_message)
-        else:
-            logging.info("Missing key")
+        provider = db.get_from_urlsafe_key(self.request.get('provider_key'))
+        # create and store activation key and url
+        salt = sha.new(str(random.random())).hexdigest()[:5]
+        activation_key = sha.new(salt + provider.first_name + provider.last_name).hexdigest()
+        provider.activation_key = activation_key
+        provider.put()
+        # activation url
+        url_obj = urlparse.urlparse(self.request.url)
+        activation_url = urlparse.urlunparse((url_obj.scheme, url_obj.netloc, '/provider/activation/' + provider.activation_key, '', '', ''))
+        logging.info('activation url:' + activation_url)
+        # send email
+        mail.emailSolicitProvider(self.jinja2, provider, activation_url)
+        # render the provider admin page
+        success_message='Solicit email sent to %s' % provider.email
+        self.render_template('provider/administration.html', p=provider, success_message=success_message)
             
