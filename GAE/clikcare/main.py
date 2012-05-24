@@ -2,13 +2,11 @@
 
 # GAE
 import webapp2, logging
-from google.appengine.api import users
-from google.appengine.api.users import User
 from webapp2 import Route
 from webapp2_extras.routes import RedirectRoute
 # clik
-import admin, util, data.db as db, provider_handler, mail, auth_handler
-from base import BaseHandler
+import handler.admin, util, data.db as db, handler.provider, mail, handler.auth
+from handler.base import BaseHandler
 from forms import BookingForm, PatientForm, ContactForm, EmailOnlyBookingForm
 from data.model import Booking
 
@@ -241,27 +239,27 @@ application = webapp2.WSGIApplication([
                                        ('/patient/book', PatientBookHandler),
                                        
                                        # provider
-                                       ('/provider/login', provider_handler.ProviderLoginHandler),
-                                       ('/provider/profile', provider_handler.ProviderEditProfileHandler),
-                                       ('/provider/address', provider_handler.ProviderEditAddressHandler),
-                                       ('/provider/address/upload', provider_handler.ProviderAddressUploadHandler),
-                                       ('/provider/schedule', provider_handler.ProviderScheduleHandler),
-                                       ('/provider/terms', provider_handler.ProviderTermsHandler),
-                                       ('/provider/bookings', provider_handler.ProviderBookingsHandler),
-                                       ('/provider/administration', provider_handler.ProviderAdministrationHandler),
-                                       Route('/provider/activation/<activation_key>', handler=provider_handler.ProviderActivationHandler),
-                                       ('/serve/([^/]+)?', provider_handler.ServeHandler), # temporary - to test file uploads
+                                       ('/provider/login', handler.provider.ProviderLoginHandler),
+                                       ('/provider/profile', handler.provider.ProviderEditProfileHandler),
+                                       ('/provider/address', handler.provider.ProviderEditAddressHandler),
+                                       ('/provider/address/upload', handler.provider.ProviderAddressUploadHandler),
+                                       ('/provider/schedule', handler.provider.ProviderScheduleHandler),
+                                       ('/provider/terms', handler.provider.ProviderTermsHandler),
+                                       ('/provider/bookings', handler.provider.ProviderBookingsHandler),
+                                       ('/provider/administration', handler.provider.ProviderAdministrationHandler),
+                                       Route('/provider/activation/<activation_key>', handler=handler.provider.ProviderActivationHandler),
+                                       ('/serve/([^/]+)?', handler.provider.ServeHandler), # temporary - to test file uploads
                                        # admin
-                                       ('/admin/provider/init', admin.NewProviderInitHandler),
-                                       ('/admin/provider/solicit', admin.NewProviderSolicitHandler),
-                                       ('/admin', admin.AdminIndexHandler),
-                                       ('/admin/bookings', admin.AdminBookingsHandler),
-                                       ('/admin/providers', admin.AdminProvidersHandler),
+                                       ('/admin/provider/init', handler.admin.NewProviderInitHandler),
+                                       ('/admin/provider/solicit', handler.admin.NewProviderSolicitHandler),
+                                       ('/admin', handler.admin.AdminIndexHandler),
+                                       ('/admin/bookings', handler.admin.AdminBookingsHandler),
+                                       ('/admin/providers', handler.admin.AdminProvidersHandler),
                                        # auth
-                                       ('/login', auth_handler.LoginHandler),
+                                       ('/login', handler.auth.LoginHandler),
                                        #('/create', auth_handler.CreateUserHandler),
                                         #RedirectRoute('/login/', auth_handler.LoginHandler, name='login', strict_slash=True),
-                                        RedirectRoute('/logout/', auth_handler.LogoutHandler, name='logout', strict_slash=True),
+                                        RedirectRoute('/logout/', handler.auth.LogoutHandler, name='logout', strict_slash=True),
                                       ], debug=True,
                                       config=webapp2_config)
 

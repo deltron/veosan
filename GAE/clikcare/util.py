@@ -5,7 +5,7 @@ from datetime import date, timedelta
 import logging
 from babel.dates import format_date, format_datetime
 from babel import Locale
-from base import lang
+from handler.base import lang
 
 # String used on many pages
 saved_message = _(u'Saved!').decode("UTF-8")

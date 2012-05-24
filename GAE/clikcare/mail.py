@@ -1,7 +1,5 @@
 
 import logging
-from babel import Locale
-from base import lang
 from google.appengine.api import mail
 
 CLIK_SUPPORT_ADDRESS = 'philippe.caya@gmail.com'

@@ -2,13 +2,12 @@
     admin handlers
 '''
 
-from google.appengine.ext import db as gdb
-from google.appengine.api import users
+import logging, random, sha, urlparse
+
+# clik
+from data.model import Provider
 from base import BaseHandler
 import data.db as db, mail
-import logging
-from data.model import Provider
-import random, sha, urlparse
 
 
 class AdminBaseHandler(BaseHandler):
