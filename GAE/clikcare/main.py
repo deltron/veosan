@@ -5,76 +5,12 @@ import webapp2, logging
 from webapp2 import Route
 from webapp2_extras.routes import RedirectRoute
 # clik
-import handler.admin, util, data.db as db, handler.provider, mail, handler.auth
-from handler.base import BaseHandler
-from forms import BookingForm, PatientForm, ContactForm, EmailOnlyBookingForm
-from data.model import Booking
+import util
+from handler import booking, provider, auth, admin
+from  handler.base import BaseHandler
+from forms import ContactForm
 
 
-class BaseBookingHandler(BaseHandler):
-    '''Common functions for all booking handlers'''
-    
-    def renderConfirmedBooking(self, booking):
-        tv = {'patient': booking.patient, 'booking': booking, 'provider': booking.provider}
-        self.render_template('patient/book.html', **tv)
-        
-    def renderNewPatientForm(self, patientForm, booking):
-        tv = {'form': patientForm, 'booking': booking, 'provider': booking.provider}
-        self.render_template('patient/new.html', **tv)
-        
-    def renderFullyBooked(self, booking, emailForm=None):
-        tv = {'booking': booking, 'form': emailForm}
-        self.render_template('no_result.html', **tv) 
-        
-        
-    
-class IndexHandler(BaseBookingHandler):
-    def get(self):
-        self.render_template('index.html', form=BookingForm(self.request.GET))
-        
-    def post(self):
-        ''' Renders 2nd page: Result + Confirm button
-        TODO: Replace with passing booking properties and provider key, saving only after the patient logging ??? 
-        '''
-        bookingform = BookingForm(self.request.POST)
-        if bookingform.validate():
-            booking = db.storeBooking(self.request.POST, None, None)
-            logging.debug('Created booking: %s' % booking.key)
-            logging.info("Looking for best provider...")
-            provider = db.findBestProviderForBooking(booking)
-            if (provider):
-                logging.info("Provider found: " + provider.fullName())
-                booking.provider = provider.key
-                booking.dateTime = booking.requestDateTime
-                booking.put()
-                # booking saved with provider, no patient info yet
-                email_form = EmailOnlyBookingForm()
-                tv = {'patient': None, 'booking': booking, 'p': provider, 'form': email_form }
-                self.render_template('result.html', **tv) 
-            else:
-                logging.warn('No provider found for booking: %s' % booking.key.urlsafe())
-                emailForm = EmailOnlyBookingForm()
-                self.renderFullyBooked(booking, emailForm) 
-        else:
-            self.render_template('index.html', form=bookingform)
-
-
-class FullyBookedHandler(BaseBookingHandler):
-    def get(self):
-        self.redirect
-        
-    def post(self):
-        emailForm = EmailOnlyBookingForm(self.request.POST)
-        booking_key = self.request.get('bk')
-        booking = Booking.get(booking_key)
-        if emailForm.validate():
-            ''' Stores email for Booking with No Result'''
-            booking.requestEmail = self.request.get('email')
-            booking.put()
-            self.renderFullyBooked(booking)
-        else:
-            self.renderFullyBooked(booking, emailForm)
-        
 
 class StaticHandler(BaseHandler):
     def get(self):
@@ -103,92 +39,11 @@ class ContactHandler(BaseHandler):
             self.render_template('contact.html', form=contact_form, sent=False)
 
 
-class PatientBookHandler(BaseBookingHandler):
-    '''
-        Handler to confirm the booking and create new patient record if user logged in
-    '''
-    def post(self):
-        'We have a booking with a provider, we need to add the patient using the User'
-        booking = db.get_from_urlsafe_key(self.request.get('bk')) 
-        email_form = EmailOnlyBookingForm(self.request.POST)
-        if email_form.validate():
-            # store email in booking as requestEmail
-            booking.request_email = self.request.get('email')
-            booking.put()
-            
-            # TODO Consider case where user is already logged in
-            
-            # existing or new patient
-            email = self.request.get('email')
-            # if we know this email, send to login
-            logging.info('email: %s' % email)
-            existing_user = self.auth.store.user_model.get_by_auth_id(email)
-            if existing_user:
-                patient = db.getPatientFromUser(existing_user)
-                if patient:
-                    # Existing patient
-                    logging.info('User exists, patient exists, confirming booking.')
-                    booking.patient = patient
-                    booking.put()
-                    self.renderConfirmedBooking(booking)
-                else:
-                    # user exists, but not patient!!!
-                    logging.error('User exists for %s but not patient' % email)
-                    # TODO missing render call for this odd situation
-            else:
-                # New patient
-                logging.info('Patient does not exist, creating new patient.')
-                patientForm = PatientForm(self.request.POST)
-                # set email in form 
-                patientForm.email.data = email
-                self.renderNewPatientForm(patientForm, booking)
 
-        else:
-            # email form validation failed
-            tv = {'patient': None, 'booking': booking, 'p': booking.provider, 'form': email_form }
-            self.render_template('result.html', **tv) 
             
             
 
-
-class PatientBookForNewHandler(BaseBookingHandler):
-    '''
-        Handler for New Patient Form
-    '''
-    def post(self):
-        logging.info('post to /patient/new')
-        '''This handler is for the New Patient Form'''
-        # create patient form for validation
-        patientForm = PatientForm(self.request.POST)
-        # fetch booking from bk
-        booking_key = self.request.get('bk')
-        logging.info('Fetching booking:' + str(booking_key))
-        booking = Booking.get(booking_key)
-        if patientForm.validate():
-            # Create User in Auth system
-            email = self.request.get('email')
-            password = self.request.get('password')
-            user = self.create_user(email, password)
-            if user:
-                # Store New Patient
-                patient = db.storePatient(self.request.POST, user)
-                if (patient):
-                    booking.patient = patient
-                    booking.put()
-                    # booking succesfull, send email
-                    mail.emailBookingToPatient(self.jinja2, booking)
-                else:
-                    logging.error("No booking saved because patient is None")
-            else:
-                logging.error('User not created.')
-                # TODO add custom validation to tell user that email is already in use.
-                self.renderNewPatientForm(patientForm, booking)
-            self.renderConfirmedBooking(booking)
-        else:           
-            self.renderNewPatientForm(patientForm, booking)     
-
-
-
+ 
 
 jinja_filters = {}
 jinja_filters['format_date_weekday_after'] = util.format_date_weekday_after
@@ -224,8 +79,8 @@ webapp2_config['webapp2_extras.sessions'] = {
 
 application = webapp2.WSGIApplication([
                                        # General pages
-                                       ('/', IndexHandler),
-                                       ('/full', FullyBookedHandler),
+                                       ('/', booking.IndexHandler),
+                                       ('/full', booking.FullyBookedHandler),
                                        ('/contact', ContactHandler),
                                        
                                        # Static Pages
@@ -235,31 +90,31 @@ application = webapp2.WSGIApplication([
                                        Route('/privacy', handler=StaticHandler, name='privacy'),
                                        
                                        # Patient
-                                       ('/patient/booknew', PatientBookForNewHandler),
-                                       ('/patient/book', PatientBookHandler),
+                                       ('/patient/booknew', booking.PatientBookForNewHandler),
+                                       ('/patient/book', booking.PatientBookHandler),
                                        
                                        # provider
-                                       ('/provider/login', handler.provider.ProviderLoginHandler),
-                                       ('/provider/profile', handler.provider.ProviderEditProfileHandler),
-                                       ('/provider/address', handler.provider.ProviderEditAddressHandler),
-                                       ('/provider/address/upload', handler.provider.ProviderAddressUploadHandler),
-                                       ('/provider/schedule', handler.provider.ProviderScheduleHandler),
-                                       ('/provider/terms', handler.provider.ProviderTermsHandler),
-                                       ('/provider/bookings', handler.provider.ProviderBookingsHandler),
-                                       ('/provider/administration', handler.provider.ProviderAdministrationHandler),
-                                       Route('/provider/activation/<activation_key>', handler=handler.provider.ProviderActivationHandler),
-                                       ('/serve/([^/]+)?', handler.provider.ServeHandler), # temporary - to test file uploads
+                                       ('/provider/login', provider.ProviderLoginHandler),
+                                       ('/provider/profile', provider.ProviderEditProfileHandler),
+                                       ('/provider/address', provider.ProviderEditAddressHandler),
+                                       ('/provider/address/upload', provider.ProviderAddressUploadHandler),
+                                       ('/provider/schedule', provider.ProviderScheduleHandler),
+                                       ('/provider/terms', provider.ProviderTermsHandler),
+                                       ('/provider/bookings', provider.ProviderBookingsHandler),
+                                       ('/provider/administration', provider.ProviderAdministrationHandler),
+                                       Route('/provider/activation/<activation_key>', handler=provider.ProviderActivationHandler),
+                                       ('/serve/([^/]+)?', provider.ServeHandler), # temporary - to test file uploads
                                        # admin
-                                       ('/admin/provider/init', handler.admin.NewProviderInitHandler),
-                                       ('/admin/provider/solicit', handler.admin.NewProviderSolicitHandler),
-                                       ('/admin', handler.admin.AdminIndexHandler),
-                                       ('/admin/bookings', handler.admin.AdminBookingsHandler),
-                                       ('/admin/providers', handler.admin.AdminProvidersHandler),
+                                       ('/admin/provider/init', admin.NewProviderInitHandler),
+                                       ('/admin/provider/solicit', admin.NewProviderSolicitHandler),
+                                       ('/admin', admin.AdminIndexHandler),
+                                       ('/admin/bookings', admin.AdminBookingsHandler),
+                                       ('/admin/providers', admin.AdminProvidersHandler),
                                        # auth
-                                       ('/login', handler.auth.LoginHandler),
-                                       #('/create', auth_handler.CreateUserHandler),
-                                        #RedirectRoute('/login/', auth_handler.LoginHandler, name='login', strict_slash=True),
-                                        RedirectRoute('/logout/', handler.auth.LogoutHandler, name='logout', strict_slash=True),
+                                       ('/login', auth.LoginHandler),
+                                       #('/create', auth_ CreateUserHandler),
+                                        #RedirectRoute('/login/', auth_ LoginHandler, name='login', strict_slash=True),
+                                        RedirectRoute('/logout/', auth.LogoutHandler, name='logout', strict_slash=True),
                                       ], debug=True,
                                       config=webapp2_config)
 
