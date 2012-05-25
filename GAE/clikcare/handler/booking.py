@@ -2,8 +2,7 @@
 
 import logging
 import data.db as db, mail
-from forms import BookingForm, PatientForm, EmailOnlyBookingForm
-from data.model import Booking
+from forms.base import BookingForm, PatientForm, EmailOnlyBookingForm
 from handler.base import BaseHandler
 
 

@@ -2,7 +2,7 @@
 
 import logging
 from  handler.base import BaseHandler
-from forms import ContactForm
+from forms.base import ContactForm
 
 
 class StaticHandler(BaseHandler):
