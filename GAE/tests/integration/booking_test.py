@@ -55,7 +55,44 @@ class BookingTest(AdminTest):
         response.mustcontain("The quick brown fox jumped over the lazy dog")
         response.mustcontain("Areas of interest include treatment and management of spinal conditions with an emphasis on manual therapy and rehabilitative exercise.")
         
+        
+    def test_booking_single_timeslot_book_unavailable_time(self):
+        ''' Create a booking in a timeslot with no availability '''
+        
+        AdminTest.test_complete_profile_creation(self)
+        
+        # at this point there is one fully completed profile with a single timeslot available (Monday 8-13)
+        
+        # go back to the main page and try to book monday 8am
+        response = self.testapp.post('/')
+                
+        # fill out the form
+        booking_form = response.forms[0] # booking form
+        booking_form['category'] = 'osteopath' # admin test created an osteopath
+        
+        booking_date_select = booking_form.fields['booking_date'][0]
+        
+        # find the option value with a tuesday (no availability)
 
+        for (date_string, selected) in booking_date_select.options:
+            d = datetime.strptime(date_string, "%Y-%m-%d")
+            if d.weekday() == 1: # choose the first tuesday on the form
+                booking_form['booking_date'] = date_string
+                break
+        
+        # set time to 2pm
+        booking_form['booking_time'] = '14'
+
+        # leave region to default (should be downtown)
+        
+        response = booking_form.submit()
+        
+        # verify error messages
+        response.mustcontain("Fully Booked!")
+        response.mustcontain("We currently do not have a health-care professional available that matches your needs and schedule.")
+        response.mustcontain("Please fill in your email below and we will contact you as soon as we have availability.")
+
+ 
 
 if __name__ == "__main__":
     unittest.main()
