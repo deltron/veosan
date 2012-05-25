@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import logging
 from base import BaseHandler
 # webapp2 auth service
 from webapp2_extras.auth import InvalidAuthIdError
@@ -44,8 +45,20 @@ class LoginHandler(BaseHandler):
             remember_me = True if self.request.POST.get('remember_me') == 'on' else False
             # Username and password check
             try:
-                self.auth.get_user_by_password(username, password, remember=remember_me)
-                self.redirect('/admin')
+                user = self.auth.get_user_by_password(username, password, remember=remember_me)
+                # login was succesful
+                roles = db.get_user_roles(user)
+                if 'Provider' in roles:
+                    pass
+                
+                elif 'Patient' in roles:
+                    pass
+                
+                else:
+                    logging.error('User %s logged in without roles')
+                    error_message = 'Your profile is not activated. Please contact us.'
+                    self.render_template('login.html', form=login_form, error_message=error_message)
+                
             except (InvalidAuthIdError, InvalidPasswordError), e:
                 # throws InvalidAuthIdError if user is not found, throws InvalidPasswordError if provided password doesn't match with specified user
                 error_message = 'Login failed. Try again.'
