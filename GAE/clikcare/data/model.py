@@ -14,7 +14,7 @@ from webapp2_extras.appengine.auth.models import User
 '''
     stored data 
 '''
-    
+
 
 class Patient(ndb.Model):
     '''
@@ -137,11 +137,4 @@ class Booking(ndb.Model):
                 s += u'%s: %s <br>' % (k[1:], v)
         return s
     
-
-#class User(Webapp2AuthUser):
-#    '''
-#        Extending the Webapp2 Auth User class to link provider and patient
-#    '''
-#    provider = ndb.KeyProperty(kind=Provider)
-#    patient = ndb.KeyProperty(kind=Patient)
     
