@@ -43,3 +43,6 @@ def emailSolicitProvider(jinja2, provider, activation_url):
         logging.error('Email to provider not sent. %s' % e)
         
         
+def emailProviderWelcomeMessage(jinja2, provider):
+    pass
+        

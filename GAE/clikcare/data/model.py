@@ -20,7 +20,6 @@ class Patient(ndb.Model):
     A patient
     '''
     created_on = ndb.DateTimeProperty(auto_now_add=True)
-    #user = db.UserProperty()
     user = ndb.KeyProperty(kind=User)
     first_name = ndb.StringProperty()
     last_name = ndb.StringProperty()
@@ -65,7 +64,7 @@ class Provider(ndb.Model):
     quote = ndb.TextProperty()
     # schedule
     # see Schedule Class below
-
+    user = ndb.KeyProperty(kind=User)
     
     def fullName(self):
         return '{0} {1}, {2}'.format(self.first_name, self.last_name, self.category)

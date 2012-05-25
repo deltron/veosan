@@ -124,8 +124,6 @@ class PatientBookForNewHandler(BaseBookingHandler):
         Handler for New Patient Form
     '''
     def post(self):
-        logging.info('post to /patient/new')
-        '''This handler is for the New Patient Form'''
         # create patient form for validation
         patientForm = PatientForm(self.request.POST)
         # fetch booking from bk

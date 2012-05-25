@@ -138,6 +138,11 @@ class ProviderTermsForm(Form):
     # todo validate against exact first_name, last_name string
     #signature = TextField(_(u'Signature').decode("UTF-8"), [validators.Length(min=5, message='First name and last name as in address page')])
 
+class ProviderPasswordForm(Form):
+    #email = TextField(_(u'Email').decode("UTF-8"), [validators.Email(message=_(u'Invalid email address.').decode("UTF-8"))])
+    password = PasswordField(_(u'Password').decode("UTF-8"), [validators.Length(min=6, message='Password needs at least 6 characters')])
+    #remember_me = CustomBooleanField(_(u'Remember Me').decode("UTF-8"))
+    
 class ProviderLoginForm(Form):
     email = TextField(_(u'E-mail Address').decode("UTF-8"), [validators.Email(message=_(u'Invalid email address.').decode("UTF-8"))])
     password = PasswordField('Password')

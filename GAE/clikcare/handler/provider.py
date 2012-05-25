@@ -3,12 +3,13 @@ import logging
 from base import BaseHandler
 import data.db as db
 import urllib
-from forms import ProviderProfileForm, ProviderAddressForm, ProviderPhotoForm, ProviderTermsForm, ProviderLoginForm
+from datetime import date
+from forms import ProviderProfileForm, ProviderAddressForm, ProviderPhotoForm, ProviderTermsForm, ProviderLoginForm, ProviderPasswordForm
 from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
 from google.appengine.api import users
 from data.model import Provider, Schedule
-import util
+import util, mail
 
 def parseRefererSection(request):
     referer = request.environ['HTTP_REFERER']
@@ -36,6 +37,11 @@ class ProviderBaseHandler(BaseHandler):
     def render_terms(self, provider, terms_form, **extra):
         self.render_template('provider/provider_terms.html', p=provider, form=terms_form, **extra)
 
+    def render_password(self, provider, password_form=None, **extra):
+        if not password_form:
+            password_form = ProviderPasswordForm()
+        self.render_template('provider/password.html', p=provider, form=password_form, **extra)
+        
     def render_administration(self, provider, **extra):
         self.render_template('provider/administration.html', p=provider, **extra)
            
@@ -148,14 +154,50 @@ class ProviderTermsHandler(ProviderBaseHandler):
         if terms_form.validate():
             # Save signature and terms agreement
             provider.terms_agreement = self.request.get('terms_agreement') == u'True'
+            provider.terms_date = date.today()
             provider.put()
-            # TODO Add Welcome Message and invitation to review profile and set schedule
-            redirect_url = provider.get_edit_link(section='profile')
-            logging.info(redirect_url)
-            self.redirect(redirect_url)
+            # Go to the password selection page
+            self.render_password(provider)
         else:
             self.render_terms(provider, terms_form=terms_form)
 
+
+class ProviderPasswordHandler(ProviderBaseHandler):
+    def get(self):
+        '''
+            TODO: Display page in the context of the Provider profile (with tabs at the top)
+        '''
+        pass
+            
+    def post(self):
+        '''
+            Create user and link it to the Provider
+        '''
+        provider = db.get_from_urlsafe_key(self.request.get('provider_key'))
+        password_form = ProviderPasswordForm(self.request.POST)
+        if password_form.validate():
+            # Create User in Auth system
+            # we are not reading email from form
+            email = provider.email
+            password = self.request.get('password')
+            user = self.create_user(email, password)
+            if user:
+                # Link user to provider
+                provider.user = user.key
+                provider.put()
+                mail.emailProviderWelcomeMessage(self.jinja2, provider)
+                # Provider is Activated
+                # TODO Add Welcome Message and invitation to review profile and set schedule
+                redirect_url = provider.get_edit_link(section='profile')
+                logging.info(redirect_url)
+                self.redirect(redirect_url)
+            else:
+                logging.error('User not created.')
+                # TODO add custom validation to tell user that email is already in use.
+                error_message = 'User email is already taken. If you are already using this email for your patient profile, please inform us or use another email.'
+                self.renderPasswordForm(provider, password_form=password_form, error_message=error_message)
+        else:
+            self.render_pass(provider, password_form=password_form)
 
 class ProviderBookingsHandler(ProviderBaseHandler):
     def get(self):
