@@ -23,6 +23,25 @@
 <div class="row">
 	
 	<div class="span6">
+		
+		<h2>Terms and User</h2>
+		<div class="well">
+		{% if p.terms_agreement %}
+			Agreed to terms on {{p.terms_date}}<br>
+		{% else %}
+			Terms not signed<br>
+		{% endif %}
+		<br>
+		{% if p.user %}
+			{% set u = p.user.get() %}
+			User email: {{u.auth_ids|join}}<br>
+			{% if u.password %} Password is set {% else %} Password is not set {% endif %}<br>
+			<!-- created: {{u.created|format_datetime_noseconds}}<br>
+			updated: {{u.created|format_datetime_noseconds}}<br> -->
+		{% else %}
+			No user linked to this profile<br>
+		{% endif %}
+		</div>
 		<h2>Solicit</h2>
 		<form method="post" action="/admin/provider/solicit" class="well form-inline">
 			<p>Make sure profile is completed before sending the invitaion for the provider to agree to the terms and take over his profile.</p>
@@ -34,6 +53,8 @@
 				<span>&lt;{{p.email}}&gt;</span>
 			</fieldset>
 		</form>
+		
+		
 	</div>
 	
 	<div class="span6">
