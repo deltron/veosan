@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 
 # GAE
-import webapp2, logging
+import webapp2
 from webapp2 import Route
 from webapp2_extras.routes import RedirectRoute
 # clik
 import util
 from handler import booking, provider, auth, admin, static
-
+from data.model import User
 
 jinja_filters = {}
 jinja_filters['format_date_weekday_after'] = util.format_date_weekday_after
@@ -40,6 +40,11 @@ webapp2_config['webapp2_extras.i18n'] = {
 webapp2_config['webapp2_extras.sessions'] = {
                                              'secret_key': '82374y6ii899hy8-89308847-21u9x676',
                                              }
+
+webapp2_config['webapp2_extras.auth'] = {
+                                         'user_model': User,
+                                         }
+
 
 application = webapp2.WSGIApplication([
                                        # General pages

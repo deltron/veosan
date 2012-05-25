@@ -9,11 +9,18 @@ from google.appengine.ext import ndb
 from google.appengine.ext import blobstore
 import logging
 from datetime import datetime, timedelta
-from webapp2_extras.appengine.auth.models import User
+from webapp2_extras.appengine.auth.models import User as Webapp2AuthUser
 
 '''
     stored data 
 '''
+
+
+class User(Webapp2AuthUser):
+    '''
+        Extending the Webapp2 Auth User to add roles
+    '''
+    roles = ndb.StringProperty(repeated=True)
 
 
 class Patient(ndb.Model):

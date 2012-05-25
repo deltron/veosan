@@ -8,8 +8,12 @@ from webapp2_extras.auth import InvalidPasswordError
 from google.appengine.api import users
 # clik
 from forms import LoginForm
+import data
 
 
+# Roles
+PROVIDER_ROLE = 'Provider'
+PATIENT_ROLE = 'Patient'
 
 
 def user_required(handler):
@@ -40,19 +44,23 @@ class LoginHandler(BaseHandler):
     def post(self):
         login_form = LoginForm(self.request.POST)
         if login_form.validate():
-            username = self.request.POST.get('username')
+            email = self.request.POST.get('email')
             password = self.request.POST.get('password')
             remember_me = True if self.request.POST.get('remember_me') == 'on' else False
+            logging.info('Trying to login email:%s' % email)
             # Username and password check
             try:
-                user = self.auth.get_user_by_password(username, password, remember=remember_me)
-                # login was succesful
-                roles = db.get_user_roles(user)
-                if 'Provider' in roles:
-                    pass
-                
-                elif 'Patient' in roles:
-                    pass
+                auth_user = self.auth.get_user_by_password(email, password, remember=remember_me)
+                user = data.db.get_user(email)
+                logging.info('Login succesful for %s' % user)
+                # login was succesful, User is in the session
+                roles = data.db.get_user_roles(user)
+                logging.info('roles: %s' % roles)
+                if PROVIDER_ROLE in roles:
+                    self.redirect('/provider/bookings')
+                    
+                elif PATIENT_ROLE in roles:
+                    self.redirect('/')
                 
                 else:
                     logging.error('User %s logged in without roles')

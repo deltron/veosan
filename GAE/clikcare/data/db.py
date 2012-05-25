@@ -6,8 +6,9 @@ from google.appengine.ext import ndb
 import logging
 import types
 from datetime import datetime, date, time
-from data.model import Booking, Patient, Provider
+from data.model import Booking, Patient, Provider, User
 import util
+from handler.auth import PROVIDER_ROLE, PATIENT_ROLE
   
 def get_from_urlsafe_key(urlsafe_key):
     logging.info('Getting from urlsafe key: %s' % urlsafe_key)
@@ -158,8 +159,19 @@ def get_provider_from_activation_key(activation_key):
     logging.debug('Found provider %s from activation_key: %s' % (provider, activation_key))
     return provider
 
+def get_user(email):
+    return User.query(User.auth_ids == email).get()
+
 def get_user_roles(user):
     '''
         return roles from user based on link to provider or patient
     '''
-    return []
+    roles = []
+    provider = Provider.query(Provider.user == user.key).get()
+    if provider:
+        roles.append(PROVIDER_ROLE)
+    patient = Patient.query(Patient.user == user.key).get()
+    if patient:
+        roles.append(PATIENT_ROLE)
+    return roles
+

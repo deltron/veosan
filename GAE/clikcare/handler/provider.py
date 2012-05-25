@@ -192,10 +192,10 @@ class ProviderPasswordHandler(ProviderBaseHandler):
                 logging.info(redirect_url)
                 self.redirect(redirect_url)
             else:
-                logging.error('User not created.')
+                logging.error('User not created. Probably because email already in Unique table.')
                 # TODO add custom validation to tell user that email is already in use.
                 error_message = 'User email is already taken. If you are already using this email for your patient profile, please inform us or use another email.'
-                self.renderPasswordForm(provider, password_form=password_form, error_message=error_message)
+                self.render_password(provider, password_form=password_form, error_message=error_message)
         else:
             self.render_pass(provider, password_form=password_form)
 
