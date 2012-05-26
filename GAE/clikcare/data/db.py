@@ -159,7 +159,7 @@ def get_provider_from_activation_key(activation_key):
     logging.debug('Found provider %s from activation_key: %s' % (provider, activation_key))
     return provider
 
-def get_user(email):
+def get_user_from_email(email):
     return User.query(User.auth_ids == email).get()
 
 def get_user_roles(user):
