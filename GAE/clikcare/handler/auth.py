@@ -9,6 +9,7 @@ from google.appengine.api import users
 # clik
 from forms import LoginForm
 import data
+from data.model import Provider, Patient
 
 
 # Roles
@@ -51,17 +52,19 @@ class LoginHandler(BaseHandler):
             # Username and password check
             try:
                 auth_user = self.auth.get_user_by_password(email, password, remember=remember_me)
-                user = data.db.get_user(email)
+                user = self.get_current_user()
                 logging.info('Login succesful for %s' % user)
                 # login was succesful, User is in the session
-                roles = data.db.get_user_roles(user)
-                logging.info('roles: %s' % roles)
-                if PROVIDER_ROLE in roles:
-                    self.redirect('/provider/bookings')
-                    
-                elif PATIENT_ROLE in roles:
-                    self.redirect('/')
-                
+                profiles = data.db.get_user_profiles(user)
+                logging.info('profiles: %s' % profiles)
+                # redirect to the first profile type
+                if len(profiles) > 0:
+                    profile = profiles[0]
+                    if isinstance(profile, Provider):
+                        redirect_url = profile.get_edit_link('bookings')
+                        self.redirect(redirect_url)
+                    else:
+                        self.redirect('/')
                 else:
                     logging.error('User %s logged in without roles')
                     error_message = 'Your profile is not activated. Please contact us.'

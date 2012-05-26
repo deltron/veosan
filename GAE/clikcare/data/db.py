@@ -175,3 +175,16 @@ def get_user_roles(user):
         roles.append(PATIENT_ROLE)
     return roles
 
+def get_user_profiles(user):
+    '''
+        return profiles from user based on link to provider or patient
+    '''
+    profiles = []
+    providers = Provider.query(Provider.user == user.key)
+    for pro in providers:
+        profiles.append(pro)
+    patients = Patient.query(Patient.user == user.key)
+    for pat in patients:
+        profiles.append(pat)
+    return profiles
+

@@ -44,13 +44,15 @@ class BaseHandler(webapp2.RequestHandler):
         google_user = users.get_current_user()
         if google_user:
             logging.info('google user also logged in:' + str(google_user))
-            username = '%s [%s]' % (username, google_user.nickname())
+            #username = '%s [%s]' % (username, google_user.nickname())
             # check google account for admin
             if users.is_current_user_admin():
                 roles.append('admin')
         else:
             logging.info('no google user logged in')
         # template variables
+        template_args['user'] = user
+        template_args['google_user'] = google_user
         template_args['username'] = username
         template_args['login_url'] = '/login'
         template_args['logout_url'] = '/logout'
