@@ -7,7 +7,7 @@ from webapp2_extras.auth import InvalidPasswordError
 # google user service
 from google.appengine.api import users
 # clik
-from forms import LoginForm
+from forms.base import LoginForm
 import data
 from data.model import Provider, Patient
 

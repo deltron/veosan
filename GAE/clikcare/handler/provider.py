@@ -4,7 +4,7 @@ from base import BaseHandler
 import data.db as db
 import urllib
 from datetime import date
-from forms import ProviderProfileForm, ProviderAddressForm, ProviderPhotoForm, ProviderTermsForm, ProviderLoginForm, ProviderPasswordForm
+from forms.provider import ProviderProfileForm, ProviderAddressForm, ProviderPhotoForm, ProviderTermsForm, ProviderLoginForm, ProviderPasswordForm
 from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
 from google.appengine.api import users
