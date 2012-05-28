@@ -81,7 +81,7 @@ class PatientBookHandler(BaseBookingHandler):
                 if patient:
                     # Existing patient
                     logging.info('User exists, patient exists, confirming booking.')
-                    booking.patient = patient
+                    booking.patient = patient.key
                     booking.put()
                     self.renderConfirmedBooking(booking)
                 else:

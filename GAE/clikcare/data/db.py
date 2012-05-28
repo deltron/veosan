@@ -34,20 +34,14 @@ def storeBooking(r, patient=None, provider=None):
 def storePatient(r, user):
     # r is a MultiDict object from the request
     logging.info("Storing patient profile from request:" + str(r.__dict__))
-    
     patient = Patient()
-    
     # set all the properties
     util.set_all_properties_on_entity_from_multidict(patient, r)
-    
+    patient.user = user.key
     # store
     patient_key = patient.put()
     logging.info('Saved patient key:' + str(patient_key))
     logging.info(vars(patient))
-    
-    # link openIDuser - is this still relevant?
-    #patient.user = user
-    
     return patient
 
 def getPatientFromUser(user):
