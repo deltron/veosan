@@ -28,7 +28,7 @@
 				<input id="location" name="location" type="hidden" value="{{ booking.region }}">
 				<input id="booking_date" name="booking_date" type="hidden" value="{{ booking.date }}">
 				<input id="booking_time" name="booking_time" type="hidden" value="{{ booking.time }}">
-				<input id="bk" name="bk" type="hidden" value="{{ booking.key() }}">
+				<input id="bk" name="bk" type="hidden" value="{{ booking.key.urlsafe() }}">
 
 			</fieldset>
 			<div class="form-actions">

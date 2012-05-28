@@ -10,11 +10,11 @@ class BaseBookingHandler(BaseHandler):
     '''Common functions for all booking handlers'''
     
     def renderConfirmedBooking(self, booking):
-        tv = {'patient': booking.patient, 'booking': booking, 'provider': booking.provider}
+        tv = {'patient': booking.patient, 'booking': booking.get(), 'provider': booking.provider.get()}
         self.render_template('patient/book.html', **tv)
         
     def renderNewPatientForm(self, patientForm, booking):
-        tv = {'form': patientForm, 'booking': booking, 'provider': booking.provider}
+        tv = {'form': patientForm, 'booking': booking, 'provider': booking.provider.get()}
         self.render_template('patient/new.html', **tv)
         
     def renderFullyBooked(self, booking, emailForm=None):
@@ -68,6 +68,8 @@ class PatientBookHandler(BaseBookingHandler):
             booking.put()
             
             # TODO Consider case where user is already logged in
+            
+            # TODO rework this:
             
             # existing or new patient
             email = self.request.get('email')
@@ -136,7 +138,7 @@ class PatientBookForNewHandler(BaseBookingHandler):
                 # Store New Patient
                 patient = db.storePatient(self.request.POST, user)
                 if (patient):
-                    booking.patient = patient
+                    booking.patient = patient.key
                     booking.put()
                     # booking succesfull, send email
                     mail.emailBookingToPatient(self.jinja2, booking)
@@ -145,7 +147,8 @@ class PatientBookForNewHandler(BaseBookingHandler):
             else:
                 logging.error('User not created.')
                 # TODO add custom validation to tell user that email is already in use.
-                self.renderNewPatientForm(patientForm, booking)
+                self.renderNewPatientForm(patientForm, booking, error_message='Email already in use. Try to login instead.')
+                
             self.renderConfirmedBooking(booking)
         else:           
             self.renderNewPatientForm(patientForm, booking)    
