@@ -51,29 +51,22 @@ class AdminTest(BaseTest):
     def test_admin_provider_init_with_empty_email(self):
         ''' initialize a new provider with no email address (should not be possible) '''
         
-        request_variables = { 'providerEmail' : '' }
+        request_variables = { 'provider_email' : '' }
         response = self.testapp.post('/admin/provider/init', request_variables)
 
         self.assertEqual(response.status_int, 200)        
         
         # this should fail with an error message
         
-        # TODO: check for error message
-        
-        
+        # check for error message
+        response.mustcontain("Addresse courriel invalide.")
         
         # if anything below here is in the response, it's not good!
     
         # Check signs of success
-        response.mustcontain("Initialized new provider for ")
-        response.mustcontain("None, None []")
-            
-        # check badges are present
-        response.mustcontain('<span class="label label-success">new</span>')
-        response.mustcontain('<span class="label label-important">missing terms</span>')
+        if "Initialized new provider for " in response:
+            self.assertTrue(False, "A provider was created without an email address")
 
-        # if we got this far, it's because an empty provider was created
-        self.assertTrue(False, "A provider was created without an email address")
 
 
     ######################################################################
@@ -84,7 +77,7 @@ class AdminTest(BaseTest):
     def _test_admin_provider_init(self):
         ''' initialize a new provider '''
         
-        request_variables = { 'providerEmail' : 'unit_test@provider.com' }
+        request_variables = { 'provider_email' : 'unit_test@provider.com' }
         response = self.testapp.post('/admin/provider/init', request_variables)
 
         self.assertEqual(response.status_int, 200)        

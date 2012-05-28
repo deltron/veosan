@@ -20,13 +20,11 @@
 			{% for p in providers %}
 			<li>
 				<a href="{{p.get_edit_link()}}"
-					rel="popover"
-					title="{{p.first_name}} {{p.last_name}}"
-					data-content="{{p.get_html_summary()}}">
-					{{p.last_name}}, {{p.first_name}} [{{p.email}}]
-				</a>
-					{% if p.recently_created() %} <span class="label label-success">new</span>{% endif %}
-					{% if not p.terms_agreement %} <span class="label label-important">missing terms</span>{% endif %}
+				rel="popover"
+				title="{{p.first_name}} {{p.last_name}}"
+				data-content="{{p.get_html_summary()}}"> {{p.last_name}}, {{p.first_name}} [{{p.email}}] </a>
+				{% if p.recently_created() %} <span class="label label-success">new</span>{% endif %}
+				{% if not p.terms_agreement %} <span class="label label-important">missing terms</span>{% endif %}
 			</li>
 			{% endfor %}
 		</ul>
@@ -39,7 +37,16 @@
 		<form method="post" action="/admin/provider/init" class="well form-inline">
 			Generate a new ID for provider. You will have to login with their ID to complete the profile.
 			<fieldset>
-				<input class="input-xlarge" id="providerEmail" name="providerEmail" type="text" placeholder="New Provider's Email Address">
+				{% if form.provider_email.errors %}
+				<p class="help-block">
+					{% for error in form.provider_email.errors %} <i class="icon-exclamation-sign"></i> {{ error }}
+					<br>
+					{% endfor %}
+				</p>
+				{% endif %}
+
+				{{ form.provider_email }}
+
 				<button type="submit" class="btn btn-primary">
 					Initialize New Provider
 				</button>

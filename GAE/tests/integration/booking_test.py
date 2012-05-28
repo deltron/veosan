@@ -166,9 +166,13 @@ class BookingTest(AdminTest):
         response = booking_form.submit()
         
         # verify error messages
-        response.mustcontain("Fully Booked!")
-        response.mustcontain("We currently do not have a health-care professional available that matches your needs and schedule.")
-        response.mustcontain("Please fill in your email below and we will contact you as soon as we have availability.")
+        self.assertTrue(False, "How should we handle double bookings?")
+        
+        response.showbrowser()
+
+        #response.mustcontain("Fully Booked!")
+        #response.mustcontain("We currently do not have a health-care professional available that matches your needs and schedule.")
+        #response.mustcontain("Please fill in your email below and we will contact you as soon as we have availability.")
        
         
 if __name__ == "__main__":

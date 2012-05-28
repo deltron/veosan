@@ -6,6 +6,7 @@ import logging, random, sha, urlparse
 
 # clik
 from data.model import Provider
+from forms.admin import NewProviderForm
 from base import BaseHandler
 import data.db as db, mail
 
@@ -32,7 +33,7 @@ class AdminProvidersHandler(AdminBaseHandler):
     ''' Administer Providers '''
  
     def get(self):
-        self.render_providers()
+        self.render_providers(form=NewProviderForm())
                   
 class NewProviderInitHandler(AdminBaseHandler):
     '''
@@ -40,12 +41,18 @@ class NewProviderInitHandler(AdminBaseHandler):
         This allows the admin to login with their ID to fill out and customize the profile
     '''
     def post(self):
-        provider_email = self.request.get('providerEmail')
-        provider_key = db.initProvider(provider_email)
-        provider = provider_key.get()
-        logging.info('initialized new provider with key : %s' % provider_key)
-        success_message = 'Initialized new provider for %s' % (provider_email)
-        self.render_providers(success_message=success_message)
+        form = NewProviderForm(self.request.POST)
+        if form.validate():
+            # Init Provider
+            provider_email = self.request.get('provider_email')
+            provider_key = db.initProvider(provider_email)
+            logging.info('initialized new provider with key : %s' % provider_key)
+            success_message = 'Initialized new provider for %s' % (provider_email)
+            self.render_providers(success_message=success_message, form=form)        
+        else:
+            # show error
+            logging.info('Trying to create a provider with invalid email address: %s' % form.provider_email)
+            self.render_providers(form=form)
         
         
 class NewProviderSolicitHandler(BaseHandler):
