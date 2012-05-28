@@ -68,6 +68,25 @@ class AdminTest(BaseTest):
             self.assertTrue(False, "A provider was created without an email address")
 
 
+    def test_admin_provider_init_with_invalid_email(self):
+        ''' initialize a new provider with invalid address (should not be possible) '''
+        
+        request_variables = { 'provider_email' : 'aaabbbccc' }
+        response = self.testapp.post('/admin/provider/init', request_variables)
+
+        self.assertEqual(response.status_int, 200)        
+        
+        # this should fail with an error message
+        
+        # check for error message
+        response.mustcontain("Addresse courriel invalide.")
+        
+        # if anything below here is in the response, it's not good!
+    
+        # Check signs of success
+        if "Initialized new provider for " in response:
+            self.assertTrue(False, "A provider was created without an email address")
+
 
     ######################################################################
     ## BELOW HERE ARE LOCAL / REUSABLE UTILITY METHODS TO SET UP A PROFILE
