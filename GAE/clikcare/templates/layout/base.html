@@ -106,9 +106,8 @@ Twitter Bootstrap horizontal form layout.
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ username }} <b class="caret"></b></a>
 									<ul class="dropdown-menu">
 						                {% if 'admin' in roles %}
-										<li>
-											<a href="/admin"  title="{{ google_user.nickname() }}">Administration</a>
-										</li>
+										<li><a href="/admin"  title="{{ google_user.nickname() }}">Administration</a></li>
+										<li><a href="{admin_logout_url{}}"  title="Logout of {{ google_user.nickname() }}">Admin Logout</a></li>
 										{% endif%}
 						                <li class="divider"></li>
 						                <li>
@@ -119,7 +118,8 @@ Twitter Bootstrap horizontal form layout.
 							{% else %}
 								<li><a href="{{login_url}}">{{ _('My Account') }}</a></li>
 								{% if 'admin' in roles %}
-								<li><a href="/admin">Administration</a></li>
+								<li><a href="/admin" title="{{ google_user.nickname() }}">Administration</a></li>
+								<li><a href="{{admin_logout_url}}"  title="Logout of {{ google_user.nickname() }}">Admin Logout</a></li>
 								{% endif%}
 							{% endif %}
 						</ul>
