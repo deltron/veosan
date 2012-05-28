@@ -56,6 +56,7 @@ class BaseHandler(webapp2.RequestHandler):
         template_args['username'] = username
         template_args['login_url'] = '/login'
         template_args['logout_url'] = '/logout'
+        template_args['admin_logout_url'] = users.create_logout_url('/')
         template_args['roles'] = roles
         # render
         self.response.write(self.jinja2.render_template(filename, **template_args))
@@ -84,7 +85,7 @@ class BaseHandler(webapp2.RequestHandler):
         return auth_conf
 
     def get_current_user(self):
-        ''' Get the current authenticated user from our internal auth system'''
+        ''' Get the current authenticated user from our internal auth system. Returns None if no user is logged in'''
         user = None
         user_session = self.auth.get_user_by_session()
         logging.info('user_session:' + str(user_session))
@@ -101,4 +102,8 @@ class BaseHandler(webapp2.RequestHandler):
         else:
             logging.info('New user creation failed. Probably existing email: %s' % new_user)
             return None
-                
+
+               
+                     
+                     
+                     

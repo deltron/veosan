@@ -9,28 +9,42 @@ from google.appengine.api import users
 # clik
 from forms.base import LoginForm
 import data
-from data.model import Provider, Patient
+from data.model import Provider
 
 
 # Roles
 PROVIDER_ROLE = 'Provider'
 PATIENT_ROLE = 'Patient'
 
+def provider_required(handler_method):
+    '''
+        Decorator: Checks session for authenticated provider (or google admin)
+    '''
+    
+    def check_provider_key(self):
+        user = self.get_current_user()
+        if user:
+            provider = data.db.get_first_provider_profile(user)
+            if provider:
+                return provider.key.urlsafe() == self.request.get('key')   
+            else:
+                logging.info('provider_required failed. Provider key does not match request key %s <> $s' % (provider.key.urlsafe(), self.request.get('key')))
+        else:
+            logging.info('provider_required failed: User is None')
+        return False
 
-def user_required(handler):
-    '''
-        Decorator
-        Checks session for authenticated user OR google admin user
-    '''
-    def check_login(self, *args, **kwargs):
-        if self.auth.get_user_by_session() or users.is_current_user_admin():
-            handler(self, *args, **kwargs)
-            # no return, we use jinja templates
+    def check_provider_login(self, *args, **kwargs):
+        # admin
+        if users.is_current_user_admin():
+            handler_method(self, *args, **kwargs)
+        # provider logged in with key matching request key
+        elif check_provider_key(self):
+            handler_method(self, *args, **kwargs)
         else:
             self.redirect('/login', abort=True)
             
     # decorator returns check_login function    
-    return check_login
+    return check_provider_login
 
 
 class LoginHandler(BaseHandler):

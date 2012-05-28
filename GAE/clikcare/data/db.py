@@ -188,3 +188,11 @@ def get_user_profiles(user):
         profiles.append(pat)
     return profiles
 
+def get_first_provider_profile(user):
+    '''
+        returns the first provider profile liked to user. Returns None if user is not a provider
+    '''
+    if user:
+        return Provider.query(Provider.user == user.key).get()
+    else:
+        return None
