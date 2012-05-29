@@ -9,17 +9,18 @@ from handler.base import BaseHandler
 class BaseBookingHandler(BaseHandler):
     '''Common functions for all booking handlers'''
     
-    def renderConfirmedBooking(self, booking):
-        tv = {'patient': booking.patient, 'booking': booking, 'provider': booking.provider}
+    def renderConfirmedBooking(self, booking, **extra):
+        tv = {'patient': booking.patient.get(), 'booking': booking, 'provider': booking.provider.get()}
+        tv.update(extra)
         self.render_template('patient/book.html', **tv)
         
-    def renderNewPatientForm(self, patientForm, booking):
-        tv = {'form': patientForm, 'booking': booking, 'provider': booking.provider}
+    def renderNewPatientForm(self, patientForm, booking, **extra):
+        tv = {'form': patientForm, 'booking': booking, 'provider': booking.provider.get()}
+        tv.update(extra)
         self.render_template('patient/new.html', **tv)
         
-    def renderFullyBooked(self, booking, emailForm=None):
-        tv = {'booking': booking, 'form': emailForm}
-        self.render_template('no_result.html', **tv) 
+    def renderFullyBooked(self, booking, emailForm=None, **extra):
+        self.render_template('no_result.html', booking=booking, form=emailForm, **extra) 
         
         
     
@@ -69,6 +70,8 @@ class PatientBookHandler(BaseBookingHandler):
             
             # TODO Consider case where user is already logged in
             
+            # TODO rework this:
+            
             # existing or new patient
             email = self.request.get('email')
             # if we know this email, send to login
@@ -79,7 +82,7 @@ class PatientBookHandler(BaseBookingHandler):
                 if patient:
                     # Existing patient
                     logging.info('User exists, patient exists, confirming booking.')
-                    booking.patient = patient
+                    booking.patient = patient.key
                     booking.put()
                     self.renderConfirmedBooking(booking)
                 else:
@@ -136,16 +139,19 @@ class PatientBookForNewHandler(BaseBookingHandler):
                 # Store New Patient
                 patient = db.storePatient(self.request.POST, user)
                 if (patient):
-                    booking.patient = patient
+                    booking.patient = patient.key
                     booking.put()
                     # booking succesfull, send email
                     mail.emailBookingToPatient(self.jinja2, booking)
+                    self.renderConfirmedBooking(booking)
                 else:
                     logging.error("No booking saved because patient is None")
+                    self.renderNewPatientForm(patientForm, booking, error_message='Error while saving your booking. Please contact us.')
             else:
                 logging.error('User not created.')
                 # TODO add custom validation to tell user that email is already in use.
-                self.renderNewPatientForm(patientForm, booking)
-            self.renderConfirmedBooking(booking)
+                self.renderNewPatientForm(patientForm, booking, error_message='Email already in use. Try to login instead.')
+                
+            
         else:           
             self.renderNewPatientForm(patientForm, booking)    

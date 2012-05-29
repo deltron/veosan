@@ -34,25 +34,19 @@ def storeBooking(r, patient=None, provider=None):
 def storePatient(r, user):
     # r is a MultiDict object from the request
     logging.info("Storing patient profile from request:" + str(r.__dict__))
-    
     patient = Patient()
-    
     # set all the properties
     util.set_all_properties_on_entity_from_multidict(patient, r)
-    
+    patient.user = user.key
     # store
     patient_key = patient.put()
     logging.info('Saved patient key:' + str(patient_key))
     logging.info(vars(patient))
-    
-    # link openIDuser - is this still relevant?
-    #patient.user = user
-    
     return patient
 
 def getPatientFromUser(user):
     logging.info('Fetching patient from User: %s' % user)
-    query = Patient.query(Patient.user == user)
+    query = Patient.query(Patient.user == user.key)
     #query = gdb.GqlQuery("SELECT * FROM Patient WHERE user = :1", user)
     logging.info("count:" + str(query.count()))
     patient = query.get()
@@ -188,3 +182,11 @@ def get_user_profiles(user):
         profiles.append(pat)
     return profiles
 
+def get_first_provider_profile(user):
+    '''
+        returns the first provider profile liked to user. Returns None if user is not a provider
+    '''
+    if user:
+        return Provider.query(Provider.user == user.key).get()
+    else:
+        return None

@@ -6,13 +6,15 @@ CLIK_SUPPORT_ADDRESS = 'philippe.caya@gmail.com'
 
 
 def renderBookingEmailBody(jinja2, template_filename, booking):
-    tv = {'b': booking, 'provider': booking.provider, 'patient': booking.patient}
+    tv = {'b': booking, 'provider': booking.provider.get(), 'patient': booking.patient.get()}
     return jinja2.render_template(template_filename, **tv)
     
 
 def emailBookingToPatient(jinja2, booking):
     ''' send booking info to patient, provider and us '''
-    to_address = booking.patient.email
+    patient = booking.patient.get()
+    provider = booking.provider.get()
+    to_address = patient.email
     # check email valid
     if not mail.is_email_valid(to_address):
         logging.warn('Email is not valid: {0}. Trying anyway...' %  to_address)
@@ -20,7 +22,7 @@ def emailBookingToPatient(jinja2, booking):
     message = mail.EmailMessage()
     message.sender = CLIK_SUPPORT_ADDRESS
     message.to = to_address
-    message.subject = u'Cliksoin Reservation - %s' % _(booking.provider.category).decode("UTF-8").capitalize()
+    message.subject = u'Cliksoin Reservation - %s' % _(provider.category).decode("UTF-8").capitalize()
     message.body = renderBookingEmailBody(jinja2, 'email/patient_booking.txt', booking)
     try:
         message.send()
