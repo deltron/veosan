@@ -74,8 +74,8 @@ msgstr "Confirmer"
 msgid "Save"
 msgstr "Sauvegarder"
 
-msgid "Saved!"
-msgstr "Vos changements sont sauvegardés!"
+msgid "Your changes were saved."
+msgstr "Vos modifications ont été enregistrées."
 
 msgid "Send"
 msgstr "Envoyer"

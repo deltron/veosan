@@ -8,7 +8,7 @@ from babel import Locale
 from handler.base import lang
 
 # String used on many pages
-saved_message = _(u'Saved!').decode("UTF-8")
+saved_message = _(u'Your changes were saved.').decode("UTF-8")
 
 # key, value
 def getAllRegions():

@@ -132,7 +132,8 @@ class AdminTest(BaseTest):
         
         # submit it
         response = address_form.submit()
-        response.mustcontain("Saved!")
+        
+        response.mustcontain("Vos modifications ont été enregistrées.")
 
         # check values in database
         provider = db.getProviderFromEmail("unit_test@provider.com")
@@ -188,7 +189,7 @@ class AdminTest(BaseTest):
 
         # submit it
         response = address_form.submit()
-        response.mustcontain("Saved!")
+        response.mustcontain("Vos modifications ont été enregistrées.")
 
         # check values in database
         provider = db.getProviderFromEmail("unit_test@provider.com")
@@ -238,7 +239,7 @@ class AdminTest(BaseTest):
 
         # submit it
         response = profile_form.submit()
-        response.mustcontain("Saved!")
+        response.mustcontain("Vos modifications ont été enregistrées.")
 
         response.mustcontain("2002")
         response.mustcontain("Areas of interest include treatment and management")
