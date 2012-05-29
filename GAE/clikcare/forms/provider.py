@@ -8,24 +8,24 @@ import util
 
     
 class ProviderAddressForm(Form):
-    prefix = TextField(_(u'Prefix').decode("UTF-8"))
+    prefix = TextField(_(u'Title').decode("UTF-8"))
     first_name = TextField(_(u'First Name').decode("UTF-8"), [validators.Length(min=1, message=_(u'First name is a required field').decode("UTF-8"))])
     last_name = TextField(_(u'Last Name').decode("UTF-8"), [validators.Length(min=1, message=_(u'Last name is a required field').decode("UTF-8"))])
-    postfix = TextField(_(u'Postfix qualifications').decode("UTF-8"))
+    postfix = TextField(_(u'Credentials').decode("UTF-8"))
     phone = TextField(_(u'Telephone').decode("UTF-8"), [validators.Regexp(regex="^[2-9]\d{2}-\d{3}-\d{4}$", message=_(u'Please make sure phone number is in the following format: 514-555-1212').decode("UTF-8"))])
     location = SelectField(_(u'Location').decode("UTF-8"), choices=util.getAllRegions())
-    address = TextField(_(u'Addresse'), [validators.Length(min=5, message='Address requis.')])
-    city = TextField(_(u'City'), [validators.Length(min=3, message='Address requis.')])
-    postal_code = TextField(_(u'Postal Code'), [validators.Length(min=6, message='Address requis.')])
+    address = TextField(_(u'Addresse').decode("UTF-8"), [validators.Length(min=5, message='Address requis.')])
+    city = TextField(_(u'City').decode("UTF-8"), [validators.Length(min=3, message='Address requis.')])
+    postal_code = TextField(_(u'Postal Code').decode("UTF-8"), [validators.Length(min=6, message='Address requis.')])
     
 class ProviderPhotoForm(Form):
-    profilePhoto = FileField('T&eacute;l&eacute;charger')
+    profilePhoto = FileField(_(u'Upload').decode("UTF-8"))
 
 class ProviderProfileForm(Form):
     category = SelectField(_(u'Category').decode("UTF-8"), choices=util.getAllCategories())
     specialty = MultiCheckboxField(_(u'Specialties').decode("UTF-8"), choices=util.getAllSpecialities())
     start_year = TextField(_(u'Active Since').decode("UTF-8"), [validators.Length(min=4, max=4, message='Your first year of practice')])
-    bio = TextAreaField(_('Biography').decode("UTF-8"))
+    bio = TextAreaField(_(u'Biography').decode("UTF-8"))
     quote = TextAreaField(_(u'Quote').decode("UTF-8"))
     associations = MultiCheckboxField(_(u'Associations').decode("UTF-8"), choices=util.getAllAssociations())
     certifications = MultiCheckboxField(_(u'Certifications').decode("UTF-8"), choices=util.getAllCertifications())

@@ -236,6 +236,12 @@ msgstr "Diplôme"
 msgid "Biography"
 msgstr "Biographie"
 
+msgid "Quote"
+msgstr "Commentaire"
+
+msgid "Active Since"
+msgstr "Actif depuis"
+
 msgid "Member of order since"
 msgstr "Membre de l'ordre depuis"
 
@@ -250,6 +256,17 @@ msgstr "J'accepte de faire des visites chez les clients"
 msgid "Get patients in your neighborhood by completing your contact information."
 msgstr "Trouvez des patients dans vôtre quartier en fournissant vos coordonées."
 
+msgid "Title"
+msgstr "Salutation"
+
+msgid "Credentials"
+msgstr "Lettres de créance"
+
+msgid "City"
+msgstr "Ville"
+
+msgid "Postal Code"
+msgstr "Code postale"
 
 
 #################
