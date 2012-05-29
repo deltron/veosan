@@ -138,6 +138,22 @@ Twitter Bootstrap horizontal form layout.
 				</p>
 			</header>
 			<hr>
+			<!-- messages -->
+			
+			<!-- Error Message -->
+			{% if error_message %}
+			<div class="alert alert-error">
+				{{error_message}}
+			</div>
+			{% endif %}
+			
+			<!-- Success Message -->
+			{% if success_message %}
+			<div class="alert alert-success">
+				{{success_message}}
+			</div>
+			{% endif %}
+			
 			<!-- content goes here -->
 			{% block content %}{% endblock %}
 

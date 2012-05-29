@@ -46,7 +46,7 @@ def storePatient(r, user):
 
 def getPatientFromUser(user):
     logging.info('Fetching patient from User: %s' % user)
-    query = Patient.query(Patient.user == user)
+    query = Patient.query(Patient.user == user.key)
     #query = gdb.GqlQuery("SELECT * FROM Patient WHERE user = :1", user)
     logging.info("count:" + str(query.count()))
     patient = query.get()
