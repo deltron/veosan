@@ -9,11 +9,11 @@
 		<div class="well">
 			<h1>
 				
-				{{p.prefix or ''}} {{p.first_name or ''}} 
+				{{p.title or ''}} {{p.first_name or ''}} 
 				{% if p.last_name %} {{p.last_name|first}}.
 				{% endif %} 
 				
-				<!--<span style="font-size:small; color:Grey;">{% if p.postfix %} {{p.postfix or ''}}{% endif %}</span>-->
+				<!--<span style="font-size:small; color:Grey;">{% if p.credentials %} {{p.credentials or ''}}{% endif %}</span>-->
 				is available</h1>
 			
 			<h3> on {{booking.dateTime|format_datetime_full}} at his clinic on {{p.address}} in {{p.city}}</h3>

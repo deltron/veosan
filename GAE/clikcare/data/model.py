@@ -59,8 +59,8 @@ class Provider(ndb.Model):
     # address
     first_name = ndb.StringProperty()
     last_name = ndb.StringProperty()
-    prefix = ndb.StringProperty()
-    postfix = ndb.StringProperty()
+    title = ndb.StringProperty()
+    credentials = ndb.StringProperty()
     email = ndb.StringProperty()
     phone = ndb.StringProperty()
     location = ndb.StringProperty()
