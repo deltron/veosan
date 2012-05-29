@@ -2,8 +2,8 @@
 
 {% set active_page = "bookings" %}
 
-{% block subhead %}Bookings{% endblock %}
-{% block lead %}Your upcoming bookings{% endblock %}
+{% block subhead %}{{ _('Bookings') }}{% endblock %}
+{% block lead %}{{ _('Your upcoming bookings.') }}{% endblock %}
 
 {% block content %}
 <div class="row">
@@ -14,8 +14,8 @@
 			<thead>
 				<tr>
 					<!-- <th>Key</th> -->
-					<th>Date & Time</th>
-					<th>Patient</th>
+					<th>{{ _('Date and Time') }}</th>
+					<th>{{ _('Patient') }}</th>
 					<th></th>
 				</tr>
 			</thead>
@@ -38,7 +38,7 @@
 			
 		{% else %}
 			<div class="alert alert-error">
-  				{{ _('No upcoming bookings.') }}
+  				{{ _('No upcoming bookings. Is there any time marked as available in your schedule?') }}
 			</div>
 		{% endif %}
 	</div>	
