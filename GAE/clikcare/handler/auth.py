@@ -6,6 +6,7 @@ from webapp2_extras.auth import InvalidAuthIdError
 from webapp2_extras.auth import InvalidPasswordError
 # google user service
 from google.appengine.api import users
+from webapp2_extras.appengine.users import admin_required as google_admin_required
 # clik
 from forms.base import LoginForm
 import data
@@ -15,6 +16,9 @@ from data.model import Provider
 # Roles
 PROVIDER_ROLE = 'Provider'
 PATIENT_ROLE = 'Patient'
+
+# admin_required uses the google user system
+admin_required = google_admin_required
 
 def provider_required(handler_method):
     '''

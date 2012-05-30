@@ -6,14 +6,13 @@ from datetime import date
 from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
 from google.appengine.api import users
-from webapp2_extras.appengine.users import admin_required
 #clik
 from base import BaseHandler
 import data.db as db
-from forms.provider import ProviderProfileForm, ProviderAddressForm, ProviderPhotoForm, ProviderTermsForm, ProviderLoginForm, ProviderPasswordForm
+from forms.provider import ProviderProfileForm, ProviderAddressForm, ProviderPhotoForm, ProviderTermsForm, ProviderPasswordForm
 from data.model import Provider, Schedule
 import util, mail
-from handler.auth import provider_required
+from handler.auth import provider_required, admin_required
 
 def parseRefererSection(request):
     referer = request.environ['HTTP_REFERER']
