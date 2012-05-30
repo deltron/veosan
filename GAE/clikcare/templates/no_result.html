@@ -1,18 +1,17 @@
 {% extends "/layout/base.html" %}
 
-{% block subhead %}{% endblock %}
-{% block lead %}{{ _('Ooops! We are fully booked.') }}{% endblock %}
+{% block subhead %} {{ _('Results') }} {% endblock %}
+{% block lead %} {% endblock %}
 
 {% block content %}
 <div class="row">
 	<div class="span6">
-		<div class="well">
-			
-			<h1><img src="/assets/img/blue-exclamation.png" width="80" height="80"> Fully Booked!</h1>
-			<br>
-			<h3>{{ _('We currently do not have a health-care professional available that matches your needs and schedule.') }}</h3>
-			<br>			
-			<h4>Please fill in your email below and we will contact you as soon as we have availability.</h4>
+		<div class="well">			
+			<p>{{ _('Hi! Unfortunately there are no professionals available that fit your needs and schedule right now.') }}</p>
+			<p>{{ _('We are working hard every day to expand our team so this doesn\'t happen again.') }}</p>
+			<p>{{ _('In the meantime <span style="background:orange">would you be available at X, Y, Z alternative time?</span>') }}</p>
+
+			<p>{{ _('Alternatively, please fill in your email below and we will contact you as soon as we have availability.') }}</p>
 			<br>
 			<br>
 			{% if booking.requestEmail %}
