@@ -5,6 +5,8 @@ from base import BaseTest
 
 class AdminTest(BaseTest):
    
+    _PROVIDER_TEST_EMAIL = "unit_test@provider.com"
+   
     def test_fill_new_provider_address_correctly(self):
         ''' fill out the new provider's address '''
         
@@ -41,6 +43,11 @@ class AdminTest(BaseTest):
         
         # init a provider
         self._test_admin_provider_init()
+        # solicit
+        self._test_new_provider_solicit()
+        # terms agreement
+        
+        # choose password
         
         # fill all sections
         self._test_fill_new_provider_address_correctly_action()
@@ -108,6 +115,21 @@ class AdminTest(BaseTest):
         response.mustcontain('<span class="label label-important">missing terms</span>')
 
 
+    def _test_new_provider_solicit(self):
+        ''' Send email to provider and activate'''
+        # get the provider key
+        provider = db.getProviderFromEmail("unit_test@provider.com")
+        request_variables = { 'key' : provider.key.urlsafe() }
+        response = self.testapp.post('/provider/administration', request_variables)
+        response.mustcontain('Provider Administration')
+        solicit_form = response.form[0]
+        solicit_form.submit()
+        # the above should send an email
+        messages = self.mail_stub.get_sent_messages(to=_PROVIDER_TEST_EMAIL)
+        self.assertEqual(1, len(messages))
+        m = messages[0]
+        print str(m)
+        
         
     def _test_fill_new_provider_address_correctly_action(self):
         # get the provider key
@@ -117,6 +139,7 @@ class AdminTest(BaseTest):
         request_variables = { 'key' : provider.key.urlsafe() }
         response = self.testapp.get('/provider/address', request_variables)
         
+        #response.showbrowser()
         address_form = response.forms[0] # address form
         
         # fill out the form

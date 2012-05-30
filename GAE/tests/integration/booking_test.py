@@ -168,12 +168,40 @@ class BookingTest(AdminTest):
         # verify error messages
         self.assertTrue(False, "How should we handle double bookings?")
         
-        response.showbrowser()
+        #response.showbrowser()
 
         #response.mustcontain("Fully Booked!")
         #response.mustcontain("We currently do not have a health-care professional available that matches your needs and schedule.")
         #response.mustcontain("Please fill in your email below and we will contact you as soon as we have availability.")
        
+        
+    def test_booking_new_patient(self):
+        ''' Create a booking in the available timeslot '''
+        AdminTest.test_complete_profile_creation(self)
+        # at this point there is one fully completed profile with a single timeslot available (Monday 8-13)
+        # go back to the main page and try to book monday 8am
+        result_response = self.testapp.post('/')
+        # fill out the form
+        booking_form = result_response.forms[0] # booking form
+        booking_form['category'] = 'osteopath' # admin test created an osteopath
+        booking_date_select = booking_form.fields['booking_date'][0]
+        # find the option value with a monday
+        for (date_string, selected) in booking_date_select.options:
+            d = datetime.strptime(date_string, "%Y-%m-%d")
+            if d.weekday() == 0: # choose the first monday on the form
+                booking_form['booking_date'] = date_string
+                break
+        # leave time to default (should be 8-9h)
+        # leave region to default (should be downtown)
+        result_response = booking_form.submit()
+        # email form
+        email_form = result_response.forms[0]
+        email_form['email'] = 'pat@patient.com'
+        new_patient_response = email_form.submit()
+        
+        #new_patient_response.showbrowser()
+        #new_patient_response.must_contain()
+        
         
 if __name__ == "__main__":
     unittest.main()
