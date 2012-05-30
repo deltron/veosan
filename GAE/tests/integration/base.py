@@ -2,7 +2,7 @@
 
 import unittest, webtest
 from google.appengine.ext import testbed
-import main, data.db as db
+import main
 
 class BaseTest(unittest.TestCase):
     ''' *** NOTE ***
@@ -21,7 +21,9 @@ class BaseTest(unittest.TestCase):
         self.testbed.init_datastore_v3_stub()
         self.testbed.init_blobstore_stub()
         self.testbed.init_memcache_stub()
-        
+        self.testbed.init_user_stub()
+
+
     def tearDown(self):
         self.testbed.deactivate()
 
