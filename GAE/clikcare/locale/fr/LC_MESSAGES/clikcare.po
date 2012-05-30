@@ -57,12 +57,20 @@ msgstr "Conditions d'utilisation"
 msgid "Privacy"
 msgstr "Politique de confidentialité"
 
+msgid "Login"
+msgstr "Connexion"
+
 msgid "Logout"
 msgstr "Déconnexion"
 
 msgid "Contact"
 msgstr "Nous joindre"
 
+msgid "Remember Me"
+msgstr "Se souvenir de moi"
+
+msgid "Password"
+msgstr "Mot de passe"
 
 #################
 # Form navigation
