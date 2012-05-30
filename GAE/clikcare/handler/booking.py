@@ -20,7 +20,7 @@ class BaseBookingHandler(BaseHandler):
         self.render_template('patient/new.html', **tv)
         
     def renderFullyBooked(self, booking, emailForm=None, **extra):
-        self.render_template('no_result.html', booking=booking, form=emailForm, **extra) 
+        self.render_template('booking/no_result.html', booking=booking, form=emailForm, **extra) 
         
         
     
@@ -46,7 +46,7 @@ class IndexHandler(BaseBookingHandler):
                 # booking saved with provider, no patient info yet
                 email_form = EmailOnlyBookingForm()
                 tv = {'patient': None, 'booking': booking, 'p': provider, 'form': email_form }
-                self.render_template('result.html', **tv) 
+                self.render_template('booking/result.html', **tv) 
             else:
                 logging.warn('No provider found for booking: %s' % booking.key.urlsafe())
                 emailForm = EmailOnlyBookingForm()
@@ -100,7 +100,7 @@ class PatientBookHandler(BaseBookingHandler):
         else:
             # email form validation failed
             tv = {'patient': None, 'booking': booking, 'p': booking.provider, 'form': email_form }
-            self.render_template('result.html', **tv) 
+            self.render_template('booking/result.html', **tv) 
             
             
 class FullyBookedHandler(BaseBookingHandler):

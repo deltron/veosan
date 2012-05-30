@@ -107,6 +107,7 @@ class AdminTest(BaseTest):
         response.mustcontain('<span class="label label-success">new</span>')
         response.mustcontain('<span class="label label-important">missing terms</span>')
 
+        # login
 
         
     def _test_fill_new_provider_address_correctly_action(self):
