@@ -29,7 +29,7 @@ def main(sdk_path, test_path):
     # I think there is a way to load this properly with packages and environment variables
     # see http://jinja.pocoo.org/docs/api/
     # this will do for now
-    os.chdir("../clikcare") 
+    #os.chdir("../clikcare") 
     
     suite = unittest2.loader.TestLoader().discover(start_dir=test_path, pattern='*_test.py')
     unittest2.TextTestRunner(verbosity=2).run(suite)

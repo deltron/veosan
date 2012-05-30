@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import os
 import unittest, webtest
 from google.appengine.ext import testbed
 import main
@@ -30,5 +31,17 @@ class BaseTest(unittest.TestCase):
     def tearDown(self):
         self.testbed.deactivate()
 
-
+    
+    ##
+    ## Testbed Authentication methods
+    ##
+    
+    def login_as_admin(self):
+        self.set_current_google_user('admin@clikcare.com', 'admin@clikcare.com', is_admin=1)
+        
+    def set_current_google_user(self, email, user_id, is_admin=False):    
+        os.environ['USER_EMAIL'] = email or ''
+        os.environ['USER_ID'] = user_id or ''
+        os.environ['USER_IS_ADMIN'] = '1' if is_admin else '0'
+    
     

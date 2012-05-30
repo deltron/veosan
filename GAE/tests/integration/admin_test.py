@@ -64,6 +64,7 @@ class AdminTest(BaseTest):
         self.assertEqual(response.status_int, 200)        
         
         # this should fail with an error message
+        response.showbrowser()
         
         # check for error message
         response.mustcontain("Addresse courriel invalide.")
@@ -119,9 +120,11 @@ class AdminTest(BaseTest):
     def _test_new_provider_solicit(self):
         ''' Send email to provider and activate'''
         # get the provider key
+        self.login_as_admin()
         provider = db.getProviderFromEmail("unit_test@provider.com")
         request_variables = { 'key' : provider.key.urlsafe() }
-        response = self.testapp.post('/provider/administration', request_variables)
+        response = self.testapp.get('/provider/administration', request_variables)
+        response.showbrowser()
         response.mustcontain('Provider Administration')
         solicit_form = response.form[0]
         solicit_form.submit()
