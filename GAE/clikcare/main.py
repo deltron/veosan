@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import os, logging
 # GAE
 import webapp2
 from webapp2 import Route
@@ -27,7 +28,12 @@ jinja_environment_args = {
 
 
 webapp2_config = {}
+
+template_path = os.path.dirname(__file__) + '/templates'
+logging.info('setting template path to %s' % template_path)
+
 webapp2_config['webapp2_extras.jinja2'] = {
+                                            'template_path': template_path,
                                             'filters': jinja_filters,
                                             'environment_args': jinja_environment_args
                                             } 
