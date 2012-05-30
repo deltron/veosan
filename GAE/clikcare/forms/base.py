@@ -37,8 +37,3 @@ class ContactForm(Form):
     email = TextField(_(u'E-mail Address').decode("UTF-8"), [validators.Email(message=_(u'Invalid email address.').decode("UTF-8"))])
     subject = TextField(_(u'Subject').decode("UTF-8"), [validators.Length(min=3, message='Subject required.')])
     message = TextAreaField(_(u'Message').decode("UTF-8"))
-    
-class LoginForm(Form):
-    email = TextField(_(u'Email').decode("UTF-8"), [validators.Email(message=_(u'Invalid email address.').decode("UTF-8"))])
-    password = PasswordField(_(u'Password').decode("UTF-8"))
-    remember_me = CustomBooleanField(_(u'Remember Me').decode("UTF-8"))

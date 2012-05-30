@@ -60,6 +60,9 @@ msgstr "Politique de confidentialité"
 msgid "Login"
 msgstr "Connexion"
 
+msgid "Login to Clikcare"
+msgstr "Connexion à Cliksanté"
+
 msgid "Logout"
 msgstr "Déconnexion"
 
@@ -314,6 +317,14 @@ msgstr "Vos réservations à venir."
 
 msgid "No upcoming bookings. Is there any time marked as available in your schedule?"
 msgstr "Aucun rendez-vous dans le système. Est-ce que vous avez du temps disponible dans votre horaire?"
+
+
+#################
+# Login page
+#################
+
+msgid "Enjoy the benefits of being a member today!"
+msgstr "Profitez des avantages d'être membre dès aujourd'hui!"
 
 
 

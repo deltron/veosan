@@ -8,7 +8,7 @@ from webapp2_extras.auth import InvalidPasswordError
 from google.appengine.api import users
 from webapp2_extras.appengine.users import admin_required as google_admin_required
 # clik
-from forms.base import LoginForm
+from forms.login import LoginForm
 import data
 from data.model import Provider
 

@@ -64,7 +64,6 @@ class AdminTest(BaseTest):
         self.assertEqual(response.status_int, 200)        
         
         # this should fail with an error message
-        response.showbrowser()
         
         # check for error message
         response.mustcontain("Addresse courriel invalide.")
@@ -99,7 +98,25 @@ class AdminTest(BaseTest):
     ######################################################################
     ## BELOW HERE ARE LOCAL / REUSABLE UTILITY METHODS TO SET UP A PROFILE
     ######################################################################
-     
+    def _test_login_as_provider(self):
+        ''' login with provider credentials '''
+        
+        # need to assume provider is created
+        
+        response = self.testapp.post('/login')
+        
+        # verify we get the login page
+        response.mustcontain("Connexion à Cliksanté")
+
+        # fill out details
+        login_form = response.form[0]
+        login_form['email'] = self._PROVIDER_TEST_EMAIL
+        login_form['password'] = 'abcd'
+
+        login_form.submit()
+        
+        
+
      
     def _test_admin_provider_init(self):
         ''' initialize a new provider '''
@@ -115,7 +132,6 @@ class AdminTest(BaseTest):
         response.mustcontain('<span class="label label-success">new</span>')
         response.mustcontain('<span class="label label-important">missing terms</span>')
 
-        # login
 
     def _test_new_provider_solicit(self):
         ''' Send email to provider and activate'''
