@@ -39,21 +39,26 @@ class AdminTest(BaseTest):
         
         
     def test_complete_profile_creation(self):
-        ''' Test init provider with address, profile and one timeslot together '''
-        
+        '''
+            Test init provider with address, profile and one timeslot together.
+            This happens in two strokes:
+            1. The admin create the profile and solicits the provider
+            2. The provoder receives the email and activates his account
+        '''
+        self.login_as_admin()
         # init a provider
         self._test_admin_provider_init()
-        # solicit
-        self._test_new_provider_solicit()
-        # terms agreement
-        
-        # choose password
-        
         # fill all sections
         self._test_fill_new_provider_address_correctly_action()
         self._test_fill_new_provider_profile_correctly_action()
         self._test_provider_schedule_set_one_timeslot_action()
+        # solicit
+        self._test_new_provider_solicit()
+        self.logout_admin()
         
+        # terms agreement
+        
+        # choose password        
         
     def test_admin_provider_init_with_empty_email(self):
         ''' initialize a new provider with no email address (should not be possible) '''
@@ -109,7 +114,7 @@ class AdminTest(BaseTest):
         response.mustcontain("Connexion à Cliksanté")
 
         # fill out details
-        login_form = response.form[0]
+        login_form = response.forms[0]
         login_form['email'] = self._PROVIDER_TEST_EMAIL
         login_form['password'] = 'abcd'
 
@@ -136,16 +141,17 @@ class AdminTest(BaseTest):
     def _test_new_provider_solicit(self):
         ''' Send email to provider and activate'''
         # get the provider key
-        self.login_as_admin()
         provider = db.getProviderFromEmail("unit_test@provider.com")
         request_variables = { 'key' : provider.key.urlsafe() }
         response = self.testapp.get('/provider/administration', request_variables)
-        response.showbrowser()
+        #response.showbrowser()
         response.mustcontain('Provider Administration')
-        solicit_form = response.form[0]
+        response.mustcontain(self._PROVIDER_TEST_EMAIL)
+        solicit_form = response.forms[0]
+        # sends an email to the provider
         solicit_form.submit()
-        # the above should send an email
-        messages = self.mail_stub.get_sent_messages(to=_PROVIDER_TEST_EMAIL)
+        # read the email and check content
+        messages = self.mail_stub.get_sent_messages(to=self._PROVIDER_TEST_EMAIL)
         self.assertEqual(1, len(messages))
         m = messages[0]
         print str(m)
@@ -158,10 +164,8 @@ class AdminTest(BaseTest):
         # request the address page
         request_variables = { 'key' : provider.key.urlsafe() }
         response = self.testapp.get('/provider/address', request_variables)
-        
         #response.showbrowser()
         address_form = response.forms[0] # address form
-        
         # fill out the form
         address_form['title'] = u"Mr."
         address_form['first_name'] = u"Fantastic"

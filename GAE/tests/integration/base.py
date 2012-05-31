@@ -38,6 +38,11 @@ class BaseTest(unittest.TestCase):
     
     def login_as_admin(self):
         self.set_current_google_user('admin@clikcare.com', 'admin@clikcare.com', is_admin=1)
+    
+    def logout_admin(self):
+        del os.environ['USER_EMAIL']
+        del os.environ['USER_ID']
+        del os.environ['USER_IS_ADMIN']
         
     def set_current_google_user(self, email, user_id, is_admin=False):    
         os.environ['USER_EMAIL'] = email or ''

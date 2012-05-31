@@ -20,17 +20,9 @@ def main(sdk_path, test_path):
     sys.path.insert(0, sdk_path)
     import dev_appserver
     dev_appserver.fix_sys_path()
-    
     # Test Beautiful Soup import
     print 'Using BeautifulSoup version ' + BeautifulSoup.__version__
-    
-    # TODO this is a hack
-    # change directory to app root, otherwise templates won't be found...
-    # I think there is a way to load this properly with packages and environment variables
-    # see http://jinja.pocoo.org/docs/api/
-    # this will do for now
-    #os.chdir("../clikcare") 
-    
+    # collect and un all tests
     suite = unittest2.loader.TestLoader().discover(start_dir=test_path, pattern='*_test.py')
     unittest2.TextTestRunner(verbosity=2).run(suite)
 

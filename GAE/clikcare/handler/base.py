@@ -1,6 +1,5 @@
-import gettext
+import gettext, os, logging
 import webapp2
-import logging
 from google.appengine.api import users
 from webapp2_extras import jinja2
 from webapp2_extras import auth
@@ -8,10 +7,11 @@ from webapp2_extras import sessions
 
 
 # change to en and everything is english!
-# todo: do we do /en/ /fr/ for every address or read it in the session somewhere?
+# todo: do we do /en/ /fr/ for every address or read it in the session somewhere? Session.
 
 lang = 'fr'
-t = gettext.translation('clikcare', 'locale', languages=[lang], fallback='en')
+locale_dir = os.path.dirname(__file__) + '/../locale'
+t = gettext.translation('clikcare', locale_dir, languages=[lang], fallback='en')
 t.install()
 
 class BaseHandler(webapp2.RequestHandler):
