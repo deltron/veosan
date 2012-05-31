@@ -327,6 +327,21 @@ msgid "Enjoy the benefits of being a member today!"
 msgstr "Profitez des avantages d'être membre dès aujourd'hui!"
 
 
+#################
+# Terms page
+#################
+
+msgid "I agree with the Terms of Service"
+msgstr "J'accepte les conditions d'utilisation"
+
+
+#################
+# Password page
+#################
+
+msgid "Select your password"
+msgstr "Choisissez votre mot de passe"
+
 
 ####################################################################
 # Lists of things
