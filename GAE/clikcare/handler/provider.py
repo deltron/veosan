@@ -34,7 +34,9 @@ class ProviderBaseHandler(BaseHandler):
         days = util.getWeekdays()
         self.render_template('provider/schedule.html', p=provider, availableIds=availableIds, timeslots=timeslots, days=days, **extra)
     
-    def render_bookings(self, provider, bookings, **extra):
+    def render_bookings(self, provider, **extra):
+        bookings = db.fetch_future_bookings(provider)   
+        logging.info('Bookings:' + str(bookings))
         self.render_template('provider/bookings.html', p=provider, bookings=bookings, **extra)
             
     def render_terms(self, provider, terms_form, **extra):
@@ -207,9 +209,10 @@ class ProviderPasswordHandler(ProviderBaseHandler):
                 # login automatically
                 self.login_user(email, password)
                 # TODO Add Welcome Message and invitation to review profile and set schedule
-                redirect_url = provider.get_edit_link(section='profile')
-                logging.info(redirect_url)
-                self.redirect(redirect_url)
+                #redirect_url = provider.get_edit_link(section='profile')
+                #self.redirect(redirect_url)
+                welcome_message = _("Welcome to Clikcare! Please review your profile and open your schedule.")
+                self.render_bookings(provider, success_message=welcome_message)
             else:
                 logging.error('User not created. Probably because email already in Unique table.')
                 # TODO add custom validation to tell user that email is already in use.
@@ -224,9 +227,8 @@ class ProviderBookingsHandler(ProviderBaseHandler):
     @provider_required
     def get(self):
         provider = db.get_from_urlsafe_key(self.request.get('key'))
-        bookings = db.fetch_future_bookings(provider)   
-        logging.info('Bookings:' + str(bookings))
-        self.render_bookings(provider, bookings)
+        
+        self.render_bookings(provider)
 
 
 class ProviderAdministrationHandler(ProviderBaseHandler):

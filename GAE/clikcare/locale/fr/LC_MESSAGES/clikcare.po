@@ -342,6 +342,9 @@ msgstr "J'accepte les conditions d'utilisation"
 msgid "Select your password"
 msgstr "Choisissez votre mot de passe"
 
+msgid "Welcome to Clikcare! Please review your profile and open your schedule."
+msgstr "Bienvenue chez Cliksanté! Veuillez révisez votre profile et planifiez votre horraire."
+
 
 ####################################################################
 # Lists of things

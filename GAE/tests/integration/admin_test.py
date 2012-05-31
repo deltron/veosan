@@ -438,13 +438,14 @@ class AdminTest(BaseTest):
         password_form['password'] = self._TEST_PROVIDER_PASSWORD
         #password_choice_response.showbrowser()
         # Welcome page (handle redirect)
-        welcome_redirect_response = password_form.submit()
-        self.assertEqual(welcome_redirect_response.status_int, 302)
-        redirect_location = welcome_redirect_response._headers['Location']
-        welcome_response = self.testapp.get(redirect_location)
-        print str(welcome_redirect_response.__dict__)
+        welcome_response = password_form.submit()
+        #self.assertEqual(welcome_redirect_response.status_int, 302)
+        #redirect_location = welcome_redirect_response._headers['Location']
+        #welcome_response = self.testapp.get(redirect_location)
+        #print str(welcome_redirect_response.__dict__)
         self.assertEqual(welcome_response.status_int, 200)
-        #welcome_response.showbrowser()
+        welcome_response.mustcontain(u'Bienvenue chez Cliksanté!')
+        welcome_response.showbrowser()
 
 
 if __name__ == "__main__":
