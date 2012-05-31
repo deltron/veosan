@@ -2,10 +2,13 @@
 
 import unittest, data.db as db
 from base import BaseTest
+import logging
 
 class AdminTest(BaseTest):
    
-    _PROVIDER_TEST_EMAIL = "unit_test@provider.com"
+    _TEST_PROVIDER_EMAIL = "unit_test@provider.com"
+    
+    _TEST_PROVIDER_PASSWORD = u'123456'
    
     def test_fill_new_provider_address_correctly(self):
         ''' fill out the new provider's address '''
@@ -55,10 +58,11 @@ class AdminTest(BaseTest):
         # solicit
         self._test_new_provider_solicit()
         self.logout_admin()
-        
         # terms agreement
+        self._test_provider_activation_form_email()
+        # choose password
         
-        # choose password        
+             
         
     def test_admin_provider_init_with_empty_email(self):
         ''' initialize a new provider with no email address (should not be possible) '''
@@ -115,7 +119,7 @@ class AdminTest(BaseTest):
 
         # fill out details
         login_form = response.forms[0]
-        login_form['email'] = self._PROVIDER_TEST_EMAIL
+        login_form['email'] = self._TEST_PROVIDER_EMAIL
         login_form['password'] = 'abcd'
 
         login_form.submit()
@@ -141,21 +145,23 @@ class AdminTest(BaseTest):
     def _test_new_provider_solicit(self):
         ''' Send email to provider and activate'''
         # get the provider key
-        provider = db.getProviderFromEmail("unit_test@provider.com")
+        provider = db.getProviderFromEmail(self._TEST_PROVIDER_EMAIL)
         request_variables = { 'key' : provider.key.urlsafe() }
         response = self.testapp.get('/provider/administration', request_variables)
         #response.showbrowser()
         response.mustcontain('Provider Administration')
-        response.mustcontain(self._PROVIDER_TEST_EMAIL)
+        response.mustcontain(self._TEST_PROVIDER_EMAIL)
         solicit_form = response.forms[0]
         # sends an email to the provider
         solicit_form.submit()
         # read the email and check content
-        messages = self.mail_stub.get_sent_messages(to=self._PROVIDER_TEST_EMAIL)
+        messages = self.mail_stub.get_sent_messages(to=self._TEST_PROVIDER_EMAIL)
         self.assertEqual(1, len(messages))
         m = messages[0]
-        print str(m)
-        
+        self.assertEqual(m.subject, 'Cliksoin - Confirm your profile %s' % provider.fullName())
+        # assert that activation link is in the email body
+        self.assertTrue('http://localhost/provider/activation/%s' % provider.activation_key in m.body.payload)
+ 
         
     def _test_fill_new_provider_address_correctly_action(self):
         # get the provider key
@@ -413,6 +419,33 @@ class AdminTest(BaseTest):
         # not possible to test blobstore yet...
         
    
+    def _test_provider_activation_form_email(self):
+        '''
+            Click on activation link, 
+        '''
+        print 'Activation...'
+        provider = db.getProviderFromEmail(self._TEST_PROVIDER_EMAIL)
+        # terms page
+        activation_url = 'http://localhost/provider/activation/%s' % provider.activation_key
+        terms_response = self.testapp.get(activation_url)
+        terms_response.mustcontain("J'accepte les conditions d'utilisation")
+        terms_form = terms_response.forms[0]
+        terms_form['terms_agreement'] = '1'
+        # password page
+        password_choice_response = terms_form.submit()
+        password_choice_response.mustcontain('Choisissez votre mot de passe')
+        password_form = password_choice_response.forms[0]
+        password_form['password'] = self._TEST_PROVIDER_PASSWORD
+        #password_choice_response.showbrowser()
+        # Welcome page (handle redirect)
+        welcome_redirect_response = password_form.submit()
+        self.assertEqual(welcome_redirect_response.status_int, 302)
+        redirect_location = welcome_redirect_response._headers['Location']
+        welcome_response = self.testapp.get(redirect_location)
+        print str(welcome_redirect_response.__dict__)
+        self.assertEqual(welcome_response.status_int, 200)
+        #welcome_response.showbrowser()
+
 
 if __name__ == "__main__":
     unittest.main()
