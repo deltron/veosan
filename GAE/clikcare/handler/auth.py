@@ -69,9 +69,7 @@ class LoginHandler(BaseHandler):
             logging.info('Trying to login email:%s' % email)
             # Username and password check
             try:
-                auth_user = self.auth.get_user_by_password(email, password, remember=remember_me)
-                user = self.get_current_user()
-                logging.info('Login succesful for %s' % user)
+                user = self.login_user(email, password, remember_me)
                 # login was succesful, User is in the session
                 profiles = data.db.get_user_profiles(user)
                 logging.info('profiles: %s' % profiles)

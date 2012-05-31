@@ -182,12 +182,14 @@ class ProviderPasswordHandler(ProviderBaseHandler):
         '''
             TODO: Display page in the context of the Provider profile (with tabs at the top)
         '''
+        logging.info('GET not implemented on /provider/password')
         pass
             
     def post(self):
         '''
             Create user and link it to the Provider
         '''
+        logging.info('POST provider password')
         provider = db.get_from_urlsafe_key(self.request.get('provider_key'))
         password_form = ProviderPasswordForm(self.request.POST)
         if password_form.validate():
@@ -202,6 +204,8 @@ class ProviderPasswordHandler(ProviderBaseHandler):
                 provider.put()
                 mail.emailProviderWelcomeMessage(self.jinja2, provider)
                 # Provider is Activated
+                # login automatically
+                self.login_user(email, password)
                 # TODO Add Welcome Message and invitation to review profile and set schedule
                 redirect_url = provider.get_edit_link(section='profile')
                 logging.info(redirect_url)
@@ -213,6 +217,7 @@ class ProviderPasswordHandler(ProviderBaseHandler):
                 self.render_password(provider, password_form=password_form, error_message=error_message)
         else:
             self.render_pass(provider, password_form=password_form)
+
 
 class ProviderBookingsHandler(ProviderBaseHandler):
     

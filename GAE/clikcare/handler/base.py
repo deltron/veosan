@@ -83,6 +83,13 @@ class BaseHandler(webapp2.RequestHandler):
         auth_conf = { 'login_url': self.uri_for('login'),
                       'logout_url': self.uri_for('logout') }
         return auth_conf
+    
+    
+    def login_user(self, email, password, remember_me=True):
+        auth_user = self.auth.get_user_by_password(email, password, remember=remember_me)
+        user = self.get_current_user()
+        logging.info('Login succesful for %s' % user)
+        return user
 
     def get_current_user(self):
         ''' Get the current authenticated user from our internal auth system. Returns None if no user is logged in'''
