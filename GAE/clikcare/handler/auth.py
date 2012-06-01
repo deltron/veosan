@@ -88,7 +88,7 @@ class LoginHandler(BaseHandler):
                 
             except (InvalidAuthIdError, InvalidPasswordError), e:
                 # throws InvalidAuthIdError if user is not found, throws InvalidPasswordError if provided password doesn't match with specified user
-                error_message = 'Login failed. Try again.'
+                error_message = _(u'Login failed. Try again.').decode('UTF-8')
                 self.render_template('login.html', form=login_form, error_message=error_message)
         else:
             # form validation error

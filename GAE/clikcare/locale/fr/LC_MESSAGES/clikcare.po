@@ -326,6 +326,9 @@ msgstr "Aucun rendez-vous dans le système. Est-ce que vous avez du temps dispon
 msgid "Enjoy the benefits of being a member today!"
 msgstr "Profitez des avantages d'être membre dès aujourd'hui!"
 
+msgid "Login failed. Try again."
+msgstr "L'authentification a échoué. Veuillez vérifier votre email et mot de passe."
+
 
 #################
 # Terms page

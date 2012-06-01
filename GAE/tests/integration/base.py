@@ -79,26 +79,6 @@ class BaseTest(unittest.TestCase):
         self.logout_admin()
         # terms agreement
         self._test_provider_activation_form_email()
-        
-    
-    def _test_login_as_provider(self):
-        ''' login with provider credentials '''
-        
-        # need to assume provider is created
-        
-        response = self.testapp.post('/login')
-        
-        # verify we get the login page
-        response.mustcontain("Connexion à Cliksanté")
-
-        # fill out details
-        login_form = response.forms[0]
-        login_form['email'] = self._TEST_PROVIDER_EMAIL
-        login_form['password'] = 'abcd'
-
-        login_form.submit()
-        
-        
 
      
     def _test_admin_provider_init(self):
@@ -371,11 +351,10 @@ class BaseTest(unittest.TestCase):
         self.assertEqual(monday_morning_i['class'], 'icon-ok-circle', 'Monday morning should be ok icon')
 
 
-    def test_upload_image_to_correct_address(self):
+    def _test_upload_image_to_correct_address(self):
         ''' Upload a test image for the new provider '''
         
         self.test_fill_new_provider_address_correctly()
-        
         # get the provider key
         provider = db.getProviderFromEmail("unit_test@provider.com")
         
