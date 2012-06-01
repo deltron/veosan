@@ -2,7 +2,7 @@
 import logging
 from google.appengine.api import mail
 
-CLIK_SUPPORT_ADDRESS = 'philippe.caya@gmail.com'
+CLIK_SUPPORT_ADDRESS = 'cliktester@gmail.com'
 
 
 def renderBookingEmailBody(jinja2, template_filename, booking):
@@ -44,7 +44,20 @@ def emailSolicitProvider(jinja2, provider, activation_url):
     except Exception as e:
         logging.error('Email to provider not sent. %s' % e)
         
-        
 def emailProviderWelcomeMessage(jinja2, provider):
     pass
-        
+
+def email_contact_form(jinja2, from_email, subject, message_body):
+    logging.info('Feedback from %s | subject: %s\n\nMESSAGE\n=========\n%s' % (from_email, subject, message_body))
+    
+    message = mail.EmailMessage()
+    message.sender = from_email
+    message.to = CLIK_SUPPORT_ADDRESS
+    message.subject = subject
+    message.body = message_body
+    
+    try:
+        message.send()
+    except Exception as e:
+        logging.error('Email to provider not sent. %s' % e)
+        raise e
