@@ -54,7 +54,11 @@ class BaseTest(unittest.TestCase):
         os.environ['USER_EMAIL'] = email or ''
         os.environ['USER_ID'] = user_id or ''
         os.environ['USER_IS_ADMIN'] = '1' if is_admin else '0'
-    
+        
+    def logout_provider(self):
+        logout_redirect = self.testapp.get('/logout')
+        logout_response = logout_redirect.follow()
+        logout_response.showbrowser()
     
     ######################################################################
     ## BELOW HERE ARE LOCAL / REUSABLE UTILITY METHODS TO SET UP A PROFILE
