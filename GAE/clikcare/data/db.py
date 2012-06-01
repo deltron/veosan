@@ -56,10 +56,10 @@ def findBestProviderForBooking(booking):
     'Returns provider that best matches: category, location, dateTime'
     category = booking.requestCategory
     region = booking.requestRegion
-    date_time = booking.requestDateTime
-    logging.info("request date_time x:" + str(date_time))
-    requestDay = date_time.weekday()
-    requestStartTime = date_time.hour
+    logging.info("request date_time x:" + str(booking.requestDateTime))
+    requestDay = booking.requestDateTime.weekday()
+    requestStartTime = booking.requestDateTime.hour
+    # Hack: appointments last one hour
     requestEndTime = requestStartTime + 1
     logging.info('Looking for {0} in {1} available on day:{2} from {3} to {4}'.format(category, region, requestDay, requestStartTime, requestEndTime))
     providers = []
@@ -75,7 +75,12 @@ def findBestProviderForBooking(booking):
                 # manually check if hours match (because of BadFilterError: "Only one property per query may have inequality filters")
                 if (requestStartTime >= s.startTime & requestEndTime <= s.endTime):
                     logging.info('Found schedule match for provider {0}, schedule {1}:'.format(p, s.repr()))
-                    providers.append(p)
+                    # check if provider does not have a previous appointment conflicting with this one
+                    conflicting_booking = Booking.query(Booking.provider==p.key, Booking.dateTime==booking.requestDateTime).get()
+                    if not conflicting_booking:
+                        providers.append(p)
+                    else:
+                        logging.info('|- Conflicting booking at {%H:%M}'.format(conflicting_booking.dateTime))
                 else:
                     logging.info('Schedule hours do not match {0}'.format(s.repr()))
         else:
