@@ -1,17 +1,17 @@
 # -*- coding: utf-8 -*-
 
-from admin_test import AdminTest
+from base import BaseTest
 from datetime import datetime, date
 import unittest
 import util
 
-class BookingTest(AdminTest):
+class BookingTest(BaseTest):
     ''' TODO: bug because this extends the admin_test it runs everything twice... '''
     
     def test_booking_single_timeslot_available(self):
         ''' Create a booking in the available timeslot '''
         
-        AdminTest.test_complete_profile_creation(self)
+        self.create_complete_provider_profile()
         
         # at this point there is one fully completed profile with a single timeslot available (Monday 8-13)
         
@@ -59,7 +59,7 @@ class BookingTest(AdminTest):
     def test_booking_single_timeslot_book_unavailable_time(self):
         ''' Create a booking in a timeslot with no availability '''
         
-        AdminTest.test_complete_profile_creation(self)
+        self.create_complete_provider_profile()
         
         # at this point there is one fully completed profile with a single timeslot available (Monday 8-13)
         
@@ -95,7 +95,7 @@ class BookingTest(AdminTest):
     def test_booking_twice_in_same_timeslot(self):
         ''' Create a booking in the timeslot after another booking is made in the same timeslot '''
         
-        AdminTest.test_complete_profile_creation(self)
+        self.create_complete_provider_profile()
         
         # at this point there is one fully completed profile with a single timeslot available (Monday 8-13)
         
@@ -177,7 +177,7 @@ class BookingTest(AdminTest):
         
     def test_booking_new_patient(self):
         ''' Create a booking in the available timeslot '''
-        AdminTest.test_complete_profile_creation(self)
+        self.create_complete_provider_profile()
         # at this point there is one fully completed profile with a single timeslot available (Monday 8-13)
         # go back to the main page and try to book monday 8am
         result_response = self.testapp.post('/')
