@@ -1,70 +1,47 @@
 {% extends "/layout/base.html" %}
 
 {% block subhead %} {{ _('Appointment Details') }} {% endblock %}
-{% block lead %} {% endblock %}
+{% block lead %} aaa {% endblock %}
 
 {% block content %}
 <div class="row">
 	<div class="span6">
-		<div class="well">			
-			<p>{{ _('Hi! Unfortunately there are no professionals available that fit your needs and schedule right now.') }}</p>
-			<p>{{ _('We are working hard every day to expand our team so this doesn\'t happen again.') }}</p>
-			<p>{{ _('In the meantime <span style="background:orange">would you be available at X, Y, Z alternative time?</span>') }}</p>
-
-			<p>{{ _('Alternatively, please fill in your email below and we will contact you as soon as we have availability.') }}</p>
-			<br>
-			<br>
+		<div class="well">
+			<p>
+				{{ _('Hi! Unfortunately there are no professionals available that fit your needs and schedule right now.') }}
+			</p>
+			<p>
+				{{ _('In the meantime <span style="background:orange">would you be available at X, Y, Z alternative time?</span>') }}
+			</p>
+			<hr>
+			<p>
+				{{ _('We are working hard every day to expand our team so this doesn\'t happen again.') }}
+				{{ _('Please fill in your email below and we will contact you as soon as we have availability.') }}
+			</p>
 			{% if booking.requestEmail %}
-				<div class="alert alert-success">
-					<h2>{{ _('Thanks!') }}</h2>
-				</div>	
-			{%else %}
-				<form method="post" action="/full" class="form-inline">
-					<fieldset>
-						<input id="bk" name="bk" type="hidden" value="{{ booking.key.urlsafe() }}">
-						<fieldset>
-							{{ makeStandardForm() }}
-						</fieldset>
-						<button type="submit" class="btn btn-primary btn-large">
-							{{ _('Go!') }}
-						</button>
-					</fieldset>
-				</form>
+			<div class="alert alert-success">
+				<h2>{{ _('Thanks!') }}</h2>
+			</div>
+			{% else %}
+			<form method="post" action="/full" class="form-inline">
+				<fieldset>
+					<input id="bk" name="bk" type="hidden" value="{{ booking.key.urlsafe() }}">
+					{% if form.email.errors %}
+
+					<p class="help-block">
+						{% for error in form.email.errors %} <i class="icon-exclamation-sign"></i> {{ error }}
+						<br>
+						{% endfor %}
+					</p>
+					{% endif %}
+					{{ form.email(class=inputClass) }}
+					<button type="submit" class="btn btn-primary">
+						{{ _('Submit') }}
+					</button>
+				</fieldset>
+			</form>
 			{% endif %}
 		</div>
-	</div>
-	<div class="span1">
-		<p><!-- SPAN1 SPACER
-			Junk layout, Trash when reworking maybe with image for quality 
-			Maybe Simplyfy all this page: Appointment Info on Left, Bio and Quote on right-->
-		</p>
-	</div>
-	
-	<!-- Right hand side -->
-	<div class="span5">	
-		<div class="row">
-		  <div class="span2">
-				<img src="/assets/img/default-profile.png" width="100" height="100">
-		  </div>
-		  <div class="span3">
-			  	<div class="row-fluid">
-					<blockquote>
-						<p>
-							Clikcare helps people like you!
-						</p>
-					</blockquote>
-				</div>
-		  </div>
-		</div>
-	
-		<div class="row">
-			<div class="span5">
-				<br>
-				<h4> {{ _('My Background') }} </h4>
-				<p>This is the success story of sommeone who was desperatly looking for a health care provider and found it throught clikcare.</p>
-			</div>
-		</div>
-		
 	</div>
 </div>
 {% endblock content %} 

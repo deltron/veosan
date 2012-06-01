@@ -103,6 +103,9 @@ msgstr "Précédent"
 msgid "Upload"
 msgstr "Télécharger"
 
+msgid "Submit"
+msgstr "Soumettre"
+
 
 #################
 # About page
@@ -344,6 +347,21 @@ msgstr "Choisissez votre mot de passe"
 
 msgid "Welcome to Clikcare! Please review your profile and open your schedule."
 msgstr "Bienvenue chez Cliksanté! Veuillez révisez votre profile et planifiez votre horraire."
+
+
+#################
+# Booking results
+#################
+
+msgid "Appointment Details"
+msgstr "Détails de votre rendez-vous"
+
+#################
+# Booking results (no result)
+#################
+
+msgid "Hi! Unfortunately there are no professionals available that fit your needs and schedule right now."
+msgstr "Malheureusement, il n'y a pas de professionnels disponibles qui répondent à vos besoins et votre horaire pour le moment."
 
 
 ####################################################################
