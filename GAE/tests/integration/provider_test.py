@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from admin_test import AdminTest
-from datetime import datetime, date
+from base import BaseTest
 import unittest
 
-#class ProviderTest(AdminTest):
-#    ''' TODO: bug because this extends the admin_test it runs everything twice... '''
+class ProviderTest(BaseTest):
+    ''' TODO: bug because this extends the admin_test it runs everything twice... '''
         
 
 

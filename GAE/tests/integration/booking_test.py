@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from base import BaseTest
-from datetime import datetime
+from datetime import datetime, timedelta
 import unittest
 import util
 
@@ -190,7 +190,6 @@ class BookingTest(BaseTest):
         email_form['email'] = 'pat@patient.com'
         new_patient_response = email_form.submit()
         
-        #new_patient_response.showbrowser()
         new_patient_response.mustcontain('Nouveau Patient')
         patient_form = new_patient_response.forms[0]
         patient_form['first_name'] = first_name = 'Pat!'
@@ -199,9 +198,25 @@ class BookingTest(BaseTest):
         patient_form['telephone'] = '514-123-1234'
         patient_form['terms_agreement'] = '1'
         booking_confirm_page = patient_form.submit()
-        
-        booking_confirm_page.showbrowser()
+        #booking_confirm_page.showbrowser()
         booking_confirm_page.mustcontain('Thank you %s!' % first_name)
+        
+    def test_booking_existing_patient(self):
+        self.test_booking_new_patient()
+        self.logout_patient()
+        # Try making another booking as Pat the patient
+        today = datetime.today()
+        next_monday = today + timedelta(days=-today.weekday(), weeks=1)
+        next_monday_string = datetime.strftime(next_monday, "%Y-%m-%d")
+        # We already have an appointment at 8AM, let's now book 10AM
+        result_response = self.book_appointment('osteopath', next_monday_string, '10')
+        # email form
+        email_form = result_response.forms[0]
+        email_form['email'] = self._TEST_PATIENT_EMAIL
+        # We are an existing patient, this should take us to the login page
+        login_page = email_form.submit()
+        login_page.showbrowser()
+        
         
         
 if __name__ == "__main__":

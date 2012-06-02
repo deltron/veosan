@@ -5,6 +5,7 @@ import unittest, webtest
 from google.appengine.ext import testbed
 import main
 import data.db as db
+from datetime import datetime
 
 class BaseTest(unittest.TestCase):
     ''' *** NOTE ***
@@ -18,6 +19,8 @@ class BaseTest(unittest.TestCase):
     _TEST_PROVIDER_EMAIL = "unit_test@provider.com"
     
     _TEST_PROVIDER_PASSWORD = u'123456'
+    
+    _TEST_PATIENT_EMAIL = 'pat@patient.com'
 
     def setUp(self):
         # Wrap the app with WebTest’s TestApp.
@@ -58,10 +61,16 @@ class BaseTest(unittest.TestCase):
     def logout_provider(self):
         logout_redirect = self.testapp.get('/logout')
         logout_response = logout_redirect.follow()
-        logout_response.showbrowser()
+        logout_response.mustcontain('Mon Compte')
     
+    def logout_patient(self):
+        logout_redirect = self.testapp.get('/logout')
+        logout_response = logout_redirect.follow()
+        logout_response.mustcontain('Mon Compte')
+        
+        
     ######################################################################
-    ## BELOW HERE ARE LOCAL / REUSABLE UTILITY METHODS TO SET UP A PROFILE
+    ## PROVIDER AND ADMIN METHODS
     ######################################################################
     
     def create_complete_provider_profile(self):
@@ -393,14 +402,27 @@ class BaseTest(unittest.TestCase):
         password_choice_response.mustcontain('Choisissez votre mot de passe')
         password_form = password_choice_response.forms[0]
         password_form['password'] = self._TEST_PROVIDER_PASSWORD
-        #password_choice_response.showbrowser()
-        # Welcome page (handle redirect)
         welcome_response = password_form.submit()
-        #self.assertEqual(welcome_redirect_response.status_int, 302)
-        #redirect_location = welcome_redirect_response._headers['Location']
-        #welcome_response = self.testapp.get(redirect_location)
-        #print str(welcome_redirect_response.__dict__)
         self.assertEqual(welcome_response.status_int, 200)
         welcome_response.mustcontain(u'Bienvenue chez Cliksanté!')
         #welcome_response.showbrowser()
 
+
+    ###
+    ### Patient Methods
+    ###
+
+    def book_appointment(self, category, date_string, hour_string):
+        '''
+            Go to index, fill the form and resturn the response
+        '''
+        result_response = self.testapp.post('/')
+        # fill out the form
+        booking_form = result_response.forms[0] # booking form
+        booking_form['category'] = category
+        booking_form['booking_date'] = date_string
+        booking_form['booking_time'] = hour_string
+        # leave region to default (should be downtown)
+        result_response = booking_form.submit()
+        return result_response
+        

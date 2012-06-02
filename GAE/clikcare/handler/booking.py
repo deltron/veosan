@@ -57,7 +57,7 @@ class IndexHandler(BaseBookingHandler):
 
 class PatientBookHandler(BaseBookingHandler):
     '''
-        Handler to confirm the booking and create new patient record if user logged in
+        Handler to confirm the booking and create new patient record
     '''
     def post(self):
         'We have a booking with a provider, we need to add the patient using the User'
@@ -80,6 +80,9 @@ class PatientBookHandler(BaseBookingHandler):
             if existing_user:
                 patient = db.getPatientFromUser(existing_user)
                 if patient:
+                    
+                    # TODO sent to login page with booking_key in form
+                    
                     # Existing patient
                     logging.info('User exists, patient exists, confirming booking.')
                     booking.patient = patient.key
@@ -139,8 +142,11 @@ class PatientBookForNewHandler(BaseBookingHandler):
                 # Store New Patient
                 patient = db.storePatient(self.request.POST, user)
                 if (patient):
+                    # store booking
                     booking.patient = patient.key
                     booking.put()
+                    # auto-loggin patient
+                    self.login_user(email, password)
                     # booking succesfull, send email
                     mail.emailBookingToPatient(self.jinja2, booking)
                     self.renderConfirmedBooking(booking)
