@@ -141,6 +141,9 @@ msgstr "Joignez-vous à l'équipe!"
 msgid "Subject"
 msgstr "Sujet"
 
+msgid "Subject required."
+msgstr "Sujet requis."
+
 msgid "Message"
 msgstr "Message"
 

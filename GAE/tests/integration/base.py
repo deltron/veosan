@@ -16,7 +16,8 @@ class BaseTest(unittest.TestCase):
     
        
     _TEST_PROVIDER_EMAIL = "unit_test@provider.com"
-    
+    _TEST_ADMIN_EMAIL = "unit_test@admin.com"
+
     _TEST_PROVIDER_PASSWORD = u'123456'
 
     def setUp(self):
