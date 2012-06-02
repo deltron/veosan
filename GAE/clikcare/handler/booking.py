@@ -3,7 +3,9 @@
 import logging
 import data.db as db, mail
 from forms.base import BookingForm, PatientForm, EmailOnlyBookingForm
+from forms.login import LoginForm
 from handler.base import BaseHandler
+from handler.auth import patient_required
 
 
 class BaseBookingHandler(BaseHandler):
@@ -14,8 +16,8 @@ class BaseBookingHandler(BaseHandler):
         tv.update(extra)
         self.render_template('patient/book.html', **tv)
         
-    def renderNewPatientForm(self, patientForm, booking, **extra):
-        tv = {'form': patientForm, 'booking': booking, 'provider': booking.provider.get()}
+    def renderNewPatientForm(self, patientForm, booking, user=None, **extra):
+        tv = {'form': patientForm, 'booking': booking, 'provider': booking.provider.get(), 'user': user}
         tv.update(extra)
         self.render_template('patient/new.html', **tv)
         
@@ -56,6 +58,19 @@ class IndexHandler(BaseBookingHandler):
 
 
 class PatientBookHandler(BaseBookingHandler):
+    
+    @patient_required
+    def get(self):
+        '''
+            Displays booking confirmation.
+            Protected by @patient_required so that only logged in patient can see their own booking confirm
+        '''
+        booking_key = self.request.get('bk')
+        logging.info('Showing Booking confirmation for %s' % booking_key)
+        booking = db.get_from_urlsafe_key(booking_key)
+        self.renderConfirmedBooking(booking) 
+        
+        
     '''
         Handler to confirm the booking and create new patient record
     '''
@@ -65,40 +80,52 @@ class PatientBookHandler(BaseBookingHandler):
         email_form = EmailOnlyBookingForm(self.request.POST)
         if email_form.validate():
             # store email in booking as requestEmail
-            booking.request_email = self.request.get('email')
-            booking.put()
-            
-            # TODO Consider case where user is already logged in
-            
-            # TODO rework this:
-            
-            # existing or new patient
             email = self.request.get('email')
-            # if we know this email, send to login
-            logging.info('email: %s' % email)
-            existing_user = self.auth.store.user_model.get_by_auth_id(email)
-            if existing_user:
-                patient = db.getPatientFromUser(existing_user)
+            booking.request_email = email
+            booking.put()
+            user = self.get_current_user()
+            if user:
+                # A user is logged in let's see if he is a patient (might be a provider)
+                patient = db.get_patient_profile(user)
                 if patient:
-                    
-                    # TODO sent to login page with booking_key in form
-                    
-                    # Existing patient
-                    logging.info('User exists, patient exists, confirming booking.')
+                    # Patient is logged in
+                    logging.info('Patient %s is already logged in, confirming booking.' % email)
                     booking.patient = patient.key
                     booking.put()
-                    self.renderConfirmedBooking(booking)
+                    self.renderConfirmedBooking(booking) 
                 else:
-                    # user exists, but not patient!!!
-                    logging.error('User exists for %s but not patient' % email)
-                    # TODO missing render call for this odd situation
+                    # user logged in, but not a patient, got to new patient form with the user.key set
+                    logging.info('User %s is logged in, but not a patient, creating new patient.' % email)
+                    patientForm = PatientForm(self.request.POST)
+                    self.renderNewPatientForm(patientForm, booking, user)   
+                
             else:
-                # New patient
-                logging.info('Patient does not exist, creating new patient.')
-                patientForm = PatientForm(self.request.POST)
-                # set email in form 
-                patientForm.email.data = email
-                self.renderNewPatientForm(patientForm, booking)
+                existing_user = self.auth.store.user_model.get_by_auth_id(email)
+                if existing_user:
+                    existing_patient = db.get_patient_profile(existing_user)
+                    if existing_patient:
+                        # email is in datastore, but not logged in
+                        # link booking to patient and then check if same patient logs in (check is in @patient_required)
+                        booking.patient = existing_patient.key
+                        booking.put()
+                        # send to login page with booking.key set
+                        login_form = LoginForm()
+                        login_form.email.data = email
+                        self.render_template('login.html', form=login_form, booking=booking)
+                    
+                    else:
+                        # user exists, not no patient profile attached (might be a provider)
+                        
+                        # 1. login, 2. patient profile, 3. confirm
+                        pass
+                        
+                else:    
+                    # email is not known, create new patient profile
+                    logging.info('Patient does not exist for %s, creating new patient.' % email)
+                    patientForm = PatientForm(self.request.POST)
+                    # set email in form 
+                    patientForm.email.data = email
+                    self.renderNewPatientForm(patientForm, booking)             
 
         else:
             # email form validation failed

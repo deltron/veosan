@@ -9,6 +9,11 @@
 		
 		<form method="post" action="/login" class="form-horizontal">
 			<fieldset>
+				{% if booking %}
+				<!-- booking key -->
+				<input type="hidden" name="booking_key" value="{{booking.key.urlsafe()}}" />
+				{% endif %}
+				<!-- form -->
 				{{ makeStandardForm() }}
 			</fieldset>
 			<div class="form-actions">

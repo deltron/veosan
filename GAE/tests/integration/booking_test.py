@@ -194,11 +194,13 @@ class BookingTest(BaseTest):
         patient_form = new_patient_response.forms[0]
         patient_form['first_name'] = first_name = 'Pat!'
         patient_form['last_name'] = 'Patient'
-        patient_form['password'] = '123456'
+        patient_form['password'] = self._TEST_PATIENT_PASSWORD
         patient_form['telephone'] = '514-123-1234'
         patient_form['terms_agreement'] = '1'
         booking_confirm_page = patient_form.submit()
-        #booking_confirm_page.showbrowser()
+        # patient email in navbar
+        booking_confirm_page.mustcontain(self._TEST_PATIENT_EMAIL)
+        # Title check
         booking_confirm_page.mustcontain('Thank you %s!' % first_name)
         
     def test_booking_existing_patient(self):
@@ -215,9 +217,18 @@ class BookingTest(BaseTest):
         email_form['email'] = self._TEST_PATIENT_EMAIL
         # We are an existing patient, this should take us to the login page
         login_page = email_form.submit()
-        login_page.showbrowser()
-        
-        
+        login_page.mustcontain('Connexion à Cliksanté')
+        login_page.mustcontain('booking_key')
+        # email should be set in form
+        login_page.mustcontain(self._TEST_PATIENT_EMAIL)
+        login_form = login_page.forms[0]
+        login_form['password'] = self._TEST_PATIENT_PASSWORD
+        login_redirect = login_form.submit()
+        booking_confirm_page = login_redirect.follow()
+        # patient email in navbar
+        booking_confirm_page.mustcontain(self._TEST_PATIENT_EMAIL)
+        # Title check
+        booking_confirm_page.mustcontain('Thank you Pat!')
         
 if __name__ == "__main__":
     unittest.main()

@@ -44,13 +44,6 @@ def storePatient(r, user):
     logging.info(vars(patient))
     return patient
 
-def getPatientFromUser(user):
-    logging.info('Fetching patient from User: %s' % user)
-    query = Patient.query(Patient.user == user.key)
-    #query = gdb.GqlQuery("SELECT * FROM Patient WHERE user = :1", user)
-    logging.info("count:" + str(query.count()))
-    patient = query.get()
-    return patient
 
 def findBestProviderForBooking(booking):
     'Returns provider that best matches: category, location, dateTime'
@@ -187,11 +180,18 @@ def get_user_profiles(user):
         profiles.append(pat)
     return profiles
 
-def get_first_provider_profile(user):
-    '''
-        returns the first provider profile liked to user. Returns None if user is not a provider
-    '''
+def get_provider_profile(user):
+    '''returns the first provider profile liked to user. Returns None if user is not a provider'''
     if user:
         return Provider.query(Provider.user == user.key).get()
     else:
         return None
+    
+def get_patient_profile(user):
+    '''returns the first patient profile liked to user. Returns None if user is not a patient'''
+    if user:
+        return Patient.query(Patient.user == user.key).get()
+    else:
+        return None
+    
+    

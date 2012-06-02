@@ -87,10 +87,7 @@ application = webapp2.WSGIApplication([
                                        ('/admin/providers', admin.AdminProvidersHandler),
                                        # auth
                                        ('/login', auth.LoginHandler),
-                                       #('/create', auth_ CreateUserHandler),
-                                        #RedirectRoute('/login/', auth_ LoginHandler, name='login', strict_slash=True),
                                        ('/logout', auth.LogoutHandler),
-                                        #RedirectRoute('/logout/', auth.LogoutHandler, name='logout', strict_slash=True),
                                       ], debug=True,
                                       config=webapp2_config)
 
