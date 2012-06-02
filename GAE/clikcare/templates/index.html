@@ -221,3 +221,18 @@
   </div><!--/row-->
 </div> <!-- class marketing -->
 {% endblock content %} 
+
+{% block extra_javascript %}
+<script src="/assets/js/bootstrap-carousel.js"></script>
+<script src="/assets/js/bootstrap-transition.js"></script>
+<script>
+	$(function() {
+		$('#carouselProfile').carousel({
+			interval : 15000
+		});
+	});
+</script>
+
+{% endblock extra_javascript %} 
+
+
