@@ -5,7 +5,6 @@ from wtforms import validators
 from custom_form import CustomBooleanField
 import util
 
-  
 class BookingForm(Form):
     category = SelectField(_(u'Category').decode("UTF-8"), choices=util.getAllCategories())
     location = SelectField(_(u'Location').decode("UTF-8"), choices=util.getAllRegions())
@@ -33,7 +32,3 @@ class PatientForm(Form):
 #   confirmation = MultiCheckboxField(_(u'Confirmation').decode("UTF-8"), choices=util.getAllConfirmation(), default=['email'])
 
 
-class ContactForm(Form):
-    email = TextField(_(u'E-mail Address').decode("UTF-8"), [validators.Email(message=_(u'Invalid email address.').decode("UTF-8"))])
-    subject = TextField(_(u'Subject').decode("UTF-8"), [validators.Length(min=3, message='Subject required.')])
-    message = TextAreaField(_(u'Message').decode("UTF-8"))

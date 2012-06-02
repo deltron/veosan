@@ -141,6 +141,9 @@ msgstr "Joignez-vous à l'équipe!"
 msgid "Subject"
 msgstr "Sujet"
 
+msgid "Subject required."
+msgstr "Sujet requis."
+
 msgid "Message"
 msgstr "Message"
 
@@ -149,6 +152,13 @@ msgstr "Votre opinion compte!"
 
 msgid "We want to know what you think about our service. If you have any feedback regarding the web site or the care you have received please let us know in the form below."
 msgstr "Nous voulons savoir ce que vous pensez de notre service. Si vous avez des commentaires au sujet du site web ou les soins que vous avez reçu, n'hésitez pas à nous en faire part dans le formulaire ci-dessous."
+
+msgid "Your comments were sent succesfully. Thanks for your feedback, we will contact you shortly to follow up. Have a great day!"
+msgstr "Vos commentaires ont été envoyés avec succès. Merci, nous vous contacterons rapidement pour assurer le suivi. Passez une excellente journée!"
+
+msgid "Sorry, there was an error sending your comments. Please call 555-123-1212 to talk to someone."
+msgstr "Désolé, il y avait une erreur d'envoyer vos commentaires. S'il vous plaît appelez 555-123-1212 pour parler à quelqu'un."
+
 
 #################
 # Index page

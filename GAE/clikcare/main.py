@@ -7,7 +7,7 @@ from webapp2 import Route
 from webapp2_extras.routes import RedirectRoute
 # clik
 import util
-from handler import booking, provider, auth, admin, static
+from handler import booking, provider, auth, admin, static, contact
 from data.model import User
 
 jinja_filters = {}
@@ -56,7 +56,7 @@ application = webapp2.WSGIApplication([
                                        # General pages
                                        ('/', booking.IndexHandler),
                                        ('/full', booking.FullyBookedHandler),
-                                       ('/contact', static.ContactHandler),
+                                       ('/contact', contact.ContactHandler),
                                        
                                        # Static Pages
                                        Route('/about', handler=static.StaticHandler, name='about'),

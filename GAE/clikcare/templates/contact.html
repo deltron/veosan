@@ -6,7 +6,7 @@
 {% block content %}
 <div class="row">
 	<div class="span12">
-		{% if sent == False %}
+		{% if not (error_message or success_message) %}
 
 		<div class=" well">
 			{{ _('We want to know what you think about our service. If you have any feedback regarding the web site or the care you have received please let us know in the form below.') }}
@@ -22,11 +22,6 @@
 				</button>
 			</div>
 		</form>
-
-		{% else %}
-
-		Message success!
-
 		{% endif %}
 	</div>
 </div>
