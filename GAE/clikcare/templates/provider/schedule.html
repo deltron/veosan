@@ -65,9 +65,10 @@
 	</div>
 	
 </div>
+{% endblock %}
 
-<script src="/assets/js/jquery.js"></script>
 
+{% block extra_javascript %}
 <script>
     $("#tt a").click(function () {
     	//alert("I am an alert box! " + $("#b14").attr("Class")); 
@@ -103,5 +104,5 @@
      	$.post('/provider/schedule', post_data)
     });
 </script>
+{% endblock extra_javascript %}
 
-{% endblock %}
