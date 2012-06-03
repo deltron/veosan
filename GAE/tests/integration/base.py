@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
+from google.appengine.ext import testbed
 import os
 import unittest, webtest
-from google.appengine.ext import testbed
+# clik
 import main
 import data.db as db
-from datetime import datetime
 
 class BaseTest(unittest.TestCase):
     ''' *** NOTE ***
@@ -22,7 +22,7 @@ class BaseTest(unittest.TestCase):
     _TEST_ADMIN_EMAIL = "unit_test@admin.com"
 
     _TEST_PATIENT_EMAIL = 'pat@patient.com'
-    _TEST_PATIENT_PASSWORD = '123456'
+    _TEST_PATIENT_PASSWORD = '654321'
 
     def setUp(self):
         # Wrap the app with WebTest’s TestApp.
@@ -60,6 +60,21 @@ class BaseTest(unittest.TestCase):
         os.environ['USER_ID'] = user_id or ''
         os.environ['USER_IS_ADMIN'] = '1' if is_admin else '0'
         
+        
+    def login_as_provider(self):
+        ''' login as a provider, assumes already initialized and accepted terms '''
+        response = self.testapp.get('/login')
+        
+        login_form = response.forms[0]
+        login_form['email'] = self._TEST_PROVIDER_EMAIL
+        login_form['password'] = self._TEST_PROVIDER_PASSWORD
+        login_redirect = login_form.submit()
+        response = login_redirect.follow()
+        
+        # default page for provider after login is bookings
+        response.mustcontain("Rendez-vous")
+        
+
     def logout_provider(self):
         logout_redirect = self.testapp.get('/logout')
         logout_response = logout_redirect.follow()
