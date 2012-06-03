@@ -78,28 +78,31 @@ class PatientBookHandler(BaseBookingHandler):
         'We have a booking with a provider, we need to add the patient using the User'
         booking = db.get_from_urlsafe_key(self.request.get('bk')) 
         email_form = EmailOnlyBookingForm(self.request.POST)
-        if email_form.validate():
-            # store email in booking as requestEmail
-            email = self.request.get('email')
-            booking.request_email = email
-            booking.put()
-            user = self.get_current_user()
-            if user:
-                # A user is logged in let's see if he is a patient (might be a provider)
-                patient = db.get_patient_profile(user)
-                if patient:
-                    # Patient is logged in
-                    logging.info('Patient %s is already logged in, confirming booking.' % email)
-                    booking.patient = patient.key
-                    booking.put()
-                    self.renderConfirmedBooking(booking) 
-                else:
-                    # user logged in, but not a patient, got to new patient form with the user.key set
-                    logging.info('User %s is logged in, but not a patient, creating new patient.' % email)
-                    patientForm = PatientForm(self.request.POST)
-                    self.renderNewPatientForm(patientForm, booking, user)   
-                
+        user = self.get_current_user()
+        if user:
+            # form was only a submit button, we get the email from the user logged in
+            email = user.get_email()
+            # A user is logged in let's see if he is a patient (he might be a provider)
+            patient = db.get_patient_profile(user)
+            if patient:
+                # Patient is logged in
+                logging.info('Patient %s is already logged in, confirming booking.' % email)
+                booking.patient = patient.key
+                booking.put()
+                self.renderConfirmedBooking(booking) 
             else:
+                # user logged in, but not a patient, got to new patient form with the user.key set
+                logging.info('User %s is logged in, but not a patient, creating new patient.' % email)
+                patientForm = PatientForm(self.request.POST)
+                self.renderNewPatientForm(patientForm, booking, user)   
+            
+        else:
+            # Form has an email field, let's validate
+            if email_form.validate():
+                # store email in booking as requestEmail
+                email = self.request.get('email')
+                booking.request_email = email
+                booking.put()
                 existing_user = self.auth.store.user_model.get_by_auth_id(email)
                 if existing_user:
                     existing_patient = db.get_patient_profile(existing_user)
@@ -126,11 +129,10 @@ class PatientBookHandler(BaseBookingHandler):
                     # set email in form 
                     patientForm.email.data = email
                     self.renderNewPatientForm(patientForm, booking)             
-
-        else:
-            # email form validation failed
-            tv = {'patient': None, 'booking': booking, 'p': booking.provider, 'form': email_form }
-            self.render_template('booking/result.html', **tv) 
+            else:
+                # email form validation failed
+                tv = {'patient': None, 'booking': booking, 'p': booking.provider, 'form': email_form }
+                self.render_template('booking/result.html', **tv) 
             
             
 class FullyBookedHandler(BaseBookingHandler):

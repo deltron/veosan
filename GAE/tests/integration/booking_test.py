@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import logging, sys
 from base import BaseTest
 from datetime import datetime, timedelta
 import unittest
@@ -168,7 +169,6 @@ class BookingTest(BaseTest):
         # setup a provider
         self.create_complete_provider_profile()
         self.logout_provider()
-        
         # at this point there is one fully completed profile with a single timeslot available (Monday 8-13)
         # go back to the main page and try to book monday 8am
         result_response = self.testapp.post('/')
@@ -230,7 +230,31 @@ class BookingTest(BaseTest):
         # Title check
         booking_confirm_page.mustcontain('Thank you Pat!')
         
+    def test_booking_with_loggedin_patient(self):
+        self.test_booking_new_patient()
+        self.logout_patient()
+        # Try to login and book another appintment as Pat the patient
+        self.login_as_patient()
+        # book appointment
+        today = datetime.today()
+        next_monday = today + timedelta(days=-today.weekday(), weeks=1)
+        next_monday_string = datetime.strftime(next_monday, "%Y-%m-%d")
+        # We already have an appointment at 8AM, let's now book 10AM
+        result_response = self.book_appointment('osteopath', next_monday_string, '10')
+        result_response.showbrowser()
+        # email form
+        book_form = result_response.forms[0]
+        # no email on form (can we assert this?)
+        booking_confirm_page = book_form.submit()
+        booking_confirm_page.showbrowser()
+        # patient email in navbar
+        booking_confirm_page.mustcontain(self._TEST_PATIENT_EMAIL)
+        # Title check
+        booking_confirm_page.mustcontain('Thank you Pat!')
+        
+        
 if __name__ == "__main__":
+    logging.basicConfig(stream=sys.stderr)
     unittest.main()
     
     

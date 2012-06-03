@@ -73,7 +73,7 @@ def findBestProviderForBooking(booking):
                     if not conflicting_booking:
                         providers.append(p)
                     else:
-                        logging.info('|- Conflicting booking at {%H:%M}'.format(conflicting_booking.dateTime))
+                        logging.info('|- Conflicting booking at %s'.format(conflicting_booking.dateTime.strftime("%H:%M")))
                 else:
                     logging.info('Schedule hours do not match {0}'.format(s.repr()))
         else:

@@ -23,7 +23,10 @@
 		<form action="/patient/book" method="post" class="form-inline">	
 			<fieldset>
 				<input id="bk" name="bk" type="hidden" value="{{ booking.key.urlsafe() }}">	
+				
+				{% if not user %}
 				<input id='email' name='email' type="text" class="" placeholder="{{_('Email Address')}}">
+				{% endif %}
 				
 				<button type="submit" class="btn btn-primary">
 					{{ _('Book Appointment') }}

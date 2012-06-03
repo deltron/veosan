@@ -60,11 +60,27 @@ class BaseTest(unittest.TestCase):
         os.environ['USER_ID'] = user_id or ''
         os.environ['USER_IS_ADMIN'] = '1' if is_admin else '0'
         
+    
     def logout_provider(self):
         logout_redirect = self.testapp.get('/logout')
         logout_response = logout_redirect.follow()
         logout_response.mustcontain('Mon Compte')
     
+    def login_as_patient(self):
+        response = self.testapp.get('/login')
+        response.mustcontain("Connexion à Cliksanté")
+        login_form = response.forms[0]
+        login_form['email'] = self._TEST_PATIENT_EMAIL
+        login_form['password'] = self._TEST_PATIENT_PASSWORD
+        login_redirect_response = login_form.submit()
+        # response after login is a redirect, so follow
+        login_welcome_page = login_redirect_response.follow()
+        # email in the header
+        login_welcome_page.mustcontain(self._TEST_PATIENT_EMAIL)
+        # login lands on index page
+        login_welcome_page.mustcontain('Trouvez des soins')
+        
+        
     def logout_patient(self):
         logout_redirect = self.testapp.get('/logout')
         logout_response = logout_redirect.follow()
@@ -391,7 +407,6 @@ class BaseTest(unittest.TestCase):
         '''
             Click on activation link, 
         '''
-        print 'Activation...'
         provider = db.getProviderFromEmail(self._TEST_PROVIDER_EMAIL)
         # terms page
         activation_url = 'http://localhost/provider/activation/%s' % provider.activation_key

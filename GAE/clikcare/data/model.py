@@ -21,6 +21,9 @@ class User(Webapp2AuthUser):
         Extending the Webapp2 Auth User to add roles
     '''
     roles = ndb.StringProperty(repeated=True)
+    
+    def get_email(self):
+        return self.auth_ids[0]
 
 
 class Patient(ndb.Model):
