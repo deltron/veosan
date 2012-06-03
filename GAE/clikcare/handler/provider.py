@@ -219,7 +219,7 @@ class ProviderPasswordHandler(ProviderBaseHandler):
                 error_message = 'User email is already taken. If you are already using this email for your patient profile, please inform us or use another email.'
                 self.render_password(provider, password_form=password_form, error_message=error_message)
         else:
-            self.render_pass(provider, password_form=password_form)
+            self.render_password(provider, password_form=password_form)
 
 
 class ProviderBookingsHandler(ProviderBaseHandler):
