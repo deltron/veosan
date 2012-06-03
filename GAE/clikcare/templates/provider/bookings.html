@@ -7,9 +7,9 @@
 
 {% block content %}
 <div class="row">
-	<div class="span6">
 		{% if bookings|length > 0 %}
-			
+		<div class="span6">
+
 			<table class="table">
 			<thead>
 				<tr>
@@ -34,13 +34,15 @@
 				{% endfor %}
 			</tbody>
 			</table>
-			
+		</div>	
+
 			
 		{% else %}
+		<div class="span12">
 			<div class="alert alert-error">
   				{{ _('No upcoming bookings. Is there any time marked as available in your schedule?') }}
 			</div>
+		</div>
 		{% endif %}
-	</div>	
 </div>
 {% endblock content %} 
