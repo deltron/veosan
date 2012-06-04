@@ -69,11 +69,12 @@
 
 
 {% block extra_javascript %}
-<script src="/assets/js/jquery.js"></script>
 <script src="/assets/js/bootstrap-tooltip.js"></script>
-<script src="/assets/js/bootstrap-popover.js"></script>
 
 <script>
+	$(function() {
+		$('a[rel=tooltip]').tooltip();
+	});
 
     $("#tt a").click(function () {
     	//alert("I am an alert box! " + $("#b14").attr("Class")); 
