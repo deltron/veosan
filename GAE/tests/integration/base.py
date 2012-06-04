@@ -115,9 +115,9 @@ class BaseTest(unittest.TestCase):
         self.login_as_admin()
         # init a provider
         self.init_new_provider()       # fill all sections
-        self._test_fill_new_provider_address_correctly_action()
+        self.fill_new_provider_address_correctly_action()
         self._test_fill_new_provider_profile_correctly_action()
-        self._test_provider_schedule_set_one_timeslot_action()
+        self.provider_schedule_set_one_timeslot_action()
         # solicit
         self.solicit_provider()
         self.logout_admin()
@@ -146,12 +146,13 @@ class BaseTest(unittest.TestCase):
         provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
         request_variables = { 'key' : provider.key.urlsafe() }
         response = self.testapp.get('/provider/administration', request_variables)
-        #response.showbrowser()
+
         response.mustcontain('Provider Administration')
         response.mustcontain(self._TEST_PROVIDER_EMAIL)
         solicit_form = response.forms[0]
         # sends an email to the provider
         solicit_form.submit()
+        
         # read the email and check content
         messages = self.mail_stub.get_sent_messages(to=self._TEST_PROVIDER_EMAIL)
         self.assertEqual(1, len(messages))
@@ -162,15 +163,16 @@ class BaseTest(unittest.TestCase):
  
 
         
-    def _test_fill_new_provider_address_correctly_action(self):
+    def fill_new_provider_address_correctly_action(self):
         # get the provider key
         provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
         
         # request the address page
         request_variables = { 'key' : provider.key.urlsafe() }
         response = self.testapp.get('/provider/address', request_variables)
-        #response.showbrowser()
+        
         address_form = response.forms[0] # address form
+        
         # fill out the form
         address_form['title'] = u"Mr."
         address_form['first_name'] = u"Fantastic"
@@ -201,7 +203,7 @@ class BaseTest(unittest.TestCase):
         response.mustcontain("Fox, Fantastic [unit_test@provider.com]")
 
 
-    def _test_modify_provider_address_action(self):
+    def modify_provider_address_action(self):
         # get the provider key
         provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
         
@@ -339,7 +341,7 @@ class BaseTest(unittest.TestCase):
         self.assertTrue(provider.onsite)
 
         
-    def _test_provider_schedule_set_one_timeslot_action(self):
+    def provider_schedule_set_one_timeslot_action(self):
 
         # get the provider key
         provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
