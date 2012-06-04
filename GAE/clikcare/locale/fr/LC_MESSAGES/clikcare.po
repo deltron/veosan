@@ -54,6 +54,9 @@ msgstr "Carrières"
 msgid "Terms"
 msgstr "Conditions d'utilisation"
 
+msgid "Provider Terms"
+msgstr "Conditions pour fournisseurs"
+
 msgid "Privacy"
 msgstr "Politique de confidentialité"
 
@@ -346,6 +349,9 @@ msgstr "L'authentification a échoué. Veuillez vérifier votre email et mot de 
 #################
 # Terms page
 #################
+
+msgid "Terms for Service Providers"
+msgstr "Conditions pour les fournisseurs de services"
 
 msgid "I agree with the Terms of Service"
 msgstr "J'accepte les conditions d'utilisation"

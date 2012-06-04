@@ -159,9 +159,19 @@ class ProviderScheduleHandler(ProviderBaseHandler):
             logging.info('Wrong operation save schedule:' + operation)
 
 class ProviderTermsHandler(ProviderBaseHandler):
-    
     def get(self):
-        provider = db.get_from_urlsafe_key(self.request.get('key'))
+        # get the provider key
+        key = self.request.get('key')
+        if key:
+            provider = db.get_from_urlsafe_key(key)
+        
+        # if no key, try to find out who the provider is by checking the logged in user
+        else:
+            user = self.get_current_user()
+            # make sure user is a provider
+            if 'provider' in user.roles:
+                provider = db.get_provider_from_email(user.get_email())
+        
         terms_form = ProviderTermsForm(obj=provider)
         self.render_terms(provider, terms_form=terms_form)
     

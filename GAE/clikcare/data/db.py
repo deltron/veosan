@@ -140,7 +140,7 @@ def storeProvider(r):
     return provider_key
 
 
-def getProviderFromEmail(email):
+def get_provider_from_email(email):
     provider = Provider.query(Provider.email == email).get()
     logging.debug('Provider for email %s is %s' % (email, provider))
     return provider   

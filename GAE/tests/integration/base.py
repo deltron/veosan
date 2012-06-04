@@ -144,7 +144,7 @@ class BaseTest(unittest.TestCase):
     def _test_new_provider_solicit(self):
         ''' Send email to provider and activate'''
         # get the provider key
-        provider = db.getProviderFromEmail(self._TEST_PROVIDER_EMAIL)
+        provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
         request_variables = { 'key' : provider.key.urlsafe() }
         response = self.testapp.get('/provider/administration', request_variables)
         #response.showbrowser()
@@ -164,7 +164,7 @@ class BaseTest(unittest.TestCase):
         
     def _test_fill_new_provider_address_correctly_action(self):
         # get the provider key
-        provider = db.getProviderFromEmail("unit_test@provider.com")
+        provider = db.get_provider_from_email("unit_test@provider.com")
         
         # request the address page
         request_variables = { 'key' : provider.key.urlsafe() }
@@ -188,7 +188,7 @@ class BaseTest(unittest.TestCase):
         response.mustcontain("Vos modifications ont été enregistrées.")
 
         # check values in database
-        provider = db.getProviderFromEmail("unit_test@provider.com")
+        provider = db.get_provider_from_email("unit_test@provider.com")
         
         # iterate over every field item, find the match in the provider object and check its equality
         # possible we miss something here?
@@ -203,7 +203,7 @@ class BaseTest(unittest.TestCase):
 
     def _test_modify_provider_address_action(self):
         # get the provider key
-        provider = db.getProviderFromEmail("unit_test@provider.com")
+        provider = db.get_provider_from_email("unit_test@provider.com")
         
         # request the address page
         request_variables = { 'key' : provider.key.urlsafe() }
@@ -244,7 +244,7 @@ class BaseTest(unittest.TestCase):
         response.mustcontain("Vos modifications ont été enregistrées.")
 
         # check values in database
-        provider = db.getProviderFromEmail("unit_test@provider.com")
+        provider = db.get_provider_from_email("unit_test@provider.com")
         
         # iterate over every field item, find the match in the provider object and check its equality
         # possible we miss something here?
@@ -261,7 +261,7 @@ class BaseTest(unittest.TestCase):
     def _test_fill_new_provider_profile_correctly_action(self):
 
         # get the provider key
-        provider = db.getProviderFromEmail("unit_test@provider.com")
+        provider = db.get_provider_from_email("unit_test@provider.com")
         
         # request the address page
         request_variables = { 'key' : provider.key.urlsafe() }
@@ -311,7 +311,7 @@ class BaseTest(unittest.TestCase):
         response.mustcontain('option selected value="osteopath"')
         
         # check values in database
-        provider = db.getProviderFromEmail("unit_test@provider.com")
+        provider = db.get_provider_from_email("unit_test@provider.com")
         
         # iterate over every field item, find the match in the provider object and check its equality
         # possible we miss something here?
@@ -342,7 +342,7 @@ class BaseTest(unittest.TestCase):
     def _test_provider_schedule_set_one_timeslot_action(self):
 
         # get the provider key
-        provider = db.getProviderFromEmail("unit_test@provider.com")
+        provider = db.get_provider_from_email("unit_test@provider.com")
         
         # request the schedule page
         request_variables = { 'key' : provider.key.urlsafe() }
@@ -378,7 +378,7 @@ class BaseTest(unittest.TestCase):
         request_variables = { 'key' : provider.key.urlsafe() }
         response = self.testapp.get('/provider/schedule', request_variables)        
         
-        provider = db.getProviderFromEmail("unit_test@provider.com")
+        provider = db.get_provider_from_email("unit_test@provider.com")
         
         # check one schedule was saved in the database
         schedule_count = provider.get_schedule().count()
@@ -401,7 +401,7 @@ class BaseTest(unittest.TestCase):
         
         self.test_fill_new_provider_address_correctly()
         # get the provider key
-        provider = db.getProviderFromEmail("unit_test@provider.com")
+        provider = db.get_provider_from_email("unit_test@provider.com")
         
         # request the address page
         request_variables = { 'key' : provider.key.urlsafe() }
@@ -421,7 +421,7 @@ class BaseTest(unittest.TestCase):
         '''
             Click on activation link, 
         '''
-        provider = db.getProviderFromEmail(self._TEST_PROVIDER_EMAIL)
+        provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
         # terms page
         activation_url = 'http://localhost/provider/activation/%s' % provider.activation_key
         terms_response = self.testapp.get(activation_url)

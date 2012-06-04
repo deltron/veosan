@@ -2,14 +2,13 @@
 
 {% block subnav %}
 
-{# TODO: Still doesn't work #}
 {% if 'provider' in roles %}
 <ul class="nav nav-tabs">
 	<li id="terms" {% if "terms" == active_page %} class="active" {% endif %}>
 		<a href="/terms">{{ _('Terms') }}</a>
 	</li>
 	<li id="provider_terms" {% if "provider_terms" == active_page %} class="active" {% endif %}>
-		<a href="#">{{ _('Provider Terms') }}</a>
+		<a href="/provider/terms">{{ _('Provider Terms') }}</a>
 	</li>
 </ul>
 {% endif %}

@@ -2,17 +2,17 @@
 
 {% set active_page = "provider_terms" %}
 
-{% block subhead %}Conditions{% endblock %}
+{% block subhead %}{{ _('Terms for Service Providers')}}{% endblock %}
 {% block lead %}{% endblock %}
 
 {% block content %}
 <div class="row">
-	<div class="well span9">
+	<div class="well span12">
 		<h3>{{p.first_name}} {{p.last_name}}</h3>
-		{{p.address}}
-		<br>
-		{{p.email}}
-		<br>
+		{{p.address}}<br>
+		{{p.city}}<br>
+		{{p.postal_code}}<br>
+		{{p.email}}<br>
 		{{p.phone}}
 		<br>
 		<br>
@@ -39,11 +39,20 @@
 				Provider must maintain a valid license to practise their profession and be in good standing with all relevant professional organizations, insurance companies, etc.
 			</li>
 		</ol>
-		Date of agreement.
 	</div>
 </div>
+
+{% if p.terms_agreement %}
 <div class="row">
-	<div class="span9">
+
+<div class="alert alert-success span12">
+Terms agreed on {{ p.terms_date }}
+</div>
+</div>
+
+{% else %}
+{# show form if terms were not yet agreed #}
+<div class="row">
 		<form method="post" action="/provider/terms" class="form-horizontal">
 			<fieldset>
 				{{ makeStandardForm() }}
@@ -55,6 +64,6 @@
 				</button>
 			</div>
 		</form>
-	</div>
 </div>
+{% endif %}
 {% endblock content %} 
