@@ -2,6 +2,7 @@
 
 from base import BaseTest
 
+
 class AuthenticationTest(BaseTest):
      
     def test_provider_login_success(self):
@@ -50,11 +51,39 @@ class AuthenticationTest(BaseTest):
         '''
             Test that patients can login
         '''
-        # Create patient and logout
-        
+        # Create patient in datastore
+        self.create_test_patient()
         # login as patient
-        
-        pass
+        response = self.testapp.get('/login')
+        response.mustcontain("Connexion à Cliksanté")
+        login_form = response.forms[0]
+        login_form['email'] = self._TEST_PATIENT_EMAIL
+        login_form['password'] = self._TEST_PATIENT_PASSWORD
+        login_redirect_response = login_form.submit()
+        # response after login is a redirect, so follow
+        login_welcome_page = login_redirect_response.follow()
+        # email in the header
+        login_welcome_page.mustcontain(self._TEST_PATIENT_EMAIL)
+        # login lands on index page
+        login_welcome_page.mustcontain('Trouvez des soins')
 
     def test_patient_login_fail(self):
-        pass
+        # Create patient in datastore
+        self.create_test_patient()
+        # Try to login and book another appintment as Pat the patient
+        self.login_as_patient()
+        # login as patient
+        response = self.testapp.get('/login')
+        response.mustcontain("Connexion à Cliksanté")
+        login_form = response.forms[0]
+        login_form['email'] = self._TEST_PATIENT_EMAIL
+        login_form['password'] = 'This is the wrong password for the patient'
+        login_failed_response = login_form.submit()
+        # response after login is a redirect, so follow
+        # return to login page
+        login_failed_response.mustcontain("Connexion à Cliksanté")
+        #slogin_failed_response.showbrowser()
+        # message about failed login
+        login_failed_response.mustcontain("rifier votre email et mot de passe.")
+        
+        

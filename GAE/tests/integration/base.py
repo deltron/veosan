@@ -6,7 +6,10 @@ import unittest, webtest
 # clik
 import main
 import data.db as db
-
+from data.model import Patient
+from datetime import datetime
+from data.model import User
+        
 class BaseTest(unittest.TestCase):
     ''' *** NOTE ***
     
@@ -48,7 +51,7 @@ class BaseTest(unittest.TestCase):
     ##
     
     def login_as_admin(self):
-        self.set_current_google_user('admin@clikcare.com', 'admin@clikcare.com', is_admin=1)
+        self.set_current_google_user('admin@clikcare.com', 'admin@clikcare.com', is_admin=True)
     
     def logout_admin(self):
         del os.environ['USER_EMAIL']
@@ -169,7 +172,6 @@ class BaseTest(unittest.TestCase):
         # request the address page
         request_variables = { 'key' : provider.key.urlsafe() }
         response = self.testapp.get('/provider/address', request_variables)
-        #response.showbrowser()
         address_form = response.forms[0] # address form
         # fill out the form
         address_form['title'] = u"Mr."
@@ -456,4 +458,20 @@ class BaseTest(unittest.TestCase):
         # leave region to default (should be downtown)
         result_response = booking_form.submit()
         return result_response
+        
+    def create_test_patient(self):
+        '''
+            Create a test patient (and linked user) in the datastore
+        '''
+        user_created, new_user = User.create_user(self._TEST_PATIENT_EMAIL, password_raw=self._TEST_PATIENT_PASSWORD, roles=['patient'])
+        self.assertTrue(user_created)
+        tp = Patient()
+        tp.created_on = datetime.now()
+        tp.user = new_user.key
+        tp.first_name = 'Pat'
+        tp.last_name = 'Patient'
+        tp.email = "pat@patient.com"
+        tp.telephone = '514-123-1234'
+        tp.terms_agreement = True
+        tp.put() 
         
