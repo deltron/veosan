@@ -114,15 +114,16 @@ class BaseTest(unittest.TestCase):
         '''
         self.login_as_admin()
         # init a provider
-        self.init_new_provider()       # fill all sections
+        self.init_new_provider()       
+        # fill all sections
         self.fill_new_provider_address_correctly_action()
-        self._test_fill_new_provider_profile_correctly_action()
+        self.fill_new_provider_profile_correctly_action()
         self.provider_schedule_set_one_timeslot_action()
         # solicit
         self.solicit_provider()
         self.logout_admin()
         # terms agreement
-        self._test_provider_activation_form_email()
+        self.activate_provider_form_email()
 
      
     def init_new_provider(self):
@@ -260,7 +261,7 @@ class BaseTest(unittest.TestCase):
 
 
         
-    def _test_fill_new_provider_profile_correctly_action(self):
+    def fill_new_provider_profile_correctly_action(self):
 
         # get the provider key
         provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
@@ -419,7 +420,7 @@ class BaseTest(unittest.TestCase):
         # not possible to test blobstore yet...
         
    
-    def _test_provider_activation_form_email(self):
+    def activate_provider_form_email(self):
         '''
             Click on activation link, 
         '''

@@ -274,7 +274,5 @@ class ProviderActivationHandler(ProviderBaseHandler):
             self.render_terms(provider, terms_form=terms_form)
         else:
             logging.info('No activation key')
-        
-        
-        
-        
+            
+            

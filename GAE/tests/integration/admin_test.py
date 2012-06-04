@@ -4,6 +4,11 @@ from base import BaseTest
 from data import db
 
 class AdminTest(BaseTest):
+    
+    def test_complete_profile_creation(self):
+        ''' basic test to complete entire provider profile, the base case '''
+        self.create_complete_provider_profile()
+
    
     def test_fill_new_provider_address_correctly(self):
         ''' fill out the new provider's address '''
@@ -19,7 +24,7 @@ class AdminTest(BaseTest):
         # init a provider
         self.login_as_admin()
         self.init_new_provider()
-        self._test_fill_new_provider_profile_correctly_action()
+        self.fill_new_provider_profile_correctly_action()
 
     def test_fill_new_provider_address_then_modify(self):
         ''' fill out the new provider's address then modify it '''
@@ -40,9 +45,18 @@ class AdminTest(BaseTest):
         self.provider_schedule_set_one_timeslot_action()
         
         
-    def test_complete_profile_creation(self):
-        self.login_as_admin()
+    def test_admin_provider_init_with_duplicate_email(self):
         self.create_complete_provider_profile()
+
+        # log back in as admin        
+        self.login_as_admin()
+        
+        # try to create another profile with the same email address
+        request_variables = { 'provider_email' : self._TEST_PROVIDER_EMAIL }
+        response = self.testapp.post('/admin/provider/init', request_variables)
+        
+        # check for error message
+        response.mustcontain("Provider already exists for email address")
         
         
     def test_admin_provider_init_with_empty_email(self):
@@ -88,6 +102,7 @@ class AdminTest(BaseTest):
         if "Initialized new provider for " in response:
             self.assertTrue(False, "A provider was created without an email address")
             
+
     def test_new_provider_solicit_with_empty_profile(self):
         # set things up
         self.login_as_admin()
