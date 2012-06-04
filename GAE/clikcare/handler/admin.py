@@ -64,7 +64,7 @@ class NewProviderSolicitHandler(BaseHandler):
         provider = db.get_from_urlsafe_key(self.request.get('provider_key'))
         # create and store activation key and url
         salt = sha.new(str(random.random())).hexdigest()[:5]
-        activation_key = sha.new(salt + provider.first_name + provider.last_name).hexdigest()
+        activation_key = sha.new(salt + provider.email + provider.first_name + provider.last_name).hexdigest()
         provider.activation_key = activation_key
         provider.put()
         # activation url
