@@ -71,10 +71,10 @@ Twitter Bootstrap horizontal form layout.
 				padding: 0px 5px 0px 0px
 			}
 			.foot a {
-				color: #aaaaaa;
+				color: #777777;
 			}
 			.foot a:hover {
-				color: #666666;
+				color: #555555;
 			}
 			.foot hr {
 				margin: 18px 0px 0px 0px;
@@ -186,19 +186,13 @@ Twitter Bootstrap horizontal form layout.
 		<!-- Le javascript
 		================================================== -->
 		<!-- Placed at the end of the document so the pages load faster -->
-		<script src="/assets/js/jquery.js"></script>
-		<script src="/assets/js/bootstrap-button.js"></script>
-		<script src="/assets/js/bootstrap-dropdown.js"></script>
-		<script src="/assets/js/bootstrap-tooltip.js"></script>
-		<script src="/assets/js/bootstrap-popover.js"></script>
-		<script>
-			$(function() {
-				$('a[rel=tooltip]').tooltip();
-				$('a[rel=popover]').popover();
-				$('.uploadProfileModal').modal();
-			});
-		</script>
 		
+		{# Dropdown in navbar menu requires jquery to be everywhere #}
+		<script src="/assets/js/jquery.js"></script>
+		<script src="/assets/js/bootstrap-dropdown.js"></script>
+
 		{% block extra_javascript %}{% endblock %}
+
+		
 	</body>
 </html>

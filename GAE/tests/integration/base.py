@@ -117,22 +117,22 @@ class BaseTest(unittest.TestCase):
         '''
         self.login_as_admin()
         # init a provider
-        self._test_admin_provider_init()
+        self.init_new_provider()       
         # fill all sections
-        self._test_fill_new_provider_address_correctly_action()
-        self._test_fill_new_provider_profile_correctly_action()
-        self._test_provider_schedule_set_one_timeslot_action()
+        self.fill_new_provider_address_correctly_action()
+        self.fill_new_provider_profile_correctly_action()
+        self.provider_schedule_set_one_timeslot_action()
         # solicit
-        self._test_new_provider_solicit()
+        self.solicit_provider()
         self.logout_admin()
         # terms agreement
-        self._test_provider_activation_form_email()
+        self.activate_provider_form_email()
 
      
-    def _test_admin_provider_init(self):
+    def init_new_provider(self):
         ''' initialize a new provider '''
         
-        request_variables = { 'provider_email' : 'unit_test@provider.com' }
+        request_variables = { 'provider_email' : self._TEST_PROVIDER_EMAIL }
         response = self.testapp.post('/admin/provider/init', request_variables)
 
         self.assertEqual(response.status_int, 200)        
@@ -144,18 +144,19 @@ class BaseTest(unittest.TestCase):
         response.mustcontain('<span class="label label-important">missing terms</span>')
 
 
-    def _test_new_provider_solicit(self):
+    def solicit_provider(self):
         ''' Send email to provider and activate'''
         # get the provider key
         provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
         request_variables = { 'key' : provider.key.urlsafe() }
         response = self.testapp.get('/provider/administration', request_variables)
-        #response.showbrowser()
+
         response.mustcontain('Provider Administration')
         response.mustcontain(self._TEST_PROVIDER_EMAIL)
         solicit_form = response.forms[0]
         # sends an email to the provider
         solicit_form.submit()
+        
         # read the email and check content
         messages = self.mail_stub.get_sent_messages(to=self._TEST_PROVIDER_EMAIL)
         self.assertEqual(1, len(messages))
@@ -164,15 +165,18 @@ class BaseTest(unittest.TestCase):
         # assert that activation link is in the email body
         self.assertTrue('http://localhost/provider/activation/%s' % provider.activation_key in m.body.payload)
  
+
         
-    def _test_fill_new_provider_address_correctly_action(self):
+    def fill_new_provider_address_correctly_action(self):
         # get the provider key
-        provider = db.get_provider_from_email("unit_test@provider.com")
+        provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
         
         # request the address page
         request_variables = { 'key' : provider.key.urlsafe() }
         response = self.testapp.get('/provider/address', request_variables)
+        
         address_form = response.forms[0] # address form
+        
         # fill out the form
         address_form['title'] = u"Mr."
         address_form['first_name'] = u"Fantastic"
@@ -190,7 +194,7 @@ class BaseTest(unittest.TestCase):
         response.mustcontain("Vos modifications ont été enregistrées.")
 
         # check values in database
-        provider = db.get_provider_from_email("unit_test@provider.com")
+        provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
         
         # iterate over every field item, find the match in the provider object and check its equality
         # possible we miss something here?
@@ -203,9 +207,9 @@ class BaseTest(unittest.TestCase):
         response.mustcontain("Fox, Fantastic [unit_test@provider.com]")
 
 
-    def _test_modify_provider_address_action(self):
+    def modify_provider_address_action(self):
         # get the provider key
-        provider = db.get_provider_from_email("unit_test@provider.com")
+        provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
         
         # request the address page
         request_variables = { 'key' : provider.key.urlsafe() }
@@ -260,10 +264,10 @@ class BaseTest(unittest.TestCase):
 
 
         
-    def _test_fill_new_provider_profile_correctly_action(self):
+    def fill_new_provider_profile_correctly_action(self):
 
         # get the provider key
-        provider = db.get_provider_from_email("unit_test@provider.com")
+        provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
         
         # request the address page
         request_variables = { 'key' : provider.key.urlsafe() }
@@ -341,10 +345,10 @@ class BaseTest(unittest.TestCase):
         self.assertTrue(provider.onsite)
 
         
-    def _test_provider_schedule_set_one_timeslot_action(self):
+    def provider_schedule_set_one_timeslot_action(self):
 
         # get the provider key
-        provider = db.get_provider_from_email("unit_test@provider.com")
+        provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
         
         # request the schedule page
         request_variables = { 'key' : provider.key.urlsafe() }
@@ -403,7 +407,7 @@ class BaseTest(unittest.TestCase):
         
         self.test_fill_new_provider_address_correctly()
         # get the provider key
-        provider = db.get_provider_from_email("unit_test@provider.com")
+        provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
         
         # request the address page
         request_variables = { 'key' : provider.key.urlsafe() }
@@ -419,7 +423,7 @@ class BaseTest(unittest.TestCase):
         # not possible to test blobstore yet...
         
    
-    def _test_provider_activation_form_email(self):
+    def activate_provider_form_email(self):
         '''
             Click on activation link, 
         '''

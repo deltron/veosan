@@ -45,10 +45,18 @@ class NewProviderInitHandler(AdminBaseHandler):
         if form.validate():
             # Init Provider
             provider_email = self.request.get('provider_email')
-            provider_key = db.initProvider(provider_email)
-            logging.info('initialized new provider with key : %s' % provider_key)
-            success_message = 'Initialized new provider for %s' % (provider_email)
-            self.render_providers(success_message=success_message, form=form)        
+            
+            # check if a provider exists with this address already
+            existing_provider = db.get_provider_from_email(provider_email)
+            if existing_provider:
+                error_message = 'Provider already exists for email address: %s' % (provider_email)
+                self.render_providers(error_message=error_message, form=form)        
+
+            else:
+                provider_key = db.initProvider(provider_email)
+                logging.info('initialized new provider with key : %s' % provider_key)
+                success_message = 'Initialized new provider for %s' % (provider_email)
+                self.render_providers(success_message=success_message, form=form)        
         else:
             # show error
             logging.info('Trying to create a provider with invalid email address: %s' % form.provider_email)
@@ -64,16 +72,25 @@ class NewProviderSolicitHandler(BaseHandler):
         provider = db.get_from_urlsafe_key(self.request.get('provider_key'))
         # create and store activation key and url
         salt = sha.new(str(random.random())).hexdigest()[:5]
-        activation_key = sha.new(salt + provider.email + provider.first_name + provider.last_name).hexdigest()
-        provider.activation_key = activation_key
-        provider.put()
-        # activation url
-        url_obj = urlparse.urlparse(self.request.url)
-        activation_url = urlparse.urlunparse((url_obj.scheme, url_obj.netloc, '/provider/activation/' + provider.activation_key, '', '', ''))
-        logging.info('activation url:' + activation_url)
-        # send email
-        mail.emailSolicitProvider(self.jinja2, provider, activation_url)
-        # render the provider admin page
-        success_message='Solicit email sent to %s' % provider.email
-        self.render_template('provider/administration.html', p=provider, success_message=success_message)
+        
+        # Check provider has at least a first name, last name and email before activation
+        if provider.email and provider.first_name and provider.last_name:
+            activation_key = sha.new(salt + provider.email + provider.first_name + provider.last_name).hexdigest()
+            provider.activation_key = activation_key
+            provider.put()
             
+            # activation url
+            url_obj = urlparse.urlparse(self.request.url)
+            activation_url = urlparse.urlunparse((url_obj.scheme, url_obj.netloc, '/provider/activation/' + provider.activation_key, '', '', ''))
+            logging.info('activation url:' + activation_url)
+            
+            # send email
+            mail.emailSolicitProvider(self.jinja2, provider, activation_url)
+            
+            # render the provider admin page
+            success_message='Solicit email sent to %s' % provider.email
+            self.render_template('provider/administration.html', p=provider, success_message=success_message)
+        else:
+            error_message='Incomplete profile for %s, email not sent' % provider.email
+            self.render_template('provider/administration.html', p=provider, error_message=error_message)
+

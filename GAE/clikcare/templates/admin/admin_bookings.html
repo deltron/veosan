@@ -1,4 +1,4 @@
-{% extends "/layout/admin.html" %}
+{% extends "/layout/admin_nav.html" %}
 
 {% set active_page = "bookings" %}
 
@@ -63,3 +63,14 @@
 	</div>
 </div>
 {% endblock content %} 
+
+{% block extra_javascript %}
+	<script src="/assets/js/bootstrap-tooltip.js"></script>
+	<script src="/assets/js/bootstrap-popover.js"></script>
+	<script>
+		$(function() {
+			$('a[rel=tooltip]').tooltip();
+			$('a[rel=popover]').popover();
+		});
+	</script>
+{% endblock extra_javascript %}
