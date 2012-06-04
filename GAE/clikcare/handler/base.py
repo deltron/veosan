@@ -107,7 +107,7 @@ class BaseHandler(webapp2.RequestHandler):
             user, token_timestamp = self.auth.store.user_model.get_by_auth_token(user_session['user_id'], user_session['token'])
         return user
     
-    def create_user(self, email, password, roles):
+    def create_user(self, email, password, roles=[]):
         # Passing password_raw=password will hash the password
         
         user_created, new_user = self.auth.store.user_model.create_user(email, password_raw=password, roles=roles)
