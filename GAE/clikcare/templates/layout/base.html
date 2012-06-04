@@ -138,11 +138,9 @@ Twitter Bootstrap horizontal form layout.
 				</p>
 			</header>
 			<hr>
-			<!-- messages -->
 			
 			{% if error_message %}
 			<!-- Error Message -->
-
 			<div class="alert alert-error">
 				{{error_message}}
 			</div>
@@ -150,14 +148,14 @@ Twitter Bootstrap horizontal form layout.
 			
 			{% if success_message %}
 			<!-- Success Message -->
-
 			<div class="alert alert-success">
 				{{success_message}}
 			</div>
 			{% endif %}
 			
+			{% block content %}
 			<!-- content goes here -->
-			{% block content %}{% endblock %}
+			{% endblock %}
 
 			<div class="foot">
 				<hr>

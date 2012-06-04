@@ -25,6 +25,9 @@ class TermsTest(BaseTest):
 
             # check tabs/menu is present
             response.mustcontain("Provider Terms")
+            
+            # click on the provider terms link
+            
 
 if __name__ == "__main__":
     unittest.main()
