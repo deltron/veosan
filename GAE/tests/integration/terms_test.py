@@ -9,8 +9,9 @@ class TermsTest(BaseTest):
 
             response = self.testapp.get('/terms')
             response.mustcontain("Conditions d'utilisation")
-
-            ''' TODO check some stuff, make sure menu isn't there '''
+            
+            if "Conditions pour fournisseurs" in response:
+                self.assertTrue("False", "Menu should not appear")
         
             
         def test_terms_provider_logged_in(self):
