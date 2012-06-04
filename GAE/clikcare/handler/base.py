@@ -37,19 +37,26 @@ class BaseHandler(webapp2.RequestHandler):
         logging.info('User: ' + str(user))
         # Eventually display the full name of the user (when linked to patient or provider profile)
         username = ''
+        roles = []
+
         if user:
             username = user.auth_ids[0]
-        # roles
-        roles = []
+            
+            # extend roles
+            roles.extend(user.roles)
+            
         google_user = users.get_current_user()
         if google_user:
             logging.info('google user also logged in:' + str(google_user))
             #username = '%s [%s]' % (username, google_user.nickname())
-            # check google account for admin
+            
+            # check google account for admin, add to roles
             if users.is_current_user_admin():
                 roles.append('admin')
         else:
             logging.info('no google user logged in')
+            # copy roles into roles list
+            
         # template variables
         template_args['user'] = user
         template_args['google_user'] = google_user

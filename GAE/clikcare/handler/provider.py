@@ -204,7 +204,13 @@ class ProviderPasswordHandler(ProviderBaseHandler):
                 # Link user to provider
                 provider.user = user.key
                 provider.put()
+                
+                # add provider role to user
+                user.roles.append('provider')
+                
+                # send welcome email
                 mail.emailProviderWelcomeMessage(self.jinja2, provider)
+                
                 # Provider is Activated
                 # login automatically
                 self.login_user(email, password)
