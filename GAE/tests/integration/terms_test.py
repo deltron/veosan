@@ -17,7 +17,10 @@ class TermsTest(BaseTest):
         def test_terms_provider_logged_in(self):
             ''' Check the terms page for a provider that has accepted them '''
 
+            self.login_as_admin()
             self.create_complete_provider_profile()
+            self.logout_admin()
+            
             self.login_as_provider()
 
             response = self.testapp.get('/terms')

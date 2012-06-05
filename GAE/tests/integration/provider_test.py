@@ -16,10 +16,10 @@ class ProviderTest(BaseTest):
         provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
         # request the address page
         request_variables = { 'key' : provider.key.urlsafe() }
-        response = self.testapp.get('/provider/address', request_variables)
+        response = self.testapp.get('/provider/bookings', request_variables)
         # patient name in navbar
         response.mustcontain(self._TEST_PROVIDER_EMAIL)
-        response.mustcontain('Adresse')
+        response.mustcontain('Rendez-vous')
         response.mustcontain('Fantastic')
         response.mustcontain('Fox')
         assert 'Administration' not in response 
@@ -107,9 +107,7 @@ class ProviderTest(BaseTest):
         # request the address page
         request_variables = { 'key' : provider.key.urlsafe() }
         response = self.testapp.get('/provider/address', request_variables)
-        
-        response.showbrowser()
-        
+                
         photo_form = response.forms[1] # photo form
         
         photo_form['profilePhoto'] = ('profilePhoto', 'provider-test-image.png')
