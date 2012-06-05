@@ -127,7 +127,7 @@ class BaseTest(unittest.TestCase):
         self.solicit_provider()
         self.logout_admin()
         # terms agreement
-        self.activate_provider_form_email()
+        self.activate_provider_from_email()
 
      
     def init_new_provider(self):
@@ -424,7 +424,7 @@ class BaseTest(unittest.TestCase):
         # not possible to test blobstore yet...
         
    
-    def activate_provider_form_email(self):
+    def activate_provider_from_email(self):
         '''
             Click on activation link, 
         '''
@@ -440,10 +440,11 @@ class BaseTest(unittest.TestCase):
         password_choice_response.mustcontain('Choisissez votre mot de passe')
         password_form = password_choice_response.forms[0]
         password_form['password'] = self._TEST_PROVIDER_PASSWORD
+        password_form['password_confirm'] = self._TEST_PROVIDER_PASSWORD
+
         welcome_response = password_form.submit()
         self.assertEqual(welcome_response.status_int, 200)
         welcome_response.mustcontain(u'Bienvenue chez Cliksanté!')
-        #welcome_response.showbrowser()
 
 
     ###

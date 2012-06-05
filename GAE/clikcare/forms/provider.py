@@ -41,7 +41,9 @@ class ProviderTermsForm(Form):
 
 class ProviderPasswordForm(Form):
     #email = TextField(_(u'Email').decode("UTF-8"), [validators.Email(message=_(u'Invalid email address.').decode("UTF-8"))])
-    password = PasswordField(_(u'Password').decode("UTF-8"), [validators.Length(min=6, message='Password needs at least 6 characters')])
+    password = PasswordField(_(u'Password').decode("UTF-8"), [validators.Length(min=6, message=_(u'Password needs at least 6 characters')), validators.EqualTo('password_confirm', _(u"Passwords do not match"))])
+    password_confirm = PasswordField(_(u'Password Confirmation').decode("UTF-8"))
+
     #remember_me = CustomBooleanField(_(u'Remember Me').decode("UTF-8"))
     
 class ProviderLoginForm(Form):
