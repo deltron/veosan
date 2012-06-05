@@ -4,10 +4,9 @@ import os, logging
 # GAE
 import webapp2
 from webapp2 import Route
-from webapp2_extras.routes import RedirectRoute
 # clik
 import util
-from handler import booking, provider, auth, admin, static, contact, blob
+from handler import booking, provider, provider_admin, auth, admin, static, contact, blob
 from data.model import User
 
 jinja_filters = {}
@@ -68,16 +67,19 @@ application = webapp2.WSGIApplication([
                                        ('/patient/booknew', booking.PatientBookForNewHandler),
                                        ('/patient/book', booking.PatientBookHandler),
                                        
-                                       # provider
-                                       ('/provider/profile', provider.ProviderEditProfileHandler),
-                                       ('/provider/address', provider.ProviderEditAddressHandler),
-                                       ('/provider/address/upload', provider.ProviderAddressUploadHandler),
+                                       # provider admin
+                                       ('/provider/profile', provider_admin.ProviderEditProfileHandler),
+                                       ('/provider/address', provider_admin.ProviderEditAddressHandler),
+                                       ('/provider/address/upload', provider_admin.ProviderAddressUploadHandler),
+                                       ('/provider/administration', provider_admin.ProviderAdministrationHandler),
+
+                                       #provider
                                        ('/provider/schedule', provider.ProviderScheduleHandler),
                                        ('/provider/terms', provider.ProviderTermsHandler),
                                        ('/provider/bookings', provider.ProviderBookingsHandler),
                                        ('/provider/password', provider.ProviderPasswordHandler),
-                                       ('/provider/administration', provider.ProviderAdministrationHandler),
                                        Route('/provider/activation/<activation_key>', handler=provider.ProviderActivationHandler),
+                                       
                                        # admin
                                        ('/admin/provider/init', admin.NewProviderInitHandler),
                                        ('/admin/provider/solicit', admin.NewProviderSolicitHandler),

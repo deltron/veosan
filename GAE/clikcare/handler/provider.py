@@ -8,26 +8,12 @@ from google.appengine.ext.webapp import blobstore_handlers
 #clik
 from base import BaseHandler
 import data.db as db
-from forms.provider import ProviderProfileForm, ProviderAddressForm, ProviderPhotoForm, ProviderTermsForm, ProviderPasswordForm
+from forms.provider import ProviderTermsForm, ProviderPasswordForm
 from data.model import Provider, Schedule
 import util, mail
-from handler.auth import provider_required, admin_required
+from handler.auth import provider_required
 
-def parseRefererSection(request):
-    referer = request.environ['HTTP_REFERER']
-    logging.info("referer:" + referer)
-    section = referer.split('/')[-1]
-    return section
-
-class ProviderBaseHandler(BaseHandler):
-    def render_profile(self, provider, profile_form, **extra):
-        self.render_template('provider/profile.html', p=provider, form=profile_form, **extra)
-    
-    def render_address(self, provider, address_form, **extra):
-        upload_url = blobstore.create_upload_url('/provider/address/upload')
-        uploadForm = ProviderPhotoForm(self.request.GET)
-        self.render_template('provider/address.html', p=provider, form=address_form, uploadForm=uploadForm, upload_url=upload_url, **extra)
-        
+class ProviderBaseHandler(BaseHandler):       
     def render_schedule(self, provider, availableIds, **extra):
         timeslots = util.getScheduleTimeslots()
         days = util.getWeekdays()
@@ -46,69 +32,6 @@ class ProviderBaseHandler(BaseHandler):
             password_form = ProviderPasswordForm()
         self.render_template('provider/password.html', p=provider, form=password_form, **extra)
         
-    def render_administration(self, provider, **extra):
-        self.render_template('provider/administration.html', p=provider, **extra)
-           
-
-class ProviderEditProfileHandler(ProviderBaseHandler):
-    
-    @admin_required
-    def get(self):
-        provider = db.get_from_urlsafe_key(self.request.get('key'))
-        logging.info("provider dump before edit:" + str(vars(provider)))
-        form = ProviderProfileForm(obj=provider)
-        self.render_profile(provider, profile_form=form)
-    
-    @admin_required
-    def post(self):
-        form = ProviderProfileForm(self.request.POST)
-        if form.validate():
-            # Store Provider
-            key = db.storeProvider(self.request.POST)
-            provider = key.get()
-            self.render_profile(provider, profile_form=form, success_message=util.saved_message)
-        else:
-            # show error
-            provider = db.getProvider(self.request)
-            self.render_profile(provider, profile_form=form)
-          
-
-class ProviderEditAddressHandler(ProviderBaseHandler):
-    
-    @admin_required
-    def get(self):
-        provider = db.get_from_urlsafe_key(self.request.get('key'))
-        logging.info("provider dump before edit:" + str(vars(provider)))
-        form = ProviderAddressForm(obj=provider)
-        self.render_address(provider, address_form=form)
-
-    @admin_required
-    def post(self):
-        form = ProviderAddressForm(self.request.POST)
-        if form.validate():
-            # Store Provider
-            key = db.storeProvider(self.request.POST)
-            provider = key.get()
-            self.render_address(provider, address_form=form, success_message=util.saved_message)
-        else:
-            # show validation error
-            provider = db.getProvider(self.request)
-            self.render_address(provider, address_form=form)
-
-
-class ProviderAddressUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
-    
-    @admin_required
-    def post(self):
-        provider = db.get_from_urlsafe_key(self.request.get('key'))
-        logging.info("Found provider: %s %s" % (provider.first_name, provider.last_name))
-        uploadForm = ProviderPhotoForm(self.request.POST)
-        upload_files = self.get_uploads(uploadForm.profilePhoto.name)[0]
-        logging.info("Uploaded blob key: %s " % upload_files.key())
-        provider.profile_photo_blob_key = upload_files.key()
-        Provider.put(provider)
-        # redirect to address edit page        
-        self.redirect(provider.get_edit_link('address')) 
 
 class ProviderScheduleHandler(ProviderBaseHandler):
     
@@ -242,16 +165,6 @@ class ProviderBookingsHandler(ProviderBaseHandler):
         self.render_bookings(provider)
 
 
-class ProviderAdministrationHandler(ProviderBaseHandler):
-    
-    @admin_required
-    def get(self):
-        provider = db.get_from_urlsafe_key(self.request.get('key'))   
-        if users.is_current_user_admin():
-            self.render_administration(provider)
-        else:
-            logging.info("Not Admin: Can't see provider administration page")
-        
         
 class ProviderActivationHandler(ProviderBaseHandler):
     def get(self, activation_key=None):

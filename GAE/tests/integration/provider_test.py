@@ -94,7 +94,13 @@ class ProviderTest(BaseTest):
     def test_upload_image_to_correct_address(self):
         ''' Upload a test image for the new provider '''
         
-        self.test_fill_new_provider_address_correctly()
+        self.login_as_admin()
+        # init a provider
+        self.init_new_provider()
+        # fill all sections
+        self.fill_new_provider_address_correctly_action()
+        self.fill_new_provider_profile_correctly_action()
+
         # get the provider key
         provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
         
@@ -102,15 +108,14 @@ class ProviderTest(BaseTest):
         request_variables = { 'key' : provider.key.urlsafe() }
         response = self.testapp.get('/provider/address', request_variables)
         
+        response.showbrowser()
+        
         photo_form = response.forms[1] # photo form
         
         photo_form['profilePhoto'] = ('profilePhoto', 'provider-test-image.png')
-        
-        self.fail()
-        # photo_form.submit()
-        
-        # hmm can't upload
-        # not possible to test blobstore yet...
+
+     #   response = photo_form.submit()
+     #   response.showbrowser()
         
 
 if __name__ == "__main__":
