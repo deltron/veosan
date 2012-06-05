@@ -147,20 +147,12 @@ class BookingTest(BaseTest):
                 break
         
         # leave time to default (should be 8-9h)
-
         # leave region to default (should be downtown)
-        
         response = booking_form.submit()
-        
+        response.mustcontain("Malheureusement, il n'y a pas de professionnels disponibles")
         # verify error messages
-        self.assertTrue(False, "How should we handle double bookings?")
-        
+        self.fail("How should we handle double bookings?")
         #response.showbrowser()
-
-        #response.mustcontain("Fully Booked!")
-        #response.mustcontain("We currently do not have a health-care professional available that matches your needs and schedule.")
-        #response.mustcontain("Please fill in your email below and we will contact you as soon as we have availability.")
-       
         
     def test_booking_new_patient(self):
         ''' Create a booking in the available timeslot '''
@@ -240,12 +232,12 @@ class BookingTest(BaseTest):
         next_monday_string = datetime.strftime(next_monday, "%Y-%m-%d")
         # We already have an appointment at 8AM, let's now book 10AM
         result_response = self.book_appointment('osteopath', next_monday_string, '10')
-        result_response.showbrowser()
+        #result_response.showbrowser()
         # email form
         book_form = result_response.forms[0]
         # no email on form (can we assert this?)
         booking_confirm_page = book_form.submit()
-        booking_confirm_page.showbrowser()
+        #booking_confirm_page.showbrowser()
         # patient email in navbar
         booking_confirm_page.mustcontain(self._TEST_PATIENT_EMAIL)
         # Title check
