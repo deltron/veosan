@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 
 from google.appengine.ext import testbed
-import os
+import os, logging
 import unittest, webtest
+from StringIO import StringIO
+
 # clik
 import main
 import data.db as db
@@ -40,10 +42,23 @@ class BaseTest(unittest.TestCase):
         # mail stubs
         self.testbed.init_mail_stub()
         self.mail_stub = self.testbed.get_stub(testbed.MAIL_SERVICE_NAME)
+        
+        # set up the logger
+        self.stream = StringIO()
+        self.handler = logging.StreamHandler(self.stream)
+        self.log = logging.getLogger()
+        self.log.setLevel(logging.INFO)
+
 
 
     def tearDown(self):
         self.testbed.deactivate()
+        
+        # close down the logger
+        self.handler.flush()
+        self.log.removeHandler(self.handler)
+        self.handler.close()
+
 
     
     ##
@@ -403,26 +418,6 @@ class BaseTest(unittest.TestCase):
         self.assertEqual(monday_morning_i['class'], 'icon-ok-circle', 'Monday morning should be ok icon')
 
 
-    def _test_upload_image_to_correct_address(self):
-        ''' Upload a test image for the new provider '''
-        
-        self.test_fill_new_provider_address_correctly()
-        # get the provider key
-        provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
-        
-        # request the address page
-        request_variables = { 'key' : provider.key.urlsafe() }
-        response = self.testapp.get('/provider/address', request_variables)
-        
-        photo_form = response.forms[1] # photo form
-        
-        photo_form['profilePhoto'] = ('profilePhoto', 'provider-test-image.png')
-        
-        # photo_form.submit()
-        
-        # hmm can't upload
-        # not possible to test blobstore yet...
-        
    
     def activate_provider_from_email(self):
         '''
