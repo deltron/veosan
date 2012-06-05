@@ -78,6 +78,9 @@ msgstr "Se souvenir de moi"
 msgid "Password"
 msgstr "Mot de passe"
 
+msgid "Password Confirmation"
+msgstr "Confirmer votre mot de passe"
+
 #################
 # Form navigation
 #################

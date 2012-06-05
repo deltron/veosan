@@ -206,27 +206,27 @@ class ProviderPasswordHandler(ProviderBaseHandler):
         password_form = ProviderPasswordForm(self.request.POST)
         if password_form.validate():
             # Create User in Auth system
-            
+        
             # get email from provider, we are not reading email from the form
             email = provider.email
-            
+        
             # get password from request
             password = self.request.get('password')
-            
+        
             # add provider role to user
             roles = ['provider']
-            
+        
             # create and store the user
             user = self.create_user(email, password, roles)
-            
+        
             if user:
                 # Link user to provider and save
                 provider.user = user.key
                 provider.put()
-                
+            
                 # send welcome email
                 mail.emailProviderWelcomeMessage(self.jinja2, provider)
-                
+            
                 # Provider is Activated
                 # login automatically
                 self.login_user(email, password)
