@@ -3,6 +3,7 @@ import logging
 from datetime import date
 # GAE
 from google.appengine.api import users
+from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
 #clik
 from base import BaseHandler
