@@ -215,7 +215,7 @@ class BookingTest(BaseTest):
         # email form
         email_form = result_response.forms[0]
         email_form['email'] = self._TEST_PATIENT_EMAIL
-        # We are an existing patient, this should take us to the login page
+        # We are an existing patient, but not logged in, this should take us to the login page
         login_page = email_form.submit()
         login_page.mustcontain('Connexion à Cliksanté')
         login_page.mustcontain('booking_key')
