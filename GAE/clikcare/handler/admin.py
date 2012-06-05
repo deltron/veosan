@@ -9,10 +9,12 @@ from data.model import Provider
 from forms.admin import NewProviderForm
 from base import BaseHandler
 import data.db as db, mail
+from handler.auth import admin_required
 
 
 class AdminBaseHandler(BaseHandler):
     ''' Base functions for administration pages''' 
+
     def render_providers(self, **tv):
         providers = db.fetchProviders()
         self.render_template('admin/admin_providers.html', providers=providers, **tv)
@@ -20,26 +22,34 @@ class AdminBaseHandler(BaseHandler):
 class AdminIndexHandler(AdminBaseHandler):
     '''Administration Index'''
 
+    @admin_required
     def get(self):
         self.redirect('/admin/bookings')
 
+
 class AdminBookingsHandler(AdminBaseHandler):
     '''Administer Bookings'''
+    
+    @admin_required
     def get(self):
             bookings = db.fetch_bookings()
             self.render_template('admin/admin_bookings.html', bookings=bookings)
 
+
 class AdminProvidersHandler(AdminBaseHandler):
     ''' Administer Providers '''
  
+    @admin_required
     def get(self):
         self.render_providers(form=NewProviderForm())
+
                   
 class NewProviderInitHandler(AdminBaseHandler):
     '''
         Create a unique ID for the new provider, initalize profile with defaults.
         This allows the admin to login with their ID to fill out and customize the profile
     '''
+
     def post(self):
         form = NewProviderForm(self.request.POST)
         if form.validate():
@@ -68,6 +78,7 @@ class NewProviderSolicitHandler(BaseHandler):
         Assumes profile has been completed to admin's satisfaction, now send out
         the sollicitation email to the provider to reset password and agree to terms.
     '''
+    
     def post(self):
         provider = db.get_from_urlsafe_key(self.request.get('provider_key'))
         # create and store activation key and url

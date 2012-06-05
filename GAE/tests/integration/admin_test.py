@@ -127,6 +127,27 @@ class AdminTest(BaseTest):
         self.assertEqual(0, len(messages))
 
 
+    def test_bookings_page_as_admin(self):
+        # TODO create a booking
+        #import booking_test
+        #bt = booking_test.BookingTest()
+        #bt.test_booking_new_patient()
+        #bt.logout_patient()
+        # login as admin and test
+        self.login_as_admin()
+        response = self.testapp.get('/admin')
+        bookings_page = response.follow()
+        bookings_page.mustcontain('Rendez-vous')
+        #bookings_page.showbrowser()
+        
+        
+    def test_no_bookings_page_as_anonymnous(self):
+        self.logout_admin()
+        response = self.testapp.get('/admin')
+        # check if redirect to admin login page
+        self.assertEqual(response.status_int, 302)  
+    
+
 if __name__ == "__main__":
     unittest.main()
     

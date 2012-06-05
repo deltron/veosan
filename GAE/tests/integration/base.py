@@ -56,7 +56,8 @@ class BaseTest(unittest.TestCase):
     def logout_admin(self):
         del os.environ['USER_EMAIL']
         del os.environ['USER_ID']
-        del os.environ['USER_IS_ADMIN']
+        if os.environ.has_key('USER_IS_ADMIN'):
+            del os.environ['USER_IS_ADMIN']
         
     def set_current_google_user(self, email, user_id, is_admin=False):    
         os.environ['USER_EMAIL'] = email or ''
@@ -117,7 +118,7 @@ class BaseTest(unittest.TestCase):
         '''
         self.login_as_admin()
         # init a provider
-        self.init_new_provider()       
+        self.init_new_provider()
         # fill all sections
         self.fill_new_provider_address_correctly_action()
         self.fill_new_provider_profile_correctly_action()
