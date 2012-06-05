@@ -34,7 +34,6 @@ class ProviderEditProfileHandler(ProviderAdminBaseHandler):
         form = ProviderProfileForm(obj=provider)
         self.render_profile(provider, profile_form=form)
     
-    @admin_required
     def post(self):
         form = ProviderProfileForm(self.request.POST)
         if form.validate():
@@ -57,7 +56,6 @@ class ProviderEditAddressHandler(ProviderAdminBaseHandler):
         form = ProviderAddressForm(obj=provider)
         self.render_address(provider, address_form=form)
 
-    @admin_required
     def post(self):
         form = ProviderAddressForm(self.request.POST)
         if form.validate():
@@ -73,7 +71,6 @@ class ProviderEditAddressHandler(ProviderAdminBaseHandler):
 
 class ProviderAddressUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
     
-    @admin_required
     def post(self):
         provider = db.get_from_urlsafe_key(self.request.get('key'))
         logging.info("Found provider: %s %s" % (provider.first_name, provider.last_name))
