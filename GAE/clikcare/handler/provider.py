@@ -105,7 +105,7 @@ class ProviderAddressUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
         uploadForm = ProviderPhotoForm(self.request.POST)
         upload_files = self.get_uploads(uploadForm.profilePhoto.name)[0]
         logging.info("Uploaded blob key: %s " % upload_files.key())
-        provider.profile_photo_blob = upload_files.key()
+        provider.profile_photo_blob_key = upload_files.key()
         Provider.put(provider)
         # redirect to address edit page        
         self.redirect(provider.get_edit_link('address')) 
