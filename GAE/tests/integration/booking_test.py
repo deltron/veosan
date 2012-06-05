@@ -88,9 +88,8 @@ class BookingTest(BaseTest):
         response = booking_form.submit()
         
         # verify error messages
-        response.mustcontain("Fully Booked!")
-        response.mustcontain("We currently do not have a health-care professional available that matches your needs and schedule.")
-        response.mustcontain("Please fill in your email below and we will contact you as soon as we have availability.")
+        response.mustcontain("Malheureusement, il n'y a pas de professionnels disponibles qui répondent à vos besoins")
+
 
     def test_booking_twice_in_same_timeslot(self):
         ''' Create a booking in the timeslot after another booking is made in the same timeslot '''
