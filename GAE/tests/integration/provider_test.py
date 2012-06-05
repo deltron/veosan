@@ -89,6 +89,30 @@ class ProviderTest(BaseTest):
         self.assertEqual(welcome_response.status_int, 200)
         welcome_response.mustcontain('Passwords do not match')
 
+
+
+    def test_upload_image_to_correct_address(self):
+        ''' Upload a test image for the new provider '''
+        
+        self.test_fill_new_provider_address_correctly()
+        # get the provider key
+        provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
+        
+        # request the address page
+        request_variables = { 'key' : provider.key.urlsafe() }
+        response = self.testapp.get('/provider/address', request_variables)
+        
+        photo_form = response.forms[1] # photo form
+        
+        photo_form['profilePhoto'] = ('profilePhoto', 'provider-test-image.png')
+        
+        self.fail()
+        # photo_form.submit()
+        
+        # hmm can't upload
+        # not possible to test blobstore yet...
+        
+
 if __name__ == "__main__":
     unittest.main()
     

@@ -7,7 +7,7 @@ from webapp2 import Route
 from webapp2_extras.routes import RedirectRoute
 # clik
 import util
-from handler import booking, provider, auth, admin, static, contact
+from handler import booking, provider, auth, admin, static, contact, blob
 from data.model import User
 
 jinja_filters = {}
@@ -78,7 +78,6 @@ application = webapp2.WSGIApplication([
                                        ('/provider/password', provider.ProviderPasswordHandler),
                                        ('/provider/administration', provider.ProviderAdministrationHandler),
                                        Route('/provider/activation/<activation_key>', handler=provider.ProviderActivationHandler),
-                                       ('/serve/([^/]+)?', provider.ServeHandler), # temporary - to test file uploads
                                        # admin
                                        ('/admin/provider/init', admin.NewProviderInitHandler),
                                        ('/admin/provider/solicit', admin.NewProviderSolicitHandler),
@@ -88,6 +87,8 @@ application = webapp2.WSGIApplication([
                                        # auth
                                        ('/login', auth.LoginHandler),
                                        ('/logout', auth.LogoutHandler),
+                                       # blob
+                                       ('/serve/([^/]+)?', blob.BlobServeHandler),
                                       ], debug=True,
                                       config=webapp2_config)
 

@@ -1,10 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
-import urllib
 from datetime import date
 # GAE
-from google.appengine.ext import blobstore
-from google.appengine.ext.webapp import blobstore_handlers
 from google.appengine.api import users
 #clik
 from base import BaseHandler
@@ -110,16 +107,6 @@ class ProviderAddressUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
         Provider.put(provider)
         # redirect to address edit page        
         self.redirect(provider.get_edit_link('address')) 
-
-class ServeHandler(blobstore_handlers.BlobstoreDownloadHandler):
-    ''' Serve a blob with key. call URL as
-            /serve/xxx   where xxx = blob store key
-    '''
-    def get(self, resource):
-        resource = str(urllib.unquote(resource))
-        blob_info = blobstore.BlobInfo(resource)
-        self.send_blob(blob_info)
-
 
 class ProviderScheduleHandler(ProviderBaseHandler):
     
