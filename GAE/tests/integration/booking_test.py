@@ -4,7 +4,8 @@ import logging, sys
 from base import BaseTest
 from datetime import datetime, timedelta
 import unittest
-import util
+import util, testutil
+from data import db
 
 class BookingTest(BaseTest):
     
@@ -242,7 +243,22 @@ class BookingTest(BaseTest):
         booking_confirm_page.mustcontain(self._TEST_PATIENT_EMAIL)
         # Title check
         booking_confirm_page.mustcontain('Thank you Pat!')
+     
+     
+    def test_booking_fail_with_provider_without_terms_agreement(self):
+        ''' Create a booking in the timeslot after another booking is made in the same timeslot '''
         
+        self.create_complete_provider_profile()
+        provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
+        provider.terms_agreement = False
+        provider.terms_date = None
+        provider.put()
+        # book appointment
+        response = self.book_appointment('osteopath', testutil.next_monday_date_string(), '8')
+        response.mustcontain('Malheureusement')
+        
+        
+           
         
 if __name__ == "__main__":
     logging.basicConfig(stream=sys.stderr)
