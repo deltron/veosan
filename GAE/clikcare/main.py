@@ -66,13 +66,7 @@ application = webapp2.WSGIApplication([
                                        # Patient
                                        ('/patient/booknew', booking.PatientBookForNewHandler),
                                        ('/patient/book', booking.PatientBookHandler),
-                                       
-                                       # provider admin
-                                       ('/provider/profile', provider_admin.ProviderEditProfileHandler),
-                                       ('/provider/address', provider_admin.ProviderEditAddressHandler),
-                                       ('/provider/address/upload', provider_admin.ProviderAddressUploadHandler),
-                                       ('/provider/administration', provider_admin.ProviderAdministrationHandler),
-
+                                  
                                        #provider
                                        ('/provider/schedule', provider.ProviderScheduleHandler),
                                        ('/provider/terms', provider.ProviderTermsHandler),
@@ -85,7 +79,14 @@ application = webapp2.WSGIApplication([
                                        ('/admin/provider/solicit', admin.NewProviderSolicitHandler),
                                        ('/admin', admin.AdminIndexHandler),
                                        ('/admin/bookings', admin.AdminBookingsHandler),
-                                       ('/admin/providers', admin.AdminProvidersHandler),
+                                       ('/admin/providers', admin.AdminProvidersHandler),                                       
+                                            
+                                       # provider admin
+                                       ('/admin/provider', provider_admin.ProviderAdministrationHandler),
+                                       ('/admin/provider/profile', provider_admin.ProviderEditProfileHandler),
+                                       ('/admin/provider/address', provider_admin.ProviderEditAddressHandler),
+                                       ('/admin/provider/address/upload', provider_admin.ProviderAddressUploadHandler),
+                                       
                                        # auth
                                        ('/login', auth.LoginHandler),
                                        ('/logout', auth.LogoutHandler),

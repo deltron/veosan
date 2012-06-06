@@ -169,7 +169,7 @@ class BaseTest(unittest.TestCase):
         # get the provider key
         provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
         request_variables = { 'key' : provider.key.urlsafe() }
-        response = self.testapp.get('/provider/administration', request_variables)
+        response = self.testapp.get('/admin/provider', request_variables)
 
         response.mustcontain('Provider Administration')
         response.mustcontain(self._TEST_PROVIDER_EMAIL)
@@ -193,7 +193,7 @@ class BaseTest(unittest.TestCase):
         
         # request the address page
         request_variables = { 'key' : provider.key.urlsafe() }
-        response = self.testapp.get('/provider/address', request_variables)
+        response = self.testapp.get('/admin/provider/address', request_variables)
         
         address_form = response.forms[0] # address form
         
@@ -233,7 +233,7 @@ class BaseTest(unittest.TestCase):
         
         # request the address page
         request_variables = { 'key' : provider.key.urlsafe() }
-        response = self.testapp.get('/provider/address', request_variables)
+        response = self.testapp.get('/admin/provider/address', request_variables)
         
         address_form = response.forms[0] # address form
         
@@ -291,7 +291,7 @@ class BaseTest(unittest.TestCase):
         
         # request the address page
         request_variables = { 'key' : provider.key.urlsafe() }
-        response = self.testapp.get('/provider/profile', request_variables)
+        response = self.testapp.get('/admin/provider/profile', request_variables)
          
         profile_form = response.forms[0] # address form
         

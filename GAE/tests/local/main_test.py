@@ -26,7 +26,7 @@ class MainTestCase(unittest.TestCase):
 
     def testProviderAddressHandlerPOST(self):
         # create fake request
-        request = webapp2.Request.blank('/provider/address')
+        request = webapp2.Request.blank('/admin/provider/address')
         request.method = 'GET'
         # Get a response for that request.
         response = request.get_response(main.application)

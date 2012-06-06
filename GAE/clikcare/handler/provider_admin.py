@@ -17,7 +17,7 @@ class ProviderAdminBaseHandler(BaseHandler):
         self.render_template('provider/profile.html', p=provider, form=profile_form, **extra)
     
     def render_address(self, provider, address_form, **extra):
-        upload_url = blobstore.create_upload_url('/provider/address/upload')
+        upload_url = blobstore.create_upload_url('/admin/provider/address/upload')
         uploadForm = ProviderPhotoForm(self.request.GET)
         self.render_template('provider/address.html', p=provider, form=address_form, uploadForm=uploadForm, upload_url=upload_url, **extra)
        

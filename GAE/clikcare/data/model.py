@@ -80,8 +80,8 @@ class Provider(ndb.Model):
     def fullName(self):
         return '{0} {1}, {2}'.format(self.first_name, self.last_name, self.category)
     
-    def get_edit_link(self, section='address'):
-        return u'/provider/%s?key=%s' % (section, self.key.urlsafe())
+    def get_edit_link(self, route='/provider/bookings'):
+        return u'%s?key=%s' % (route, self.key.urlsafe())
     
     def get_html_summary(self):
         s = u''

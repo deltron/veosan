@@ -20,9 +20,12 @@ class ProviderTest(BaseTest):
         # patient name in navbar
         response.mustcontain(self._TEST_PROVIDER_EMAIL)
         response.mustcontain('Rendez-vous')
-        response.mustcontain('Fantastic')
-        response.mustcontain('Fox')
+        response.mustcontain('Horaire')
         assert 'Administration' not in response 
+        assert 'Profile' not in response 
+        assert 'Addresse' not in response 
+
+
         
     def test_provider_solicit_password_too_short(self):
         self.login_as_admin()
@@ -106,7 +109,7 @@ class ProviderTest(BaseTest):
         
         # request the address page
         request_variables = { 'key' : provider.key.urlsafe() }
-        response = self.testapp.get('/provider/address', request_variables)
+        response = self.testapp.get('/admin/provider/address', request_variables)
                 
         photo_form = response.forms[1] # photo form
         

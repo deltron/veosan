@@ -111,7 +111,7 @@ class AdminTest(BaseTest):
         # get the provider key
         provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
         request_variables = { 'key' : provider.key.urlsafe() }
-        response = self.testapp.get('/provider/administration', request_variables)
+        response = self.testapp.get('/admin/provider', request_variables)
 
         response.mustcontain('Provider Administration')
         response.mustcontain(self._TEST_PROVIDER_EMAIL)
@@ -147,6 +147,26 @@ class AdminTest(BaseTest):
         # check if redirect to admin login page
         self.assertEqual(response.status_int, 302)  
     
+
+    def test_admin_sees_all_tabs_for_provider(self):
+        # setup a provider
+        self.create_complete_provider_profile()
+        self.logout_provider()
+        # login as admin
+        self.login_as_admin()
+        # get the provider key
+        provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
+        # request the address page
+        request_variables = { 'key' : provider.key.urlsafe() }
+        response = self.testapp.get('/provider/bookings', request_variables)
+        # patient name in navbar
+        response.mustcontain('Administration')
+        response.mustcontain('Rendez-vous')
+        response.mustcontain('Horaire')
+        response.mustcontain('Profile')
+        response.mustcontain('Adresse')
+
+
 
 if __name__ == "__main__":
     unittest.main()

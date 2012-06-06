@@ -121,7 +121,7 @@ class LoginHandler(BaseHandler):
                     if len(profiles) > 0:
                         profile = profiles[0]
                         if isinstance(profile, Provider):
-                            redirect_url = profile.get_edit_link('bookings')
+                            redirect_url = profile.get_edit_link('/provider/bookings')
                             self.redirect(redirect_url)
                         else:
                             self.redirect('/')
