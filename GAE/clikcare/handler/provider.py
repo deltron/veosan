@@ -171,6 +171,11 @@ class ProviderActivationHandler(ProviderBaseHandler):
         #parse URL to get activation key
         if (activation_key):
             provider = db.get_provider_from_activation_key(activation_key)
+            
+            # mark terms as not agreed
+            provider.terms_agreement = False
+            provider.terms_date = None
+            
             # show terms page
             terms_form = ProviderTermsForm(obj=provider)
             self.render_terms(provider, terms_form=terms_form)

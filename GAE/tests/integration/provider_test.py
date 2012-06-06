@@ -42,7 +42,7 @@ class ProviderTest(BaseTest):
         # terms agreement                       
         provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
         # terms page
-        activation_url = 'http://localhost/provider/activation/%s' % provider.activation_key
+        activation_url = '/provider/activation/%s' % provider.activation_key
         terms_response = self.testapp.get(activation_url)
         terms_response.mustcontain("J'accepte les conditions d'utilisation")
         terms_form = terms_response.forms[0]
@@ -75,7 +75,7 @@ class ProviderTest(BaseTest):
         # terms agreement                       
         provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
         # terms page
-        activation_url = 'http://localhost/provider/activation/%s' % provider.activation_key
+        activation_url = '/provider/activation/%s' % provider.activation_key
         terms_response = self.testapp.get(activation_url)
         terms_response.mustcontain("J'accepte les conditions d'utilisation")
         terms_form = terms_response.forms[0]
@@ -91,6 +91,44 @@ class ProviderTest(BaseTest):
         welcome_response = password_form.submit()
         self.assertEqual(welcome_response.status_int, 200)
         welcome_response.mustcontain('Passwords do not match')
+
+
+    def test_provider_accept_terms_navigate_away(self):
+        self.login_as_admin()
+        # init a provider
+        self.init_new_provider()
+        # fill all sections
+        self.fill_new_provider_address_correctly_action()
+        self.fill_new_provider_profile_correctly_action()
+        # solicit
+        self.solicit_provider()
+        self.logout_admin()
+        
+        # terms agreement                       
+        provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
+        # terms page
+        activation_url = '/provider/activation/%s' % provider.activation_key
+        terms_response = self.testapp.get(activation_url)
+        terms_response.mustcontain("J'accepte les conditions d'utilisation")
+        terms_form = terms_response.forms[0]
+        terms_form['terms_agreement'] = '1'
+        
+        terms_form.submit()
+        
+        # navigate away and back
+        
+        # request same page
+        activation_url = '/provider/activation/%s' % provider.activation_key
+        terms_response = self.testapp.get(activation_url)
+        
+        terms_response.mustcontain("J'accepte les conditions d'utilisation")
+        assert "Terms agreed on" not in terms_response
+        
+        terms_form = terms_response.forms[0]
+        terms_form['terms_agreement'] = '1'
+        password_choice_response = terms_form.submit()
+        password_choice_response.mustcontain('Choisissez votre mot de passe')
+
 
 
 
