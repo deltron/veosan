@@ -27,7 +27,7 @@ class ProviderBaseHandler(BaseHandler):
     def render_terms(self, provider, terms_form, **extra):
         self.render_template('provider/provider_terms.html', p=provider, form=terms_form, **extra)
 
-    def render_password(self, provider, password_form=None, **extra):
+    def render_password_selection(self, provider, password_form=None, **extra):
         if not password_form:
             password_form = ProviderPasswordForm()
         self.render_template('provider/password.html', p=provider, form=password_form, **extra)
@@ -96,7 +96,7 @@ class ProviderTermsHandler(ProviderBaseHandler):
             provider.terms_date = date.today()
             provider.put()
             # Go to the password selection page
-            self.render_password(provider)
+            self.render_password_selection(provider)
         else:
             self.render_terms(provider, terms_form=terms_form)
 
@@ -134,6 +134,11 @@ class ProviderPasswordHandler(ProviderBaseHandler):
             if user:
                 # Link user to provider and save
                 provider.user = user.key
+                
+                # remove activation link from user
+                provider.activation_key = None
+
+                # save provider
                 provider.put()
             
                 # send welcome email
@@ -145,15 +150,16 @@ class ProviderPasswordHandler(ProviderBaseHandler):
                 # TODO Add Welcome Message and invitation to review profile and set schedule
                 #redirect_url = provider.get_edit_link(section='profile')
                 #self.redirect(redirect_url)
+                
                 welcome_message = _("Welcome to Clikcare! Please review your profile and open your schedule.")
                 self.render_bookings(provider, success_message=welcome_message)
             else:
                 logging.error('User not created. Probably because email already in Unique table.')
                 # TODO add custom validation to tell user that email is already in use.
                 error_message = 'User email is already taken. If you are already using this email for your patient profile, please inform us or use another email.'
-                self.render_password(provider, password_form=password_form, error_message=error_message)
+                self.render_password_selection(provider, password_form=password_form, error_message=error_message)
         else:
-            self.render_password(provider, password_form=password_form)
+            self.render_password_selection(provider, password_form=password_form)
 
 
 class ProviderBookingsHandler(ProviderBaseHandler):
@@ -172,13 +178,17 @@ class ProviderActivationHandler(ProviderBaseHandler):
         if (activation_key):
             provider = db.get_provider_from_activation_key(activation_key)
             
-            # mark terms as not agreed
-            provider.terms_agreement = False
-            provider.terms_date = None
+            if provider:
+                # mark terms as not agreed
+                provider.terms_agreement = False
+                provider.terms_date = None
             
-            # show terms page
-            terms_form = ProviderTermsForm(obj=provider)
-            self.render_terms(provider, terms_form=terms_form)
+                # show terms page
+                terms_form = ProviderTermsForm(obj=provider)
+                self.render_terms(provider, terms_form=terms_form)
+            else:
+                # no provider found for activation key, send them to the login page
+                self.redirect("/login")
         else:
             logging.info('No activation key')
             
