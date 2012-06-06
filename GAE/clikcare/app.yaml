@@ -4,6 +4,10 @@ runtime: python27
 api_version: 1
 threadsafe: yes
 
+# for backup/restore
+builtins:
+- remote_api: on
+
 libraries:
 - name: jinja2
   version: "2.6"
