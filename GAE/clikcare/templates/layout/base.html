@@ -1,43 +1,6 @@
-{#
 
-Macro to generate a standard form.
+{% import '/layout/macros.html' as macro with context %}
 
-This will iterate over a WTForms form object and print out every
-field in the order it was created. Displays well inside the
-Twitter Bootstrap horizontal form layout.
-
-#}
-
-{% macro makeStandardForm(name, inputClass='input-xlarge') -%}
-{% for field in form %}
-{% if field.type != "FileField" %}
-<div class="control-group {% if field.errors %} error {% endif %}">
-	{% if field.type == "CustomBooleanField" %}
-	{# don't show the label on the left side for boolean #}
-	{% else %}
-	{{ field.label(class="control-label") }}
-	{% endif %}
-	<div class="controls">
-		{% if field.errors %}
-
-		<p class="help-block">
-			{% for error in field.errors %} <i class="icon-exclamation-sign"></i> {{ error }}
-			<br>
-			{% endfor %}
-		</p>
-		{% endif %}
-		{% if field.type in ['MultiCheckboxField', 'CustomBooleanField'] %}
-			{{ field(class="checkbox") }}
-		{% elif field.type == 'TextAreaField' %}
-			{{ field(class="field span6", rows="10") }}
-		{% else %}
-			{{ field(class=inputClass) }}
-		{% endif %}
-	</div>
-</div>
-{% endif %}
-{% endfor %}
-{%- endmacro %}
 
 <!DOCTYPE html>
 <html lang="fr">

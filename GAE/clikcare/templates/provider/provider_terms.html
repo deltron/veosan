@@ -50,7 +50,7 @@
 {# show form if terms were not yet agreed #}
 		<form method="post" action="/provider/terms" class="form-horizontal">
 			<fieldset>
-				{{ makeStandardForm() }}
+				{{ macro.makeStandardForm() }}
 			</fieldset>
 			<input type="hidden" name="provider_key" value="{{p.key.urlsafe()}}" />
 			<div class="form-actions">
