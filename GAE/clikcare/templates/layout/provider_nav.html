@@ -13,10 +13,10 @@
 		<a href="{{p.get_edit_link(route='/admin/provider/profile')}}">{{ _('Profile') }}</a>
 	</li>
 	<li id="address" {% if  "address" == active_page %} class="active" {% endif %} style="font-style:italic">
-		<a href="{{p.get_edit_link(route='/admin/admin/provider/address')}}">{{ _('Address') }}</a>
+		<a href="{{p.get_edit_link(route='/admin/provider/address')}}">{{ _('Address') }}</a>
 	</li>
 	<li id="administration" {% if  "administration" == active_page %} class="active" {% endif %} style="font-style:italic">
-		<a href="{{p.get_edit_link(route='/admin/admin/provider')}}">{{ _('Administration') }}</a>
+		<a href="{{p.get_edit_link(route='/admin/provider')}}">{{ _('Administration') }}</a>
 	</li>
 	{% endif %}
 </ul>
