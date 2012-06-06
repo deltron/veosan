@@ -1,6 +1,6 @@
 
-
-# get stub bulkloader file
+# get stub bulkloader file 
+#   do once or when schema changes a lot
 # appcfg.py create_bulkloader_config --filename=bulkloader.yaml --application=s~clikcare-stage --url=http://clikcare-stage.appspot.com/_ah/remote_api
 
 

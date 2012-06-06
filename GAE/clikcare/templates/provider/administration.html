@@ -54,37 +54,9 @@
 	
 	<div class="span6">
 		<h2>Bio Preview</h2>
-		
 		<div class="well">
-					<!-- TODO: create a BIO block we can use here and in results page -->
-					
-					<div class="row">
-					  <div class="span2">
-				  		{% if p.profile_photo_blob_key == None %}
-							<img src="/assets/img/default-profile.png" width="100" height="100">
-						{% else %}
-							<img src="/serve/{{ p.profile_photo_blob_key }}" width="100" height="100">
-						{% endif %}
-					  </div>
-					  <div class="span3">
-						  	<div class="row-fluid">
-								<blockquote>
-									<p>
-										{{p.quote}}
-									</p>
-								</blockquote>
-							</div>
-					  </div>
-					</div>
-					<div class="row">
-						<div class="span5">
-							<br>
-							<h4> {{ _('My Background') }} </h4>
-							<p>{{p.bio}}</p>
-						</div>
-					</div>
-			
-	    </div>
+			{{ macro.makeProviderBio(p) }}
+		</div>
 	</div>
 </div>
 {% endblock %}

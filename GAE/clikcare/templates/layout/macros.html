@@ -1,0 +1,78 @@
+{#
+
+Macro to generate a standard form.
+
+This will iterate over a WTForms form object and print out every
+field in the order it was created. Displays well inside the
+Twitter Bootstrap horizontal form layout.
+
+#}
+
+{% macro makeStandardForm(name, inputClass='input-xlarge') -%}
+{% for field in form %}
+{% if field.type != "FileField" %}
+<div class="control-group {% if field.errors %} error {% endif %}">
+	{% if field.type == "CustomBooleanField" %}
+	{# don't show the label on the left side for boolean #}
+	{% else %}
+	{{ field.label(class="control-label") }}
+	{% endif %}
+	<div class="controls">
+		{% if field.errors %}
+
+		<p class="help-block">
+			{% for error in field.errors %} <i class="icon-exclamation-sign"></i> {{ error }}
+			<br>
+			{% endfor %}
+		</p>
+		{% endif %}
+		{% if field.type in ['MultiCheckboxField', 'CustomBooleanField'] %}
+			{{ field(class="checkbox") }}
+		{% elif field.type == 'TextAreaField' %}
+			{{ field(class="field span6", rows="10") }}
+		{% else %}
+			{{ field(class=inputClass) }}
+		{% endif %}
+	</div>
+</div>
+{% endif %}
+{% endfor %}
+{%- endmacro %}
+
+
+
+
+
+{#
+	Macro to generate a provider bio
+#}
+
+{% macro makeProviderBio(provider) -%}
+
+		<div class="row">
+		  <div class="span2">
+	  		{% if provider.profile_photo_blob_key == None %}
+				<img src="/assets/img/default-profile.png" width="100" height="100">
+			{% else %}
+				<img src="/serve/{{ p.profile_photo_blob_key }}" width="100" height="100">
+			{% endif %}
+		  </div>
+		  <div class="span3">
+			  	<div class="row-fluid">
+					<blockquote>
+						<p>
+							{{provider.quote}}
+						</p>
+					</blockquote>
+				</div>
+		  </div>
+		</div>
+		<div class="row">
+			<div class="span5">
+				<br>
+				<h4> {{ _('My Background') }} </h4>
+				<p>{{provider.bio}}</p>
+			</div>
+		</div>
+
+{%- endmacro %}
