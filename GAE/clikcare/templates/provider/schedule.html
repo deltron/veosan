@@ -101,7 +101,7 @@
      	$(this).tooltip('toggle')
      	
      	post_data = {
-     		provider_key: "{{p.key.urlsafe()}}",
+     		key: "{{ provider.key.urlsafe() }}",
      		day_time: $(this).attr("id"),
      		operation: op
      	}

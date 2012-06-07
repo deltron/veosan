@@ -3,10 +3,10 @@
 {% set active_page = "administration" %}
 
 {% block subhead %}
-	{{p.fullName()}}
+	{{ provider.fullName() }}
 	<!-- TODO: Make this a block, reuse on provider list -->
-	{% if p.recently_created() %} <span class="label label-success">new</span>{% endif %}
-	{% if not p.terms_agreement %} <span class="label label-important">missing terms</span>{% endif %}
+	{% if provider.recently_created() %} <span class="label label-success">new</span>{% endif %}
+	{% if not provider.terms_agreement %} <span class="label label-important">missing terms</span>{% endif %}
 {% endblock %}
 
 {% block lead %} {{ _('Provider Administration') }} {% endblock %}
@@ -21,18 +21,16 @@
 		
 		<h2>Terms and User</h2>
 		<div class="well">
-		{% if p.terms_agreement %}
-			Agreed to terms on {{p.terms_date}}<br>
+		{% if provider.terms_agreement %}
+			Agreed to terms on {{ provider.terms_date }}<br>
 		{% else %}
 			Terms not signed<br>
 		{% endif %}
 		<br>
-		{% if p.user %}
-			{% set u = p.user.get() %}
+		{% if provider.user %}
+			{% set u = provider.user.get() %}
 			User email: {{u.auth_ids|join}}<br>
 			{% if u.password %} Password is set {% else %} Password is not set {% endif %}<br>
-			<!-- created: {{u.created|format_datetime_noseconds}}<br>
-			updated: {{u.created|format_datetime_noseconds}}<br> -->
 		{% else %}
 			Provider is not activated. There is no user linked to this profile<br>
 		{% endif %}
@@ -41,11 +39,11 @@
 		<form method="post" action="/admin/provider/solicit" class="well form-inline">
 			<p>Make sure profile is completed before sending the invitaion for the provider to agree to the terms and take over his profile.</p>
 			<fieldset>
-				<input type="hidden" name="provider_key" value="{{p.key.urlsafe()}}" />
+				<input type="hidden" name="provider_key" value="{{ provider.key.urlsafe() }}" />
 				<button type="submit" class="btn btn-primary">
 					Solicit Provider
 				</button>
-				<span>&lt;{{p.email}}&gt;</span>
+				<span>&lt;{{ provider.email }}&gt;</span>
 			</fieldset>
 		</form>
 		
@@ -55,7 +53,7 @@
 	<div class="span6">
 		<h2>Bio Preview</h2>
 		<div class="well">
-			{{ macro.makeProviderBio(p) }}
+			{{ macro.make_provider_bio(provider) }}
 		</div>
 	</div>
 </div>
