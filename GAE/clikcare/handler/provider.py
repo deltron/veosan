@@ -97,6 +97,15 @@ class ProviderTermsHandler(ProviderBaseHandler):
         else:
             self.render_terms(provider, terms_form=terms_form)
 
+class ProviderResetPasswordHandler(ProviderBaseHandler):
+    def post(self):
+        email = self.request.get('email')
+
+        logging.info("(ProviderResetPasswordHandler.post) got password reset request for email: %s" % email)
+        if email:
+            provider = db.get_provider_from_email(email)
+
+        pass
 
 
 class ProviderPasswordHandler(ProviderBaseHandler):
