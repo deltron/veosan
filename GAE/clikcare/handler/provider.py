@@ -51,7 +51,7 @@ class ProviderScheduleHandler(ProviderBaseHandler):
         operation = self.request.get('operation')
         logging.info("SAVE SCHEDULE: " + urlsafe_key + " " + day + "-" + startTime + "-" + endTime + " " + operation)
         
-        provider = db.get_from_urlsafe_key(self.request.get('key'))
+        provider = db.get_from_urlsafe_key(urlsafe_key)
         if (operation == 'add'):
             s = Schedule()
             s.provider = provider.key
