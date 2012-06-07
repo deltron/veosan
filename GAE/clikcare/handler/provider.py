@@ -17,20 +17,20 @@ class ProviderBaseHandler(BaseHandler):
     def render_schedule(self, provider, availableIds, **extra):
         timeslots = util.getScheduleTimeslots()
         days = util.getWeekdays()
-        self.render_template('provider/schedule.html', p=provider, availableIds=availableIds, timeslots=timeslots, days=days, **extra)
+        self.render_template('provider/schedule.html', provider=provider, availableIds=availableIds, timeslots=timeslots, days=days, **extra)
     
     def render_bookings(self, provider, **extra):
         bookings = db.fetch_future_bookings(provider)   
         logging.info('Bookings:' + str(bookings))
-        self.render_template('provider/bookings.html', p=provider, bookings=bookings, **extra)
+        self.render_template('provider/bookings.html', provider=provider, bookings=bookings, **extra)
             
     def render_terms(self, provider, terms_form, **extra):
-        self.render_template('provider/provider_terms.html', p=provider, form=terms_form, **extra)
+        self.render_template('provider/provider_terms.html', provider=provider, form=terms_form, **extra)
 
     def render_password_selection(self, provider, password_form=None, **extra):
         if not password_form:
             password_form = ProviderPasswordForm()
-        self.render_template('provider/password.html', p=provider, form=password_form, **extra)
+        self.render_template('provider/password.html', provider=provider, form=password_form, **extra)
         
 
 class ProviderScheduleHandler(ProviderBaseHandler):
@@ -42,12 +42,10 @@ class ProviderScheduleHandler(ProviderBaseHandler):
         logging.info('available ids' + str(availableIds))
         self.render_schedule(provider, availableIds)
            
-    # SHOULD HAVE @provider_required
-    # SECURITY HOLE!!!!
-    # TODO!!! 
+    @provider_required
     def post(self):
         logging.info('ProviderScheduleHandler POST')
-        urlsafe_key = self.request.get('provider_key')
+        urlsafe_key = self.request.get('key')
         day_time = self.request.get('day_time')
         day, startTime, endTime = day_time.split('-')
         operation = self.request.get('operation')
