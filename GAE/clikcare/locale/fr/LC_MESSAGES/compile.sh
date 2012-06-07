@@ -1,1 +1,1 @@
-msgfmt -o clikcare.mo clikcare.po
+msgfmt -o messages.mo messages.po

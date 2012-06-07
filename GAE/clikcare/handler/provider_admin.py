@@ -9,10 +9,11 @@ from base import BaseHandler
 import data.db as db
 from forms.provider import ProviderProfileForm, ProviderAddressForm, ProviderPhotoForm
 from data.model import Provider
-import util
 from handler.auth import admin_required
+from util import saved_message
 
 class ProviderAdminBaseHandler(BaseHandler):
+
     def render_profile(self, provider, profile_form, **extra):
         self.render_template('provider/profile.html', provider=provider, form=profile_form, **extra)
     
@@ -41,7 +42,7 @@ class ProviderEditProfileHandler(ProviderAdminBaseHandler):
             # Store Provider
             key = db.storeProvider(self.request.POST)
             provider = key.get()
-            self.render_profile(provider, profile_form=form, success_message=util.saved_message)
+            self.render_profile(provider, profile_form=form, success_message=saved_message)
         else:
             # show error
             provider = db.getProvider(self.request)
@@ -64,7 +65,7 @@ class ProviderEditAddressHandler(ProviderAdminBaseHandler):
             # Store Provider
             provider_key = db.storeProvider(self.request.POST)
             provider = provider_key.get()
-            self.render_address(provider, address_form=form, success_message=util.saved_message)
+            self.render_address(provider, address_form=form, success_message=saved_message)
         else:
             # show validation error
             provider = db.getProvider(self.request)

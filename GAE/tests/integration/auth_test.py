@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+import unittest
 from base import BaseTest
 
 
@@ -86,4 +86,8 @@ class AuthenticationTest(BaseTest):
         # message about failed login
         login_failed_response.mustcontain("rifier votre email et mot de passe.")
         
+           
         
+if __name__ == "__main__":
+    unittest.main()
+            

@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import logging, sys
 from base import BaseTest
 from datetime import datetime, timedelta
 import unittest
@@ -261,7 +260,6 @@ class BookingTest(BaseTest):
            
         
 if __name__ == "__main__":
-    logging.basicConfig(stream=sys.stderr)
     unittest.main()
     
     

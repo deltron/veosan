@@ -4,6 +4,7 @@ from handler.base import BaseHandler
 # webapp2 auth service
 from webapp2_extras.auth import InvalidAuthIdError
 from webapp2_extras.auth import InvalidPasswordError
+from webapp2_extras.i18n import gettext as _
 # google user service
 from google.appengine.api import users
 from webapp2_extras.appengine.users import admin_required as google_admin_required

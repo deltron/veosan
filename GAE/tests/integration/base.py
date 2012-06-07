@@ -5,6 +5,7 @@ import os, logging
 import unittest, webtest
 from StringIO import StringIO
 
+
 # clik
 import main
 import data.db as db
@@ -18,8 +19,7 @@ class BaseTest(unittest.TestCase):
     Settings in app.yaml are ignored by tests
     App assumes login is "magically" handled properly
     
-    '''
-    
+    '''    
        
     _TEST_PROVIDER_EMAIL = "unit_test@provider.com"
     _TEST_PROVIDER_PASSWORD = u'123456'
@@ -42,13 +42,12 @@ class BaseTest(unittest.TestCase):
         # mail stubs
         self.testbed.init_mail_stub()
         self.mail_stub = self.testbed.get_stub(testbed.MAIL_SERVICE_NAME)
-        
         # set up the logger
         self.stream = StringIO()
         self.handler = logging.StreamHandler(self.stream)
         self.log = logging.getLogger()
         self.log.setLevel(logging.INFO)
-
+        # en francais
 
 
     def tearDown(self):
@@ -210,7 +209,6 @@ class BaseTest(unittest.TestCase):
         
         # submit it
         response = address_form.submit()
-        
         response.mustcontain("Vos modifications ont été enregistrées.")
 
         # check values in database

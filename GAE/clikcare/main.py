@@ -6,7 +6,7 @@ import webapp2
 from webapp2 import Route
 # clik
 import util
-from handler import booking, provider, provider_admin, auth, admin, static, contact, blob
+from handler import booking, provider, provider_admin, auth, admin, static, contact, blob, language
 from data.model import User
 
 jinja_filters = {}
@@ -29,6 +29,8 @@ jinja_environment_args = {
 webapp2_config = {}
 
 template_path = os.path.dirname(__file__) + '/templates'
+locale_path = os.path.dirname(__file__) + '/locale'
+
 logging.info('setting template path to %s' % template_path)
 
 webapp2_config['webapp2_extras.jinja2'] = {
@@ -38,8 +40,8 @@ webapp2_config['webapp2_extras.jinja2'] = {
                                             } 
 
 webapp2_config['webapp2_extras.i18n'] = {
-                                         'translations_path': 'locale',
-                                         'default_locale': 'fr'
+                                         'translations_path': locale_path,
+                                         'default_locale': 'en'
                                          }
 
 webapp2_config['webapp2_extras.sessions'] = {
@@ -97,6 +99,9 @@ application = webapp2.WSGIApplication([
                                        ('/logout', auth.LogoutHandler),
                                        # blob
                                        ('/serve/([^/]+)?', blob.BlobServeHandler),
+                                       # language
+                                       Route('/lang/<lang>', language.LanguageHandler),
+                                       
                                       ], debug=True,
                                       config=webapp2_config)
 

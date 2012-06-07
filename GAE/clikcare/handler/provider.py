@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import logging
 from datetime import date
 #clik
@@ -6,8 +5,10 @@ from base import BaseHandler
 import data.db as db
 from forms.provider import ProviderTermsForm, ProviderPasswordForm
 from data.model import Schedule
-import util, mail
+import util
+import mail
 from handler.auth import provider_required
+from webapp2_extras.i18n import gettext as _
 
 class ProviderBaseHandler(BaseHandler):       
     def render_schedule(self, provider, availableIds, **extra):
@@ -96,15 +97,6 @@ class ProviderTermsHandler(ProviderBaseHandler):
         else:
             self.render_terms(provider, terms_form=terms_form)
 
-class ProviderResetPasswordHandler(ProviderBaseHandler):
-    def post(self):
-        email = self.request.get('email')
-
-        logging.info("(ProviderResetPasswordHandler.post) got password reset request for email: %s" % email)
-        if email:
-            provider = db.get_provider_from_email(email)
-
-        pass
 
 
 class ProviderPasswordHandler(ProviderBaseHandler):

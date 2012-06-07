@@ -1,24 +1,23 @@
-import gettext, os, logging
+import os, logging
 import webapp2
 from google.appengine.api import users
 from webapp2_extras import jinja2
 from webapp2_extras import auth
 from webapp2_extras import sessions
 import data
-
+from webapp2_extras import i18n
+from util import languages
+from webapp2_extras.i18n import lazy_gettext as _
 
 # change to en and everything is english!
 # todo: do we do /en/ /fr/ for every address or read it in the session somewhere? Session.
-
-lang = 'fr'
-locale_dir = os.path.dirname(__file__) + '/../locale'
-t = gettext.translation('clikcare', locale_dir, languages=[lang], fallback='en')
-t.install()
 
 class BaseHandler(webapp2.RequestHandler):
     '''
         Base Handler for the whole site. Provides templating, user and authentication services
     '''
+    
+    _translations = None
     
     @webapp2.cached_property
     def jinja2(self):
@@ -26,7 +25,11 @@ class BaseHandler(webapp2.RequestHandler):
             jinja2 renderer
         '''
         j = jinja2.get_jinja2(app=self.app)
-        j.environment.install_gettext_translations(t)
+        #if self._translations:
+        #    logging.info('installing translations %s' % self.get_language())
+        #    j.environment.install_gettext_translations(self._translations)
+        #else:
+        #    logging.info('no translations for jinja')
         return j
 
     def render_template(self, filename, provider=None, **template_args):
@@ -85,12 +88,24 @@ class BaseHandler(webapp2.RequestHandler):
         template_args['admin_logout_url'] = users.create_logout_url('/')
         template_args['roles'] = roles
         template_args['provider'] = provider
+        template_args['lang'] = _('en')
+        template_args['languages'] = filter(lambda l: l not in [_('en')], languages)
+        logging.info('language is %s' % _('en'))
             
         # render
         self.response.write(self.jinja2.render_template(filename, **template_args))
           
     def dispatch(self):
-        '''Save the session across requests'''
+        ''' 
+            - Set language form session and 
+            - Save the session across requests
+        '''
+        # language
+        lang = self.get_language()
+        if not lang:
+            lang = 'fr'
+        self.install_translations(lang)
+        # save session (from auth)
         try:
             response = super(BaseHandler, self).dispatch()
             #self.response.write(response)
@@ -112,6 +127,33 @@ class BaseHandler(webapp2.RequestHandler):
                       'logout_url': self.uri_for('logout') }
         return auth_conf
     
+    def get_language(self):
+        session = self.session_store.get_session()
+        if session.has_key('lang'):
+            return session['lang']
+        else:
+            return 'fr'
+        
+    def set_language(self, lang):
+        session = self.session_store.get_session()
+        session['lang'] = lang
+        
+        
+    def install_translations(self, lang):
+        logging.info('installing translations %s' % lang)
+        # Set the requested locale.
+        #locale = self.request.GET.get('locale', 'en')
+        #logging.info('locale from request is %s' % locale)
+        i18n.get_i18n().set_locale(lang)
+        
+        logging.info('i18n locale: %s' % i18n.get_i18n().locale)
+        logging.info('i18n translations: %s' % i18n.get_i18n().translations)
+        #t = gettext.translation('clikcare', locale_dir, languages=[lang], fallback='en')
+        #t.install()
+        # install on Jinja too
+        #self.jinja2.environment.install_gettext_translations(t)
+        logging.info('language is %s' % _('en'))
+        
     
     def login_user(self, email, password, remember_me=True):
         auth_user = self.auth.get_user_by_password(email, password, remember=remember_me)
@@ -139,7 +181,3 @@ class BaseHandler(webapp2.RequestHandler):
             logging.info('New user creation failed. Probably existing email: %s' % new_user)
             return None
 
-               
-                     
-                     
-                     

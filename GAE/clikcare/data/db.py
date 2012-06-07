@@ -4,11 +4,10 @@
 #from google.appengine.ext import db as gdb
 from google.appengine.ext import ndb
 import logging
-import types
 from datetime import datetime, date, time
 from data.model import Booking, Patient, Provider, User
-import util
 from handler.auth import PROVIDER_ROLE, PATIENT_ROLE
+import db_util
   
 def get_from_urlsafe_key(urlsafe_key):
     logging.info('(db.get_from_urlsafe_key) Getting from urlsafe key: %s' % urlsafe_key)
@@ -36,7 +35,7 @@ def storePatient(r, user):
     logging.info("Storing patient profile from request:" + str(r.__dict__))
     patient = Patient()
     # set all the properties
-    util.set_all_properties_on_entity_from_multidict(patient, r)
+    db_util.set_all_properties_on_entity_from_multidict(patient, r)
     patient.user = user.key
     # store
     patient_key = patient.put()
@@ -131,7 +130,7 @@ def storeProvider(r):
     provider = getOrCreateProvider(r['provider_key'])
     
     # set all the properties
-    util.set_all_properties_on_entity_from_multidict(provider, r)
+    db_util.set_all_properties_on_entity_from_multidict(provider, r)
     
     # store
     provider_key = provider.put()

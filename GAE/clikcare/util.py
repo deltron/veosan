@@ -1,81 +1,82 @@
 #!/usr/local/bin/python
 # -*- coding: utf-8 -*-
-
+import calendar
 from datetime import date, timedelta
 import logging
-from babel.dates import format_date, format_datetime
-from babel import Locale
-from handler.base import lang
+from webapp2_extras.i18n import format_date, format_datetime
+from webapp2_extras.i18n import lazy_gettext as _
+
+languages = ['fr', 'en']
 
 # String used on many pages
-saved_message = _(u'Your changes were saved.').decode("UTF-8")
-
+saved_message = _(u'Your changes were saved.')
+    
 # key, value
 def getAllRegions():
-    return [('mtl-downtown', _(u'Montreal - Downtown').decode("UTF-8")),
-            ('mtl-westisland', _(u'Montreal - West-Island').decode("UTF-8"))
+    return [('mtl-downtown', _(u'Montreal - Downtown')),
+            ('mtl-westisland', _(u'Montreal - West-Island'))
             ]
     
 # key, value
 def getAllCategories():
-    return [(u"physiotherapy", _(u"Physiotherapist").decode("UTF-8")),
-            (u"chiropractor", _(u"Chiropractor").decode("UTF-8")),
-            (u"osteopath", _(u"Osteopath").decode("UTF-8"))
+    return [(u"physiotherapy", _(u"Physiotherapist")),
+            (u"chiropractor", _(u"Chiropractor")),
+            (u"osteopath", _(u"Osteopath"))
         ]
 
 # key, value
 def getAllSpecialities():
-    return [("sports", _(u"Sports").decode("UTF-8")),
-            ("geriatric", _(u"Geriatric").decode("UTF-8")),            
-            ("cardiology", _(u"Cardiology").decode("UTF-8")),
-            ("pneumology", _(u"Pneumology").decode("UTF-8")),
-            ("orthopedic", _(u"Orthopedic").decode("UTF-8")),
-            ("neurology", _(u"Neurology").decode("UTF-8")),
-            ("pediatric", _(u"Pediatric").decode("UTF-8"))
+    return [("sports", _(u"Sports")),
+            ("geriatric", _(u"Geriatric")),            
+            ("cardiology", _(u"Cardiology")),
+            ("pneumology", _(u"Pneumology")),
+            ("orthopedic", _(u"Orthopedic")),
+            ("neurology", _(u"Neurology")),
+            ("pediatric", _(u"Pediatric"))
         ]
     
 def getAllSpecialitiesForPatient():
     z = getAllSpecialities()
     z.extend([ 
-            ("other", _(u"Other").decode("UTF-8")),
-            ("dontknow", _(u"Not sure or don't know").decode("UTF-8")),
-            ("noanswer", _(u"Prefer not to answer").decode("UTF-8"))
+            ("other", _(u"Other")),
+            ("dontknow", _(u"Not sure or don't know")),
+            ("noanswer", _(u"Prefer not to answer"))
         ])
     return z
 
 
 def getAllSchools():
-    return [("na", _(u"Not Applicable").decode("UTF-8")),
-            ("concordia", _(u"Concordia University").decode("UTF-8")),
-            ("mcgill", _(u"McGill University").decode("UTF-8")),
-            ("udem", _(u"Universite de Montreal").decode("UTF-8")),
-            ("uqtr", _(u"Universite de Quebec a Trois-Rivieres").decode("UTF-8")),
-            ("usherb", _(u"Universite de Sherbrooke").decode("UTF-8"))
+    return [("na", _(u"Not Applicable")),
+            ("concordia", _(u"Concordia University")),
+            ("mcgill", _(u"McGill University")),
+            ("udem", _(u"Universite de Montreal")),
+            ("uqtr", _(u"Universite de Quebec a Trois-Rivieres")),
+            ("usherb", _(u"Universite de Sherbrooke"))
         ]
 
 def getAllAssociations():
-    return [("oppq", _(u"Ordre professionnel de la physiotherapie du Quebec (OPPQ)").decode("UTF-8")),
-            ("cpa", _(u"Canadian Physiotherapy Association (CPA)").decode("UTF-8")),
-            ("campt", _(u"Canadian Academy of Manipulative Physiotherapy (CAMPT)").decode("UTF-8"))
+    return [("oppq", _(u"Ordre professionnel de la physiotherapie du Quebec (OPPQ)")),
+            ("cpa", _(u"Canadian Physiotherapy Association (CPA)")),
+            ("campt", _(u"Canadian Academy of Manipulative Physiotherapy (CAMPT)"))
         ]
 
 def getAllCertifications():
-    return [("mckenzie", _(u"McKenzie Method").decode("UTF-8")),
-            ("art", _(u"Active Release Therapy (ART)").decode("UTF-8"))
+    return [("mckenzie", _(u"McKenzie Method")),
+            ("art", _(u"Active Release Therapy (ART)"))
         ]
 
 
 def getAllInsurance():
-    return [("private", _(u"Private insurance (ex: employer)").decode("UTF-8")),
-            ("public", _(u"Public insurance (ex: CSST, SAAQ)").decode("UTF-8")),
-            ("other", _(u"Other coverage").decode("UTF-8")),
-            ("dontknow", _(u"Not sure or don't know").decode("UTF-8")),
-            ("noanswer", _(u"Prefer not to answer").decode("UTF-8"))
+    return [("private", _(u"Private insurance (ex: employer)")),
+            ("public", _(u"Public insurance (ex: CSST, SAAQ)")),
+            ("other", _(u"Other coverage")),
+            ("dontknow", _(u"Not sure or don't know")),
+            ("noanswer", _(u"Prefer not to answer"))
         ]
     
 def getAllConfirmation():
-    return [("email", _(u"Email").decode("UTF-8")),
-            ("telephone", _(u"Telephone").decode("UTF-8")),
+    return [("email", _(u"Email")),
+            ("telephone", _(u"Telephone")),
         ]
 
 
@@ -99,25 +100,27 @@ def getTimesList():
 
 def getScheduleTimeslots():
     # returns a list of list(name, start time, end time)
-    return ( ( _(u"Morning").decode("UTF-8"), '8', '13'),
-             ( _(u"Afternoon").decode("UTF-8"), '13', '18'),
-             ( _(u"Evening").decode("UTF-8"), '18', '21')
+    return ( ( _(u"Morning"), '8', '13'),
+             ( _(u"Afternoon"), '13', '18'),
+             ( _(u"Evening"), '18', '21')
             )
 
 def getWeekdays():
-    locale = Locale(lang)
-    weekdays_lower = locale.days['format']['wide'].items()
+    cal = calendar.Calendar(0)
+    weekdays_lower = [(day, calendar.day_name[day]) for day in cal.iterweekdays()]
+    logging.info('Weekdays from cal: %s' % weekdays_lower)
     weekdays = map( lambda s: (s[0], s[1].capitalize()), weekdays_lower)
-    logging.info( str(weekdays) )
+    logging.info('Weekdays: %s' % weekdays)
     return weekdays
 
 def format_date_weekday_after(date):
-    return format_date(date, u"d MMMM yyyy (EEEE)", locale=lang)
+    return format_date(date, u"d MMMM yyyy (EEEE)")
 
 def format_datetime_full(datetime):
-    return format_datetime(datetime, u"EEEE d MMMM yyyy", locale=lang) + " " +  _(u"at") + " " + format_datetime(datetime, u"H:mm", locale=lang)
+    return format_datetime(datetime, "EEEE d MMMM yyyy") + " " +  _(u"at") + " " + format_datetime(datetime, "H:mm")
 
 def format_hour(hour):
+    lang = _('en')
     if (hour):
         '''take a number in 24-hour format and return 13h or 1 PM'''
         if (lang == 'fr'):
@@ -132,29 +135,33 @@ def format_hour(hour):
         return ""
 
 def formatTimeToOneHourPeriod(startTime):
+    lang = _('en')
     endTime = startTime + 1
     if (lang == 'fr'):
         return unicode(startTime) + u'h - ' + unicode(endTime) + u'h'
     else:
+        logging.info('starttime %s' % startTime)
         startAMPM = u'AM'
         if (startTime > 12):
-            startTimeEN = startTime - 12
+            startTime = startTime - 12
             startAMPM = u'PM'
         endAMPM = u'AM'
         if (endTime > 12):
-            endTimeEN = endTime - 12
+            endTime = endTime - 12
             endAMPM = u'PM'
-        return unicode(startTimeEN) + u' ' + startAMPM + u' - ' + unicode(endTimeEN) + u' ' + endAMPM
+        return unicode(startTime) + u' ' + startAMPM + u' - ' + unicode(endTime) + u' ' + endAMPM
     
 def format_30min_period(startTime, startMinutes):
     return u'START - END [placeholder]'
 
 # is this method used anywhere?
 def formatDateTimeNoSeconds(datetime):
-    return format_datetime(datetime, u"yyyy-MM-dd H:mm", locale=lang)
+    return format_datetime(datetime, "yyyy-MM-dd H:mm")
 
 
 ''' dump properties '''
 def dump(obj):  
     return vars(obj)
     # todo split at the comma (replace with <br>)
+    
+
