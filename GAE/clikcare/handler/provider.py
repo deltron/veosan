@@ -1,15 +1,11 @@
 # -*- coding: utf-8 -*-
 import logging
 from datetime import date
-# GAE
-from google.appengine.api import users
-from google.appengine.ext import blobstore
-from google.appengine.ext.webapp import blobstore_handlers
 #clik
 from base import BaseHandler
 import data.db as db
 from forms.provider import ProviderTermsForm, ProviderPasswordForm
-from data.model import Provider, Schedule
+from data.model import Schedule
 import util, mail
 from handler.auth import provider_required
 
@@ -99,6 +95,16 @@ class ProviderTermsHandler(ProviderBaseHandler):
             self.render_password_selection(provider)
         else:
             self.render_terms(provider, terms_form=terms_form)
+
+class ProviderResetPasswordHandler(ProviderBaseHandler):
+    def post(self):
+        email = self.request.get('email')
+
+        logging.info("(ProviderResetPasswordHandler.post) got password reset request for email: %s" % email)
+        if email:
+            provider = db.get_provider_from_email(email)
+
+        pass
 
 
 class ProviderPasswordHandler(ProviderBaseHandler):

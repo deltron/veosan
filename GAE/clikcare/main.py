@@ -72,6 +72,8 @@ application = webapp2.WSGIApplication([
                                        ('/provider/terms', provider.ProviderTermsHandler),
                                        ('/provider/bookings', provider.ProviderBookingsHandler),
                                        ('/provider/password', provider.ProviderPasswordHandler),
+                                       ('/provider/resetpassword', provider.ProviderResetPasswordHandler),
+                                       Route('/provider/resetpassword/<resetpassword_key>', handler=provider.ProviderResetPasswordHandler),
                                        Route('/provider/activation/<activation_key>', handler=provider.ProviderActivationHandler),
                                        
                                        # admin
