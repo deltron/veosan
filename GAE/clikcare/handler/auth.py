@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import logging
-from base import BaseHandler
+from handler.base import BaseHandler
 # webapp2 auth service
 from webapp2_extras.auth import InvalidAuthIdError
 from webapp2_extras.auth import InvalidPasswordError

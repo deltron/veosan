@@ -4,6 +4,7 @@ from google.appengine.api import users
 from webapp2_extras import jinja2
 from webapp2_extras import auth
 from webapp2_extras import sessions
+import data
 
 
 # change to en and everything is english!
@@ -45,6 +46,10 @@ class BaseHandler(webapp2.RequestHandler):
             # extend roles
             roles.extend(user.roles)
             
+            # make provider object available if a provider
+            provider = data.db.get_provider_from_email(user.get_email())
+
+            
         google_user = users.get_current_user()
         if google_user:
             logging.info('google user also logged in:' + str(google_user))
@@ -65,6 +70,7 @@ class BaseHandler(webapp2.RequestHandler):
         template_args['logout_url'] = '/logout'
         template_args['admin_logout_url'] = users.create_logout_url('/')
         template_args['roles'] = roles
+        template_args['provider'] = provider
         # render
         self.response.write(self.jinja2.render_template(filename, **template_args))
           

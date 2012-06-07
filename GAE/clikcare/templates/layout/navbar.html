@@ -9,9 +9,30 @@
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ username }} <b class="caret"></b></a>
 						<ul class="dropdown-menu">
+							{% if provider and 'provider' in roles %}
+							<li id="bookings" {% if "bookings" == active_page %} class="active" {% endif %}>
+								<a href="{{provider.get_edit_link(route='/provider/bookings')}}">{{ _('Bookings') }}</a>
+							</li>
+							<li id="schedule" {% if "schedule" == active_page %} class="active" {% endif %}>
+								<a href="{{provider.get_edit_link(route='/provider/schedule')}}">{{ _('Schedule') }}</a>
+							</li>
+							<li class="divider"></li>
+							{% endif%}
+
 							{% if 'admin' in roles %}
+							<li id="profile" {% if  "profile" == active_page %} class="active" {% endif %} style="font-style:italic">
+								<a href="{{provider.get_edit_link(route='/admin/provider/profile')}}">{{ _('Profile') }}</a>
+							</li>
+							<li id="address" {% if  "address" == active_page %} class="active" {% endif %} style="font-style:italic">
+								<a href="{{provider.get_edit_link(route='/admin/provider/address')}}">{{ _('Address') }}</a>
+							</li>
+							<li id="administration" {% if  "administration" == active_page %} class="active" {% endif %} style="font-style:italic">
+								<a href="{{provider.get_edit_link(route='/admin/provider')}}">{{ _('Administration') }}</a>
+							</li>
+							<li class="divider"></li>
+
 							<li style="font-style:italic">
-								<a href="/admin"  title="{{ google_user.nickname() }}">Administration</a>
+								<a href="/admin"  title="{{ google_user.nickname() }}">System Admin</a>
 							</li>
 							<li style="font-style:italic">
 								<a href="{admin_logout_url{}}"  title="Logout of {{ google_user.nickname() }}">Admin Logout</a>
