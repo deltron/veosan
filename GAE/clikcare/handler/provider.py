@@ -41,8 +41,10 @@ class ProviderScheduleHandler(ProviderBaseHandler):
         availableIds = provider.getAvailableScheduleIds()
         logging.info('available ids' + str(availableIds))
         self.render_schedule(provider, availableIds)
-            
-    @provider_required
+           
+    # SHOULD HAVE @provider_required
+    # SECURITY HOLE!!!!
+    # TODO!!! 
     def post(self):
         logging.info('ProviderScheduleHandler POST')
         urlsafe_key = self.request.get('provider_key')

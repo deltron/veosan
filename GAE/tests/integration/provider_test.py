@@ -5,6 +5,21 @@ import unittest
 from data import db 
 
 class ProviderTest(BaseTest):
+    def test_provider_schedule_set_one_timeslot_action_as_provider(self):
+        self.login_as_admin()
+        self.init_new_provider()
+        # fill all sections
+        self.fill_new_provider_address_correctly_action()
+        self.fill_new_provider_profile_correctly_action()
+        self.solicit_provider()
+        self.logout_admin()
+        # terms agreement
+        self.activate_provider_from_email()
+        self.logout_provider()
+        
+        self.login_as_provider()
+        self.provider_schedule_set_one_timeslot_action()
+
 
     def test_administration_tab_not_visible_to_provider(self):
         # setup a provider
