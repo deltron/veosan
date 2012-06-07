@@ -9,12 +9,12 @@
 <div class="row">
 	<div class="span12">
 	<div class="well">
-		<h3>{{p.first_name}} {{p.last_name}}</h3>
-		{{p.address}}<br>
-		{{p.city}}<br>
-		{{p.postal_code}}<br>
-		{{p.email}}<br>
-		{{p.phone}}
+		<h3>{{provider.first_name}} {{provider.last_name}}</h3>
+		{{provider.address}}<br>
+		{{provider.city}}<br>
+		{{provider.postal_code}}<br>
+		{{provider.email}}<br>
+		{{provider.phone}}
 		<br>
 		<br>
 		<ol>
@@ -42,9 +42,9 @@
 		</ol>
 	</div>
 
-{% if p.terms_agreement %}
+{% if provider.terms_agreement %}
 	<div class="alert alert-success">
-		Terms agreed on {{ p.terms_date }}
+		Terms agreed on {{ provider.terms_date }}
 	</div>
 {% else %}
 {# show form if terms were not yet agreed #}
@@ -52,7 +52,7 @@
 			<fieldset>
 				{{ macro.makeStandardForm() }}
 			</fieldset>
-			<input type="hidden" name="provider_key" value="{{p.key.urlsafe()}}" />
+			<input type="hidden" name="provider_key" value="{{ provider.key.urlsafe() }}" />
 			<div class="form-actions">
 				<button type="submit" class="btn btn-primary">
 					{{ _('I Agree') }}

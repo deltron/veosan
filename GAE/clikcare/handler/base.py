@@ -4,6 +4,7 @@ from google.appengine.api import users
 from webapp2_extras import jinja2
 from webapp2_extras import auth
 from webapp2_extras import sessions
+import data
 from webapp2_extras import i18n
 from util import languages
 from webapp2_extras.i18n import lazy_gettext as _
@@ -31,33 +32,51 @@ class BaseHandler(webapp2.RequestHandler):
         #    logging.info('no translations for jinja')
         return j
 
-    def render_template(self, filename, **template_args):
+    def render_template(self, filename, provider=None, **template_args):
         '''
             Common template rendering function
         '''
+        
         # add template arguments common to all templates
         user = self.get_current_user()
-        logging.info('User: ' + str(user))
+        logging.info('(BaseHandler.render_template) User logged in: ' + str(user))
+        
         # Eventually display the full name of the user (when linked to patient or provider profile)
         username = ''
         roles = []
-
+        
+        
+        # somebody is logged in
         if user:
             username = user.auth_ids[0]
-            
+                        
             # extend roles
             roles.extend(user.roles)
             
+            # is it a provider?
+            if 'provider' in roles:
+                provider_from_user = data.db.get_provider_from_email(user.get_email())
+                logging.info('(BaseHandler.render_template) Provider logged in: ' + str(provider_from_user.email))
+
+                # verify user->provider matches request->provider passed as paramater (ie. from request key)
+                if provider: 
+                    if not provider_from_user == provider:
+                        logging.error("(BaseHandler.render_template) Logged in user does not match provider_key. We have a problem.") 
+                else:
+                    # if no provider from request key, set it from the user
+                    # useful for making the drop-down menu keys when not requesting specific provider pages
+                    provider = provider_from_user
+                
         google_user = users.get_current_user()
         if google_user:
-            logging.info('google user also logged in:' + str(google_user))
-            #username = '%s [%s]' % (username, google_user.nickname())
+            logging.info('(BaseHandler.render_template) Google User also logged in: ' + str(google_user))
             
             # check google account for admin, add to roles
             if users.is_current_user_admin():
                 roles.append('admin')
+
         else:
-            logging.info('no google user logged in')
+            logging.info('(BaseHandler.render_template) No Google user logged in')
             # copy roles into roles list
             
         # template variables
@@ -68,9 +87,11 @@ class BaseHandler(webapp2.RequestHandler):
         template_args['logout_url'] = '/logout'
         template_args['admin_logout_url'] = users.create_logout_url('/')
         template_args['roles'] = roles
-        template_args['lang'] = _('en')
+        template_args['provider'] = provider
+		template_args['lang'] = _('en')
         template_args['languages'] = filter(lambda l: l not in [_('en')], languages)
         logging.info('language is %s' % _('en'))
+            
         # render
         self.response.write(self.jinja2.render_template(filename, **template_args))
           
@@ -137,14 +158,14 @@ class BaseHandler(webapp2.RequestHandler):
     def login_user(self, email, password, remember_me=True):
         auth_user = self.auth.get_user_by_password(email, password, remember=remember_me)
         user = self.get_current_user()
-        logging.info('Login succesful for %s' % user)
+        logging.info('(BaseHandler.login_user) Login succesful for %s' % user)
         return user
 
     def get_current_user(self):
         ''' Get the current authenticated user from our internal auth system. Returns None if no user is logged in'''
         user = None
         user_session = self.auth.get_user_by_session()
-        logging.info('user_session:' + str(user_session))
+        logging.info('(BaseHandler.get_current_user) user_session:' + str(user_session))
         if user_session:
             user, token_timestamp = self.auth.store.user_model.get_by_auth_token(user_session['user_id'], user_session['token'])
         return user

@@ -40,16 +40,18 @@
 		</div>
 	</div>
 	<div class="span6">
-		<div id="carouselProfile" class="carousel">
+		<div id="carouselProfile" class="carousel slide">
 			<!-- Carousel items -->
 			<div class="carousel-inner">
+				{# TODO: replace with calls to make_provider_bio #}
+				
 				<div class="item active" style="width:100%">
 					<div style="margin: 0px auto; width:75%;">
 						<div class="row-fluid">
-							<div class="span">
-								<img src="assets/img/profile-thumb1.jpeg">
+							<div class="span4">
+								<img src="/assets/img/profile-thumb1.jpeg">
 							</div>
-							<div class="span">
+							<div class="span8">
 								<h3>JULIE S.</h3>
 								<h6>B.Sc., M.Cl.Sc., FCAMT</h6>
 								<br>
@@ -88,10 +90,10 @@
 				<div class="item " style="width:100%">
 					<div style="margin: 0px auto; width:75%;">
 						<div class="row-fluid">
-							<div class="span">
-								<img src="assets/img/profile-thumb2.jpeg">
+							<div class="span4">
+								<img src="/assets/img/profile-thumb2.jpeg">
 							</div>
-							<div class="span">
+							<div class="span8">
 								<h3>CARLA T.</h3>
 								<h6>B.Sc., M.Cl.Sc., FCAMT</h6>
 								<br>
@@ -130,10 +132,10 @@
 				<div class="item " style="width:100%">
 					<div style="margin: 0px auto; width:75%;">
 						<div class="row-fluid">
-							<div class="span">
-								<img src="assets/img/profile-thumb3.jpeg">
+							<div class="span4">
+								<img src="/assets/img/profile-thumb3.jpeg">
 							</div>
-							<div class="span">
+							<div class="span8">
 								<h3>PATRICK I.</h3>
 								<h6>B.Sc., M.Cl.Sc., FCAMT</h6>
 								<br>
@@ -177,61 +179,76 @@
 	</div>
 </div>
 
-
-
 <div class="marketing">
-  <h1>Health care for everyone, everywhere.</h1>
-  <p class="marketing-byline">Finding care is simple and easy. Here's why.</p>
-  
-  <br>
-  
-  <div class="row">
-    <div class="span4">
-      <i class="bs-icon icon-home"></i>
-      <h3>Local Providers</h3>
-      <p>We match your health care needs with the best providers in your area. Our team is ready to help you today.</p>
-    </div>
-    <div class="span4">
-      <i class="bs-icon icon-time"></i>
-      <h3>Simple Booking</h3>
-      <p>Booking an appointment is just one step away. Forget about spending hours searching and trying to make sense of the results. It's better with Clikcare.</p>
-    </div>
-    <div class="span4">
-      <i class="bs-icon icon-ok"></i>
-      <h3>Quality and Experience</h3>
-      <p>Our care providers are screened to meet the highest industry standards. We look at things like education, experience, and accreditations so you don't have to.</p>
-    </div>
-  </div><!--/row-->
-  <div class="row">
-    <div class="span4">
-      <i class="bs-icon icon-heart"></i>
-      <h3>We Care</h3>
-      <p>We know how difficult it can be to navigate the health care system and want to make it better. We use Clikcare to find care for our family and friends.</p>
-    </div>
-    <div class="span4">
-      <i class="bs-icon icon-user"></i>
-      <h3>Community</h3>
-      <p>We are actively engaged in the healthcare community. A portion of our proceeds goes to fund local initiatives aimed at making care more accessible for everyone.</p>
-    </div>
-    <div class="span4">
-      <i class="bs-icon icon-plus"></i>
-      <h3>Positive Impact</h3>
-      <p>We believe using great technology is the key to creating a sustainable healthcare ecosystem for the next generation. Let's work together to make this a reality.</p>
-    </div>
-  </div><!--/row-->
-</div> <!-- class marketing -->
-{% endblock content %} 
+	<h1>Health care for everyone, everywhere.</h1>
+	<p class="marketing-byline">
+		Finding care is simple and easy. Here's why.
+	</p>
+
+	<br>
+
+	<div class="row">
+		<div class="span4">
+			<i class="bs-icon icon-home"></i>
+			<h3>Local Providers</h3>
+			<p>
+				We match your health care needs with the best providers in your area. Consultations can be done in clinic or conveniently at your home. Our team is ready to help you today.
+			</p>
+		</div>
+		<div class="span4">
+			<i class="bs-icon icon-time"></i>
+			<h3>Simple Booking</h3>
+			<p>
+				Booking an appointment is just one step away. Forget about spending hours searching and trying to make sense of the results. It's better with Clikcare.
+			</p>
+		</div>
+		<div class="span4">
+			<i class="bs-icon icon-ok"></i>
+			<h3>Quality and Experience</h3>
+			<p>
+				Our care providers are screened to meet the highest industry standards. We look at things like education, experience, and accreditations so you don't have to.
+			</p>
+		</div>
+	</div><!--/row-->
+	<div class="row">
+		<div class="span4">
+			<i class="bs-icon icon-heart"></i>
+			<h3>We Care</h3>
+			<p>
+				We know how difficult it can be to navigate the health care system and want to make it better. We use Clikcare to find care for our family and friends.
+			</p>
+		</div>
+		<div class="span4">
+			<i class="bs-icon icon-user"></i>
+			<h3>Community</h3>
+			<p>
+				We are actively engaged in the healthcare community. A portion of our proceeds goes to fund local initiatives aimed at making care more accessible for everyone.
+			</p>
+		</div>
+		<div class="span4">
+			<i class="bs-icon icon-plus"></i>
+			<h3>Positive Impact</h3>
+			<p>
+				We believe using great technology is the key to creating a sustainable healthcare ecosystem for the next generation. Let's work together to make this a reality.
+			</p>
+		</div>
+	</div><!--/row-->
+</div>
+<!-- class marketing -->
+{% endblock content %}
 
 {% block extra_javascript %}
-<script src="/assets/js/jquery.js"></script>
-<script src="/assets/js/bootstrap-carousel.js"></script>
-<script src="/assets/js/bootstrap-transition.js"></script>
 <script>
 	$(function() {
 		$('#carouselProfile').carousel({
 			interval : 15000
 		});
-	});
+	}); 
 </script>
 
+<<<<<<< HEAD
 {% endblock extra_javascript %} 
+=======
+{% endblock extra_javascript %}
+
+>>>>>>> 28c7b99e33706ae23d75b322b8bb436d53799f34

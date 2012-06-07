@@ -47,17 +47,12 @@
 		
 		<!-- Bio Preview -->
 		<div class="span6">
-			<h2>Your Bio</h2>
-			<div class="well">
-				{{ macro.makeProviderBio(p) }}
-			</div>		
+				{{ macro.make_provider_bio(provider) }}
 		</div>
 </div> <!-- row -->
 {% endblock content %} 
 
 {% block extra_javascript %}
-	<script src="/assets/js/bootstrap-tooltip.js"></script>
-	<script src="/assets/js/bootstrap-popover.js"></script>
 	<script>
 		$(function() {
 			$('a[rel=tooltip]').tooltip();

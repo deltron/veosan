@@ -69,15 +69,14 @@
 
 
 {% block extra_javascript %}
-<script src="/assets/js/bootstrap-tooltip.js"></script>
-
 <script>
 	$(function() {
 		$('a[rel=tooltip]').tooltip();
 	});
 
     $("#tt a").click(function () {
-    	//alert("I am an alert box! " + $("#b14").attr("Class")); 
+    	//alert("I am an alert box! " + $("#b14").attr("Class"));
+    	
      	$(this).toggleClass("btn-success");
      	// TODO change icon inside the <a>
      	var $icon = $(this).find('div i');
@@ -102,7 +101,7 @@
      	$(this).tooltip('toggle')
      	
      	post_data = {
-     		provider_key: "{{p.key.urlsafe()}}",
+     		key: "{{ provider.key.urlsafe() }}",
      		day_time: $(this).attr("id"),
      		operation: op
      	}

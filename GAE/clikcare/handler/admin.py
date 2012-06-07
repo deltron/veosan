@@ -100,8 +100,8 @@ class NewProviderSolicitHandler(BaseHandler):
             
             # render the provider admin page
             success_message='Solicit email sent to %s' % provider.email
-            self.render_template('provider/administration.html', p=provider, success_message=success_message)
+            self.render_template('provider/administration.html', provider=provider, success_message=success_message)
         else:
             error_message='Incomplete profile for %s, email not sent' % provider.email
-            self.render_template('provider/administration.html', p=provider, error_message=error_message)
+            self.render_template('provider/administration.html', provider=provider, error_message=error_message)
 

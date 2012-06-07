@@ -15,15 +15,15 @@ from util import saved_message
 class ProviderAdminBaseHandler(BaseHandler):
 
     def render_profile(self, provider, profile_form, **extra):
-        self.render_template('provider/profile.html', p=provider, form=profile_form, **extra)
+        self.render_template('provider/profile.html', provider=provider, form=profile_form, **extra)
     
     def render_address(self, provider, address_form, **extra):
         upload_url = blobstore.create_upload_url('/admin/provider/address/upload')
         uploadForm = ProviderPhotoForm(self.request.GET)
-        self.render_template('provider/address.html', p=provider, form=address_form, uploadForm=uploadForm, upload_url=upload_url, **extra)
+        self.render_template('provider/address.html', provider=provider, form=address_form, uploadForm=uploadForm, upload_url=upload_url, **extra)
        
     def render_administration(self, provider, **extra):
-        self.render_template('provider/administration.html', p=provider, **extra)
+        self.render_template('provider/administration.html', provider=provider, **extra)
            
 
 class ProviderEditProfileHandler(ProviderAdminBaseHandler):
@@ -35,6 +35,7 @@ class ProviderEditProfileHandler(ProviderAdminBaseHandler):
         form = ProviderProfileForm(obj=provider)
         self.render_profile(provider, profile_form=form)
     
+    # admin_required
     def post(self):
         form = ProviderProfileForm(self.request.POST)
         if form.validate():
@@ -57,12 +58,13 @@ class ProviderEditAddressHandler(ProviderAdminBaseHandler):
         form = ProviderAddressForm(obj=provider)
         self.render_address(provider, address_form=form)
 
+    # admin_required
     def post(self):
         form = ProviderAddressForm(self.request.POST)
         if form.validate():
             # Store Provider
-            key = db.storeProvider(self.request.POST)
-            provider = key.get()
+            provider_key = db.storeProvider(self.request.POST)
+            provider = provider_key.get()
             self.render_address(provider, address_form=form, success_message=saved_message)
         else:
             # show validation error

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import logging
-from base import BaseHandler
+from handler.base import BaseHandler
 # webapp2 auth service
 from webapp2_extras.auth import InvalidAuthIdError
 from webapp2_extras.auth import InvalidPasswordError
@@ -30,8 +30,10 @@ def provider_required(handler_method):
         user = self.get_current_user()
         if user:
             provider = data.db.get_provider_profile(user)
+            
+            # if there is a key in the request, make sure it matches the logged in user
             if provider:
-                return provider.key.urlsafe() == self.request.get('key')   
+                return provider.key.urlsafe() == self.request.get('key')
             else:
                 logging.info('provider_required failed. Provider key does not match request key %s <> $s' % (provider.key.urlsafe(), self.request.get('key')))
         else:

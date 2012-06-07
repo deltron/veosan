@@ -40,9 +40,9 @@ class BookingTest(BaseTest):
         
         # verify provider name
         response.mustcontain("Mr. Fantastic F.", "is available")
-        
+                
         # verify location
-        response.mustcontain("at his clinic on 123 Main St. in Westmount")
+        response.mustcontain("at their clinic at 123 Main St. in Westmount")
         
         # verify date and time
         response.mustcontain("8:00")
@@ -115,7 +115,7 @@ class BookingTest(BaseTest):
         # verify provider name
         response.mustcontain("Mr. Fantastic F.", "is available")
         # verify location
-        response.mustcontain("at his clinic on 123 Main St. in Westmount")
+        response.mustcontain("at their clinic at 123 Main St. in Westmount")
         # verify date and time
         response.mustcontain("8:00")
     

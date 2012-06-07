@@ -77,9 +77,9 @@ application = webapp2.WSGIApplication([
                                        Route('/provider/activation/<activation_key>', handler=provider.ProviderActivationHandler),
                                        
                                        # admin
+                                       ('/admin', admin.AdminIndexHandler),
                                        ('/admin/provider/init', admin.NewProviderInitHandler),
                                        ('/admin/provider/solicit', admin.NewProviderSolicitHandler),
-                                       ('/admin', admin.AdminIndexHandler),
                                        ('/admin/bookings', admin.AdminBookingsHandler),
                                        ('/admin/providers', admin.AdminProvidersHandler),                                       
                                             
@@ -88,6 +88,9 @@ application = webapp2.WSGIApplication([
                                        ('/admin/provider/profile', provider_admin.ProviderEditProfileHandler),
                                        ('/admin/provider/address', provider_admin.ProviderEditAddressHandler),
                                        ('/admin/provider/address/upload', provider_admin.ProviderAddressUploadHandler),
+                                       
+                                       # signup for provider
+                                       ('/provider/signup', provider.ProviderSignupHandler),
                                        
                                        # auth
                                        ('/login', auth.LoginHandler),

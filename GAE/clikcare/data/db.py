@@ -10,9 +10,9 @@ from handler.auth import PROVIDER_ROLE, PATIENT_ROLE
 import db_util
   
 def get_from_urlsafe_key(urlsafe_key):
-    logging.info('Getting from urlsafe key: %s' % urlsafe_key)
+    logging.info('(db.get_from_urlsafe_key) Getting from urlsafe key: %s' % urlsafe_key)
     key = ndb.Key(urlsafe=urlsafe_key)
-    logging.info('Getting kind: %s and key: %s' % (key.kind(), key.id()))
+    logging.info('(db.get_from_urlsafe_key) Getting kind: %s and key: %s' % (key.kind(), key.id()))
     return key.get()
 
 def storeBooking(r, patient=None, provider=None):

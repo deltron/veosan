@@ -8,19 +8,77 @@
 	<div class="span12">
 		<form method="post" action="/login" class="form-horizontal">
 			<fieldset>
-				{% if booking %}
-				<!-- booking key -->
-				<input type="hidden" name="booking_key" value="{{booking.key.urlsafe()}}" />
-				{% endif %}
-				<!-- form -->
-				{{ macro.makeStandardForm() }}
+				<div class="row">
+					<div class="span6">
+						{% if booking %}
+						<!-- booking key -->
+						<input type="hidden" name="booking_key" value="{{booking.key.urlsafe()}}" />
+						{% endif %}
+						<!-- form -->
+						{{ macro.makeStandardForm() }}
+					</div>
+
+					<div class="span6">
+						<ul class="unstyled">
+							<li>
+								<h2><a data-toggle="modal" href="#create_account_modal">Create an Account</a></h2>
+							</li>
+
+							<li>
+								&nbsp;
+							</li>
+							<li>
+								<a data-toggle="modal" href="#forgot_password">Oops. I forgot my password.</a>
+							</li>
+						</ul>
+					</div>
+				</div>
 			</fieldset>
 			<div class="form-actions">
 				<button type="submit" class="btn btn-primary">
-						{{ _('Login') }}
+					{{ _('Login') }}
 				</button>
 			</div>
 		</form>
 	</div>
 </div>
+
+<div class="modal hide" id="create_account_modal" style="display: none;">
+	<div class="modal-header">
+		<a class="close" data-dismiss="modal">×</a>
+		<h3>Create an Account</h3>
+	</div>
+	<div class="modal-body marketing">
+		<i class="bs-icon icon-heart"></i><h3>For Patients</h3>
+		<p>
+			Creating an account is easy! Just <a href="/">book an appointment</a> to get started today.
+		</p>
+
+		<i class="bs-icon icon-briefcase"></i><h3>For Health-care Providers</h3>
+		<p>
+			Membership on our platform is currently by invitation-only. Please enter your details below and we will be in touch!
+		</p>
+
+		<form method="post" action="/provider/signup" class="form-inline">
+			<fieldset>
+				<input id="provider_email" name="provider_email" type="text" placeholder="Email Address">
+				<input id="provider_postalcode" name="provider_postalcode" type="text" placeholder="Postal Code" class="input-small">
+				<button type="submit" class="btn btn-primary">
+					Submit
+				</button>
+			</fieldset>
+		</form>
+	</div>
+</div>
+
+<div class="modal hide" id="forgot_password" style="display: none;">
+	<div class="modal-header">
+		<a class="close" data-dismiss="modal">×</a>
+		<h3>Password Recovery</h3>
+	</div>
+	<div class="modal-body">
+		No big deal! Click here or call.
+	</div>
+</div>
+
 {% endblock content %} 

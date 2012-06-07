@@ -393,7 +393,7 @@ class BaseTest(unittest.TestCase):
 
 
         # Click to select Monday morning        
-        request_variables = {'provider_key': provider.key.urlsafe(), 'day_time': monday_morning_id, 'operation': 'add'}
+        request_variables = {'key': provider.key.urlsafe(), 'day_time': monday_morning_id, 'operation': 'add'}
         response = self.testapp.post('/provider/schedule', request_variables)
         
         # no javascript interpretation for jquery so request the page again...
