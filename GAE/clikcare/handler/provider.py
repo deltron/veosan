@@ -192,4 +192,19 @@ class ProviderActivationHandler(ProviderBaseHandler):
         else:
             logging.info('No activation key')
             
-            
+
+class ProviderSignupHandler(ProviderBaseHandler):
+    def post(self):
+        provider_email = self.request.get('provider_email')
+        provider_postalcode = self.request.get('provider_postalcode')
+
+        message = "Received sign-up request from email->%s postal_code->%s" % (provider_email, provider_postalcode)
+
+        logging.info(message)
+
+        from_email = "cliktester@gmail.com"
+        subject = "Request for signup from provider"
+
+        mail.email_contact_form(self.jinja2, from_email, subject, message)
+
+        self.redirect("/")
