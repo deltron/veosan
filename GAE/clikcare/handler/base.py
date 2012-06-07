@@ -39,6 +39,7 @@ class BaseHandler(webapp2.RequestHandler):
         # Eventually display the full name of the user (when linked to patient or provider profile)
         username = ''
         roles = []
+        provider = None
 
         if user:
             username = user.auth_ids[0]
@@ -71,6 +72,7 @@ class BaseHandler(webapp2.RequestHandler):
         template_args['admin_logout_url'] = users.create_logout_url('/')
         template_args['roles'] = roles
         template_args['provider'] = provider
+            
         # render
         self.response.write(self.jinja2.render_template(filename, **template_args))
           
