@@ -57,43 +57,7 @@
 		<link href="/assets/css/docs.css" rel="stylesheet">
 	</head>
 	<body>
-		<div class="navbar navbar-fixed-top">
-			<div class="navbar-inner">
-				<div class="container">
-					<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> 
-						<span class="icon-bar"></span> 
-						<span class="icon-bar"></span> 
-						<span class="icon-bar"></span> 
-					</a>
-					<a class="brand" href="/">{{ _('clikcare') }}</a>
-					<div class="nav-collapse">
-						<ul class="nav pull-right">
-							{% if user %}
-								<li class="dropdown">
-									<a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ username }} <b class="caret"></b></a>
-									<ul class="dropdown-menu">
-						            	{% if 'admin' in roles %}
-											<li style="font-style:italic"><a href="/admin"  title="{{ google_user.nickname() }}">Administration</a></li>
-											<li style="font-style:italic"><a href="{admin_logout_url{}}"  title="Logout of {{ google_user.nickname() }}">Admin Logout</a></li>
-											<li class="divider"></li>
-										{% endif%}
-						            	<li class=""><a href="{{logout_url}}">{{ _('Logout') }}</a></li>
-					        		</ul>
-					        	</li>
-							{% else %}
-								<li><a href="{{login_url}}">{{ _('My Account') }}</a></li>
-
-								{% if 'admin' in roles %}
-									<li style="font-style:italic"><a href="/admin" title="{{ google_user.nickname() }}">Administration</a></li>
-									<li style="font-style:italic"><a href="{{admin_logout_url}}"  title="Logout of {{ google_user.nickname() }}">Admin Logout</a></li>
-								{% endif%}
-							{% endif %}			
-						</ul>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- /navbar -->
+		{% include "/layout/navbar.html" with context %}
 
 		<div class="container">
 			{% block subnav %}{% endblock %}
@@ -123,29 +87,7 @@
 			<!-- content goes here -->
 			{% endblock %}
 
-			<div class="foot">
-				<hr>
-				<ul>
-					<li>
-						<a href="/about">{{ _('About') }}</a>
-					</li>
-					<li>
-						<a href="/contact">{{ _('Contact') }}</a>
-					</li>
-					<li>
-						<a href="/careers">{{ _('Careers') }}</a>
-					</li>
-					<li>
-						<a href="/terms">{{ _('Terms') }}</a>
-					</li>
-					<li>
-						<a href="/privacy">{{ _('Privacy') }}</a>
-					</li>
-					<li class="pull-right">
-						&copy; 2012 Cliksante inc.
-					</li>
-				</ul>
-			</div>
+			{% include "/layout/footer.html" with context %}
 		</div>
 		<!-- /container -->
 
