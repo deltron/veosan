@@ -1,17 +1,14 @@
-# -*- coding: utf-8 -*-
 import logging
 from datetime import date
-# GAE
-from google.appengine.api import users
-from google.appengine.ext import blobstore
-from google.appengine.ext.webapp import blobstore_handlers
 #clik
 from base import BaseHandler
 import data.db as db
 from forms.provider import ProviderTermsForm, ProviderPasswordForm
-from data.model import Provider, Schedule
-import util, mail
+from data.model import Schedule
+import util
+import mail
 from handler.auth import provider_required
+from webapp2_extras.i18n import gettext as _
 
 class ProviderBaseHandler(BaseHandler):       
     def render_schedule(self, provider, availableIds, **extra):

@@ -6,7 +6,7 @@ from forms.base import BookingForm, PatientForm, EmailOnlyBookingForm
 from forms.login import LoginForm
 from handler.base import BaseHandler
 from handler.auth import patient_required
-
+import util
 
 class BaseBookingHandler(BaseHandler):
     '''Common functions for all booking handlers'''
@@ -24,17 +24,26 @@ class BaseBookingHandler(BaseHandler):
     def renderFullyBooked(self, booking, emailForm=None, **extra):
         self.render_template('booking/no_result.html', booking=booking, form=emailForm, **extra) 
         
-        
+    def create_booking_form(self, payload):
+        bookingform = BookingForm(payload)
+        # set choices at run time because can't find a way to do lazy date and time localization in form declaration
+        bookingform.category.choices = util.getAllCategories()
+        bookingform.location.choices = util.getAllRegions()
+        bookingform.booking_date.choices = util.getDatesList()
+        bookingform.booking_time.choices = util.getTimesList()
+        return bookingform
+    
     
 class IndexHandler(BaseBookingHandler):
     def get(self):
-        self.render_template('index.html', form=BookingForm(self.request.GET))
+        bookingform = self.create_booking_form(self.request.GET)
+        self.render_template('index.html', form=bookingform)
         
     def post(self):
         ''' Renders 2nd page: Result + Confirm button
         TODO: Replace with passing booking properties and provider key, saving only after the patient logging ??? 
         '''
-        bookingform = BookingForm(self.request.POST)
+        bookingform = self.create_booking_form(self.request.POST)
         if bookingform.validate():
             booking = db.storeBooking(self.request.POST, None, None)
             logging.debug('Created booking: %s' % booking.key)
