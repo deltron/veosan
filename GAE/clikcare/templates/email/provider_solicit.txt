@@ -1,4 +1,4 @@
-Thank you {{p.first_name}} {{p.last_name}} for creating an account!  Please confirm your email address by
+Thank you {{provider.first_name}} {{provider.last_name}} for creating an account!  Please confirm your email address by
 clicking on the link below:
 
 {{activation_url}}

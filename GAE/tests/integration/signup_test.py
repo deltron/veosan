@@ -19,9 +19,7 @@ class SignupTest(BaseTest):
         
         response = signup_form.submit()
         
-        # will be redirected to main page
-        response = response.follow()
-        response.mustcontain("Trouvez des soins")
+        response.mustcontain("Thanks for your interest. We will be in touch soon")
         
         # now check we received the signup email
         messages = self.mail_stub.get_sent_messages(to='cliktester@gmail.com')

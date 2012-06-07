@@ -27,9 +27,4 @@ class PatientForm(Form):
     comments = TextAreaField(_(u'Comments for your appointment'))
     # terms agreement (required)
     terms_agreement = CustomBooleanField(_(u'I agree with the Terms of Service'), [validators.Required(message=_(u'You must accept the terms to book an appointment'))])
-    
-    
-# to simplify for now, just assume email-only confirmation
-#   confirmation = MultiCheckboxField(_(u'Confirmation').decode("UTF-8"), choices=util.getAllConfirmation(), default=['email'])
-
 

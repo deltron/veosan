@@ -5,7 +5,6 @@
 import logging, random, sha, urlparse
 
 # clik
-from data.model import Provider
 from forms.admin import NewProviderForm
 from base import BaseHandler
 import data.db as db, mail

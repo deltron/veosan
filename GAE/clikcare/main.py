@@ -97,8 +97,10 @@ application = webapp2.WSGIApplication([
                                        # auth
                                        ('/login', auth.LoginHandler),
                                        ('/logout', auth.LogoutHandler),
+                                       
                                        # blob
                                        ('/serve/([^/]+)?', blob.BlobServeHandler),
+                                       
                                        # language
                                        Route('/lang/<lang>', language.LanguageHandler),
                                        

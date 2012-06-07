@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import logging
 from handler.base import BaseHandler
 # webapp2 auth service
@@ -98,8 +97,7 @@ class LoginHandler(BaseHandler):
         POST checks username, password, logs in user and redirect to start page
     '''
     def get(self):
-        login_form = LoginForm()
-        self.render_template('login.html', form=login_form)
+        self.render_template('login.html', form=LoginForm())
 
     def post(self):
         login_form = LoginForm(self.request.POST)
@@ -135,7 +133,7 @@ class LoginHandler(BaseHandler):
                 
             except (InvalidAuthIdError, InvalidPasswordError), e:
                 # throws InvalidAuthIdError if user is not found, throws InvalidPasswordError if provided password doesn't match with specified user
-                error_message = _(u'Login failed. Try again.').decode('UTF-8')
+                error_message = _(u'Login failed. Try again.')
                 self.render_template('login.html', form=login_form, error_message=error_message)
         else:
             # form validation error
