@@ -6,36 +6,39 @@ from data.model import Booking, Provider
 
 
 
-def findBestProviders(booking):
+def find_providers_for_booking_request(booking):
     '''
-        Create listof best provider to match request
+        Create list of best provider to match request
     '''
-    pass
+    # match on all criterias
+    perfectMatch = Provider.query(Provider.category==booking.requestCategory, Provider.location==region, Provider.terms_agreement==True)
+    
+    # if no providers found expand hours to before and after
     
     
 
 
 def findBestProviderForBookingRequest(booking):
     '''
-        Returns provider that best matches: category, location, dateTime
+        Returns provider that best matches: requestCategory, location, dateTime
     '''
-    category = booking.requestCategory
-    region = booking.requestRegion
+    requestCategory = booking.requestCategory
+    requestLocation = booking.requestLocation
     logging.info("request date_time x:" + str(booking.requestDateTime))
     requestDay = booking.requestDateTime.weekday()
     requestStartTime = booking.requestDateTime.hour
     # Hack: appointments last one hour
     requestEndTime = requestStartTime + 1
-    logging.info('Looking for {0} in {1} available on day:{2} from {3} to {4}'.format(category, region, requestDay, requestStartTime, requestEndTime))
+    logging.info('Looking for {0} in {1} available on day:{2} from {3} to {4}'.format(requestCategory, requestLocation, requestDay, requestStartTime, requestEndTime))
     providers = []
     providerUniverseCount = Provider.query().count()
     logging.info('Total provider universe: %s' % providerUniverseCount)
-    broadMatchCount = Provider.query(Provider.category==category, Provider.location==region).count()
-    logging.info('Found %s providers offering %s in %s' % (broadMatchCount, category, region))
-    providersQuery = Provider.query(Provider.category==category, Provider.location==region, Provider.terms_agreement==True)
-    #gdb.GqlQuery('''Select * from Provider WHERE category = :1 AND region = :2''', category, region)
+    broadMatchCount = Provider.query(Provider.category==requestCategory, Provider.location==requestLocation).count()
+    logging.info('Found %s providers offering %s in %s' % (broadMatchCount, requestCategory, requestLocation))
+    providersQuery = Provider.query(Provider.category==requestCategory, Provider.location==requestLocation, Provider.terms_agreement==True)
+    #gdb.GqlQuery('''Select * from Provider WHERE requestCategory = :1 AND requestLocation = :2''', requestCategory, requestLocation)
     providerCount = providersQuery.count(limit=50)
-    logging.info('Found {0} providers in category and region. Narrowing down list using schedule...'.format(providerCount))
+    logging.info('Found {0} providers in requestCategory and requestLocation. Narrowing down list using schedule...'.format(providerCount))
     for p in providersQuery:
         scheduleQuery = ndb.gql('''Select * from Schedule WHERE provider = :1 AND day = :2''', p.key, requestDay)
         schedulesCount = scheduleQuery.count(limit=48)

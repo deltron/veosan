@@ -55,7 +55,7 @@ class DBTestCase(BaseTestCase):
         # create booking
         b = Booking()
         b.requestCategory = testCategory
-        b.requestRegion = testLocation
+        b.requestLocation = testLocation
         b.requestDateTime = datetime.strptime('2012-04-26 10', '%Y-%m-%d %H')
         b.put();
         # test the matching
@@ -80,7 +80,7 @@ class DBTestCase(BaseTestCase):
         # create booking
         b = Booking()
         b.requestCategory = testCategory
-        b.requestRegion = otherRegion
+        b.requestLocation = otherRegion
         b.requestDateTime = datetime.strptime('2012-04-26 10', '%Y-%m-%d %H')
         b.put();
         # test the matching

@@ -128,7 +128,7 @@ class Booking(ndb.Model):
     created_on = ndb.DateTimeProperty(auto_now_add=True)
     #request
     requestCategory = ndb.StringProperty()
-    requestRegion = ndb.StringProperty()
+    requestLocation = ndb.StringProperty()
     requestDateTime = ndb.DateTimeProperty()
     # email for booking requests with no provider found
     request_email = ndb.StringProperty()
