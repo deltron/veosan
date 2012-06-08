@@ -6,6 +6,7 @@ from datetime import datetime
 from data import Provider, Booking, Schedule
 
 class DBTestCase(unittest.TestCase):
+    
     def setUp(self):
         print('setup ' + self._testMethodName)
         logging.basicConfig(level=logging.DEBUG)

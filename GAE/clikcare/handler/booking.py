@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 
 import logging
-import data.db as db, mail
+import data.db as db
+from data import db_book
+import mail
 from forms.base import BookingForm, PatientForm, EmailOnlyBookingForm
 from forms.login import LoginForm
 from handler.base import BaseHandler
@@ -48,7 +50,7 @@ class IndexHandler(BaseBookingHandler):
             booking = db.storeBooking(self.request.POST, None, None)
             logging.debug('Created booking: %s' % booking.key)
             logging.info("Looking for best provider...")
-            provider = db.findBestProviderForBooking(booking)
+            provider = db_book.findBestProviderForBooking(booking)
             if (provider):
                 logging.info("Provider found: " + provider.fullName())
                 booking.provider = provider.key
