@@ -214,8 +214,76 @@ class ProviderTest(BaseTest):
         response.mustcontain("Mot de passe")
 
         
+                            
+    def test_provider_reset_password(self):
+        self.create_complete_provider_profile()
+        self.logout_admin()
+        self.logout_provider()
         
+        login_response = self.testapp.get("/login")
+
+        resetpassword_form = login_response.forms[2] # reset passwod is 3rd form on page
+        resetpassword_form['provider_email'] = self._TEST_PROVIDER_EMAIL
+        response = resetpassword_form.submit()
         
+        # terms agreement                       
+        response.mustcontain("Password reset instructions sent to %s" % self._TEST_PROVIDER_EMAIL)
+        
+        messages = self.mail_stub.get_sent_messages(to=self._TEST_PROVIDER_EMAIL)
+        self.assertEqual(2, len(messages))
+        m = messages[1]    
+
+        provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
+
+        self.assertEqual(m.subject, 'Cliksoin - Password Reset Instructions for %s %s' % (provider.first_name, provider.last_name) )
+        self.assertEqual(m.sender, 'cliktester@gmail.com')
+        self.assertIn('Please click the link below to choose a new password', m.body.payload)
+
+        self.assertTrue('/provider/resetpassword/%s' % provider.resetpassword_key in m.body.payload)
+
+        # terms page
+        reset_url = '/provider/resetpassword/%s' % provider.resetpassword_key
+        reset_response = self.testapp.get(reset_url)
+        
+        reset_response.mustcontain("Choisissez votre mot de passe")
+        reset_response.mustcontain(self._TEST_PROVIDER_EMAIL)
+
+        # set password and all that
+        password_form = reset_response.forms[0]
+        password_form['password'] = '123456'
+        password_form['password_confirm'] = '123456'
+
+        reset_post_response = password_form.submit()
+        self.assertEqual(reset_post_response.status_int, 200)
+        
+        reset_post_response.mustcontain('Welcome back! Password has been reset for %s' % provider.email)
+        reset_post_response.mustcontain('Rendez-vous')
+
+        # try to login with old credentials
+        logout_response = self.testapp.get("/logout")
+        logout_response = logout_response.follow()
+        logout_response.mustcontain('Trouvez des soins')
+        
+        login_response = self.testapp.get("/login")
+
+        login_form = login_response.forms[0]
+        login_form['email'] = self._TEST_PROVIDER_EMAIL
+        login_form['password'] = self._TEST_PROVIDER_PASSWORD        
+        response = login_form.submit()
+
+
+        # !! TODO - from here this doesn't work.
+        # login should fail
+        response = response.follow()
+        response.mustcontain("rifier votre email et mot de passe.")
+
+        # login again with new credentials
+        resetpassword_form = response.forms[0]
+        resetpassword_form['email'] = self._TEST_PROVIDER_EMAIL
+        resetpassword_form['password'] = '123456'        
+        response = resetpassword_form.submit()
+        response.mustcontain("Rendez-vous")
+
 
 
 if __name__ == "__main__":
