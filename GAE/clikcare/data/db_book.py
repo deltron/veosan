@@ -4,8 +4,21 @@ import logging
 from google.appengine.ext import ndb
 from data.model import Booking, Provider
 
-def findBestProviderForBooking(booking):
-    'Returns provider that best matches: category, location, dateTime'
+
+
+def findBestProviders(booking):
+    '''
+        Create listof best provider to match request
+    '''
+    pass
+    
+    
+
+
+def findBestProviderForBookingRequest(booking):
+    '''
+        Returns provider that best matches: category, location, dateTime
+    '''
     category = booking.requestCategory
     region = booking.requestRegion
     logging.info("request date_time x:" + str(booking.requestDateTime))
@@ -47,4 +60,3 @@ def findBestProviderForBooking(booking):
     else:
         logging.info('No Provider Found')
         return None
-   
