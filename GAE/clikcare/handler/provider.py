@@ -10,6 +10,7 @@ import util
 import mail
 from handler.auth import provider_required
 from webapp2_extras.i18n import gettext as _
+from webapp2_extras import security 
 
 class ProviderBaseHandler(BaseHandler):       
     def render_schedule(self, provider, availableIds, **extra):
@@ -155,57 +156,85 @@ class ProviderPasswordHandler(ProviderBaseHandler):
             TODO: Display page in the context of the Provider profile (with tabs at the top)
         '''
         logging.info('GET not implemented on /provider/password')
-        pass
+        self.redirect("/")
             
     def post(self):
         '''
             Create user and link it to the Provider
         '''
-        logging.info('POST provider password')
-        provider = db.get_from_urlsafe_key(self.request.get('provider_key'))
+
         password_form = ProviderPasswordForm(self.request.POST)
+                            
+        # get provider from request
+        provider = db.get_from_urlsafe_key(self.request.get('provider_key'))
+        
         if password_form.validate():
-            # Create User in Auth system
-        
-            # get email from provider, we are not reading email from the form
-            email = provider.email
-        
             # get password from request
             password = self.request.get('password')
-        
-            # add provider role to user
-            roles = ['provider']
-        
-            # create and store the user
-            user = self.create_user(email, password, roles)
-        
-            if user:
-                # Link user to provider and save
-                provider.user = user.key
+            
+            # get user from provider
+            user = db.get_user_from_email(provider.email)
+            
+            # check if user exists, if yes then we are just setting a new password
+            if user:            
+                # set password (same as passing password_raw to user_create)
+                password_hash = security.generate_password_hash(password, length=12)    
+                user.password = password_hash
+                user.put()
                 
-                # remove activation link from user
-                provider.activation_key = None
+                logging.info('(ProviderPasswordHandler.post) Set new password for email %s' % provider.email)
 
-                # save provider
-                provider.put()
-            
-                # send welcome email
-                mail.emailProviderWelcomeMessage(self.jinja2, provider)
-            
-                # Provider is Activated
-                # login automatically
-                self.login_user(email, password)
-                # TODO Add Welcome Message and invitation to review profile and set schedule
-                #redirect_url = provider.get_edit_link(section='profile')
-                #self.redirect(redirect_url)
+                self.login_user(provider.email, password)
+
+                success_message = _("Welcome back! Password has been reset for %s" % provider.email)
                 
-                welcome_message = _("Welcome to Clikcare! Please review your profile and open your schedule.")
-                self.render_bookings(provider, success_message=welcome_message)
+            # user doesn't exist, let's make a new one, set the password and link to provider
             else:
-                logging.error('User not created. Probably because email already in Unique table.')
-                # TODO add custom validation to tell user that email is already in use.
-                error_message = 'User email is already taken. If you are already using this email for your patient profile, please inform us or use another email.'
-                self.render_password_selection(provider, password_form=password_form, error_message=error_message)
+                logging.info('(ProviderPasswordHandler.post) Creating a new user for %s' % provider.email)
+                
+                # add provider role to user
+                roles = ['provider']
+        
+                # create and store the user
+                user = self.create_user(provider.email, password, roles)
+        
+                # if user created successfully, link to to the provider
+                if user:
+                    # Link user to provider and save
+                    provider.user = user.key
+                
+                    # remove activation link from user
+                    provider.activation_key = None
+
+                    # save provider
+                    provider.put()
+            
+                    logging.info('(ProviderPasswordHandler.post) Provider<->User linked for %s' % provider.email)
+
+            
+                    # send welcome email
+                    mail.emailProviderWelcomeMessage(self.jinja2, provider)
+            
+                    # Provider is Activated
+                    # login automatically
+                    self.login_user(provider.email, password)
+                
+                    # TODO Add Welcome Message and invitation to review profile and set schedule
+                    #redirect_url = provider.get_edit_link(section='profile')
+                    #self.redirect(redirect_url)
+                
+                    welcome_message = _("Welcome to Clikcare! Please review your profile and open your schedule.")
+                    self.render_bookings(provider, success_message=welcome_message)
+                
+                # something went wrong, user not created
+                else:
+                    logging.error('(ProviderPasswordHandler.post) User not created. Probably because email already in Unique table.')
+                    
+                    # TODO add custom validation to tell user that email is already in use.
+                    error_message = 'User email is already taken. If you are already using this email for your patient profile, please inform us or use another email.'
+                    self.render_password_selection(provider, password_form=password_form, error_message=error_message)
+        
+        # password form was not validate, re-render and try again!
         else:
             self.render_password_selection(provider, password_form=password_form)
 
