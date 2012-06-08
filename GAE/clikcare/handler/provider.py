@@ -182,12 +182,17 @@ class ProviderPasswordHandler(ProviderBaseHandler):
                 user.password = password_hash
                 user.put()
                 
+                # clear the password reset key from provider to prevent further shenanigans
+                provider.resetpassword_key = None
+                provider.put()
+                
                 logging.info('(ProviderPasswordHandler.post) Set new password for email %s' % provider.email)
 
                 self.login_user(provider.email, password)
 
                 success_message = _("Welcome back! Password has been reset for %s" % provider.email)
-                
+                self.render_bookings(provider, success_message=success_message)
+
             # user doesn't exist, let's make a new one, set the password and link to provider
             else:
                 logging.info('(ProviderPasswordHandler.post) Creating a new user for %s' % provider.email)
