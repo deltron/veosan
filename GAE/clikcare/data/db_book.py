@@ -28,6 +28,10 @@ def findBestProviderForBookingRequest(booking):
     requestEndTime = requestStartTime + 1
     logging.info('Looking for {0} in {1} available on day:{2} from {3} to {4}'.format(category, region, requestDay, requestStartTime, requestEndTime))
     providers = []
+    providerUniverseCount = Provider.query().count()
+    logging.info('Total provider universe: %s' % providerUniverseCount)
+    broadMatchCount = Provider.query(Provider.category==category, Provider.location==region).count()
+    logging.info('Found %s providers offering %s in %s' % (broadMatchCount, category, region))
     providersQuery = Provider.query(Provider.category==category, Provider.location==region, Provider.terms_agreement==True)
     #gdb.GqlQuery('''Select * from Provider WHERE category = :1 AND region = :2''', category, region)
     providerCount = providersQuery.count(limit=50)
