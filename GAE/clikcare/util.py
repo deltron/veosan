@@ -18,10 +18,14 @@ def getAllRegions():
             ]
     
 # key, value
+CAT_PHYSIO = "physiotherapy"
+CAT_CHIRO = "chiropractor"
+CAT_OSTEO = "osteopath"
+
 def getAllCategories():
-    return [(u"physiotherapy", _(u"Physiotherapist")),
-            (u"chiropractor", _(u"Chiropractor")),
-            (u"osteopath", _(u"Osteopath"))
+    return [(CAT_PHYSIO, _(u"Physiotherapist")),
+            (CAT_CHIRO, _(u"Chiropractor")),
+            (CAT_OSTEO, _(u"Osteopath"))
         ]
 
 # key, value
