@@ -99,9 +99,23 @@ class ProviderTermsHandler(ProviderBaseHandler):
             self.render_terms(provider, terms_form=terms_form)
 
 class ProviderResetPasswordHandler(ProviderBaseHandler):
-    def get(self):
-        ''' Someone coming back with a password token '''
-        pass
+    def get(self, resetpassword_key=None):
+        ''' Someone coming back with a password reset token '''
+        #parse URL to get password reset key
+        if (resetpassword_key):
+            provider = db.get_provider_from_resetpassword_key(resetpassword_key)
+            
+            if provider:
+                # got a provider for that password reset token, show the password form
+                self.render_password_selection(provider)
+            else:
+                # no provider found for password reset key, send them to the login page
+                error_message = "Sorry we can't find anyone for that password reset link."
+                logging.info("(ProviderResetPasswordHandler.get) can't find anyone for that password reset link: %s" % resetpassword_key)
+                self.render_template("/login.html", form=LoginForm(), error_message=error_message)
+        else:
+            logging.info('(ProviderResetPasswordHandler.get) No password reset key in request')
+        
         
     def post(self):
         ''' Someone forgot their password, generate a token and send email '''
@@ -115,19 +129,19 @@ class ProviderResetPasswordHandler(ProviderBaseHandler):
             if provider.email and provider.first_name and provider.last_name:
                 salt = sha.new(str(random.random())).hexdigest()[:5]
 
-                provider.passwordreset_key = sha.new(salt + provider.email + provider.first_name + provider.last_name).hexdigest()
+                provider.resetpassword_key = sha.new(salt + provider.email + provider.first_name + provider.last_name).hexdigest()
                 provider.put()
                 
                 # activation url
                 url_obj = urlparse.urlparse(self.request.url)
-                passwordreset_url = urlparse.urlunparse((url_obj.scheme, url_obj.netloc, '/provider/resetpassword/' + provider.passwordreset_key, '', '', ''))
+                passwordreset_url = urlparse.urlunparse((url_obj.scheme, url_obj.netloc, '/provider/resetpassword/' + provider.resetpassword_key, '', '', ''))
                 logging.info('(ProviderResetPasswordHandler.post) password reset URL:' + passwordreset_url)
             
                 # send email
                 mail.emailProviderPasswordReset(self.jinja2, provider, passwordreset_url)
             
                 # render the login page with success message
-                success_message='Password reset instructions sent to %s' % provider.email
+                success_message = 'Password reset instructions sent to %s' % provider.email
                 logging.info("(ProviderResetPasswordHandler.post) " + success_message)
                 self.render_template('login.html', form=LoginForm(), success_message=success_message)
             else:
@@ -241,5 +255,5 @@ class ProviderSignupHandler(ProviderBaseHandler):
 
         mail.email_contact_form(self.jinja2, from_email, subject, message)
 
-        success_message='Thanks for your interest. We will be in touch soon!'
+        success_message = 'Thanks for your interest. We will be in touch soon!'
         self.render_template('login.html', form=LoginForm(), success_message=success_message)

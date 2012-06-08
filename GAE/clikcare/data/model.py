@@ -46,7 +46,7 @@ class Provider(ndb.Model):
     '''
     created_on = ndb.DateTimeProperty(auto_now_add=True)
     activation_key = ndb.StringProperty()
-    passwordreset_key = ndb.StringProperty()
+    resetpassword_key = ndb.StringProperty()
     
     # terms
     terms_agreement = ndb.BooleanProperty()

@@ -144,6 +144,10 @@ def get_provider_from_email(email):
     logging.debug('Provider for email %s is %s' % (email, provider))
     return provider   
 
+def get_provider_from_resetpassword_key(resetpassword_key):
+    provider = Provider.query(Provider.resetpassword_key == resetpassword_key).get()
+    logging.debug('(db.get_provider_from_resetpassword_key) Found provider %s from resetpassword_key: %s' % (provider, resetpassword_key))
+    return provider
 
 def get_provider_from_activation_key(activation_key):
     provider = Provider.query(Provider.activation_key == activation_key).get()
