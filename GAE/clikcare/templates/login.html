@@ -77,7 +77,15 @@
 		<h3>Password Recovery</h3>
 	</div>
 	<div class="modal-body">
-		No big deal! Click here or call.
+		No big deal! Please enter your email address below and we will send you the instructions to reset your password.
+		<form method="post" action="/provider/resetpassword" class="form-inline">
+			<fieldset>
+				<input id="provider_email" name="provider_email" type="text" placeholder="Email Address">
+				<button type="submit" class="btn btn-primary">
+					Reset
+				</button>
+			</fieldset>
+		</form>
 	</div>
 </div>
 

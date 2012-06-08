@@ -1,8 +1,8 @@
 from wtforms import Form, TextField, TextAreaField
 from wtforms import validators
+from webapp2_extras.i18n import lazy_gettext as _
 
 class ContactForm(Form):
-    pass
-#    from_email = TextField(_(u'E-mail Address').decode("UTF-8"), [validators.Email(message=_(u'Invalid email address.').decode("UTF-8"))])
-#    subject = TextField(_(u'Subject').decode("UTF-8"), [validators.Length(min=3, message=_(u'Subject required.').decode("UTF-8"))])
-#    message_body = TextAreaField(_(u'Message').decode("UTF-8"))
+    from_email = TextField(_(u'E-mail Address'), [validators.Email(message=_(u'Invalid email address.'))])
+    subject = TextField(_(u'Subject'), [validators.Length(min=3, message=_(u'Subject required.'))])
+    message_body = TextAreaField(_(u'Message'))

@@ -3,6 +3,7 @@
 from handler.base import BaseHandler
 from forms.contact import ContactForm
 import mail
+from webapp2_extras.i18n import gettext as _
 
 class ContactHandler(BaseHandler):
     def get(self):

@@ -180,7 +180,7 @@ class BaseTest(unittest.TestCase):
         messages = self.mail_stub.get_sent_messages(to=self._TEST_PROVIDER_EMAIL)
         self.assertEqual(1, len(messages))
         m = messages[0]
-        self.assertEqual(m.subject, 'Cliksoin - Confirm your profile %s' % provider.fullName())
+        self.assertEqual(m.subject, 'Cliksoin - Please confirm your profile %s' % provider.fullName())
         # assert that activation link is in the email body
         self.assertTrue('http://localhost/provider/activation/%s' % provider.activation_key in m.body.payload)
  

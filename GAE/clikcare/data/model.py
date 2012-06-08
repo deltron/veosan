@@ -46,6 +46,7 @@ class Provider(ndb.Model):
     '''
     created_on = ndb.DateTimeProperty(auto_now_add=True)
     activation_key = ndb.StringProperty()
+    passwordreset_key = ndb.StringProperty()
     
     # terms
     terms_agreement = ndb.BooleanProperty()
@@ -78,7 +79,7 @@ class Provider(ndb.Model):
     user = ndb.KeyProperty(kind=User)
     
     def fullName(self):
-        return '{0} {1}, {2}'.format(self.first_name, self.last_name, self.category)
+        return '{0} {1}'.format(self.first_name, self.last_name)
     
     def get_edit_link(self, route='/provider/bookings'):
         return u'%s?key=%s' % (route, self.key.urlsafe())

@@ -1,9 +1,10 @@
-import logging
+import logging, random, sha, urlparse
 from datetime import date
 #clik
 from base import BaseHandler
 import data.db as db
 from forms.provider import ProviderTermsForm, ProviderPasswordForm
+from forms.login import LoginForm
 from data.model import Schedule
 import util
 import mail
@@ -96,6 +97,42 @@ class ProviderTermsHandler(ProviderBaseHandler):
             self.render_password_selection(provider)
         else:
             self.render_terms(provider, terms_form=terms_form)
+
+class ProviderResetPasswordHandler(ProviderBaseHandler):
+    def get(self):
+        ''' Someone coming back with a password token '''
+        pass
+        
+    def post(self):
+        ''' Someone forgot their password, generate a token and send email '''
+        email = self.request.get('provider_email')
+
+        logging.info("(ProviderResetPasswordHandler.post) got password reset request for email: %s" % email)
+        if email:
+            provider = db.get_provider_from_email(email)
+        
+            # Check provider has at least a first name, last name and email before activation
+            if provider.email and provider.first_name and provider.last_name:
+                salt = sha.new(str(random.random())).hexdigest()[:5]
+
+                provider.passwordreset_key = sha.new(salt + provider.email + provider.first_name + provider.last_name).hexdigest()
+                provider.put()
+                
+                # activation url
+                url_obj = urlparse.urlparse(self.request.url)
+                passwordreset_url = urlparse.urlunparse((url_obj.scheme, url_obj.netloc, '/provider/resetpassword/' + provider.passwordreset_key, '', '', ''))
+                logging.info('(ProviderResetPasswordHandler.post) password reset URL:' + passwordreset_url)
+            
+                # send email
+                mail.emailProviderPasswordReset(self.jinja2, provider, passwordreset_url)
+            
+                # render the login page with success message
+                success_message='Password reset instructions sent to %s' % provider.email
+                logging.info("(ProviderResetPasswordHandler.post) " + success_message)
+                self.render_template('login.html', form=LoginForm(), success_message=success_message)
+            else:
+                logging.info("(ProviderResetPasswordHandler.post) Can't reset password, no provider exists for email: %s" % email)
+                self.render_template('login.html', form=LoginForm())
 
 
 class ProviderPasswordHandler(ProviderBaseHandler):
@@ -204,4 +241,5 @@ class ProviderSignupHandler(ProviderBaseHandler):
 
         mail.email_contact_form(self.jinja2, from_email, subject, message)
 
-        self.redirect("/")
+        success_message='Thanks for your interest. We will be in touch soon!'
+        self.render_template('login.html', form=LoginForm(), success_message=success_message)

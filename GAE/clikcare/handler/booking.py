@@ -58,7 +58,7 @@ class IndexHandler(BaseBookingHandler):
                 booking.put()
                 # booking saved with provider, no patient info yet
                 email_form = EmailOnlyBookingForm()
-                tv = {'patient': None, 'booking': booking, 'p': provider, 'form': email_form }
+                tv = {'patient': None, 'booking': booking, 'provider': provider, 'form': email_form }
                 self.render_template('booking/result.html', **tv) 
             else:
                 logging.warn('No provider found for booking: %s' % booking.key.urlsafe())
@@ -142,7 +142,7 @@ class PatientBookHandler(BaseBookingHandler):
                     self.renderNewPatientForm(patientForm, booking)             
             else:
                 # email form validation failed
-                tv = {'patient': None, 'booking': booking, 'p': booking.provider, 'form': email_form }
+                tv = {'patient': None, 'booking': booking, 'provider': booking.provider, 'form': email_form }
                 self.render_template('booking/result.html', **tv) 
             
             
