@@ -3,8 +3,55 @@
 import logging
 from google.appengine.ext import ndb
 from data.model import Booking, Provider, Schedule
+from datetime import time, date, datetime, timedelta
+
+###
+### Timeslots available in a day
+###
+
+def create_time_tuple(start, end):
+    return (time(start), time(end))
+
+def create_one_hour_timeslot(start):
+    return create_time_tuple(start, start+1)
+
+timeslots = map(create_one_hour_timeslot, range(8, 17))
 
 
+def main_search(booking):
+    # perfect match
+    providers = find_providers_perfect_match(booking)
+    logging.info('perfect match found %s available providers' % len(providers))
+    if (len(providers) == 0):
+        # if no providers found expand hours to before and after
+        logging.info('No perfect match providers found, expanding search to other time on same day')
+        providers = find_providers_alternate_time(booking)
+        # imperfect match (other days)
+    
+        # imperfect match (other locations)
+    return providers
+
+    
+def timeslot_distance(ts1, ts2):
+    time_diff = datetime.combine(date.today(), ts1[0]) - datetime.combine(date.today(), ts2[0])
+    return abs(time_diff.total_seconds())
+
+
+def filter_providers_same_day_alternate_time(booking, providerQuery):
+    providers = []
+    request_day = booking.requestDateTime.weekday()
+    request_start = booking.requestDateTime.hour
+    request_end = request_start + 1 # Hack: appointments last one hour
+    request_timeslot = (time(request_start), time(request_end))
+    
+    # sort timeslots based on distance to reuqest timeslot
+    sorted_timeslots = sorted(timeslots, key=lambda t: timeslot_distance(t, request_timeslot))
+    logging.info('sorted timeslots %s' % sorted_timeslots)
+    
+    
+    return providers
+    
+    
 
 def filter_providers_based_on_schedule(booking, providerQuery):
     providers = []
@@ -36,41 +83,50 @@ def filter_providers_based_on_schedule(booking, providerQuery):
             logging.info('No schedule match for provider {0} on day'.format(p, request_day))
     # return list of providers available
     return providers
-            
 
-def find_providers_for_booking_request(booking):
+
+def display_general_provider_universe_stats(booking):
+    # unpack booking request
+    requestCategory = booking.requestCategory
+    requestLocation = booking.requestLocation
+    # general debug stats
+    providerUniverseCount = Provider.query().count()
+    logging.info('Total provider universe: %s' % providerUniverseCount)
+    broadMatchCount = Provider.query(Provider.category==requestCategory, Provider.location==requestLocation).count()
+    logging.info('Found %s providers offering %s in %s (ignoring terms agreement)' % (broadMatchCount, requestCategory, requestLocation))
+    
+    
+def find_providers_perfect_match(booking):
     '''
         Create list of best provider to match request
     '''
     # unpack booking request
     requestCategory = booking.requestCategory
     requestLocation = booking.requestLocation
-
-    # general debug stats
-    providerUniverseCount = Provider.query().count()
-    logging.info('Total provider universe: %s' % providerUniverseCount)
-    broadMatchCount = Provider.query(Provider.category==requestCategory, Provider.location==requestLocation).count()
-    logging.info('Found %s providers offering %s in %s (ignoring terms agreement)' % (broadMatchCount, requestCategory, requestLocation))
-       
-    # match on all criterias, sort by experience (ascending start_year)
-    providers_query = Provider.query(Provider.category==requestCategory, Provider.location==requestLocation, Provider.terms_agreement==True).order(Provider.start_year)
-    logging.info('Found %s providers offering %s in %s (with terms)' % (providers_query.count(), requestCategory, requestLocation))
-    
-    #available_providers = ifilter(provider_is_availble, providersQuery)
-    providers = filter_providers_based_on_schedule(booking, providers_query)
-    logging.info('found %s available providers' % len(providers))
-    #providers = providersQuery.fetch(limit=1)
-    if (len(providers) == 0):
-        # if no providers found expand hours to before and after
-        logging.info('No perfect match providers found, expanding search to other regions')
-        # TODO
-        
+    # match on location and category, sort by experience (ascending start_year)
+    providers_wide_query = Provider.query(Provider.category==requestCategory, Provider.location==requestLocation, Provider.terms_agreement==True).order(Provider.start_year)
+    logging.info('Found %s providers offering %s in %s (with terms)' % (providers_wide_query.count(), requestCategory, requestLocation))
+    providers = filter_providers_based_on_schedule(booking, providers_wide_query)
+    logging.info('Found %s providers offering %s in %s at requested date and time' % (providers_wide_query.count(), requestCategory, requestLocation))
     return providers
 
+
+def find_providers_alternate_time(booking):
+    '''
+        Create list of providers that are available on the same day, but at a different time
+    '''
+    # match on location and category, sort by experience (ascending start_year)
+    providers_wide_query = Provider.query(Provider.category==booking.requestCategory, Provider.location==booking.requestLocation, Provider.terms_agreement==True).order(Provider.start_year)
+    logging.info('Found %s providers offering %s in %s (with terms)' % (providers_wide_query.count(), booking.requestCategory, booking.requestLocation))
+    providers = filter_providers_same_day_alternate_time(booking, providers_wide_query)
+    logging.info('Found %s providers offering %s in %s at requested date but alternate time' % (providers_wide_query.count(), booking.requestCategory, booking.requestLocation))
+    return providers
+    
 
 
 def findBestProviderForBookingRequest(booking):
     '''
+        OLD method returns single provider
         Returns provider that best matches: requestCategory, location, dateTime
     '''
     requestCategory = booking.requestCategory
