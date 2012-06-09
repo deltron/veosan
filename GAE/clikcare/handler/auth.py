@@ -146,6 +146,10 @@ class LogoutHandler(BaseHandler):
         Unset user session and redirect to index
     '''
     def get(self):
+        user = self.get_current_user()
+        if user:
+            logging.info("(LogoutHandler.get) Logging out user: %s" % user.get_email())
+
         self.auth.unset_session()
         self.redirect('/')
 
