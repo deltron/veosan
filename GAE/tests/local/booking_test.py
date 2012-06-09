@@ -15,10 +15,10 @@ class BookingTestCase(BaseTestCase):
         self.assertEqual(len(providers), Provider.query().count())
         
         # create booking request
-        next_monday_at_9 = testutil.create_datetime_from_weekday_and_hour(0, 9)
+        next_monday_at_9 = testutil.create_datetime_from_weekday_and_hour(0, 22)
         booking_request = Booking(requestCategory=util.CAT_PHYSIO, requestLocation='mtl-downtown', requestDateTime=next_monday_at_9)
         
-        providers = db_book.find_providers_for_booking_request(booking_request)
+        providers = db_book.main_search(booking_request)
         
         start_years = map(lambda x: x.start_year, providers)
         logging.info('start years %s' % start_years)
