@@ -250,8 +250,8 @@ class ProviderTest(BaseTest):
 
         # set password and all that
         password_form = reset_response.forms[0]
-        password_form['password'] = '123456'
-        password_form['password_confirm'] = '123456'
+        password_form['password'] = '654321'
+        password_form['password_confirm'] = '654321'
 
         reset_post_response = password_form.submit()
         self.assertEqual(reset_post_response.status_int, 200)
@@ -272,16 +272,17 @@ class ProviderTest(BaseTest):
         response = login_form.submit()
 
 
-        # !! TODO - from here this doesn't work.
         # login should fail
-        response = response.follow()
         response.mustcontain("rifier votre email et mot de passe.")
 
         # login again with new credentials
         resetpassword_form = response.forms[0]
         resetpassword_form['email'] = self._TEST_PROVIDER_EMAIL
-        resetpassword_form['password'] = '123456'        
+        resetpassword_form['password'] = '654321'        
         response = resetpassword_form.submit()
+        
+        # follow response redirect after successful login
+        response = response.follow()
         response.mustcontain("Rendez-vous")
 
 

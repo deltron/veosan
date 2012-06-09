@@ -105,7 +105,8 @@ class LoginHandler(BaseHandler):
             email = self.request.POST.get('email')
             password = self.request.POST.get('password')
             remember_me = True if self.request.POST.get('remember_me') == 'on' else False
-            logging.info('Trying to login email:%s' % email)
+            logging.info('(LoginHandler.post) Trying to login email: %s' % email)
+
             # Username and password check
             try:
                 user = self.login_user(email, password, remember_me)

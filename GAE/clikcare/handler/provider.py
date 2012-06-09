@@ -181,7 +181,7 @@ class ProviderPasswordHandler(ProviderBaseHandler):
                 password_hash = security.generate_password_hash(password, length=12)    
                 user.password = password_hash
                 user.put()
-                
+                                
                 # clear the password reset key from provider to prevent further shenanigans
                 provider.resetpassword_key = None
                 provider.put()
