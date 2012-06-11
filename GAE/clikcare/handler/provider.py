@@ -273,8 +273,7 @@ class ProviderActivationHandler(ProviderBaseHandler):
                 self.redirect("/login")
         else:
             logging.info('No activation key')
-            
-
+          
 class ProviderSignupHandler(ProviderBaseHandler):
     def post(self):
         provider_email = self.request.get('provider_email')

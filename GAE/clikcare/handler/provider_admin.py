@@ -95,4 +95,23 @@ class ProviderAdministrationHandler(ProviderAdminBaseHandler):
         else:
             logging.info("Not Admin: Can't see provider administration page")
         
-            
+
+  
+class ProviderEnableHandler(ProviderAdminBaseHandler):
+    def post(self):
+        provider = db.get_from_urlsafe_key(self.request.get('provider_key'))
+        
+        success_message = ''
+        
+        # toggle provider state
+        if provider.enable:
+            provider.enable = False
+            success_message = 'Provider is now disabled'            
+        else:
+            provider.enable = True        
+            success_message = 'Provider is now enabled'            
+
+        provider.put()
+
+        self.render_administration(provider, success_message=success_message)
+

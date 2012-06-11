@@ -87,6 +87,7 @@ application = webapp2.WSGIApplication([
                                             
                                        # provider admin
                                        ('/admin/provider', provider_admin.ProviderAdministrationHandler),
+                                       ('/admin/provider/enable', provider_admin.ProviderEnableHandler),
                                        ('/admin/provider/profile', provider_admin.ProviderEditProfileHandler),
                                        ('/admin/provider/address', provider_admin.ProviderEditAddressHandler),
                                        ('/admin/provider/address/upload', provider_admin.ProviderAddressUploadHandler),

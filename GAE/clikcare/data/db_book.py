@@ -104,7 +104,7 @@ def find_providers_perfect_match(booking):
     requestCategory = booking.requestCategory
     requestLocation = booking.requestLocation
     # match on location and category, sort by experience (ascending start_year)
-    providers_wide_query = Provider.query(Provider.category==requestCategory, Provider.location==requestLocation, Provider.terms_agreement==True).order(Provider.start_year)
+    providers_wide_query = Provider.query(Provider.category==requestCategory, Provider.location==requestLocation, Provider.terms_agreement==True, Provider.enable==True).order(Provider.start_year)
     logging.info('Found %s providers offering %s in %s (with terms)' % (providers_wide_query.count(), requestCategory, requestLocation))
     providers = filter_providers_based_on_schedule(booking, providers_wide_query)
     logging.info('Found %s providers offering %s in %s at requested date and time' % (providers_wide_query.count(), requestCategory, requestLocation))
@@ -116,7 +116,7 @@ def find_providers_alternate_time(booking):
         Create list of providers that are available on the same day, but at a different time
     '''
     # match on location and category, sort by experience (ascending start_year)
-    providers_wide_query = Provider.query(Provider.category==booking.requestCategory, Provider.location==booking.requestLocation, Provider.terms_agreement==True).order(Provider.start_year)
+    providers_wide_query = Provider.query(Provider.category==booking.requestCategory, Provider.location==booking.requestLocation, Provider.terms_agreement==True, Provider.enable==True).order(Provider.start_year)
     logging.info('Found %s providers offering %s in %s (with terms)' % (providers_wide_query.count(), booking.requestCategory, booking.requestLocation))
     providers = filter_providers_same_day_alternate_time(booking, providers_wide_query)
     logging.info('Found %s providers offering %s in %s at requested date but alternate time' % (providers_wide_query.count(), booking.requestCategory, booking.requestLocation))
@@ -142,7 +142,7 @@ def findBestProviderForBookingRequest(booking):
     logging.info('Total provider universe: %s' % providerUniverseCount)
     broadMatchCount = Provider.query(Provider.category==requestCategory, Provider.location==requestLocation).count()
     logging.info('Found %s providers offering %s in %s' % (broadMatchCount, requestCategory, requestLocation))
-    providersQuery = Provider.query(Provider.category==requestCategory, Provider.location==requestLocation, Provider.terms_agreement==True)
+    providersQuery = Provider.query(Provider.category==requestCategory, Provider.location==requestLocation, Provider.terms_agreement==True, Provider.enable==True)
     #gdb.GqlQuery('''Select * from Provider WHERE requestCategory = :1 AND requestLocation = :2''', requestCategory, requestLocation)
     providerCount = providersQuery.count(limit=50)
     logging.info('Found {0} providers in requestCategory and requestLocation. Narrowing down list using schedule...'.format(providerCount))

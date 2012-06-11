@@ -3,10 +3,11 @@
 {% set active_page = "administration" %}
 
 {% block subhead %}
-	{{ provider.fullName() }}
-	<!-- TODO: Make this a block, reuse on provider list -->
-	{% if provider.recently_created() %} <span class="label label-success">new</span>{% endif %}
-	{% if not provider.terms_agreement %} <span class="label label-important">missing terms</span>{% endif %}
+{{ provider.fullName() }}
+<!-- TODO: Make this a block, reuse on provider list -->
+{% if provider.recently_created() %} <span class="label label-success">new</span>{% endif %}
+{% if not provider.terms_agreement %} <span class="label label-important">missing terms</span>{% endif %}
+{% if not provider.enable %} <span class="label label-important">disabled</span>{% endif %}
 {% endblock %}
 
 {% block lead %} {{ _('Provider Administration') }} {% endblock %}
@@ -16,28 +17,36 @@
 <!-- Form -->
 
 <div class="row">
-	
+
 	<div class="span6">
-		
-		<h2>Terms and User</h2>
+
+		<h3>Terms and User</h3>
 		<div class="well">
-		{% if provider.terms_agreement %}
-			Agreed to terms on {{ provider.terms_date }}<br>
-		{% else %}
-			Terms not signed<br>
-		{% endif %}
-		<br>
-		{% if provider.user %}
+			{% if provider.terms_agreement %}
+			Agreed to terms on {{ provider.terms_date }}
+			<br>
+			{% else %}
+			Terms not signed
+			<br>
+			{% endif %}
+			<br>
+			{% if provider.user %}
 			{% set u = provider.user.get() %}
-			User email: {{u.auth_ids|join}}<br>
-			{% if u.password %} Password is set {% else %} Password is not set {% endif %}<br>
-		{% else %}
-			Provider is not activated. There is no user linked to this profile<br>
-		{% endif %}
+			User email: {{u.auth_ids|join}}
+			<br>
+			{% if u.password %} Password is set {% else %} Password is not set {% endif %}
+			<br>
+			{% else %}
+			Provider is not activated. There is no user linked to this profile
+			<br>
+			{% endif %}
 		</div>
-		<h2>Solicit</h2>
+
+		<h3>Solicit</h3>
 		<form method="post" action="/admin/provider/solicit" class="well form-inline">
-			<p>Make sure profile is completed before sending the invitaion for the provider to agree to the terms and take over his profile.</p>
+			<p>
+				Make sure profile is completed before sending the invitation for the provider to agree to the terms and take over his profile.
+			</p>
 			<fieldset>
 				<input type="hidden" name="provider_key" value="{{ provider.key.urlsafe() }}" />
 				<button type="submit" class="btn btn-primary">
@@ -46,15 +55,30 @@
 				<span>&lt;{{ provider.email }}&gt;</span>
 			</fieldset>
 		</form>
-		
-		
-	</div>
-	
-	<div class="span6">
-		<h2>Bio Preview</h2>
+
+		<h3>Enable</h3>
 		<div class="well">
-			{{ macro.make_provider_bio(provider) }}
+			<p>Current status is enable={{ provider.enable }}</p>
+			<form method="post" action="/admin/provider/enable" class="form-inline">
+				<fieldset>
+					<input type="hidden" name="provider_key" value="{{ provider.key.urlsafe() }}" />
+					{% if provider.enable %}
+					<button type="submit" class="btn btn-danger">
+						Disable Provider
+					</button>
+					{% elif not provider.enable or provider.enable == None %}
+					<button type="submit" class="btn btn-success">
+						Enable Provider
+					</button>
+					{% endif %}
+				</fieldset>
+			</form>
 		</div>
+	</div>
+
+	<div class="span6">
+		<h3>Bio Preview</h3>
+		{{ macro.make_provider_bio(provider) }}
 	</div>
 </div>
 {% endblock %}
