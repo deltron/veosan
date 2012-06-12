@@ -55,7 +55,7 @@ class BaseHandler(webapp2.RequestHandler):
             
             # is it a provider?
             if 'provider' in roles:
-                provider_from_user = data.db.get_provider_from_email(user.get_email())
+                provider_from_user = data.db.get_provider_from_user(user)
                 logging.info('(BaseHandler.render_template) Provider logged in: ' + str(provider_from_user.email))
 
                 # verify user->provider matches request->provider passed as paramater (ie. from request key)

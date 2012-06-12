@@ -3,8 +3,7 @@ from datetime import date
 #clik
 from base import BaseHandler
 import data.db as db
-import data
-from data.model import Provider
+import auth
 from provider import ProviderBaseHandler
 from forms.user import ProviderTermsForm, PasswordForm, LoginForm
 import mail
@@ -40,8 +39,8 @@ class ProviderTermsHandler(UserBaseHandler):
         else:
             user = self.get_current_user()
             # make sure user is a provider
-            if 'provider' in user.roles:
-                provider = db.get_provider_from_email(user.get_email())
+            if auth.PROVIDER_ROLE in user.roles:
+                provider = db.get_provider_from_user(user)
         
         terms_form = ProviderTermsForm(obj=provider)
         self.render_terms(provider, terms_form=terms_form)
@@ -155,7 +154,8 @@ class ProviderPasswordHandler(UserBaseHandler):
                 logging.info('(ProviderPasswordHandler.post) Creating a new user for %s' % provider.email)
                 
                 # add provider role to user
-                roles = ['provider']
+                # TODO - this is not generic, set this somewhere else
+                roles = [auth.PROVIDER_ROLE]
         
                 # create and store the user
                 user = self.create_user(provider.email, password, roles)
@@ -163,6 +163,7 @@ class ProviderPasswordHandler(UserBaseHandler):
                 # if user created successfully, link to to the provider
                 if user:
                     # Link user to provider and save
+                    # TODO - this is not generic, set this somewhere else
                     provider.user = user.key
                 
                     # remove activation link from user
@@ -247,9 +248,13 @@ class LoginHandler(BaseHandler):
         POST checks username, password, logs in user and redirect to start page
     '''
     def get(self):
+        ''' Show login page '''
+        
         self.render_template('login.html', form=LoginForm())
 
     def post(self):
+        ''' checks username, password, logs in user and redirect to start page '''
+        
         login_form = LoginForm(self.request.POST)
         if login_form.validate():
             email = self.request.POST.get('email')
@@ -260,26 +265,30 @@ class LoginHandler(BaseHandler):
             # Username and password check
             try:
                 user = self.login_user(email, password, remember_me)
+                
                 # login was succesful, User is in the session
                 booking_key = self.request.POST.get('booking_key')
                 if booking_key:
                     # special redirect for login during booking flow
                     self.redirect('/patient/book?bk=%s' % booking_key)
                 else:
-                    # default redirects
-                    profiles = data.db.get_user_profiles(user)
-                    logging.info('profiles: %s' % profiles)
-                    # redirect to the first profile type
-                    if len(profiles) > 0:
-                        profile = profiles[0]
-                        if isinstance(profile, Provider):
-                            redirect_url = profile.get_edit_link('/provider/bookings')
-                            self.redirect(redirect_url)
-                        else:
-                            self.redirect('/')
+                    # check role of user, redirect to appropriate page after login
+                    if auth.PROVIDER_ROLE in user.roles:
+                        provider = db.get_provider_from_user(user)
+                        logging.info('(LoginHandler.post) User %s logged in as provider, redirecting to bookings page', user.get_email())
+
+                        self.redirect(provider.get_edit_link('/provider/bookings'))
+
+                    elif auth.PATIENT_ROLE in user.roles:
+                        # patient = db.get_patient_from_user(user)
+                        # no welcome page for patient yet!
+                        
+                        logging.info('(LoginHandler.post) User %s logged in as patient, redirecting to / page', user.get_email())
+                        self.redirect('/')
+                        
                     else:
-                        logging.error('User %s logged in without roles')
-                        error_message = 'Your profile is not activated. Please contact us.'
+                        logging.error('(LoginHandler.post) User %s logged in without roles', user.get_email())
+                        error_message = 'Your account is not activated. Please check your email for an activation message or <a href="/contact">contact us</a> if you require assistance.'
                         self.render_template('login.html', form=login_form, error_message=error_message)
                 
             except (InvalidAuthIdError, InvalidPasswordError), e:

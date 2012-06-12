@@ -9,6 +9,7 @@ from forms.user import LoginForm
 from handler.base import BaseHandler
 from handler.auth import patient_required
 import util
+import auth
 
 class BaseBookingHandler(BaseHandler):
     '''Common functions for all booking handlers'''
@@ -94,7 +95,7 @@ class PatientBookHandler(BaseBookingHandler):
             # form was only a submit button, we get the email from the user logged in
             email = user.get_email()
             # A user is logged in let's see if he is a patient (he might be a provider)
-            patient = db.get_patient_profile(user)
+            patient = db.get_patient_from_user(user)
             if patient:
                 # Patient is logged in
                 logging.info('Patient %s is already logged in, confirming booking.' % email)
@@ -116,7 +117,7 @@ class PatientBookHandler(BaseBookingHandler):
                 booking.put()
                 existing_user = self.auth.store.user_model.get_by_auth_id(email)
                 if existing_user:
-                    existing_patient = db.get_patient_profile(existing_user)
+                    existing_patient = db.get_patient_from_user(existing_user)
                     if existing_patient:
                         # email is in datastore, but not logged in
                         # link booking to patient and then check if same patient logs in (check is in @patient_required)
@@ -177,7 +178,10 @@ class PatientBookForNewHandler(BaseBookingHandler):
             # Create User in Auth system
             email = self.request.get('email')
             password = self.request.get('password')
-            user = self.create_user(email, password)
+            
+            roles = [auth.PATIENT_ROLE]
+            
+            user = self.create_user(email, password, roles)
             if user:
                 # Store New Patient
                 patient = db.storePatient(self.request.POST, user)
@@ -185,6 +189,9 @@ class PatientBookForNewHandler(BaseBookingHandler):
                     # store booking
                     booking.patient = patient.key
                     booking.put()
+                    
+                    
+                    
                     # auto-loggin patient
                     self.login_user(email, password)
                     # booking succesfull, send email

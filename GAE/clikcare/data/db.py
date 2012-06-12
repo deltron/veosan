@@ -122,35 +122,22 @@ def get_user_roles(user):
     provider = Provider.query(Provider.user == user.key).get()
     if provider:
         roles.append(PROVIDER_ROLE)
+        
     patient = Patient.query(Patient.user == user.key).get()
     if patient:
         roles.append(PATIENT_ROLE)
+        
     return roles
 
 
-## Why not just use the roles?
-
-def get_user_profiles(user):
-    '''
-        return profiles from user based on link to provider or patient
-    '''
-    profiles = []
-    providers = Provider.query(Provider.user == user.key)
-    for pro in providers:
-        profiles.append(pro)
-    patients = Patient.query(Patient.user == user.key)
-    for pat in patients:
-        profiles.append(pat)
-    return profiles
-
-def get_provider_profile(user):
+def get_provider_from_user(user):
     '''returns the first provider profile liked to user. Returns None if user is not a provider'''
     if user:
         return Provider.query(Provider.user == user.key).get()
     else:
         return None
     
-def get_patient_profile(user):
+def get_patient_from_user(user):
     '''returns the first patient profile liked to user. Returns None if user is not a patient'''
     if user:
         return Patient.query(Patient.user == user.key).get()
