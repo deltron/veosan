@@ -9,6 +9,7 @@ import data
 # Roles
 PROVIDER_ROLE = 'provider'
 PATIENT_ROLE = 'patient'
+ADMIN_ROLE = 'admin'
 
 # admin_required uses the google user system
 admin_required = google_admin_required
@@ -21,15 +22,15 @@ def provider_required(handler_method):
     def check_provider_key(self):
         user = self.get_current_user()
         if user:
-            provider = data.db.get_provider_profile(user)
+            provider = data.db.get_provider_from_user(user)
             
             # if there is a key in the request, make sure it matches the logged in user
             if provider:
                 return provider.key.urlsafe() == self.request.get('key')
             else:
-                logging.info('provider_required failed. Provider key does not match request key %s <> $s' % (provider.key.urlsafe(), self.request.get('key')))
+                logging.info('(decorator @provider_required.check_provider_key) provider_required failed. Provider key does not match request key %s != %s' % (provider.key.urlsafe(), self.request.get('key')))
         else:
-            logging.info('provider_required failed: User is None')
+            logging.info('(decorator @provider_required.check_provider_key) provider_required failed: User is None')
         return False
 
     def check_provider_login(self, *args, **kwargs):
@@ -54,7 +55,7 @@ def patient_required(handler_method):
     def check_patient_key(self):
         user = self.get_current_user()
         if user:
-            patient = data.db.get_patient_profile(user)
+            patient = data.db.get_patient_from_user(user)
             if patient:
                 booking_key = self.request.get('bk')
                 if booking_key:

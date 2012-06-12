@@ -1,10 +1,11 @@
-import os, logging
+import logging
 import webapp2
 from google.appengine.api import users
 from webapp2_extras import jinja2
 from webapp2_extras import auth
 from webapp2_extras import sessions
 import data
+import auth as clik_auth
 from webapp2_extras import i18n
 from util import languages
 from webapp2_extras.i18n import lazy_gettext as _
@@ -54,8 +55,8 @@ class BaseHandler(webapp2.RequestHandler):
             roles.extend(user.roles)
             
             # is it a provider?
-            if 'provider' in roles:
-                provider_from_user = data.db.get_provider_from_email(user.get_email())
+            if clik_auth.PROVIDER_ROLE in roles:
+                provider_from_user = data.db.get_provider_from_user(user)
                 logging.info('(BaseHandler.render_template) Provider logged in: ' + str(provider_from_user.email))
 
                 # verify user->provider matches request->provider passed as paramater (ie. from request key)
@@ -73,11 +74,10 @@ class BaseHandler(webapp2.RequestHandler):
             
             # check google account for admin, add to roles
             if users.is_current_user_admin():
-                roles.append('admin')
+                roles.append(clik_auth.ADMIN_ROLE)
 
         else:
             logging.info('(BaseHandler.render_template) No Google user logged in')
-            # copy roles into roles list
             
         # template variables
         template_args['user'] = user
@@ -175,9 +175,9 @@ class BaseHandler(webapp2.RequestHandler):
         
         user_created, new_user = self.auth.store.user_model.create_user(email, password_raw=password, roles=roles)
         if user_created:
-            logging.info('Create new user: %s' % new_user)
+            logging.info('(BaseHandler.create_user) Create new user: %s' % new_user.get_email())
             return new_user
         else:
-            logging.info('New user creation failed. Probably existing email: %s' % new_user)
+            logging.info('(BaseHandler.create_user) New user creation failed. Probably existing email: %s' % new_user.get_email())
             return None
 
