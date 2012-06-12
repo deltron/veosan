@@ -1,14 +1,16 @@
-import logging
+import logging, sha, random
 import webapp2
 from google.appengine.api import users
 from webapp2_extras import jinja2
 from webapp2_extras import auth
 from webapp2_extras import sessions
 import data
-import auth as clik_auth
+import handler.auth
 from webapp2_extras import i18n
 from util import languages
 from webapp2_extras.i18n import lazy_gettext as _
+from data.model import User
+from data import db
 
 # change to en and everything is english!
 # todo: do we do /en/ /fr/ for every address or read it in the session somewhere? Session.
@@ -55,7 +57,7 @@ class BaseHandler(webapp2.RequestHandler):
             roles.extend(user.roles)
             
             # is it a provider?
-            if clik_auth.PROVIDER_ROLE in roles:
+            if handler.auth.PROVIDER_ROLE in roles:
                 provider_from_user = data.db.get_provider_from_user(user)
                 logging.info('(BaseHandler.render_template) Provider logged in: ' + str(provider_from_user.email))
 
@@ -74,7 +76,7 @@ class BaseHandler(webapp2.RequestHandler):
             
             # check google account for admin, add to roles
             if users.is_current_user_admin():
-                roles.append(clik_auth.ADMIN_ROLE)
+                roles.append(handler.auth.ADMIN_ROLE)
 
         else:
             logging.info('(BaseHandler.render_template) No Google user logged in')
@@ -170,6 +172,46 @@ class BaseHandler(webapp2.RequestHandler):
             user, token_timestamp = self.auth.store.user_model.get_by_auth_token(user_session['user_id'], user_session['token'])
         return user
     
+    def create_empty_user_for_provider(self, provider):
+        roles = [handler.auth.PROVIDER_ROLE]
+        auth_id = provider.email
+        user_created, new_user = self.auth.store.user_model.create_user(auth_id, roles=roles)
+        
+        if user_created:
+            logging.info('(BaseHandler.create_user) Create shell user for provider: %s' % new_user.get_email())
+            
+            # link user to provider
+            provider.user = new_user.key
+            provider.put()
+            
+            return new_user
+        else:
+            logging.info('(BaseHandler.create_user) New shell user creation failed. Probably existing email: %s' % new_user.get_email())
+            return None
+
+    def create_signup_token(self, user):
+        # create a token for the user
+        salt = sha.new(str(random.random())).hexdigest()[:5]
+        token = sha.new(salt + user.get_email()).hexdigest()
+        
+        user.signup_token = token
+        user.put()
+        
+        return token
+    
+    def validate_signup_token(self, token):
+        user = db.get_user_from_signup_token(token)
+        
+        return user
+
+    def delete_signup_token(self, user):
+        user.signup_token = None
+        user.put()
+        
+        return user
+
+            
+    # eventually this will be obsolete
     def create_user(self, email, password, roles=[]):
         # Passing password_raw=password will hash the password
         

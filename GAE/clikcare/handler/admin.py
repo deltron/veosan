@@ -63,7 +63,7 @@ class NewProviderInitHandler(AdminBaseHandler):
 
             else:
                 provider_key = db.initProvider(provider_email)
-                logging.info('initialized new provider with key : %s' % provider_key)
+                logging.info('(NewProviderInitHandler.post) initialized new provider with key : %s' % provider_key)
                 success_message = 'Initialized new provider for %s' % (provider_email)
                 self.render_providers(success_message=success_message, form=form)        
         else:
@@ -80,19 +80,19 @@ class NewProviderSolicitHandler(BaseHandler):
     
     def post(self):
         provider = db.get_from_urlsafe_key(self.request.get('provider_key'))
-        # create and store activation key and url
-        salt = sha.new(str(random.random())).hexdigest()[:5]
         
         # Check provider has at least a first name, last name and email before activation
-        if provider.email and provider.first_name and provider.last_name:
-            activation_key = sha.new(salt + provider.email + provider.first_name + provider.last_name).hexdigest()
-            provider.activation_key = activation_key
-            provider.put()
+        if provider.email and provider.first_name and provider.last_name:            
+            # create a blank user with provider role
+            user = self.create_empty_user_for_provider(provider)
+            
+            # create a signup token for new user
+            token = self.create_signup_token(user)
             
             # activation url
             url_obj = urlparse.urlparse(self.request.url)
-            activation_url = urlparse.urlunparse((url_obj.scheme, url_obj.netloc, '/provider/activation/' + provider.activation_key, '', '', ''))
-            logging.info('activation url:' + activation_url)
+            activation_url = urlparse.urlunparse((url_obj.scheme, url_obj.netloc, '/provider/activation/' + token, '', '', ''))
+            logging.info('(NewProviderSolicitHandler.post) generated activation url for user %s : %s ' %  (provider.email, activation_url))
             
             # send email
             mail.emailSolicitProvider(self.jinja2, provider, activation_url)

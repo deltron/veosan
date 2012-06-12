@@ -181,8 +181,10 @@ class BaseTest(unittest.TestCase):
         self.assertEqual(1, len(messages))
         m = messages[0]
         self.assertEqual(m.subject, 'Cliksoin - Please confirm your profile %s' % provider.fullName())
+        
         # assert that activation link is in the email body
-        self.assertTrue('http://localhost/provider/activation/%s' % provider.activation_key in m.body.payload)
+        user = User.query(User.key == provider.user).get()
+        self.assertTrue('http://localhost/provider/activation/%s' % user.signup_token in m.body.payload)
  
 
         
@@ -427,7 +429,9 @@ class BaseTest(unittest.TestCase):
         '''
         provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
         # terms page
-        activation_url = 'http://localhost/provider/activation/%s' % provider.activation_key
+        user = User.query(User.key == provider.user).get()
+
+        activation_url = 'http://localhost/provider/activation/%s' % user.signup_token
         terms_response = self.testapp.get(activation_url)
         terms_response.mustcontain("J'accepte les conditions d'utilisation")
         terms_form = terms_response.forms[0]

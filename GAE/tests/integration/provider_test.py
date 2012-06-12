@@ -2,7 +2,8 @@
 
 from base import BaseTest
 import unittest
-from data import db 
+from data import db
+from data.model import User
 
 class ProviderTest(BaseTest):
     def test_provider_schedule_set_one_timeslot_action_as_provider(self):
@@ -57,7 +58,8 @@ class ProviderTest(BaseTest):
         # terms agreement                       
         provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
         # terms page
-        activation_url = '/provider/activation/%s' % provider.activation_key
+        user = User.query(User.key == provider.user).get()
+        activation_url = '/provider/activation/%s' % user.signup_token
         terms_response = self.testapp.get(activation_url)
         terms_response.mustcontain("J'accepte les conditions d'utilisation")
         terms_form = terms_response.forms[0]
@@ -90,7 +92,8 @@ class ProviderTest(BaseTest):
         # terms agreement                       
         provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
         # terms page
-        activation_url = '/provider/activation/%s' % provider.activation_key
+        user = User.query(User.key == provider.user).get()
+        activation_url = '/provider/activation/%s' % user.signup_token
         terms_response = self.testapp.get(activation_url)
         terms_response.mustcontain("J'accepte les conditions d'utilisation")
         terms_form = terms_response.forms[0]
@@ -122,7 +125,8 @@ class ProviderTest(BaseTest):
         # terms agreement                       
         provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
         # terms page
-        activation_url = '/provider/activation/%s' % provider.activation_key
+        user = User.query(User.key == provider.user).get()
+        activation_url = '/provider/activation/%s' % user.signup_token
         terms_response = self.testapp.get(activation_url)
         terms_response.mustcontain("J'accepte les conditions d'utilisation")
         terms_form = terms_response.forms[0]
@@ -133,7 +137,8 @@ class ProviderTest(BaseTest):
         # navigate away and back
         
         # request same page
-        activation_url = '/provider/activation/%s' % provider.activation_key
+        user = User.query(User.key == provider.user).get()
+        activation_url = '/provider/activation/%s' % user.signup_token
         terms_response = self.testapp.get(activation_url)
         
         terms_response.mustcontain("J'accepte les conditions d'utilisation")
@@ -186,7 +191,8 @@ class ProviderTest(BaseTest):
         # terms agreement                       
         provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
         # terms page
-        activation_url = '/provider/activation/%s' % provider.activation_key
+        user = User.query(User.key == provider.user).get()
+        activation_url = '/provider/activation/%s' % user.signup_token
         terms_response = self.testapp.get(activation_url)
         terms_response.mustcontain("J'accepte les conditions d'utilisation")
         terms_form = terms_response.forms[0]

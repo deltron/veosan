@@ -1,12 +1,4 @@
-'''
-Created on Mar 17, 2012
-
-@author: phil
-'''
-
-#from google.appengine.ext import db
 from google.appengine.ext import ndb
-from google.appengine.ext import blobstore
 import logging
 from datetime import datetime, timedelta
 from webapp2_extras.appengine.auth.models import User as Webapp2AuthUser
@@ -21,6 +13,11 @@ class User(Webapp2AuthUser):
         Extending the Webapp2 Auth User to add roles
     '''
     roles = ndb.StringProperty(repeated=True)
+    
+    # for now...
+    # replace with dictionnary later...
+    # better yet find a way to mash into the webapp2 user token model
+    signup_token = ndb.StringProperty()
     
     def get_email(self):
         return self.auth_ids[0]
@@ -45,10 +42,9 @@ class Provider(ndb.Model):
     A provider
     '''
     created_on = ndb.DateTimeProperty(auto_now_add=True)
-    activation_key = ndb.StringProperty()
-    resetpassword_key = ndb.StringProperty()
     enable = ndb.BooleanProperty()
-    
+    resetpassword_key = ndb.StringProperty()
+
     # terms
     terms_agreement = ndb.BooleanProperty()
     terms_date = ndb.DateProperty()

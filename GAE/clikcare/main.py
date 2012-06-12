@@ -78,7 +78,7 @@ application = webapp2.WSGIApplication([
                                        ('/provider/password', user.ProviderPasswordHandler),
                                        ('/provider/resetpassword', user.ProviderResetPasswordHandler),
                                        Route('/provider/resetpassword/<resetpassword_key>', handler=user.ProviderResetPasswordHandler),
-                                       Route('/provider/activation/<activation_key>', handler=user.ProviderActivationHandler),
+                                       Route('/provider/activation/<signup_token>', handler=user.ProviderActivationHandler),
                                        ('/provider/signup', user.ProviderSignupHandler),
                                        ('/login', user.LoginHandler),
                                        ('/logout', user.LogoutHandler),

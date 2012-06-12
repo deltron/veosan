@@ -131,53 +131,36 @@ class ProviderPasswordHandler(UserBaseHandler):
             # get user from provider
             user = db.get_user_from_email(provider.email)
             
-            # check if user exists, if yes then we are just setting a new password
-            if user:            
-                # set password (same as passing password_raw to user_create)
-                password_hash = security.generate_password_hash(password, length=12)    
-                user.password = password_hash
-                user.put()
-                                
-                # clear the password reset key from provider to prevent further shenanigans
-                provider.resetpassword_key = None
-                provider.put()
+            # set password (same as passing password_raw to user_create)
+            password_hash = security.generate_password_hash(password, length=12)    
+            user.password = password_hash
+            user.put()
+         
+             
+            if auth.PROVIDER_ROLE in user.roles:
                 
-                logging.info('(ProviderPasswordHandler.post) Set new password for email %s' % provider.email)
-
-                self.login_user(provider.email, password)
-
-                success_message = _("Welcome back! Password has been reset for %s" % provider.email)
-                ProviderBaseHandler.render_bookings(self, provider, success_message=success_message)
-
-            # user doesn't exist, let's make a new one, set the password and link to provider
-            else:
-                logging.info('(ProviderPasswordHandler.post) Creating a new user for %s' % provider.email)
-                
-                # add provider role to user
-                # TODO - this is not generic, set this somewhere else
-                roles = [auth.PROVIDER_ROLE]
-        
-                # create and store the user
-                user = self.create_user(provider.email, password, roles)
-        
-                # if user created successfully, link to to the provider
-                if user:
-                    # Link user to provider and save
-                    # TODO - this is not generic, set this somewhere else
-                    provider.user = user.key
-                
-                    # remove activation link from user
-                    provider.activation_key = None
-
-                    # save provider
+                # this was a password reset
+                if provider.resetpassword_key:
+                    # clear the password reset key from provider to prevent further shenanigans
+                    provider.resetpassword_key = None
                     provider.put()
-            
-                    logging.info('(ProviderPasswordHandler.post) Provider<->User linked for %s' % provider.email)
+                
+                    logging.info('(ProviderPasswordHandler.post) Set new password for email %s' % provider.email)
 
-            
+                    self.login_user(provider.email, password)
+
+                    success_message = _("Welcome back! Password has been reset for %s" % provider.email)
+                    ProviderBaseHandler.render_bookings(self, provider, success_message=success_message)
+
+                else:
+                    logging.info('(ProviderPasswordHandler.post) New user just set their password: %s' % provider.email)
+                    
+                    # delete the signup token
+                    self.delete_signup_token(user)
+                    
                     # send welcome email
                     mail.emailProviderWelcomeMessage(self.jinja2, provider)
-            
+                    
                     # Provider is Activated
                     # login automatically
                     self.login_user(provider.email, password)
@@ -189,13 +172,13 @@ class ProviderPasswordHandler(UserBaseHandler):
                     welcome_message = _("Welcome to Clikcare! Please review your profile and open your schedule.")
                     ProviderBaseHandler.render_bookings(self, provider, success_message=welcome_message)
                 
-                # something went wrong, user not created
-                else:
-                    logging.error('(ProviderPasswordHandler.post) User not created. Probably because email already in Unique table.')
+            # something went wrong, user not created
+            else:
+                logging.error('(ProviderPasswordHandler.post) User not created. Probably because email already in Unique table.')
                     
-                    # TODO add custom validation to tell user that email is already in use.
-                    error_message = 'User email is already taken. If you are already using this email for your patient profile, please inform us or use another email.'
-                    self.render_password_selection(provider, password_form=password_form, error_message=error_message)
+                # TODO add custom validation to tell user that email is already in use.
+                error_message = 'User email is already taken. If you are already using this email for your patient profile, please inform us or use another email.'
+                self.render_password_selection(provider, password_form=password_form, error_message=error_message)
         
         # password form was not validate, re-render and try again!
         else:
@@ -203,12 +186,13 @@ class ProviderPasswordHandler(UserBaseHandler):
 
         
 class ProviderActivationHandler(UserBaseHandler):
-    def get(self, activation_key=None):
+    def get(self, signup_token=None):
         #parse URL to get activation key
-        if (activation_key):
-            provider = db.get_provider_from_activation_key(activation_key)
+        if (signup_token):
+            user = self.validate_signup_token(signup_token)
+            provider = db.get_provider_from_user(user)
             
-            if provider:
+            if user and provider:
                 # mark terms as not agreed
                 provider.terms_agreement = False
                 provider.terms_date = None
@@ -220,7 +204,7 @@ class ProviderActivationHandler(UserBaseHandler):
                 # no provider found for activation key, send them to the login page
                 self.redirect("/login")
         else:
-            logging.info('No activation key')
+            logging.info('(ProviderActivationHandler) No activation token')
             
           
 class ProviderSignupHandler(UserBaseHandler):
