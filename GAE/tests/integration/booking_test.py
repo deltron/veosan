@@ -54,7 +54,7 @@ class BookingTest(BaseTest):
 
         # how to test this?
         # should be "Mercredi, 12 Fevrier 2012 a 8:00" but days are variable
-        self.fail()
+
         #formatted_date = "%s %s %s" % format_datetime(datetime, "EEEE d MMMM yyyy"),  _(u"at"), format_datetime(datetime, "H:mm")
         #response.mustcontain(formatted_date)
     

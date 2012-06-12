@@ -4,8 +4,7 @@ from datetime import date
 from base import BaseHandler
 import data.db as db
 from provider import ProviderBaseHandler
-from forms.user import ProviderTermsForm, ProviderPasswordForm
-from forms.login import LoginForm
+from forms.user import ProviderTermsForm, PasswordForm, LoginForm
 import mail
 from webapp2_extras.i18n import gettext as _
 from webapp2_extras import security 
@@ -22,7 +21,7 @@ class UserBaseHandler(BaseHandler):
 
     def render_password_selection(self, provider, password_form=None, **extra):
         if not password_form:
-            password_form = ProviderPasswordForm()
+            password_form = PasswordForm()
         self.render_template('provider/password.html', provider=provider, form=password_form, **extra)
         
 
@@ -109,10 +108,7 @@ class ProviderResetPasswordHandler(UserBaseHandler):
 
 class ProviderPasswordHandler(UserBaseHandler):
     def get(self):
-        '''
-            TODO: Display page in the context of the Provider profile (with tabs at the top)
-        '''
-        logging.info('GET not implemented on /provider/password')
+        logging.info('(ProviderPasswordHandler.get) GET not implemented on /provider/password')
         self.redirect("/")
             
     def post(self):
@@ -120,8 +116,8 @@ class ProviderPasswordHandler(UserBaseHandler):
             Create user and link it to the Provider
         '''
 
-        password_form = ProviderPasswordForm(self.request.POST)
-                            
+        password_form = PasswordForm(self.request.POST)
+
         # get provider from request
         provider = db.get_from_urlsafe_key(self.request.get('provider_key'))
         

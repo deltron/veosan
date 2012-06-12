@@ -5,7 +5,7 @@ import data.db as db
 from data import db_book
 import mail
 from forms.base import BookingForm, PatientForm, EmailOnlyBookingForm
-from forms.login import LoginForm
+from forms.user import LoginForm
 from handler.base import BaseHandler
 from handler.auth import patient_required
 import util

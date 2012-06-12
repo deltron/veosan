@@ -1,16 +1,10 @@
-import logging, random, sha, urlparse
-from datetime import date
+import logging
 #clik
-from base import BaseHandler
 import data.db as db
-from forms.user import ProviderTermsForm, ProviderPasswordForm
-from forms.login import LoginForm
-from data.model import Schedule
 import util
-import mail
+from base import BaseHandler
+from data.model import Schedule
 from handler.auth import provider_required
-from webapp2_extras.i18n import gettext as _
-from webapp2_extras import security 
 
 class ProviderBaseHandler(BaseHandler):       
     def render_schedule(self, provider, availableIds, **extra):
