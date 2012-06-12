@@ -50,7 +50,7 @@ class IndexHandler(BaseBookingHandler):
             booking = db.storeBooking(self.request.POST, None, None)
             logging.debug('Created booking: %s' % booking.key)
             logging.info("Looking for best provider...")
-            provider = db_book.findBestProviderForBooking(booking)
+            provider = db_book.findBestProviderForBookingRequest(booking)
             if (provider):
                 logging.info("Provider found: " + provider.fullName())
                 booking.provider = provider.key
