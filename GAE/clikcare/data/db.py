@@ -63,6 +63,7 @@ def initProvider(provider_email):
     ''' inititalize provider with email. return the provider's key '''
     new_provider = Provider()
     new_provider.email = provider_email
+    new_provider.enable = True
     provider_key = new_provider.put()
     return provider_key
 
@@ -125,6 +126,9 @@ def get_user_roles(user):
     if patient:
         roles.append(PATIENT_ROLE)
     return roles
+
+
+## Why not just use the roles?
 
 def get_user_profiles(user):
     '''

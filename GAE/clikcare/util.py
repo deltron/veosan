@@ -121,7 +121,7 @@ def format_date_weekday_after(date):
     return format_date(date, u"d MMMM yyyy (EEEE)")
 
 def format_datetime_full(datetime):
-    return format_datetime(datetime, "EEEE d MMMM yyyy") + " " +  _(u"at") + " " + format_datetime(datetime, "H:mm")
+    return "%s %s %s" % (format_datetime(datetime, "EEEE d MMMM yyyy"),  _(u"at"), format_datetime(datetime, "H:mm"))
 
 def format_hour(hour):
     lang = _('en')
@@ -158,8 +158,7 @@ def formatTimeToOneHourPeriod(startTime):
 def format_30min_period(startTime, startMinutes):
     return u'START - END [placeholder]'
 
-# is this method used anywhere?
-def formatDateTimeNoSeconds(datetime):
+def format_datetime_noseconds(datetime):
     return format_datetime(datetime, "yyyy-MM-dd H:mm")
 
 

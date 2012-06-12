@@ -8,7 +8,7 @@ from webapp2_extras.i18n import gettext as _
 from google.appengine.api import users
 from webapp2_extras.appengine.users import admin_required as google_admin_required
 # clik
-from forms.login import LoginForm
+from forms.user import LoginForm
 import data
 from data.model import Provider
 

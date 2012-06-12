@@ -141,7 +141,7 @@ def findBestProviderForBookingRequest(booking):
     logging.info('Total provider universe: %s' % providerUniverseCount)
     broadMatchCount = Provider.query(Provider.category==requestCategory, Provider.location==requestLocation).count()
     logging.info('Found %s providers offering %s in %s' % (broadMatchCount, requestCategory, requestLocation))
-    providersQuery = Provider.query(Provider.category==requestCategory, Provider.location==requestLocation, Provider.terms_agreement==True)
+    providersQuery = Provider.query(Provider.category==requestCategory, Provider.location==requestLocation, Provider.terms_agreement==True, Provider.enable==True)
     #gdb.GqlQuery('''Select * from Provider WHERE requestCategory = :1 AND requestLocation = :2''', requestCategory, requestLocation)
     providerCount = providersQuery.count(limit=50)
     logging.info('Found {0} providers in requestCategory and requestLocation. Narrowing down list using schedule...'.format(providerCount))

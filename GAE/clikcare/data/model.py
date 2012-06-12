@@ -47,6 +47,7 @@ class Provider(ndb.Model):
     created_on = ndb.DateTimeProperty(auto_now_add=True)
     activation_key = ndb.StringProperty()
     resetpassword_key = ndb.StringProperty()
+    enable = ndb.BooleanProperty()
     
     # terms
     terms_agreement = ndb.BooleanProperty()
@@ -74,15 +75,16 @@ class Provider(ndb.Model):
     profile_photo_blob_key = ndb.BlobKeyProperty()
     bio = ndb.TextProperty()
     quote = ndb.TextProperty()
-    # schedule
-    # see Schedule Class below
+    
+    # user
     user = ndb.KeyProperty(kind=User)
     
     def fullName(self):
         return '{0} {1}'.format(self.first_name, self.last_name)
     
+    # headers must be strings not unicode
     def get_edit_link(self, route='/provider/bookings'):
-        return u'%s?key=%s' % (route, self.key.urlsafe())
+        return '%s?key=%s' % (route, self.key.urlsafe())
     
     def get_html_summary(self):
         s = u''

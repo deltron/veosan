@@ -6,13 +6,13 @@ import webapp2
 from webapp2 import Route
 # clik
 import util
-from handler import booking, provider, provider_admin, auth, admin, static, contact, blob, language
+from handler import booking, provider, provider_admin, auth, admin, static, contact, blob, language, user
 from data.model import User
 
 jinja_filters = {}
 jinja_filters['format_date_weekday_after'] = util.format_date_weekday_after
 jinja_filters['format_datetime_full'] = util.format_datetime_full
-jinja_filters['format_datetime_noseconds'] = util.formatDateTimeNoSeconds
+jinja_filters['format_datetime_noseconds'] = util.format_datetime_noseconds
 jinja_filters['format_hour'] = util.format_hour
 jinja_filters['format_30min_period'] = util.format_30min_period
 jinja_filters['dump'] = util.dump
@@ -71,13 +71,16 @@ application = webapp2.WSGIApplication([
                                   
                                        #provider
                                        ('/provider/schedule', provider.ProviderScheduleHandler),
-                                       ('/provider/terms', provider.ProviderTermsHandler),
                                        ('/provider/bookings', provider.ProviderBookingsHandler),
-                                       ('/provider/password', provider.ProviderPasswordHandler),
-                                       ('/provider/resetpassword', provider.ProviderResetPasswordHandler),
-                                       Route('/provider/resetpassword/<resetpassword_key>', handler=provider.ProviderResetPasswordHandler),
-                                       Route('/provider/activation/<activation_key>', handler=provider.ProviderActivationHandler),
                                        
+                                       # user
+                                       ('/provider/terms', user.ProviderTermsHandler),
+                                       ('/provider/password', user.ProviderPasswordHandler),
+                                       ('/provider/resetpassword', user.ProviderResetPasswordHandler),
+                                       Route('/provider/resetpassword/<resetpassword_key>', handler=user.ProviderResetPasswordHandler),
+                                       Route('/provider/activation/<activation_key>', handler=user.ProviderActivationHandler),
+                                       ('/provider/signup', user.ProviderSignupHandler),
+
                                        # admin
                                        ('/admin', admin.AdminIndexHandler),
                                        ('/admin/provider/init', admin.NewProviderInitHandler),
@@ -87,13 +90,11 @@ application = webapp2.WSGIApplication([
                                             
                                        # provider admin
                                        ('/admin/provider', provider_admin.ProviderAdministrationHandler),
+                                       ('/admin/provider/enable', provider_admin.ProviderEnableHandler),
                                        ('/admin/provider/profile', provider_admin.ProviderEditProfileHandler),
                                        ('/admin/provider/address', provider_admin.ProviderEditAddressHandler),
                                        ('/admin/provider/address/upload', provider_admin.ProviderAddressUploadHandler),
-                                       
-                                       # signup for provider
-                                       ('/provider/signup', provider.ProviderSignupHandler),
-                                       
+                                                                              
                                        # auth
                                        ('/login', auth.LoginHandler),
                                        ('/logout', auth.LogoutHandler),

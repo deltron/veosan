@@ -76,14 +76,15 @@ class ProviderAddressUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
     
     def post(self):
         provider = db.get_from_urlsafe_key(self.request.get('key'))
-        logging.info("Found provider: %s %s" % (provider.first_name, provider.last_name))
+        logging.info("(ProviderAddressUploadHandler.post) Found provider: %s %s" % (provider.first_name, provider.last_name))
         uploadForm = ProviderPhotoForm(self.request.POST)
         upload_files = self.get_uploads(uploadForm.profilePhoto.name)[0]
-        logging.info("Uploaded blob key: %s " % upload_files.key())
+        logging.info("(ProviderAddressUploadHandler.post) Uploaded blob key: %s " % upload_files.key())
         provider.profile_photo_blob_key = upload_files.key()
-        Provider.put(provider)
+        provider.put()
+        
         # redirect to address edit page        
-        self.redirect(provider.get_edit_link('address')) 
+        self.redirect(provider.get_edit_link(str('/admin/provider/address'))) 
 
 class ProviderAdministrationHandler(ProviderAdminBaseHandler):
     
@@ -95,4 +96,23 @@ class ProviderAdministrationHandler(ProviderAdminBaseHandler):
         else:
             logging.info("Not Admin: Can't see provider administration page")
         
-            
+
+  
+class ProviderEnableHandler(ProviderAdminBaseHandler):
+    def post(self):
+        provider = db.get_from_urlsafe_key(self.request.get('provider_key'))
+        
+        success_message = ''
+        
+        # toggle provider state
+        if provider.enable:
+            provider.enable = False
+            success_message = 'Provider is now disabled'            
+        else:
+            provider.enable = True        
+            success_message = 'Provider is now enabled'            
+
+        provider.put()
+
+        self.render_administration(provider, success_message=success_message)
+
