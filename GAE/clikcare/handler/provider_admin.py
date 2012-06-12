@@ -76,14 +76,15 @@ class ProviderAddressUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
     
     def post(self):
         provider = db.get_from_urlsafe_key(self.request.get('key'))
-        logging.info("Found provider: %s %s" % (provider.first_name, provider.last_name))
+        logging.info("(ProviderAddressUploadHandler.post) Found provider: %s %s" % (provider.first_name, provider.last_name))
         uploadForm = ProviderPhotoForm(self.request.POST)
         upload_files = self.get_uploads(uploadForm.profilePhoto.name)[0]
-        logging.info("Uploaded blob key: %s " % upload_files.key())
+        logging.info("(ProviderAddressUploadHandler.post) Uploaded blob key: %s " % upload_files.key())
         provider.profile_photo_blob_key = upload_files.key()
-        Provider.put(provider)
+        provider.put()
+        
         # redirect to address edit page        
-        self.redirect(provider.get_edit_link('address')) 
+        self.redirect(provider.get_edit_link(str('/admin/provider/address'))) 
 
 class ProviderAdministrationHandler(ProviderAdminBaseHandler):
     

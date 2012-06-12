@@ -84,7 +84,7 @@ class Provider(ndb.Model):
     
     # headers must be strings not unicode
     def get_edit_link(self, route='/provider/bookings'):
-        return str('%s?key=%s' % (route, self.key.urlsafe()))
+        return '%s?key=%s' % (route, self.key.urlsafe())
     
     def get_html_summary(self):
         s = u''
