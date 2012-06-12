@@ -9,6 +9,7 @@ import data
 # Roles
 PROVIDER_ROLE = 'provider'
 PATIENT_ROLE = 'patient'
+ADMIN_ROLE = 'admin'
 
 # admin_required uses the google user system
 admin_required = google_admin_required
