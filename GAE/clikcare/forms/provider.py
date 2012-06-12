@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from wtforms import Form, TextField, SelectField, FileField, PasswordField, TextAreaField
+from wtforms import Form, TextField, SelectField, FileField, TextAreaField
 from wtforms import validators
 from custom_form import MultiCheckboxField, CustomBooleanField
 import util
@@ -29,12 +29,3 @@ class ProviderProfileForm(Form):
     associations = MultiCheckboxField(_(u'Associations'), choices=util.getAllAssociations())
     certifications = MultiCheckboxField(_(u'Certifications'), choices=util.getAllCertifications())
     onsite = CustomBooleanField(_(u'I am willing to do on-site visits'))
-    
-class ProviderTermsForm(Form):
-    # terms agreement (required)
-    terms_agreement = CustomBooleanField(_(u'I agree with the Terms of Service'), [validators.Required(message=_(u'You must accept the terms to register'))])
-    
-class ProviderPasswordForm(Form):
-    password = PasswordField(_(u'Password'), [validators.Length(min=6, message=_(u'Password needs at least 6 characters')), validators.EqualTo('password_confirm', _(u"Passwords do not match"))])
-    password_confirm = PasswordField(_(u'Password Confirmation'))
-    

@@ -127,6 +127,9 @@ def get_user_roles(user):
         roles.append(PATIENT_ROLE)
     return roles
 
+
+## Why not just use the roles?
+
 def get_user_profiles(user):
     '''
         return profiles from user based on link to provider or patient
