@@ -185,27 +185,37 @@ class ProviderPasswordHandler(UserBaseHandler):
             self.render_password_selection(provider, password_form=password_form)
 
         
-class ProviderActivationHandler(UserBaseHandler):
+class ActivationHandler(UserBaseHandler):
     def get(self, signup_token=None):
-        #parse URL to get activation key
-        if (signup_token):
+        if signup_token:
             user = self.validate_signup_token(signup_token)
-            provider = db.get_provider_from_user(user)
+            if user:
             
-            if user and provider:
-                # mark terms as not agreed
-                provider.terms_agreement = False
-                provider.terms_date = None
-            
-                # show terms page
-                terms_form = ProviderTermsForm(obj=provider)
-                self.render_terms(provider, terms_form=terms_form)
+                if auth.PROVIDER_ROLE in user.roles:
+                    provider = db.get_provider_from_user(user)
+                
+                    if provider:
+                        # mark terms as not agreed
+                        provider.terms_agreement = False
+                        provider.terms_date = None
+
+                        # show terms page
+                        terms_form = ProviderTermsForm(obj=provider)
+                        self.render_terms(provider, terms_form=terms_form)
+                    else:
+                        # no provider found for user & token combination, send them to the login page
+                        logging.info('(ActivationHandler) no provider found for user & token combination')
+                        self.redirect("/login")
+                        
             else:
-                # no provider found for activation key, send them to the login page
+                # no user found for token combination, send them to the login page
+                logging.info('(ActivationHandler) no user found for signup token %s' % signup_token)
                 self.redirect("/login")
+
         else:
-            logging.info('(ProviderActivationHandler) No activation token')
-            
+            logging.info('(ActivationHandler) No signup token in request')
+            self.redirect("/login")
+
           
 class ProviderSignupHandler(UserBaseHandler):
     def post(self):

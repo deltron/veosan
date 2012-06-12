@@ -91,7 +91,7 @@ class NewProviderSolicitHandler(BaseHandler):
             
             # activation url
             url_obj = urlparse.urlparse(self.request.url)
-            activation_url = urlparse.urlunparse((url_obj.scheme, url_obj.netloc, '/provider/activation/' + token, '', '', ''))
+            activation_url = urlparse.urlunparse((url_obj.scheme, url_obj.netloc, '/activation/' + token, '', '', ''))
             logging.info('(NewProviderSolicitHandler.post) generated activation url for user %s : %s ' %  (provider.email, activation_url))
             
             # send email

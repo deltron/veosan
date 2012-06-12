@@ -184,7 +184,7 @@ class BaseTest(unittest.TestCase):
         
         # assert that activation link is in the email body
         user = User.query(User.key == provider.user).get()
-        self.assertTrue('http://localhost/provider/activation/%s' % user.signup_token in m.body.payload)
+        self.assertTrue('http://localhost/activation/%s' % user.signup_token in m.body.payload)
  
 
         
@@ -431,7 +431,7 @@ class BaseTest(unittest.TestCase):
         # terms page
         user = User.query(User.key == provider.user).get()
 
-        activation_url = 'http://localhost/provider/activation/%s' % user.signup_token
+        activation_url = 'http://localhost/activation/%s' % user.signup_token
         terms_response = self.testapp.get(activation_url)
         terms_response.mustcontain("J'accepte les conditions d'utilisation")
         terms_form = terms_response.forms[0]
