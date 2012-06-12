@@ -57,3 +57,14 @@ class BookingTestCase(BaseTestCase):
         # assert top provider is p2
         self.assertEqual(providers[1][0], booking_responses[0].provider.key)
         
+        
+    def test_find_providers_no_matches_wrong_category(self):
+        providers = create_test_providers()
+        # create booking request - Saturday at 10 PM
+        sat_at_10 = testutil.create_datetime_from_weekday_and_hour(5, 22)
+        booking_request = Booking(requestCategory=util.CAT_OSTEO, requestLocation='mtl-downtown', requestDateTime=sat_at_10)
+        booking_responses = db_book.main_search(booking_request)
+        logging.info('Booking Respones:')
+        # assert top provider is p2
+        self.assertEqual(0, len(booking_responses))
+        
