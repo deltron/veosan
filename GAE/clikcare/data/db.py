@@ -114,22 +114,6 @@ def get_provider_from_activation_key(activation_key):
 def get_user_from_email(email):
     return User.query(User.auth_ids == email).get()
 
-def get_user_roles(user):
-    '''
-        return roles from user based on link to provider or patient
-    '''
-    roles = []
-    provider = Provider.query(Provider.user == user.key).get()
-    if provider:
-        roles.append(PROVIDER_ROLE)
-        
-    patient = Patient.query(Patient.user == user.key).get()
-    if patient:
-        roles.append(PATIENT_ROLE)
-        
-    return roles
-
-
 def get_provider_from_user(user):
     '''returns the first provider profile liked to user. Returns None if user is not a provider'''
     if user:
