@@ -76,8 +76,8 @@ class Provider(ndb.Model):
     bio = ndb.TextProperty()
     quote = ndb.TextProperty()
     
-    # schedule
-    
+    # user
+    user = ndb.KeyProperty(kind=User)
     
     def fullName(self):
         return '{0} {1}'.format(self.first_name, self.last_name)
