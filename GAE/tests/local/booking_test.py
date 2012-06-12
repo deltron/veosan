@@ -21,7 +21,7 @@ class BookingTestCase(BaseTestCase):
         logging.info(ts)
         self.assertEquals(4, len(ts))
         
-    def test_find_providers_saturday_afternoon(self):
+    def test_find_providers_perfect_and_imperfect(self):
         providers = create_test_providers()
         logging.info("providers: %s" % providers)
         self.assertEqual(len(providers), Provider.query().count())
@@ -40,7 +40,8 @@ class BookingTestCase(BaseTestCase):
         # second provider is not perfect match
         br2 = booking_responses[1]
         self.assertFalse(br2.is_perfect_match(booking_request))
-        
+        # assert top provider is p2
+        self.assertEqual(providers[1][0], booking_responses[0].provider.key)
         
     def test_find_providers_all_imperfect_matches(self):
         providers = create_test_providers()
@@ -53,4 +54,6 @@ class BookingTestCase(BaseTestCase):
             logging.info('providers %s on %s at %s' % (br.provider.fullName(), br.timeslot.start.date(), br.timeslot.start.time()))
         for br in booking_responses:
             self.assertFalse(br.is_perfect_match(booking_request))
+        # assert top provider is p2
+        self.assertEqual(providers[1][0], booking_responses[0].provider.key)
         
