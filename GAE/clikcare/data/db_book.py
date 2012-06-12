@@ -1,12 +1,9 @@
-
-
 import logging
 from google.appengine.ext import ndb
 from data.model import Booking, Provider, Schedule
 from datetime import time, date, datetime, timedelta
 from collections import namedtuple
 from functools import partial
-
 
 ###
 ### TimeSlots and DatetimeSlot
@@ -43,6 +40,12 @@ class BookingResponse():
     def __init__(self, provider, ts):
         self.provider = provider
         self.timeslot = ts
+        
+    def is_perfect_match(self, request):
+        return (self.provider.location == request.requestLocation) & (self.timeslot.start == request.requestDateTime)
+ 
+    def is_perfect_timeslot_match(self, request):
+        return self.timeslot.start == request.requestDateTime
     
 
 def main_search(booking):
@@ -91,9 +94,10 @@ def filter_and_sort_providers_based_on_schedule(booking, providerQuery):
     for p in providerQuery:
         sorted_available_timeslots = get_sorted_schedule_timeslots(p, request_timeslot)
         # TODO: Filter out booking conflicts
-        best_ts = sorted_available_timeslots[0]
-        br = BookingResponse(p, best_ts)
-        booking_responses.append(br)
+        if sorted_available_timeslots: # not empty
+            best_ts = sorted_available_timeslots[0]
+            br = BookingResponse(p, best_ts)
+            booking_responses.append(br)
     # sort all responses by distance to the request
     sorted_responses = sorted(booking_responses, key=lambda br: timeslot_distance(br.timeslot, request_timeslot))
     # return

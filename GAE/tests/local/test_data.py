@@ -3,24 +3,12 @@ from data.model import Provider, Schedule
 from datetime import date
 
 
-def open_schedule(p_key):
-    '''
-        Add Schedule items from Monday to Friday 9-12 and 13-17
-    '''
-    for day in range(0, 5):
-        am = Schedule(day=day, startTime=8, endTime=12, provider=p_key)
-        am.put()
-        pm = Schedule(day=day, startTime=13, endTime=17, provider=p_key)
-        pm.put()
-        
-        
 def create_test_provider(**args):
     '''
         Create a test provider with an open schedule
     '''
     p = Provider(**args)
     p_key = p.put()
-    open_schedule(p_key)
     return (p_key, p)
     
     
@@ -30,21 +18,24 @@ def create_test_providers():
     '''
     p1 = create_test_provider(terms_agreement=True, terms_date=date.today(),
                   category=u'physiotherapy', specialty=['geriatric'], associations=[''], certifications=[''], onsite=True, start_year='2001',
-                  first_name='Provider', last_name='One-OnSite', title='Mr.', credentials='Ph.D.', email='provider1@clikcare.com', phone='514-123-1234',
+                  first_name='Provider', last_name='One-OnSite-AllWeek', title='Mr.', credentials='Ph.D.', email='provider1@clikcare.com', phone='514-123-1234',
                   location=u'mtl-downtown', address='1234 Grand Boul.', city='Montreal', postal_code='H2J 3M7',
                   bio = "Here's my bio", quote="Here's my quote")
+    open_schedule_all_week(p1[0])
 
     p2 = create_test_provider(terms_agreement=True, terms_date=date.today(),
                   category=u'physiotherapy', specialty=['sports'], associations=[''], certifications=[''], onsite=False, start_year='2003',
-                  first_name='Provider', last_name='Two', title='Mr.', credentials='M.Sc.', email='provider2@clikcare.com', phone='514-123-1234',
+                  first_name='Provider', last_name='Two-Weekends', title='Mr.', credentials='M.Sc.', email='provider2@clikcare.com', phone='514-123-1234',
                   location=u'mtl-downtown', address='1234 Grand Boul.', city='Montreal', postal_code='H2J 3M7',
                   bio = "Here's my bio", quote="Here's my quote")
+    open_schedule_weekends(p2[0])
     
     p3 = create_test_provider(terms_agreement=True, terms_date=date.today(),
                   category=u'physiotherapy', specialty=['geriatric'], associations=[''], certifications=[''], onsite=False, start_year='2010',
                   first_name='Provider', last_name='Three', title='Mr.', credentials='M.Sc.', email='provider2@clikcare.com', phone='514-123-1234',
                   location=u'mtl-downtown', address='1234 Grand Boul.', city='Montreal', postal_code='H2J 3M7',
                   bio = "Here's my bio", quote="Here's my quote")
+    open_schedule_all_mornings(p3[0])
     
     p4 = create_test_provider(terms_agreement=True, terms_date=date.today(),
                   category=u'physiotherapy', specialty=['geriatric'], associations=[''], certifications=[''], onsite=False, start_year='1999',
@@ -65,4 +56,29 @@ def create_test_providers():
                   bio = "Here's my bio", quote="Here's my quote")
     
     return [p1, p2, p3, p4, p5, p6]
+
+
+
+
+
+
+def open_schedule_all_week(p_key):
+    '''Add Schedule items from Monday to Friday 9-12 and 13-17 '''
+    for day in [0,1,2,3,4]:
+        am = Schedule(day=day, startTime=8, endTime=12, provider=p_key)
+        am.put()
+        pm = Schedule(day=day, startTime=13, endTime=17, provider=p_key)
+        pm.put()
+        
+        
+def open_schedule_weekends(p_key):
+    '''Add Schedule items from Sat and Sun 9-12 and 13-17 '''
+    for day in [5,6]:
+        Schedule(day=day, startTime=8, endTime=12, provider=p_key).put() # AM
+        Schedule(day=day, startTime=13, endTime=17, provider=p_key).put() # PM
+
     
+def open_schedule_all_mornings(p_key):
+    '''Add Schedule items from Sat and Sun 9-12 and 13-17 '''
+    for day in [0,1,2,3,4,5,6]:
+        Schedule(day=day, startTime=8, endTime=12, provider=p_key).put() # AM
