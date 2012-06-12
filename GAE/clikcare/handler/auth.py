@@ -1,21 +1,14 @@
 import logging
-from handler.base import BaseHandler
-# webapp2 auth service
-from webapp2_extras.auth import InvalidAuthIdError
-from webapp2_extras.auth import InvalidPasswordError
-from webapp2_extras.i18n import gettext as _
 # google user service
 from google.appengine.api import users
 from webapp2_extras.appengine.users import admin_required as google_admin_required
 # clik
-from forms.user import LoginForm
 import data
-from data.model import Provider
 
 
 # Roles
-PROVIDER_ROLE = 'Provider'
-PATIENT_ROLE = 'Patient'
+PROVIDER_ROLE = 'provider'
+PATIENT_ROLE = 'patient'
 
 # admin_required uses the google user system
 admin_required = google_admin_required
@@ -89,70 +82,6 @@ def patient_required(handler_method):
     # decorator returns check_login function    
     return check_patient_login
 
-
-
-class LoginHandler(BaseHandler):
-    '''
-        GET shows login page
-        POST checks username, password, logs in user and redirect to start page
-    '''
-    def get(self):
-        self.render_template('login.html', form=LoginForm())
-
-    def post(self):
-        login_form = LoginForm(self.request.POST)
-        if login_form.validate():
-            email = self.request.POST.get('email')
-            password = self.request.POST.get('password')
-            remember_me = True if self.request.POST.get('remember_me') == 'on' else False
-            logging.info('(LoginHandler.post) Trying to login email: %s' % email)
-
-            # Username and password check
-            try:
-                user = self.login_user(email, password, remember_me)
-                # login was succesful, User is in the session
-                booking_key = self.request.POST.get('booking_key')
-                if booking_key:
-                    # special redirect for login during booking flow
-                    self.redirect('/patient/book?bk=%s' % booking_key)
-                else:
-                    # default redirects
-                    profiles = data.db.get_user_profiles(user)
-                    logging.info('profiles: %s' % profiles)
-                    # redirect to the first profile type
-                    if len(profiles) > 0:
-                        profile = profiles[0]
-                        if isinstance(profile, Provider):
-                            redirect_url = profile.get_edit_link('/provider/bookings')
-                            self.redirect(redirect_url)
-                        else:
-                            self.redirect('/')
-                    else:
-                        logging.error('User %s logged in without roles')
-                        error_message = 'Your profile is not activated. Please contact us.'
-                        self.render_template('login.html', form=login_form, error_message=error_message)
-                
-            except (InvalidAuthIdError, InvalidPasswordError), e:
-                # throws InvalidAuthIdError if user is not found, throws InvalidPasswordError if provided password doesn't match with specified user
-                error_message = _(u'Login failed. Try again.')
-                self.render_template('login.html', form=login_form, error_message=error_message)
-        else:
-            # form validation error
-            self.render_template('login.html', form=login_form)
-
-
-
-class LogoutHandler(BaseHandler):
-    '''
-        Unset user session and redirect to index
-    '''
-    def get(self):
-        user = self.get_current_user()
-        if user:
-            logging.info("(LogoutHandler.get) Logging out user: %s" % user.get_email())
-
-        self.auth.unset_session()
-        self.redirect('/')
 
 
 

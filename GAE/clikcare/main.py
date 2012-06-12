@@ -80,7 +80,9 @@ application = webapp2.WSGIApplication([
                                        Route('/provider/resetpassword/<resetpassword_key>', handler=user.ProviderResetPasswordHandler),
                                        Route('/provider/activation/<activation_key>', handler=user.ProviderActivationHandler),
                                        ('/provider/signup', user.ProviderSignupHandler),
-
+                                       ('/login', user.LoginHandler),
+                                       ('/logout', user.LogoutHandler),
+                                       
                                        # admin
                                        ('/admin', admin.AdminIndexHandler),
                                        ('/admin/provider/init', admin.NewProviderInitHandler),
@@ -95,10 +97,7 @@ application = webapp2.WSGIApplication([
                                        ('/admin/provider/address', provider_admin.ProviderEditAddressHandler),
                                        ('/admin/provider/address/upload', provider_admin.ProviderAddressUploadHandler),
                                                                               
-                                       # auth
-                                       ('/login', auth.LoginHandler),
-                                       ('/logout', auth.LogoutHandler),
-                                       
+                             
                                        # blob
                                        ('/serve/([^/]+)?', blob.BlobServeHandler),
                                        
