@@ -12,7 +12,7 @@ from data.model import User
 jinja_filters = {}
 jinja_filters['format_date_weekday_after'] = util.format_date_weekday_after
 jinja_filters['format_datetime_full'] = util.format_datetime_full
-jinja_filters['format_datetime_noseconds'] = util.formatDateTimeNoSeconds
+jinja_filters['format_datetime_noseconds'] = util.format_datetime_noseconds
 jinja_filters['format_hour'] = util.format_hour
 jinja_filters['format_30min_period'] = util.format_30min_period
 jinja_filters['dump'] = util.dump
