@@ -21,14 +21,22 @@ class BookingTestCase(BaseTestCase):
         logging.info(ts)
         self.assertEquals(4, len(ts))
         
-    
-    def test_find_best_provider_without_perfect_match(self):
+    def test_find_providers_saturday_afternoon(self):
         providers = create_test_providers()
         logging.info("providers: %s" % providers)
         self.assertEqual(len(providers), Provider.query().count())
         # create booking request
-        next_monday_at_9 = testutil.create_datetime_from_weekday_and_hour(3, 10)
+        next_monday_at_9 = testutil.create_datetime_from_weekday_and_hour(5, 15)
         booking_request = Booking(requestCategory=util.CAT_PHYSIO, requestLocation='mtl-downtown', requestDateTime=next_monday_at_9)
         booking_responses = db_book.main_search(booking_request)
+        logging.info('Booking Respones:')
         for br in booking_responses:
-            logging.info('providers %s at %s' % (br.provider.fullName(), br.timeslot.start))
+            logging.info('providers %s on %s at %s' % (br.provider.fullName(), br.timeslot.start.date(), br.timeslot.start.time()))
+        # 2 responses
+        self.assertEqual(2, len(booking_responses))
+        # first provider is perfet match
+        br1 = booking_responses[0]
+        self.assertTrue(br1.is_perfect_match(booking_request))
+        # second provider is not perfect match
+        br2 = booking_responses[1]
+        self.assertFalse(self.assertTrue(br1.is_perfect_match(booking_request)))
