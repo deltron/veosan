@@ -38,6 +38,3 @@ class ProviderPasswordForm(Form):
     password = PasswordField(_(u'Password'), [validators.Length(min=6, message=_(u'Password needs at least 6 characters')), validators.EqualTo('password_confirm', _(u"Passwords do not match"))])
     password_confirm = PasswordField(_(u'Password Confirmation'))
     
-class ProviderLoginForm(Form):
-    email = TextField(_(u'E-mail Address'), [validators.Email(message=_(u'Invalid email address.'))])
-    password = PasswordField('Password')
