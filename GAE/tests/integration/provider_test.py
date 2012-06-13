@@ -59,7 +59,7 @@ class ProviderTest(BaseTest):
         provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
         # terms page
         user = User.query(User.key == provider.user).get()
-        activation_url = '/activation/%s' % user.signup_token
+        activation_url = '/user/activation/%s' % user.signup_token
         terms_response = self.testapp.get(activation_url)
         terms_response.mustcontain("J'accepte les conditions d'utilisation")
         terms_form = terms_response.forms[0]
@@ -93,7 +93,7 @@ class ProviderTest(BaseTest):
         provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
         # terms page
         user = User.query(User.key == provider.user).get()
-        activation_url = '/activation/%s' % user.signup_token
+        activation_url = '/user/activation/%s' % user.signup_token
         terms_response = self.testapp.get(activation_url)
         terms_response.mustcontain("J'accepte les conditions d'utilisation")
         terms_form = terms_response.forms[0]
@@ -126,7 +126,7 @@ class ProviderTest(BaseTest):
         provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
         # terms page
         user = User.query(User.key == provider.user).get()
-        activation_url = '/activation/%s' % user.signup_token
+        activation_url = '/user/activation/%s' % user.signup_token
         terms_response = self.testapp.get(activation_url)
         terms_response.mustcontain("J'accepte les conditions d'utilisation")
         terms_form = terms_response.forms[0]
@@ -138,7 +138,7 @@ class ProviderTest(BaseTest):
         
         # request same page
         user = User.query(User.key == provider.user).get()
-        activation_url = '/activation/%s' % user.signup_token
+        activation_url = '/user/activation/%s' % user.signup_token
         terms_response = self.testapp.get(activation_url)
         
         terms_response.mustcontain("J'accepte les conditions d'utilisation")
@@ -192,7 +192,7 @@ class ProviderTest(BaseTest):
         provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
         # terms page
         user = User.query(User.key == provider.user).get()
-        activation_url = '/activation/%s' % user.signup_token
+        activation_url = '/user/activation/%s' % user.signup_token
         terms_response = self.testapp.get(activation_url)
         terms_response.mustcontain("J'accepte les conditions d'utilisation")
         terms_form = terms_response.forms[0]

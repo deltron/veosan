@@ -74,14 +74,14 @@ application = webapp2.WSGIApplication([
                                        ('/provider/bookings', provider.ProviderBookingsHandler),
                                        
                                        # user
-                                       Route('/activation/<signup_token>', handler=user.ActivationHandler),
+                                       ('/login', user.LoginHandler),
+                                       ('/logout', user.LogoutHandler),
+                                       ('/user/password', user.PasswordHandler),
+                                       Route('/user/activation/<signup_token>', handler=user.ActivationHandler),
                                        ('/provider/terms', user.ProviderTermsHandler),
-                                       ('/provider/password', user.ProviderPasswordHandler),
                                        ('/provider/resetpassword', user.ProviderResetPasswordHandler),
                                        Route('/provider/resetpassword/<resetpassword_key>', handler=user.ProviderResetPasswordHandler),
                                        ('/provider/signup', user.ProviderSignupHandler),
-                                       ('/login', user.LoginHandler),
-                                       ('/logout', user.LogoutHandler),
                                        
                                        # admin
                                        ('/admin', admin.AdminIndexHandler),

@@ -109,9 +109,9 @@ class ProviderResetPasswordHandler(UserBaseHandler):
                 self.render_template('login.html', form=LoginForm())
 
 
-class ProviderPasswordHandler(UserBaseHandler):
+class PasswordHandler(UserBaseHandler):
     def get(self):
-        logging.info('(ProviderPasswordHandler.get) GET not implemented on /provider/password')
+        logging.info('(PasswordHandler.get) GET not implemented on /password')
         self.redirect("/")
             
     def post(self):
@@ -145,7 +145,7 @@ class ProviderPasswordHandler(UserBaseHandler):
                     provider.resetpassword_key = None
                     provider.put()
                 
-                    logging.info('(ProviderPasswordHandler.post) Set new password for email %s' % provider.email)
+                    logging.info('(PasswordHandler.post) Set new password for email %s' % provider.email)
 
                     self.login_user(provider.email, password)
 
@@ -153,7 +153,7 @@ class ProviderPasswordHandler(UserBaseHandler):
                     ProviderBaseHandler.render_bookings(self, provider, success_message=success_message)
 
                 else:
-                    logging.info('(ProviderPasswordHandler.post) New user just set their password: %s' % provider.email)
+                    logging.info('(PasswordHandler.post) New user just set their password: %s' % provider.email)
                     
                     # delete the signup token
                     self.delete_signup_token(user)
@@ -174,7 +174,7 @@ class ProviderPasswordHandler(UserBaseHandler):
                 
             # something went wrong, user not created
             else:
-                logging.error('(ProviderPasswordHandler.post) User not created. Probably because email already in Unique table.')
+                logging.error('(PasswordHandler.post) User not created. Probably because email already in Unique table.')
                     
                 # TODO add custom validation to tell user that email is already in use.
                 error_message = 'User email is already taken. If you are already using this email for your patient profile, please inform us or use another email.'

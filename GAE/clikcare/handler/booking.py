@@ -4,7 +4,8 @@ import logging
 import data.db as db
 from data import db_book
 import mail
-from forms.base import BookingForm, PatientForm, EmailOnlyBookingForm
+from forms.base import BookingForm, EmailOnlyBookingForm
+from forms.patient import PatientForm
 from forms.user import LoginForm
 from handler.base import BaseHandler
 from handler.auth import patient_required
@@ -17,15 +18,15 @@ class BaseBookingHandler(BaseHandler):
     def renderConfirmedBooking(self, booking, **extra):
         tv = {'patient': booking.patient.get(), 'booking': booking, 'provider': booking.provider.get()}
         tv.update(extra)
-        self.render_template('patient/book.html', **tv)
+        self.render_template('patient/confirm_appointment.html', **tv)
         
     def renderNewPatientForm(self, patientForm, booking, user=None, **extra):
         tv = {'form': patientForm, 'booking': booking, 'provider': booking.provider.get(), 'user': user}
         tv.update(extra)
-        self.render_template('patient/new.html', **tv)
+        self.render_template('patient/profile.html', **tv)
         
     def renderFullyBooked(self, booking, emailForm=None, **extra):
-        self.render_template('booking/no_result.html', booking=booking, form=emailForm, **extra) 
+        self.render_template('search/no_result.html', booking=booking, form=emailForm, **extra) 
         
     def create_booking_form(self, payload):
         bookingform = BookingForm(payload)
@@ -60,7 +61,7 @@ class IndexHandler(BaseBookingHandler):
                 # booking saved with provider, no patient info yet
                 email_form = EmailOnlyBookingForm()
                 tv = {'patient': None, 'booking': booking, 'provider': provider, 'form': email_form }
-                self.render_template('booking/result.html', **tv) 
+                self.render_template('search/result.html', **tv) 
             else:
                 logging.warn('No provider found for booking: %s' % booking.key.urlsafe())
                 emailForm = EmailOnlyBookingForm()
@@ -144,7 +145,7 @@ class PatientBookHandler(BaseBookingHandler):
             else:
                 # email form validation failed
                 tv = {'patient': None, 'booking': booking, 'provider': booking.provider, 'form': email_form }
-                self.render_template('booking/result.html', **tv) 
+                self.render_template('search/result.html', **tv) 
             
             
 class FullyBookedHandler(BaseBookingHandler):
@@ -171,10 +172,10 @@ class PatientBookForNewHandler(BaseBookingHandler):
     '''
     def post(self):
         # create patient form for validation
-        patientForm = PatientForm(self.request.POST)
+        patient_form = PatientForm(self.request.POST)
         # fetch booking from bk
         booking = db.get_from_urlsafe_key(self.request.get('bk'))
-        if patientForm.validate():
+        if patient_form.validate():
             # Create User in Auth system
             email = self.request.get('email')
             password = self.request.get('password')
@@ -199,11 +200,11 @@ class PatientBookForNewHandler(BaseBookingHandler):
                     self.renderConfirmedBooking(booking)
                 else:
                     logging.error("No booking saved because patient is None")
-                    self.renderNewPatientForm(patientForm, booking, error_message='Error while saving your booking. Please contact us.')
+                    self.renderNewPatientForm(patient_form, booking, error_message='Error while saving your booking. Please contact us.')
             else:
                 logging.error('User not created.')
                 # TODO add custom validation to tell user that email is already in use.
-                self.renderNewPatientForm(patientForm, booking, error_message='Email already in use. Try to login instead.')
+                self.renderNewPatientForm(patient_form, booking, error_message='Email already in use. Try to login instead.')
                 
             
         else:           

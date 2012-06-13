@@ -199,7 +199,7 @@ class BookingTest(BaseTest):
         patient_form = new_patient_response.forms[0]
         patient_form['first_name'] = first_name = 'Pat!'
         patient_form['last_name'] = 'Patient'
-        patient_form['password'] = self._TEST_PATIENT_PASSWORD
+ #      patient_form['password'] = self._TEST_PATIENT_PASSWORD
         patient_form['telephone'] = '514-123-1234'
         patient_form['terms_agreement'] = '1'
         booking_confirm_page = patient_form.submit()
@@ -207,7 +207,7 @@ class BookingTest(BaseTest):
         booking_confirm_page.mustcontain(self._TEST_PATIENT_EMAIL)
         # Title check
         booking_confirm_page.mustcontain('Thank you %s!' % first_name)
-        
+         
     def test_booking_existing_patient(self):
         self.test_booking_new_patient()
         self.logout_patient()

@@ -189,6 +189,25 @@ class BaseHandler(webapp2.RequestHandler):
             logging.info('(BaseHandler.create_user) New shell user creation failed. Probably existing email: %s' % new_user.get_email())
             return None
 
+
+    def create_empty_user_for_patient(self, patient):
+        roles = [handler.auth.PATIENT_ROLE]
+        auth_id = patient.email
+        user_created, new_user = self.auth.store.user_model.create_user(auth_id, roles=roles)
+        
+        if user_created:
+            logging.info('(BaseHandler.create_user) Create shell user for provider: %s' % new_user.get_email())
+            
+            # link user to provider
+            provider.user = new_user.key
+            provider.put()
+            
+            return new_user
+        else:
+            logging.info('(BaseHandler.create_user) New shell user creation failed. Probably existing email: %s' % new_user.get_email())
+            return None
+
+
     def create_signup_token(self, user):
         # create a token for the user
         salt = sha.new(str(random.random())).hexdigest()[:5]
