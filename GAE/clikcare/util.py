@@ -6,11 +6,12 @@ import logging
 from webapp2_extras.i18n import format_date, format_datetime
 from webapp2_extras.i18n import lazy_gettext as _
 
-languages = ['fr', 'en']
+DEFAULT_LANG = 'fr'
+LANGUAGE_LABELS = { 'fr' : u'Français', 'en': u'English'}
 
 # String used on many pages
 saved_message = _(u'Your changes were saved.')
-    
+
 # key, value
 def getAllRegions():
     return [('mtl-downtown', _(u'Montreal - Downtown')),

@@ -16,11 +16,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 
-# Language code hack
-
-msgid "en"
-msgstr "fr"
-
 
 #################
 # Title & brand
