@@ -54,9 +54,9 @@ class DBTestCase(BaseTestCase):
         self.assertEqual(2, Provider.query().count(), '2 providers in datastore')
         # create booking
         b = Booking()
-        b.requestCategory = testCategory
-        b.requestLocation = testLocation
-        b.requestDateTime = datetime.strptime('2012-04-26 10', '%Y-%m-%d %H')
+        b.request_category = testCategory
+        b.request_location = testLocation
+        b.request_datetime = datetime.strptime('2012-04-26 10', '%Y-%m-%d %H')
         b.put();
         # test the matching
         brs = db_search.provider_search(b)

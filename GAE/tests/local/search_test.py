@@ -27,7 +27,7 @@ class BookingTestCase(BaseTestCase):
         self.assertEqual(len(providers), Provider.query().count())
         # create booking request
         next_monday_at_9 = testutil.create_datetime_from_weekday_and_hour(5, 15)
-        booking_request = Booking(requestCategory=util.CAT_PHYSIO, requestLocation='mtl-downtown', requestDateTime=next_monday_at_9)
+        booking_request = Booking(request_category=util.CAT_PHYSIO, request_location='mtl-downtown', request_datetime=next_monday_at_9)
         booking_responses = db_search.provider_search(booking_request)
         logging.info('Booking Respones:')
         for br in booking_responses:
@@ -47,7 +47,7 @@ class BookingTestCase(BaseTestCase):
         providers = create_test_providers()
         # create booking request - Saturday at 10 PM
         sat_at_10 = testutil.create_datetime_from_weekday_and_hour(5, 22)
-        booking_request = Booking(requestCategory=util.CAT_PHYSIO, requestLocation='mtl-downtown', requestDateTime=sat_at_10)
+        booking_request = Booking(request_category=util.CAT_PHYSIO, request_location='mtl-downtown', request_datetime=sat_at_10)
         booking_responses = db_search.provider_search(booking_request)
         logging.info('Booking Respones:')
         for br in booking_responses:
@@ -61,7 +61,7 @@ class BookingTestCase(BaseTestCase):
         providers = create_test_providers()
         # create booking request - Saturday at 10 PM
         sat_at_10 = testutil.create_datetime_from_weekday_and_hour(5, 22)
-        booking_request = Booking(requestCategory=util.CAT_OSTEO, requestLocation='mtl-downtown', requestDateTime=sat_at_10)
+        booking_request = Booking(request_category=util.CAT_OSTEO, request_location='mtl-downtown', request_datetime=sat_at_10)
         booking_responses = db_search.provider_search(booking_request)
         logging.info('Booking Respones:')
         # assert top provider is p2
