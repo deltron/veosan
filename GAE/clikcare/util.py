@@ -17,7 +17,7 @@ def getAllRegions():
             ('mtl-westisland', _(u'Montreal - West-Island'))
             ]
     
-# key, value
+## key, value
 CAT_PHYSIO = "physiotherapy"
 CAT_CHIRO = "chiropractor"
 CAT_OSTEO = "osteopath"

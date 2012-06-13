@@ -285,9 +285,11 @@ class LoginHandler(BaseHandler):
                 
                 # login was succesful, User is in the session
                 booking_key = self.request.POST.get('booking_key')
+                
                 if booking_key:
                     # special redirect for login during booking flow
                     self.redirect('/patient/book?bk=%s' % booking_key)
+                
                 else:
                     # check role of user, redirect to appropriate page after login
                     if auth.PROVIDER_ROLE in user.roles:

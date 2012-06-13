@@ -2,6 +2,7 @@
 import logging
 from google.appengine.api import mail
 from webapp2_extras.i18n import gettext as _
+import util
 
 CLIK_SUPPORT_ADDRESS = 'cliktester@gmail.com'
 
@@ -24,7 +25,8 @@ def email_booking_to_patient(jinja2, booking, activation_url=None):
     message = mail.EmailMessage()
     message.sender = CLIK_SUPPORT_ADDRESS
     message.to = to_address
-    message.subject = u'Cliksoin Reservation - %s' % _(provider.category).capitalize()
+    category_label = dict(util.getAllCategories())[provider.category]
+    message.subject = u'Cliksoin Reservation - %s' % _(category_label).capitalize()
     tv = {'booking': booking, 'activation_url': activation_url}
     message.body = render_booking_email_body(jinja2, 'email/patient_booking.txt', **tv)
     try:
