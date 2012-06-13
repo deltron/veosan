@@ -2,7 +2,7 @@
 import logging
 from datetime import datetime
 from base_test import BaseTestCase
-from data import db, db_util, db_book
+from data import db, db_util, db_search
 from data.model import Provider, Booking, Schedule
 
 class DBTestCase(BaseTestCase):
@@ -59,32 +59,9 @@ class DBTestCase(BaseTestCase):
         b.requestDateTime = datetime.strptime('2012-04-26 10', '%Y-%m-%d %H')
         b.put();
         # test the matching
-        bestProvider = db_book.findBestProviderForBookingRequest(b)
-        logging.info('best provider:' + str(bestProvider))
+        brs = db_search.provider_search(b)
+        logging.info('best provider:' + str(brs))
         # assert
-        self.assertIsNotNone(bestProvider, 'provider should not be None')
-        self.assertEqual(pkey, bestProvider.key, 'provider keys should be equal')
+        self.assertIsNotNone(brs, 'provider should not be None')
+        self.assertEqual(pkey, brs[0].provider.key, 'provider keys should be equal')
         
-        
-    def testCantFindProvider(self):
-        testCategory = u'physiotherapy'
-        testRegion = u'montreal-west'
-        otherRegion = u'montreal-downtown'
-        # create provider
-        p = Provider()
-        p.first_name = 'Best-Test'
-        p.last_name = 'Phys-Io'
-        p.category = testCategory
-        p.region = testRegion
-        pkey = p.put()
-        # create booking
-        b = Booking()
-        b.requestCategory = testCategory
-        b.requestLocation = otherRegion
-        b.requestDateTime = datetime.strptime('2012-04-26 10', '%Y-%m-%d %H')
-        b.put();
-        # test the matching
-        bestProvider = db_book.findBestProviderForBookingRequest(b)
-        logging.info('best provider:' + str(bestProvider))
-        # assert
-        self.assertEqual(None, bestProvider, 'provider keys should be None')

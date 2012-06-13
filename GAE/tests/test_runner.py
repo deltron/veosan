@@ -43,8 +43,9 @@ if __name__ == '__main__':
 
 
     # Note : uncomment local to run those as well. I commented it to focus on integration
-    TEST_PATH = [ #"local",
-                  "integration"]
+    TEST_PATH = [ "local",
+                  "integration"
+                 ]
     
     for t in TEST_PATH:
         main(SDK_PATH, t)

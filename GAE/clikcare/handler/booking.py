@@ -2,7 +2,7 @@
 
 import logging
 import data.db as db
-from data import db_book
+from data import db_search
 import mail
 from forms.base import BookingForm, EmailOnlyBookingForm
 from forms.patient import PatientForm
@@ -52,15 +52,19 @@ class IndexHandler(BaseBookingHandler):
             booking = db.storeBooking(self.request.POST, None, None)
             logging.debug('Created booking: %s' % booking.key)
             logging.info("Looking for best provider...")
-            provider = db_book.findBestProviderForBookingRequest(booking)
-            if (provider):
-                logging.info("Provider found: " + provider.fullName())
-                booking.provider = provider.key
-                booking.dateTime = booking.requestDateTime
-                booking.put()
+            booking_responses = db_search.provider_search(booking)
+            if booking_responses:
+                index = self.request.get('index', 0)
+                br = booking_responses[index]
+                
+                logging.info("Showing provider %s at index %s: " % (br.provider.fullName(), index))
+                #booking.provider = provider.key
+                #booking.dateTime = booking.requestDateTime
+                #booking.put()
                 # booking saved with provider, no patient info yet
+                
                 email_form = EmailOnlyBookingForm()
-                tv = {'patient': None, 'booking': booking, 'provider': provider, 'form': email_form }
+                tv = {'patient': None, 'booking': booking, 'provider': br.provider, 'form': email_form }
                 self.render_template('search/result.html', **tv) 
             else:
                 logging.warn('No provider found for booking: %s' % booking.key.urlsafe())

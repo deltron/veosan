@@ -19,3 +19,10 @@ indexes:
   ancestor: yes
   properties:
   - name: dateTime
+
+- kind: Provider
+  properties:
+  - name: category
+  - name: location
+  - name: terms_agreement
+  - name: start_year

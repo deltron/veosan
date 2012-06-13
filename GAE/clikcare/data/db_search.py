@@ -9,16 +9,13 @@ from functools import partial
 ### TimeSlots and DatetimeSlot
 ###
 
-# 2 datetimes: start and end on the same day
+# Timeslot represents a period on the calendar using two datetimes
 Timeslot = namedtuple('Timeslot', "start end")
-
-#def create_time_slot(start, end):
-#    return Timeslot(start, end)
 
 def create_one_hour_timeslot(date, start):
     return Timeslot( datetime.combine(date, time(start)), datetime.combine(date, time(start+1)))
 
-def create_timeslots_over_range(date, start_hour, end_hour):
+def create_one_hour_timeslots_over_range(date, start_hour, end_hour):
     return map(partial(create_one_hour_timeslot, date), range(start_hour, end_hour))
 
 def timeslot_distance(ts1, ts2):
@@ -48,10 +45,10 @@ class BookingResponse():
         return self.timeslot.start == request.requestDateTime
     
 
-def main_search(booking):
+def provider_search(booking):
     '''
-        1. Try perfect match of location and datetime 
-        2. Look for other timeslots on the request day around the desired time
+        1. Select the closest available timeslot per provider
+        2. Sorts all booking responses by proximity to requested time
         
         Returns list of BookingResponse
     '''
@@ -114,7 +111,7 @@ def get_sorted_schedule_timeslots(provider, request_timeslot):
     scheduleQuery = Schedule.query(Schedule.provider==provider.key, Schedule.day==request_day)
     timeslots = []
     for s in scheduleQuery:
-        ts = create_timeslots_over_range(request_date, s.startTime, s.endTime)
+        ts = create_one_hour_timeslots_over_range(request_date, s.startTime, s.endTime)
         timeslots = timeslots + ts
     # sort
     sorted_timeslots = sorted(timeslots, key=lambda t: timeslot_distance(t, request_timeslot))
@@ -126,7 +123,7 @@ def get_sorted_schedule_timeslots(provider, request_timeslot):
 ### JUNK
 ###
  
-def findBestProviderForBookingRequest(booking):
+def findBestProviderForBookingRequestOLD(booking):
     '''
         Depreacated
         method returns single provider
