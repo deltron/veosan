@@ -9,6 +9,8 @@ from forms.admin import NewProviderForm
 from base import BaseHandler
 import data.db as db, mail
 from handler.auth import admin_required
+from google.appengine.ext import ndb
+
 
 
 class AdminBaseHandler(BaseHandler):
@@ -95,16 +97,16 @@ class NewProviderSolicitHandler(BaseHandler):
             # activation url
             url_obj = urlparse.urlparse(self.request.url)
             activation_url = urlparse.urlunparse((url_obj.scheme, url_obj.netloc, '/user/activation/' + token, '', '', ''))
-            logging.info('(NewProviderSolicitHandler.post) generated activation url for user %s : %s ' %  (provider.email, activation_url))
+            logging.info('(NewProviderSolicitHandler.post) generated activation url for user %s : %s ' % (provider.email, activation_url))
             
             # send email
             mail.emailSolicitProvider(self.jinja2, provider, activation_url)
             
             # render the provider admin page
-            success_message='Solicit email sent to %s' % provider.email
+            success_message = 'Solicit email sent to %s' % provider.email
             self.render_template('provider/administration.html', provider=provider, success_message=success_message)
         else:
-            error_message='Incomplete profile for %s, email not sent' % provider.email
+            error_message = 'Incomplete profile for %s, email not sent' % provider.email
             self.render_template('provider/administration.html', provider=provider, error_message=error_message)
 
 
@@ -115,6 +117,18 @@ class AdminStageDataHandler(AdminBaseHandler):
     def post(self):
         from data import test_data
         test_data.create_test_providers()
+        self.redirect('/admin/providers')
+        
+
+class AdminDeleteDataHandler(AdminBaseHandler):
+    ''' Administer Providers '''
+
+    def post(self):
+        all_entities = ndb.Query().fetch(keys_only=True)
+        for e in all_entities:
+            e.delete()
+        
+        logging.info('*** DELETE ALL ENTITIES: %s' % all_entities)
         self.redirect('/admin/providers')
         
         
