@@ -82,9 +82,12 @@ class NewProviderSolicitHandler(BaseHandler):
         provider = db.get_from_urlsafe_key(self.request.get('provider_key'))
         
         # Check provider has at least a first name, last name and email before activation
-        if provider.email and provider.first_name and provider.last_name:            
+        if provider.email and provider.first_name and provider.last_name: 
             # create a blank user with provider role
-            user = self.create_empty_user_for_provider(provider)
+            if provider.user: 
+                user = provider.user.get()
+            else:    
+                user = self.create_empty_user_for_provider(provider)
             
             # create a signup token for new user
             token = self.create_signup_token(user)
