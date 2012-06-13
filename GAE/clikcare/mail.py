@@ -6,12 +6,33 @@ from webapp2_extras.i18n import gettext as _
 CLIK_SUPPORT_ADDRESS = 'cliktester@gmail.com'
 
 
-def render_booking_email_body(jinja2, template_filename, booking, activation_url):
+def render_booking_email_body(jinja2, template_filename, booking, activation_url=None):
     tv = {'b': booking, 'provider': booking.provider.get(), 'patient': booking.patient.get(), 'activation_url': activation_url}
     return jinja2.render_template(template_filename, **tv)
     
 
-def email_booking_to_patient(jinja2, booking, activation_url):
+def email_booking_to_patient(jinja2, booking):
+    ''' send booking info to patient, provider and us '''
+    patient = booking.patient.get()
+    provider = booking.provider.get()
+    to_address = patient.email
+    # check email valid
+    if not mail.is_email_valid(to_address):
+        logging.warn('Email is not valid: {0}. Trying anyway...' %  to_address)
+    # create message
+    message = mail.EmailMessage()
+    message.sender = CLIK_SUPPORT_ADDRESS
+    message.to = to_address
+    message.subject = u'Cliksoin Reservation - %s' % _(provider.category).capitalize()
+    tv = {'booking': booking}
+    message.body = render_booking_email_body(jinja2, 'email/patient_booking.txt', **tv)
+    try:
+        message.send()
+    except Exception as e:
+        logging.error('Email to patient not sent. %s' % e)
+
+
+def email_booking_to_patient_with_activation(jinja2, booking, activation_url):
     ''' send booking info to patient, provider and us '''
     patient = booking.patient.get()
     provider = booking.provider.get()

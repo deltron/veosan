@@ -18,6 +18,7 @@ class BaseBookingHandler(BaseHandler):
     @staticmethod
     def render_confirmed_patient(handler, patient, **extra):
         # find the patient's bookings
+        # TODO: does this work for multiple appointments? probably not
         booking = db.get_bookings_for_patient(patient)
         
         tv = {'patient': patient, 'booking': booking, 'provider': booking.provider.get()}
@@ -66,6 +67,7 @@ class IndexHandler(BaseBookingHandler):
                 booking.provider = provider.key
                 booking.dateTime = booking.requestDateTime
                 booking.put()
+                
                 # booking saved with provider, no patient info yet
                 email_form = EmailOnlyBookingForm()
                 tv = {'patient': None, 'booking': booking, 'provider': provider, 'form': email_form }
@@ -107,12 +109,14 @@ class PatientBookHandler(BaseBookingHandler):
                 logging.info('Patient %s is already logged in, confirming booking.' % email)
                 booking.patient = patient.key
                 booking.put()
-                self.render_confirmed_patient(booking) 
+                
+                # skip activation stuff, send confirm email
+                mail.email_booking_to_patient(self.jinja2, booking)
+                
+                self.render_confirmed_patient(self, patient) 
             else:
-                # user logged in, but not a patient, got to new patient form with the user.key set
-                logging.info('User %s is logged in, but not a patient, creating new patient.' % email)
-                patientForm = PatientForm(self.request.POST)
-                self.render_new_patient_form(patientForm, booking, user)   
+                # TODO ... If it's logged in and not a patient, it has to be a provider! Can they be both?    
+                pass
             
         else:
             # Form has an email field, let's validate
@@ -204,7 +208,7 @@ class NewPatientHandler(BaseBookingHandler):
                 booking.put()
                                         
                 # booking succesful, send profile confirmation email
-                mail.email_booking_to_patient(self.jinja2, booking, activation_url)
+                mail.email_booking_to_patient_with_activation(self.jinja2, booking, activation_url)
                 
                 self.render_confirmation_email_sent(booking)
             else:

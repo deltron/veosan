@@ -2,10 +2,12 @@ Hi {{ patient.first_name }} {{ patient.last_name }},
 
 Your are booked for {{ provider.category }} with {{ provider.fullName() }} on {{ b.dateTime|format_datetime_full }}. 
 
-One last thing, please click on the link below to confirm:
+{% if activation_url %}
+One last thing, since you are new around here please click on the link below to confirm your address:
 
 {{activation_url}}
 
+{% endif %}
 
 Thank you,
 
