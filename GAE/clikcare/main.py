@@ -56,6 +56,7 @@ webapp2_config['webapp2_extras.auth'] = {
 application = webapp2.WSGIApplication([
                                        # General pages
                                        ('/', booking.IndexHandler),
+                                       ('/next', booking.SearchNextHandler),
                                        ('/full', booking.FullyBookedHandler),
                                        ('/contact', contact.ContactHandler),
                                        
@@ -89,6 +90,7 @@ application = webapp2.WSGIApplication([
                                        ('/admin/provider/solicit', admin.NewProviderSolicitHandler),
                                        ('/admin/bookings', admin.AdminBookingsHandler),
                                        ('/admin/providers', admin.AdminProvidersHandler),                                       
+                                       ('/admin/stagedata', admin.AdminStageDataHandler),
                                             
                                        # provider admin
                                        ('/admin/provider', provider_admin.ProviderAdministrationHandler),

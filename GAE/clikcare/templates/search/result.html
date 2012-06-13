@@ -8,6 +8,8 @@
 	<div class="span6">
 		<div class="well">
 			<h1>
+				{% set provider = br.provider %}
+				
 				{{ provider.title or ''}} {{ provider.first_name or '' }} 
 				{% if provider.last_name %} {{ provider.last_name|first}}.{% endif %} 
 				
@@ -19,13 +21,15 @@
 		<br>
 		<form action="/patient/book" method="post" class="form-inline">	
 			<fieldset>
-				<input id="bk" name="bk" type="hidden" value="{{ booking.key.urlsafe() }}">	
+				<input id="bk" name="bk" type="hidden" value="{{ booking.key.urlsafe() }}"/>	
+				<input type="hidden" name="provider_key" value="{{ provider.key.urlsafe() }}"/>
+				<input type="hidden" name="booking_datetime" value="{{ br.timeslot.start }}"/>
 				
 				{% if not user %}
 				<input id='email' name='email' type="text" class="" placeholder="{{_('Email Address')}}">
 				{% endif %}
 				
-				<button type="submit" class="btn btn-primary">
+				<button type="submit" class="btn btn-primary btn-large">
 					{{ _('Book Appointment') }}
 				</button>
 			</fieldset>
@@ -36,14 +40,31 @@
 				</div>	
 			{% endif %}
 		</form>
+		
+	<!-- Show me another -->
+	
+	<!-- TODO: Move this to somewhere not too obvious -->
+	<form action="/next" method="post">
+		<fieldset>
+			<input id="bk" name="bk" type="hidden" value="{{ booking.key.urlsafe() }}">	
+			<input id="index" name="index" type="hidden" value="{{ index + 1 }}">	
+			
+			<div class="control-group">
+				<div class="controls">
+					<button type="submit" class="btn">
+						{{ _('Show me another') }}
+					</button>
+				</div>
+			</div>
+		</fieldset>
+	</form>
+		
+		
 			
 		</div>
 	</div>
 	<div class="span1">
-		<p><!-- SPAN1 SPACER
-			Junk layout, Trash when reworking maybe with image for quality 
-			Maybe Simplyfy all this page: Appointment Info on Left, Bio and Quote on right-->
-		</p>
+		<p><!-- Column spacer --></p>
 	</div>
 	
 	<!-- Bio Preview -->

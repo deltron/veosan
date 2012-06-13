@@ -9,8 +9,8 @@ from forms.patient import PatientForm
 from forms.user import LoginForm
 from handler.base import BaseHandler
 from handler.auth import patient_required
+from datetime import datetime
 import util
-import auth
 
 class BaseBookingHandler(BaseHandler):
     '''Common functions for all booking handlers'''
@@ -25,6 +25,14 @@ class BaseBookingHandler(BaseHandler):
         tv.update(extra)
         handler.render_template('patient/confirm_appointment.html', **tv)
         
+    def render_result(self, booking, booking_responses, index):
+        br = booking_responses[index]
+        logging.info("Showing provider %s at index %s: " % (br.provider.fullName(), index))
+        email_form = EmailOnlyBookingForm()
+        logging.info("Rendering result: provider %s at index %s: " % (br.provider.fullName(), index))
+        tv = {'patient': None, 'booking': booking, 'br': br, 'index': index, 'form': email_form }
+        self.render_template('search/result.html', **tv)     
+    
     def render_new_patient_form(self, patientForm, booking, user=None, **extra):
         tv = {'form': patientForm, 'booking': booking, 'provider': booking.provider.get(), 'user': user}
         tv.update(extra)
@@ -64,17 +72,7 @@ class IndexHandler(BaseBookingHandler):
             booking_responses = db_search.provider_search(booking)
             if booking_responses:
                 index = self.request.get('index', 0)
-                br = booking_responses[index]
-                
-                logging.info("Showing provider %s at index %s: " % (br.provider.fullName(), index))
-                #booking.provider = provider.key
-                #booking.dateTime = booking.requestDateTime
-                #booking.put()
-                # booking saved with provider, no patient info yet
-                
-                email_form = EmailOnlyBookingForm()
-                tv = {'patient': None, 'booking': booking, 'provider': br.provider, 'form': email_form }
-                self.render_template('search/result.html', **tv) 
+                self.render_result(booking, booking_responses, index)
             else:
                 logging.warn('No provider found for booking: %s' % booking.key.urlsafe())
                 emailForm = EmailOnlyBookingForm()
@@ -82,6 +80,28 @@ class IndexHandler(BaseBookingHandler):
         else:
             self.render_template('index.html', form=bookingform)
 
+#booking.provider = provider.key
+                #booking.dateTime = booking.requestDateTime
+                #booking.put()
+                # booking saved with provider, no patient info yet
+                
+class SearchNextHandler(BaseBookingHandler):
+    '''
+        Handler to travel through the search results
+    '''
+    def post(self):
+        # get request info
+        index = int(self.request.get('index'))
+        booking_key = self.request.get('bk')
+        booking = db.get_from_urlsafe_key(booking_key)
+        booking_responses = db_search.provider_search(booking)
+        if booking_responses:
+            self.render_result(booking, booking_responses, index)
+        else:
+            logging.warn('No provider found for booking: %s' % booking.key.urlsafe())
+            emailForm = EmailOnlyBookingForm()
+            self.renderFullyBooked(booking, emailForm)
+            
 
 class PatientBookHandler(BaseBookingHandler):
     
@@ -98,8 +118,18 @@ class PatientBookHandler(BaseBookingHandler):
         
        
     def post(self):
-        ''' We have a booking with a provider, we need to add the patient using the User '''
+        '''
+            1. Save selected provider and timeslot to the booking
+            2. Add the patient using the User
+        '''
         booking = db.get_from_urlsafe_key(self.request.get('bk')) 
+        # 1. Save provider and datetime in booking
+        provider = db.get_from_urlsafe_key(self.request.get('provider_key')) 
+        booking.provider = provider.key
+        booking_datetime = datetime.strptime(self.request.get('booking_datetime'), '%Y-%m-%d %H:%M:%S')
+        booking.dateTime = booking_datetime
+        booking.put()
+        # 2. Add patient information
         email_form = EmailOnlyBookingForm(self.request.POST)
         user = self.get_current_user()
         if user:
