@@ -107,3 +107,14 @@ class NewProviderSolicitHandler(BaseHandler):
             error_message='Incomplete profile for %s, email not sent' % provider.email
             self.render_template('provider/administration.html', provider=provider, error_message=error_message)
 
+
+
+class AdminStageDataHandler(AdminBaseHandler):
+    ''' Administer Providers '''
+
+    def post(self):
+        from data import test_data
+        test_data.create_test_providers()
+        self.redirect('/admin/providers')
+        
+        
