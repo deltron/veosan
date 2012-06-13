@@ -42,7 +42,7 @@ class BaseHandler(webapp2.RequestHandler):
         
         # add template arguments common to all templates
         user = self.get_current_user()
-        logging.info('(BaseHandler.render_template) User logged in: ' + str(user))
+
         
         # Eventually display the full name of the user (when linked to patient or provider profile)
         username = ''
@@ -51,6 +51,8 @@ class BaseHandler(webapp2.RequestHandler):
         
         # somebody is logged in
         if user:
+            logging.info('(BaseHandler.render_template) User logged in: %s with roles %s' % (user.get_email(), user.roles))
+
             username = user.auth_ids[0]
                         
             # extend roles
@@ -78,8 +80,6 @@ class BaseHandler(webapp2.RequestHandler):
             if users.is_current_user_admin():
                 roles.append(handler.auth.ADMIN_ROLE)
 
-        else:
-            logging.info('(BaseHandler.render_template) No Google user logged in')
             
         # template variables
         template_args['user'] = user

@@ -25,6 +25,11 @@ class BaseBookingHandler(BaseHandler):
         tv.update(extra)
         handler.render_template('patient/confirm_appointment.html', **tv)
         
+    def render_confirmed_booking(self, booking, **extra):        
+        tv = {'patient': booking.patient.get(), 'booking': booking, 'provider': booking.provider.get()}
+        tv.update(extra)
+        self.render_template('patient/confirm_appointment.html', **tv)
+
     def render_result(self, booking, booking_responses, index):
         br = booking_responses[index]
         logging.info("Showing provider %s at index %s: " % (br.provider.fullName(), index))
@@ -108,9 +113,9 @@ class PatientBookHandler(BaseBookingHandler):
             Protected by @patient_required so that only logged in patient can see their own booking confirm
         '''
         booking_key = self.request.get('bk')
-        logging.info('Showing Booking confirmation for %s' % booking_key)
+        logging.info('(PatientBookHandler.get) Showing Booking confirmation for %s' % booking_key)
         booking = db.get_from_urlsafe_key(booking_key)
-        self.renderConfirmedBooking(booking) 
+        self.render_confirmed_booking(booking) 
         
        
     def post(self):
