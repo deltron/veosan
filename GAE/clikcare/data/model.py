@@ -18,6 +18,7 @@ class User(Webapp2AuthUser):
     # replace with dictionnary later...
     # better yet find a way to mash into the webapp2 user token model
     signup_token = ndb.StringProperty()
+    confirmed = ndb.BooleanProperty()
     
     def get_email(self):
         return self.auth_ids[0]
@@ -137,6 +138,8 @@ class Booking(ndb.Model):
     patient = ndb.KeyProperty(kind=Patient)
     # link to provider
     provider = ndb.KeyProperty(kind=Provider)
+    
+    confirmed = ndb.BooleanProperty()
     
     def get_html_summary(self):
         s = u''

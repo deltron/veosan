@@ -29,16 +29,17 @@ def storeBooking(r, patient=None, provider=None):
     booking.put()
     return booking
     
-def storePatient(r, user):
+def store_patient(r):
     # r is a MultiDict object from the request
     logging.info("Storing patient profile from request:" + str(r.__dict__))
     patient = Patient()
+    
     # set all the properties
     db_util.set_all_properties_on_entity_from_multidict(patient, r)
-    patient.user = user.key
+
     # store
-    patient_key = patient.put()
-    logging.info('Saved patient key:' + str(patient_key))
+    patient.put()
+    logging.info('Saved patient:' + str(patient.email))
     logging.info(vars(patient))
     return patient
 
@@ -51,6 +52,10 @@ def fetchProviders():
 
 def fetch_bookings():
     return Booking.query().order(-Booking.created_on)
+
+
+def get_bookings_for_patient(patient):
+    return Booking.query(Booking.patient == patient.key).get()
 
 def fetch_future_bookings(provider):
     yesterday_at_midnight = datetime.combine(date.today(), time())

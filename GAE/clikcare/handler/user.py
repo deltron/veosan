@@ -5,6 +5,7 @@ from base import BaseHandler
 import data.db as db
 import auth
 from provider import ProviderBaseHandler
+from booking import BaseBookingHandler
 from forms.user import ProviderTermsForm, PasswordForm, LoginForm
 import mail
 from webapp2_extras.i18n import gettext as _
@@ -22,10 +23,10 @@ class UserBaseHandler(BaseHandler):
     def render_terms(self, provider, terms_form, **extra):
         self.render_template('provider/provider_terms.html', provider=provider, form=terms_form, **extra)
 
-    def render_password_selection(self, provider, password_form=None, **extra):
+    def render_password_selection(self, provider=None, patient=None, password_form=None, **extra):
         if not password_form:
             password_form = PasswordForm()
-        self.render_template('provider/password.html', provider=provider, form=password_form, **extra)
+        self.render_template('provider/password.html', provider=provider, patient=patient, form=password_form, **extra)
         
 
 class ProviderTermsHandler(UserBaseHandler):
@@ -54,7 +55,7 @@ class ProviderTermsHandler(UserBaseHandler):
             provider.terms_date = date.today()
             provider.put()
             # Go to the password selection page
-            self.render_password_selection(provider)
+            self.render_password_selection(provider=provider)
         else:
             self.render_terms(provider, terms_form=terms_form)
 
@@ -67,7 +68,7 @@ class ProviderResetPasswordHandler(UserBaseHandler):
             
             if provider:
                 # got a provider for that password reset token, show the password form
-                self.render_password_selection(provider)
+                self.render_password_selection(provider=provider)
             else:
                 # no provider found for password reset key, send them to the login page
                 error_message = "Sorry we can't find anyone for that password reset link."
@@ -115,29 +116,64 @@ class PasswordHandler(UserBaseHandler):
         self.redirect("/")
             
     def post(self):
-        '''
-            Create user and link it to the Provider
-        '''
-
         password_form = PasswordForm(self.request.POST)
-
-        # get provider from request
-        provider = db.get_from_urlsafe_key(self.request.get('provider_key'))
+        provider = None
+        patient = None
+        user = None
         
-        if password_form.validate():
+        # get role from request
+        role = self.request.get('role')
+
+        if role == auth.PROVIDER_ROLE:
+            provider = db.get_from_urlsafe_key(self.request.get('key'))
+            if provider:
+                user = db.get_user_from_email(provider.email)
+
+        elif role == auth.PATIENT_ROLE:
+            patient = db.get_from_urlsafe_key(self.request.get('key'))
+            if patient:
+                user = db.get_user_from_email(patient.email)
+
+        else:
+            logging.info('(PasswordHandler.post) Got nonsense role %s in password_form for user' % role)
+
+        if user and password_form.validate():
+                
             # get password from request
             password = self.request.get('password')
-            
-            # get user from provider
-            user = db.get_user_from_email(provider.email)
-            
-            # set password (same as passing password_raw to user_create)
+                
+            # hash password (same as passing password_raw to user_create)
             password_hash = security.generate_password_hash(password, length=12)    
             user.password = password_hash
             user.put()
-         
-             
-            if auth.PROVIDER_ROLE in user.roles:
+            
+            # login with new password
+            self.login_user(user.get_email(), password)
+
+            if user.signup_token:
+                # new user
+                logging.info('(PasswordHandler.post) New user just set their password: %s' % user.get_email())
+                
+                # delete the signup token
+                self.delete_signup_token(user)
+            
+                if provider:
+                    # send welcome email
+                    mail.emailProviderWelcomeMessage(self.jinja2, provider)
+                        
+                    # Provider is Activated
+                    # login automatically
+                    
+                    welcome_message = _("Welcome to Clikcare! Please review your profile and open your schedule.")
+                    ProviderBaseHandler.render_bookings(self, provider, success_message=welcome_message)
+               
+                elif patient:
+                    welcome_message = _("Welcome to Clikcare! Profile confirmation successful.")
+                    BaseBookingHandler.render_confirmed_patient(self, patient, success_message=welcome_message)
+
+            else:
+                # not a returning user, must be a password reset
+                # only implemented for provider for now
                 
                 # this was a password reset
                 if provider.resetpassword_key:
@@ -150,39 +186,11 @@ class PasswordHandler(UserBaseHandler):
                     self.login_user(provider.email, password)
 
                     success_message = _("Welcome back! Password has been reset for %s" % provider.email)
-                    ProviderBaseHandler.render_bookings(self, provider, success_message=success_message)
-
-                else:
-                    logging.info('(PasswordHandler.post) New user just set their password: %s' % provider.email)
-                    
-                    # delete the signup token
-                    self.delete_signup_token(user)
-                    
-                    # send welcome email
-                    mail.emailProviderWelcomeMessage(self.jinja2, provider)
-                    
-                    # Provider is Activated
-                    # login automatically
-                    self.login_user(provider.email, password)
-                
-                    # TODO Add Welcome Message and invitation to review profile and set schedule
-                    #redirect_url = provider.get_edit_link(section='profile')
-                    #self.redirect(redirect_url)
-                
-                    welcome_message = _("Welcome to Clikcare! Please review your profile and open your schedule.")
-                    ProviderBaseHandler.render_bookings(self, provider, success_message=welcome_message)
-                
-            # something went wrong, user not created
-            else:
-                logging.error('(PasswordHandler.post) User not created. Probably because email already in Unique table.')
-                    
-                # TODO add custom validation to tell user that email is already in use.
-                error_message = 'User email is already taken. If you are already using this email for your patient profile, please inform us or use another email.'
-                self.render_password_selection(provider, password_form=password_form, error_message=error_message)
-        
+                    ProviderBaseHandler.render_bookings(self, provider, success_message=success_message) 
+      
         # password form was not validate, re-render and try again!
         else:
-            self.render_password_selection(provider, password_form=password_form)
+            self.render_password_selection(provider=provider, patient=patient, password_form=password_form)
 
         
 class ActivationHandler(UserBaseHandler):
@@ -192,6 +200,8 @@ class ActivationHandler(UserBaseHandler):
             if user:
             
                 if auth.PROVIDER_ROLE in user.roles:
+                    logging.info('(ActivationHandler) activating provider: %s' % user.get_email())
+
                     provider = db.get_provider_from_user(user)
                 
                     if provider:
@@ -207,6 +217,19 @@ class ActivationHandler(UserBaseHandler):
                         logging.info('(ActivationHandler) no provider found for user & token combination')
                         self.redirect("/login")
                         
+                elif auth.PATIENT_ROLE in user.roles:
+                    logging.info('(ActivationHandler) activating patient: %s' % user.get_email())
+
+                    patient = db.get_patient_from_user(user)
+                    
+                    if patient:
+                        # make the patient choose a password
+                        self.render_password_selection(patient=patient)
+                    else:
+                        # no patient found for user & token combination, send them to the login page
+                        logging.info('(ActivationHandler) no patient found for user & token combination')
+                        self.redirect("/login")
+
             else:
                 # no user found for token combination, send them to the login page
                 logging.info('(ActivationHandler) no user found for signup token %s' % signup_token)

@@ -66,7 +66,7 @@ application = webapp2.WSGIApplication([
                                        Route('/privacy', handler=static.StaticHandler, name='privacy'),
                                        
                                        # Patient
-                                       ('/patient/booknew', booking.PatientBookForNewHandler),
+                                       ('/patient/new', booking.NewPatientHandler),
                                        ('/patient/book', booking.PatientBookHandler),
                                   
                                        #provider

@@ -6,12 +6,12 @@ from webapp2_extras.i18n import gettext as _
 CLIK_SUPPORT_ADDRESS = 'cliktester@gmail.com'
 
 
-def renderBookingEmailBody(jinja2, template_filename, booking):
-    tv = {'b': booking, 'provider': booking.provider.get(), 'patient': booking.patient.get()}
+def render_booking_email_body(jinja2, template_filename, booking, activation_url):
+    tv = {'b': booking, 'provider': booking.provider.get(), 'patient': booking.patient.get(), 'activation_url': activation_url}
     return jinja2.render_template(template_filename, **tv)
     
 
-def emailBookingToPatient(jinja2, booking):
+def email_booking_to_patient(jinja2, booking, activation_url):
     ''' send booking info to patient, provider and us '''
     patient = booking.patient.get()
     provider = booking.provider.get()
@@ -24,7 +24,8 @@ def emailBookingToPatient(jinja2, booking):
     message.sender = CLIK_SUPPORT_ADDRESS
     message.to = to_address
     message.subject = u'Cliksoin Reservation - %s' % _(provider.category).capitalize()
-    message.body = renderBookingEmailBody(jinja2, 'email/patient_booking.txt', booking)
+    tv = {'booking': booking, 'activation_url': activation_url}
+    message.body = render_booking_email_body(jinja2, 'email/patient_booking.txt', **tv)
     try:
         message.send()
     except Exception as e:

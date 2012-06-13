@@ -1,0 +1,19 @@
+{% extends "/layout/base.html" %}
+
+{% block subhead %} {{ _('Confirmation') }} {% endblock %}
+{% block lead %}{% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="span12">
+		<h1><img src="/assets/img/green-check.png" width="80" height="80"> Thank you {{patient.first_name}}!</h1>
+		<br>
+		<p>An email was sent with your appointment details and a confirmation code.</p>
+		<p>Please check your inbox and click on the link to finish the process.</p>
+				
+		<p><i class="icon-envelope"></i> You will receive an email shortly confirming your reservation.</p>
+		<p><i class="icon-user"></i> <a href="/contact">Contact us</a> for any questions relating to your appointment</p>
+		<br>
+	</div>
+</div>
+{% endblock %} 

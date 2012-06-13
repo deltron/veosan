@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import logging
+import logging, urlparse
 import data.db as db
 from data import db_book
 import mail
@@ -15,16 +15,24 @@ import auth
 class BaseBookingHandler(BaseHandler):
     '''Common functions for all booking handlers'''
     
-    def renderConfirmedBooking(self, booking, **extra):
-        tv = {'patient': booking.patient.get(), 'booking': booking, 'provider': booking.provider.get()}
-        tv.update(extra)
-        self.render_template('patient/confirm_appointment.html', **tv)
+    @staticmethod
+    def render_confirmed_patient(handler, patient, **extra):
+        # find the patient's bookings
+        booking = db.get_bookings_for_patient(patient)
         
-    def renderNewPatientForm(self, patientForm, booking, user=None, **extra):
+        tv = {'patient': patient, 'booking': booking, 'provider': booking.provider.get()}
+        tv.update(extra)
+        handler.render_template('patient/confirm_appointment.html', **tv)
+        
+    def render_new_patient_form(self, patientForm, booking, user=None, **extra):
         tv = {'form': patientForm, 'booking': booking, 'provider': booking.provider.get(), 'user': user}
         tv.update(extra)
         self.render_template('patient/profile.html', **tv)
-        
+    
+    def render_confirmation_email_sent(self, booking):
+        tv = {'patient': booking.patient.get(), 'booking': booking, 'provider': booking.provider.get()}
+        self.render_template('patient/confirmation_email_sent.html', **tv)
+
     def renderFullyBooked(self, booking, emailForm=None, **extra):
         self.render_template('search/no_result.html', booking=booking, form=emailForm, **extra) 
         
@@ -83,12 +91,9 @@ class PatientBookHandler(BaseBookingHandler):
         booking = db.get_from_urlsafe_key(booking_key)
         self.renderConfirmedBooking(booking) 
         
-        
-    '''
-        Handler to confirm the booking and create new patient record
-    '''
+       
     def post(self):
-        'We have a booking with a provider, we need to add the patient using the User'
+        ''' We have a booking with a provider, we need to add the patient using the User '''
         booking = db.get_from_urlsafe_key(self.request.get('bk')) 
         email_form = EmailOnlyBookingForm(self.request.POST)
         user = self.get_current_user()
@@ -102,12 +107,12 @@ class PatientBookHandler(BaseBookingHandler):
                 logging.info('Patient %s is already logged in, confirming booking.' % email)
                 booking.patient = patient.key
                 booking.put()
-                self.renderConfirmedBooking(booking) 
+                self.render_confirmed_patient(booking) 
             else:
                 # user logged in, but not a patient, got to new patient form with the user.key set
                 logging.info('User %s is logged in, but not a patient, creating new patient.' % email)
                 patientForm = PatientForm(self.request.POST)
-                self.renderNewPatientForm(patientForm, booking, user)   
+                self.render_new_patient_form(patientForm, booking, user)   
             
         else:
             # Form has an email field, let's validate
@@ -141,7 +146,7 @@ class PatientBookHandler(BaseBookingHandler):
                     patientForm = PatientForm(self.request.POST)
                     # set email in form 
                     patientForm.email.data = email
-                    self.renderNewPatientForm(patientForm, booking)             
+                    self.render_new_patient_form(patientForm, booking)             
             else:
                 # email form validation failed
                 tv = {'patient': None, 'booking': booking, 'provider': booking.provider, 'form': email_form }
@@ -166,46 +171,47 @@ class FullyBookedHandler(BaseBookingHandler):
             
 
 
-class PatientBookForNewHandler(BaseBookingHandler):
+class NewPatientHandler(BaseBookingHandler):
     '''
         Handler for New Patient Form
     '''
     def post(self):
         # create patient form for validation
         patient_form = PatientForm(self.request.POST)
-        # fetch booking from bk
-        booking = db.get_from_urlsafe_key(self.request.get('bk'))
+        
         if patient_form.validate():
-            # Create User in Auth system
-            email = self.request.get('email')
-            password = self.request.get('password')
+            # fetch booking from bk
+            booking = db.get_from_urlsafe_key(self.request.get('bk'))
+        
+            # create a patient from the form
+            patient = db.store_patient(self.request.POST)
             
-            roles = [auth.PATIENT_ROLE]
+            # Create an empty user in Auth system
+            user = self.create_empty_user_for_patient(patient)
             
-            user = self.create_user(email, password, roles)
+            # create a signup token for new user
+            token = self.create_signup_token(user)
+
+            # activation url
+            url_obj = urlparse.urlparse(self.request.url)
+            activation_url = urlparse.urlunparse((url_obj.scheme, url_obj.netloc, '/user/activation/' + token, '', '', ''))
+            logging.info('(NewPatientHandler.post) generated activation url for user %s : %s ' %  (patient.email, activation_url))
+
             if user:
-                # Store New Patient
-                patient = db.storePatient(self.request.POST, user)
-                if (patient):
-                    # store booking
-                    booking.patient = patient.key
-                    booking.put()
-                    
-                    
-                    
-                    # auto-loggin patient
-                    self.login_user(email, password)
-                    # booking succesfull, send email
-                    mail.emailBookingToPatient(self.jinja2, booking)
-                    self.renderConfirmedBooking(booking)
-                else:
-                    logging.error("No booking saved because patient is None")
-                    self.renderNewPatientForm(patient_form, booking, error_message='Error while saving your booking. Please contact us.')
+                # store booking
+                booking.patient = patient.key
+                booking.confirmed = user.confirmed = False
+                booking.put()
+                                        
+                # booking succesful, send profile confirmation email
+                mail.email_booking_to_patient(self.jinja2, booking, activation_url)
+                
+                self.render_confirmation_email_sent(booking)
             else:
                 logging.error('User not created.')
                 # TODO add custom validation to tell user that email is already in use.
-                self.renderNewPatientForm(patient_form, booking, error_message='Email already in use. Try to login instead.')
+                self.render_new_patient_form(patient_form, booking, error_message='Email already in use. Try to login instead.')
                 
             
         else:           
-            self.renderNewPatientForm(patientForm, booking)    
+            self.render_new_patient_form(patient_form, booking)    
