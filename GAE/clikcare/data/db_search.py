@@ -23,9 +23,7 @@ def timeslot_distance(ts1, ts2):
     time_diff = ts1.start - ts2.start
     return abs(time_diff.total_seconds())
 
-# All the time slots on a single days
-#timeslots = create_timeslots_over_range(8, 17)
-
+    
 
 class BookingResponse():
     '''
@@ -39,10 +37,10 @@ class BookingResponse():
         self.timeslot = ts
         
     def is_perfect_match(self, request):
-        return (self.provider.location == request.requestLocation) & (self.timeslot.start == request.requestDateTime)
+        return (self.provider.location == request.request_location) & (self.timeslot.start == request.request_datetime)
  
     def is_perfect_timeslot_match(self, request):
-        return self.timeslot.start == request.requestDateTime
+        return self.timeslot.start == request.request_datetime
     
 
 def provider_search(booking):
@@ -54,26 +52,26 @@ def provider_search(booking):
     '''
     display_general_provider_universe_stats(booking)
     # unpack booking request
-    requestCategory = booking.requestCategory
-    requestLocation = booking.requestLocation
+    request_category = booking.request_category
+    request_location = booking.request_location
     # match on location and category, sort by experience (ascending start_year)
-    providers_wide_query = Provider.query(Provider.category==requestCategory, Provider.location==requestLocation, Provider.terms_agreement==True).order(Provider.start_year)
-    logging.info('Found %s providers offering %s in %s (with terms)' % (providers_wide_query.count(), requestCategory, requestLocation))
+    providers_wide_query = Provider.query(Provider.category==request_category, Provider.location==request_location, Provider.terms_agreement==True).order(Provider.start_year)
+    logging.info('Found %s providers offering %s in %s (with terms)' % (providers_wide_query.count(), request_category, request_location))
     # sort by best available timeslot and filter out booking conflicts
     booking_responses = filter_and_sort_providers_based_on_schedule(booking, providers_wide_query)
-    logging.info('Found %s providers offering %s in %s at requested date and time' % (providers_wide_query.count(), requestCategory, requestLocation))
+    logging.info('Found %s providers offering %s in %s at requested date and time' % (providers_wide_query.count(), request_category, request_location))
     return booking_responses
 
 
 def display_general_provider_universe_stats(booking):
     # unpack booking request
-    requestCategory = booking.requestCategory
-    requestLocation = booking.requestLocation
+    request_category = booking.request_category
+    request_location = booking.request_location
     # general debug stats
     providerUniverseCount = Provider.query().count()
     logging.info('Total provider universe: %s' % providerUniverseCount)
-    broadMatchCount = Provider.query(Provider.category==requestCategory, Provider.location==requestLocation).count()
-    logging.info('Found %s providers offering %s in %s (ignoring terms agreement)' % (broadMatchCount, requestCategory, requestLocation))
+    broadMatchCount = Provider.query(Provider.category==request_category, Provider.location==request_location).count()
+    logging.info('Found %s providers offering %s in %s (ignoring terms agreement)' % (broadMatchCount, request_category, request_location))
 
 
 def filter_and_sort_providers_based_on_schedule(booking, providerQuery):
@@ -83,10 +81,10 @@ def filter_and_sort_providers_based_on_schedule(booking, providerQuery):
     '''
     booking_responses = []
     # unpack booking
-    request_date = booking.requestDateTime.date()
+    request_date = booking.request_datetime.date()
     logging.info('request date: %s' % request_date)
-    request_start = booking.requestDateTime.hour
-    request_timeslot = create_one_hour_timeslot(booking.requestDateTime.date(), request_start)
+    request_start = booking.request_datetime.hour
+    request_timeslot = create_one_hour_timeslot(booking.request_datetime.date(), request_start)
     logging.info('request timeslot: %s %s' % request_timeslot)
     for p in providerQuery:
         sorted_available_timeslots = get_sorted_schedule_timeslots(p, request_timeslot)
@@ -117,60 +115,3 @@ def get_sorted_schedule_timeslots(provider, request_timeslot):
     sorted_timeslots = sorted(timeslots, key=lambda t: timeslot_distance(t, request_timeslot))
     return sorted_timeslots
 
-
-
-###
-### JUNK
-###
- 
-def findBestProviderForBookingRequestOLD(booking):
-    '''
-        Depreacated
-        method returns single provider
-        Returns provider that best matches: requestCategory, location, dateTime
-    '''
-    requestCategory = booking.requestCategory
-    requestLocation = booking.requestLocation
-    logging.info("request date_time x:" + str(booking.requestDateTime))
-    requestDay = booking.requestDateTime.weekday()
-    requestStartTime = booking.requestDateTime.hour
-    # Hack: appointments last one hour
-    requestEndTime = requestStartTime + 1
-    logging.info('Looking for {0} in {1} available on day:{2} from {3} to {4}'.format(requestCategory, requestLocation, requestDay, requestStartTime, requestEndTime))
-    providers = []
-    providerUniverseCount = Provider.query().count()
-    logging.info('Total provider universe: %s' % providerUniverseCount)
-    broadMatchCount = Provider.query(Provider.category==requestCategory, Provider.location==requestLocation).count()
-    logging.info('Found %s providers offering %s in %s' % (broadMatchCount, requestCategory, requestLocation))
-    providersQuery = Provider.query(Provider.category==requestCategory, Provider.location==requestLocation, Provider.terms_agreement==True, Provider.enable==True)
-    #gdb.GqlQuery('''Select * from Provider WHERE requestCategory = :1 AND requestLocation = :2''', requestCategory, requestLocation)
-    providerCount = providersQuery.count(limit=50)
-    logging.info('Found {0} providers in requestCategory and requestLocation. Narrowing down list using schedule...'.format(providerCount))
-    for p in providersQuery:
-        scheduleQuery = ndb.gql('''Select * from Schedule WHERE provider = :1 AND day = :2''', p.key, requestDay)
-        schedulesCount = scheduleQuery.count(limit=48)
-        if (schedulesCount > 0):
-            for s in scheduleQuery:
-                # manually check if hours match (because of BadFilterError: "Only one property per query may have inequality filters")
-                if (requestStartTime >= s.startTime & requestEndTime <= s.endTime):
-                    logging.info('Found schedule match for provider {0}, schedule {1}:'.format(p, s.repr()))
-                    # check if provider does not have a previous appointment conflicting with this one
-                    conflicting_booking = Booking.query(Booking.provider==p.key, Booking.dateTime==booking.requestDateTime).get()
-                    if not conflicting_booking:
-                        providers.append(p)
-                    else:
-                        logging.info('|- Conflicting booking at %s'.format(conflicting_booking.dateTime.strftime("%H:%M")))
-                else:
-                    logging.info('Schedule hours do not match {0}'.format(s.repr()))
-        else:
-            logging.info('No schedule match for provider {0} on day'.format(p, requestDay))
-    logging.info('providers:' + str(providers))
-    #providers = providersQuery.fetch(limit=1)
-    if (len(providers) > 0):
-        # TODO use ordering clause or Round-robin to find the top provider when list is longer than 1, currently uses the first in the list
-        bestProvider = providers[0]
-        logging.info('Found Best Provider: ' + bestProvider.fullName())
-        return bestProvider
-    else:
-        logging.info('No Provider Found')
-        return None

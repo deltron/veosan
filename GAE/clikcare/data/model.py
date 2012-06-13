@@ -126,13 +126,12 @@ class Schedule(ndb.Model):
 class Booking(ndb.Model):
     created_on = ndb.DateTimeProperty(auto_now_add=True)
     #request
-    requestCategory = ndb.StringProperty()
-    requestLocation = ndb.StringProperty()
-    requestDateTime = ndb.DateTimeProperty()
-    # email for booking requests with no provider found
+    request_category = ndb.StringProperty()
+    request_location = ndb.StringProperty()
+    request_datetime = ndb.DateTimeProperty()
     request_email = ndb.StringProperty()
     # actual appointment
-    dateTime = ndb.DateTimeProperty()
+    request_datetime = ndb.DateTimeProperty()
     comments = ndb.TextProperty()
     # link to patient
     patient = ndb.KeyProperty(kind=Patient)

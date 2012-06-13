@@ -13,12 +13,17 @@ indexes:
 - kind: Booking
   properties:
   - name: provider
-  - name: dateTime
+  - name: request_datetime
 
 - kind: Booking
   ancestor: yes
   properties:
   - name: dateTime
+
+- kind: Booking
+  ancestor: yes
+  properties:
+  - name: request_datetime
 
 - kind: Provider
   properties:

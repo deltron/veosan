@@ -17,12 +17,12 @@ def get_from_urlsafe_key(urlsafe_key):
 def storeBooking(r, patient=None, provider=None):
     logging.info('Saving Booking from:' + str(r))
     booking = Booking()
-    booking.requestCategory = r['category']
-    booking.requestLocation = r['location']
+    booking.request_category = r['category']
+    booking.request_location = r['location']
     requestDateString = r['booking_date']
     requestTimeString = r['booking_time']
-    requestDateTime = datetime.strptime(requestDateString + " " + requestTimeString, '%Y-%m-%d %H')
-    booking.requestDateTime = requestDateTime
+    request_datetime = datetime.strptime(requestDateString + " " + requestTimeString, '%Y-%m-%d %H')
+    booking.request_datetime = request_datetime
     booking.comments = r.get('comments', '')
     booking.patient = patient
     booking.provider = provider
@@ -59,8 +59,8 @@ def get_bookings_for_patient(patient):
 
 def fetch_future_bookings(provider):
     yesterday_at_midnight = datetime.combine(date.today(), time())
-    bookings = Booking.query(ancestor=provider.key).order(Booking.dateTime).fetch(50)
-    #, Booking.dateTime > yesterday_at_midnight
+    bookings = Booking.query(ancestor=provider.key).order(Booking.request_datetime).fetch(50)
+    #, Booking.request_datetime > yesterday_at_midnight
     return bookings
 
 def initProvider(provider_email):
