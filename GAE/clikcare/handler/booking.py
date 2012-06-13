@@ -208,7 +208,7 @@ class NewPatientHandler(BaseBookingHandler):
                 booking.put()
                                         
                 # booking succesful, send profile confirmation email
-                mail.email_booking_to_patient_with_activation(self.jinja2, booking, activation_url)
+                mail.email_booking_to_patient(self.jinja2, booking, activation_url)
                 
                 self.render_confirmation_email_sent(booking)
             else:
