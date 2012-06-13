@@ -2,7 +2,7 @@
     admin handlers
 '''
 
-import logging, random, sha, urlparse
+import logging, urlparse
 
 # clik
 from forms.admin import NewProviderForm

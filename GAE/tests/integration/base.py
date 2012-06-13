@@ -109,7 +109,7 @@ class BaseTest(unittest.TestCase):
         login_form['email'] = self._TEST_PATIENT_EMAIL
         login_form['password'] = self._TEST_PATIENT_PASSWORD
         login_redirect_response = login_form.submit()
-        # response after login is a redirect, so follow
+        # response after login is a redirect, so follow        
         login_welcome_page = login_redirect_response.follow()
         # email in the header
         login_welcome_page.mustcontain(self._TEST_PATIENT_EMAIL)

@@ -178,7 +178,7 @@ class BaseHandler(webapp2.RequestHandler):
         user_created, new_user = self.auth.store.user_model.create_user(auth_id, roles=roles)
         
         if user_created:
-            logging.info('(BaseHandler.create_user) Create shell user for provider: %s' % new_user.get_email())
+            logging.info('(BaseHandler.create_empty_user_for_provider) Create shell user for provider: %s' % new_user.get_email())
             
             # link user to provider
             provider.user = new_user.key
@@ -186,7 +186,7 @@ class BaseHandler(webapp2.RequestHandler):
             
             return new_user
         else:
-            logging.info('(BaseHandler.create_user) New shell user creation failed. Probably existing email: %s' % new_user.get_email())
+            logging.info('(BaseHandler.create_empty_user_for_provider) New shell user creation failed. Probably existing email: %s' % new_user.get_email())
             return None
 
 
@@ -196,15 +196,15 @@ class BaseHandler(webapp2.RequestHandler):
         user_created, new_user = self.auth.store.user_model.create_user(auth_id, roles=roles)
         
         if user_created:
-            logging.info('(BaseHandler.create_user) Create shell user for provider: %s' % new_user.get_email())
+            logging.info('(BaseHandler.create_empty_user_for_patient) Create shell user for patient: %s' % new_user.get_email())
             
             # link user to provider
-            provider.user = new_user.key
-            provider.put()
+            patient.user = new_user.key
+            patient.put()
             
             return new_user
         else:
-            logging.info('(BaseHandler.create_user) New shell user creation failed. Probably existing email: %s' % new_user.get_email())
+            logging.info('(BaseHandler.create_empty_user_for_patient) New shell user creation failed. Probably existing email: %s' % new_user.get_email())
             return None
 
 
@@ -214,6 +214,8 @@ class BaseHandler(webapp2.RequestHandler):
         token = sha.new(salt + user.get_email()).hexdigest()
         
         user.signup_token = token
+        user.confirmed = False
+        
         user.put()
         
         return token
@@ -225,20 +227,11 @@ class BaseHandler(webapp2.RequestHandler):
 
     def delete_signup_token(self, user):
         user.signup_token = None
+        
+        # assume the user is confirmed 
+        # (possibly faulty assumption - move this closer to where it's called)
+        user.confirmed = True
+        
         user.put()
         
         return user
-
-            
-    # eventually this will be obsolete
-    def create_user(self, email, password, roles=[]):
-        # Passing password_raw=password will hash the password
-        
-        user_created, new_user = self.auth.store.user_model.create_user(email, password_raw=password, roles=roles)
-        if user_created:
-            logging.info('(BaseHandler.create_user) Create new user: %s' % new_user.get_email())
-            return new_user
-        else:
-            logging.info('(BaseHandler.create_user) New user creation failed. Probably existing email: %s' % new_user.get_email())
-            return None
-

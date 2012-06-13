@@ -22,11 +22,13 @@
 							<li>
 								<a href="{{provider.get_edit_link(route='/provider/schedule')}}">{{ _('Schedule') }}</a>
 							</li>
+							{% endif%}
+							
+							{# Always show logout #}
 							<li class="divider"></li>
 							<li class="">
 								<a href="{{logout_url}}">{{ _('Logout') }}</a>
 							</li>
-							{% endif%}
 
 							{% if provider and 'admin' in roles %}
 							{# Show provider administration menu items #}
