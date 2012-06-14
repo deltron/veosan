@@ -11,6 +11,7 @@ from handler.base import BaseHandler
 from handler.auth import patient_required
 from datetime import datetime
 import util
+from utilities import time
 
 class BaseBookingHandler(BaseHandler):
     '''Common functions for all booking handlers'''
@@ -67,8 +68,8 @@ class BaseBookingHandler(BaseHandler):
         # set choices at run time because can't find a way to do lazy date and time localization in form declaration
         bookingform.category.choices = util.getAllCategories()
         bookingform.location.choices = util.getAllRegions()
-        bookingform.booking_date.choices = util.getDatesList()
-        bookingform.booking_time.choices = util.getTimesList()
+        bookingform.booking_date.choices = time.getDatesList()
+        bookingform.booking_time.choices = time.getTimesList()
         return bookingform
     
     

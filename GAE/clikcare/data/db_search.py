@@ -3,7 +3,6 @@ from data.model import Provider, Schedule
 from utilities.time import create_one_hour_timeslots_over_range, create_one_hour_timeslot, timeslot_distance
 
 
-
 class BookingResponse():
     '''
         Class representing a possible booking availability

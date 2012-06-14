@@ -5,18 +5,19 @@ import os, logging
 import webapp2
 from webapp2 import Route
 # clik
-import util
-from handler import booking, provider, provider_admin, auth, admin, static, contact, blob, language, user
+from util import dump
+from utilities import time
+from handler import booking, provider, provider_admin, admin, static, contact, blob, language, user
 from data.model import User
 
 
 jinja_filters = {}
-jinja_filters['format_date_weekday_after'] = util.format_date_weekday_after
-jinja_filters['format_datetime_full'] = util.format_datetime_full
-jinja_filters['format_datetime_noseconds'] = util.format_datetime_noseconds
-jinja_filters['format_hour'] = util.format_hour
-jinja_filters['format_30min_period'] = util.format_30min_period
-jinja_filters['dump'] = util.dump
+jinja_filters['format_date_weekday_after'] = time.format_date_weekday_after
+jinja_filters['format_datetime_full'] = time.format_datetime_full
+jinja_filters['format_datetime_noseconds'] = time.format_datetime_noseconds
+jinja_filters['format_hour'] = time.format_hour
+jinja_filters['format_30min_period'] = time.format_30min_period
+jinja_filters['dump'] = dump
 
 jinja_environment_args = {
         'autoescape': True,

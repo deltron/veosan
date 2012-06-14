@@ -1,8 +1,12 @@
 
+import calendar
+from datetime import date, timedelta
+import logging
 from datetime import time, date, datetime, timedelta
 from collections import namedtuple
 from functools import partial
-    
+from webapp2_extras.i18n import format_date, format_datetime
+from webapp2_extras.i18n import lazy_gettext as _
     
 ###
 ### TimeSlots and DatetimeSlot
@@ -21,3 +25,83 @@ def timeslot_distance(ts1, ts2):
     ''' helper method for sorting '''
     time_diff = ts1.start - ts2.start
     return abs(time_diff.total_seconds())
+
+
+
+
+def getDatesList():
+    ''' Return a list of date from tomorrow to 3 weeks from now'''
+    datesList = []
+    d = date.today()
+    logging.info(d)
+    oneDay = timedelta(days=1)
+    for n in range(21):
+        d = d + oneDay
+        dateTuple = (unicode(d), format_date_weekday_after(d))
+        datesList.append(dateTuple)
+    return datesList
+
+def getTimesList():
+    # this doesn't work for am/pm in english
+    startTimeList = range(8, 21)
+    timeStringList = map(lambda x: (unicode(x), formatTimeToOneHourPeriod(x)), startTimeList)
+    return timeStringList
+
+def getScheduleTimeslots():
+    # returns a list of list(name, start time, end time)
+    return ( ( _(u"Morning"), '8', '13'),
+             ( _(u"Afternoon"), '13', '18'),
+             ( _(u"Evening"), '18', '21')
+            )
+
+def getWeekdays():
+    cal = calendar.Calendar(0)
+    weekdays_lower = [(day, calendar.day_name[day]) for day in cal.iterweekdays()]
+    logging.info('Weekdays from cal: %s' % weekdays_lower)
+    weekdays = map( lambda s: (s[0], s[1].capitalize()), weekdays_lower)
+    logging.info('Weekdays: %s' % weekdays)
+    return weekdays
+
+def format_date_weekday_after(date):
+    return format_date(date, u"d MMMM yyyy (EEEE)")
+
+def format_datetime_full(datetime):
+    return "%s %s %s" % (format_datetime(datetime, "EEEE d MMMM yyyy"),  _(u"at"), format_datetime(datetime, "H:mm"))
+
+def format_hour(hour):
+    lang = _('en')
+    if (hour):
+        '''take a number in 24-hour format and return 13h or 1 PM'''
+        if (lang == 'fr'):
+            return hour + u'h'
+        else :
+            AMPM = u'AM'
+            if (hour > 12):
+                hour_en = hour - 12
+                AMPM = u'PM'
+            return unicode(hour_en) + u' ' + AMPM
+    else:
+        return ""
+
+def formatTimeToOneHourPeriod(startTime):
+    lang = _('en')
+    endTime = startTime + 1
+    if (lang == 'fr'):
+        return unicode(startTime) + u'h - ' + unicode(endTime) + u'h'
+    else:
+        logging.info('starttime %s' % startTime)
+        startAMPM = u'AM'
+        if (startTime > 12):
+            startTime = startTime - 12
+            startAMPM = u'PM'
+        endAMPM = u'AM'
+        if (endTime > 12):
+            endTime = endTime - 12
+            endAMPM = u'PM'
+        return unicode(startTime) + u' ' + startAMPM + u' - ' + unicode(endTime) + u' ' + endAMPM
+    
+def format_30min_period(startTime, startMinutes):
+    return u'START - END [placeholder]'
+
+def format_datetime_noseconds(datetime):
+    return format_datetime(datetime, "yyyy-MM-dd H:mm")

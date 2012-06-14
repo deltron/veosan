@@ -1,10 +1,10 @@
 
 import logging
-from test_data import create_test_providers
+from data.test_data import create_test_providers
 from base_test import BaseTestCase
 from data.model import Provider, Booking
 from data import db_search
-from data.db_search import Timeslot
+from utilities.time import Timeslot
 from datetime import date, datetime
 import util
 import testutil

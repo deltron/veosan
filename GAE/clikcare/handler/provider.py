@@ -1,15 +1,15 @@
 import logging
 #clik
 import data.db as db
-import util
+from utilities import time
 from base import BaseHandler
 from data.model import Schedule
 from handler.auth import provider_required
 
 class ProviderBaseHandler(BaseHandler):       
     def render_schedule(self, provider, availableIds, **extra):
-        timeslots = util.getScheduleTimeslots()
-        days = util.getWeekdays()
+        timeslots = time.getScheduleTimeslots()
+        days = time.getWeekdays()
         self.render_template('provider/schedule.html', provider=provider, availableIds=availableIds, timeslots=timeslots, days=days, **extra)
     
     @staticmethod
