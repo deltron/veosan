@@ -23,13 +23,31 @@ class UserBaseHandler(BaseHandler):
     def render_terms(self, provider, terms_form, **kw):
         self.render_template('provider/provider_terms.html', provider=provider, form=terms_form, **kw)
 
-    def render_password_selection(self, provider=None, patient=None, password_form=None, **kw):
+    def render_password_selection(self, user=None, password_form=None, **kw):
         if not password_form:
             password_form = PasswordForm()
-        self.render_template('provider/password.html', provider=provider, patient=patient, form=password_form, **kw)
+            
+        if user:
+            # check if provider or patient            
+            if auth.PROVIDER_ROLE in user.roles:
+                provider = db.get_provider_from_user(user)
+                if provider:
+                    self.render_template('user/password.html', provider=provider, form=password_form, **kw)
+                else:
+                    logging.error('(UserBaseHandler.render_password_selection) no provider found for user %s ' + user.get_email())
+
+            elif auth.PATIENT_ROLE in user.roles:
+                patient = db.get_patient_from_user(user)
+                if patient:
+                    self.render_template('user/password.html', patient=patient, form=password_form, **kw)
+                else:
+                    logging.error('(UserBaseHandler.render_password_selection) no patient found for user %s ' + user.get_email())
+
+            else:
+                logging.error('(UserBaseHandler.render_password_selection) no user given, cannot render password selection')
         
     def render_login(self, **kw):
-        self.render_template('login.html', form=LoginForm(), **kw)
+        self.render_template('user/login.html', form=LoginForm(), **kw)
 
 
 class ProviderTermsHandler(UserBaseHandler):
@@ -58,24 +76,23 @@ class ProviderTermsHandler(UserBaseHandler):
             provider.terms_date = date.today()
             provider.put()
             # Go to the password selection page
-            self.render_password_selection(provider=provider)
+            self.render_password_selection(user=provider.user.get())
         else:
             self.render_terms(provider, terms_form=terms_form)
 
-class ProviderResetPasswordHandler(UserBaseHandler):
-    def get(self, resetpassword_key=None):
+class ResetPasswordHandler(UserBaseHandler):
+    def get(self, resetpassword_token=None):
         ''' Someone coming back with a password reset token '''
         #parse URL to get password reset key
-        if (resetpassword_key):
-            provider = db.get_provider_from_resetpassword_key(resetpassword_key)
-            
-            if provider:
-                # got a provider for that password reset token, show the password form
-                self.render_password_selection(provider=provider)
+        if resetpassword_token:
+            user = self.validate_resetpassword_token(resetpassword_token)
+            if user:            
+                # got a good user for that password reset token, show the password form
+                self.render_password_selection(user=user)
             else:
-                # no provider found for password reset key, send them to the login page
+                # no user found for password reset key, send them to the login page
                 error_message = "Sorry, we can't find anyone for that password reset link. Links are expired after 24 hours, please try again."
-                logging.info("(ProviderResetPasswordHandler.get) can't find anyone for that password reset link: %s" % resetpassword_key)
+                logging.info("(ProviderResetPasswordHandler.get) can't find anyone for that password reset link: %s" % resetpassword_token)
                 self.render_login(error_message=error_message)
         else:
             logging.info('(ProviderResetPasswordHandler.get) No password reset key in request')
@@ -83,29 +100,25 @@ class ProviderResetPasswordHandler(UserBaseHandler):
         
     def post(self):
         ''' Someone forgot their password, generate a token and send email '''
-        email = self.request.get('provider_email')
+        email = self.request.get('email')
 
         logging.info("(ProviderResetPasswordHandler.post) got password reset request for email: %s" % email)
-        if email:
-            provider = db.get_provider_from_email(email)
+        if email:            
+            user = db.get_user_from_email(email)
         
-            # Check provider has at least a first name, last name and email before activation
-            if provider.email and provider.first_name and provider.last_name:
-                salt = sha.new(str(random.random())).hexdigest()[:5]
-
-                provider.resetpassword_key = sha.new(salt + provider.email + provider.first_name + provider.last_name).hexdigest()
-                provider.put()
+            if user:
+                self.create_resetpassword_token(user)
                 
-                # activation url
+                # resetpassword url
                 url_obj = urlparse.urlparse(self.request.url)
-                passwordreset_url = urlparse.urlunparse((url_obj.scheme, url_obj.netloc, '/provider/resetpassword/' + provider.resetpassword_key, '', '', ''))
+                passwordreset_url = urlparse.urlunparse((url_obj.scheme, url_obj.netloc, '/user/resetpassword/' + user.resetpassword_token, '', '', ''))
                 logging.info('(ProviderResetPasswordHandler.post) password reset URL:' + passwordreset_url)
             
                 # send email
-                mail.emailProviderPasswordReset(self.jinja2, provider, passwordreset_url)
+                mail.email_user_password_reset(self.jinja2, user, passwordreset_url)
             
                 # render the login page with success message
-                success_message = 'Password reset instructions sent to %s' % provider.email
+                success_message = 'Password reset instructions sent to %s' % user.get_email()
                 logging.info("(ProviderResetPasswordHandler.post) " + success_message)
                 self.render_login(success_message=success_message)
             else:
@@ -176,24 +189,26 @@ class PasswordHandler(UserBaseHandler):
 
             else:
                 # not a returning user, must be a password reset
-                # only implemented for provider for now
+                if user.resetpassword_token:
+                    # clear the password reset key to prevent further shenanigans
+                    self.delete_resetpassword_token(user)
                 
-                # this was a password reset
-                if provider.resetpassword_key:
-                    # clear the password reset key from provider to prevent further shenanigans
-                    provider.resetpassword_key = None
-                    provider.put()
-                
-                    logging.info('(PasswordHandler.post) Set new password for email %s' % provider.email)
+                    logging.info('(PasswordHandler.post) Set new password for email %s' % user.get_email())
 
-                    self.login_user(provider.email, password)
+                    self.login_user(user.get_email(), password)
 
-                    success_message = _("Welcome back! Password has been reset for %s" % provider.email)
-                    ProviderBaseHandler.render_bookings(self, provider, success_message=success_message) 
+                    success_message = _("Welcome back! Password has been reset for %s" % user.get_email())
+                    
+                    if auth.PROVIDER_ROLE in user.roles:
+                        ProviderBaseHandler.render_bookings(self, provider, success_message=success_message) 
+                    
+                    if auth.PATIENT_ROLE in user.roles:
+                        # do patient stuff
+                        pass
       
         # password form was not validate, re-render and try again!
         else:
-            self.render_password_selection(provider=provider, patient=patient, password_form=password_form)
+            self.render_password_selection(user, password_form=password_form)
 
         
 class ActivationHandler(UserBaseHandler):
@@ -228,7 +243,7 @@ class ActivationHandler(UserBaseHandler):
                     
                     if patient:
                         # make the patient choose a password
-                        self.render_password_selection(patient=patient)
+                        self.render_password_selection(user=user)
                     else:
                         # no patient found for user & token combination, send them to the login page
                         logging.info('(ActivationHandler) no patient found for user & token combination')
@@ -314,15 +329,15 @@ class LoginHandler(UserBaseHandler):
                     else:
                         logging.error('(LoginHandler.post) User %s logged in without roles', user.get_email())
                         error_message = 'Your account is not activated. Please check your email for an activation message or <a href="/contact">contact us</a> if you require assistance.'
-                        self.render_template('login.html', form=login_form, error_message=error_message)
+                        self.render_template('user/login.html', form=login_form, error_message=error_message)
                 
             except (InvalidAuthIdError, InvalidPasswordError), e:
                 # throws InvalidAuthIdError if user is not found, throws InvalidPasswordError if provided password doesn't match with specified user
                 error_message = _(u'Login failed. Try again.')
-                self.render_template('login.html', form=login_form, error_message=error_message)
+                self.render_template('user/login.html', form=login_form, error_message=error_message)
         else:
             # form validation error
-            self.render_template('login.html', form=login_form)
+            self.render_template('user/login.html', form=login_form)
 
 
 

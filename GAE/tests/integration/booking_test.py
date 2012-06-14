@@ -163,7 +163,7 @@ class BookingTest(BaseTest):
         
         #category_label = dict(util.getAllCategories())[provider.category]
 
-        self.assertEqual(m.subject, 'Cliksoin Reservation - %s' % 'Ostéopathe')
+        self.assertEqual(m.subject, 'veocare Reservation - %s' % 'Ostéopathe')
         
         # assert that activation link is in the email body
         user = User.query(User.key == patient.user).get()
@@ -265,7 +265,7 @@ class BookingTest(BaseTest):
         
         #category_label = dict(util.getAllCategories())[provider.category]
 
-        self.assertEqual(m.subject, 'Cliksoin Reservation - %s' % 'Ostéopathe')
+        self.assertEqual(m.subject, 'veocare reservation - %s' % 'Ostéopathe')
         
         # assert that activation link is in the email body
         user = User.query(User.key == patient.user).get()
