@@ -27,6 +27,8 @@ msgstr "veocare! trouvez des soins aujourd'hui"
 msgid "veocare"
 msgstr "veocare"
 
+msgid "veocare"
+msgstr "veosanté"
 
 #################
 # Navbar

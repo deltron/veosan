@@ -215,7 +215,7 @@ class AdminTest(BaseTest):
         
         # Booking should work
         response = self.book_appointment(util.CAT_OSTEO, testutil.next_monday_date_string() , 14)
-        response.mustcontain("Mr. Fantastic F. is available")
+        response.mustcontain("Mr. Fantastic F.")
 
 
 if __name__ == "__main__":

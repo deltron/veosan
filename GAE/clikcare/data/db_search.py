@@ -33,11 +33,11 @@ def provider_search(booking):
     request_category = booking.request_category
     request_location = booking.request_location
     # match on location and category, sort by experience (ascending start_year)
-    providers_wide_query = Provider.query(Provider.category==request_category, Provider.location==request_location, Provider.terms_agreement==True).order(Provider.start_year)
-    logging.info('Found %s providers offering %s in %s (with terms)' % (providers_wide_query.count(), request_category, request_location))
+    providers_wide_query = Provider.query(Provider.category==request_category, Provider.location==request_location, Provider.enable==True, Provider.terms_agreement==True).order(Provider.start_year)
+    logging.info('Found %s providers offering %s in %s (enabled and with terms)' % (providers_wide_query.count(), request_category, request_location))
     # sort by best available timeslot and filter out booking conflicts
     booking_responses = filter_and_sort_providers_based_on_schedule(booking, providers_wide_query)
-    logging.info('Found %s providers offering %s in %s at requested date and time' % (providers_wide_query.count(), request_category, request_location))
+    logging.info('Returning %s booking-responses offering %s in %s at requested date and time' % (len(booking_responses), request_category, request_location))
     return booking_responses
 
 
@@ -49,7 +49,7 @@ def display_general_provider_universe_stats(booking):
     providerUniverseCount = Provider.query().count()
     logging.info('Total provider universe: %s' % providerUniverseCount)
     broadMatchCount = Provider.query(Provider.category==request_category, Provider.location==request_location).count()
-    logging.info('Found %s providers offering %s in %s (ignoring terms agreement)' % (broadMatchCount, request_category, request_location))
+    logging.info('Found %s providers offering %s in %s (ignoring enable and terms agreement)' % (broadMatchCount, request_category, request_location))
 
 
 def filter_and_sort_providers_based_on_schedule(booking, providerQuery):
