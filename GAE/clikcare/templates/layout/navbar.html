@@ -6,12 +6,13 @@
 			<div class="nav-collapse">
 				<ul class="nav pull-right">
 					<!-- language -->
-					{% for l in languages %}
-					<li><a href="/lang/{{l}}">{{l}}</a></li>
+					{% for l in other_languages %}
+					<li><a href="/lang/{{l}}">{{ language_labels[l] }}</a></li>
 					{% endfor %}
-					<!-- User menu -->
 					
 					{% if user %}
+					<!-- User menu -->
+
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ username }} <b class="caret"></b></a>
 						<ul class="dropdown-menu">

@@ -2,10 +2,8 @@
 
 {% set active_page = "providers" %}
 
-{% block subhead %} <!-- Providers -->
-{% endblock %}
-{% block lead %} <!-- Provider administration -->
-{% endblock %}
+{% block subhead %}Providers{% endblock %}
+{% block lead %}Provider administration{% endblock %}
 
 {% block content %}
 <!-- span -->
@@ -46,21 +44,6 @@
 
 				<button type="submit" class="btn btn-primary">
 					Initialize New Provider
-				</button>
-			</fieldset>
-		</form>
-	</div>
-</div>
-
-
-
-<div class="row">
-	<div class="span6">
-	<form method="post" action="/admin/stagedata" class="well form-inline">
-		Generate a few providers to test the search
-			<fieldset>
-				<button type="submit" class="btn btn-primary">
-					Create Stage Data
 				</button>
 			</fieldset>
 		</form>

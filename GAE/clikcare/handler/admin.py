@@ -8,7 +8,10 @@ import logging, urlparse
 from forms.admin import NewProviderForm
 from base import BaseHandler
 import data.db as db, mail
+import util
 from handler.auth import admin_required
+from google.appengine.ext import ndb
+
 
 
 class AdminBaseHandler(BaseHandler):
@@ -17,6 +20,11 @@ class AdminBaseHandler(BaseHandler):
     def render_providers(self, **tv):
         providers = db.fetchProviders()
         self.render_template('admin/admin_providers.html', providers=providers, **tv)
+
+    def render_data(self, **tv):
+        dev_server=util.is_dev_server(self.request)
+        logging.info('(AdminBaseHandler.render_data) dev_server=%s' % dev_server)
+        self.render_template('admin/data.html', dev_server=dev_server, **tv)
 
 class AdminIndexHandler(AdminBaseHandler):
     '''Administration Index'''
@@ -41,6 +49,13 @@ class AdminProvidersHandler(AdminBaseHandler):
     @admin_required
     def get(self):
         self.render_providers(form=NewProviderForm())
+        
+class AdminPatientsHandler(AdminBaseHandler):
+    ''' Administer Patients '''
+ 
+    @admin_required
+    def get(self):
+        self.render_template('admin/patients.html')
 
                   
 class NewProviderInitHandler(AdminBaseHandler):
@@ -95,26 +110,61 @@ class NewProviderSolicitHandler(BaseHandler):
             # activation url
             url_obj = urlparse.urlparse(self.request.url)
             activation_url = urlparse.urlunparse((url_obj.scheme, url_obj.netloc, '/user/activation/' + token, '', '', ''))
-            logging.info('(NewProviderSolicitHandler.post) generated activation url for user %s : %s ' %  (provider.email, activation_url))
+            logging.info('(NewProviderSolicitHandler.post) generated activation url for user %s : %s ' % (provider.email, activation_url))
             
             # send email
             mail.emailSolicitProvider(self.jinja2, provider, activation_url)
             
             # render the provider admin page
-            success_message='Solicit email sent to %s' % provider.email
+            success_message = 'Solicit email sent to %s' % provider.email
             self.render_template('provider/administration.html', provider=provider, success_message=success_message)
         else:
-            error_message='Incomplete profile for %s, email not sent' % provider.email
+            error_message = 'Incomplete profile for %s, email not sent' % provider.email
             self.render_template('provider/administration.html', provider=provider, error_message=error_message)
 
+
+class AdminDataHandler(AdminBaseHandler):
+    ''' Administer Providers '''
+
+    def get(self):        
+        self.render_data()
 
 
 class AdminStageDataHandler(AdminBaseHandler):
     ''' Administer Providers '''
 
     def post(self):
-        from data import test_data
-        test_data.create_test_providers()
-        self.redirect('/admin/providers')
+        if util.is_dev_server(self.request):
+            logging.info('*** Generating test data for providers')
+            from data import test_data
+            test_data.create_test_providers()
+            self.render_data(success_message="Generated provider data successfully")
+
+        else:
+            logging.info('*** Someone tried to Generating test data for providers on a production server. WTF!?')
+            self.render_data(error_message="Production server, cannot generate test provider data")
+
+class AdminDeleteDataHandler(AdminBaseHandler):
+    ''' Delete all data from database '''
+
+    def post(self):
+        logging.info('self.request.host %s' % self.request.host)
+        
+        if util.is_dev_server(self.request):
+            confirm_text = self.request.get('confirm_text')
+            if confirm_text == 'delete':
+                all_entities = ndb.Query().fetch(keys_only=True)
+                logging.info('*** DELETE ALL ENTITIES: %s' % all_entities)
+                for e in all_entities: 
+                    e.delete()
+                self.render_data(success_message="Everything deleted")
+            else:
+                self.render_data(error_message="Missing confirmation code")
+
+        else:
+            logging.info('*** Someone tried to delete everything from a production server. WTF!?')
+            self.render_data(error_message="Production server, cannot delete")
+
+        
         
         

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import unittest
+from datetime import datetime
 from base import BaseTest
 from data import db
 
@@ -166,6 +167,98 @@ class AdminTest(BaseTest):
         response.mustcontain('Profile')
         response.mustcontain('Adresse')
 
+
+    def test_provider_disable(self):
+        self.create_complete_provider_profile()
+        self.login_as_admin()
+        
+        provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
+        request_variables = { 'key' : provider.key.urlsafe() }
+        response = self.testapp.get('/admin/provider', request_variables)
+        
+        # make sure provider starts as Enabled
+        response.mustcontain("Current status is enable=True")
+        response.mustcontain("Disable Provider") # button
+
+        disable_form = response.forms[1]
+        disable_response = disable_form.submit()
+        
+        disable_response.mustcontain("Current status is enable=False")
+        disable_response.mustcontain("Enable Provider")
+
+        self.logout_admin()
+        
+        # now try to make a booking with this guy        
+        # at this point there is one fully completed profile with a single timeslot available (Monday 8-13)
+        
+        # go back to the main page and try to book monday 8am
+        response = self.testapp.post('/')
+                
+        # fill out the form
+        booking_form = response.forms[0] # booking form
+        booking_form['category'] = 'osteopath' # admin test created an osteopath
+        
+        booking_date_select = booking_form.fields['booking_date'][0]
+        
+        # find the option value with a tuesday (no availability)
+
+        for (date_string, selected) in booking_date_select.options:
+            d = datetime.strptime(date_string, "%Y-%m-%d")
+            if d.weekday() == 1: # choose the first tuesday on the form
+                booking_form['booking_date'] = date_string
+                break
+        
+        # set time to 2pm
+        booking_form['booking_time'] = '14'
+
+        # leave region to default (should be downtown)
+        
+        response = booking_form.submit()
+        
+        # verify error messages
+        response.mustcontain("Malheureusement, il n'y a pas de professionnels disponibles qui répondent à vos besoins")
+
+        # now enable him again and try to make a booking
+        self.login_as_admin()
+        
+        provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
+        request_variables = { 'key' : provider.key.urlsafe() }
+        response = self.testapp.get('/admin/provider', request_variables)
+        
+        # make sure provider starts as Enabled
+        response.mustcontain("Current status is enable=False")
+        response.mustcontain("Enable Provider") # button
+
+        disable_form = response.forms[1]
+        disable_response = disable_form.submit()
+        
+        disable_response.mustcontain("Current status is enable=True")
+        disable_response.mustcontain("Disable Provider")        
+        
+        response = self.testapp.post('/')
+                
+        # fill out the form
+        booking_form = response.forms[0] # booking form
+        booking_form['category'] = 'osteopath' # admin test created an osteopath
+        
+        booking_date_select = booking_form.fields['booking_date'][0]
+        
+        # find the option value with a tuesday (no availability)
+
+        for (date_string, selected) in booking_date_select.options:
+            d = datetime.strptime(date_string, "%Y-%m-%d")
+            if d.weekday() == 0: # choose the first monday on the form
+                booking_form['booking_date'] = date_string
+                break
+        
+        # set time to 8am
+        booking_form['booking_time'] = '8'
+
+        # leave region to default (should be downtown)
+        
+        response = booking_form.submit()
+        
+        response.mustcontain("Mr. Fantastic F. is available")
 
 
 if __name__ == "__main__":

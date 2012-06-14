@@ -1,0 +1,39 @@
+{% extends "/layout/admin_nav.html" %}
+
+{% set active_page = "data" %}
+
+{% block subhead %} Data {% endblock %}
+{% block lead %} System level data adminstration{% endblock %}
+
+{% block content %}
+<!-- span -->
+{% if dev_server %}
+<div class="row">
+	<div class="span6">
+	<form method="post" action="/admin/data/stage" class="well form-inline">
+		Generate a few providers to test the search
+			<fieldset>
+				<button type="submit" class="btn btn-primary">
+					Create Stage Data
+				</button>
+			</fieldset>
+		</form>
+	</div>
+	
+	<div class="span6">
+	<form method="post" action="/admin/data/delete" class="well form-inline">
+			<fieldset>
+				<p>Write "delete" in the box</p>
+				<input type="text" name="confirm_text" >
+				<button type="submit" class="btn btn-danger">
+					DELETE ALL DATA
+				</button>
+			</fieldset>
+		</form>
+	</div>
+</div>
+{% else %}
+<h1>Production Server. Nothing to see here.</h1>
+{% endif %}
+
+{% endblock content %} 

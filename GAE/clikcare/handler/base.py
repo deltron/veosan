@@ -7,13 +7,10 @@ from webapp2_extras import sessions
 import data
 import handler.auth
 from webapp2_extras import i18n
-from util import languages
+import util
 from webapp2_extras.i18n import lazy_gettext as _
 from data.model import User
 from data import db
-
-# change to en and everything is english!
-# todo: do we do /en/ /fr/ for every address or read it in the session somewhere? Session.
 
 class BaseHandler(webapp2.RequestHandler):
     '''
@@ -82,6 +79,9 @@ class BaseHandler(webapp2.RequestHandler):
 
             
         # template variables
+        lang = self.get_language()
+        other_languages = filter(lambda l: l not in lang, util.LANGUAGE_LABELS.keys())
+
         template_args['user'] = user
         template_args['google_user'] = google_user
         template_args['username'] = username
@@ -90,10 +90,12 @@ class BaseHandler(webapp2.RequestHandler):
         template_args['admin_logout_url'] = users.create_logout_url('/')
         template_args['roles'] = roles
         template_args['provider'] = provider
-        template_args['lang'] = _('en')
-        template_args['languages'] = filter(lambda l: l not in [_('en')], languages)
-        logging.info('language is %s' % _('en'))
-            
+        template_args['lang'] = lang
+        template_args['other_languages'] = other_languages
+        template_args['language_labels'] = util.LANGUAGE_LABELS
+        
+        logging.info('(BaseHandler.render_template) Language is %s' % lang)
+
         # render
         self.response.write(self.jinja2.render_template(filename, **template_args))
           
@@ -105,7 +107,7 @@ class BaseHandler(webapp2.RequestHandler):
         # language
         lang = self.get_language()
         if not lang:
-            lang = 'fr'
+            lang = util.DEFAULT_LANG
         self.install_translations(lang)
         # save session (from auth)
         try:
@@ -134,7 +136,7 @@ class BaseHandler(webapp2.RequestHandler):
         if session.has_key('lang'):
             return session['lang']
         else:
-            return 'fr'
+            return util.DEFAULT_LANG
         
     def set_language(self, lang):
         session = self.session_store.get_session()
