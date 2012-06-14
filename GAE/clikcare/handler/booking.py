@@ -175,7 +175,7 @@ class PatientBookHandler(BaseBookingHandler):
                         # send to login page with booking.key set
                         login_form = LoginForm()
                         login_form.email.data = email
-                        self.render_template('login.html', form=login_form, booking=booking)
+                        self.render_template('user/login.html', form=login_form, booking=booking)
                     
                     else:
                         # user exists, not no patient profile attached (might be a provider)

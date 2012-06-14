@@ -209,17 +209,22 @@ class BaseHandler(webapp2.RequestHandler):
             return None
 
 
-    def create_signup_token(self, user):
+### Token stuff
+### with a dictionary for tokens { 'subject', token } this could be made generic
+
+    def create_token(self, user):
         # create a token for the user
         salt = sha.new(str(random.random())).hexdigest()[:5]
         token = sha.new(salt + user.get_email()).hexdigest()
-        
-        user.signup_token = token
+        return token
+
+    def create_signup_token(self, user):
+        user.signup_token = self.create_token(user)
         user.confirmed = False
         
         user.put()
         
-        return token
+        return user.signup_token
     
     def validate_signup_token(self, token):
         user = db.get_user_from_signup_token(token)
@@ -233,6 +238,23 @@ class BaseHandler(webapp2.RequestHandler):
         # (possibly faulty assumption - move this closer to where it's called)
         user.confirmed = True
         
+        user.put()
+        
+        return user
+    
+    
+    def create_resetpassword_token(self, user):
+        user.resetpassword_token = self.create_token(user)        
+        user.put()
+        return user.resetpassword_token
+    
+    def validate_resetpassword_token(self, token):
+        user = db.get_user_from_resetpassword_token(token)
+        
+        return user
+
+    def delete_resetpassword_token(self, user):
+        user.resetpassword_token = None        
         user.put()
         
         return user

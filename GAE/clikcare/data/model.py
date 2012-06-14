@@ -18,6 +18,9 @@ class User(Webapp2AuthUser):
     # replace with dictionnary later...
     # better yet find a way to mash into the webapp2 user token model
     signup_token = ndb.StringProperty()
+    resetpassword_token = ndb.StringProperty()
+    
+    
     confirmed = ndb.BooleanProperty()
     
     def get_email(self):
@@ -50,7 +53,6 @@ class Provider(ndb.Model):
     '''
     created_on = ndb.DateTimeProperty(auto_now_add=True)
     enable = ndb.BooleanProperty()
-    resetpassword_key = ndb.StringProperty()
 
     # terms
     terms_agreement = ndb.BooleanProperty()

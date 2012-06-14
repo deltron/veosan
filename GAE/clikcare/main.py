@@ -81,11 +81,11 @@ application = webapp2.WSGIApplication([
                                        ('/logout', user.LogoutHandler),
                                        ('/user/password', user.PasswordHandler),
                                        Route('/user/activation/<signup_token>', handler=user.ActivationHandler),
-                                       ('/provider/terms', user.ProviderTermsHandler),
-                                       ('/provider/resetpassword', user.ProviderResetPasswordHandler),
-                                       Route('/provider/resetpassword/<resetpassword_key>', handler=user.ProviderResetPasswordHandler),
+                                       ('/user/resetpassword', user.ResetPasswordHandler),
+                                       Route('/user/resetpassword/<resetpassword_token>', handler=user.ResetPasswordHandler),
                                        ('/provider/signup', user.ProviderSignupHandler),
-                                       
+                                       ('/provider/terms', user.ProviderTermsHandler),
+
                                        # admin
                                        ('/admin', admin.AdminIndexHandler),
                                        ('/admin/provider/init', admin.NewProviderInitHandler),
