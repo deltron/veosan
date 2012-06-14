@@ -9,6 +9,7 @@ import util
 from handler import booking, provider, provider_admin, auth, admin, static, contact, blob, language, user
 from data.model import User
 
+
 jinja_filters = {}
 jinja_filters['format_date_weekday_after'] = util.format_date_weekday_after
 jinja_filters['format_datetime_full'] = util.format_datetime_full

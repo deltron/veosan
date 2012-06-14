@@ -30,13 +30,25 @@ class BaseBookingHandler(BaseHandler):
         tv.update(extra)
         self.render_template('patient/confirm_appointment.html', **tv)
 
-    def render_result(self, booking, booking_responses, index):
+    def search_and_render_results(self, booking, email_form=None):
+        logging.info("Searching for providers for booking %s" % booking)
+        booking_responses = db_search.provider_search(booking)
+        if booking_responses:
+            index = int(self.request.get('index', 0))
+            self.render_result(booking, booking_responses, index, email_form)
+        else:
+            logging.warn('No provider found for booking: %s' % booking.key.urlsafe())
+            emailForm = EmailOnlyBookingForm()
+            self.renderFullyBooked(booking, emailForm) 
+    
+    def render_result(self, booking, booking_responses, index, email_form=None):
         br = booking_responses[index]
-        logging.info("Showing provider %s at index %s: " % (br.provider.fullName(), index))
-        email_form = EmailOnlyBookingForm()
-        logging.info("Rendering result: provider %s at index %s: " % (br.provider.fullName(), index))
-        tv = {'patient': None, 'booking': booking, 'br': br, 'index': index, 'form': email_form }
-        self.render_template('search/result.html', **tv)     
+        # create email form if not passed (email_form is passed in when validation fails)
+        if not email_form:
+            email_form = EmailOnlyBookingForm()
+        logging.info("Rendering result: active provider is %s at index %s: " % (br.provider.fullName(), index))
+        tv = {'patient': None, 'booking': booking, 'booking_responses': booking_responses, 'index': index, 'form': email_form }
+        self.render_template('search/result_caroussel.html', **tv)     
     
     def render_new_patient_form(self, patientForm, booking, user=None, **extra):
         tv = {'form': patientForm, 'booking': booking, 'provider': booking.provider.get(), 'user': user}
@@ -72,16 +84,8 @@ class IndexHandler(BaseBookingHandler):
         bookingform = self.create_booking_form(self.request.POST)
         if bookingform.validate():
             booking = db.storeBooking(self.request.POST, None, None)
-            logging.debug('Created booking: %s' % booking.key)
-            logging.info("Looking for best provider...")
-            booking_responses = db_search.provider_search(booking)
-            if booking_responses:
-                index = self.request.get('index', 0)
-                self.render_result(booking, booking_responses, index)
-            else:
-                logging.warn('No provider found for booking: %s' % booking.key.urlsafe())
-                emailForm = EmailOnlyBookingForm()
-                self.renderFullyBooked(booking, emailForm) 
+            logging.debug('Created booking: %s' % booking)
+            self.search_and_render_results(booking)
         else:
             self.render_template('index.html', form=bookingform)
 
@@ -186,9 +190,8 @@ class PatientBookHandler(BaseBookingHandler):
                     patientForm.email.data = email
                     self.render_new_patient_form(patientForm, booking)             
             else:
-                # email form validation failed
-                tv = {'patient': None, 'booking': booking, 'provider': booking.provider, 'form': email_form }
-                self.render_template('search/result.html', **tv) 
+                # email validation failed. Show same results again
+                self.search_and_render_results(booking, email_form)
             
             
 class FullyBookedHandler(BaseBookingHandler):

@@ -130,6 +130,7 @@ class Booking(ndb.Model):
     request_location = ndb.StringProperty()
     request_datetime = ndb.DateTimeProperty()
     request_email = ndb.StringProperty()
+    
     # actual appointment
     request_datetime = ndb.DateTimeProperty()
     comments = ndb.TextProperty()
