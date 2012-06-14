@@ -27,6 +27,8 @@ msgstr "cliksanté! trouvez des soins aujourd'hui"
 msgid "clikcare"
 msgstr "cliksanté"
 
+msgid "veocare"
+msgstr "veosanté"
 
 #################
 # Navbar
