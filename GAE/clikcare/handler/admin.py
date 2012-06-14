@@ -17,14 +17,14 @@ from google.appengine.ext import ndb
 class AdminBaseHandler(BaseHandler):
     ''' Base functions for administration pages''' 
 
-    def render_providers(self, **tv):
+    def render_providers(self, **kw):
         providers = db.fetch_providers()
-        self.render_template('admin/admin_providers.html', providers=providers, **tv)
+        self.render_template('admin/admin_providers.html', providers=providers, **kw)
 
-    def render_data(self, **tv):
+    def render_data(self, **kw):
         dev_server=util.is_dev_server(self.request)
         logging.info('(AdminBaseHandler.render_data) dev_server=%s' % dev_server)
-        self.render_template('admin/data.html', dev_server=dev_server, **tv)
+        self.render_template('admin/data.html', dev_server=dev_server, **kw)
 
 class AdminIndexHandler(AdminBaseHandler):
     '''Administration Index'''

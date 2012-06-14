@@ -14,16 +14,16 @@ from util import saved_message
 
 class ProviderAdminBaseHandler(BaseHandler):
 
-    def render_profile(self, provider, profile_form, **extra):
-        self.render_template('provider/profile.html', provider=provider, form=profile_form, **extra)
+    def render_profile(self, provider, profile_form, **kw):
+        self.render_template('provider/profile.html', provider=provider, form=profile_form, **kw)
     
-    def render_address(self, provider, address_form, **extra):
+    def render_address(self, provider, address_form, **kw):
         upload_url = blobstore.create_upload_url('/admin/provider/address/upload')
         uploadForm = ProviderPhotoForm(self.request.GET)
-        self.render_template('provider/address.html', provider=provider, form=address_form, uploadForm=uploadForm, upload_url=upload_url, **extra)
+        self.render_template('provider/address.html', provider=provider, form=address_form, uploadForm=uploadForm, upload_url=upload_url, **kw)
        
-    def render_administration(self, provider, **extra):
-        self.render_template('provider/administration.html', provider=provider, **extra)
+    def render_administration(self, provider, **kw):
+        self.render_template('provider/administration.html', provider=provider, **kw)
            
 
 class ProviderEditProfileHandler(ProviderAdminBaseHandler):

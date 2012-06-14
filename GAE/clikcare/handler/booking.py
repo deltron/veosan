@@ -17,19 +17,19 @@ class BaseBookingHandler(BaseHandler):
     '''Common functions for all booking handlers'''
     
     @staticmethod
-    def render_confirmed_patient(handler, patient, **extra):
+    def render_confirmed_patient(handler, patient, **kw):
         # find the patient's bookings
         # TODO: does this work for multiple appointments? probably not
         booking = db.get_bookings_for_patient(patient)
         
-        tv = {'patient': patient, 'booking': booking, 'provider': booking.provider.get()}
-        tv.update(extra)
-        handler.render_template('patient/confirm_appointment.html', **tv)
+        extra = {'patient': patient, 'booking': booking, 'provider': booking.provider.get()}
+        kw.update(extra)
+        handler.render_template('patient/confirm_appointment.html', **kw)
         
-    def render_confirmed_booking(self, booking, **extra):        
-        tv = {'patient': booking.patient.get(), 'booking': booking, 'provider': booking.provider.get()}
-        tv.update(extra)
-        self.render_template('patient/confirm_appointment.html', **tv)
+    def render_confirmed_booking(self, booking, **kw):        
+        extra = {'patient': booking.patient.get(), 'booking': booking, 'provider': booking.provider.get()}
+        kw.update(extra)
+        self.render_template('patient/confirm_appointment.html', **kw)
 
     def search_and_render_results(self, booking, email_form=None):
         logging.info("Searching for providers for booking %s" % booking)
@@ -48,20 +48,20 @@ class BaseBookingHandler(BaseHandler):
         if not email_form:
             email_form = EmailOnlyBookingForm()
         logging.info("Rendering result: active provider is %s at index %s: " % (br.provider.fullName(), index))
-        tv = {'patient': None, 'booking': booking, 'booking_responses': booking_responses, 'index': index, 'form': email_form }
-        self.render_template('search/result_caroussel.html', **tv)     
+        kw = {'patient': None, 'booking': booking, 'booking_responses': booking_responses, 'index': index, 'form': email_form }
+        self.render_template('search/result_caroussel.html', **kw)     
     
-    def render_new_patient_form(self, patientForm, booking, user=None, **extra):
-        tv = {'form': patientForm, 'booking': booking, 'provider': booking.provider.get(), 'user': user}
-        tv.update(extra)
-        self.render_template('patient/profile.html', **tv)
+    def render_new_patient_form(self, patientForm, booking, user=None, **kw):
+        extra = {'form': patientForm, 'booking': booking, 'provider': booking.provider.get(), 'user': user}
+        kw.update(extra)
+        self.render_template('patient/profile.html', **kw)
     
     def render_confirmation_email_sent(self, booking):
-        tv = {'patient': booking.patient.get(), 'booking': booking, 'provider': booking.provider.get()}
-        self.render_template('patient/confirmation_email_sent.html', **tv)
+        kw = {'patient': booking.patient.get(), 'booking': booking, 'provider': booking.provider.get()}
+        self.render_template('patient/confirmation_email_sent.html', **kw)
 
-    def renderFullyBooked(self, booking, emailForm=None, **extra):
-        self.render_template('search/no_result.html', booking=booking, form=emailForm, **extra) 
+    def renderFullyBooked(self, booking, emailForm=None, **kw):
+        self.render_template('search/no_result.html', booking=booking, form=emailForm, **kw) 
         
     def create_booking_form(self, payload):
         bookingform = BookingForm(payload)

@@ -152,8 +152,7 @@ class BaseHandler(webapp2.RequestHandler):
         
         logging.info('i18n locale: %s' % i18n.get_i18n().locale)
         logging.info('i18n translations: %s' % i18n.get_i18n().translations)
-        #t = gettext.translation('clikcare', locale_dir, languages=[lang], fallback='en')
-        #t.install()
+
         # install on Jinja too
         #self.jinja2.environment.install_gettext_translations(t)
         logging.info('language is %s' % _('en'))

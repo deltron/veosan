@@ -28,6 +28,14 @@ indexes:
 - kind: Provider
   properties:
   - name: category
+  - name: enable
+  - name: location
+  - name: terms_agreement
+  - name: start_year
+
+- kind: Provider
+  properties:
+  - name: category
   - name: location
   - name: terms_agreement
   - name: start_year
