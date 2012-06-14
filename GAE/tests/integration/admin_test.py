@@ -3,6 +3,7 @@ import unittest
 from datetime import datetime
 from base import BaseTest
 from data import db
+import testutil, util
 
 class AdminTest(BaseTest):
     
@@ -190,34 +191,11 @@ class AdminTest(BaseTest):
         
         # now try to make a booking with this guy        
         # at this point there is one fully completed profile with a single timeslot available (Monday 8-13)
-        
-        # go back to the main page and try to book monday 8am
-        response = self.testapp.post('/')
-                
-        # fill out the form
-        booking_form = response.forms[0] # booking form
-        booking_form['category'] = 'osteopath' # admin test created an osteopath
-        
-        booking_date_select = booking_form.fields['booking_date'][0]
-        
-        # find the option value with a tuesday (no availability)
-
-        for (date_string, selected) in booking_date_select.options:
-            d = datetime.strptime(date_string, "%Y-%m-%d")
-            if d.weekday() == 1: # choose the first tuesday on the form
-                booking_form['booking_date'] = date_string
-                break
-        
-        # set time to 2pm
-        booking_form['booking_time'] = '14'
-
-        # leave region to default (should be downtown)
-        
-        response = booking_form.submit()
+        response = self.book_appointment(util.CAT_OSTEO, testutil.next_monday_date_string() , 14)
         
         # verify error messages
         response.mustcontain("Malheureusement, il n'y a pas de professionnels disponibles qui répondent à vos besoins")
-
+        
         # now enable him again and try to make a booking
         self.login_as_admin()
         
@@ -235,29 +213,8 @@ class AdminTest(BaseTest):
         disable_response.mustcontain("Current status is enable=True")
         disable_response.mustcontain("Disable Provider")        
         
-        response = self.testapp.post('/')
-                
-        # fill out the form
-        booking_form = response.forms[0] # booking form
-        booking_form['category'] = 'osteopath' # admin test created an osteopath
-        
-        booking_date_select = booking_form.fields['booking_date'][0]
-        
-        # find the option value with a tuesday (no availability)
-
-        for (date_string, selected) in booking_date_select.options:
-            d = datetime.strptime(date_string, "%Y-%m-%d")
-            if d.weekday() == 0: # choose the first monday on the form
-                booking_form['booking_date'] = date_string
-                break
-        
-        # set time to 8am
-        booking_form['booking_time'] = '8'
-
-        # leave region to default (should be downtown)
-        
-        response = booking_form.submit()
-        
+        # Booking should work
+        response = self.book_appointment(util.CAT_OSTEO, testutil.next_monday_date_string() , 14)
         response.mustcontain("Mr. Fantastic F. is available")
 
 
