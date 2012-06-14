@@ -89,7 +89,9 @@ application = webapp2.WSGIApplication([
                                        ('/admin/provider/init', admin.NewProviderInitHandler),
                                        ('/admin/provider/solicit', admin.NewProviderSolicitHandler),
                                        ('/admin/bookings', admin.AdminBookingsHandler),
-                                       ('/admin/providers', admin.AdminProvidersHandler),                                       
+                                       ('/admin/providers', admin.AdminProvidersHandler),  
+                                                                
+                                       ('/admin/data', admin.AdminDataHandler),
                                        ('/admin/data/stage', admin.AdminStageDataHandler),
                                        ('/admin/data/delete', admin.AdminDeleteDataHandler),
                                        

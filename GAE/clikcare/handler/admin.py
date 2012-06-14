@@ -21,6 +21,11 @@ class AdminBaseHandler(BaseHandler):
         providers = db.fetchProviders()
         self.render_template('admin/admin_providers.html', providers=providers, **tv)
 
+    def render_data(self, **tv):
+        dev_server=util.is_dev_server(self.request)
+        logging.info('(AdminBaseHandler.render_data) dev_server=%s' % dev_server)
+        self.render_template('admin/data.html', dev_server=dev_server, **tv)
+
 class AdminIndexHandler(AdminBaseHandler):
     '''Administration Index'''
 
@@ -43,11 +48,7 @@ class AdminProvidersHandler(AdminBaseHandler):
  
     @admin_required
     def get(self):
-        delete_enabled = False
-        if self.request.host in util.DEV_SERVERS:
-            delete_enabled = True
-        
-        self.render_providers(form=NewProviderForm(), delete_enabled=delete_enabled)
+        self.render_providers(form=NewProviderForm())
 
                   
 class NewProviderInitHandler(AdminBaseHandler):
@@ -115,15 +116,26 @@ class NewProviderSolicitHandler(BaseHandler):
             self.render_template('provider/administration.html', provider=provider, error_message=error_message)
 
 
+class AdminDataHandler(AdminBaseHandler):
+    ''' Administer Providers '''
+
+    def get(self):        
+        self.render_data()
+
 
 class AdminStageDataHandler(AdminBaseHandler):
     ''' Administer Providers '''
 
     def post(self):
-        from data import test_data
-        test_data.create_test_providers()
-        self.redirect('/admin/providers')
-        
+        if util.is_dev_server(self.request):
+            logging.info('*** Generating test data for providers')
+            from data import test_data
+            test_data.create_test_providers()
+            self.render_data(success_message="Generated provider data successfully")
+
+        else:
+            logging.info('*** Someone tried to Generating test data for providers on a production server. WTF!?')
+            self.render_data(error_message="Production server, cannot generate test provider data")
 
 class AdminDeleteDataHandler(AdminBaseHandler):
     ''' Delete all data from database '''
@@ -131,14 +143,21 @@ class AdminDeleteDataHandler(AdminBaseHandler):
     def post(self):
         logging.info('self.request.host %s' % self.request.host)
         
-        if self.request.host in util.DEV_SERVERS:
-            all_entities = ndb.Query().fetch(keys_only=True)
-            logging.info('*** DELETE ALL ENTITIES: %s' % all_entities)
-            for e in all_entities: 
-                e.delete()
+        if util.is_dev_server(self.request):
+            confirm_text = self.request.get('confirm_text')
+            if confirm_text == 'delete':
+                all_entities = ndb.Query().fetch(keys_only=True)
+                logging.info('*** DELETE ALL ENTITIES: %s' % all_entities)
+                for e in all_entities: 
+                    e.delete()
+                self.render_data(success_message="Everything deleted")
+            else:
+                self.render_data(error_message="Missing confirmation code")
+
         else:
             logging.info('*** Someone tried to delete everything from a production server. WTF!?')
+            self.render_data(error_message="Production server, cannot delete")
+
         
-        self.redirect('/admin/providers')
         
         

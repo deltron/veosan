@@ -52,33 +52,6 @@
 	</div>
 </div>
 
-
-
-<div class="row">
-	<div class="span6">
-	<form method="post" action="/admin/data/stage" class="well form-inline">
-		Generate a few providers to test the search
-			<fieldset>
-				<button type="submit" class="btn btn-primary">
-					Create Stage Data
-				</button>
-			</fieldset>
-		</form>
-	</div>
-	{% if delete_enabled %}
-	<div class="span6">
-	<form method="post" action="/admin/data/delete" class="well form-inline">
-		DELETE ALL DATA
-			<fieldset>
-				<button type="submit" class="btn btn-danger">
-					DELETE ALL DATA
-				</button>
-			</fieldset>
-		</form>
-	</div>
-	{% endif %}
-</div>
-
 {% endblock content %} 
 
 {% block extra_javascript %}
