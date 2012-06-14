@@ -375,8 +375,7 @@ class BaseTest(unittest.TestCase):
         response = self.testapp.get('/provider/schedule', request_variables)
         
         # TODO make this more comprehensible ie. monday-8-to-13
-        monday_morning_id = '0-8-13'
-         
+        monday_morning_id = '0-8-12'
         
         # Check a ids
         monday_morning_a = response.html.find('a', attrs={'id': monday_morning_id})

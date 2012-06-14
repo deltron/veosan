@@ -9,6 +9,7 @@ from handler.auth import provider_required
 class ProviderBaseHandler(BaseHandler):       
     def render_schedule(self, provider, availableIds, **extra):
         timeslots = time.getScheduleTimeslots()
+        logging.info(timeslots)
         days = time.getWeekdays()
         self.render_template('provider/schedule.html', provider=provider, availableIds=availableIds, timeslots=timeslots, days=days, **extra)
     
