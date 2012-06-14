@@ -220,11 +220,10 @@ class NewPatientHandler(BaseBookingHandler):
     def post(self):
         # create patient form for validation
         patient_form = PatientForm(self.request.POST)
-        
+        # fetch booking from bk
+        booking = db.get_from_urlsafe_key(self.request.get('bk'))
+        # validate form
         if patient_form.validate():
-            # fetch booking from bk
-            booking = db.get_from_urlsafe_key(self.request.get('bk'))
-        
             # create a patient from the form
             patient = db.store_patient(self.request.POST)
             
@@ -244,7 +243,7 @@ class NewPatientHandler(BaseBookingHandler):
                 booking.patient = patient.key
                 booking.confirmed = user.confirmed = False
                 booking.put()
-                                        
+                
                 # booking succesful, send profile confirmation email
                 mail.email_booking_to_patient(self.jinja2, booking, activation_url)
                 
@@ -253,7 +252,8 @@ class NewPatientHandler(BaseBookingHandler):
                 logging.error('User not created.')
                 # TODO add custom validation to tell user that email is already in use.
                 self.render_new_patient_form(patient_form, booking, error_message='Email already in use. Try to login instead.')
-                
+
+        else:   
+            # validation failed        
+            self.render_new_patient_form(patient_form, booking)
             
-        else:           
-            self.render_new_patient_form(patient_form, booking)    
