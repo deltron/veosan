@@ -11,5 +11,6 @@ class LanguageHandler(BaseHandler):
             Changes language and redirect to current page
         '''
         self.set_language(lang)
-        # TODO Add parameter for redirect url
-        self.redirect('/')
+        # redirect to referrer or /
+        url = self.request.headers.get('Referer', '/')
+        self.redirect(url)
