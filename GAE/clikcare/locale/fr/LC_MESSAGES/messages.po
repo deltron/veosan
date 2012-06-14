@@ -21,11 +21,11 @@ msgstr ""
 # Title & brand
 #################
 
-msgid "clikcare! find a health care professional today"
-msgstr "cliksanté! trouvez des soins aujourd'hui"
+msgid "veocare! find a health care professional today"
+msgstr "veocare! trouvez des soins aujourd'hui"
 
-msgid "clikcare"
-msgstr "cliksanté"
+msgid "veocare"
+msgstr "veocare"
 
 
 #################
