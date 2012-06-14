@@ -1,3 +1,5 @@
+#!/usr/local/bin/python
+# -*- coding: utf-8 -*-
 
 import calendar
 from datetime import date, timedelta
@@ -70,16 +72,18 @@ def format_datetime_full(datetime):
 
 def format_hour(hour):
     lang = _('en')
-    if (hour):
-        '''take a number in 24-hour format and return 13h or 1 PM'''
+    logging.info('Formating hour %s' % hour)
+    if hour:
+        # take a number in 24-hour format and return 13h or 1 PM
         if (lang == 'fr'):
-            return hour + u'h'
+            return u'%sh' % hour
         else :
             AMPM = u'AM'
-            if (hour > 12):
-                hour_en = hour - 12
+            hour_en = hour
+            if (int(hour) > 12):
+                hour_en = int(hour) - 12
                 AMPM = u'PM'
-            return unicode(hour_en) + u' ' + AMPM
+            return u'%s %s' % (hour_en, AMPM)
     else:
         return ""
 
