@@ -74,9 +74,9 @@ class ProviderResetPasswordHandler(UserBaseHandler):
                 self.render_password_selection(provider=provider)
             else:
                 # no provider found for password reset key, send them to the login page
-                error_message = "Sorry we can't find anyone for that password reset link."
+                error_message = "Sorry, we can't find anyone for that password reset link. Links are expired after 24 hours, please try again."
                 logging.info("(ProviderResetPasswordHandler.get) can't find anyone for that password reset link: %s" % resetpassword_key)
-                self.render_login("/login.html", error_message=error_message)
+                self.render_login(error_message=error_message)
         else:
             logging.info('(ProviderResetPasswordHandler.get) No password reset key in request')
         
