@@ -65,6 +65,7 @@
 			</fieldset>
 		</form>
 	</div>
+	{% if delete_enabled %}
 	<div class="span6">
 	<form method="post" action="/admin/data/delete" class="well form-inline">
 		DELETE ALL DATA
@@ -74,7 +75,8 @@
 				</button>
 			</fieldset>
 		</form>
-	</div>	
+	</div>
+	{% endif %}
 </div>
 
 {% endblock content %} 

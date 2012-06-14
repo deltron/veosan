@@ -6,6 +6,8 @@ import logging
 from webapp2_extras.i18n import format_date, format_datetime
 from webapp2_extras.i18n import lazy_gettext as _
 
+DEV_SERVERS = ('localhost:8080', 'clikcare-stage.appspot.com')
+
 DEFAULT_LANG = 'fr'
 LANGUAGE_LABELS = { 'fr' : u'Français', 'en': u'English'}
 

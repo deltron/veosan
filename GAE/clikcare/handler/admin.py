@@ -8,6 +8,7 @@ import logging, urlparse
 from forms.admin import NewProviderForm
 from base import BaseHandler
 import data.db as db, mail
+import util
 from handler.auth import admin_required
 from google.appengine.ext import ndb
 
@@ -42,7 +43,11 @@ class AdminProvidersHandler(AdminBaseHandler):
  
     @admin_required
     def get(self):
-        self.render_providers(form=NewProviderForm())
+        delete_enabled = False
+        if self.request.host in util.DEV_SERVERS:
+            delete_enabled = True
+        
+        self.render_providers(form=NewProviderForm(), delete_enabled=delete_enabled)
 
                   
 class NewProviderInitHandler(AdminBaseHandler):
@@ -121,14 +126,19 @@ class AdminStageDataHandler(AdminBaseHandler):
         
 
 class AdminDeleteDataHandler(AdminBaseHandler):
-    ''' Administer Providers '''
+    ''' Delete all data from database '''
 
     def post(self):
-        all_entities = ndb.Query().fetch(keys_only=True)
-        for e in all_entities:
-            e.delete()
+        logging.info('self.request.host %s' % self.request.host)
         
-        logging.info('*** DELETE ALL ENTITIES: %s' % all_entities)
+        if self.request.host in util.DEV_SERVERS:
+            all_entities = ndb.Query().fetch(keys_only=True)
+            logging.info('*** DELETE ALL ENTITIES: %s' % all_entities)
+            for e in all_entities: 
+                e.delete()
+        else:
+            logging.info('*** Someone tried to delete everything from a production server. WTF!?')
+        
         self.redirect('/admin/providers')
         
         
