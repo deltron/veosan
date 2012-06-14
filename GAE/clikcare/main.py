@@ -90,7 +90,7 @@ application = webapp2.WSGIApplication([
                                        ('/admin/provider/solicit', admin.NewProviderSolicitHandler),
                                        ('/admin/bookings', admin.AdminBookingsHandler),
                                        ('/admin/providers', admin.AdminProvidersHandler),  
-                                                                
+                                       ('/admin/patients', admin.AdminPatientsHandler),
                                        ('/admin/data', admin.AdminDataHandler),
                                        ('/admin/data/stage', admin.AdminStageDataHandler),
                                        ('/admin/data/delete', admin.AdminDeleteDataHandler),

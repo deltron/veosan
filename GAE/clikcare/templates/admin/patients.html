@@ -1,0 +1,22 @@
+{% extends "/layout/admin_nav.html" %}
+
+{% set active_page = "patients" %}
+
+{% block subhead %}Patients{% endblock %}
+{% block lead %}Patient administration{% endblock %}
+
+{% block content %}
+<!-- span -->
+<div class="row">
+	<div class="span12">
+		<ul class="unstyled">
+			{% for p in patients %}
+			<li>
+				a patient.
+			</li>
+			{% endfor %}
+		</ul>
+	</div>
+</div>
+
+{% endblock content %} 

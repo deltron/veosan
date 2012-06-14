@@ -49,6 +49,13 @@ class AdminProvidersHandler(AdminBaseHandler):
     @admin_required
     def get(self):
         self.render_providers(form=NewProviderForm())
+        
+class AdminPatientsHandler(AdminBaseHandler):
+    ''' Administer Patients '''
+ 
+    @admin_required
+    def get(self):
+        self.render_template('admin/patients.html')
 
                   
 class NewProviderInitHandler(AdminBaseHandler):
