@@ -211,11 +211,11 @@ class ProviderTest(BaseTest):
 
         self.logout_provider()
         
-        login_redirect = self.testapp.get(activation_url)
-        response = login_redirect.follow()
+        response = self.testapp.get(activation_url)
         
         assert "J'accepte les conditions d'utilisation" not in response
-        response.mustcontain("Connexion à Cliksanté")
+        response.mustcontain("Activation link has expired.")
+        response.mustcontain("Connexion à veocare")
         response.mustcontain("Couriel")
         response.mustcontain("Mot de passe")
 

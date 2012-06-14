@@ -104,7 +104,9 @@ class BaseTest(unittest.TestCase):
     
     def login_as_patient(self):
         response = self.testapp.get('/login')
-        response.mustcontain("Connexion à Cliksanté")
+        response.mustcontain("Connexion à veocare")
+
+        
         login_form = response.forms[0]
         login_form['email'] = self._TEST_PATIENT_EMAIL
         login_form['password'] = self._TEST_PATIENT_PASSWORD
@@ -444,7 +446,7 @@ class BaseTest(unittest.TestCase):
 
         welcome_response = password_form.submit()
         self.assertEqual(welcome_response.status_int, 200)
-        welcome_response.mustcontain(u'Bienvenue chez Cliksanté!')
+        welcome_response.mustcontain(u'Bienvenue chez veocare!')
 
 
     ###

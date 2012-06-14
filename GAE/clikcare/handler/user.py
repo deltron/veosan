@@ -20,14 +20,17 @@ class UserBaseHandler(BaseHandler):
     '''
     
         
-    def render_terms(self, provider, terms_form, **extra):
-        self.render_template('provider/provider_terms.html', provider=provider, form=terms_form, **extra)
+    def render_terms(self, provider, terms_form, **kw):
+        self.render_template('provider/provider_terms.html', provider=provider, form=terms_form, **kw)
 
-    def render_password_selection(self, provider=None, patient=None, password_form=None, **extra):
+    def render_password_selection(self, provider=None, patient=None, password_form=None, **kw):
         if not password_form:
             password_form = PasswordForm()
-        self.render_template('provider/password.html', provider=provider, patient=patient, form=password_form, **extra)
+        self.render_template('provider/password.html', provider=provider, patient=patient, form=password_form, **kw)
         
+    def render_login(self, **kw):
+        self.render_template('login.html', form=LoginForm(), **kw)
+
 
 class ProviderTermsHandler(UserBaseHandler):
     def get(self):
@@ -73,7 +76,7 @@ class ProviderResetPasswordHandler(UserBaseHandler):
                 # no provider found for password reset key, send them to the login page
                 error_message = "Sorry we can't find anyone for that password reset link."
                 logging.info("(ProviderResetPasswordHandler.get) can't find anyone for that password reset link: %s" % resetpassword_key)
-                self.render_template("/login.html", form=LoginForm(), error_message=error_message)
+                self.render_login("/login.html", error_message=error_message)
         else:
             logging.info('(ProviderResetPasswordHandler.get) No password reset key in request')
         
@@ -104,10 +107,10 @@ class ProviderResetPasswordHandler(UserBaseHandler):
                 # render the login page with success message
                 success_message = 'Password reset instructions sent to %s' % provider.email
                 logging.info("(ProviderResetPasswordHandler.post) " + success_message)
-                self.render_template('login.html', form=LoginForm(), success_message=success_message)
+                self.render_login(success_message=success_message)
             else:
                 logging.info("(ProviderResetPasswordHandler.post) Can't reset password, no provider exists for email: %s" % email)
-                self.render_template('login.html', form=LoginForm())
+                self.render_login()
 
 
 class PasswordHandler(UserBaseHandler):
@@ -212,6 +215,7 @@ class ActivationHandler(UserBaseHandler):
                         # show terms page
                         terms_form = ProviderTermsForm(obj=provider)
                         self.render_terms(provider, terms_form=terms_form)
+                        
                     else:
                         # no provider found for user & token combination, send them to the login page
                         logging.info('(ActivationHandler) no provider found for user & token combination')
@@ -231,9 +235,11 @@ class ActivationHandler(UserBaseHandler):
                         self.redirect("/login")
 
             else:
-                # no user found for token combination, send them to the login page
+                # no user found for token combination, probably expired link (or just garbage).
                 logging.info('(ActivationHandler) no user found for signup token %s' % signup_token)
-                self.redirect("/login")
+                
+                error_message = _("Activation link has expired. Please <a href='/contact'>contact us</a> to receive a new activation.")
+                self.render_login(error_message=error_message)
 
         else:
             logging.info('(ActivationHandler) No signup token in request')
@@ -255,19 +261,19 @@ class ProviderSignupHandler(UserBaseHandler):
         mail.email_contact_form(self.jinja2, from_email, subject, message)
 
         success_message = 'Thanks for your interest. We will be in touch soon!'
-        self.render_template('login.html', form=LoginForm(), success_message=success_message)
+        self.render_login(success_message=success_message)
         
         
 
-class LoginHandler(BaseHandler):
+class LoginHandler(UserBaseHandler):
     '''
         GET shows login page
         POST checks username, password, logs in user and redirect to start page
     '''
     def get(self):
         ''' Show login page '''
+        self.render_login()
         
-        self.render_template('login.html', form=LoginForm())
 
     def post(self):
         ''' checks username, password, logs in user and redirect to start page '''
@@ -320,7 +326,7 @@ class LoginHandler(BaseHandler):
 
 
 
-class LogoutHandler(BaseHandler):
+class LogoutHandler(UserBaseHandler):
     '''
         Unset user session and redirect to index
     '''
