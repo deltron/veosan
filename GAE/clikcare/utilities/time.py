@@ -28,8 +28,9 @@ def timeslot_distance(ts1, ts2):
     time_diff = ts1.start - ts2.start
     return abs(time_diff.total_seconds())
 
-
-
+###
+### Date and Time Lists
+###
 
 def getDatesList():
     ''' Return a list of date from tomorrow to 3 weeks from now'''
@@ -51,8 +52,8 @@ def getTimesList():
 
 def getScheduleTimeslots():
     # returns a list of list(name, start time, end time)
-    return ( ( _(u"Morning"), '8', '13'),
-             ( _(u"Afternoon"), '13', '18'),
+    return ( ( _(u"Morning"), '8', '12'),
+             ( _(u"Afternoon"), '12', '18'),
              ( _(u"Evening"), '18', '21')
             )
 
@@ -64,6 +65,10 @@ def getWeekdays():
     logging.info('Weekdays: %s' % weekdays)
     return weekdays
 
+###
+###  Date and Time Formating
+###
+
 def format_date_weekday_after(date):
     return format_date(date, u"d MMMM yyyy (EEEE)")
 
@@ -72,7 +77,6 @@ def format_datetime_full(datetime):
 
 def format_hour(hour):
     lang = _('en')
-    logging.info('Formating hour %s' % hour)
     if hour:
         # take a number in 24-hour format and return 13h or 1 PM
         if (lang == 'fr'):
