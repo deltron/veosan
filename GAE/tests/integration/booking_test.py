@@ -39,8 +39,7 @@ class BookingTest(BaseTest):
         # leave region to default (should be downtown)
         
         response = booking_form.submit()
-        
-        response.showbrowser()
+
         # verify provider name
         response.mustcontain("Mr. Fantastic F.")
                 
