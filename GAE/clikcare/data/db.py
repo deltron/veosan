@@ -43,16 +43,14 @@ def store_patient(r):
     logging.info(vars(patient))
     return patient
 
+def fetch_patients():
+    return Patient.query().order(Patient.last_name)
 
-def fetchProviders():
-    # TODO add limit
-    providers = Provider.query().order(Provider.last_name)
-    #gdb.GqlQuery("SELECT * from Provider ORDER BY last_name ASC LIMIT 50")
-    return providers
+def fetch_providers():
+    return Provider.query().order(Provider.last_name)
 
 def fetch_bookings():
     return Booking.query().order(-Booking.created_on)
-
 
 def get_bookings_for_patient(patient):
     return Booking.query(Booking.patient == patient.key).get()

@@ -35,6 +35,8 @@ class Patient(ndb.Model):
     email = ndb.StringProperty()
     telephone = ndb.StringProperty()
     terms_agreement = ndb.BooleanProperty()
+    confirmed = ndb.BooleanProperty()
+
     # insurance
     # age    
 

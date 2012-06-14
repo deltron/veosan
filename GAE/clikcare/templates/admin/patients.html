@@ -9,13 +9,26 @@
 <!-- span -->
 <div class="row">
 	<div class="span12">
-		<ul class="unstyled">
-			{% for p in patients %}
-			<li>
-				a patient.
-			</li>
-			{% endfor %}
-		</ul>
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>email</th>
+					<th>confirmed</th>
+					<th>appointments</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for p in patients %}
+				<tr>
+					<td>{{ p.last_name }},  {{ p.first_name }}</td>
+					<td>{{ p.email }}</td>
+					<td>{{ p.confirmed }}</td>
+					<td>not impl. yet</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
 	</div>
 </div>
 

@@ -18,7 +18,7 @@ class AdminBaseHandler(BaseHandler):
     ''' Base functions for administration pages''' 
 
     def render_providers(self, **tv):
-        providers = db.fetchProviders()
+        providers = db.fetch_providers()
         self.render_template('admin/admin_providers.html', providers=providers, **tv)
 
     def render_data(self, **tv):
@@ -39,8 +39,8 @@ class AdminBookingsHandler(AdminBaseHandler):
     
     @admin_required
     def get(self):
-            bookings = db.fetch_bookings()
-            self.render_template('admin/admin_bookings.html', bookings=bookings)
+        bookings = db.fetch_bookings()
+        self.render_template('admin/admin_bookings.html', bookings=bookings)
 
 
 class AdminProvidersHandler(AdminBaseHandler):
@@ -55,7 +55,8 @@ class AdminPatientsHandler(AdminBaseHandler):
  
     @admin_required
     def get(self):
-        self.render_template('admin/patients.html')
+        patients = db.fetch_patients()
+        self.render_template('admin/patients.html', patients=patients)
 
                   
 class NewProviderInitHandler(AdminBaseHandler):
