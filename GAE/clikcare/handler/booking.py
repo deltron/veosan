@@ -49,7 +49,7 @@ class BaseBookingHandler(BaseHandler):
             email_form = EmailOnlyBookingForm()
         logging.info("Rendering result: active provider is %s at index %s: " % (br.provider.fullName(), index))
         kw = {'patient': None, 'booking': booking, 'booking_responses': booking_responses, 'index': index, 'form': email_form }
-        self.render_template('search/result_caroussel.html', **kw)     
+        self.render_template('search/result_carousel.html', **kw)     
     
     def render_new_patient_form(self, patientForm, booking, user=None, **kw):
         extra = {'form': patientForm, 'booking': booking, 'provider': booking.provider.get(), 'user': user}
