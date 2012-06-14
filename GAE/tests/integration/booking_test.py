@@ -40,8 +40,9 @@ class BookingTest(BaseTest):
         
         response = booking_form.submit()
         
+        response.showbrowser()
         # verify provider name
-        response.mustcontain("Mr. Fantastic F.", "is available")
+        response.mustcontain("Mr. Fantastic F.")
                 
         # verify location
         response.mustcontain("at their clinic at 123 Main St. in Westmount")

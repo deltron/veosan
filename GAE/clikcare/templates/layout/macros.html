@@ -56,7 +56,7 @@ Macro to generate a provider bio
 				{% endif %}
 			</div>
 			<div class="span8">
-				<h3> {{provider.first_name or ''}}
+				<h3> {{provider.title or ''}} {{provider.first_name or ''}}
 				{% if provider.last_name %} {{provider.last_name|first}}. {% endif %} </h3>
 				{% if provider.credentials %}
 				<h6>{{ provider.credentials }}</h6>
