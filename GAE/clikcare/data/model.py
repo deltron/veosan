@@ -35,10 +35,14 @@ class Patient(ndb.Model):
     email = ndb.StringProperty()
     telephone = ndb.StringProperty()
     terms_agreement = ndb.BooleanProperty()
-    confirmed = ndb.BooleanProperty()
 
     # insurance
     # age    
+    
+    def get_bookings(self):
+        return Booking.query(Booking.patient == self.key).fetch()
+    
+
 
 class Provider(ndb.Model):
     '''
