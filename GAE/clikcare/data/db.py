@@ -43,16 +43,14 @@ def store_patient(r):
     logging.info(vars(patient))
     return patient
 
+def fetch_patients():
+    return Patient.query().order(Patient.last_name)
 
-def fetchProviders():
-    # TODO add limit
-    providers = Provider.query().order(Provider.last_name)
-    #gdb.GqlQuery("SELECT * from Provider ORDER BY last_name ASC LIMIT 50")
-    return providers
+def fetch_providers():
+    return Provider.query().order(Provider.last_name)
 
 def fetch_bookings():
     return Booking.query().order(-Booking.created_on)
-
 
 def get_bookings_for_patient(patient):
     return Booking.query(Booking.patient == patient.key).get()
@@ -105,16 +103,15 @@ def get_provider_from_email(email):
     logging.debug('Provider for email %s is %s' % (email, provider))
     return provider   
 
-def get_provider_from_resetpassword_key(resetpassword_key):
-    provider = Provider.query(Provider.resetpassword_key == resetpassword_key).get()
-    logging.debug('(db.get_provider_from_resetpassword_key) Found provider %s from resetpassword_key: %s' % (provider, resetpassword_key))
-    return provider
 
 def get_user_from_email(email):
     return User.query(User.auth_ids == email).get()
 
 def get_user_from_signup_token(token):
     return User.query(User.signup_token == token).get()
+
+def get_user_from_resetpassword_token(token):
+    return User.query(User.resetpassword_token == token).get()
 
 def get_provider_from_user(user):
     '''returns the first provider profile liked to user. Returns None if user is not a provider'''

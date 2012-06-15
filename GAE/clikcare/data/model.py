@@ -7,6 +7,13 @@ from webapp2_extras.appengine.auth.models import User as Webapp2AuthUser
     stored data 
 '''
 
+# headers must be strings not unicode
+def get_link(model_entity, route=None):
+    if route:
+        return '%s?key=%s' % (route, model_entity.key.urlsafe())
+    else:
+        logging.error('(model.get_link) Trying to get route key with no route')
+    
 
 class User(Webapp2AuthUser):
     '''
@@ -18,6 +25,9 @@ class User(Webapp2AuthUser):
     # replace with dictionnary later...
     # better yet find a way to mash into the webapp2 user token model
     signup_token = ndb.StringProperty()
+    resetpassword_token = ndb.StringProperty()
+    
+    
     confirmed = ndb.BooleanProperty()
     
     def get_email(self):
@@ -35,8 +45,14 @@ class Patient(ndb.Model):
     email = ndb.StringProperty()
     telephone = ndb.StringProperty()
     terms_agreement = ndb.BooleanProperty()
+
     # insurance
     # age    
+
+    def get_bookings(self):
+        return Booking.query(Booking.patient == self.key).fetch()
+    
+
 
 class Provider(ndb.Model):
     '''
@@ -44,7 +60,6 @@ class Provider(ndb.Model):
     '''
     created_on = ndb.DateTimeProperty(auto_now_add=True)
     enable = ndb.BooleanProperty()
-    resetpassword_key = ndb.StringProperty()
 
     # terms
     terms_agreement = ndb.BooleanProperty()
@@ -76,13 +91,13 @@ class Provider(ndb.Model):
     # user
     user = ndb.KeyProperty(kind=User)
     
+    def get_edit_link(self, route='/provider/bookings'):
+        return get_link(self, route)
+ 
     def fullName(self):
         return '{0} {1}'.format(self.first_name, self.last_name)
     
-    # headers must be strings not unicode
-    def get_edit_link(self, route='/provider/bookings'):
-        return '%s?key=%s' % (route, self.key.urlsafe())
-    
+
     def get_html_summary(self):
         s = u''
         fields_dict = vars(self).iteritems()

@@ -7,7 +7,7 @@ from webapp2 import Route
 # clik
 from util import dump
 from utilities import time
-from handler import booking, provider, provider_admin, admin, static, contact, blob, language, user
+from handler import booking, provider, patient, provider_admin, admin, static, contact, blob, language, user
 from data.model import User
 
 
@@ -69,7 +69,8 @@ application = webapp2.WSGIApplication([
                                        Route('/privacy', handler=static.StaticHandler, name='privacy'),
                                        
                                        # Patient
-                                       ('/patient/new', booking.NewPatientHandler),
+                                       ('/patient/bookings', patient.ListPatientBookings),
+                                       ('/patient/new', patient.NewPatientHandler),
                                        ('/patient/book', booking.PatientBookHandler),
                                   
                                        #provider
@@ -81,11 +82,11 @@ application = webapp2.WSGIApplication([
                                        ('/logout', user.LogoutHandler),
                                        ('/user/password', user.PasswordHandler),
                                        Route('/user/activation/<signup_token>', handler=user.ActivationHandler),
-                                       ('/provider/terms', user.ProviderTermsHandler),
-                                       ('/provider/resetpassword', user.ProviderResetPasswordHandler),
-                                       Route('/provider/resetpassword/<resetpassword_key>', handler=user.ProviderResetPasswordHandler),
+                                       ('/user/resetpassword', user.ResetPasswordHandler),
+                                       Route('/user/resetpassword/<resetpassword_token>', handler=user.ResetPasswordHandler),
                                        ('/provider/signup', user.ProviderSignupHandler),
-                                       
+                                       ('/provider/terms', user.ProviderTermsHandler),
+
                                        # admin
                                        ('/admin', admin.AdminIndexHandler),
                                        ('/admin/provider/init', admin.NewProviderInitHandler),

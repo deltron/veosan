@@ -163,7 +163,7 @@ class BookingTest(BaseTest):
         
         #category_label = dict(util.getAllCategories())[provider.category]
 
-        self.assertEqual(m.subject, 'Cliksoin Reservation - %s' % 'Ostéopathe')
+        self.assertEqual(m.subject, 'veosan Reservation - %s' % 'Ostéopathe')
         
         # assert that activation link is in the email body
         user = User.query(User.key == patient.user).get()
@@ -264,7 +264,7 @@ class BookingTest(BaseTest):
         
         #category_label = dict(util.getAllCategories())[provider.category]
 
-        self.assertEqual(m.subject, 'Cliksoin Reservation - %s' % 'Ostéopathe')
+        self.assertEqual(m.subject, 'veosan reservation - %s' % 'Ostéopathe')
         
         # assert that activation link is in the email body
         user = User.query(User.key == patient.user).get()
@@ -300,7 +300,7 @@ class BookingTest(BaseTest):
         email_form['email'] = self._TEST_PATIENT_EMAIL
         # We are an existing patient, but not logged in, this should take us to the login page
         login_page = email_form.submit()
-        login_page.mustcontain('Connexion à Cliksanté')
+        login_page.mustcontain('Connexion à veosan')
         login_page.mustcontain('booking_key')
         # email should be set in form
         login_page.mustcontain(self._TEST_PATIENT_EMAIL)

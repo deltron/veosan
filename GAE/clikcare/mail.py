@@ -8,8 +8,8 @@ CLIK_SUPPORT_ADDRESS = 'cliktester@gmail.com'
 
 
 def render_booking_email_body(jinja2, template_filename, booking, activation_url=None):
-    tv = {'b': booking, 'provider': booking.provider.get(), 'patient': booking.patient.get(), 'activation_url': activation_url}
-    return jinja2.render_template(template_filename, **tv)
+    kw = {'b': booking, 'provider': booking.provider.get(), 'patient': booking.patient.get(), 'activation_url': activation_url}
+    return jinja2.render_template(template_filename, **kw)
     
 
 
@@ -26,9 +26,9 @@ def email_booking_to_patient(jinja2, booking, activation_url=None):
     message.sender = CLIK_SUPPORT_ADDRESS
     message.to = to_address
     category_label = dict(util.getAllCategories())[provider.category]
-    message.subject = u'Cliksoin Reservation - %s' % _(category_label).capitalize()
-    tv = {'booking': booking, 'activation_url': activation_url}
-    message.body = render_booking_email_body(jinja2, 'email/patient_booking.txt', **tv)
+    message.subject = u'veosan reservation - %s' % _(category_label).capitalize()
+    kw = {'booking': booking, 'activation_url': activation_url}
+    message.body = render_booking_email_body(jinja2, 'email/patient_booking.txt', **kw)
     try:
         message.send()
     except Exception as e:
@@ -41,22 +41,21 @@ def emailSolicitProvider(jinja2, provider, activation_url):
     message = mail.EmailMessage()
     message.sender = CLIK_SUPPORT_ADDRESS
     message.to = provider.email
-    message.subject = u'Cliksoin - Please confirm your profile %s' % provider.fullName()
-    tv = {'provider': provider, 'activation_url': activation_url}
-    message.body = jinja2.render_template('email/provider_solicit.txt', **tv)
+    message.subject = u'veosan - Please confirm your profile %s' % provider.fullName()
+    kw = {'provider': provider, 'activation_url': activation_url}
+    message.body = jinja2.render_template('email/provider_solicit.txt', **kw)
     try:
         message.send()
     except Exception as e:
         logging.error('Email to provider not sent. %s' % e)
         
-def emailProviderPasswordReset(jinja2, provider, activation_url):
+def email_user_password_reset(jinja2, user, activation_url):
     ''' Send solicitation email to provider '''
     message = mail.EmailMessage()
     message.sender = CLIK_SUPPORT_ADDRESS
-    message.to = provider.email
-    message.subject = u'Cliksoin - Password Reset Instructions for %s' % provider.fullName()
-    tv = {'provider': provider, 'activation_url': activation_url}
-    message.body = jinja2.render_template('email/provider_passwordreset.txt', **tv)
+    message.to = user.get_email()
+    message.subject = u'veosan - password reset instructions'
+    message.body = jinja2.render_template('email/provider_passwordreset.txt', activation_url=activation_url)
     try:
         message.send()
     except Exception as e:

@@ -4,6 +4,7 @@ from datetime import datetime
 from base_test import BaseTestCase
 from data import db, db_util, db_search
 from data.model import Provider, Booking, Schedule
+from webob import MultiDict
 
 class DBTestCase(BaseTestCase):
 
@@ -18,11 +19,11 @@ class DBTestCase(BaseTestCase):
         print key
 
 
-    def test_set_all_properties_on_entity_from_multidict_boolean(self):
+    def test_set_property_on_entity_from_multidict(self):
         entity = db.Provider()
-        multidict = { 'onsite': 'y' }   
+        multidict = MultiDict({ 'last_name': 'lntest' })
         db_util.set_all_properties_on_entity_from_multidict(entity, multidict)
-
+        self.assertEquals(entity.last_name, 'lntest')
 
     def testFindBestProviderForBooking(self):
         testCategory = u'physiotherapy'

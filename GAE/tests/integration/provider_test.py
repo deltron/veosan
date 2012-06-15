@@ -211,11 +211,11 @@ class ProviderTest(BaseTest):
 
         self.logout_provider()
         
-        login_redirect = self.testapp.get(activation_url)
-        response = login_redirect.follow()
+        response = self.testapp.get(activation_url)
         
         assert "J'accepte les conditions d'utilisation" not in response
-        response.mustcontain("Connexion à Cliksanté")
+        response.mustcontain("Activation link has expired.")
+        response.mustcontain("Connexion à veosan")
         response.mustcontain("Couriel")
         response.mustcontain("Mot de passe")
 
@@ -229,7 +229,7 @@ class ProviderTest(BaseTest):
         login_response = self.testapp.get("/login")
 
         resetpassword_form = login_response.forms[2] # reset passwod is 3rd form on page
-        resetpassword_form['provider_email'] = self._TEST_PROVIDER_EMAIL
+        resetpassword_form['email'] = self._TEST_PROVIDER_EMAIL
         response = resetpassword_form.submit()
         
         # terms agreement                       
@@ -239,16 +239,16 @@ class ProviderTest(BaseTest):
         self.assertEqual(2, len(messages))
         m = messages[1]    
 
-        provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
+        user = db.get_user_from_email(self._TEST_PROVIDER_EMAIL)
 
-        self.assertEqual(m.subject, 'Cliksoin - Password Reset Instructions for %s %s' % (provider.first_name, provider.last_name) )
+        self.assertEqual(m.subject, 'veosan - password reset instructions' )
         self.assertEqual(m.sender, 'cliktester@gmail.com')
         self.assertIn('Please click the link below to choose a new password', m.body.payload)
 
-        self.assertTrue('/provider/resetpassword/%s' % provider.resetpassword_key in m.body.payload)
+        self.assertTrue('/user/resetpassword/%s' % user.resetpassword_token in m.body.payload)
 
         # terms page
-        reset_url = '/provider/resetpassword/%s' % provider.resetpassword_key
+        reset_url = '/user/resetpassword/%s' % user.resetpassword_token
         reset_response = self.testapp.get(reset_url)
         
         reset_response.mustcontain("Choisissez votre mot de passe")
@@ -262,7 +262,7 @@ class ProviderTest(BaseTest):
         reset_post_response = password_form.submit()
         self.assertEqual(reset_post_response.status_int, 200)
         
-        reset_post_response.mustcontain('Welcome back! Password has been reset for %s' % provider.email)
+        reset_post_response.mustcontain('Welcome back! Password has been reset for %s' % user.get_email())
         reset_post_response.mustcontain('Rendez-vous')
 
         # try to login with old credentials
@@ -291,7 +291,53 @@ class ProviderTest(BaseTest):
         response = response.follow()
         response.mustcontain("Rendez-vous")
 
+    def test_provider_reset_password_twice_with_same_token(self):
+        self.create_complete_provider_profile()
+        self.logout_admin()
+        self.logout_provider()
+        
+        login_response = self.testapp.get("/login")
 
+        resetpassword_form = login_response.forms[2] # reset passwod is 3rd form on page
+        resetpassword_form['email'] = self._TEST_PROVIDER_EMAIL
+        response = resetpassword_form.submit()
+        
+        # terms agreement                       
+        response.mustcontain("Password reset instructions sent to %s" % self._TEST_PROVIDER_EMAIL)
+        
+        messages = self.mail_stub.get_sent_messages(to=self._TEST_PROVIDER_EMAIL)
+        self.assertEqual(2, len(messages))
+        m = messages[1]    
+
+        user = db.get_user_from_email(self._TEST_PROVIDER_EMAIL)
+
+        self.assertEqual(m.subject, 'veosan - password reset instructions')
+        self.assertEqual(m.sender, 'cliktester@gmail.com')
+        self.assertIn('Please click the link below to choose a new password', m.body.payload)
+
+        self.assertTrue('/user/resetpassword/%s' % user.resetpassword_token in m.body.payload)
+
+        # terms page
+        reset_url = '/user/resetpassword/%s' % user.resetpassword_token
+        reset_response = self.testapp.get(reset_url)
+        
+        reset_response.mustcontain("Choisissez votre mot de passe")
+        reset_response.mustcontain(self._TEST_PROVIDER_EMAIL)
+
+        # set password and all that
+        password_form = reset_response.forms[0]
+        password_form['password'] = '654321'
+        password_form['password_confirm'] = '654321'
+
+        reset_post_response = password_form.submit()
+        self.assertEqual(reset_post_response.status_int, 200)
+        
+        reset_post_response.mustcontain('Welcome back! Password has been reset for %s' % user.get_email())
+        reset_post_response.mustcontain('Rendez-vous')
+
+        # try to re-use the same password reset token
+        reset_response = self.testapp.get(reset_url)
+        reset_response.mustcontain("Links are expired after 24 hours, please try again")
 
 if __name__ == "__main__":
     unittest.main()

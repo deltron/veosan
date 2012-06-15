@@ -7,17 +7,17 @@ from data.model import Schedule
 from handler.auth import provider_required
 
 class ProviderBaseHandler(BaseHandler):       
-    def render_schedule(self, provider, availableIds, **extra):
+    def render_schedule(self, provider, availableIds, **kw):
         timeslots = time.getScheduleTimeslots()
         logging.info(timeslots)
         days = time.getWeekdays()
-        self.render_template('provider/schedule.html', provider=provider, availableIds=availableIds, timeslots=timeslots, days=days, **extra)
+        self.render_template('provider/schedule.html', provider=provider, availableIds=availableIds, timeslots=timeslots, days=days, **kw)
     
     @staticmethod
-    def render_bookings(handler, provider, **extra):
+    def render_bookings(handler, provider, **kw):
         bookings = db.fetch_future_bookings(provider)   
         logging.info('Bookings:' + str(bookings))
-        handler.render_template('provider/bookings.html', provider=provider, bookings=bookings, **extra)
+        handler.render_template('provider/bookings.html', provider=provider, bookings=bookings, **kw)
 
 
 class ProviderScheduleHandler(ProviderBaseHandler):

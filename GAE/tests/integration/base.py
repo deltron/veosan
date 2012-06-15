@@ -104,7 +104,9 @@ class BaseTest(unittest.TestCase):
     
     def login_as_patient(self):
         response = self.testapp.get('/login')
-        response.mustcontain("Connexion à Cliksanté")
+        response.mustcontain("Connexion à veosan")
+
+        
         login_form = response.forms[0]
         login_form['email'] = self._TEST_PATIENT_EMAIL
         login_form['password'] = self._TEST_PATIENT_PASSWORD
@@ -114,7 +116,7 @@ class BaseTest(unittest.TestCase):
         # email in the header
         login_welcome_page.mustcontain(self._TEST_PATIENT_EMAIL)
         # login lands on index page
-        login_welcome_page.mustcontain('Trouvez des soins')
+        login_welcome_page.mustcontain('Upcoming Appointments')
         
         
     def logout_patient(self):
@@ -180,7 +182,7 @@ class BaseTest(unittest.TestCase):
         messages = self.mail_stub.get_sent_messages(to=self._TEST_PROVIDER_EMAIL)
         self.assertEqual(1, len(messages))
         m = messages[0]
-        self.assertEqual(m.subject, 'Cliksoin - Please confirm your profile %s' % provider.fullName())
+        self.assertEqual(m.subject, 'veosan - Please confirm your profile %s' % provider.fullName())
         
         # assert that activation link is in the email body
         user = User.query(User.key == provider.user).get()
@@ -444,7 +446,7 @@ class BaseTest(unittest.TestCase):
 
         welcome_response = password_form.submit()
         self.assertEqual(welcome_response.status_int, 200)
-        welcome_response.mustcontain(u'Bienvenue chez Cliksanté!')
+        welcome_response.mustcontain(u'Bienvenue chez veosan!')
 
 
     ###

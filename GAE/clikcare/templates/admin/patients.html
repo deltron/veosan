@@ -9,13 +9,33 @@
 <!-- span -->
 <div class="row">
 	<div class="span12">
-		<ul class="unstyled">
-			{% for p in patients %}
-			<li>
-				a patient.
-			</li>
-			{% endfor %}
-		</ul>
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>email</th>
+					<th>confirmed</th>
+					<th>appointments</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for p in patients %}
+				<tr>
+					<td>{{ p.last_name }},  {{ p.first_name }}</td>
+					<td>{{ p.email }}</td>
+					<td>{{ p.user.get().confirmed }}</td>
+					
+					<td>
+						<ul>
+						{% for b in p.get_bookings() %}	
+							<li> {{ b.provider.get().last_name }} </li>
+						{% endfor %}
+						</ul>
+					</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
 	</div>
 </div>
 
