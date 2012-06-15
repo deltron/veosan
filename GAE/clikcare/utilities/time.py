@@ -17,11 +17,15 @@ from webapp2_extras.i18n import lazy_gettext as _
 # Timeslot represents a period on the calendar using two datetimes
 Timeslot = namedtuple('Timeslot', "start end")
 
-def create_one_hour_timeslot(date, start):
+def create_one_hour_timeslot(datetime_start):
+    datetime_end = datetime.combine(datetime_start.date(), time(datetime_start.time().hour+1, datetime_start.time().minute))
+    return Timeslot(datetime_start, datetime_end)
+    
+def create_one_hour_timeslot_on_date(date, start):
     return Timeslot( datetime.combine(date, time(start)), datetime.combine(date, time(start+1)))
 
 def create_one_hour_timeslots_over_range(date, start_hour, end_hour):
-    return map(partial(create_one_hour_timeslot, date), range(start_hour, end_hour))
+    return map(partial(create_one_hour_timeslot_on_date, date), range(start_hour, end_hour))
 
 def timeslot_distance(ts1, ts2):
     ''' helper method for sorting '''

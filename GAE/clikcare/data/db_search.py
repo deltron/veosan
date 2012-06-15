@@ -1,5 +1,6 @@
 import logging
-from data.model import Provider, Schedule
+from data.model import Provider, Schedule, Booking
+from datetime import datetime, time
 from utilities.time import create_one_hour_timeslots_over_range, create_one_hour_timeslot, timeslot_distance
 
 
@@ -19,7 +20,10 @@ class BookingResponse():
  
     def is_perfect_timeslot_match(self, request):
         return self.timeslot.start == request.request_datetime
-    
+
+    def is_perfect_location_match(self, request):
+        return self.provider.location == request.request_location
+      
 
 def provider_search(booking):
     '''
@@ -58,17 +62,15 @@ def filter_and_sort_providers_based_on_schedule(booking, providerQuery):
         Sorts the list by ascending proximity to the requested time
     '''
     booking_responses = []
-    # unpack booking
-    request_date = booking.request_datetime.date()
-    logging.info('request date: %s' % request_date)
-    request_start = booking.request_datetime.hour
-    request_timeslot = create_one_hour_timeslot(booking.request_datetime.date(), request_start)
+    request_timeslot = create_one_hour_timeslot(booking.request_datetime)
     logging.info('request timeslot: %s %s' % request_timeslot)
     for p in providerQuery:
         sorted_available_timeslots = get_sorted_schedule_timeslots(p, request_timeslot)
+        
+        sorted_available_timeslots_without_conflicts = filter_out_timeslots_with_existing_bookings(sorted_available_timeslots, p, request_timeslot)
         # TODO: Filter out booking conflicts
-        if sorted_available_timeslots: # not empty
-            best_ts = sorted_available_timeslots[0]
+        if sorted_available_timeslots_without_conflicts: # not empty
+            best_ts = sorted_available_timeslots_without_conflicts[0]
             br = BookingResponse(p, best_ts)
             booking_responses.append(br)
     # sort all responses by distance to the request
@@ -76,6 +78,32 @@ def filter_and_sort_providers_based_on_schedule(booking, providerQuery):
     # return
     return sorted_responses
 
+
+def filter_out_timeslots_with_existing_bookings(available_timeslots, provider, request_timeslot):
+    '''
+        Remove provider's booking from the list of available timeslots for the day of the request
+    '''
+    day_start = datetime.combine(request_timeslot.start.date(), time(0, 0, 0))
+    day_end = datetime.combine(request_timeslot.start.date(), time(23, 59, 59))
+    #  , Booking.datetime > day_start, Booking.datetime < day_end
+    request_day_confirmed_bookings = Booking.query(Booking.provider==provider.key).fetch()
+    logging.info('bookings for today: %s' % request_day_confirmed_bookings)
+    # Hack, bookings are considered to be 1 hour long 
+    # TODO Add end_datetime in Booking to generalize this
+    booking_datetimes = map(lambda b: b.datetime, request_day_confirmed_bookings)
+    booking_timeslots = map(create_one_hour_timeslot, booking_datetimes)
+    logging.info("booking timeslots: %s" % booking_timeslots)
+    # filter out previous booking engagements
+    logging.info("available_timeslots: %s" % available_timeslots)
+    available_timeslots_without_conflicts = filter(lambda a: a not in booking_timeslots, available_timeslots)
+    logging.info("conflicts removed: %s" % available_timeslots_without_conflicts)
+    return available_timeslots_without_conflicts
+    #if not conflicting_booking:
+    #    providers.append(p)
+    #else:
+    #    logging.info('|- Conflicting booking at %s'.format(conflicting_booking.dateTime.strftime("%H:%M")))
+       
+       
     
 def get_sorted_schedule_timeslots(provider, request_timeslot):
     '''

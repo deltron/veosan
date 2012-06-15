@@ -147,7 +147,7 @@ class Booking(ndb.Model):
     request_email = ndb.StringProperty()
     
     # actual appointment
-    request_datetime = ndb.DateTimeProperty()
+    datetime = ndb.DateTimeProperty()
     comments = ndb.TextProperty()
     # link to patient
     patient = ndb.KeyProperty(kind=Patient)

@@ -4,12 +4,19 @@ from data.test_data import create_test_providers
 from base_test import BaseTestCase
 from data.model import Provider, Booking
 from data import db_search
-from utilities.time import Timeslot
+from utilities.time import Timeslot, create_one_hour_timeslot
 from datetime import date, datetime
 import util
 import testutil
 
 class BookingTestCase(BaseTestCase):
+    
+    def test_timeslot_equality(self):
+        dt1 = datetime(2012, 04, 17, 4, 34)
+        dt2 = datetime(2012, 04, 17, 4, 34)
+        ts1 = create_one_hour_timeslot(dt1)
+        ts2 = create_one_hour_timeslot(dt2)
+        self.assertEqual(ts1, ts2) 
     
     def test_print_timeslot(self):
         ts = Timeslot(datetime.now(), datetime.now())
