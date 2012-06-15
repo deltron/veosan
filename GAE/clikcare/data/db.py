@@ -53,7 +53,7 @@ def fetch_bookings():
     return Booking.query().order(-Booking.created_on)
 
 def get_bookings_for_patient(patient):
-    return Booking.query(Booking.patient == patient.key).get()
+    return Booking.query(Booking.patient == patient.key).fetch()
 
 def fetch_future_bookings(provider):
     yesterday_at_midnight = datetime.combine(date.today(), time())

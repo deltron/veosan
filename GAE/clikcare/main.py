@@ -6,6 +6,7 @@ import webapp2
 from webapp2 import Route
 # clik
 from util import dump
+import util
 from utilities import time
 from handler import booking, provider, patient, provider_admin, admin, static, contact, blob, language, user
 from data.model import User
