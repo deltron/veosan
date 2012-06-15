@@ -123,7 +123,7 @@ class BookingTest(BaseTest):
         # leave region to default (should be downtown)
         response = booking_form.submit()
         # verify provider name
-        response.mustcontain("Mr. Fantastic F.", "is available")
+        response.mustcontain("Mr. Fantastic F.")
         # verify location
         response.mustcontain("at their clinic at 123 Main St. in Westmount")
         # verify date and time
@@ -208,12 +208,11 @@ class BookingTest(BaseTest):
         # leave region to default (should be downtown)
         response = booking_form.submit()
         
-        #response.showbrowser()
-        
-        response.mustcontain("Malheureusement, il n'y a pas de professionnels disponibles")
-        # verify error messages
-        #self.fail("How should we handle double bookings?")
-        #response.showbrowser()
+        response.showbrowser()       
+        response.mustcontain("9:00")
+        response.mustcontain("Mr. Fantastic F.")
+        response.mustcontain("at their clinic at 123 Main St. in Westmount")
+
         
     def test_booking_new_patient(self):
         ''' Create a booking in the available timeslot '''
