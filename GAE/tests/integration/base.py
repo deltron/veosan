@@ -116,7 +116,7 @@ class BaseTest(unittest.TestCase):
         # email in the header
         login_welcome_page.mustcontain(self._TEST_PATIENT_EMAIL)
         # login lands on index page
-        login_welcome_page.mustcontain('Trouvez des soins')
+        login_welcome_page.mustcontain('Upcoming Appointments')
         
         
     def logout_patient(self):

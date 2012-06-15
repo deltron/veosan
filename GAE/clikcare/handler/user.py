@@ -4,8 +4,10 @@ from datetime import date
 from base import BaseHandler
 import data.db as db
 import auth
+from data import model
+from patient import PatientBaseHandler
 from provider import ProviderBaseHandler
-from booking import BaseBookingHandler
+from booking import BookingBaseHandler
 from forms.user import ProviderTermsForm, PasswordForm, LoginForm
 import mail
 from webapp2_extras.i18n import gettext as _
@@ -185,27 +187,26 @@ class PasswordHandler(UserBaseHandler):
                
                 elif patient:
                     welcome_message = _("Welcome to Clikcare! Profile confirmation successful.")
-                    BaseBookingHandler.render_confirmed_patient(self, patient, success_message=welcome_message)
+                    BookingBaseHandler.render_confirmed_patient(self, patient, success_message=welcome_message)
 
-            else:
+            elif user.resetpassword_token:
                 # not a returning user, must be a password reset
-                if user.resetpassword_token:
-                    # clear the password reset key to prevent further shenanigans
-                    self.delete_resetpassword_token(user)
+               
+                # clear the password reset key to prevent further shenanigans
+                self.delete_resetpassword_token(user)
                 
-                    logging.info('(PasswordHandler.post) Set new password for email %s' % user.get_email())
+                logging.info('(PasswordHandler.post) Set new password for email %s' % user.get_email())
 
-                    self.login_user(user.get_email(), password)
+                self.login_user(user.get_email(), password)
 
-                    success_message = _("Welcome back! Password has been reset for %s" % user.get_email())
-                    
-                    if auth.PROVIDER_ROLE in user.roles:
-                        ProviderBaseHandler.render_bookings(self, provider, success_message=success_message) 
-                    
-                    if auth.PATIENT_ROLE in user.roles:
-                        # do patient stuff
-                        pass
-      
+                success_message = _("Welcome back! Password has been reset for %s" % user.get_email())
+                
+                if auth.PROVIDER_ROLE in user.roles:
+                    ProviderBaseHandler.render_bookings(self, provider, success_message=success_message) 
+                
+                if auth.PATIENT_ROLE in user.roles:
+                    PatientBaseHandler.render_bookings(self, patient, success_message=success_message) 
+
         # password form was not validate, re-render and try again!
         else:
             self.render_password_selection(user, password_form=password_form)
@@ -320,11 +321,10 @@ class LoginHandler(UserBaseHandler):
                         self.redirect(provider.get_edit_link('/provider/bookings'))
 
                     elif auth.PATIENT_ROLE in user.roles:
-                        # patient = db.get_patient_from_user(user)
-                        # no welcome page for patient yet!
+                        patient = db.get_patient_from_user(user)
                         
                         logging.info('(LoginHandler.post) User %s logged in as patient, redirecting to / page', user.get_email())
-                        self.redirect('/')
+                        self.redirect(model.get_link(patient, '/patient/bookings'))
                         
                     else:
                         logging.error('(LoginHandler.post) User %s logged in without roles', user.get_email())
