@@ -133,7 +133,7 @@ class PatientBookHandler(BaseBookingHandler):
         provider = db.get_from_urlsafe_key(self.request.get('provider_key')) 
         booking.provider = provider.key
         booking_datetime = datetime.strptime(self.request.get('booking_datetime'), '%Y-%m-%d %H:%M:%S')
-        booking.request_datetime = booking_datetime
+        booking.datetime = booking_datetime
         booking.put()
         # 2. Add patient information
         email_form = EmailOnlyBookingForm(self.request.POST)
