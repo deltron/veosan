@@ -26,7 +26,7 @@ def email_booking_to_patient(jinja2, booking, activation_url=None):
     message.sender = CLIK_SUPPORT_ADDRESS
     message.to = to_address
     category_label = dict(util.getAllCategories())[provider.category]
-    message.subject = u'veocare reservation - %s' % _(category_label).capitalize()
+    message.subject = u'veosan reservation - %s' % _(category_label).capitalize()
     kw = {'booking': booking, 'activation_url': activation_url}
     message.body = render_booking_email_body(jinja2, 'email/patient_booking.txt', **kw)
     try:
@@ -41,7 +41,7 @@ def emailSolicitProvider(jinja2, provider, activation_url):
     message = mail.EmailMessage()
     message.sender = CLIK_SUPPORT_ADDRESS
     message.to = provider.email
-    message.subject = u'veocare - Please confirm your profile %s' % provider.fullName()
+    message.subject = u'veosan - Please confirm your profile %s' % provider.fullName()
     kw = {'provider': provider, 'activation_url': activation_url}
     message.body = jinja2.render_template('email/provider_solicit.txt', **kw)
     try:
@@ -54,7 +54,7 @@ def email_user_password_reset(jinja2, user, activation_url):
     message = mail.EmailMessage()
     message.sender = CLIK_SUPPORT_ADDRESS
     message.to = user.get_email()
-    message.subject = u'veocare - password reset instructions'
+    message.subject = u'veosan - password reset instructions'
     message.body = jinja2.render_template('email/provider_passwordreset.txt', activation_url=activation_url)
     try:
         message.send()

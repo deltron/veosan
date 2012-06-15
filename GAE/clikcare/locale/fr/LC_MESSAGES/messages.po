@@ -21,11 +21,11 @@ msgstr ""
 # Title & brand
 #################
 
-msgid "veocare! find a health care professional today"
-msgstr "veocare! trouvez des soins aujourd'hui"
+msgid "veosan! find a health care professional today"
+msgstr "veosan! trouvez des soins aujourd'hui"
 
-msgid "veocare"
-msgstr "veocare"
+msgid "veosan"
+msgstr "veosan"
 
 #################
 # Navbar
@@ -65,7 +65,7 @@ msgid "Login"
 msgstr "Connexion"
 
 msgid "Login to Clikcare"
-msgstr "Connexion à veocare"
+msgstr "Connexion à veosan"
 
 msgid "Logout"
 msgstr "Déconnexion"
@@ -369,7 +369,7 @@ msgid "Select your password"
 msgstr "Choisissez votre mot de passe"
 
 msgid "Welcome to Clikcare! Please review your profile and open your schedule."
-msgstr "Bienvenue chez veocare! Veuillez révisez votre profile et planifiez votre horraire."
+msgstr "Bienvenue chez veosan! Veuillez révisez votre profile et planifiez votre horraire."
 
 
 #################

@@ -7,7 +7,7 @@ from webapp2 import Route
 # clik
 from util import dump
 from utilities import time
-from handler import booking, provider, provider_admin, admin, static, contact, blob, language, user
+from handler import booking, provider, patient, provider_admin, admin, static, contact, blob, language, user
 from data.model import User
 
 
@@ -69,7 +69,8 @@ application = webapp2.WSGIApplication([
                                        Route('/privacy', handler=static.StaticHandler, name='privacy'),
                                        
                                        # Patient
-                                       ('/patient/new', booking.NewPatientHandler),
+                                       ('/patient/bookings', patient.ListPatientBookings),
+                                       ('/patient/new', patient.NewPatientHandler),
                                        ('/patient/book', booking.PatientBookHandler),
                                   
                                        #provider

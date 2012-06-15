@@ -13,7 +13,7 @@ class AuthenticationTest(BaseTest):
         # Now login again
         response = self.testapp.get('/login')
         # verify we get the login page
-        response.mustcontain("Connexion à veocare")
+        response.mustcontain("Connexion à veosan")
         # fill out details
         login_form = response.forms[0]
         login_form['email'] = self._TEST_PROVIDER_EMAIL
@@ -34,14 +34,14 @@ class AuthenticationTest(BaseTest):
         # Now login again
         response = self.testapp.get('/login')
         # verify we get the login page
-        response.mustcontain("Connexion à veocare")
+        response.mustcontain("Connexion à veosan")
         # fill out details
         login_form = response.forms[0]
         login_form['email'] = self._TEST_PROVIDER_EMAIL
         login_form['password'] = 'This is the wrong password'
         login_failed_response = login_form.submit()
         # return to login page
-        login_failed_response.mustcontain("Connexion à veocare")
+        login_failed_response.mustcontain("Connexion à veosan")
         #slogin_failed_response.showbrowser()
         # message about failed login
         login_failed_response.mustcontain("rifier votre email et mot de passe.")
@@ -55,7 +55,7 @@ class AuthenticationTest(BaseTest):
         self.create_test_patient()
         # login as patient
         response = self.testapp.get('/login')
-        response.mustcontain("Connexion à veocare")
+        response.mustcontain("Connexion à veosan")
         login_form = response.forms[0]
         login_form['email'] = self._TEST_PATIENT_EMAIL
         login_form['password'] = self._TEST_PATIENT_PASSWORD
@@ -74,14 +74,14 @@ class AuthenticationTest(BaseTest):
         self.login_as_patient()
         # login as patient
         response = self.testapp.get('/login')
-        response.mustcontain("Connexion à veocare")
+        response.mustcontain("Connexion à veosan")
         login_form = response.forms[0]
         login_form['email'] = self._TEST_PATIENT_EMAIL
         login_form['password'] = 'This is the wrong password for the patient'
         login_failed_response = login_form.submit()
         # response after login is a redirect, so follow
         # return to login page
-        login_failed_response.mustcontain("Connexion à veocare")
+        login_failed_response.mustcontain("Connexion à veosan")
         #slogin_failed_response.showbrowser()
         # message about failed login
         login_failed_response.mustcontain("rifier votre email et mot de passe.")

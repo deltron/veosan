@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import logging, urlparse
+import logging
 import data.db as db
 from data import db_search
 import mail
@@ -9,11 +9,12 @@ from forms.patient import PatientForm
 from forms.user import LoginForm
 from handler.base import BaseHandler
 from handler.auth import patient_required
+from handler.patient import PatientBaseHandler
 from datetime import datetime
 import util
 from utilities import time
 
-class BaseBookingHandler(BaseHandler):
+class BookingBaseHandler(BaseHandler):
     '''Common functions for all booking handlers'''
     
     @staticmethod
@@ -50,15 +51,6 @@ class BaseBookingHandler(BaseHandler):
         logging.info("Rendering result: active provider is %s at index %s: " % (br.provider.fullName(), index))
         kw = {'patient': None, 'booking': booking, 'booking_responses': booking_responses, 'index': index, 'form': email_form }
         self.render_template('search/result_carousel.html', **kw)     
-    
-    def render_new_patient_form(self, patientForm, booking, user=None, **kw):
-        extra = {'form': patientForm, 'booking': booking, 'provider': booking.provider.get(), 'user': user}
-        kw.update(extra)
-        self.render_template('patient/profile.html', **kw)
-    
-    def render_confirmation_email_sent(self, booking):
-        kw = {'patient': booking.patient.get(), 'booking': booking, 'provider': booking.provider.get()}
-        self.render_template('patient/confirmation_email_sent.html', **kw)
 
     def renderFullyBooked(self, booking, emailForm=None, **kw):
         self.render_template('search/no_result.html', booking=booking, form=emailForm, **kw) 
@@ -73,7 +65,7 @@ class BaseBookingHandler(BaseHandler):
         return bookingform
     
     
-class IndexHandler(BaseBookingHandler):
+class IndexHandler(BookingBaseHandler):
     def get(self):
         bookingform = self.create_booking_form(self.request.GET)
         self.render_template('index.html', form=bookingform)
@@ -91,7 +83,7 @@ class IndexHandler(BaseBookingHandler):
             self.render_template('index.html', form=bookingform)
 
                 
-class SearchNextHandler(BaseBookingHandler):
+class SearchNextHandler(BookingBaseHandler):
     '''
         Handler to travel through the search results
     '''
@@ -109,7 +101,7 @@ class SearchNextHandler(BaseBookingHandler):
             self.renderFullyBooked(booking, emailForm)
             
 
-class PatientBookHandler(BaseBookingHandler):
+class PatientBookHandler(BookingBaseHandler):
     
     @patient_required
     def get(self):
@@ -189,13 +181,13 @@ class PatientBookHandler(BaseBookingHandler):
                     patientForm = PatientForm(self.request.POST)
                     # set email in form 
                     patientForm.email.data = email
-                    self.render_new_patient_form(patientForm, booking)             
+                    PatientBaseHandler.render_new_patient_form(self, patientForm, booking)             
             else:
                 # email validation failed. Show same results again
                 self.search_and_render_results(booking, email_form)
             
             
-class FullyBookedHandler(BaseBookingHandler):
+class FullyBookedHandler(BookingBaseHandler):
     def get(self):
         logging.warn('FullyBooked GET Handler Not Implemented')
         pass
@@ -210,50 +202,4 @@ class FullyBookedHandler(BaseBookingHandler):
             self.renderFullyBooked(booking)
         else:
             self.renderFullyBooked(booking, emailForm)
-            
 
-
-class NewPatientHandler(BaseBookingHandler):
-    '''
-        Handler for New Patient Form
-    '''
-    def post(self):
-        # create patient form for validation
-        patient_form = PatientForm(self.request.POST)
-        # fetch booking from bk
-        booking = db.get_from_urlsafe_key(self.request.get('bk'))
-        # validate form
-        if patient_form.validate():
-            # create a patient from the form
-            patient = db.store_patient(self.request.POST)
-            
-            # Create an empty user in Auth system
-            user = self.create_empty_user_for_patient(patient)
-            
-            # create a signup token for new user
-            token = self.create_signup_token(user)
-
-            # activation url
-            url_obj = urlparse.urlparse(self.request.url)
-            activation_url = urlparse.urlunparse((url_obj.scheme, url_obj.netloc, '/user/activation/' + token, '', '', ''))
-            logging.info('(NewPatientHandler.post) generated activation url for user %s : %s ' %  (patient.email, activation_url))
-
-            if user:
-                # store booking
-                booking.patient = patient.key
-                booking.confirmed = user.confirmed = False
-                booking.put()
-                
-                # booking succesful, send profile confirmation email
-                mail.email_booking_to_patient(self.jinja2, booking, activation_url)
-                
-                self.render_confirmation_email_sent(booking)
-            else:
-                logging.error('User not created.')
-                # TODO add custom validation to tell user that email is already in use.
-                self.render_new_patient_form(patient_form, booking, error_message='Email already in use. Try to login instead.')
-
-        else:   
-            # validation failed        
-            self.render_new_patient_form(patient_form, booking)
-            

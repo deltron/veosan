@@ -215,7 +215,7 @@ class ProviderTest(BaseTest):
         
         assert "J'accepte les conditions d'utilisation" not in response
         response.mustcontain("Activation link has expired.")
-        response.mustcontain("Connexion à veocare")
+        response.mustcontain("Connexion à veosan")
         response.mustcontain("Couriel")
         response.mustcontain("Mot de passe")
 
@@ -241,7 +241,7 @@ class ProviderTest(BaseTest):
 
         user = db.get_user_from_email(self._TEST_PROVIDER_EMAIL)
 
-        self.assertEqual(m.subject, 'veocare - password reset instructions' )
+        self.assertEqual(m.subject, 'veosan - password reset instructions' )
         self.assertEqual(m.sender, 'cliktester@gmail.com')
         self.assertIn('Please click the link below to choose a new password', m.body.payload)
 
@@ -311,7 +311,7 @@ class ProviderTest(BaseTest):
 
         user = db.get_user_from_email(self._TEST_PROVIDER_EMAIL)
 
-        self.assertEqual(m.subject, 'veocare - password reset instructions')
+        self.assertEqual(m.subject, 'veosan - password reset instructions')
         self.assertEqual(m.sender, 'cliktester@gmail.com')
         self.assertIn('Please click the link below to choose a new password', m.body.payload)
 
