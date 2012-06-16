@@ -65,18 +65,20 @@ def filter_and_sort_providers_based_on_schedule(booking, providerQuery):
     request_timeslot = create_one_hour_timeslot(booking.request_datetime)
     logging.info('request timeslot: %s %s' % request_timeslot)
     for p in providerQuery:
+        # list all available timeslots in order of proximity to requested datetime
         sorted_available_timeslots = get_sorted_schedule_timeslots(p, request_timeslot)
-        
+        # remove existing bookings
         sorted_available_timeslots_without_conflicts = filter_out_timeslots_with_existing_bookings(sorted_available_timeslots, p, request_timeslot)
-        # TODO: Filter out booking conflicts
         if sorted_available_timeslots_without_conflicts: # not empty
             best_ts = sorted_available_timeslots_without_conflicts[0]
             br = BookingResponse(p, best_ts)
             booking_responses.append(br)
     # sort all responses by distance to the request
     sorted_responses = sorted(booking_responses, key=lambda br: timeslot_distance(br.timeslot, request_timeslot))
-    # return
-    return sorted_responses
+    # limit to 3 results
+    returned_responses = sorted_responses[0:3]
+    # ..and return
+    return returned_responses
 
 
 def filter_out_timeslots_with_existing_bookings(available_timeslots, provider, request_timeslot):
@@ -85,8 +87,8 @@ def filter_out_timeslots_with_existing_bookings(available_timeslots, provider, r
     '''
     day_start = datetime.combine(request_timeslot.start.date(), time(0, 0, 0))
     day_end = datetime.combine(request_timeslot.start.date(), time(23, 59, 59))
-    #  , Booking.datetime > day_start, Booking.datetime < day_end
-    request_day_confirmed_bookings = Booking.query(Booking.provider==provider.key).fetch()
+    #  
+    request_day_confirmed_bookings = Booking.query(Booking.provider==provider.key, Booking.datetime > day_start, Booking.datetime < day_end).fetch()
     logging.info('bookings for today: %s' % request_day_confirmed_bookings)
     # Hack, bookings are considered to be 1 hour long 
     # TODO Add end_datetime in Booking to generalize this
@@ -98,10 +100,6 @@ def filter_out_timeslots_with_existing_bookings(available_timeslots, provider, r
     available_timeslots_without_conflicts = filter(lambda a: a not in booking_timeslots, available_timeslots)
     logging.info("conflicts removed: %s" % available_timeslots_without_conflicts)
     return available_timeslots_without_conflicts
-    #if not conflicting_booking:
-    #    providers.append(p)
-    #else:
-    #    logging.info('|- Conflicting booking at %s'.format(conflicting_booking.dateTime.strftime("%H:%M")))
        
        
     

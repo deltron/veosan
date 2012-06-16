@@ -101,7 +101,6 @@ def formatTimeToOneHourPeriod(startTime):
     if (lang == 'fr'):
         return unicode(startTime) + u'h - ' + unicode(endTime) + u'h'
     else:
-        logging.info('starttime %s' % startTime)
         startAMPM = u'AM'
         if (startTime > 12):
             startTime = startTime - 12
