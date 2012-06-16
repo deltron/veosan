@@ -182,11 +182,11 @@ class PasswordHandler(UserBaseHandler):
                     # Provider is Activated
                     # login automatically
                     
-                    welcome_message = _("Welcome to Clikcare! Please review your profile and open your schedule.")
+                    welcome_message = _("Welcome to Veosan! Please review your profile and open your schedule.")
                     ProviderBaseHandler.render_bookings(self, provider, success_message=welcome_message)
                
                 elif patient:
-                    welcome_message = _("Welcome to Clikcare! Profile confirmation successful.")
+                    welcome_message = _("Welcome to Veosan! Profile confirmation successful.")
                     BookingBaseHandler.render_confirmed_patient(self, patient, success_message=welcome_message)
 
             elif user.resetpassword_token:
