@@ -20,8 +20,11 @@ class BookingBaseHandler(BaseHandler):
     @staticmethod
     def render_confirmed_patient(handler, patient, **kw):
         # find the patient's bookings
-        # TODO: does this work for multiple appointments? probably not
-        booking = db.get_bookings_for_patient(patient)
+        # ASSUMPTION:
+        # ==========
+        # if the patient is being confirmed, they only have one appointment
+        # so we take the first one from the restult list and display it
+        booking = db.get_bookings_for_patient(patient)[0]
         
         extra = {'patient': patient, 'booking': booking, 'provider': booking.provider.get()}
         kw.update(extra)
