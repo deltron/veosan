@@ -11,6 +11,11 @@ class PatientBaseHandler(BaseHandler):
     
     @staticmethod
     def render_new_patient_form(handler, patient_form, booking, user=None, **kw):
+        ''' 
+            New patients are created from bookings. 
+            The booking is saved in the database, get their email address from there
+        '''
+        
         extra = {'form': patient_form, 'booking': booking, 'provider': booking.provider.get(), 'user': user}
         kw.update(extra)
         handler.render_template('patient/profile.html', **kw)
@@ -49,10 +54,14 @@ class NewPatientHandler(PatientBaseHandler):
         patient_form = PatientForm(self.request.POST)
         # fetch booking from bk
         booking = db.get_from_urlsafe_key(self.request.get('bk'))
+        
         # validate form
         if patient_form.validate():
             # create a patient from the form
             patient = db.store_patient(self.request.POST)
+            
+            # set the patient email from the booking object
+            patient.email = booking.request_email
             
             # Create an empty user in Auth system
             user = self.create_empty_user_for_patient(patient)

@@ -12,6 +12,6 @@ class BookingForm(Form):
     booking_date = SelectField(_(u'Date'))
     booking_time = SelectField(_(u'Time'))
 
-class EmailOnlyBookingForm(Form):
+class email_only_booking_form(Form):
     email = TextField(_(u'E-mail Address'), [validators.Email(message=_(u'Invalid email address.'))])
 
