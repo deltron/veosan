@@ -140,7 +140,6 @@ class AdminTest(BaseTest):
         response = self.testapp.get('/admin')
         bookings_page = response.follow()
         bookings_page.mustcontain('Rendez-vous')
-        #bookings_page.showbrowser()
         
         
     def test_no_bookings_page_as_anonymnous(self):

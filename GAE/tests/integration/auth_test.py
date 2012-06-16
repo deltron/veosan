@@ -42,7 +42,6 @@ class AuthenticationTest(BaseTest):
         login_failed_response = login_form.submit()
         # return to login page
         login_failed_response.mustcontain("Connexion à veosan")
-        #slogin_failed_response.showbrowser()
         # message about failed login
         login_failed_response.mustcontain("rifier votre email et mot de passe.")
         
@@ -82,7 +81,6 @@ class AuthenticationTest(BaseTest):
         # response after login is a redirect, so follow
         # return to login page
         login_failed_response.mustcontain("Connexion à veosan")
-        #slogin_failed_response.showbrowser()
         # message about failed login
         login_failed_response.mustcontain("rifier votre email et mot de passe.")
         

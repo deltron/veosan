@@ -446,7 +446,7 @@ class BaseTest(unittest.TestCase):
 
         welcome_response = password_form.submit()
         self.assertEqual(welcome_response.status_int, 200)
-        welcome_response.mustcontain(u'Bienvenue chez veosan!')
+        welcome_response.mustcontain(u'Bienvenue chez Veosan!')
 
 
     ###
@@ -458,8 +458,11 @@ class BaseTest(unittest.TestCase):
             Go to index, fill the form and resturn the response
         '''
         result_response = self.testapp.post('/')
+        booking_form = result_response.forms[0] # booking form  
+        # check that date requested is in date select list
+        booking_date_select = booking_form.fields['booking_date'][0]
+        self.assertIn(date_string, [x[0] for x in booking_date_select.options]) 
         # fill out the form
-        booking_form = result_response.forms[0] # booking form
         booking_form['category'] = category
         booking_form['booking_date'] = date_string
         booking_form['booking_time'] = hour_string

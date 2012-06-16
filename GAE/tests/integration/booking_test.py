@@ -3,7 +3,7 @@
 from base import BaseTest
 from datetime import datetime, timedelta
 import unittest
-import testutil
+import testutil, util
 from data import db
 from data.model import Patient, Booking, User
 
@@ -12,51 +12,16 @@ class BookingTest(BaseTest):
     
     def test_booking_single_timeslot_available(self):
         ''' Create a booking in the available timeslot '''
-        
         self.create_complete_provider_profile()
-        
         # at this point there is one fully completed profile with a single timeslot available (Monday 8-13)
-        
-        # go back to the main page and try to book monday 8am
-        response = self.testapp.post('/')
-                
-        # fill out the form
-        booking_form = response.forms[0] # booking form
-        booking_form['category'] = 'osteopath' # admin test created an osteopath
-        
-        booking_date_select = booking_form.fields['booking_date'][0]
-        
-        # find the option value with a monday
-
-        for (date_string, selected) in booking_date_select.options:
-            d = datetime.strptime(date_string, "%Y-%m-%d")
-            if d.weekday() == 0: # choose the first monday on the form
-                booking_form['booking_date'] = date_string
-                break
-        
-        # leave time to default (should be 8-9h)
-
-        # leave region to default (should be downtown)
-        
-        response = booking_form.submit()
-
+        # try to book monday 8am
+        response = self.book_appointment(util.CAT_OSTEO, testutil.next_monday_date_string(), 8)
         # verify provider name
         response.mustcontain("Mr. Fantastic F.")
-                
         # verify location
         response.mustcontain("at their clinic at 123 Main St. in Westmount")
-        
         # verify date and time
         response.mustcontain("8:00")
-    
-        d = datetime.strptime(date_string + " 8:00", "%Y-%m-%d %H:%M")
-
-        # how to test this?
-        # should be "Mercredi, 12 Fevrier 2012 a 8:00" but days are variable
-
-        #formatted_date = "%s %s %s" % format_datetime(datetime, "EEEE d MMMM yyyy"),  _(u"at"), format_datetime(datetime, "H:mm")
-        #response.mustcontain(formatted_date)
-    
         # verify bio and quote
         response.mustcontain("The quick brown fox jumped over the lazy dog")
         response.mustcontain("Areas of interest include treatment and management of spinal conditions with an emphasis on manual therapy and rehabilitative exercise.")
@@ -64,35 +29,9 @@ class BookingTest(BaseTest):
         
     def test_booking_single_timeslot_book_unavailable_time(self):
         ''' Create a booking in a timeslot with no availability '''
-        
         self.create_complete_provider_profile()
-        
-        # at this point there is one fully completed profile with a single timeslot available (Monday 8-13)
-        
-        # go back to the main page and try to book monday 8am
-        response = self.testapp.post('/')
-                
-        # fill out the form
-        booking_form = response.forms[0] # booking form
-        booking_form['category'] = 'osteopath' # admin test created an osteopath
-        
-        booking_date_select = booking_form.fields['booking_date'][0]
-        
-        # find the option value with a tuesday (no availability)
-
-        for (date_string, selected) in booking_date_select.options:
-            d = datetime.strptime(date_string, "%Y-%m-%d")
-            if d.weekday() == 1: # choose the first tuesday on the form
-                booking_form['booking_date'] = date_string
-                break
-        
-        # set time to 2pm
-        booking_form['booking_time'] = '14'
-
-        # leave region to default (should be downtown)
-        
-        response = booking_form.submit()
-        
+        # Out Schedule is open only on Monday, try to book Tuesday
+        response = self.book_appointment(util.CAT_OSTEO, testutil.next_weekday_date_string(testutil.TUESDAY), 14)
         # verify error messages
         response.mustcontain("Malheureusement, il n'y a pas de professionnels disponibles qui répondent à vos besoins")
 
@@ -206,9 +145,7 @@ class BookingTest(BaseTest):
         
         # leave time to default (should be 8-9h)
         # leave region to default (should be downtown)
-        response = booking_form.submit()
-        
-        response.showbrowser()       
+        response = booking_form.submit()     
         response.mustcontain("9:00")
         response.mustcontain("Mr. Fantastic F.")
         response.mustcontain("at their clinic at 123 Main St. in Westmount")
@@ -324,12 +261,10 @@ class BookingTest(BaseTest):
         next_monday_string = datetime.strftime(next_monday, "%Y-%m-%d")
         # We already have an appointment at 8AM, let's now book 10AM
         result_response = self.book_appointment('osteopath', next_monday_string, '10')
-        #result_response.showbrowser()
         # email form
         book_form = result_response.forms[0]
         # no email on form (can we assert this?)
         booking_confirm_page = book_form.submit()
-        #booking_confirm_page.showbrowser()
         # patient email in navbar
         booking_confirm_page.mustcontain(self._TEST_PATIENT_EMAIL)
         # Title check
