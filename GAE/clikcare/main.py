@@ -72,7 +72,7 @@ application = webapp2.WSGIApplication([
                                        # Patient
                                        ('/patient/bookings', patient.ListPatientBookings),
                                        ('/patient/new', patient.NewPatientHandler),
-                                       ('/patient/book', booking.PatientBookHandler),
+                                       ('/patient/book', booking.BookingHandler),
                                   
                                        #provider
                                        ('/provider/schedule', provider.ProviderScheduleHandler),

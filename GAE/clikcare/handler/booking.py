@@ -4,7 +4,7 @@ import logging
 import data.db as db
 from data import db_search
 import mail
-from forms.base import BookingForm, EmailOnlyBookingForm
+from forms.base import BookingForm, email_only_booking_form
 from forms.patient import PatientForm
 from forms.user import LoginForm
 from handler.base import BaseHandler
@@ -20,8 +20,11 @@ class BookingBaseHandler(BaseHandler):
     @staticmethod
     def render_confirmed_patient(handler, patient, **kw):
         # find the patient's bookings
-        # TODO: does this work for multiple appointments? probably not
-        booking = db.get_bookings_for_patient(patient)
+        # ASSUMPTION:
+        # ==========
+        # if the patient is being confirmed, they only have one appointment
+        # so we take the first one from the restult list and display it
+        booking = db.get_bookings_for_patient(patient)[0]
         
         extra = {'patient': patient, 'booking': booking, 'provider': booking.provider.get()}
         kw.update(extra)
@@ -40,14 +43,14 @@ class BookingBaseHandler(BaseHandler):
             self.render_result(booking, booking_responses, index, email_form)
         else:
             logging.warn('No provider found for booking: %s' % booking.key.urlsafe())
-            emailForm = EmailOnlyBookingForm()
+            emailForm = email_only_booking_form()
             self.renderFullyBooked(booking, emailForm) 
     
     def render_result(self, booking, booking_responses, index, email_form=None):
         br = booking_responses[index]
         # create email form if not passed (email_form is passed in when validation fails)
         if not email_form:
-            email_form = EmailOnlyBookingForm()
+            email_form = email_only_booking_form()
         logging.info("Rendering result: active provider is %s at index %s: " % (br.provider.fullName(), index))
         kw = {'patient': None, 'booking': booking, 'booking_responses': booking_responses, 'index': index, 'form': email_form }
         self.render_template('search/result_carousel.html', **kw)     
@@ -74,13 +77,13 @@ class IndexHandler(BookingBaseHandler):
         ''' Renders 2nd page: Result + Confirm button
         TODO: Replace with passing booking properties and provider key, saving only after the patient logging ??? 
         '''
-        bookingform = self.create_booking_form(self.request.POST)
-        if bookingform.validate():
+        booking_form = self.create_booking_form(self.request.POST)
+        if booking_form.validate():
             booking = db.storeBooking(self.request.POST, None, None)
-            logging.debug('Created booking: %s' % booking)
+            logging.debug('(IndexHandler) Created booking: %s' % booking)
             self.search_and_render_results(booking)
         else:
-            self.render_template('index.html', form=bookingform)
+            self.render_template('index.html', form=booking_form)
 
                 
 class SearchNextHandler(BookingBaseHandler):
@@ -97,12 +100,11 @@ class SearchNextHandler(BookingBaseHandler):
             self.render_result(booking, booking_responses, index)
         else:
             logging.warn('No provider found for booking: %s' % booking.key.urlsafe())
-            emailForm = EmailOnlyBookingForm()
+            emailForm = email_only_booking_form()
             self.renderFullyBooked(booking, emailForm)
             
 
-class PatientBookHandler(BookingBaseHandler):
-    
+class BookingHandler(BookingBaseHandler):
     @patient_required
     def get(self):
         '''
@@ -110,29 +112,35 @@ class PatientBookHandler(BookingBaseHandler):
             Protected by @patient_required so that only logged in patient can see their own booking confirm
         '''
         booking_key = self.request.get('bk')
-        logging.info('(PatientBookHandler.get) Showing Booking confirmation for %s' % booking_key)
+        logging.info('(BookingHandler.get) Showing Booking confirmation for %s' % booking_key)
         booking = db.get_from_urlsafe_key(booking_key)
         self.render_confirmed_booking(booking) 
         
        
     def post(self):
         '''
+            State: 
+                - patient has chosen a provider and time slot
+                - booking has been created and is referenced by 'bk' parameter
+                
             1. Save selected provider and timeslot to the booking
             2. Add the patient using the User
         '''
-        booking = db.get_from_urlsafe_key(self.request.get('bk')) 
+        booking = db.get_from_urlsafe_key(self.request.get('bk'))
+        
         # 1. Save provider and datetime in booking
         provider = db.get_from_urlsafe_key(self.request.get('provider_key')) 
         booking.provider = provider.key
         booking_datetime = datetime.strptime(self.request.get('booking_datetime'), '%Y-%m-%d %H:%M:%S')
         booking.datetime = booking_datetime
         booking.put()
-        # 2. Add patient information
-        email_form = EmailOnlyBookingForm(self.request.POST)
+        
+        # is a user logged in? if so we can pull the information from their existin account
         user = self.get_current_user()
         if user:
             # form was only a submit button, we get the email from the user logged in
             email = user.get_email()
+            
             # A user is logged in let's see if he is a patient (he might be a provider)
             patient = db.get_patient_from_user(user)
             if patient:
@@ -150,13 +158,19 @@ class PatientBookHandler(BookingBaseHandler):
                 pass
             
         else:
-            # Form has an email field, let's validate
+            # no user is logged in, grab the email address from the booking form
+            email_form = email_only_booking_form(self.request.POST)
+
             if email_form.validate():
                 # store email in booking as requestEmail
                 email = self.request.get('email')
+                
                 booking.request_email = email
                 booking.put()
-                existing_user = self.auth.store.user_model.get_by_auth_id(email)
+                
+                # check if the email address given is an existing user that hasn't logged in
+                # or a completely new user
+                existing_user = db.get_user_from_email(email)
                 if existing_user:
                     existing_patient = db.get_patient_from_user(existing_user)
                     if existing_patient:
@@ -173,15 +187,13 @@ class PatientBookHandler(BookingBaseHandler):
                         # user exists, not no patient profile attached (might be a provider)
                         
                         # 1. login, 2. patient profile, 3. confirm
-                        pass
+                        logging.info("(BookingHandler) user exists, not no patient profile attached (might be a provider)")
                         
                 else:    
                     # email is not known, create new patient profile
                     logging.info('Patient does not exist for %s, creating new patient.' % email)
-                    patientForm = PatientForm(self.request.POST)
-                    # set email in form 
-                    patientForm.email.data = email
-                    PatientBaseHandler.render_new_patient_form(self, patientForm, booking)             
+                    patient_form = PatientForm(self.request.POST)
+                    PatientBaseHandler.render_new_patient_form(self, patient_form, booking)             
             else:
                 # email validation failed. Show same results again
                 self.search_and_render_results(booking, email_form)
@@ -193,7 +205,7 @@ class FullyBookedHandler(BookingBaseHandler):
         pass
         
     def post(self):
-        emailForm = EmailOnlyBookingForm(self.request.POST)
+        emailForm = email_only_booking_form(self.request.POST)
         booking = db.get_from_urlsafe_key(self.request.get('bk'))
         if emailForm.validate():
             ''' Stores email for Booking with No Result'''
