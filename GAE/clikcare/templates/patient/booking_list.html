@@ -6,7 +6,43 @@
 {% block content %}
 <div class="row">
 	<div class="span12">
-		Hello.
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Date and time</th>
+					<th>Category</th>
+					<th>Provider</th>
+					<th>Notes</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for b in bookings %}
+				{% set provider = b.provider.get() %}
+				<tr>
+					<td> {{ b.request_datetime|format_datetime_full }} </td>
+					<td> {{ category_dict[provider.category] }} </td>
+					<td>
+						<address>
+							<strong>
+								{{ provider.first_name }}
+								{{ provider.last_name }}
+							</strong>
+							<br>
+							{{ provider.address }}
+							<br>
+							{{ provider.city }}
+							<br>
+							{{ provider.postal_code }}
+							<br>
+							<abbr title="Phone">P:</abbr>
+							{{ provider.phone }}
+						</address>
+					</td>
+					<td> {{ b.notes }}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
 	</div>
 </div>
 {% endblock content %}

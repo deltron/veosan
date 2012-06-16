@@ -9,7 +9,6 @@ import handler.auth
 from webapp2_extras import i18n
 import util
 from webapp2_extras.i18n import lazy_gettext as _
-from data.model import User
 from data import db
 
 class BaseHandler(webapp2.RequestHandler):
@@ -25,11 +24,6 @@ class BaseHandler(webapp2.RequestHandler):
             jinja2 renderer
         '''
         j = jinja2.get_jinja2(app=self.app)
-        #if self._translations:
-        #    logging.info('installing translations %s' % self.get_language())
-        #    j.environment.install_gettext_translations(self._translations)
-        #else:
-        #    logging.info('no translations for jinja')
         return j
 
     def render_template(self, filename, provider=None, **template_args):
@@ -91,6 +85,7 @@ class BaseHandler(webapp2.RequestHandler):
         template_args['roles'] = roles
         template_args['provider'] = provider
         template_args['lang'] = lang
+        template_args['category_dict'] = dict(util.getAllCategories())
         template_args['other_languages'] = other_languages
         template_args['language_labels'] = util.LANGUAGE_LABELS
         

@@ -18,17 +18,27 @@ class PatientBaseHandler(BaseHandler):
     @staticmethod
     def render_bookings(handler, patient, **kw):
         bookings = db.get_bookings_for_patient(patient)
-        handler.render_template('patient/bookings.html', bookings=bookings, **kw)
+        handler.render_template('patient/booking_list.html', bookings=bookings, **kw)
     
     @staticmethod
     def render_confirmation_email_sent(handler, booking):
         kw = {'patient': booking.patient.get(), 'booking': booking, 'provider': booking.provider.get()}
         handler.render_template('patient/confirmation_email_sent.html', **kw)
 
-
 class ListPatientBookings(PatientBaseHandler):
     def get(self):
-        self.render_template("patient/booking_list.html")
+        user = self.get_current_user()
+        if user:
+            patient = db.get_patient_from_user(user)
+            if patient:
+                self.render_bookings(self, patient)
+            else:
+                logging.info("(ListPatientBookings) No patient associated to logged in user: %s" % user.get_email())
+                self.redirect("/")
+            
+        else:
+            logging.info("(ListPatientBookings) Trying to list bookings but no user logged in")
+            self.redirect("/")
 
 class NewPatientHandler(PatientBaseHandler):
     '''

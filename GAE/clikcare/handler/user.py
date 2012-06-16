@@ -324,7 +324,7 @@ class LoginHandler(UserBaseHandler):
                         patient = db.get_patient_from_user(user)
                         
                         logging.info('(LoginHandler.post) User %s logged in as patient, redirecting to / page', user.get_email())
-                        self.redirect(model.get_link(patient, '/patient/bookings'))
+                        self.redirect('/patient/bookings')
                         
                     else:
                         logging.error('(LoginHandler.post) User %s logged in without roles', user.get_email())
