@@ -26,25 +26,23 @@ class BaseHandler(webapp2.RequestHandler):
         j = jinja2.get_jinja2(app=self.app)
         return j
 
-    def render_template(self, filename, provider=None, **template_args):
+    def render_template(self, filename, provider=None, **kw):
         '''
             Common template rendering function
         '''
         
         # add template arguments common to all templates
         user = self.get_current_user()
-
-        
-        # Eventually display the full name of the user (when linked to patient or provider profile)
-        username = ''
         roles = []
         
+        # hack for providers 
+        # (allows provider pages to be accessed without a user logged in but knowing the provider key)
+        kw['provider'] = provider
         
         # somebody is logged in
         if user:
             logging.info('(BaseHandler.render_template) User logged in: %s with roles %s' % (user.get_email(), user.roles))
-
-            username = user.auth_ids[0]
+            kw['user'] = user
                         
             # extend roles
             roles.extend(user.roles)
@@ -52,7 +50,7 @@ class BaseHandler(webapp2.RequestHandler):
             # is it a provider?
             if handler.auth.PROVIDER_ROLE in roles:
                 provider_from_user = data.db.get_provider_from_user(user)
-                logging.info('(BaseHandler.render_template) Provider logged in: ' + str(provider_from_user.email))
+                logging.info('(BaseHandler.render_template) Provider logged in: ' + user.get_email())
 
                 # verify user->provider matches request->provider passed as paramater (ie. from request key)
                 if provider: 
@@ -61,38 +59,45 @@ class BaseHandler(webapp2.RequestHandler):
                 else:
                     # if no provider from request key, set it from the user
                     # useful for making the drop-down menu keys when not requesting specific provider pages
-                    provider = provider_from_user
-                
+                    kw['provider'] = provider_from_user
+
+          
+            if handler.auth.PATIENT_ROLE in roles:
+                patient = data.db.get_patient_from_user(user)
+                logging.info('(BaseHandler.render_template) Patient logged in: ' + user.get_email())
+                if patient:
+                    kw['patient'] = patient
+
+        
         google_user = users.get_current_user()
         if google_user:
             logging.info('(BaseHandler.render_template) Google User also logged in: ' + str(google_user))
-            
+            kw['google_user'] = google_user
+
             # check google account for admin, add to roles
             if users.is_current_user_admin():
                 roles.append(handler.auth.ADMIN_ROLE)
-
-            
-        # template variables
-        lang = self.get_language()
-        other_languages = filter(lambda l: l not in lang, util.LANGUAGE_LABELS.keys())
-
-        template_args['user'] = user
-        template_args['google_user'] = google_user
-        template_args['username'] = username
-        template_args['login_url'] = '/login'
-        template_args['logout_url'] = '/logout'
-        template_args['admin_logout_url'] = users.create_logout_url('/')
-        template_args['roles'] = roles
-        template_args['provider'] = provider
-        template_args['lang'] = lang
-        template_args['category_dict'] = dict(util.getAllCategories())
-        template_args['other_languages'] = other_languages
-        template_args['language_labels'] = util.LANGUAGE_LABELS
         
+        # set the roles
+        kw['roles'] = roles
+            
+        # set the language
+        lang = self.get_language()
         logging.info('(BaseHandler.render_template) Language is %s' % lang)
+        kw['lang'] = lang
+        kw['other_languages'] = filter(lambda l: l not in lang, util.LANGUAGE_LABELS.keys())
 
+        # Login and logout URLs (why is this coded here?)
+        kw['login_url'] = '/login'
+        kw['logout_url'] = '/logout'
+        kw['admin_logout_url'] = users.create_logout_url('/')
+        
+        # useful constants for templates
+        kw['category_dict'] = dict(util.getAllCategories())
+        kw['language_labels'] = util.LANGUAGE_LABELS
+        
         # render
-        self.response.write(self.jinja2.render_template(filename, **template_args))
+        self.response.write(self.jinja2.render_template(filename, **kw))
           
     def dispatch(self):
         ''' 

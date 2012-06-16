@@ -77,13 +77,13 @@ class IndexHandler(BookingBaseHandler):
         ''' Renders 2nd page: Result + Confirm button
         TODO: Replace with passing booking properties and provider key, saving only after the patient logging ??? 
         '''
-        bookingform = self.create_booking_form(self.request.POST)
-        if bookingform.validate():
+        booking_form = self.create_booking_form(self.request.POST)
+        if booking_form.validate():
             booking = db.storeBooking(self.request.POST, None, None)
-            logging.debug('Created booking: %s' % booking)
+            logging.debug('(IndexHandler) Created booking: %s' % booking)
             self.search_and_render_results(booking)
         else:
-            self.render_template('index.html', form=bookingform)
+            self.render_template('index.html', form=booking_form)
 
                 
 class SearchNextHandler(BookingBaseHandler):
@@ -104,7 +104,7 @@ class SearchNextHandler(BookingBaseHandler):
             self.renderFullyBooked(booking, emailForm)
             
 
-class PatientBookHandler(BookingBaseHandler):
+class BookingHandler(BookingBaseHandler):
     @patient_required
     def get(self):
         '''
@@ -112,7 +112,7 @@ class PatientBookHandler(BookingBaseHandler):
             Protected by @patient_required so that only logged in patient can see their own booking confirm
         '''
         booking_key = self.request.get('bk')
-        logging.info('(PatientBookHandler.get) Showing Booking confirmation for %s' % booking_key)
+        logging.info('(BookingHandler.get) Showing Booking confirmation for %s' % booking_key)
         booking = db.get_from_urlsafe_key(booking_key)
         self.render_confirmed_booking(booking) 
         
@@ -187,7 +187,7 @@ class PatientBookHandler(BookingBaseHandler):
                         # user exists, not no patient profile attached (might be a provider)
                         
                         # 1. login, 2. patient profile, 3. confirm
-                        logging.info("(PatientBookHandler) user exists, not no patient profile attached (might be a provider)")
+                        logging.info("(BookingHandler) user exists, not no patient profile attached (might be a provider)")
                         
                 else:    
                     # email is not known, create new patient profile
