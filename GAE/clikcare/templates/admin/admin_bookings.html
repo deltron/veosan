@@ -2,9 +2,8 @@
 
 {% set active_page = "bookings" %}
 
-{% block subhead %} <!-- Bookings -->
-{% endblock %}
-{% block lead %} <!-- View and administer bookings --> {% endblock %}
+{% block subhead %} Admin Bookings {% endblock %}
+{% block lead %} View and administer bookings {% endblock %}
 
 {% block content %}
 <div class="row">
@@ -12,63 +11,57 @@
 		<table class="table">
 			<thead>
 				<tr>
-					<!-- <th>Key</th> -->
-					<th>Booking</th>
-					<th>Patient</th>
-					<th>Provider</th>
+					<th width="33%">Booking</th>
+					<th width="33%">Patient</th>
+					<th width="33%">Provider</th>
 				</tr>
 			</thead>
 			<tbody>
 				{% for b in bookings %}
 				<tr>
-					<!-- Date (Booking) -->
-					<td><a href="/booking/detail"
-					rel="popover"
-					title="Booking Details"
-					data-content="{{b.get_html_summary()}}"> {{b.request_datetime|format_datetime_noseconds}} </a></td>
-					<!-- Patient -->
-					
 					<td>
-						{% if b.patient %}
-							<a href="#" class="" rel="popover" title="{{b.patient.first_name}} {{b.patient.last_name}}" data-content="{{b.patient.phone}} <br> {{b.patient.email}} <br>">
-							{{b.patient.first_name}} {{b.patient.last_name}}
-							</a>
+						<a href="/booking/detail">{{b.request_datetime|format_datetime_noseconds}}</a>
+					</td>
+
+					<td> 
+						{% if b.patient %} 
+						{% set patient = b.patient.get() %}
+						<a href="#">
+							 {{patient.first_name}} {{patient.last_name}} 
+						</a> 
+						{% elif b.request_email %}
+							{{b.request_email}} 
+							<br>
+							<span class="badge badge-warning">!</span> 
+							User never confirmed their appointment
 						{% else %}
-							{% if b.requestEmail %}
-								{{b.requestEmail}} <a href='#' rel="tooltip" title='User did not login'> <span class="badge badge-warning">!</span> </a>
-								
-							{% else %}
-								<a href='#' rel="tooltip" title='User dropped out before entering email' style='color: grey;'> <em>No Email</em> </a>
-							{% endif %}
+							<span class="badge badge-important">x</span> 
+							User dropped out
 						{% endif %}
 					</td>
-					<!-- Provider -->
-					<td>
+					
+					<td> 
 						{% if b.provider %}
-					 		{% set p = b.provider.get() %}
-							<a href="{{p.get_edit_link()}}"
-							rel="popover"
-							title="{{p.first_name}} {{p.last_name}}"
-							data-content="{{p.get_html_summary()}}"> {{p.last_name}}, {{p.first_name}}</a>
+						{% set provider = b.provider.get() %} 
+							<a href="{{provider.get_edit_link()}}"> {{provider.email}}</a> 
 						{% else %}
-						<p>
+							<span class="badge badge-important">x</span> 
 							No provider booked
-						</p>
-						{% endif %}
-					 </td>
+						{% endif %} 
+					</td>
 				</tr>
 				{% endfor %}
 			</tbody>
 		</table>
 	</div>
 </div>
-{% endblock content %} 
+{% endblock content %}
 
 {% block extra_javascript %}
-	<script>
-		$(function() {
-			$('a[rel=tooltip]').tooltip();
-			$('a[rel=popover]').popover();
-		});
-	</script>
+<script>
+	$(function() {
+		$('a[rel=tooltip]').tooltip();
+		$('a[rel=popover]').popover();
+	}); 
+</script>
 {% endblock extra_javascript %}
