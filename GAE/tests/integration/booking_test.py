@@ -46,35 +46,21 @@ class BookingTest(BaseTest):
         
         # at this point there is one fully completed profile with a single timeslot available (Monday 8-13)
         # go back to the main page and try to book monday 8am
-        response = self.testapp.post('/')
-        # fill out the form
-        booking_form = response.forms[0] # booking form
-        booking_form['category'] = 'osteopath' # admin test created an osteopath
-        booking_date_select = booking_form.fields['booking_date'][0]
-        
-        # find the option value with a monday
-        for (date_string, selected) in booking_date_select.options:
-            d = datetime.strptime(date_string, "%Y-%m-%d")
-            if d.weekday() == 0: # choose the first monday on the form
-                booking_form['booking_date'] = date_string
-                break
-        # leave time to default (should be 8-9h)
-        # leave region to default (should be downtown)
-        response = booking_form.submit()
+        response = self.book_appointment(util.CAT_OSTEO, testutil.next_weekday_date_string(testutil.MONDAY), 8)
+
         # verify provider name
         response.mustcontain("Mr. Fantastic F.")
         # verify location
         response.mustcontain("at their clinic at 123 Main St. in Westmount")
         # verify date and time
         response.mustcontain("8:00")
-    
-        d = datetime.strptime(date_string + " 8:00", "%Y-%m-%d %H:%M")
-            
+                
         # email form
         email_form = response.forms[0]
         email_form['email'] = 'pat@patient.com'
         new_patient_response = email_form.submit()
         
+        # profile form
         new_patient_response.mustcontain('Nouveau Patient')
         patient_form = new_patient_response.forms[0]
         patient_form['first_name'] = first_name = 'Pat!'
@@ -90,7 +76,6 @@ class BookingTest(BaseTest):
         
         ## COMPLETE BOOKING (email and all that)
         
-        
         # check email
         messages = self.mail_stub.get_sent_messages(to=self._TEST_PATIENT_EMAIL)
         self.assertEqual(1, len(messages))
@@ -100,8 +85,6 @@ class BookingTest(BaseTest):
         booking = Booking.query(Booking.patient == patient.key).get()
         provider = booking.provider.get()
         
-        #category_label = dict(util.getAllCategories())[provider.category]
-
         self.assertEqual(m.subject, 'veosan reservation - %s' % 'Ostéopathe')
         
         # assert that activation link is in the email body
@@ -126,26 +109,10 @@ class BookingTest(BaseTest):
         
         
         # now try to book again
-        # go back to the main page and try to book monday 8am
-        response = self.testapp.post('/')
-                
-        # fill out the form
-        booking_form = response.forms[0] # booking form
-        booking_form['category'] = 'osteopath' # admin test created an osteopath
-        
-        booking_date_select = booking_form.fields['booking_date'][0]
-        
-        # find the option value with a monday
+        # go back to the main page and try to book monday 8am again
+        response = self.book_appointment(util.CAT_OSTEO, testutil.next_weekday_date_string(testutil.MONDAY), 8)
 
-        for (date_string, selected) in booking_date_select.options:
-            d = datetime.strptime(date_string, "%Y-%m-%d")
-            if d.weekday() == 0: # choose the first monday on the form
-                booking_form['booking_date'] = date_string
-                break
-        
-        # leave time to default (should be 8-9h)
-        # leave region to default (should be downtown)
-        response = booking_form.submit()     
+        # get the next slot
         response.mustcontain("9:00")
         response.mustcontain("Mr. Fantastic F.")
         response.mustcontain("at their clinic at 123 Main St. in Westmount")
@@ -159,22 +126,10 @@ class BookingTest(BaseTest):
         self.logout_provider()
         # at this point there is one fully completed profile with a single timeslot available (Monday 8-13)
         # go back to the main page and try to book monday 8am
-        result_response = self.testapp.post('/')
-        # fill out the form
-        booking_form = result_response.forms[0] # booking form
-        booking_form['category'] = 'osteopath' # admin test created an osteopath
-        booking_date_select = booking_form.fields['booking_date'][0]
-        # find the option value with a monday
-        for (date_string, selected) in booking_date_select.options:
-            d = datetime.strptime(date_string, "%Y-%m-%d")
-            if d.weekday() == 0: # choose the first monday on the form
-                booking_form['booking_date'] = date_string
-                break
-        # leave time to default (should be 8-9h)
-        # leave region to default (should be downtown)
-        result_response = booking_form.submit()
+        response = self.book_appointment(util.CAT_OSTEO, testutil.next_weekday_date_string(testutil.MONDAY), 8)
+
         # email form
-        email_form = result_response.forms[0]
+        email_form = response.forms[0]
         email_form['email'] = 'pat@patient.com'
         new_patient_response = email_form.submit()
         
