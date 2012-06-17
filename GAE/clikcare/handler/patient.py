@@ -91,5 +91,6 @@ class NewPatientHandler(PatientBaseHandler):
 
         else:   
             # validation failed        
-            self.render_new_patient_form(patient_form, booking)
+            logging.error('New patient form validation failed')
+            self.render_new_patient_form(self, patient_form, booking)
             

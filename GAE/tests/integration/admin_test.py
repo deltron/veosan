@@ -218,6 +218,10 @@ class AdminTest(BaseTest):
 
     def test_admin_booking_dashboard_provider_and_patient_confirmed(self):
         ''' The base case, a patient made an appointment and confirmed it '''
+        
+        self.create_complete_provider_profile()
+        response = self.book_appointment(util.CAT_OSTEO, testutil.next_monday_date_string(), 8)
+                
         self.assertTrue(False, "TODO")
 
     def test_admin_booking_dashboard_patient_dropped_out(self):

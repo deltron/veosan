@@ -9,6 +9,7 @@ from StringIO import StringIO
 # clik
 import main
 import data.db as db
+from handler import auth
 from data.model import Patient
 from datetime import datetime
 from data.model import User
@@ -135,6 +136,8 @@ class BaseTest(unittest.TestCase):
             This happens in two strokes:
             1. The admin create the profile and solicits the provider
             2. The provider receives the email and activates his account
+            
+            There is one timeslot available (Monday at 8am)
         '''
         self.login_as_admin()
         # init a provider
@@ -148,6 +151,8 @@ class BaseTest(unittest.TestCase):
         self.logout_admin()
         # terms agreement
         self.activate_provider_from_email()
+        # logout
+        self.logout_provider()
 
      
     def init_new_provider(self):
@@ -455,7 +460,7 @@ class BaseTest(unittest.TestCase):
 
     def book_appointment(self, category, date_string, hour_string):
         '''
-            Go to index, fill the form and resturn the response
+            Go to index, fill the form and return the response
         '''
         result_response = self.testapp.post('/')
         booking_form = result_response.forms[0] # booking form  
@@ -474,7 +479,7 @@ class BaseTest(unittest.TestCase):
         '''
             Create a test patient (and linked user) in the datastore
         '''
-        user_created, new_user = User.create_user(self._TEST_PATIENT_EMAIL, password_raw=self._TEST_PATIENT_PASSWORD, roles=['patient'])
+        user_created, new_user = User.create_user(self._TEST_PATIENT_EMAIL, password_raw=self._TEST_PATIENT_PASSWORD, roles=[auth.PATIENT_ROLE])
         self.assertTrue(user_created)
         tp = Patient()
         tp.created_on = datetime.now()

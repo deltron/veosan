@@ -239,8 +239,30 @@ class BookingTest(BaseTest):
         response.mustcontain('Malheureusement')
         
         
-           
+    def test_booking_new_patient_terms_not_agreed(self):
+        ''' Create a booking in the available timeslot, but don't agree to terms on new patient page '''
         
+        # setup a provider
+        self.create_complete_provider_profile()
+        self.logout_provider()
+        # at this point there is one fully completed profile with a single timeslot available (Monday 8-13)
+        # go back to the main page and try to book monday 8am
+        response = self.book_appointment(util.CAT_OSTEO, testutil.next_weekday_date_string(testutil.MONDAY), 8)
+
+        # email form
+        email_form = response.forms[0]
+        email_form['email'] = self._TEST_PATIENT_EMAIL
+        new_patient_response = email_form.submit()
+        
+        new_patient_response.mustcontain('Nouveau Patient')
+        patient_form = new_patient_response.forms[0]
+        booking_confirm_page = patient_form.submit()
+        
+        booking_confirm_page.mustcontain(u"Le prénom est un champs obligatoire")
+        booking_confirm_page.mustcontain(u"Le nom de famille est un champs obligatoire")
+        booking_confirm_page.mustcontain(u"Le numéro de téléphone doit être dans le format suivant: 514-555-1212")
+        booking_confirm_page.mustcontain(u"You must accept the terms to book an appointment")
+
 if __name__ == "__main__":
     unittest.main()
     
