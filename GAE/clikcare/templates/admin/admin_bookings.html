@@ -11,29 +11,41 @@
 		<table class="table">
 			<thead>
 				<tr>
-					<th width="33%">Booking</th>
-					<th width="33%">Patient</th>
-					<th width="33%">Provider</th>
+					<th width="25%">Category</th>
+					<th width="25%">Date and time</th>
+					<th width="25%">Patient</th>
+					<th width="25%">Provider</th>
 				</tr>
 			</thead>
 			<tbody>
 				{% for b in bookings %}
 				<tr>
 					<td>
-						<a href="/booking/detail">{{b.request_datetime|format_datetime_noseconds}}</a>
+						{% if b.provider %}
+							{% set provider = b.provider.get() %}
+
+							{{ category_dict[provider.category] }}
+						{% else %}
+							No Provider
+						{% endif %}
+					</td>
+					<td>
+						<a href="/booking/detail">
+							{{b.request_datetime|format_datetime_noseconds}}
+						</a>
 					</td>
 
 					<td> 
 						{% if b.patient %} 
 						{% set patient = b.patient.get() %}
 						<a href="#">
-							 {{patient.first_name}} {{patient.last_name}} 
+							 {{patient.first_name}} {{patient.last_name}} ({{patient.email}})
 						</a> 
 						{% elif b.request_email %}
 							{{b.request_email}} 
 							<br>
 							<span class="badge badge-warning">!</span> 
-							User never confirmed their appointment
+							Unconfirmed
 						{% else %}
 							<span class="badge badge-important">x</span> 
 							User dropped out
@@ -43,7 +55,7 @@
 					<td> 
 						{% if b.provider %}
 						{% set provider = b.provider.get() %} 
-							<a href="{{provider.get_edit_link()}}"> {{provider.email}}</a> 
+							<a href="{{provider.get_edit_link()}}">{{ provider.first_name }} {{ provider.last_name}} ({{provider.email}})</a> 
 						{% else %}
 							<span class="badge badge-important">x</span> 
 							No provider booked
