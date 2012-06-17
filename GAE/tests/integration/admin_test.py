@@ -216,7 +216,22 @@ class AdminTest(BaseTest):
         response = self.book_appointment(util.CAT_OSTEO, testutil.next_monday_date_string() , 14)
         response.mustcontain("Mr. Fantastic F.")
 
+    def test_admin_booking_dashboard_provider_and_patient_confirmed(self):
+        ''' The base case, a patient made an appointment and confirmed it '''
+        self.assertTrue(False, "TODO")
 
+    def test_admin_booking_dashboard_patient_dropped_out(self):
+        ''' Patient chose a provider, entered their email in first form, then never filled the profile '''
+        self.assertTrue(False, "TODO")
+
+    def test_admin_booking_dashboard_patient_unconfirmed(self):
+        ''' Patient chose a provider, filled their profile but didn't click the email link '''
+        self.assertTrue(False, "TODO")
+
+    def test_admin_booking_dashboard_no_provider_booked(self):
+        ''' No provider was available for the requested date/time '''
+        self.assertTrue(False, "TODO")
+    
 if __name__ == "__main__":
     unittest.main()
     
