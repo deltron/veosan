@@ -21,13 +21,7 @@
 				{% for b in bookings %}
 				<tr>
 					<td>
-						{% if b.provider %}
-							{% set provider = b.provider.get() %}
-
-							{{ category_dict[provider.category] }}
-						{% else %}
-							No Provider
-						{% endif %}
+						{{ category_dict[b.request_category] }}
 					</td>
 					<td>
 						<a href="/booking/detail">
