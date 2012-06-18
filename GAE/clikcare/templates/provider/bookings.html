@@ -24,7 +24,7 @@
 					{% if b.patient %}
 					<tr>
 						<!-- Date (Booking) -->
-						<td><a href="/booking/detail"> {{b.request_datetime|format_datetime_full}} </a></td>
+						<td> {{b.request_datetime|format_datetime_full}} </td>
 						<!-- Patient -->
 						<td><a href="#" class="" rel="popover" title="{{b.patient.first_name}} {{b.patient.last_name}}" data-content="{{b.patient.phone}} <br> {{b.patient.email}} <br>">{{b.patient.first_name}} {{b.patient.last_name}}</a></td>
 					</tr>
