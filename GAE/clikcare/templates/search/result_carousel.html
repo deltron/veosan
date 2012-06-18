@@ -1,11 +1,11 @@
 {% extends "/layout/base.html" %}
 
 {% block subhead %} {{ _('Appointment Details') }} {% endblock %}
-{% block lead %}{{ _('We found a health-care professional for you!') }}{% endblock %}
+{% block lead %}{{ _('We found a health care professional for you!') }}{% endblock %}
 
 {% block content %}
 <div class="row">
-	<div class="span8">
+	<div class="span6">
 		<div id="carouselProfile" class="carousel slide">
 			<!-- Carousel items -->
 			<div class="carousel-inner">
@@ -38,7 +38,7 @@
 								<input type="hidden" name="index" value="{{loop.index0}}"/>
 								
 								{% if not user %}
-								<input id='email' name='email' type="text" class="" placeholder="{{_('Email Address')}}">
+								<input id='email' name='email' type="text" class="" placeholder="{{_('E-mail Address')}}">
 								{% endif %}
 								
 								<button type="submit" class="btn btn-primary">
@@ -61,14 +61,7 @@
 			<a class="carousel-control right" href="#carouselProfile" data-slide="next">&rsaquo;</a>
 		</div>
 	</div>
-	<!-- Bio Preview -->
-	<div class="span3">
-			<h3>Booking with Veosan is safe and easy!</h3>
-			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore 
-				et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip 
-				ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu 
-				fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-				 mollit anim id est laborum</p>
-	</div>
+	
+	{# write some engagement text #}
 </div>
 {% endblock content %} 

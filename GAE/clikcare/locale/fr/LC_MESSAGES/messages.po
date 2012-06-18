@@ -192,7 +192,7 @@ msgstr "Adresse courriel"
 msgid "Invalid email address."
 msgstr "Addresse courriel invalide."
 
-msgid "Reserve Now"
+msgid "Book Now"
 msgstr "Réservez Maintenant"
 
 # Marketing stuff
@@ -238,9 +238,27 @@ msgid "We believe using great technology is the key to creating a sustainable he
 msgstr "Nous croyons que utiliser une meilleure technologie est la clé pour créer un système de santé pérenne. Travaillons ensemble afin d’y arriver."
 
 
+
+#################
+# Results page
+#################
+
+msgid "We found a health care professional for you!"
+msgstr "Nous avons trouvé un professionnel de la santé pour vous!"
+
+msgid "Book Appointment"
+msgstr "Prendre rendez-vous"
+
+
 #################
 # Patient Registration Page
 #################
+
+msgid "New Patient"
+msgstr "Nouveau patient"
+
+msgid "Please complete your profile"
+msgstr "SVP complétez votre profile."
 
 msgid "First Name"
 msgstr "Prénom"
@@ -252,7 +270,7 @@ msgid "Telephone"
 msgstr "Téléphone"
 
 msgid "Insurance"
-msgstr "Type d'assurance"
+msgstr "Assurance"
 
 msgid "Private insurance (ex: employer)"
 msgstr "Assurance privée (ex: employeur)"
@@ -267,13 +285,16 @@ msgid "Not sure or don't know"
 msgstr "Pas certain ou je ne sais pas"
 
 msgid "Prefer not to answer"
-msgstr "Je préfère ne pas repondre"
+msgstr "Je préfère ne pas répondre"
 
 msgid "Please confirm by telephone instead of email"
 msgstr "SVP confirmer par téléphone et non par couriel"
 
 msgid "Confirmation"
 msgstr "Confirmation"
+
+msgid "Needs"
+msgstr "Besoins"
 
 msgid "Email"
 msgstr "Couriel"
@@ -288,7 +309,7 @@ msgid "Please make sure phone number is in the following format: 514-555-1212"
 msgstr "Le numéro de téléphone doit être dans le format suivant: 514-555-1212"
 
 msgid "Comments for your appointment"
-msgstr "Commentaires pour votre rendez-vous"
+msgstr "Commentaires en vue de votre rendez-vous"
 
 
 #################
@@ -379,7 +400,7 @@ msgid "Your upcoming bookings."
 msgstr "Vos réservations à venir."
 
 msgid "No upcoming bookings. Is there any time marked as available in your schedule?"
-msgstr "Aucun rendez-vous dans le système. Est-ce que vous avez du temps disponible dans votre horaire?"
+msgstr "Vous n’avez aucun rendez-vous prévu. Avez-vous inscrit vos disponibilités dans votre horaire?"
 
 
 #################
