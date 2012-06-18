@@ -64,7 +64,7 @@ msgstr "Politique de confidentialité"
 msgid "Login"
 msgstr "Connexion"
 
-msgid "Login to Clikcare"
+msgid "Login to veosan"
 msgstr "Connexion à veosan"
 
 msgid "Logout"
