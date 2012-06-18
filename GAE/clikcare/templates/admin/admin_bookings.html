@@ -38,7 +38,13 @@
 						{% set patient = b.patient.get() %}
 						<a href="#">
 							 {{patient.first_name}} {{patient.last_name}} ({{patient.email}})
-						</a> 
+						</a>
+							{% if not patient.user.get().confirmed %}
+							<br>
+							<span class="badge badge-warning">!</span>
+							Patient not confirmed
+							{% endif %}
+							
 						{% elif b.request_email %}
 							{{b.request_email}} 
 							<br>

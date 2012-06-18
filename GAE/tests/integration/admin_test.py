@@ -240,7 +240,8 @@ class AdminTest(BaseTest):
         
 
     def test_admin_booking_dashboard_patient_dropped_out(self):
-        ''' Patient chose a provider, entered their email in first form, then never filled the profile '''
+        ''' Visitor chose a provider, then never filled their email '''
+        
         self.create_complete_provider_profile()
         booking_response = self.book_appointment(util.CAT_OSTEO, testutil.next_monday_date_string(), 8)
 
@@ -254,13 +255,56 @@ class AdminTest(BaseTest):
         response.mustcontain('8:00')
         # response.mustcontain(...monday...)
 
+
+    def test_admin_booking_dashboard_patient_profile_abandon(self):
+        ''' Visitor chose a provider, filled their email, didn't fill the profile '''
+        
+        self.create_complete_provider_profile()
+        booking_response = self.book_appointment(util.CAT_OSTEO, testutil.next_monday_date_string(), 8)
+        new_patient_response = self.fill_booking_email_form(booking_response)
+
+        self.logout_patient()                
+        self.login_as_admin()
+
+        response = self.testapp.get('/admin/bookings')
+        response.mustcontain('Unfilled profile')
+        response.mustcontain('8:00')
+        response.mustcontain(self._TEST_PATIENT_EMAIL)
+        response.mustcontain(self._TEST_PROVIDER_EMAIL)
+        response.mustcontain('Ostéopathe')
+
+
     def test_admin_booking_dashboard_patient_unconfirmed(self):
-        ''' Patient chose a provider, filled their profile but didn't click the email link '''
-        self.assertTrue(False, "TODO")
+        ''' Visitor chose a provider, filled their email, filled the profile but didn't click the email link '''
+        
+        self.create_complete_provider_profile()
+        booking_response = self.book_appointment(util.CAT_OSTEO, testutil.next_monday_date_string(), 8)
+        new_patient_response = self.fill_booking_email_form(booking_response)
+        booking_confirm_response = self.fill_new_patient_profile(new_patient_response)
+
+        self.logout_patient()                
+        self.login_as_admin()
+
+        response = self.testapp.get('/admin/bookings')
+        response.mustcontain('Patient not confirmed')
+        response.mustcontain('8:00')
+        response.mustcontain(self._TEST_PATIENT_EMAIL)
+        response.mustcontain(self._TEST_PROVIDER_EMAIL)
+        response.mustcontain('Ostéopathe')
 
     def test_admin_booking_dashboard_no_provider_booked(self):
         ''' No provider was available for the requested date/time '''
-        self.assertTrue(False, "TODO")
+
+        self.create_complete_provider_profile()
+        booking_response = self.book_appointment(util.CAT_PHYSIO, testutil.next_monday_date_string(), 17)
+
+        self.logout_patient()                
+        self.login_as_admin()
+
+        response = self.testapp.get('/admin/bookings')
+        
+        # TODO
+        self.fail("TODO : is this situation covered now?")
     
 if __name__ == "__main__":
     unittest.main()
