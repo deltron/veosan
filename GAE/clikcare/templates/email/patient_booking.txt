@@ -1,6 +1,6 @@
 Hi {{ patient.first_name }} {{ patient.last_name }},
 
-Your are booked for {{ provider.category }} with {{ provider.fullName() }} on {{ b.request_datetime|format_datetime_full }}. 
+You are booked for {{ provider.category }} with {{ provider.fullName() }} on {{ b.request_datetime|format_datetime_full }}. 
 
 {% if activation_url %}
 One last thing, since you are new around here please click on the link below to confirm your address:
@@ -11,4 +11,4 @@ One last thing, since you are new around here please click on the link below to 
 
 Thank you,
 
-Clikcare
+The Veosan Team
