@@ -1,6 +1,5 @@
-
-#clik
 from base import BaseHandler
+import logging
 
 class LanguageHandler(BaseHandler):
     '''
@@ -11,6 +10,10 @@ class LanguageHandler(BaseHandler):
             Changes language and redirect to current page
         '''
         self.set_language(lang)
+        
         # redirect to referrer or /
+        referer = self.request.headers.get('Referer')
+        logging.info('(LanguageHandler.get) Changing language to %s: referer is %s' % (lang, referer))
+        
         url = self.request.headers.get('Referer', '/')
         self.redirect(url)

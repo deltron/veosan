@@ -444,6 +444,7 @@ class BaseTest(unittest.TestCase):
         terms_form['terms_agreement'] = '1'
         # password page
         password_choice_response = terms_form.submit()
+        
         password_choice_response.mustcontain('Choisissez votre mot de passe')
         password_form = password_choice_response.forms[0]
         password_form['password'] = self._TEST_PROVIDER_PASSWORD

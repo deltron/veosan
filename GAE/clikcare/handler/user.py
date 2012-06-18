@@ -29,6 +29,9 @@ class UserBaseHandler(BaseHandler):
         if not password_form:
             password_form = PasswordForm()
             
+        if not user:
+            user = self.get_current_user()
+            
         if user:
             # check if provider or patient            
             if auth.PROVIDER_ROLE in user.roles:
@@ -54,6 +57,8 @@ class UserBaseHandler(BaseHandler):
 
 class ProviderTermsHandler(UserBaseHandler):
     def get(self):
+        provider = None
+        
         # get the provider key
         key = self.request.get('key')
         if key:
@@ -63,8 +68,10 @@ class ProviderTermsHandler(UserBaseHandler):
         else:
             user = self.get_current_user()
             # make sure user is a provider
-            if auth.PROVIDER_ROLE in user.roles:
+            if user and auth.PROVIDER_ROLE in user.roles:
                 provider = db.get_provider_from_user(user)
+            else:
+                logging.error("(ProviderTermsHandler.get) Requested terms but can't get the provider from a key or user")
         
         terms_form = ProviderTermsForm(obj=provider)
         self.render_terms(provider, terms_form=terms_form)
@@ -77,9 +84,13 @@ class ProviderTermsHandler(UserBaseHandler):
             provider.terms_agreement = self.request.get('terms_agreement') == u'True'
             provider.terms_date = date.today()
             provider.put()
+            
+            user = provider.user.get()
+            
             # Go to the password selection page
-            self.render_password_selection(user=provider.user.get())
+            self.render_password_selection(user=user)
         else:
+            # did not click "I accept"
             self.render_terms(provider, terms_form=terms_form)
 
 class ResetPasswordHandler(UserBaseHandler):
@@ -130,9 +141,8 @@ class ResetPasswordHandler(UserBaseHandler):
 
 class PasswordHandler(UserBaseHandler):
     def get(self):
-        logging.info('(PasswordHandler.get) GET not implemented on /password')
-        self.redirect("/")
-            
+        self.render_password_selection()
+        
     def post(self):
         password_form = PasswordForm(self.request.POST)
         provider = None
