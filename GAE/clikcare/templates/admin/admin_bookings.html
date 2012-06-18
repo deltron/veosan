@@ -11,15 +11,19 @@
 		<table class="table">
 			<thead>
 				<tr>
-					<th width="25%">Category</th>
-					<th width="25%">Date and time</th>
-					<th width="25%">Patient</th>
-					<th width="25%">Provider</th>
+					<th width="15%">Event Timestamp</th>
+					<th width="15%">Category</th>
+					<th width="15%">Booking Date</th>
+					<th width="20%">Patient</th>
+					<th width="20%">Provider</th>
 				</tr>
 			</thead>
 			<tbody>
 				{% for b in bookings %}
 				<tr>
+					<td>
+						{{ b.created_on|format_datetime_noseconds }}
+					</td>
 					<td>
 						{{ category_dict[b.request_category] }}
 					</td>
