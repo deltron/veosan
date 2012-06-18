@@ -46,67 +46,20 @@ class BookingTest(BaseTest):
         
         # at this point there is one fully completed profile with a single timeslot available (Monday 8-13)
         # go back to the main page and try to book monday 8am
-        response = self.book_appointment(util.CAT_OSTEO, testutil.next_weekday_date_string(testutil.MONDAY), 8)
+        booking_response = self.book_appointment(util.CAT_OSTEO, testutil.next_weekday_date_string(testutil.MONDAY), 8)
 
         # verify provider name
-        response.mustcontain("Mr. Fantastic F.")
+        booking_response.mustcontain("Mr. Fantastic F.")
         # verify location
-        response.mustcontain("at their clinic at 123 Main St. in Westmount")
+        booking_response.mustcontain("at their clinic at 123 Main St. in Westmount")
         # verify date and time
-        response.mustcontain("8:00")
-                
-        # email form
-        email_form = response.forms[0]
-        email_form['email'] = 'pat@patient.com'
-        new_patient_response = email_form.submit()
-        
-        # profile form
-        new_patient_response.mustcontain('Nouveau Patient')
-        patient_form = new_patient_response.forms[0]
-        patient_form['first_name'] = first_name = 'Pat!'
-        patient_form['last_name'] = 'Patient'
-        patient_form['telephone'] = '514-123-1234'
-        patient_form['terms_agreement'] = '1'
-        booking_confirm_page = patient_form.submit()
-        
-        # check confirm page
-        booking_confirm_page.mustcontain("An email was sent with your appointment details and a confirmation code.")
-        booking_confirm_page.mustcontain("Please check your inbox and click on the link to finish the process.")
-        
-        
-        ## COMPLETE BOOKING (email and all that)
-        
-        # check email
-        messages = self.mail_stub.get_sent_messages(to=self._TEST_PATIENT_EMAIL)
-        self.assertEqual(1, len(messages))
-        m = messages[0]
+        booking_response.mustcontain("8:00")
 
-        patient = Patient.query(Patient.email == self._TEST_PATIENT_EMAIL).get()
-        booking = Booking.query(Booking.patient == patient.key).get()
-        provider = booking.provider.get()
-        
-        self.assertEqual(m.subject, 'veosan reservation - %s' % 'Ostéopathe')
-        
-        # assert that activation link is in the email body
-        user = User.query(User.key == patient.user).get()
-        self.assertTrue('http://localhost/user/activation/%s' % user.signup_token in m.body.payload)
- 
-        # click link in email
-        activation_response = self.testapp.get('/user/activation/%s' % str(user.signup_token))
-        
-        # choose a password
-        activation_response.mustcontain('Choisissez votre mot de passe')
-        activation_response_form = activation_response.forms[0]
-        activation_response_form['password'] = self._TEST_PATIENT_PASSWORD
-        activation_response_form['password_confirm'] = self._TEST_PATIENT_PASSWORD
-        booking_confirm_page = activation_response_form.submit()
-        
-        # patient email in navbar
-        booking_confirm_page.mustcontain(self._TEST_PATIENT_EMAIL)
-        # Title check
-        booking_confirm_page.mustcontain('Thank you %s!' % patient.first_name)
-        # content check
-        
+        # fill out patient profile, receive email and set password
+        new_patient_response = self.fill_booking_email_form(booking_response)
+        booking_confirm_response = self.fill_new_patient_profile(new_patient_response)
+        self.check_activation_email_patient()
+
         
         # now try to book again
         # go back to the main page and try to book monday 8am again
@@ -126,57 +79,13 @@ class BookingTest(BaseTest):
         self.logout_provider()
         # at this point there is one fully completed profile with a single timeslot available (Monday 8-13)
         # go back to the main page and try to book monday 8am
-        response = self.book_appointment(util.CAT_OSTEO, testutil.next_weekday_date_string(testutil.MONDAY), 8)
+        booking_response = self.book_appointment(util.CAT_OSTEO, testutil.next_weekday_date_string(testutil.MONDAY), 8)
 
-        # email form
-        email_form = response.forms[0]
-        email_form['email'] = 'pat@patient.com'
-        new_patient_response = email_form.submit()
-        
-        new_patient_response.mustcontain('Nouveau Patient')
-        patient_form = new_patient_response.forms[0]
-        patient_form['first_name'] = first_name = 'Pat!'
-        patient_form['last_name'] = 'Patient'
-        patient_form['telephone'] = '514-123-1234'
-        patient_form['terms_agreement'] = '1'
-        booking_confirm_page = patient_form.submit()
-        
-        # check confirm page
-        booking_confirm_page.mustcontain("An email was sent with your appointment details and a confirmation code.")
-        booking_confirm_page.mustcontain("Please check your inbox and click on the link to finish the process.")
-        
-        # check email
-        messages = self.mail_stub.get_sent_messages(to=self._TEST_PATIENT_EMAIL)
-        self.assertEqual(1, len(messages))
-        m = messages[0]
-        
-        patient = Patient.query(Patient.email == self._TEST_PATIENT_EMAIL).get()
-        booking = Booking.query(Booking.patient == patient.key).get()
-        provider = booking.provider.get()
-        
-        #category_label = dict(util.getAllCategories())[provider.category]
+        # fill out patient profile, receive email and set password
+        new_patient_response = self.fill_booking_email_form(booking_response)
+        booking_confirm_response = self.fill_new_patient_profile(new_patient_response)
+        self.check_activation_email_patient()
 
-        self.assertEqual(m.subject, 'veosan reservation - %s' % 'Ostéopathe')
-        
-        # assert that activation link is in the email body
-        user = User.query(User.key == patient.user).get()
-        self.assertTrue('http://localhost/user/activation/%s' % user.signup_token in m.body.payload)
- 
-        # click link in email
-        activation_response = self.testapp.get('/user/activation/%s' % str(user.signup_token))
-        
-        # choose a password
-        activation_response.mustcontain('Choisissez votre mot de passe')
-        activation_response_form = activation_response.forms[0]
-        activation_response_form['password'] = self._TEST_PATIENT_PASSWORD
-        activation_response_form['password_confirm'] = self._TEST_PATIENT_PASSWORD
-        booking_confirm_page = activation_response_form.submit()
-
-        # patient email in navbar
-        booking_confirm_page.mustcontain(self._TEST_PATIENT_EMAIL)
-        # Title check
-        booking_confirm_page.mustcontain('Thank you %s!' % first_name)
-        # content check
          
     def test_booking_existing_patient(self):
         self.test_booking_new_patient()

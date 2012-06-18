@@ -12,7 +12,7 @@ import data.db as db
 from handler import auth
 from data.model import Patient
 from datetime import datetime
-from data.model import User
+from data.model import User, Booking
         
 class BaseTest(unittest.TestCase):
     ''' *** NOTE ***
@@ -474,7 +474,65 @@ class BaseTest(unittest.TestCase):
         # leave region to default (should be downtown)
         result_response = booking_form.submit()
         return result_response
+    
+    def fill_booking_email_form(self, response):
+        # email form
+        email_form = response.forms[0]
+        email_form['email'] = self._TEST_PATIENT_EMAIL
+        new_patient_response = email_form.submit()
+        return new_patient_response
+    
+    def fill_new_patient_profile(self, response):
+        response.mustcontain('Nouveau Patient')
+        patient_form = response.forms[0]
+        patient_form['first_name'] = 'Pat!'
+        patient_form['last_name'] = 'Patient'
+        patient_form['telephone'] = '514-123-1234'
+        patient_form['terms_agreement'] = '1'
+        booking_confirm_response = patient_form.submit()
         
+        # check confirm page
+        booking_confirm_response.mustcontain("An email was sent with your appointment details and a confirmation code.")
+        booking_confirm_response.mustcontain("Please check your inbox and click on the link to finish the process.")
+        return booking_confirm_response
+    
+    def check_activation_email_patient(self):
+        '''             
+            1) receive confirmation email
+            2) clicks profile activation link
+            3) sets a password
+        '''
+        # check email
+        messages = self.mail_stub.get_sent_messages(to=self._TEST_PATIENT_EMAIL)
+        self.assertEqual(1, len(messages))
+        m = messages[0]
+
+        patient = Patient.query(Patient.email == self._TEST_PATIENT_EMAIL).get()
+        booking = Booking.query(Booking.patient == patient.key).get()
+        
+        self.assertEqual(m.subject, 'veosan reservation - %s' % 'Ostéopathe')
+        
+        # assert that activation link is in the email body
+        user = User.query(User.key == patient.user).get()
+        self.assertTrue('http://localhost/user/activation/%s' % user.signup_token in m.body.payload)
+ 
+        # click link in email
+        activation_response = self.testapp.get('/user/activation/%s' % str(user.signup_token))
+        
+        # choose a password
+        activation_response.mustcontain('Choisissez votre mot de passe')
+        activation_response_form = activation_response.forms[0]
+        activation_response_form['password'] = self._TEST_PATIENT_PASSWORD
+        activation_response_form['password_confirm'] = self._TEST_PATIENT_PASSWORD
+        booking_confirm_page = activation_response_form.submit()
+        
+        # patient email in navbar
+        booking_confirm_page.mustcontain(self._TEST_PATIENT_EMAIL)
+        # Title check
+        booking_confirm_page.mustcontain('Thank you %s!' % patient.first_name)
+    
+        
+    
     def create_test_patient(self):
         '''
             Create a test patient (and linked user) in the datastore
