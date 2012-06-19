@@ -126,6 +126,8 @@ class BookingHandler(BookingBaseHandler):
             1. Save selected provider and timeslot to the booking
             2. Add the patient using the User
         '''
+        logging.info('request %s' % self.request)
+        
         booking = db.get_from_urlsafe_key(self.request.get('bk'))
         
         # 1. Save provider and datetime in booking

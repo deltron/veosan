@@ -12,9 +12,9 @@
 			
 			{% for br in booking_responses %}
 				{% if loop.index0 == index %}			
-					<div class="item active" style="width:100%">
+				<div class="item active" style="width:100%">
 				{% else %}
-					<div class="item" style="width:100%">
+				<div class="item" style="width:100%">
 				{% endif %}
 					<div style="margin: 0px auto; width:75%;">
 						
@@ -25,50 +25,71 @@
 						<!-- Time and place -->
 						<h3> on {{ br.timeslot.start|format_datetime_full }} <br>
 							at their clinic at {{ br.provider.address }} in {{ br.provider.city }}</h3>
-						
-						<!-- booking form -->
-						<br>
-						<br>
-						<br>
-						<form action="/patient/book" method="post" class="form-inline">	
-							<fieldset>
-								<input id="bk" name="bk" type="hidden" value="{{ booking.key.urlsafe() }}"/>	
-								<input type="hidden" name="provider_key" value="{{ br.provider.key.urlsafe() }}"/>
-								<input type="hidden" name="booking_datetime" value="{{ br.timeslot.start }}"/>
-								<input type="hidden" name="index" value="{{loop.index0}}"/>
-								
-								{% if not user %}
-								<input id='email' name='email' type="text" class="" placeholder="{{_('Email Address')}}">
-								{% endif %}
-								
-								<button type="submit" class="btn btn-primary">
-									{{ _('Book Appointment') }}
-								</button>
-							</fieldset>
-							<br>
-							{% if form.email.errors %}
-								<div class="alert alert-error">{% for error in form.email.errors %} {{ error }} {% endfor %}</div>	
-							{% endif %}
-						</form>
-			
+									
 					</div>
-			</div>
-			{% endfor %}
-				
+					
+					<form id="hidden_form">
+						<input type="hidden" name="provider_key" value="{{ br.provider.key.urlsafe() }}"/>
+				 		<input type="hidden" name="booking_datetime" value="{{ br.timeslot.start }}"/>
+				 		<input type="hidden" name="index" value="{{loop.index0}}"/>
+					</form>
+					
+				</div>
+				{% endfor %}	
 			</div>
 			<!-- Carousel nav -->
 			<a class="carousel-control left" href="#carouselProfile" data-slide="prev">&lsaquo;</a>
 			<a class="carousel-control right" href="#carouselProfile" data-slide="next">&rsaquo;</a>
-		</div>
-	</div>
-	<!-- Bio Preview -->
-	<div class="span3">
-			<h3>Booking with Veosan is safe and easy!</h3>
-			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore 
-				et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip 
-				ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu 
-				fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-				 mollit anim id est laborum</p>
-	</div>
-</div>
+		</div> <!-- carousel -->
+		<div class="row">
+			<!-- booking form -->
+			<br>
+			<br>
+			<br>
+			<div class="span8">
+				<!-- email form -->
+				<form id="email_form" action="/patient/book" method="post" class="form-inline">	
+					<fieldset>
+						<input id="bk" name="bk" type="hidden" value="{{ booking.key.urlsafe() }}"/>
+						{# Other values added in jquery POST #}
+						
+						{% if not user %}
+						<input id='email' name='email' type="text" class="" placeholder="{{_('Email Address')}}">
+						{% endif %}
+						
+						<button id="book_button" type="submit" class="btn btn-primary">
+							{{ _('Book Appointment') }}
+						</button>
+					</fieldset>
+					<br>
+					{% if form.email.errors %}
+						<div class="alert alert-error">{% for error in form.email.errors %} {{ error }} {% endfor %}</div>	
+					{% endif %}
+				</form>
+			</div>
+	
+		</div>	<!-- booking row -->
+	</div> <!-- span8 -->
+
+	
+
+</div> <!-- row -->
+
 {% endblock content %} 
+
+{% block extra_javascript %}
+<script>
+
+$("#email_form").submit(function () {
+	hidden_form = $(".active #hidden_form");
+	var $inputs = $('.active #hidden_form :input');
+	
+	$inputs.each(function() {
+		$('#email_form').append( $(this) );
+    });
+	return true;
+});
+
+</script>
+
+{% endblock extra_javascript %}
