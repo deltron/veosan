@@ -178,13 +178,13 @@ msgid "Category"
 msgstr "Catégorie"
 
 msgid "Your appointment with a professional from our network is guaranteed!"
-msgstr "Votre rendez-vous avec un des professionnels dans notre réseau est garantie!"
+msgstr "Un rendez-vous avec un de nos professionnels qualifiés est garantie!"
 
 msgid "When"
-msgstr "Quand"
+msgstr "Date du rendez-vous"
 
 msgid "Location"
-msgstr "Endroit"
+msgstr "Lieu"
 
 msgid "E-mail Address"
 msgstr "Adresse courriel"
@@ -192,12 +192,73 @@ msgstr "Adresse courriel"
 msgid "Invalid email address."
 msgstr "Addresse courriel invalide."
 
-msgid "Reserve Now"
+msgid "Book Now"
 msgstr "Réservez Maintenant"
+
+# Marketing stuff
+
+msgid "Health care for everyone, everywhere."
+msgstr "De meilleurs soins pour tous, partout dans notre réseau."
+
+msgid "Finding care is simple and easy. Here's why."
+msgstr "Trouvez des soins est facile, voici pourquoi."
+
+msgid "Local Providers"
+msgstr "Professionnels dans votre région"
+
+msgid "We match your health care needs with the best providers in your area. Consultations can be done in clinic or conveniently at your home. Our team is ready to help you today."
+msgstr "Notre but est de vous trouver un professionnel qui répond spécifiquement a vos besoins. Les consultations peuvent être faites dans une clinique ou a domicile. Notre équipe est ici pour vous aider."
+
+msgid "Simple Booking"
+msgstr "Prise de rendez-vous facile"
+
+msgid "Booking an appointment is just one step away. Forget about spending hours searching and trying to make sense of the results. It's better with Veosan."
+msgstr "Prendre un rendez-vous est facile! Vous n’avez pas besoin de vous casser la tête a chercher un professionnel vous-même. C'est plus simple avec veosan."
+
+msgid "Quality and Experience"
+msgstr "Qualité et expérience"
+
+msgid "Our care providers are screened to meet the highest industry standards. We look at things like education, experience, and accreditations so you don't have to."
+msgstr "Nos professionnels sont évalués afin de s’assurer qu’ils répondent a nos standards de qualité. Nous considérons l’éducation, l’expérience et les accréditations des professionnels afin d’éviter que vous ayez a le faire."
+
+msgid "We Care"
+msgstr "Nous prenons votre santé a coeur"
+
+msgid "We know how difficult it can be to navigate the health care system and want to make it better. We use Veosan to find care for our family and friends."
+msgstr "Nous savons a quel point il peut être difficile de naviguer le réseau de la santé et nous voulons simplifier cela pour vous. Nous utilisons veosan afin de trouvez des soins pour nos proches ainsi que nos amis."
+
+
+msgid "We are actively engaged in the healthcare community. A portion of our proceeds goes to fund local initiatives aimed at making care more accessible for everyone."
+msgstr "Nous savons a quel point il peut être difficile de naviguer le réseau de la santé et nous voulons simplifier cela pour vous. Nous utilisons veosan afin de trouvez des soins pour nos proches ainsi que nos amis."
+
+msgid "Positive Impact"
+msgstr "Impact Positif"
+
+msgid "We believe using great technology is the key to creating a sustainable healthcare ecosystem for the next generation. Let's work together to make this a reality."
+msgstr "Nous croyons que utiliser une meilleure technologie est la clé pour créer un système de santé pérenne. Travaillons ensemble afin d’y arriver."
+
+
+
+#################
+# Results page
+#################
+
+msgid "We found a health care professional for you!"
+msgstr "Nous avons trouvé un professionnel de la santé pour vous!"
+
+msgid "Book Appointment"
+msgstr "Prendre rendez-vous"
+
 
 #################
 # Patient Registration Page
 #################
+
+msgid "New Patient"
+msgstr "Nouveau patient"
+
+msgid "Please complete your profile"
+msgstr "SVP complétez votre profile."
 
 msgid "First Name"
 msgstr "Prénom"
@@ -209,7 +270,7 @@ msgid "Telephone"
 msgstr "Téléphone"
 
 msgid "Insurance"
-msgstr "Type d'assurance"
+msgstr "Assurance"
 
 msgid "Private insurance (ex: employer)"
 msgstr "Assurance privée (ex: employeur)"
@@ -224,13 +285,16 @@ msgid "Not sure or don't know"
 msgstr "Pas certain ou je ne sais pas"
 
 msgid "Prefer not to answer"
-msgstr "Je préfère ne pas repondre"
+msgstr "Je préfère ne pas répondre"
 
 msgid "Please confirm by telephone instead of email"
 msgstr "SVP confirmer par téléphone et non par couriel"
 
 msgid "Confirmation"
 msgstr "Confirmation"
+
+msgid "Needs"
+msgstr "Besoins"
 
 msgid "Email"
 msgstr "Couriel"
@@ -245,7 +309,7 @@ msgid "Please make sure phone number is in the following format: 514-555-1212"
 msgstr "Le numéro de téléphone doit être dans le format suivant: 514-555-1212"
 
 msgid "Comments for your appointment"
-msgstr "Commentaires pour votre rendez-vous"
+msgstr "Commentaires en vue de votre rendez-vous"
 
 
 #################
@@ -336,7 +400,7 @@ msgid "Your upcoming bookings."
 msgstr "Vos réservations à venir."
 
 msgid "No upcoming bookings. Is there any time marked as available in your schedule?"
-msgstr "Aucun rendez-vous dans le système. Est-ce que vous avez du temps disponible dans votre horaire?"
+msgstr "Vous n’avez aucun rendez-vous prévu. Avez-vous inscrit vos disponibilités dans votre horaire?"
 
 
 #################
@@ -408,7 +472,7 @@ msgid "Osteopath"
 msgstr "Ostéopathe"
 
 msgid "Chiropractor"
-msgstr "Chiropracticien"
+msgstr "Chiropraticien"
 
 
 #################

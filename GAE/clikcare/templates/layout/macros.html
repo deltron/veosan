@@ -73,9 +73,8 @@ Macro to generate a provider bio
 			<div class="span4">
 				<h5>Specialities</h5>
 				<ul class="unstyled">
-					{# TODO: how to get label from here? #}
 					{% for s in provider.specialty %}
-						<li>{{ s }}</li>
+						<li>{{ specialty_dict[s] }}</li>
 					{% endfor %}
 				</ul>
 			</div>

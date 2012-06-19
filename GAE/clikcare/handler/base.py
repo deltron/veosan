@@ -94,6 +94,7 @@ class BaseHandler(webapp2.RequestHandler):
         
         # useful constants for templates
         kw['category_dict'] = dict(util.getAllCategories())
+        kw['specialty_dict'] = dict(util.getAllSpecialities())
         kw['language_labels'] = util.LANGUAGE_LABELS
         
         # render
