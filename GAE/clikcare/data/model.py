@@ -146,6 +146,8 @@ class Booking(ndb.Model):
     request_datetime = ndb.DateTimeProperty()
     request_email = ndb.StringProperty()
     
+    search_results = ndb.KeyProperty(repeated=True)
+    
     # actual appointment
     datetime = ndb.DateTimeProperty()
     comments = ndb.TextProperty()

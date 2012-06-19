@@ -11,11 +11,12 @@
 		<table class="table">
 			<thead>
 				<tr>
-					<th width="15%">Event Timestamp</th>
-					<th width="15%">Category</th>
-					<th width="15%">Booking Date</th>
-					<th width="20%">Patient</th>
-					<th width="20%">Provider</th>
+					<th width="10%">Event Timestamp</th>
+					<th width="10%">Category</th>
+					<th width="10%">Booking Date</th>
+					<th width="15%">Patient</th>
+					<th width="15%">Provider</th>
+					<th width="30%">Search Results</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -61,6 +62,19 @@
 						{% else %}
 							<span class="badge badge-important">x</span> 
 							No provider booked
+						{% endif %} 
+					</td>
+
+					<td> 
+						{% if b.search_results %}
+							{% for provider_key in b.search_results %} 
+								{% set provider = provider_key.get() %} 
+								{{loop.index}}. <a href="{{provider.get_edit_link()}}">{{ provider.first_name }} {{ provider.last_name}} ({{provider.email}})</a> 
+								<br>
+							{% endfor %}
+						{% else %}
+							<span class="badge badge-important">x</span> 
+							No search results
 						{% endif %} 
 					</td>
 				</tr>

@@ -39,6 +39,10 @@ class BookingBaseHandler(BaseHandler):
         logging.info("Searching for providers for booking %s" % booking)
         booking_responses = db_search.provider_search(booking)
         if booking_responses:
+            # store results for analysis
+            booking.search_results = map(lambda br: br.provider.key, booking_responses)
+            booking.put()
+            # render
             index = int(self.request.get('index', 0))
             self.render_result(booking, booking_responses, index, email_form)
         else:
