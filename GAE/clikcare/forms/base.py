@@ -9,6 +9,7 @@ from webapp2_extras.i18n import lazy_gettext as _
 class BookingForm(Form):
     category = SelectField(_(u'Category'))
     location = SelectField(_(u'Location'))
+    homecare = CustomBooleanField(_(u'Receive care at home'))
     booking_date = SelectField(_(u'Date'))
     booking_time = SelectField(_(u'Time'))
 

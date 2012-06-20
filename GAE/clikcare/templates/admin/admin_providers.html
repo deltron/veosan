@@ -12,6 +12,7 @@
 		<ul class="unstyled">
 			{% for p in providers %}
 			<li>
+				{{p.created_on}}
 				<a href="{{p.get_edit_link()}}"
 				rel="popover"
 				title="{{p.first_name}} {{p.last_name}}"
@@ -19,7 +20,7 @@
 				{% if p.recently_created() %} <span class="label label-success">new</span>{% endif %}
 				{% if not p.terms_agreement %} <span class="label label-important">missing terms</span>{% endif %}
 				{% if not p.enable %} <span class="label label-important">disabled</span>{% endif %}
-
+				{% if p.onsite %} <span class="label label-info">onsite</span>{% endif %}
 			</li>
 			{% endfor %}
 		</ul>

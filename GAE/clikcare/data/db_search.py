@@ -37,7 +37,9 @@ def provider_search(booking):
     request_category = booking.request_category
     request_location = booking.request_location
     # match on location and category, sort by experience (ascending start_year)
-    providers_wide_query = Provider.query(Provider.category==request_category, Provider.location==request_location, Provider.enable==True, Provider.terms_agreement==True).order(Provider.start_year)
+    providers_wide_query = Provider.query(Provider.category==request_category, Provider.location==request_location, Provider.enable==True, Provider.terms_agreement==True).order(Provider.start_year, Provider.created_on)
+    if booking.request_homecare:
+        providers_wide_query = providers_wide_query.filter(Provider.onsite==True)
     logging.info('Found %s providers offering %s in %s (enabled and with terms)' % (providers_wide_query.count(), request_category, request_location))
     # sort by best available timeslot and filter out booking conflicts
     booking_responses = filter_and_sort_providers_based_on_schedule(booking, providers_wide_query)
@@ -63,7 +65,7 @@ def filter_and_sort_providers_based_on_schedule(booking, providerQuery):
     '''
     booking_responses = []
     request_timeslot = create_one_hour_timeslot(booking.request_datetime)
-    logging.info('request timeslot: %s %s' % request_timeslot)
+    #logging.info('request timeslot: %s %s' % request_timeslot)
     for p in providerQuery:
         # list all available timeslots in order of proximity to requested datetime
         sorted_available_timeslots = get_sorted_schedule_timeslots(p, request_timeslot)
@@ -89,16 +91,16 @@ def filter_out_timeslots_with_existing_bookings(available_timeslots, provider, r
     day_end = datetime.combine(request_timeslot.start.date(), time(23, 59, 59))
     #  
     request_day_confirmed_bookings = Booking.query(Booking.provider==provider.key, Booking.datetime > day_start, Booking.datetime < day_end).fetch()
-    logging.info('bookings for today: %s' % request_day_confirmed_bookings)
+    logging.debug('bookings for today: %s' % request_day_confirmed_bookings)
     # Hack, bookings are considered to be 1 hour long 
     # TODO Add end_datetime in Booking to generalize this
     booking_datetimes = map(lambda b: b.datetime, request_day_confirmed_bookings)
     booking_timeslots = map(create_one_hour_timeslot, booking_datetimes)
-    logging.info("booking timeslots: %s" % booking_timeslots)
+    logging.debug("booking timeslots: %s" % booking_timeslots)
     # filter out previous booking engagements
-    logging.info("available_timeslots: %s" % available_timeslots)
+    logging.debug("available_timeslots: %s" % available_timeslots)
     available_timeslots_without_conflicts = filter(lambda a: a not in booking_timeslots, available_timeslots)
-    logging.info("conflicts removed: %s" % available_timeslots_without_conflicts)
+    logging.debug("conflicts removed: %s" % available_timeslots_without_conflicts)
     return available_timeslots_without_conflicts
        
        

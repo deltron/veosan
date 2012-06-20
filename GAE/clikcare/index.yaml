@@ -35,8 +35,27 @@ indexes:
   - name: category
   - name: enable
   - name: location
+  - name: onsite
   - name: terms_agreement
   - name: start_year
+  - name: created_on
+
+- kind: Provider
+  properties:
+  - name: category
+  - name: enable
+  - name: location
+  - name: terms_agreement
+  - name: start_year
+
+- kind: Provider
+  properties:
+  - name: category
+  - name: enable
+  - name: location
+  - name: terms_agreement
+  - name: start_year
+  - name: created_on
 
 - kind: Provider
   properties:
