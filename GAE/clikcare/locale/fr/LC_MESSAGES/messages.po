@@ -249,6 +249,8 @@ msgstr "Nous avons trouvé un professionnel de la santé pour vous!"
 msgid "Book Appointment"
 msgstr "Prendre rendez-vous"
 
+msgid "in"
+msgstr "à"
 
 #################
 # Patient Registration Page

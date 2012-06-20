@@ -18,13 +18,13 @@
 				{% endif %}
 					<div style="margin: 0px auto; width:75%;">
 						
-						<h1>Provider #{{loop.index0}}</h1>
+						<!-- <h1>Provider #{{loop.index0}}</h1> -->
 						
 						{{ macro.make_provider_bio(br.provider) }}
 
 						<!-- Time and place -->
-						<h3> on {{ br.timeslot.start|format_datetime_full }} <br>
-							at their clinic at {{ br.provider.address }} in {{ br.provider.city }}</h3>
+						<h3>{{ br.timeslot.start|format_datetime_full|capitalize }} <br>
+							{{ br.provider.address }} {{_('in')}} {{ br.provider.city }}</h3>
 									
 					</div>
 					
