@@ -18,6 +18,7 @@ jinja_filters['format_datetime_full'] = time.format_datetime_full
 jinja_filters['format_datetime_noseconds'] = time.format_datetime_noseconds
 jinja_filters['format_hour'] = time.format_hour
 jinja_filters['format_30min_period'] = time.format_30min_period
+jinja_filters['code_to_string'] = util.code_to_string
 jinja_filters['dump'] = dump
 
 jinja_environment_args = {

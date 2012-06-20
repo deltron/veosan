@@ -1,6 +1,7 @@
 #!/usr/local/bin/python
 # -*- coding: utf-8 -*-
 
+from itertools import chain
 from webapp2_extras.i18n import lazy_gettext as _
 
 DEV_SERVERS = ('localhost:8080', 'clikcare-stage.appspot.com')
@@ -14,23 +15,26 @@ saved_message = _(u'Your changes were saved.')
 def is_dev_server(request):
     return request.host in DEV_SERVERS
             
+ALL_REGIONS = [('mtl-downtown', _(u'Montreal - Downtown')),
+               ('mtl-westisland', _(u'Montreal - West-Island'))]
 
 # key, value
 def getAllRegions():
-    return [('mtl-downtown', _(u'Montreal - Downtown')),
-            ('mtl-westisland', _(u'Montreal - West-Island'))
-            ]
+    return ALL_REGIONS
+    
     
 ## key, value
 CAT_PHYSIO = "physiotherapy"
 CAT_CHIRO = "chiropractor"
 CAT_OSTEO = "osteopath"
 
+ALL_CATEGORIES =  [(CAT_PHYSIO, _(u"Physiotherapist")),
+                   (CAT_CHIRO, _(u"Chiropractor")),
+                   (CAT_OSTEO, _(u"Osteopath"))]
+
 def getAllCategories():
-    return [(CAT_PHYSIO, _(u"Physiotherapist")),
-            (CAT_CHIRO, _(u"Chiropractor")),
-            (CAT_OSTEO, _(u"Osteopath"))
-        ]
+    return ALL_CATEGORIES
+           
 
 # key, value
 def getAllSpecialities():
@@ -92,5 +96,25 @@ def getAllConfirmation():
 def dump(obj):  
     return vars(obj)
     # todo split at the comma (replace with <br>)
+  
+
+#list of list of tuples
+CODE_TUPLES_LIST = [ALL_REGIONS, ALL_CATEGORIES]
+
+# Flat tuple list
+CODE_TUPLES = list(chain.from_iterable(CODE_TUPLES_LIST))
+
+# dictionary of all codes: string
+CODE_DICT = dict(CODE_TUPLES)
+
+
+def code_to_string(code):
+    '''
+        Catch all function to convert code to human string coverter
+    '''
+    value = code
+    if CODE_DICT.has_key(code):
+        value = CODE_DICT[code]
+    return value
     
 

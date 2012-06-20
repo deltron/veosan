@@ -237,7 +237,8 @@ msgstr "Impact Positif"
 msgid "We believe using great technology is the key to creating a sustainable healthcare ecosystem for the next generation. Let's work together to make this a reality."
 msgstr "Nous croyons que utiliser une meilleure technologie est la clé pour créer un système de santé pérenne. Travaillons ensemble afin d’y arriver."
 
-
+msgid "Receive care at home"
+msgstr "Recevoir des soins à domicile"
 
 #################
 # Results page

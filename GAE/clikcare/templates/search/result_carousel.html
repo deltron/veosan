@@ -24,7 +24,13 @@
 
 						<!-- Time and place -->
 						<h3>{{ br.timeslot.start|format_datetime_full|capitalize }} <br>
-							{{ br.provider.address }} {{_('in')}} {{ br.provider.city }}</h3>
+							
+							{% if booking.request_homecare %}
+								{{ _('at your home or workplace') }} {{_('in')}} {{booking.request_location|code_to_string}}
+							{% else %}
+								{{ br.provider.address }} {{_('in')}} {{ br.provider.city }}
+							{% endif %}
+						</h3>
 									
 					</div>
 					
