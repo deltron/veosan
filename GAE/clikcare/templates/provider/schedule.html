@@ -64,6 +64,13 @@
 		</table>
 	</div>
 	
+	{% if 'admin' in roles %}
+		<h3>Undisplayed Availble Timeslots</h3>
+		{% for sai in skipped_available_ids %}
+			<li>{{sai}}</li>
+		{% endfor %}
+	{% endif %}
+	
 </div>
 {% endblock %}
 

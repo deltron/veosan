@@ -9,9 +9,12 @@ from handler.auth import provider_required
 class ProviderBaseHandler(BaseHandler):       
     def render_schedule(self, provider, availableIds, **kw):
         timeslots = time.getScheduleTimeslots()
-        logging.info(timeslots)
         days = time.getWeekdays()
-        self.render_template('provider/schedule.html', provider=provider, availableIds=availableIds, timeslots=timeslots, days=days, **kw)
+        timeslot_ids = map(lambda x: "%s-%s-%s" % (x[0][0], x[1][1], x[1][2]),  [(d,ts) for d in days for ts in timeslots])
+        logging.info("timeslot ids %s" % timeslot_ids)
+        skipped_available_ids = [a for a in availableIds if a not in timeslot_ids]
+        logging.info("skipped available ids %s" % skipped_available_ids)
+        self.render_template('provider/schedule.html', provider=provider, availableIds=availableIds, timeslots=timeslots, days=days, skipped_available_ids=skipped_available_ids, **kw)
     
     @staticmethod
     def render_bookings(handler, provider, **kw):

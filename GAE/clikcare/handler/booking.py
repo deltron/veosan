@@ -66,7 +66,7 @@ class BookingBaseHandler(BaseHandler):
         bookingform = BookingForm(payload)
         # set choices at run time because can't find a way to do lazy date and time localization in form declaration
         bookingform.category.choices = util.getAllCategories()
-        bookingform.location.choices = util.getAllRegions()
+        bookingform.location.choices = util.ALL_REGIONS
         bookingform.booking_date.choices = time.getDatesList()
         bookingform.booking_time.choices = time.getTimesList()
         return bookingform

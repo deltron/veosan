@@ -16,12 +16,7 @@ def is_dev_server(request):
     return request.host in DEV_SERVERS
             
 ALL_REGIONS = [('mtl-downtown', _(u'Montreal - Downtown')),
-               ('mtl-westisland', _(u'Montreal - West-Island'))]
-
-# key, value
-def getAllRegions():
-    return ALL_REGIONS
-    
+               ('mtl-westisland', _(u'Montreal - West-Island'))]    
     
 ## key, value
 CAT_PHYSIO = "physiotherapy"
