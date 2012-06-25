@@ -13,13 +13,18 @@
 						{{ macro.makeStandardForm() }}
 					</div>
 					<div class="span6">
-						<h3>Booking Info</h3>
-						{# TODO format this nicely #}
-						<ul>
-							<li>{{ booking.request_category }}</li>
-							<li>{{ booking.request_location }}</li>
-							<li>{{ booking.request_datetime|format_datetime_noseconds }}</li>
-						</ul>
+						<div class="well">
+							<h2>{{ _('Your Appointment') }}</h2>
+							<i class="bs-icon icon-user"></i>{{provider.obfuscated_name()}} ({{ booking.request_category|code_to_string }})<br>
+							
+							<i class="bs-icon icon-time"></i> {{ booking.request_datetime|format_datetime_with_weekday }}<br>
+							
+							{% if booking.request_homecare %}
+							<i class="bs-icon icon-home"></i> {{ booking.request_location|code_to_string }}<br>
+							{%else %}
+							<i class="bs-icon icon-briefcase"></i> {{ _('at your home or workplace')|capitalize }} {{_('in')}} {{ booking.request_location|code_to_string }}<br>
+							{% endif %}
+						</div>
 					</div>
 				</div>
 				
