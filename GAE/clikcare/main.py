@@ -13,6 +13,7 @@ from data.model import User
 
 
 jinja_filters = {}
+jinja_filters['format_datetime_with_weekday'] = time.format_datetime_with_weekday
 jinja_filters['format_date_weekday_after'] = time.format_date_weekday_after
 jinja_filters['format_datetime_full'] = time.format_datetime_full
 jinja_filters['format_datetime_noseconds'] = time.format_datetime_noseconds

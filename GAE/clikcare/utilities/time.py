@@ -76,6 +76,13 @@ def getWeekdays():
 def format_date_weekday_after(date):
     return format_date(date, u"d MMMM yyyy (EEEE)")
 
+def format_datetime_with_weekday(datetime):
+    lang = _('en')
+    if (lang == 'fr'):
+        return "%s %s %s" % (format_datetime(datetime, "EEEE 'le' d MMMM yyyy"),  _(u"at"), format_datetime(datetime, "H:mm"))
+    else:
+        return "%s %s %s" % (format_datetime(datetime, "EEEE MMMM d, yyyy"),  _(u"at"), format_datetime(datetime, "H:mm a"))
+
 def format_datetime_full(datetime):
     lang = _('en')
     if (lang == 'fr'):

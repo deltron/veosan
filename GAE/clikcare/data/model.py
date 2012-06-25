@@ -45,6 +45,10 @@ class Patient(ndb.Model):
     email = ndb.StringProperty()
     telephone = ndb.StringProperty()
     terms_agreement = ndb.BooleanProperty()
+    # Address for homecare
+    address = ndb.StringProperty()
+    city = ndb.StringProperty()
+    postal_code = ndb.StringProperty()
 
     # insurance
     # age    
@@ -94,6 +98,11 @@ class Provider(ndb.Model):
     def get_edit_link(self, route='/provider/bookings'):
         return get_link(self, route)
  
+    def obfuscated_name(self):
+        if self.last_name:
+            first_letter_of_last_name = self.last_name[0]
+        return "%s %s %s." % (self.title, self.first_name, first_letter_of_last_name)
+        
     def fullName(self):
         return '{0} {1}'.format(self.first_name, self.last_name)
     
@@ -143,6 +152,7 @@ class Booking(ndb.Model):
     #request
     request_category = ndb.StringProperty()
     request_location = ndb.StringProperty()
+    request_homecare = ndb.BooleanProperty()
     request_datetime = ndb.DateTimeProperty()
     request_email = ndb.StringProperty()
     
