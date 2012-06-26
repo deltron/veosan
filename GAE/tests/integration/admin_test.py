@@ -297,15 +297,14 @@ class AdminTest(BaseTest):
 
         self.create_complete_provider_profile()
         booking_response = self.book_appointment(util.CAT_PHYSIO, testutil.next_monday_date_string(), 17)
-
+        
         self.logout_patient()                
         self.login_as_admin()
-
         response = self.testapp.get('/admin/bookings')
-        
-        # TODO
-        self.fail("TODO : is this situation covered now?")
-    
+        # admin booking shows no results
+        response.mustcontain('No search results')
+
+
 if __name__ == "__main__":
     unittest.main()
     

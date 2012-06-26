@@ -477,8 +477,8 @@ class BaseTest(unittest.TestCase):
         return result_response
     
     def fill_booking_email_form(self, response):
-        # email form
-        email_form = response.forms[0]
+        # email form (second form on page)
+        email_form = response.forms[1]
         email_form['email'] = self._TEST_PATIENT_EMAIL
         new_patient_response = email_form.submit()
         return new_patient_response
