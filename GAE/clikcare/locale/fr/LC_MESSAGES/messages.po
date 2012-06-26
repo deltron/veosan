@@ -207,7 +207,7 @@ msgid "Local Providers"
 msgstr "Professionnels dans votre région"
 
 msgid "We match your health care needs with the best providers in your area. Consultations can be done in clinic or conveniently at your home. Our team is ready to help you today."
-msgstr "Notre but est de vous trouver un professionnel qui répond spécifiquement a vos besoins. Les consultations peuvent être faites dans une clinique ou a domicile. Notre équipe est ici pour vous aider."
+msgstr "Notre but est de trouver le professionnel qui répond parfaitement à vos besoins. Les consultations peuvent être faites dans une clinique ou à domicile. Notre équipe est ici pour vous aider."
 
 msgid "Simple Booking"
 msgstr "Prise de rendez-vous facile"
@@ -219,23 +219,23 @@ msgid "Quality and Experience"
 msgstr "Qualité et expérience"
 
 msgid "Our care providers are screened to meet the highest industry standards. We look at things like education, experience, and accreditations so you don't have to."
-msgstr "Nos professionnels sont évalués afin de s’assurer qu’ils répondent a nos standards de qualité. Nous considérons l’éducation, l’expérience et les accréditations des professionnels afin d’éviter que vous ayez a le faire."
+msgstr "Nos professionnels sont évalués afin d’assurer qu’ils répondent aux plus hauts standards de qualité. Nous considérons l’éducation, l’expérience et les accréditations professionnelles afin de vous sauver du temps."
 
 msgid "We Care"
 msgstr "Nous prenons votre santé a coeur"
 
 msgid "We know how difficult it can be to navigate the health care system and want to make it better. We use Veosan to find care for our family and friends."
-msgstr "Nous savons a quel point il peut être difficile de naviguer le réseau de la santé et nous voulons simplifier cela pour vous. Nous utilisons veosan afin de trouvez des soins pour nos proches ainsi que nos amis."
+msgstr "Nous savons à quel point il peut être difficile de naviguer le réseau de la santé et c'est ce que nous voulons simplifier. Nous utilisons nous-même Veosan afin de trouvez des soins pour nos proches ainsi que nos amis."
 
 
 msgid "We are actively engaged in the healthcare community. A portion of our proceeds goes to fund local initiatives aimed at making care more accessible for everyone."
-msgstr "Nous savons a quel point il peut être difficile de naviguer le réseau de la santé et nous voulons simplifier cela pour vous. Nous utilisons veosan afin de trouvez des soins pour nos proches ainsi que nos amis."
+msgstr "Veosan est un acteur engagés de la communauté des soins de la santé. Une portion de nos profits sert à financer des organismes locaux qui rendent les soins accessibles à tous."
 
 msgid "Positive Impact"
 msgstr "Impact Positif"
 
 msgid "We believe using great technology is the key to creating a sustainable healthcare ecosystem for the next generation. Let's work together to make this a reality."
-msgstr "Nous croyons que utiliser une meilleure technologie est la clé pour créer un système de santé pérenne. Travaillons ensemble afin d’y arriver."
+msgstr "Nous croyons que l'utilisation de technologies de pointe est la clé pour créer le système de santé de demain. Travaillons ensemble afin d’y arriver."
 
 msgid "Receive care at home"
 msgstr "Recevoir des soins à domicile"
