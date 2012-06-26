@@ -200,8 +200,8 @@ msgstr "Réservez Maintenant"
 msgid "Health care for everyone, everywhere."
 msgstr "De meilleurs soins pour tous, partout dans notre réseau."
 
-msgid "Finding care is simple and easy. Here's why."
-msgstr "Trouvez des soins est facile, voici pourquoi."
+msgid "Finding care is quick and simple. Here's why."
+msgstr "Trouvez des soins est simple et rapide, voici pourquoi."
 
 msgid "Local Providers"
 msgstr "Professionnels dans votre région"
