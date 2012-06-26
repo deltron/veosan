@@ -480,6 +480,9 @@ class BaseTest(unittest.TestCase):
         # email form (second form on page)
         email_form = response.forms[1]
         email_form['email'] = self._TEST_PATIENT_EMAIL
+        
+        ''' This is broken because javascript modifies the form before submitting '''
+        
         new_patient_response = email_form.submit()
         return new_patient_response
     

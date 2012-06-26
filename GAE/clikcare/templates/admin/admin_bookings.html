@@ -11,6 +11,8 @@
 		<table class="table">
 			<thead>
 				<tr>
+					<th width="2%">Id</th>
+					<th width="5%">Status</th>
 					<th width="10%">Event Timestamp</th>
 					<th width="10%">Category</th>
 					<th width="10%">Booking Date</th>
@@ -22,6 +24,12 @@
 			<tbody>
 				{% for b in bookings %}
 				<tr>
+					<td>
+						{{ b.key.id() }}
+					</td>
+					<td>
+						{{ b.status }}
+					</td>
 					<td>
 						{{ b.created_on|format_datetime_noseconds }}
 					</td>
