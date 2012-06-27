@@ -22,11 +22,12 @@
 			<tbody>
 				{% for b in bookings %}
 					{% if b.patient %}
+						{% set patient = b.patient.get() %}
 					<tr>
 						<!-- Date (Booking) -->
 						<td> {{b.request_datetime|format_datetime_full}} </td>
 						<!-- Patient -->
-						<td><a href="#" class="" rel="popover" title="{{b.patient.first_name}} {{b.patient.last_name}}" data-content="{{b.patient.phone}} <br> {{b.patient.email}} <br>">{{b.patient.first_name}} {{b.patient.last_name}}</a></td>
+						<td><a href="#" class="" rel="popover" title="{{patient.first_name}} {{patient.last_name}}" data-content="{{patient.phone}} <br> {{patient.email}} <br>">{{patient.first_name}} {{patient.last_name}}</a></td>
 					</tr>
 					{% else %}
 						<!-- booking with a linked patient -->

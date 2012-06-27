@@ -139,7 +139,7 @@ class Provider(ndb.Model):
     
     def get_future_bookings(self):
         yesterday_at_midnight = datetime.combine(date.today(), time())
-        future_bookings = Booking.query(ancestor=self.key).order(Booking.request_datetime).fetch(50)
+        future_bookings = Booking.query(Booking.provider == self.key).order(Booking.datetime).fetch(50)
         #, Booking.request_datetime > yesterday_at_midnight
         return future_bookings
 
