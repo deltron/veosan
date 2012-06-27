@@ -18,7 +18,7 @@ class ProviderBaseHandler(BaseHandler):
     
     @staticmethod
     def render_bookings(handler, provider, **kw):
-        bookings = db.fetch_future_bookings(provider)   
+        bookings = provider.get_future_bookings()
         logging.info('Bookings:' + str(bookings))
         handler.render_template('provider/bookings.html', provider=provider, bookings=bookings, **kw)
 

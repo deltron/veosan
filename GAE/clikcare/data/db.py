@@ -56,12 +56,6 @@ def fetch_bookings():
 def get_bookings_for_patient(patient):
     return Booking.query(Booking.patient == patient.key).fetch()
 
-def fetch_future_bookings(provider):
-    yesterday_at_midnight = datetime.combine(date.today(), time())
-    bookings = Booking.query(ancestor=provider.key).order(Booking.request_datetime).fetch(50)
-    #, Booking.request_datetime > yesterday_at_midnight
-    return bookings
-
 def initProvider(provider_email):
     ''' inititalize provider with email. return the provider's key '''
     new_provider = Provider()

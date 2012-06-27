@@ -1,6 +1,6 @@
 from google.appengine.ext import ndb
 import logging
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date, time
 from webapp2_extras.appengine.auth.models import User as Webapp2AuthUser
 
 '''
@@ -136,6 +136,13 @@ class Provider(ndb.Model):
         count =  self.schedule.filter('day = ', day).filter('time = ', time).count()
         logging.info("is available? " + str(day) + " " + str(time) + " count:" + str(count))
         return count > 0
+    
+    def get_future_bookings(self):
+        yesterday_at_midnight = datetime.combine(date.today(), time())
+        future_bookings = Booking.query(ancestor=self.key).order(Booking.request_datetime).fetch(50)
+        #, Booking.request_datetime > yesterday_at_midnight
+        return future_bookings
+
         
 class Schedule(ndb.Model):
     provider = ndb.KeyProperty(kind=Provider) # name='schedule'

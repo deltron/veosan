@@ -93,7 +93,7 @@ class BaseHandler(webapp2.RequestHandler):
         kw['admin_logout_url'] = users.create_logout_url('/')
         
         # useful constants for templates
-        kw['category_dict'] = dict(util.getAllCategories())
+        kw['category_dict'] = dict(util.get_all_categories())
         kw['specialty_dict'] = dict(util.getAllSpecialities())
         kw['language_labels'] = util.LANGUAGE_LABELS
         

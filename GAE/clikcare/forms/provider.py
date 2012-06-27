@@ -12,7 +12,7 @@ class ProviderAddressForm(Form):
     last_name = TextField(_(u'Last Name'), [validators.Length(min=1, message=_(u'Last name is a required field'))])
     credentials = TextField(_(u'Credentials'))
     phone = TextField(_(u'Telephone'), [validators.Regexp(regex="^[2-9]\d{2}-\d{3}-\d{4}$", message=_(u'Please make sure phone number is in the following format: 514-555-1212'))])
-    location = SelectField(_(u'Location'), choices=util.ALL_REGIONS)
+    location = SelectField(_(u'Location'), choices=util.get_all_regions())
     address = TextField(_(u'Addresse'), [validators.Length(min=5, message='Address requis.')])
     city = TextField(_(u'City'), [validators.Length(min=3, message='Address requis.')])
     postal_code = TextField(_(u'Postal Code'), [validators.Length(min=6, message='Address requis.')])
@@ -21,7 +21,7 @@ class ProviderPhotoForm(Form):
     profilePhoto = FileField(_(u'Upload'))
 
 class ProviderProfileForm(Form):
-    category = SelectField(_(u'Category'), choices=util.getAllCategories())
+    category = SelectField(_(u'Category'), choices=util.get_all_categories())
     specialty = MultiCheckboxField(_(u'Specialties'), choices=util.getAllSpecialities())
     start_year = TextField(_(u'Active Since'), [validators.Length(min=4, max=4, message='Your first year of practice')])
     bio = TextAreaField(_(u'Biography'))

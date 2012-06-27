@@ -15,20 +15,19 @@ saved_message = _(u'Your changes were saved.')
 def is_dev_server(request):
     return request.host in DEV_SERVERS
             
-ALL_REGIONS = [('mtl-downtown', _(u'Montreal - Downtown')),
-               ('mtl-westisland', _(u'Montreal - West-Island'))]    
+def get_all_regions():
+    return [('mtl-downtown', _(u'Montreal - Downtown')),
+            ('mtl-westisland', _(u'Montreal - West-Island'))]    
     
 ## key, value
 CAT_PHYSIO = "physiotherapy"
 CAT_CHIRO = "chiropractor"
 CAT_OSTEO = "osteopath"
 
-ALL_CATEGORIES =  [(CAT_PHYSIO, _(u"Physiotherapist")),
-                   (CAT_CHIRO, _(u"Chiropractor")),
-                   (CAT_OSTEO, _(u"Osteopath"))]
-
-def getAllCategories():
-    return ALL_CATEGORIES
+def get_all_categories():
+    return [(CAT_PHYSIO, _(u"Physiotherapist")),
+            (CAT_CHIRO, _(u"Chiropractor")),
+            (CAT_OSTEO, _(u"Osteopath"))]
            
 
 # key, value
@@ -94,7 +93,7 @@ def dump(obj):
   
 
 #list of list of tuples
-CODE_TUPLES_LIST = [ALL_REGIONS, ALL_CATEGORIES]
+CODE_TUPLES_LIST = [ ]
 
 # Flat tuple list
 CODE_TUPLES = list(chain.from_iterable(CODE_TUPLES_LIST))
@@ -102,14 +101,36 @@ CODE_TUPLES = list(chain.from_iterable(CODE_TUPLES_LIST))
 # dictionary of all codes: string
 CODE_DICT = dict(CODE_TUPLES)
 
+# hack for translations
+CODE_DICT_PER_LANG =  dict()
+
+def create_untranslated_code_tuple_list():
+    code_tuples_list = []
+    code_tuples_list.append(get_all_regions())
+    code_tuples_list.append(get_all_categories())
+    # more...
+    
+    # flatten
+    code_tuples = list(chain.from_iterable(code_tuples_list))
+    code_dict = dict(code_tuples)
+    return code_dict
+    
+    
 
 def code_to_string(code):
     '''
         Catch all function to convert code to human string coverter
     '''
+    # Check cache for codes dict (hack for lazy translation)
+    lang = _('en')
+    if not CODE_DICT_PER_LANG.has_key(lang):
+        new_code_dict = create_untranslated_code_tuple_list()
+        CODE_DICT_PER_LANG[lang] = new_code_dict
+    # get code_dict for language
+    lang_code_dict = CODE_DICT_PER_LANG[lang]
     value = code
-    if CODE_DICT.has_key(code):
-        value = CODE_DICT[code]
+    if lang_code_dict.has_key(code):
+        value = lang_code_dict[code]
     return value
     
 
