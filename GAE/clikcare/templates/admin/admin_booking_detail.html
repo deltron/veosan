@@ -1,0 +1,98 @@
+{% extends "/layout/admin_nav.html" %}
+
+{% set active_page = "bookings" %}
+
+{% block subhead %} Booking #{{ b.key.id() }} ({{ b.status }}){% endblock %}
+{% block lead %} [short description] {% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="span6">
+		
+		<h6>Patient</h6>
+		{% if b.patient %} 
+			{% set patient = b.patient.get() %}
+			<a href="#">
+				 <h1>{{patient.first_name}} {{patient.last_name}} ({{patient.email}})</h1>
+			</a>
+			{% if not patient.user.get().confirmed %}
+				<br>
+				<span class="badge badge-warning">!</span>
+				<h1>Patient not confirmed</h1>
+			{% endif %}
+				
+		{% elif b.request_email %}
+			<h1>{{b.request_email}} </h1>
+			<br>
+			<span class="badge badge-warning">Unfilled profile</span> 
+		{% else %}
+			<span class="badge badge-important">User dropped out</span> 
+
+		{% endif %}
+		
+		<br>
+		<br>
+		<h6>Date and Time</h6>
+			
+			booking: {{b.datetime|format_datetime_noseconds}} <br>
+			request: {{b.request_datetime|format_datetime_noseconds}} <br>
+			created: {{ b.created_on|format_datetime_noseconds }} <br>
+		
+		<br>
+		<br>
+		<br>
+		<h6>Provider</h6>
+		{{ b.request_category|code_to_string }}
+						
+		<!--	
+		{% if b.provider %}
+		{% set provider = b.provider.get() %} 
+			<a href="{{provider.get_edit_link()}}">{{ provider.first_name }} {{ provider.last_name}} ({{provider.email}})</a> 
+		{% else %}
+			<span class="badge badge-important">x</span> 
+			No provider booked
+		{% endif %} 
+					
+					
+					
+		{% if b.search_results %}
+			{% for provider_key in b.search_results %} 
+				{% set provider = provider_key.get() %} 
+				{{loop.index}}. <a href="{{provider.get_edit_link()}}">{{ provider.first_name }} {{ provider.last_name}} ({{provider.email}})</a> 
+				<br>
+			{% endfor %}
+		{% else %}
+			<span class="badge badge-important">x</span> 
+			No search results
+		{% endif %} 
+		
+		-->
+		
+		<br>
+		<br>
+		<br>
+		
+	</div>
+	
+	<div class="span6">
+		<div class="well">
+			<h6>Operations</h6>
+			{% if b.status != 'canceled' %}
+				<a href="/admin/booking/cancel/{{ b.key.urlsafe() }}">Cancel Booking</a>
+			{% else %}
+				<a href="/admin/booking/reactivate/{{ b.key.urlsafe() }}">Reactivate Booking</a>
+			{% endif %}
+		</div>
+	</div>
+	
+</div>
+{% endblock content %}
+
+{% block extra_javascript %}
+<script>
+	$(function() {
+		$('a[rel=tooltip]').tooltip();
+		$('a[rel=popover]').popover();
+	}); 
+</script>
+{% endblock extra_javascript %}

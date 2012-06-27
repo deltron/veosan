@@ -95,6 +95,7 @@ application = webapp2.WSGIApplication([
                                        ('/admin/provider/init', admin.NewProviderInitHandler),
                                        ('/admin/provider/solicit', admin.NewProviderSolicitHandler),
                                        ('/admin/bookings', admin.AdminBookingsHandler),
+                                       Route('/admin/booking/<operation>/<bk>', admin.AdminBookingDetailHandler),
                                        ('/admin/providers', admin.AdminProvidersHandler),  
                                        ('/admin/patients', admin.AdminPatientsHandler),
                                        ('/admin/data', admin.AdminDataHandler),
