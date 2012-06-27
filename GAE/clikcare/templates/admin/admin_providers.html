@@ -9,21 +9,52 @@
 <!-- span -->
 <div class="row">
 	<div class="span12">
-		<ul class="unstyled">
-			{% for p in providers %}
-			<li>
-				{{p.created_on}}
-				<a href="{{p.get_edit_link()}}"
-				rel="popover"
-				title="{{p.first_name}} {{p.last_name}}"
-				data-content="{{p.get_html_summary()}}"> {{p.last_name}}, {{p.first_name}} [{{p.email}}] </a>
-				{% if p.recently_created() %} <span class="label label-success">new</span>{% endif %}
-				{% if not p.terms_agreement %} <span class="label label-important">missing terms</span>{% endif %}
-				{% if not p.enable %} <span class="label label-important">disabled</span>{% endif %}
-				{% if p.onsite %} <span class="label label-info">onsite</span>{% endif %}
-			</li>
-			{% endfor %}
-		</ul>
+		
+		<table class="table">
+			<thead>
+				<tr>
+					<th width="2%">Id</th>
+					<th width="5%">Category</th>
+					<th width="10%">Name</th>
+					<th width="10%">Email</th>
+					<th width="3%">Status</th>
+					<th width="10%">Created On</th>
+					<th width="15%">Upcoming bookings</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for p in providers %}
+				<tr>
+					<td>
+						<a href="{{p.get_edit_link()}}">{{ p.key.id() }}</a>
+					</td>
+					<td>
+						{{ _(p.category|code_to_string) }}
+					</td>
+					<td>
+						<strong>{{p.last_name}}</strong>, {{p.first_name}}
+					</td>
+					<td>
+						{{p.email}}
+					</td>
+					<td>
+						{% if p.recently_created() %} <span class="label label-success">new</span>{% endif %}
+						{% if not p.terms_agreement %} <span class="label label-important">missing terms</span>{% endif %}
+						{% if not p.enable %} <span class="label label-important">disabled</span>{% endif %}
+						{% if p.onsite %} <span class="label label-info">onsite</span>{% endif %}
+					</td>
+					<td>
+						{{p.created_on|format_datetime_full}}
+					</td>
+					
+
+					<td>
+						bookings
+					</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
 	</div>
 </div>
 <hr>
