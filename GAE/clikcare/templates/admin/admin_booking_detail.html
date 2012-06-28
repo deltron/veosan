@@ -13,36 +13,41 @@
 		{% if b.patient %} 
 			{% set patient = b.patient.get() %}
 			<a href="#">
-				 <h1>{{patient.first_name}} {{patient.last_name}} ({{patient.email}})</h1>
+				 <h4>{{patient.first_name}} {{patient.last_name}} ({{patient.email}})</h4>
 			</a>
 			{% if not patient.user.get().confirmed %}
-				<br>
-				<span class="badge badge-warning">!</span>
-				<h1>Patient not confirmed</h1>
+				<span class="badge badge-warning">Patient not confirmed</span>
 			{% endif %}
+		
+			{{patient.address}} <br>
+			{{patient.city}} <br>
+			{{patient.postal_code}} <br>
+			
 				
 		{% elif b.request_email %}
 			<h1>{{b.request_email}} </h1>
-			<br>
 			<span class="badge badge-warning">Unfilled profile</span> 
+			<br>
 		{% else %}
 			<span class="badge badge-important">User dropped out</span> 
-
+			<br>
 		{% endif %}
+
+		<br>
 		
-		<br>
-		<br>
 		<h6>Date and Time</h6>
-			
 			booking: {{b.datetime|format_datetime_noseconds}} <br>
 			request: {{b.request_datetime|format_datetime_noseconds}} <br>
 			created: {{ b.created_on|format_datetime_noseconds }} <br>
+
+		<br>
 		
-		<br>
-		<br>
-		<br>
 		<h6>Provider</h6>
-		{{ b.request_category|code_to_string }}
+		{% if b.provider %} 
+			{% set provider = b.provider.get() %}
+			<h4> {{ provider.fullName() }} </h4>
+			{{ b.request_category|code_to_string }}
+		{% endif %}
 						
 		<!--	
 		{% if b.provider %}
