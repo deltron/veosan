@@ -163,7 +163,9 @@ class BaseTest(unittest.TestCase):
 
         self.assertEqual(response.status_int, 200)        
         response.mustcontain("Initialized new provider for unit_test@provider.com")
-        response.mustcontain("None, None [unit_test@provider.com]")
+        response.mustcontain("new")
+        response.mustcontain("missing terms")
+        response.mustcontain("unit_test@provider.com")
         
         # check badges are present
         response.mustcontain('<span class="label label-success">new</span>')
@@ -231,7 +233,8 @@ class BaseTest(unittest.TestCase):
 
         # go back to the admin page, check the name is updated
         response = self.testapp.get('/admin/providers')
-        response.mustcontain("Fox, Fantastic [unit_test@provider.com]")
+        response.mustcontain("Fox")
+        response.mustcontain("unit_test@provider.com")
 
 
     def modify_provider_address_action(self):
