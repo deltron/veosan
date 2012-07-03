@@ -481,21 +481,35 @@ class BaseTest(unittest.TestCase):
     
     def fill_booking_email_form(self, response):
         # email form (second form on page)
+        hidden_form = response.forms[0]
         email_form = response.forms[1]
         email_form['email'] = self._TEST_PATIENT_EMAIL
+        # Replacing: new_patient_response = email_form.submit()
+        # Hack to post directly and make tests run.
+        # Warning: We are not testing the form and javascript on this page
+        post_data = {
+                     'email': self._TEST_PATIENT_EMAIL,
+                     'bk': email_form['bk'].value,
+                     'provider_key': hidden_form['provider_key'].value,
+                     'booking_datetime': hidden_form['booking_datetime'].value,
+                     'index': hidden_form['index'].value
+                    }
+        action = str(email_form.action)
+        new_patient_response = self.testapp.post(action, params=post_data)
         
-        ''' This is broken because javascript modifies the form before submitting '''
-        
-        new_patient_response = email_form.submit()
         return new_patient_response
     
     def fill_new_patient_profile(self, response):
-        response.mustcontain('Nouveau Patient')
+        response.mustcontain('Nouveau patient')
         patient_form = response.forms[0]
         patient_form['first_name'] = 'Pat!'
         patient_form['last_name'] = 'Patient'
         patient_form['telephone'] = '514-123-1234'
         patient_form['terms_agreement'] = '1'
+        patient_form['address'] = '123 High Street'
+        patient_form['city'] = 'Montreal'
+        patient_form['postal_code'] = 'H2H 2Y2'
+        
         booking_confirm_response = patient_form.submit()
         
         # check confirm page
