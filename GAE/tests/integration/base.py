@@ -105,7 +105,7 @@ class BaseTest(unittest.TestCase):
     
     def login_as_patient(self):
         response = self.testapp.get('/login')
-        response.mustcontain("Connexion à veosan")
+        response.mustcontain(u"Connexion")
 
         
         login_form = response.forms[0]
@@ -290,7 +290,9 @@ class BaseTest(unittest.TestCase):
 
         # go back to the admin page, check the name is updated
         response = self.testapp.get('/admin/providers')
-        response.mustcontain("Otter, Linda [unit_test@provider.com]")
+        response.mustcontain("Otter")
+        response.mustcontain("Linda")
+        response.mustcontain("unit_test@provider.com")
 
 
         
@@ -479,25 +481,24 @@ class BaseTest(unittest.TestCase):
         result_response = booking_form.submit()
         return result_response
     
-    def fill_booking_email_form(self, response):
+    def fill_booking_email_form(self, result_response, email):
         # email form (second form on page)
-        hidden_form = response.forms[0]
-        email_form = response.forms[1]
-        email_form['email'] = self._TEST_PATIENT_EMAIL
+        hidden_form = result_response.forms[0]
+        email_form = result_response.forms[1]
         # Replacing: new_patient_response = email_form.submit()
         # Hack to post directly and make tests run.
         # Warning: We are not testing the form and javascript on this page
         post_data = {
-                     'email': self._TEST_PATIENT_EMAIL,
+                     'email': email,
                      'bk': email_form['bk'].value,
                      'provider_key': hidden_form['provider_key'].value,
                      'booking_datetime': hidden_form['booking_datetime'].value,
                      'index': hidden_form['index'].value
                     }
         action = str(email_form.action)
-        new_patient_response = self.testapp.post(action, params=post_data)
-        
+        new_patient_response = self.testapp.post(action, params=post_data)        
         return new_patient_response
+        
     
     def fill_new_patient_profile(self, response):
         response.mustcontain('Nouveau patient')

@@ -19,7 +19,8 @@ class BookingTest(BaseTest):
         # verify provider name
         response.mustcontain("Mr. Fantastic F.")
         # verify location
-        response.mustcontain("at their clinic at 123 Main St. in Westmount")
+        response.mustcontain("123 Main St.")
+        response.mustcontain("Westmount")
         # verify date and time
         response.mustcontain("8:00")
         # verify bio and quote
@@ -51,12 +52,13 @@ class BookingTest(BaseTest):
         # verify provider name
         booking_response.mustcontain("Mr. Fantastic F.")
         # verify location
-        booking_response.mustcontain("at their clinic at 123 Main St. in Westmount")
+        booking_response.mustcontain("123 Main St.")
+        booking_response.mustcontain("Westmount")
         # verify date and time
         booking_response.mustcontain("8:00")
 
         # fill out patient profile, receive email and set password
-        new_patient_response = self.fill_booking_email_form(booking_response)
+        new_patient_response = self.fill_booking_email_form(booking_response, self._TEST_PATIENT_EMAIL)
         booking_confirm_response = self.fill_new_patient_profile(new_patient_response)
         self.check_activation_email_patient()
 
@@ -68,7 +70,8 @@ class BookingTest(BaseTest):
         # get the next slot
         response.mustcontain("9:00")
         response.mustcontain("Mr. Fantastic F.")
-        response.mustcontain("at their clinic at 123 Main St. in Westmount")
+        response.mustcontain("123 Main St.")
+        response.mustcontain("Westmount")
 
         
     def test_booking_new_patient(self):
@@ -82,7 +85,7 @@ class BookingTest(BaseTest):
         booking_response = self.book_appointment(util.CAT_OSTEO, testutil.next_weekday_date_string(testutil.MONDAY), 8)
 
         # fill out patient profile, receive email and set password
-        new_patient_response = self.fill_booking_email_form(booking_response)
+        new_patient_response = self.fill_booking_email_form(booking_response, self._TEST_PATIENT_EMAIL)
         booking_confirm_response = self.fill_new_patient_profile(new_patient_response)
         self.check_activation_email_patient()
 
@@ -97,11 +100,9 @@ class BookingTest(BaseTest):
         # We already have an appointment at 8AM, let's now book 10AM
         result_response = self.book_appointment('osteopath', next_monday_string, '10')
         # email form
-        email_form = result_response.forms[0]
-        email_form['email'] = self._TEST_PATIENT_EMAIL
+        login_page = self.fill_booking_email_form(result_response, self._TEST_PATIENT_EMAIL)
         # We are an existing patient, but not logged in, this should take us to the login page
-        login_page = email_form.submit()
-        login_page.mustcontain('Connexion à veosan')
+        login_page.mustcontain('Connexion')
         login_page.mustcontain('booking_key')
         # email should be set in form
         login_page.mustcontain(self._TEST_PATIENT_EMAIL)
@@ -132,6 +133,7 @@ class BookingTest(BaseTest):
         # patient email in navbar
         booking_confirm_page.mustcontain(self._TEST_PATIENT_EMAIL)
         # Title check
+        booking_confirm_page.showbrowser()
         booking_confirm_page.mustcontain('Thank you Pat!')
      
      
@@ -157,13 +159,10 @@ class BookingTest(BaseTest):
         # at this point there is one fully completed profile with a single timeslot available (Monday 8-13)
         # go back to the main page and try to book monday 8am
         response = self.book_appointment(util.CAT_OSTEO, testutil.next_weekday_date_string(testutil.MONDAY), 8)
-
         # email form
-        email_form = response.forms[0]
-        email_form['email'] = self._TEST_PATIENT_EMAIL
-        new_patient_response = email_form.submit()
+        new_patient_response = self.fill_booking_email_form(response, self._TEST_PATIENT_EMAIL)
         
-        new_patient_response.mustcontain('Nouveau Patient')
+        new_patient_response.mustcontain('Nouveau patient')
         patient_form = new_patient_response.forms[0]
         booking_confirm_page = patient_form.submit()
         

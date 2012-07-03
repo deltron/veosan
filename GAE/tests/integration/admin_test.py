@@ -223,7 +223,7 @@ class AdminTest(BaseTest):
         booking_response = self.book_appointment(util.CAT_OSTEO, testutil.next_monday_date_string(), 8)
         
         # fill out patient profile, receive email and set password
-        new_patient_response = self.fill_booking_email_form(booking_response)
+        new_patient_response = self.fill_booking_email_form(booking_response, self._TEST_PATIENT_EMAIL)
         booking_confirm_response = self.fill_new_patient_profile(new_patient_response)
         self.check_activation_email_patient()
 
@@ -261,7 +261,7 @@ class AdminTest(BaseTest):
         
         self.create_complete_provider_profile()
         booking_response = self.book_appointment(util.CAT_OSTEO, testutil.next_monday_date_string(), 8)
-        new_patient_response = self.fill_booking_email_form(booking_response)
+        new_patient_response = self.fill_booking_email_form(booking_response, self._TEST_PATIENT_EMAIL)
 
         self.logout_patient()                
         self.login_as_admin()
@@ -279,7 +279,7 @@ class AdminTest(BaseTest):
         
         self.create_complete_provider_profile()
         booking_response = self.book_appointment(util.CAT_OSTEO, testutil.next_monday_date_string(), 8)
-        new_patient_response = self.fill_booking_email_form(booking_response)
+        new_patient_response = self.fill_booking_email_form(booking_response, self._TEST_PATIENT_EMAIL)
         booking_confirm_response = self.fill_new_patient_profile(new_patient_response)
 
         self.logout_patient()                

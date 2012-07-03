@@ -215,7 +215,7 @@ class ProviderTest(BaseTest):
         
         assert "J'accepte les conditions d'utilisation" not in response
         response.mustcontain("Activation link has expired.")
-        response.mustcontain("Connexion à veosan")
+        response.mustcontain("Connexion")
         response.mustcontain("Couriel")
         response.mustcontain("Mot de passe")
 
