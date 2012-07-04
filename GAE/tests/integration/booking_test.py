@@ -126,14 +126,11 @@ class BookingTest(BaseTest):
         next_monday_string = datetime.strftime(next_monday, "%Y-%m-%d")
         # We already have an appointment at 8AM, let's now book 10AM
         result_response = self.book_appointment('osteopath', next_monday_string, '10')
-        # email form
-        book_form = result_response.forms[0]
         # no email on form (can we assert this?)
-        booking_confirm_page = book_form.submit()
+        booking_confirm_page = self.fill_booking_email_form(result_response)
         # patient email in navbar
         booking_confirm_page.mustcontain(self._TEST_PATIENT_EMAIL)
         # Title check
-        booking_confirm_page.showbrowser()
         booking_confirm_page.mustcontain('Thank you Pat!')
      
      

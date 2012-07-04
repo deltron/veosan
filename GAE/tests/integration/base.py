@@ -481,7 +481,7 @@ class BaseTest(unittest.TestCase):
         result_response = booking_form.submit()
         return result_response
     
-    def fill_booking_email_form(self, result_response, email):
+    def fill_booking_email_form(self, result_response, email=None):
         # email form (second form on page)
         hidden_form = result_response.forms[0]
         email_form = result_response.forms[1]
@@ -489,12 +489,13 @@ class BaseTest(unittest.TestCase):
         # Hack to post directly and make tests run.
         # Warning: We are not testing the form and javascript on this page
         post_data = {
-                     'email': email,
                      'bk': email_form['bk'].value,
                      'provider_key': hidden_form['provider_key'].value,
                      'booking_datetime': hidden_form['booking_datetime'].value,
                      'index': hidden_form['index'].value
                     }
+        if email:
+            post_data['email'] = email
         action = str(email_form.action)
         new_patient_response = self.testapp.post(action, params=post_data)        
         return new_patient_response
