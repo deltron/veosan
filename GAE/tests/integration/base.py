@@ -96,6 +96,7 @@ class BaseTest(unittest.TestCase):
         
         # default page for provider after login is bookings
         response.mustcontain("Rendez-vous")
+        return response
         
 
     def logout_provider(self):
@@ -504,7 +505,7 @@ class BaseTest(unittest.TestCase):
     def fill_new_patient_profile(self, response):
         response.mustcontain('Nouveau patient')
         patient_form = response.forms[0]
-        patient_form['first_name'] = 'Pat!'
+        patient_form['first_name'] = 'Pat'
         patient_form['last_name'] = 'Patient'
         patient_form['telephone'] = '514-123-1234'
         patient_form['terms_agreement'] = '1'

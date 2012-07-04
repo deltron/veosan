@@ -88,6 +88,11 @@ class BookingTest(BaseTest):
         new_patient_response = self.fill_booking_email_form(booking_response, self._TEST_PATIENT_EMAIL)
         booking_confirm_response = self.fill_new_patient_profile(new_patient_response)
         self.check_activation_email_patient()
+        
+        # Check that booking is visible on provider's bookings list
+        provider_response = self.login_as_provider()
+        # We should already be on the bookings page after the login
+        provider_response.mustcontain('Pat Patient')
 
          
     def test_booking_existing_patient(self):
