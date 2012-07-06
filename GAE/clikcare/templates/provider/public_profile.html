@@ -120,7 +120,7 @@
 								{{ provider.phone }}
 
 								<h5>Email</h5>
-								<a href="mailto:{{ provider.email }}">{{ provider.email }}</a>
+								{{ provider.email }}
 							</div>
 						</div>
 						<br>
@@ -132,7 +132,9 @@
 
 			</div>
 			<div class="modal-footer">
-				<a class="btn btn-primary" data-dismiss="modal">{{ _('OK') }}</a>
+				<button type="submit" class="btn btn-primary">
+					{{ _('Book Now') }}
+				</button>
 			</div>
 		</div>
 	</div>
@@ -158,7 +160,7 @@ src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDmWzdH93nBMmpuTvw7DKQEV210
 			mapTypeId : google.maps.MapTypeId.ROADMAP
 		}
 		map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-		
+
 		codeAddress();
 	}
 
