@@ -1,13 +1,191 @@
 {% extends "/layout/base.html" %}
 
-{% block subhead %} {{ _('Public Profile') }} {% endblock %}
-{% block lead %}{% endblock %}
+{% block subhead %}
+{{provider.title or ''}} {{provider.first_name or ''}} {{ provider.last_name}}
+{% endblock %}
+{% block lead %}
+{% if provider.credentials %}
+{{ provider.credentials }}
+{% endif %}
+{% endblock %}
 
 {% block content %}
-						
-{{ macro.make_provider_bio(provider) }}
 
-{% endblock content %} 
+<div class="row">
+	<!-- left column -->
+	<div class="span2">
+		{% if provider.profile_photo_blob_key == None %}
+		<img src="/assets/img/default-profile.png" width="100" height="100">
+		{% else %}
+		<img src="/serve/{{ provider.profile_photo_blob_key }}" width="100" height="100">
+		{% endif %}
+		<br>
+		<br>
+		<h5>Category</h5>
+		<ul class="unstyled">
+			<li>
+				{{ category_dict[provider.category] }}
+			</li>
+		</ul>
+
+		<h5>Specialities</h5>
+		<ul class="unstyled">
+			{% for s in provider.specialty %}
+			<li>
+				{{ specialty_dict[s] }}
+			</li>
+			{% endfor %}
+		</ul>
+
+		<h5><a data-toggle="modal" href="#contact_modal" onclick="loadScript()">Contact</a></h5>
+	</div>
+	<div class="span6">
+		<p>
+			{{ provider.bio }}
+		</p>
+
+		<br>
+		<p style="font-style: italic; font-family:serif; font-size:x-large">
+			“ {{ provider.quote }} ”
+		</p>
+		<br>
+		<hr>
+		<h5>Certifications</h5>
+		<ul class="unstyled">
+			{% for c in provider.certifications %}
+			<li>
+				{{ certification_dict[c] }}
+			</li>
+			{% endfor %}
+		</ul>
+
+		<h5>Association Memberships</h5>
+		<ul class="unstyled">
+			{% for a in provider.associations %}
+			<li>
+				{{ association_dict[a] }}
+			</li>
+			{% endfor %}
+		</ul>
+	</div>
+</div>
+<div class="row">
+	<!-- left column -->
+	<div class="span2">
+		&nbsp;
+	</div>
+	<div class="span10">
+		<button type="submit" class="btn btn-primary">
+			{{ _('Book Now') }}
+		</button>
+	</div>
+</div>
+
+<!-- modal for contact info -->
+<div class="modal hide" id="contact_modal" style="display: none;">
+	<div class="modal-header">
+		<a class="close" data-dismiss="modal">×</a>
+		<h3>{{provider.first_name or ''}} {{ provider.last_name}}</h3>
+	</div>
+	<div class="modal-body">
+		<div style="width:100%">
+			<div style="margin: 0px auto; width:100%;">
+				<div class="row-fluid">
+					<div class="span4">
+						{% if provider.profile_photo_blob_key == None %}
+						<img src="/assets/img/default-profile.png" width="100" height="100">
+						{% else %}
+						<img src="/serve/{{ provider.profile_photo_blob_key }}" width="100" height="100">
+						{% endif %}
+
+						<br>
+						<br>
+						<br>
+						<br>
+						<br>
+					</div>
+					<div class="span8">
+						<div class="row-fluid">
+							<div class="span6">
+								<h5>Address</h5>
+								{{ provider.address }}
+								<br>
+								{{ provider.city }}
+								<br>
+								{{ provider.postal_code }}
+								<br>
+							</div>
+							<div class="span6">
+								<h5>Telephone</h5>
+								{{ provider.phone }}
+
+								<h5>Email</h5>
+								<a href="mailto:{{ provider.email }}">{{ provider.email }}</a>
+							</div>
+						</div>
+						<br>
+						<h5>Map</h5>
+						<div id="map_canvas" style="width:100%; height:200px"></div>
+					</div>
+
+				</div>
+
+			</div>
+			<div class="modal-footer">
+				<a class="btn btn-primary" data-dismiss="modal">{{ _('OK') }}</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock content %}
 
 {% block extra_javascript %}
+<script type="text/javascript"
+src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDmWzdH93nBMmpuTvw7DKQEV210PmUIu64&sensor=false"></script>
+
+<script type="text/javascript">
+	var geocoder;
+	var map;
+
+	function initialize() {
+		var myLatlng = new google.maps.LatLng(45.5000000, -73.5833333);
+		geocoder = new google.maps.Geocoder();
+
+		var myOptions = {
+			zoom : 15,
+			center : myLatlng,
+			mapTypeId : google.maps.MapTypeId.ROADMAP
+		}
+		map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+		
+		codeAddress();
+	}
+
+	function codeAddress() {
+		var address = '{{ provider.address }}, {{ provider.city }}, {{ provider.postal_code }}';
+
+		geocoder.geocode({
+			'address' : address
+		}, function(results, status) {
+			if (status == google.maps.GeocoderStatus.OK) {
+				map.setCenter(results[0].geometry.location);
+				var marker = new google.maps.Marker({
+					map : map,
+					position : results[0].geometry.location
+				});
+			} else {
+				alert("Geocode was not successful for the following reason: " + status);
+			}
+		});
+	}
+
+	function loadScript() {
+		var script = document.createElement("script");
+		script.type = "text/javascript";
+		script.src = "http://maps.googleapis.com/maps/api/js?key=AIzaSyDmWzdH93nBMmpuTvw7DKQEV210PmUIu64&sensor=false&callback=initialize";
+		document.body.appendChild(script);
+	}
+</script>
+
 {% endblock extra_javascript %}
