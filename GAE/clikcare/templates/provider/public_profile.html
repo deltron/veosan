@@ -15,9 +15,9 @@
 	<!-- left column -->
 	<div class="span2">
 		{% if provider.profile_photo_blob_key == None %}
-		<img src="/assets/img/default-profile.png" width="100" height="100">
+		<img src="/assets/img/default-profile.png" width="150" height="150">
 		{% else %}
-		<img src="/serve/{{ provider.profile_photo_blob_key }}" width="100" height="100">
+		<img src="/serve/{{ provider.profile_photo_blob_key }}" width="150" height="150">
 		{% endif %}
 		<br>
 		<br>
@@ -37,7 +37,20 @@
 			{% endfor %}
 		</ul>
 
-		<h5><a data-toggle="modal" href="#contact_modal" onclick="loadScript()">Contact</a></h5>
+		<h5>Home Care Visits</h5>
+		<ul class="unstyled">
+			<li>Downtown</li>
+			<li>West-Island</li>
+		</ul>
+
+
+		<h5><a data-toggle="modal" href="#contact_modal" onclick="loadScript()">Address</a>
+			<a data-toggle="modal" href="#contact_modal" onclick="loadScript()"><i class="bs-icon icon-share-alt"> </i></a>
+		</h5>
+		<br>
+		<button type="submit" class="btn btn-success btn-large" style="width:100%">
+			{{ _('Book Now') }}
+		</button>
 	</div>
 	<div class="span6">
 		<p>
@@ -49,7 +62,41 @@
 			“ {{ provider.quote }} ”
 		</p>
 		<br>
-		<hr>
+
+		<h5>Experience</h5>
+		<ul class="unstyled">
+			<li>
+				<h6>Concordia Physio Sport Home Care Division</h6>
+				Manager
+			</li>
+			<li>
+				<h6>Club Atwater</h6>
+				Consultant physiotherapist
+			</li>
+		</ul>
+
+		<h5>Education</h5>
+		<ul class="unstyled">
+			<li>
+				<h6>Masters in Clinical Physiotherapy</h6>
+				Graduation with High Distinction
+				Curtin University, Australia
+			</li>
+			<li>
+				<h6>B.Sc. Physical Therapy</h6>
+				McGill University, Montréal
+			</li>
+		</ul>
+
+		<h5>Publications</h5>
+		<ul class="unstyled">
+			<li>
+				<h6>Journal of Orthopaedic &amp; Sports Physical Therapy</h6>
+				Clinical and Radiological Investigation of Thoracic Spine Extension Motion During Arm Elevation
+			</li>
+		</ul>
+
+		{% if provider.associations %}
 		<h5>Certifications</h5>
 		<ul class="unstyled">
 			{% for c in provider.certifications %}
@@ -58,7 +105,9 @@
 			</li>
 			{% endfor %}
 		</ul>
+		{% endif %}
 
+		{% if provider.associations %}
 		<h5>Association Memberships</h5>
 		<ul class="unstyled">
 			{% for a in provider.associations %}
@@ -67,17 +116,7 @@
 			</li>
 			{% endfor %}
 		</ul>
-	</div>
-</div>
-<div class="row">
-	<!-- left column -->
-	<div class="span2">
-		&nbsp;
-	</div>
-	<div class="span10">
-		<button type="submit" class="btn btn-primary">
-			{{ _('Book Now') }}
-		</button>
+		{% endif %}
 	</div>
 </div>
 
@@ -158,9 +197,9 @@ src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDmWzdH93nBMmpuTvw7DKQEV210
 			zoom : 15,
 			center : myLatlng,
 			mapTypeId : google.maps.MapTypeId.ROADMAP,
-			zoomControl: true,
-			mapTypeControl: false,
-			streetViewControl: false,	
+			zoomControl : true,
+			mapTypeControl : false,
+			streetViewControl : false,
 		}
 		map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
 
