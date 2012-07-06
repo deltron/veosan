@@ -24,8 +24,43 @@ msgstr ""
 msgid "veosan! find a health care professional today"
 msgstr "veosan! trouvez des soins aujourd'hui"
 
+msgid "The better way to care."
+msgstr "La santé à votre portée."
+
 msgid "veosan"
 msgstr "veosan"
+
+#################
+# Signup
+#################
+
+msgid "For Health Care Specialists"
+msgstr "Pour les spécialistes de la santé"
+
+msgid "Membership on our platform is currently by invitation."
+msgstr "L'abonnement à notre site se fait uniquement par invitation."
+
+msgid "Please enter your email address."
+msgstr "SVP entrer votre addresse courriel."
+
+msgid "Please enter your postal code."
+msgstr "SVP entrer votre code postale."
+
+msgid "I'm a patient"
+msgstr "Je suis un patient"
+
+msgid "I'm health care professional"
+msgstr "Je suis un professionel de la santé"
+
+msgid "Other"
+msgstr "Autre"
+
+msgid "We are currently opening accounts on a limited basis, please sign up below."
+msgstr "Nous ouvrons présentement des comptes par invitation, veuillez vous inscrire ci-dessous." 
+
+msgid "Thanks for your interest. We will be in touch soon!"
+msgstr "Merci pour votre intérêt. Nous serons en contact bientôt!"
+
 
 #################
 # Navbar
