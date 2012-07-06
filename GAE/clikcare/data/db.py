@@ -122,4 +122,11 @@ def get_patient_from_user(user):
     else:
         return None
     
+def get_provider_from_vanity_url(vanity_url):
+    '''returns the first provider profile liked to vanity_url. Returns None if vanity_url is not provided '''
+    if vanity_url:
+        return Provider.query(Provider.vanity_url == vanity_url).get()
+    else:
+        return None  
+    
     

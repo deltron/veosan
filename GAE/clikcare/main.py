@@ -120,6 +120,9 @@ application = webapp2.WSGIApplication([
                                        # language
                                        Route('/lang/<lang>', language.LanguageHandler),
                                        
+                                       # if nothing above matches, try to find a provider
+                                       # if this doesn't find someone it should throw a 404 (or back to index page?)
+                                       Route('/<vanity_url>', handler=provider.ProviderPublicProfileHandler),
                                       ], debug=True,
                                       config=webapp2_config)
 

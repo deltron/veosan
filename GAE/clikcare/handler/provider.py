@@ -22,6 +22,9 @@ class ProviderBaseHandler(BaseHandler):
         logging.info('Bookings:' + str(bookings))
         handler.render_template('provider/bookings.html', provider=provider, bookings=bookings, **kw)
 
+    def render_public_profile(self, provider, **kw):
+        self.render_template('provider/public_profile.html', provider=provider, **kw)
+
 
 class ProviderScheduleHandler(ProviderBaseHandler):
     
@@ -67,3 +70,20 @@ class ProviderBookingsHandler(ProviderBaseHandler):
         provider = db.get_from_urlsafe_key(self.request.get('key'))
         
         self.render_bookings(self, provider)
+
+
+class ProviderPublicProfileHandler(ProviderBaseHandler):
+    
+    def get(self, vanity_url=None):
+        logging.info('(ProviderPublicProfileHandler.get) Received vanity_url: %s' % vanity_url)
+        provider = db.get_provider_from_vanity_url(vanity_url)
+        if provider:
+            logging.info('(ProviderPublicProfileHandler.get) Found provider %s, rendering profile' % provider.email)
+
+            # found a provider, render profile
+            self.render_public_profile(provider)
+        else:
+            logging.info('(ProviderPublicProfileHandler.get) No provider found, sending to index')
+
+            # nobody found, send them to the homepage
+            self.redirect("/")

@@ -92,6 +92,9 @@ class Provider(ndb.Model):
     bio = ndb.TextProperty()
     quote = ndb.TextProperty()
     
+    # unique name for public profile
+    vanity_url = ndb.StringProperty()
+    
     # user
     user = ndb.KeyProperty(kind=User)
     

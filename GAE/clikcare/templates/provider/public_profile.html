@@ -1,0 +1,13 @@
+{% extends "/layout/base.html" %}
+
+{% block subhead %} {{ _('Public Profile') }} {% endblock %}
+{% block lead %}{% endblock %}
+
+{% block content %}
+						
+{{ macro.make_provider_bio(provider) }}
+
+{% endblock content %} 
+
+{% block extra_javascript %}
+{% endblock extra_javascript %}
