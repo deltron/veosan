@@ -4,6 +4,7 @@ import os, logging
 # GAE
 import webapp2
 from webapp2 import Route
+from webapp2_extras.routes import PathPrefixRoute
 # clik
 from util import dump
 import util
@@ -91,23 +92,26 @@ application = webapp2.WSGIApplication([
                                        Route('/user/activation/<signup_token>', handler=user.ActivationHandler),
 
                                        # admin
-                                       ('/admin', admin.AdminIndexHandler),
-                                       ('/admin/provider/init', admin.NewProviderInitHandler),
-                                       ('/admin/provider/solicit', admin.NewProviderSolicitHandler),
-                                       ('/admin/bookings', admin.AdminBookingsHandler),
-                                       Route('/admin/booking/<operation>/<bk>', admin.AdminBookingDetailHandler),
-                                       ('/admin/providers', admin.AdminProvidersHandler),  
-                                       ('/admin/patients', admin.AdminPatientsHandler),
-                                       ('/admin/data', admin.AdminDataHandler),
-                                       ('/admin/data/stage', admin.AdminStageDataHandler),
-                                       ('/admin/data/delete', admin.AdminDeleteDataHandler),
+                                       Route('/admin', admin.AdminIndexHandler),
+
+                                       PathPrefixRoute('/admin', [
+                                           Route('/bookings', admin.AdminBookingsHandler),
+                                           Route('/booking/<operation>/<bk>', admin.AdminBookingDetailHandler),
+                                           Route('/providers', admin.AdminProvidersHandler),
+                                           Route('/patients', admin.AdminPatientsHandler),
+                                           Route('/data', admin.AdminDataHandler),
+                                           Route('/data/stage', admin.AdminStageDataHandler),
+                                           Route('/data/delete', admin.AdminDeleteDataHandler),
                                        
-                                       # provider admin
-                                       ('/admin/provider', provider_admin.ProviderAdministrationHandler),
-                                       ('/admin/provider/enable', provider_admin.ProviderEnableHandler),
-                                       ('/admin/provider/profile', provider_admin.ProviderEditProfileHandler),
-                                       ('/admin/provider/address', provider_admin.ProviderEditAddressHandler),
-                                       ('/admin/provider/address/upload', provider_admin.ProviderAddressUploadHandler),
+                                           # provider admin
+                                           Route('/provider', provider_admin.ProviderAdministrationHandler),
+                                           Route('/provider/init', admin.NewProviderInitHandler),
+                                           Route('/provider/solicit', admin.NewProviderSolicitHandler),
+                                           Route('/provider/enable', provider_admin.ProviderEnableHandler),
+                                           Route('/provider/profile', provider_admin.ProviderEditProfileHandler),
+                                           Route('/provider/address', provider_admin.ProviderEditAddressHandler),
+                                           Route('/provider/address/upload', provider_admin.ProviderAddressUploadHandler),
+                                       ]),
                                                                               
                              
                                        # blob
