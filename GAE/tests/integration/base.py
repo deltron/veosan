@@ -218,6 +218,8 @@ class BaseTest(unittest.TestCase):
         address_form['address'] = u"123 Main St."
         address_form['city'] = u"Westmount"
         address_form['postal_code'] = u"H1B2C3"
+        address_form['vanity_url'] = u"bobafett"
+
         
         # submit it
         response = address_form.submit()
