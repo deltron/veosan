@@ -1,9 +1,17 @@
 {% extends "/layout/base.html" %}
 
 {% block subhead %}{{ _("The better way to care") }}{% endblock %}
-{% block lead %}{{ _("Get started by making a reservation today!") }}{% endblock %}
+
+{% block lead %}
+{% if booking_enabled %}
+{{ _("Get started by making a reservation today!") }}
+{% endif %}
+{% endblock %}
 
 {% block content %}
+
+{% if booking_enabled %}
+{# For testing, bookings are enabled #}
 <div class="row">
 	<div class="span6">
 		<div class="well">
@@ -45,7 +53,7 @@
 			<!-- Carousel items -->
 			<div class="carousel-inner">
 				{# TODO: replace with calls to make_provider_bio #}
-				
+
 				<div class="item active" style="width:100%">
 					<div style="margin: 0px auto; width:75%;">
 						<div class="row-fluid">
@@ -179,11 +187,42 @@
 		</div>
 	</div>
 </div>
+{% else %}
+{# -------------------------------------- #}
+{# BOOKING is disabled, show Signup Block #}
+{# FOR PRODUCTION #}
+{# -------------------------------------- #}
+
+<div class="marketing span12" align="center">
+	<p>
+		{{ _('We are currently opening accounts on a limited basis, please sign up below.') }}
+	</p>
+	<form method="post" action="/signup" class="form-inline">
+		<fieldset>
+			{% for field in signup_form %}
+			{% if field.errors %}
+			<p class="help-block">
+				{% for error in field.errors %} <i class="icon-exclamation-sign"></i> {{ error }}
+				<br>
+				{% endfor %}
+			</p>
+			{% endif %}
+			{% endfor %}
+
+			{{ signup_form.role(class='input-medium') }}
+			<input id="from_email" name="from_email" type="email" placeholder="{{ _('E-mail Address') }}">
+			<input id="postal_code" name="postal_code" type="text" placeholder="{{ _('Postal Code') }}" class="input-small">
+			<button type="submit" class="btn btn-primary">
+				{{ _('Submit') }}
+			</button>
+		</fieldset>
+	</form>
+</div>
+
+{% endif %}
 
 <div class="marketing">
-	<h1>
-		{{ _("Finding care is quick and simple. Here's why.") }}
-	</h1>
+	<h1> {{ _("Finding care is quick and simple. Here's why.") }} </h1>
 
 	<br>
 

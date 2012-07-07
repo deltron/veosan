@@ -100,6 +100,11 @@ class BaseHandler(webapp2.RequestHandler):
 
         kw['language_labels'] = util.LANGUAGE_LABELS
         
+        # ---------------
+        # Set this to true to show booking block on Index
+        # ---------------
+        kw['booking_enabled'] = util.BOOKING_ENABLED
+        
         # render
         self.response.write(self.jinja2.render_template(filename, **kw))
           

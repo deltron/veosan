@@ -5,6 +5,9 @@ from itertools import chain
 from webapp2_extras.i18n import lazy_gettext as _
 
 DEV_SERVERS = ('localhost:8080', 'veosan-stage.appspot.com')
+PRODUCTION_SERVERS = ('www.veosan.com')
+
+BOOKING_ENABLED = False
 
 DEFAULT_LANG = 'fr'
 LANGUAGE_LABELS = { 'fr' : u'Français', 'en': u'English'}
@@ -84,6 +87,13 @@ def getAllConfirmation():
     return [("email", _(u"Email")),
             ("telephone", _(u"Telephone")),
         ]
+
+
+def get_signup_roles():
+    return [("patient", _(u"I'm a patient")),
+            ("provider", _(u"I'm health care professional")),
+            ("other", _(u"Other"))]
+
 
 
 ''' dump properties '''

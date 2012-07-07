@@ -7,6 +7,7 @@ import mail
 from forms.base import BookingForm, email_only_booking_form
 from forms.patient import PatientForm
 from forms.user import LoginForm
+from forms.contact import SignupForm
 from handler.base import BaseHandler
 from handler.auth import patient_required
 from handler.patient import PatientBaseHandler
@@ -74,10 +75,16 @@ class BookingBaseHandler(BaseHandler):
     
 class IndexHandler(BookingBaseHandler):
     def get(self):
+        # for showing booking block
         bookingform = self.create_booking_form(self.request.GET)
-        self.render_template('index.html', form=bookingform)
         
-    def post(self):
+        # for showing signup block
+        signup_form = SignupForm()
+        signup_form.role.choices = util.get_signup_roles()
+        
+        self.render_template('index.html', form=bookingform, signup_form=signup_form)
+        
+    def post(self):        
         ''' Renders 2nd page: Result + Confirm button
         TODO: Replace with passing booking properties and provider key, saving only after the patient logging ??? 
         '''

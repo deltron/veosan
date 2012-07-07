@@ -67,7 +67,8 @@ application = webapp2.WSGIApplication([
                                        ('/next', booking.SearchNextHandler),
                                        ('/full', booking.FullyBookedHandler),
                                        ('/contact', contact.ContactHandler),
-                                       
+                                       ('/signup', contact.SignupHandler),
+
                                        # Static Pages
                                        Route('/about', handler=static.StaticHandler, name='about'),
                                        Route('/careers', handler=static.StaticHandler, name='careers'),
