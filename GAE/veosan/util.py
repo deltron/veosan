@@ -132,5 +132,6 @@ def code_to_string(code):
     if lang_code_dict.has_key(code):
         value = lang_code_dict[code]
     return value
-    
 
+def remove_empty_strings_from_list(l):
+    return filter (lambda a: a != u'', l)

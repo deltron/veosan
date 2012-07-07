@@ -22,6 +22,8 @@ jinja_filters['format_hour'] = time.format_hour
 jinja_filters['format_30min_period'] = time.format_30min_period
 jinja_filters['code_to_string'] = util.code_to_string
 jinja_filters['dump'] = dump
+jinja_filters['remove_empty_strings_from_list'] = util.remove_empty_strings_from_list
+
 
 jinja_environment_args = {
         'autoescape': True,

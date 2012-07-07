@@ -96,7 +96,7 @@
 			</li>
 		</ul>
 
-		{% if provider.associations %}
+		{% 	if provider.certifications|remove_empty_strings_from_list %}
 		<h5>Certifications</h5>
 		<ul class="unstyled">
 			{% for c in provider.certifications %}
@@ -107,7 +107,7 @@
 		</ul>
 		{% endif %}
 
-		{% if provider.associations %}
+		{% if provider.associations|remove_empty_strings_from_list %}
 		<h5>Association Memberships</h5>
 		<ul class="unstyled">
 			{% for a in provider.associations %}
