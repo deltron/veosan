@@ -242,7 +242,7 @@ class ProviderTest(BaseTest):
         user = db.get_user_from_email(self._TEST_PROVIDER_EMAIL)
 
         self.assertEqual(m.subject, 'veosan - password reset instructions' )
-        self.assertEqual(m.sender, 'cliktester@gmail.com')
+        self.assertEqual(m.sender, 'support@veosan.com')
         self.assertIn('Please click the link below to choose a new password', m.body.payload)
 
         self.assertTrue('/user/resetpassword/%s' % user.resetpassword_token in m.body.payload)
@@ -312,7 +312,7 @@ class ProviderTest(BaseTest):
         user = db.get_user_from_email(self._TEST_PROVIDER_EMAIL)
 
         self.assertEqual(m.subject, 'veosan - password reset instructions')
-        self.assertEqual(m.sender, 'cliktester@gmail.com')
+        self.assertEqual(m.sender, 'support@veosan.com')
         self.assertIn('Please click the link below to choose a new password', m.body.payload)
 
         self.assertTrue('/user/resetpassword/%s' % user.resetpassword_token in m.body.payload)

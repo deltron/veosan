@@ -4,7 +4,7 @@ from google.appengine.api import mail
 from webapp2_extras.i18n import gettext as _
 import util
 
-CLIK_SUPPORT_ADDRESS = 'cliktester@gmail.com'
+VEOSAN_SUPPORT_ADDRESS = 'support@veosan.com'
 
 
 def render_booking_email_body(jinja2, template_filename, booking, activation_url=None):
@@ -23,7 +23,7 @@ def email_booking_to_patient(jinja2, booking, activation_url=None):
         logging.warn('Email is not valid: {0}. Trying anyway...' %  to_address)
     # create message
     message = mail.EmailMessage()
-    message.sender = CLIK_SUPPORT_ADDRESS
+    message.sender = VEOSAN_SUPPORT_ADDRESS
     message.to = to_address
     category_label = dict(util.get_all_categories())[provider.category]
     message.subject = u'veosan reservation - %s' % _(category_label).capitalize()
@@ -39,7 +39,7 @@ def email_booking_to_patient(jinja2, booking, activation_url=None):
 def emailSolicitProvider(jinja2, provider, activation_url):
     ''' Send solicitation email to provider '''
     message = mail.EmailMessage()
-    message.sender = CLIK_SUPPORT_ADDRESS
+    message.sender = VEOSAN_SUPPORT_ADDRESS
     message.to = provider.email
     message.subject = u'veosan - Please confirm your profile %s' % provider.fullName()
     kw = {'provider': provider, 'activation_url': activation_url}
@@ -52,7 +52,7 @@ def emailSolicitProvider(jinja2, provider, activation_url):
 def email_user_password_reset(jinja2, user, activation_url):
     ''' Send solicitation email to provider '''
     message = mail.EmailMessage()
-    message.sender = CLIK_SUPPORT_ADDRESS
+    message.sender = VEOSAN_SUPPORT_ADDRESS
     message.to = user.get_email()
     message.subject = u'veosan - password reset instructions'
     message.body = jinja2.render_template('email/provider_passwordreset.txt', activation_url=activation_url)
@@ -70,7 +70,7 @@ def email_contact_form(jinja2, from_email, subject, message_body):
     
     message = mail.EmailMessage()
     message.sender = from_email
-    message.to = CLIK_SUPPORT_ADDRESS
+    message.to = VEOSAN_SUPPORT_ADDRESS
     message.subject = subject
     message.body = message_body
     

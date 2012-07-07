@@ -4,7 +4,7 @@
 from itertools import chain
 from webapp2_extras.i18n import lazy_gettext as _
 
-DEV_SERVERS = ('localhost:8080', 'clikcare-stage.appspot.com')
+DEV_SERVERS = ('localhost:8080', 'veosan-stage.appspot.com')
 
 DEFAULT_LANG = 'fr'
 LANGUAGE_LABELS = { 'fr' : u'Français', 'en': u'English'}

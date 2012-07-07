@@ -4,7 +4,7 @@
 
 import logging, urlparse
 
-# clik
+# veo
 from forms.admin import NewProviderForm
 from base import BaseHandler
 import data.db as db, mail

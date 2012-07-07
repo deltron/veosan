@@ -2,7 +2,7 @@ import logging
 # google user service
 from google.appengine.api import users
 from webapp2_extras.appengine.users import admin_required as google_admin_required
-# clik
+# veo
 import data
 
 

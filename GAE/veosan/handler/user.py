@@ -1,6 +1,6 @@
 import logging, random, sha, urlparse
 from datetime import date
-#clik
+# veo
 from base import BaseHandler
 import data.db as db
 import auth
@@ -281,7 +281,7 @@ class ProviderSignupHandler(UserBaseHandler):
 
         logging.info(message)
 
-        from_email = "cliktester@gmail.com"
+        from_email = "signup@veosan.com"
         subject = "Request for signup from provider"
 
         mail.email_contact_form(self.jinja2, from_email, subject, message)

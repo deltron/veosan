@@ -22,12 +22,12 @@ class SignupTest(BaseTest):
         response.mustcontain("Thanks for your interest. We will be in touch soon")
         
         # now check we received the signup email
-        messages = self.mail_stub.get_sent_messages(to='cliktester@gmail.com')
+        messages = self.mail_stub.get_sent_messages(to='support@veosan.com')
         self.assertEqual(1, len(messages))
         m = messages[0]    
             
         self.assertEqual(m.subject, 'Request for signup from provider')
-        self.assertEqual(m.sender, 'cliktester@gmail.com')
+        self.assertEqual(m.sender, 'signup@veosan.com')
         self.assertEqual(m.body.payload, 'Received sign-up request from email->test_signup@tester.com postal_code->H1H2C2')
 
         

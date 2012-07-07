@@ -20,7 +20,7 @@ class ContactTest(BaseTest):
             
             
             # check we got the email            
-            messages = self.mail_stub.get_sent_messages(to='cliktester@gmail.com')
+            messages = self.mail_stub.get_sent_messages(to='support@veosan.com')
             self.assertEqual(1, len(messages))
             m = messages[0]
             

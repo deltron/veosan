@@ -5,7 +5,7 @@ import os, logging
 import webapp2
 from webapp2 import Route
 from webapp2_extras.routes import PathPrefixRoute
-# clik
+# veo
 from util import dump
 import util
 from utilities import time

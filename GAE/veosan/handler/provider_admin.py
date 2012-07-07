@@ -4,7 +4,7 @@ import logging
 from google.appengine.api import users
 from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
-#clik
+# veo
 from base import BaseHandler
 import data.db as db
 from forms.provider import ProviderProfileForm, ProviderAddressForm, ProviderPhotoForm
