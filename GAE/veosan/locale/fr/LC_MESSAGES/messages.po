@@ -24,8 +24,11 @@ msgstr ""
 msgid "veosan! find a health care professional today"
 msgstr "veosan! trouvez des soins aujourd'hui"
 
-msgid "The better way to care."
-msgstr "La santé à votre portée."
+msgid "The better way to care"
+msgstr "La santé à votre portée"
+
+msgid "Get started by making a reservation today!"
+msgstr "Commencez avec un rendez-vous aujourd'hui!"
 
 msgid "veosan"
 msgstr "veosan"
@@ -60,6 +63,12 @@ msgstr "Nous ouvrons présentement des comptes par invitation, veuillez vous ins
 
 msgid "Thanks for your interest. We will be in touch soon!"
 msgstr "Merci pour votre intérêt. Nous serons en contact bientôt!"
+
+msgid "Create an Account"
+msgstr "Créer un nouveau compte"
+
+msgid "Oops. I forgot my password."
+msgstr "Oops. J'ai oublié mon mot de passe."
 
 
 #################
@@ -99,8 +108,8 @@ msgstr "Politique de confidentialité"
 msgid "Login"
 msgstr "Connexion"
 
-msgid "Login to veosan"
-msgstr "Connexion à veosan"
+msgid "Login to Veosan"
+msgstr "Connexion à Veosan"
 
 msgid "Logout"
 msgstr "Déconnexion"
