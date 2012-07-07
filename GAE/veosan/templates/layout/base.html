@@ -55,20 +55,17 @@
 		<link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
 		<link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
 		<link href="/assets/css/docs.css" rel="stylesheet">
-		<link href='http://fonts.googleapis.com/css?family=Josefin+Sans:600|Kreon:400|Doppio+One|Karla:400' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=Kreon:400|Karla:400' rel='stylesheet' type='text/css'>
 	</head>
 	<body>
 		{% include "/layout/navbar.html" with context %}
 
 		<div class="container">
 			{% block subnav %}{% endblock %}
-			<header class="jumbotron subhead">
-				<h1>{% block subhead %}{% endblock %}</h1>
-				<p class="lead">
-					{% block lead %}{% endblock %}
-				</p>
+			<header class="page-header">
+				<h2>{% block subhead %}{% endblock %}</h2>
+				<p class="lead">{% block lead %}{% endblock %}</p>
 			</header>
-			<hr>
 			
 			{% if error_message %}
 			<!-- Error Message -->

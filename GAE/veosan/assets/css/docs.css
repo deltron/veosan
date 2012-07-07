@@ -1,51 +1,62 @@
 /* Add additional stylesheets below
--------------------------------------------------- */
+ -------------------------------------------------- */
 
 /* Marketing section of Overview
--------------------------------------------------- */
-.marketing .row {
-  margin-bottom: 9px;
-}
-.marketing h1 {
-  margin: 36px 0 27px;
-  font-size: 40px;
-  font-weight: 300;
-  text-align: center;
-}
-.marketing h2,
-.marketing h3 {
-  font-weight: 300;
-}
-.marketing h2 {
-  font-size: 22px;
-}
-.marketing p {
-  margin-right: 10px;
-}
-.marketing .bs-icon {
-  float: left;
-  margin: 7px 10px 0 0;
-  opacity: .8;
-}
-.marketing .small-bs-icon {
-  float: left;
-  margin: 4px 5px 0 0;
+ -------------------------------------------------- */
+
+h2 {
+	line-height:1;
 }
 
-.marketing-byline {
-  margin: -18px 0 27px;
-  font-size: 18px;
-  font-weight: 300;
-  line-height: 24px;
-  color: #999;
-  text-align: center;
+.marketing .row {
+	margin-bottom: 9px;
+}
+
+.marketing h1 {
+	font-size: 28px;
+	font-weight: 200;
+	text-align: center;
+}
+.marketing h1, h2, h3 {
+	font-family: "Karla";
+	color: #333333;
+}
+.marketing h2 {
+	font-size: 22px;
+}
+.marketing p {
+	margin-right: 10px;
+}
+.marketing .bs-icon {
+	float: left;
+	margin: 7px 10px 0 0;
+	opacity: .8;
+}
+
+.marketing .small-bs-icon {
+	float: left;
+	margin: 5px 5px 5px 0;
 }
 
 .navbar .brand {
-  padding: 4px 10px 6px 22px;
-  font-size: 27px;
-  font-weight: normal;
-  letter-spacing: 2px;
-  line-height: 1;
-  color: #CCC;
+	padding: 4px 10px 6px 22px;
+	font-size: 27px;
+	letter-spacing: 2px;
+	line-height: 1;
+	color: #FFFFFF;
+	font-weight: lighter;
+	text-shadow: 0px 0px 4px rgba(0,0,0,0.75);
+	font-family: 'Kreon', sans-serif;
+}
+
+.page-header {
+	margin: 0px 0px 15px 0px;
+	padding-bottom: 4px;
+	border-bottom: 1px solid #e5e5e5;
+}
+
+.lead {
+	margin: 0px 0px 0px 0px;
+	font-size: 16px;
+	color: #999999;
 }
