@@ -13,8 +13,11 @@ from handler import auth
 from data.model import Patient
 from datetime import datetime
 from data.model import User, Booking
-        
+import util
+
 class BaseTest(unittest.TestCase):
+    util.BOOKING_ENABLED = True
+    
     ''' *** NOTE ***
     
     Settings in app.yaml are ignored by tests
