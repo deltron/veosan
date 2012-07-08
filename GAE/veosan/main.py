@@ -105,7 +105,8 @@ application = webapp2.WSGIApplication([
                                            Route('/data', admin.AdminDataHandler),
                                            Route('/data/stage', admin.AdminStageDataHandler),
                                            Route('/data/delete', admin.AdminDeleteDataHandler),
-                                       
+                                           Route('/data/index_switch', admin.AdminIndexSwitchHandler),
+
                                            # provider admin
                                            Route('/provider', provider_admin.ProviderAdministrationHandler),
                                            Route('/provider/init', admin.NewProviderInitHandler),

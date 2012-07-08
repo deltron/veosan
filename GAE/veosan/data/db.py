@@ -5,7 +5,7 @@
 from google.appengine.ext import ndb
 import logging
 from datetime import datetime, date, time
-from data.model import Booking, Patient, Provider, User
+from data.model import Booking, Patient, Provider, User, SiteConfig
 import db_util
   
 def get_from_urlsafe_key(urlsafe_key):
@@ -129,4 +129,7 @@ def get_provider_from_vanity_url(vanity_url):
     else:
         return None  
     
+def get_site_config():
+    return SiteConfig.query().get()
+
     

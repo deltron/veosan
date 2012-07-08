@@ -8,6 +8,7 @@ import logging, urlparse
 from forms.admin import NewProviderForm
 from base import BaseHandler
 import data.db as db, mail
+from data.model import SiteConfig
 import util
 from handler.auth import admin_required
 from google.appengine.ext import ndb
@@ -22,9 +23,11 @@ class AdminBaseHandler(BaseHandler):
         self.render_template('admin/admin_providers.html', providers=providers, **kw)
 
     def render_data(self, **kw):
-        dev_server=util.is_dev_server(self.request)
+        dev_server = util.is_dev_server(self.request)
+        site_config = db.get_site_config()
+        
         logging.info('(AdminBaseHandler.render_data) dev_server=%s' % dev_server)
-        self.render_template('admin/data.html', dev_server=dev_server, **kw)
+        self.render_template('admin/data.html', dev_server=dev_server, site_config=site_config, **kw)
 
 class AdminIndexHandler(AdminBaseHandler):
     '''Administration Index'''
@@ -184,6 +187,26 @@ class AdminDeleteDataHandler(AdminBaseHandler):
             logging.info('*** Someone tried to delete everything from a production server. WTF!?')
             self.render_data(error_message="Production server, cannot delete")
 
-        
+
+class AdminIndexSwitchHandler(AdminBaseHandler):
+    ''' Toggle display of signup on index page '''
+
+    def post(self):
+        site_config = db.get_site_config()
+
+        if site_config:
+            logging.info('(AdminIndexSwitchHandler.post) Current status booking_enabled = %s ' % site_config.booking_enabled)
+    
+            if site_config.booking_enabled:
+                site_config.booking_enabled = False
+            else:
+                site_config.booking_enabled = True
+    
+            site_config.put()
+            logging.info('(AdminIndexSwitchHandler.post) New status is booking_enabled = %s ' % site_config.booking_enabled)
+        else:
+            logging.info('(AdminIndexSwitchHandler.post) No site configuration!')
+
+        self.render_data()
         
         

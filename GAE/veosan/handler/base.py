@@ -10,6 +10,7 @@ from webapp2_extras import i18n
 import util
 from webapp2_extras.i18n import lazy_gettext as _
 from data import db
+from data.model import SiteConfig
 
 class BaseHandler(webapp2.RequestHandler):
     '''
@@ -103,7 +104,20 @@ class BaseHandler(webapp2.RequestHandler):
         # ---------------
         # Set this to true to show booking block on Index
         # ---------------
-        kw['booking_enabled'] = util.BOOKING_ENABLED
+        
+        site_config = db.get_site_config()
+        if site_config:
+            kw['booking_enabled'] = site_config.booking_enabled
+        else:
+            # no site configuration exists in database, create one
+            site_config = SiteConfig()
+            
+            # take defaul state for booking enabled from util 
+            # (so it can be set before the handler is called in unit tests)
+            site_config.booking_enabled = util.BOOKING_ENABLED
+            site_config.put()
+            kw['booking_enabled'] = site_config.booking_enabled
+
         
         # render
         self.response.write(self.jinja2.render_template(filename, **kw))

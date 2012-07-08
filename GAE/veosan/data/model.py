@@ -13,6 +13,9 @@ def get_link(model_entity, route=None):
         return '%s?key=%s' % (route, model_entity.key.urlsafe())
     else:
         logging.error('(model.get_link) Trying to get route key with no route')
+
+class SiteConfig(ndb.Model):
+    booking_enabled = ndb.BooleanProperty()
     
 
 class User(Webapp2AuthUser):
