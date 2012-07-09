@@ -9,7 +9,8 @@ from webapp2_extras.i18n import gettext as _
 
 class ContactHandler(BaseHandler):
     def get(self):
-        self.render_template("contact.html", form=ContactForm(self.request.GET))
+        contact_form = ContactForm()
+        self.render_template("contact.html", form=contact_form)
 
     def post(self):
         contact_form = ContactForm(self.request.POST)
@@ -23,7 +24,7 @@ class ContactHandler(BaseHandler):
             self.render_template('contact.html', form=contact_form)
             
 class SignupHandler(BaseHandler):
-    def get_form(self, request = None):
+    def get_form(self, request=None):
         if request:
             signup_form = SignupForm(request)
         else:

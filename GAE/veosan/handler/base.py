@@ -1,14 +1,12 @@
 import logging, sha, random
-import webapp2
 from google.appengine.api import users
-from webapp2_extras import jinja2
-from webapp2_extras import auth
-from webapp2_extras import sessions
+import webapp2
+from webapp2_extras import auth, i18n, jinja2, sessions
+
+# veo
 import data
 import handler.auth
-from webapp2_extras import i18n
 import util
-from webapp2_extras.i18n import lazy_gettext as _
 from data import db
 from data.model import SiteConfig
 
@@ -17,7 +15,7 @@ class BaseHandler(webapp2.RequestHandler):
         Base Handler for the whole site. Provides templating, user and authentication services
     '''
     
-    _translations = None
+    # _translations = None
     
     @webapp2.cached_property
     def jinja2(self):
@@ -124,18 +122,20 @@ class BaseHandler(webapp2.RequestHandler):
           
     def dispatch(self):
         ''' 
-            - Set language form session and 
+            - Set language from session and 
             - Save the session across requests
         '''
+        
         # language
         lang = self.get_language()
         if not lang:
             lang = util.DEFAULT_LANG
+            
         self.install_translations(lang)
+        
         # save session (from auth)
         try:
-            response = super(BaseHandler, self).dispatch()
-            #self.response.write(response)
+            super(BaseHandler, self).dispatch()
         finally:
             self.session_store.save_sessions(self.response)
 
@@ -157,29 +157,25 @@ class BaseHandler(webapp2.RequestHandler):
     def get_language(self):
         session = self.session_store.get_session()
         if session.has_key('lang'):
+            logging.info('(BaseHandler.get_language) get language from session = %s' % session['lang'])
             return session['lang']
         else:
+            logging.info('(BaseHandler.get_language) no language in session, return default = %s' % util.DEFAULT_LANG)
             return util.DEFAULT_LANG
         
     def set_language(self, lang):
+        logging.info('(BaseHandler.set_language) set session[lang] = %s' % lang)
         session = self.session_store.get_session()
         session['lang'] = lang
         
         
     def install_translations(self, lang):
-        logging.info('installing translations %s' % lang)
+        logging.info('(BaseHandler.install_translations) installing translations %s' % lang)
+
         # Set the requested locale.
-        #locale = self.request.GET.get('locale', 'en')
-        #logging.info('locale from request is %s' % locale)
         i18n.get_i18n().set_locale(lang)
         
-        logging.info('i18n locale: %s' % i18n.get_i18n().locale)
-        logging.info('i18n translations: %s' % i18n.get_i18n().translations)
-
-        # install on Jinja too
-        #self.jinja2.environment.install_gettext_translations(t)
-        logging.info('language is %s' % _('en'))
-        
+        logging.info('(BaseHandler.install_translations) webapp2 i18n locale: %s' % i18n.get_i18n().locale)
     
     def login_user(self, email, password, remember_me=True):
         auth_user = self.auth.get_user_by_password(email, password, remember=remember_me)
