@@ -82,10 +82,9 @@ class CustomForm():
     class F(Form):
         pass
     
-    def get_form(self):
-        return self.F()
+    def get_form(self, request=None, obj=None):
+        return self.F(request, obj)
 
     def set_field(self, field_name, widget):
         setattr(self.F, field_name, widget)
-
 

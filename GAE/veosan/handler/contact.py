@@ -14,7 +14,7 @@ class ContactHandler(BaseHandler):
         self.render_template("contact.html", form=contact_form)
 
     def post(self):
-        contact_form = ContactForm(self.request.POST)
+        contact_form = ContactForm().get_form(self.request.POST)
         if contact_form.validate():
             try: 
                 mail.email_contact_form(self.jinja2, contact_form.from_email.data, contact_form.subject.data, contact_form.message_body.data)
