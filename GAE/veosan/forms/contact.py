@@ -1,12 +1,10 @@
 from wtforms import TextField, TextAreaField, SelectField
 from wtforms import validators
 from webapp2_extras.i18n import lazy_gettext as _
-from webapp2_extras import i18n
 from wtforms import Form
 
 # veo
 from custom_form import CustomForm
-
 
 class ContactForm(CustomForm):
     def __init__(self):
