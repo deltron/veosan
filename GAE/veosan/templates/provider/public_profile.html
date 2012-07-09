@@ -125,7 +125,9 @@
 	</div>
 </div>
 
+{% if provider.address_enabled %}
 <!-- modal for contact info -->
+
 <div class="modal hide" id="contact_modal" style="display: none;">
 	<div class="modal-header">
 		<a class="close" data-dismiss="modal">×</a>
@@ -175,14 +177,17 @@
 				</div>
 
 			</div>
+			{% if provider.booking_enabled %}
 			<div class="modal-footer">
 				<button type="submit" class="btn btn-primary">
 					{{ _('Book Now') }}
 				</button>
 			</div>
+			{% endif %}
 		</div>
 	</div>
 </div>
+{% endif %}
 
 {% endblock content %}
 
