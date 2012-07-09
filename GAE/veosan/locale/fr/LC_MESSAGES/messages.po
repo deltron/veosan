@@ -460,6 +460,14 @@ msgstr "Profitez des avantages d'être membre dès aujourd'hui!"
 msgid "Login failed. Try again."
 msgstr "L'authentification a échoué. Veuillez vérifier votre email et mot de passe."
 
+msgid "Password Recovery"
+msgstr "Récupération de votre mot de passe"
+
+msgid "No big deal! Please enter your email address below and we will send you the instructions to reset your password."
+msgstr "Aucun problème! S'il vous plaît, entrez votre adresse courriel ci-dessous et nous vous ferons parvenir les instructions nécessaires pour réinitialiser votre mot de passe."
+
+msgid "We are currently opening accounts on a limited basis, please sign up on the <a href='/'>home page</a>."
+msgstr "Nous ouvrons présentement des comptes par invitation, veuillez vous inscrire sur la <a href='/'>page principale</a>."
 
 #################
 # Terms page

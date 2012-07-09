@@ -1,0 +1,23 @@
+	<h3 style="padding-bottom: 8px">
+		{{ _('We are currently opening accounts on a limited basis, please sign up below.') }}
+	</h3>
+	<form method="post" action="/signup" class="form-inline">
+		<fieldset>
+			{% for field in signup_form %}
+			{% if field.errors %}
+			<p class="help-block">
+				{% for error in field.errors %} <i class="icon-exclamation-sign"></i> {{ error }}
+				<br>
+				{% endfor %}
+			</p>
+			{% endif %}
+			{% endfor %}
+
+			{{ signup_form.role(class='input-medium') }}
+			<input id="from_email" name="from_email" type="email" placeholder="{{ _('E-mail Address') }}">
+			<input id="postal_code" name="postal_code" type="text" placeholder="{{ _('Postal Code') }}" class="input-small">
+			<button type="submit" class="btn btn-primary">
+				{{ _('Submit') }}
+			</button>
+		</fieldset>
+	</form>

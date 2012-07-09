@@ -281,7 +281,7 @@ class ProviderSignupHandler(UserBaseHandler):
 
         logging.info(message)
 
-        from_email = "signup@veosan.com"
+        from_email = "support@veosan.com"
         subject = "Request for signup from provider"
 
         mail.email_contact_form(self.jinja2, from_email, subject, message)

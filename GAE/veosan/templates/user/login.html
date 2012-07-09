@@ -49,40 +49,45 @@
 		<h3>{{ _("Create an Account") }}</h3>
 	</div>
 	<div class="modal-body marketing">
-		<i class="bs-icon icon-heart"></i><h3>{{ _("For Patients") }}</h3>
-		<p>
-			Creating an account is easy! Just <a href="/">book an appointment</a> to get started today.
-		</p>
+		{% if booking_enabled %}
+			<i class="bs-icon icon-heart"></i><h3>{{ _("For Patients") }}</h3>
+			<p>
+				Creating an account is easy! Just <a href="/">book an appointment</a> to get started today.
+			</p>
+	
+			<i class="bs-icon icon-briefcase"></i><h3>{{ _("For Health Care Providers") }}</h3>
+			<p>
+				Membership on our platform is currently by invitation-only. Please enter your details below and we will be in touch!
+			</p>
+	
+			<form method="post" action="/provider/signup" class="form-inline">
+				<fieldset>
+					<input id="provider_email" name="provider_email" type="text" placeholder="Email Address">
+					<input id="provider_postalcode" name="provider_postalcode" type="text" placeholder="Postal Code" class="input-small">
+					<button type="submit" class="btn btn-primary">
+						Submit
+					</button>
+				</fieldset>
+			</form>
+		{% else %}
+			{{ _("We are currently opening accounts on a limited basis, please sign up on the <a href='/'>home page</a>.") }}
 
-		<i class="bs-icon icon-briefcase"></i><h3>{{ _("For Health Care Providers") }}</h3>
-		<p>
-			Membership on our platform is currently by invitation-only. Please enter your details below and we will be in touch!
-		</p>
-
-		<form method="post" action="/provider/signup" class="form-inline">
-			<fieldset>
-				<input id="provider_email" name="provider_email" type="text" placeholder="Email Address">
-				<input id="provider_postalcode" name="provider_postalcode" type="text" placeholder="Postal Code" class="input-small">
-				<button type="submit" class="btn btn-primary">
-					Submit
-				</button>
-			</fieldset>
-		</form>
+		{% endif %}
 	</div>
 </div>
 
 <div class="modal hide" id="forgot_password" style="display: none;">
 	<div class="modal-header">
 		<a class="close" data-dismiss="modal">×</a>
-		<h3>Password Recovery</h3>
+		<h3>{{ _('Password Recovery') }}</h3>
 	</div>
 	<div class="modal-body">
-		No big deal! Please enter your email address below and we will send you the instructions to reset your password.
+		{{ _('No big deal! Please enter your email address below and we will send you the instructions to reset your password.') }}
 		<form method="post" action="/user/resetpassword" class="form-inline">
 			<fieldset>
-				<input id="email" name="email" type="text" placeholder="Email Address">
+				<input id="email" name="email" type="text" placeholder="{{ _('E-mail Address') }}">
 				<button type="submit" class="btn btn-primary">
-					Reset
+					{{ _('Submit') }}
 				</button>
 			</fieldset>
 		</form>
