@@ -8,6 +8,9 @@ threadsafe: yes
 builtins:
 - remote_api: on
 
+inbound_services:
+- warmup
+
 libraries:
 - name: jinja2
   version: "2.6"
