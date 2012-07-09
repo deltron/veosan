@@ -10,6 +10,16 @@ from webapp2_extras.i18n import gettext as _
 class ContactHandler(BaseHandler):
     def get(self):
         contact_form = ContactForm()
+        print contact_form.from_email.label
+
+        # simulate switching languages
+        self.set_language('en')
+        self.install_translations('en')
+        
+        contact_form2 = ContactForm()
+        print contact_form2.from_email.label
+        print contact_form2.subject.label
+        
         self.render_template("contact.html", form=contact_form)
 
     def post(self):
