@@ -43,7 +43,7 @@
 		<table class="table">
 			<thead>
 				<tr>
-					<th width="25%">created</th>
+					<th width="20%">created / user</th>
 					<th width="50%">Note</th>
 				</th>
 			</thead>
@@ -51,7 +51,8 @@
 				{% for n in notes %}
 					<tr style="vertical-align: top">
 						<td>
-							<p style="font-weight:bold">{{n.created_on|format_datetime_full}}</p>
+							{{n.created_on|format_datetime_full}}<br>
+							by {{n.user}}
 						</td>
 						<td>
 							{{n.body}}

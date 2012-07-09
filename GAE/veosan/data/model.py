@@ -2,6 +2,7 @@ from google.appengine.ext import ndb
 import logging
 from datetime import datetime, timedelta, date, time
 from webapp2_extras.appengine.auth.models import User as Webapp2AuthUser
+from google.appengine.api import users
 
 '''
     stored data 
@@ -166,10 +167,11 @@ class Provider(ndb.Model):
     
     def add_note(self, body):
         ''' Add Note to this provider'''
-        new_note = Note()
-        new_note.provider = self.key
-        new_note.body = body
-        new_note.put()
+        note = Note()
+        note.provider = self.key
+        note.body = body
+        note.user = users.get_current_user()
+        note.put()
             
 
         
@@ -189,6 +191,7 @@ class Note(ndb.Model):
     body = ndb.TextProperty()
     #note_type = ndb.StringProperty(choices=['call', 'meeting', 'admin']) 
     created_on = ndb.DateTimeProperty(auto_now_add=True)
+    user = ndb.UserProperty()
     #datetime = ndb.DateTimeProperty(auto_now_add=True)
     
     
