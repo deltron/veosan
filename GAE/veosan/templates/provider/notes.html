@@ -39,15 +39,28 @@
 			</fieldset>
 		</form>
 		
-		<h3>Notes</h3>
-		{% for n in notes %}
-		<div class="well">
-			{{index}}
-			{{n.body}}
-			<p style="font-style:italic">created: {{n.created_on|format_datetime_full}}</p>
-		</div>
-		{% endfor %}
-
+		<!-- Notes -->
+		<table class="table">
+			<thead>
+				<tr>
+					<th width="25%">created</th>
+					<th width="50%">Note</th>
+				</th>
+			</thead>
+			<tbody>	
+				{% for n in notes %}
+					<tr style="vertical-align: top">
+						<td>
+							<p style="font-weight:bold">{{n.created_on|format_datetime_full}}</p>
+						</td>
+						<td>
+							{{n.body}}
+							<br>
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
 	</div>
 
 	
