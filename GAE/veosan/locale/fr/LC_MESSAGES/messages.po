@@ -207,8 +207,8 @@ msgstr "Nous voulons savoir ce que vous pensez de notre service. Si vous avez de
 msgid "Your comments were sent succesfully. Thanks for your feedback, we will contact you shortly to follow up. Have a great day!"
 msgstr "Vos commentaires ont été envoyés avec succès. Merci, nous vous contacterons rapidement pour assurer le suivi. Passez une excellente journée!"
 
-msgid "Sorry, there was an error sending your comments. Please call 555-123-1212 to talk to someone."
-msgstr "Désolé, il y avait une erreur d'envoyer vos commentaires. S'il vous plaît appelez 555-123-1212 pour parler à quelqu'un."
+msgid "Sorry, there was an error sending your comments. Please call (514) 998-1286 to talk with someone."
+msgstr "Désolé, il y avait une erreur d'envoyer vos commentaires. S'il vous plaît appelez (514) 998-1286 pour parler à quelqu'un."
 
 
 #################
