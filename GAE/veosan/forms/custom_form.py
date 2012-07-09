@@ -78,3 +78,14 @@ class CustomBooleanField(BooleanField):
         else:
             return u'True'
 
+class CustomForm():
+    class F(Form):
+        pass
+    
+    def get_form(self):
+        return self.F()
+
+    def set_field(self, field_name, widget):
+        setattr(self.F, field_name, widget)
+
+

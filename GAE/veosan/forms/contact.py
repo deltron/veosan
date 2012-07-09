@@ -1,19 +1,18 @@
-from wtforms import Form, TextField, TextAreaField, SelectField
+from wtforms import TextField, TextAreaField, SelectField
 from wtforms import validators
 from webapp2_extras.i18n import lazy_gettext as _
+from webapp2_extras import i18n
+from wtforms import Form
 
-class ContactForm(Form):
-    from_email = TextField(_(u'E-mail Address'), [validators.Email(message=_(u'Invalid email address.'))])
-    subject = TextField(_(u'Subject'), [validators.Length(min=3, message=_(u'Subject required.'))])
-    message_body = TextAreaField(_(u'Message'))
+# veo
+from custom_form import CustomForm
 
-    def __init__(self, formdata=None, obj=None, prefix='', **kwargs):
-        super(ContactForm, self).__init__()
-        
-        self.from_email.label = _(u'E-mail Address')
-        self.subject.label = _(u'Subject')
-        self.message_body.label = _(u'Message')
 
+class ContactForm(CustomForm):
+    def __init__(self):
+        self.set_field('from_email', TextField(_(u'E-mail Address'), [validators.Email(message=_(u'Invalid email address.'))]))
+        self.set_field('subject', TextField(_(u'Subject'), [validators.Length(min=3, message=_(u'Subject required.'))]))
+        self.set_field('message_body', TextAreaField(_(u'Message')))
 
 class SignupForm(Form):
     role = SelectField()

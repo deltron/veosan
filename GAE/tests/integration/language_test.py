@@ -7,6 +7,7 @@ from data.model import User
 
 class LanguageTest(BaseTest):
     def test_switch_language_on_contact_form(self):
+        # default language should be french
         contact_page = self.testapp.get("/contact")
         contact_page.mustcontain("Nous voulons savoir")
         contact_page.mustcontain("Sujet")
@@ -22,8 +23,8 @@ class LanguageTest(BaseTest):
         
         # will be redirected back to contact page
         contact_page_en.mustcontain("We want to know")
-        contact_page_en.mustcontain("Subjet")
-        contact_page_en.mustcontain("Email Address")
+        contact_page_en.mustcontain("Subject")
+        contact_page_en.mustcontain("E-mail Address")
         contact_page_en.mustcontain("Send")
         
         
