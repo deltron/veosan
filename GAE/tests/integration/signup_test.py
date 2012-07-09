@@ -27,7 +27,7 @@ class SignupTest(BaseTest):
         m = messages[0]    
             
         self.assertEqual(m.subject, 'Request for signup from provider')
-        self.assertEqual(m.sender, 'signup@veosan.com')
+        self.assertEqual(m.sender, 'support@veosan.com')
         self.assertEqual(m.body.payload, 'Received sign-up request from email->test_signup@tester.com postal_code->H1H2C2')
 
         

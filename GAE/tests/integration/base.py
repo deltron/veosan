@@ -32,6 +32,8 @@ class BaseTest(unittest.TestCase):
 
     _TEST_PATIENT_EMAIL = 'pat@patient.com'
     _TEST_PATIENT_PASSWORD = '654321'
+    
+    _TEST_PROVIDER_VANITY_URL = 'bobafett'
 
     def setUp(self):
         # Wrap the app with WebTest’s TestApp.
@@ -159,17 +161,17 @@ class BaseTest(unittest.TestCase):
         self.logout_provider()
 
      
-    def init_new_provider(self):
+    def init_new_provider(self, provider_email=_TEST_PROVIDER_EMAIL):
         ''' initialize a new provider '''
         
-        request_variables = { 'provider_email' : self._TEST_PROVIDER_EMAIL }
+        request_variables = { 'provider_email' : provider_email }
         response = self.testapp.post('/admin/provider/init', request_variables)
 
         self.assertEqual(response.status_int, 200)        
-        response.mustcontain("Initialized new provider for unit_test@provider.com")
+        response.mustcontain("Initialized new provider for %s" % provider_email)
         response.mustcontain("new")
         response.mustcontain("missing terms")
-        response.mustcontain("unit_test@provider.com")
+        response.mustcontain(provider_email)
         
         # check badges are present
         response.mustcontain('<span class="label label-success">new</span>')
@@ -221,7 +223,7 @@ class BaseTest(unittest.TestCase):
         address_form['address'] = u"123 Main St."
         address_form['city'] = u"Westmount"
         address_form['postal_code'] = u"H1B2C3"
-        address_form['vanity_url'] = u"bobafett"
+        address_form['vanity_url'] = self._TEST_PROVIDER_VANITY_URL
 
         
         # submit it
@@ -263,6 +265,8 @@ class BaseTest(unittest.TestCase):
         self.assertEqual(address_form['address'].value, u"123 Main St.")
         self.assertEqual(address_form['city'].value, u"Westmount")
         self.assertEqual(address_form['postal_code'].value, u"H1B2C3")
+        self.assertEqual(address_form['vanity_url'].value, self._TEST_PROVIDER_VANITY_URL)
+
         
         # iterate over every field item, find the match in the provider object and check its equality
         # with database
@@ -280,6 +284,8 @@ class BaseTest(unittest.TestCase):
         address_form['address'] = u"321 Primary St."
         address_form['city'] = u"Outremont"
         address_form['postal_code'] = u"C4B5C6"
+        address_form['vanity_url'] = u"jangofett"
+
 
         # submit it
         response = address_form.submit()

@@ -1,7 +1,7 @@
 {% extends "/layout/base.html" %}
 
 {% block subhead %}
-{{provider.title or ''}} {{provider.first_name or ''}} {{ provider.last_name}}
+{{provider.first_name or ''}} {{ provider.last_name}}
 {% endblock %}
 {% block lead %}
 {% if provider.credentials %}
