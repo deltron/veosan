@@ -18,6 +18,9 @@
 	<li id="administration" {% if  "administration" == active_page %} class="active" {% endif %} style="font-style:italic">
 		<a href="{{provider.get_edit_link(route='/admin/provider')}}">{{ _('Administration') }}</a>
 	</li>
+	<li id="notes" {% if  "notes" == active_page %} class="active" {% endif %} style="font-style:italic">
+		<a href="{{provider.get_edit_link(route='/admin/provider/notes')}}">{{ _('Notes') }}</a>
+	</li>
 	{% endif %}
 </ul>
 {% endblock %}

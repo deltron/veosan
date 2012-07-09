@@ -117,6 +117,7 @@ application = webapp2.WSGIApplication([
                                            Route('/provider/enable', provider_admin.ProviderEnableHandler),
                                            Route('/provider/profile', provider_admin.ProviderEditProfileHandler),
                                            Route('/provider/address', provider_admin.ProviderEditAddressHandler),
+                                           Route('/provider/notes', provider_admin.ProviderNotesHandler),
                                            Route('/provider/address/upload', provider_admin.ProviderAddressUploadHandler),
                                            Route('/provider/feature/<feature_switch>', provider_admin.ProviderAccountFeaturesHandler),
 

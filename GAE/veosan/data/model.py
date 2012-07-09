@@ -2,6 +2,7 @@ from google.appengine.ext import ndb
 import logging
 from datetime import datetime, timedelta, date, time
 from webapp2_extras.appengine.auth.models import User as Webapp2AuthUser
+from google.appengine.api import users
 
 '''
     stored data 
@@ -60,13 +61,19 @@ class Patient(ndb.Model):
         return Booking.query(Booking.patient == self.key).fetch()
     
 
+# List of provider status
+provider_statuses = ['prospect', 'contacted_phone', 'contacted_meeting', 'client_enabled', 'client_suspended', 'ex_client_disabled']
+
 
 class Provider(ndb.Model):
     '''
     A provider
     '''
     created_on = ndb.DateTimeProperty(auto_now_add=True)
+    # enabled for referal search
     enable = ndb.BooleanProperty()
+    # sales status
+    status = ndb.StringProperty(default='prospect', choices=provider_statuses)
 
     # terms
     terms_agreement = ndb.BooleanProperty()
@@ -114,7 +121,7 @@ class Provider(ndb.Model):
             first_letter_of_last_name = self.last_name[0]
         return "%s %s %s." % (self.title, self.first_name, first_letter_of_last_name)
         
-    def fullName(self):
+    def full_name(self):
         return '{0} {1}'.format(self.first_name, self.last_name)
     
 
@@ -153,6 +160,19 @@ class Provider(ndb.Model):
         future_bookings = Booking.query(Booking.provider == self.key).order(Booking.datetime).fetch(50)
         #, Booking.request_datetime > yesterday_at_midnight
         return future_bookings
+    
+    def get_notes(self):
+        ''' Get Notes in reverse chronological order'''
+        return Note.query(Note.provider == self.key).order(-Note.created_on)
+    
+    def add_note(self, body):
+        ''' Add Note to this provider'''
+        note = Note()
+        note.provider = self.key
+        note.body = body
+        note.user = users.get_current_user()
+        note.put()
+            
 
         
 class Schedule(ndb.Model):
@@ -164,6 +184,17 @@ class Schedule(ndb.Model):
     def repr(self):
         # String representation for debuging, I'm too scared to override the __repr__() 
         return '[Schedule day:%s from %s to %s]' % (self.day, self.startTime, self.endTime)
+ 
+ 
+class Note(ndb.Model):
+    provider = ndb.KeyProperty(kind=Provider)
+    body = ndb.TextProperty()
+    #note_type = ndb.StringProperty(choices=['call', 'meeting', 'admin']) 
+    created_on = ndb.DateTimeProperty(auto_now_add=True)
+    user = ndb.UserProperty()
+    #datetime = ndb.DateTimeProperty(auto_now_add=True)
+    
+    
     
 class Booking(ndb.Model):
     created_on = ndb.DateTimeProperty(auto_now_add=True)

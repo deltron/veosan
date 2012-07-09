@@ -37,7 +37,7 @@ class ProviderScheduleHandler(ProviderBaseHandler):
            
     @provider_required
     def post(self):
-        logging.info('ProviderScheduleHandler POST')
+        logging.debug('ProviderScheduleHandler POST')
         urlsafe_key = self.request.get('key')
         day_time = self.request.get('day_time')
         day, startTime, endTime = day_time.split('-')

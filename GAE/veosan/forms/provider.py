@@ -39,3 +39,8 @@ class ProviderProfileForm(Form):
     associations = MultiCheckboxField(_(u'Associations'), choices=util.getAllAssociations())
     certifications = MultiCheckboxField(_(u'Certifications'), choices=util.getAllCertifications())
     onsite = CustomBooleanField(_(u'I am willing to do on-site visits'))
+
+
+class ProviderNoteForm(Form):
+    body = TextAreaField(_(u'Note'))
+    

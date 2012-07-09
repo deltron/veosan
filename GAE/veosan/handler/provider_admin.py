@@ -7,8 +7,8 @@ from google.appengine.ext.webapp import blobstore_handlers
 # veo
 from base import BaseHandler
 import data.db as db
-from forms.provider import ProviderProfileForm, ProviderAddressForm, ProviderPhotoForm
-from data.model import Provider
+from data.model import Note
+from forms.provider import ProviderProfileForm, ProviderAddressForm, ProviderPhotoForm, ProviderNoteForm
 from handler.auth import admin_required
 from util import saved_message
 
@@ -24,7 +24,13 @@ class ProviderAdminBaseHandler(BaseHandler):
        
     def render_administration(self, provider, **kw):
         self.render_template('provider/administration.html', provider=provider, **kw)
-           
+    
+    def render_notes(self, provider, **kw):
+        notes = provider.get_notes()
+        logging.info('Notes count %s' % notes.count())
+        new_note_form = ProviderNoteForm()
+        self.render_template('provider/notes.html', provider=provider, notes=notes, form=new_note_form, **kw)       
+        
 
 class ProviderEditProfileHandler(ProviderAdminBaseHandler):
     
@@ -135,10 +141,12 @@ class ProviderAccountFeaturesHandler(ProviderAdminBaseHandler):
             if current_state:           
                 setattr(provider, feature_switch, False)
                 success_message = 'feature %s is now set to %s' % (feature_switch, False)
+                provider.add_note('%s = False' % feature_switch)
                     
             else:
                 setattr(provider, feature_switch, True)
                 success_message = 'feature %s is now set to %s' % (feature_switch, True)
+                provider.add_note('%s = True' % feature_switch)
 
             provider.put()
             
@@ -146,3 +154,24 @@ class ProviderAccountFeaturesHandler(ProviderAdminBaseHandler):
 
         else:
             logging.error('Received unknown feature switch : %s' % feature_switch)
+
+
+class ProviderNotesHandler(ProviderAdminBaseHandler):
+    
+    @admin_required
+    def get(self):
+        provider = db.get_from_urlsafe_key(self.request.get('key')) 
+        if users.is_current_user_admin():
+            self.render_notes(provider)
+        else:
+            logging.info("Not Admin: Can't see provider notes page")
+            
+    def post(self):
+        if users.is_current_user_admin():
+            urlsafe_key = self.request.get('provider_key')
+            provider = db.get_from_urlsafe_key(urlsafe_key)
+            provider.add_note(self.request.get("body"))
+            self.render_notes(provider)
+        else:
+            logging.info("Not Admin: Can't see provider notes page")
+            

@@ -3,7 +3,7 @@
 {% set active_page = "administration" %}
 
 {% block subhead %}
-{{ provider.fullName() }}
+{{ provider.full_name() }}
 <!-- TODO: Make this a block, reuse on provider list -->
 {% if provider.recently_created() %} <span class="label label-success">new</span>{% endif %}
 {% if not provider.terms_agreement %} <span class="label label-important">missing terms</span>{% endif %}
@@ -56,10 +56,11 @@
 			</fieldset>
 		</form>
 
-		<h3>Enable</h3>
+		<h3>Status</h3>
 		<div class="well">
 			<p>
-				Current status is enable={{ provider.enable }}
+				Current status is {{ provider.status }}<br>
+				enable={{ provider.enable }}
 			</p>
 			<form method="post" action="/admin/provider/enable" class="form-inline">
 				<fieldset>
