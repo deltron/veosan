@@ -15,4 +15,3 @@ class WarmupHandler(BaseHandler):
         
         # render the home page, hopefully preloads everything we need
         self.redirect("/")
-        

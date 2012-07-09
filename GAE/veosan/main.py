@@ -63,7 +63,7 @@ webapp2_config['webapp2_extras.auth'] = {
 
 application = webapp2.WSGIApplication([
                                        # GAE Warmup Requests
-                                       ('/_ah/warmup', static.WarmupHandler)
+                                       ('/_ah/warmup', static.WarmupHandler),
                                        
                                        # General pages
                                        ('/', booking.IndexHandler),
