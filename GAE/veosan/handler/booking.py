@@ -56,7 +56,7 @@ class BookingBaseHandler(BaseHandler):
         # create email form if not passed (email_form is passed in when validation fails)
         if not email_form:
             email_form = email_only_booking_form()
-        logging.info("Rendering result: active provider is %s at index %s: " % (br.provider.fullName(), index))
+        logging.info("Rendering result: active provider is %s at index %s: " % (br.provider.full_name(), index))
         kw = {'patient': None, 'booking': booking, 'booking_responses': booking_responses, 'index': index, 'form': email_form }
         self.render_template('search/result_carousel.html', **kw)     
 

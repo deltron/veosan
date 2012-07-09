@@ -41,7 +41,7 @@ def emailSolicitProvider(jinja2, provider, activation_url):
     message = mail.EmailMessage()
     message.sender = VEOSAN_SUPPORT_ADDRESS
     message.to = provider.email
-    message.subject = u'veosan - Please confirm your profile %s' % provider.fullName()
+    message.subject = u'veosan - Please confirm your profile %s' % provider.full_name()
     kw = {'provider': provider, 'activation_url': activation_url}
     message.body = jinja2.render_template('email/provider_solicit.txt', **kw)
     try:

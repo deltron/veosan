@@ -195,7 +195,7 @@ class BaseTest(unittest.TestCase):
         messages = self.mail_stub.get_sent_messages(to=self._TEST_PROVIDER_EMAIL)
         self.assertEqual(1, len(messages))
         m = messages[0]
-        self.assertEqual(m.subject, 'veosan - Please confirm your profile %s' % provider.fullName())
+        self.assertEqual(m.subject, 'veosan - Please confirm your profile %s' % provider.full_name())
         
         # assert that activation link is in the email body
         user = User.query(User.key == provider.user).get()
