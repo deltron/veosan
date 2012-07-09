@@ -116,3 +116,28 @@ class ProviderEnableHandler(ProviderAdminBaseHandler):
 
         self.render_administration(provider, success_message=success_message)
 
+
+class ProviderAccountFeaturesHandler(ProviderAdminBaseHandler):
+    def post(self, feature_switch=None):
+        provider = db.get_from_urlsafe_key(self.request.get('provider_key'))
+        
+        # validate features that can be switched
+        if feature_switch in ['booking_enabled', 'address_enabled']:
+            
+            # toggle state
+            current_state = getattr(provider, feature_switch)
+            
+            if current_state:           
+                setattr(provider, feature_switch, False)
+                success_message = 'feature %s is now set to %s' % (feature_switch, False)
+                    
+            else:
+                setattr(provider, feature_switch, True)
+                success_message = 'feature %s is now set to %s' % (feature_switch, True)
+
+            provider.put()
+            
+            self.render_administration(provider, success_message=success_message)
+
+        else:
+            logging.error('Received unknown feature switch : %s' % feature_switch)

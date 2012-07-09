@@ -98,6 +98,11 @@ class Provider(ndb.Model):
     # unique name for public profile
     vanity_url = ndb.StringProperty()
     
+    # account options
+    booking_enabled = ndb.BooleanProperty(default=False)
+    address_enabled = ndb.BooleanProperty(default=False)
+    
+    
     # user
     user = ndb.KeyProperty(kind=User)
     

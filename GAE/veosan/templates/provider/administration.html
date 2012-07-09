@@ -58,7 +58,9 @@
 
 		<h3>Enable</h3>
 		<div class="well">
-			<p>Current status is enable={{ provider.enable }}</p>
+			<p>
+				Current status is enable={{ provider.enable }}
+			</p>
 			<form method="post" action="/admin/provider/enable" class="form-inline">
 				<fieldset>
 					<input type="hidden" name="provider_key" value="{{ provider.key.urlsafe() }}" />
@@ -79,6 +81,51 @@
 	<div class="span6">
 		<h3>Bio Preview</h3>
 		{{ macro.make_provider_bio(provider) }}
+
+		<h3>Public Profile</h3>
+		<div class="well">
+			<table class="table-striped" width="100%">
+				<tr>
+					<td width="60%">Show address={{ provider.address_enabled }}</td>
+					<td width="40%">
+					<form method="post" action="/admin/provider/feature/address_enabled" class="form-inline">
+						<fieldset>
+							<input type="hidden" name="provider_key" value="{{ provider.key.urlsafe() }}" />
+							{% if provider.address_enabled %}
+							<button type="submit" class="btn btn-danger">
+								Disable Address Link
+							</button>
+							{% else %}
+							<button type="submit" class="btn btn-success">
+								Enable Address Link
+							</button>
+							{% endif %}
+						</fieldset>
+					</form>
+					</td>
+				</tr>
+				<tr>
+					<td width="60%">Show booking={{ provider.booking_enabled }}</td>
+					<td width="40%">
+					<form method="post" action="/admin/provider/feature/booking_enabled" class="form-inline">
+						<fieldset>
+							<input type="hidden" name="provider_key" value="{{ provider.key.urlsafe() }}" />
+							{% if provider.booking_enabled %}
+							<button type="submit" class="btn btn-danger">
+								Disable Booking
+							</button>
+							{% else %}
+							<button type="submit" class="btn btn-success">
+								Enable Booking
+							</button>
+							{% endif %}
+						</fieldset>
+					</form>
+					</td>
+				</tr>
+
+			</table>
+		</div>
 	</div>
 </div>
 {% endblock %}

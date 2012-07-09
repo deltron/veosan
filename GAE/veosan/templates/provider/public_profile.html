@@ -43,14 +43,19 @@
 			<li>West-Island</li>
 		</ul>
 
-
+		{% if provider.address_enabled %}
 		<h4><a data-toggle="modal" href="#contact_modal" onclick="loadScript()">Address</a>
 			<a data-toggle="modal" href="#contact_modal" onclick="loadScript()"><i class="bs-icon icon-share-alt"> </i></a>
 		</h4>
+		{% endif %}
+		
 		<br>
+		
+		{% if provider.booking_enabled %}
 		<button type="submit" class="btn btn-success btn-large" style="width:100%">
 			{{ _('Book Now') }}
 		</button>
+		{% endif %}
 	</div>
 	<div class="span6">
 		<p>
