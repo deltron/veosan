@@ -75,6 +75,9 @@ class ProviderBookingsHandler(ProviderBaseHandler):
 class ProviderPublicProfileHandler(ProviderBaseHandler):
     
     def get(self, vanity_url=None):
+        # convert to lowercase
+        vanity_url = vanity_url.lower()
+        
         logging.info('(ProviderPublicProfileHandler.get) Received vanity_url: %s' % vanity_url)
         provider = db.get_provider_from_vanity_url(vanity_url)
         if provider:

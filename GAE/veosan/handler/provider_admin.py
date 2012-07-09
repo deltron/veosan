@@ -65,6 +65,11 @@ class ProviderEditAddressHandler(ProviderAdminBaseHandler):
             # Store Provider
             provider_key = db.storeProvider(self.request.POST)
             provider = provider_key.get()
+            
+            # force the vanity URL to lowercase
+            provider.vanity_url = provider.vanity_url.lower()
+            provider.put()
+            
             self.render_address(provider, address_form=form, success_message=saved_message)
         else:
             # show validation error

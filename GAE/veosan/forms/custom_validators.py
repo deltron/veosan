@@ -19,3 +19,4 @@ class UniqueVanityURL(object):
             else:
                 #available
                 pass
+
