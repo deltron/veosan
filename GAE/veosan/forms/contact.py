@@ -7,6 +7,14 @@ class ContactForm(Form):
     subject = TextField(_(u'Subject'), [validators.Length(min=3, message=_(u'Subject required.'))])
     message_body = TextAreaField(_(u'Message'))
 
+    def __init__(self, formdata=None, obj=None, prefix='', **kwargs):
+        super(ContactForm, self).__init__()
+        
+        self.from_email.label = _(u'E-mail Address')
+        self.subject.label = _(u'Subject')
+        self.message_body.label = _(u'Message')
+
+
 class SignupForm(Form):
     role = SelectField()
     from_email = TextField(_(u'E-mail Address'), [validators.Email(message=_(u'Please enter your email address.'))])
