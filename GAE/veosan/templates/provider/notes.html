@@ -1,0 +1,56 @@
+{% extends "/layout/provider_nav.html" %}
+
+{% set active_page = "notes" %}
+
+{% block subhead %}
+	{{ provider.full_name() }}
+	<!-- TODO: Make this a block, reuse on provider list -->
+	{% if provider.recently_created() %} <span class="label label-success">new</span>{% endif %}
+	{% if not provider.terms_agreement %} <span class="label label-important">missing terms</span>{% endif %}
+	{% if not provider.enable %} <span class="label label-important">disabled</span>{% endif %}
+{% endblock %}
+
+{% block lead %} {{ _('Sales and Notes') }} {% endblock %}
+
+{% block content %}
+
+<div class="row">
+
+	<div class="span12">
+		<p style="font-style:italic">Add a note about {{provider.full_name()}}</p>
+		<form class="form-inline" action="/admin/provider/notes" method="post">
+			<fieldset>
+				
+				<input type="hidden" name="provider_key" value="{{ provider.key.urlsafe() }}" />
+				
+				<div class="control-group">
+					<div class="controls">
+						{{ form.body }}
+					</div>
+				</div>
+				
+				<div class="control-group">
+					<div class="controls">
+						<button type="submit" class="btn btn-primary">
+							{{ _('Add Note') }}
+						</button>
+					</div>
+				</div>
+			</fieldset>
+		</form>
+		
+		<h3>Notes</h3>
+		{% for n in notes %}
+		<div class="well">
+			{{index}}
+			{{n.body}}
+			<p style="font-style:italic">created: {{n.created_on|format_datetime_full}}</p>
+		</div>
+		{% endfor %}
+
+	</div>
+
+	
+</div>
+
+{% endblock %}

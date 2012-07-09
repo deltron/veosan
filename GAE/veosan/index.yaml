@@ -30,6 +30,12 @@ indexes:
   properties:
   - name: request_datetime
 
+- kind: Note
+  properties:
+  - name: provider
+  - name: created_on
+    direction: desc
+
 - kind: Provider
   properties:
   - name: category
