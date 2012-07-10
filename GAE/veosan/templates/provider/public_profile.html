@@ -58,6 +58,11 @@
 			{{ _('Book Now') }}
 		</button>
 		{% endif %}
+		
+		{% if 'admin' in roles %}
+			<a href="/admin/provider/profile/{{ provider.vanity_url }}" class="btn btn-danger"><i>Edit Profile</i></a>
+		{% endif %}
+
 	</div>
 	<div class="span6">
 		<p>
