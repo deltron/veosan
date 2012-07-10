@@ -145,3 +145,14 @@ def code_to_string(code):
 
 def remove_empty_strings_from_list(l):
     return filter (lambda a: a != u'', l)
+
+
+
+note_types = ['call', 'meeting', 'admin']
+
+def get_all_note_types():
+    return [('call', _(u'Call')),
+            ('meeting', _(u'Meeting')),
+            ('admin', _(u'Admin'))]    
+
+

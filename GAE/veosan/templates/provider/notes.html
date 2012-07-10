@@ -31,6 +31,12 @@
 				
 				<div class="control-group">
 					<div class="controls">
+						{{ form.note_type }}
+					</div>
+				</div>
+				
+				<div class="control-group">
+					<div class="controls">
 						<button type="submit" class="btn btn-primary">
 							{{ _('Add Note') }}
 						</button>
@@ -55,6 +61,7 @@
 							by {{n.user}}
 						</td>
 						<td>
+							<i class="{{n.get_icon_name()}}"></i> 
 							{{n.body}}
 							<br>
 						</td>
