@@ -35,14 +35,19 @@ class ProviderAdminBaseHandler(BaseHandler):
 class ProviderEditProfileHandler(ProviderAdminBaseHandler):
     
     @admin_required
-    def get(self):
-        provider = db.get_from_urlsafe_key(self.request.get('key'))
-        logging.info("provider dump before edit:" + str(vars(provider)))
-        form = ProviderProfileForm(obj=provider)
-        self.render_profile(provider, profile_form=form)
+    def get(self, vanity_url = None):
+        provider = None
+        
+        if vanity_url:
+            provider = db.get_provider_from_vanity_url(vanity_url)
+            
+            logging.info("(ProviderEditProfileHandler.get) Edit profile for provider %s" % provider.email)
+            
+            form = ProviderProfileForm(obj=provider)
+            self.render_profile(provider, profile_form=form)
     
     # admin_required
-    def post(self):
+    def post(self, vanity_url = None):
         form = ProviderProfileForm(self.request.POST)
         if form.validate():
             # Store Provider
@@ -67,15 +72,12 @@ class ProviderEditAddressHandler(ProviderAdminBaseHandler):
     # admin_required
     def post(self):
         form = ProviderAddressForm(self.request.POST)
+        
         if form.validate():
             # Store Provider
             provider_key = db.storeProvider(self.request.POST)
             provider = provider_key.get()
-            
-            # force the vanity URL to lowercase
-            provider.vanity_url = provider.vanity_url.lower()
-            provider.put()
-            
+                        
             self.render_address(provider, address_form=form, success_message=saved_message)
         else:
             # show validation error

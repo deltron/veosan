@@ -10,7 +10,7 @@
 	</li>
 	{% if 'admin' in roles %}
 	<li id="profile" {% if  "profile" == active_page %} class="active" {% endif %} style="font-style:italic">
-		<a href="{{provider.get_edit_link(route='/admin/provider/profile')}}">{{ _('Profile') }}</a>
+		<a href="/admin/provider/profile/{{ provider.vanity_url }}">{{ _('Profile') }}</a>
 	</li>
 	<li id="address" {% if  "address" == active_page %} class="active" {% endif %} style="font-style:italic">
 		<a href="{{provider.get_edit_link(route='/admin/provider/address')}}">{{ _('Address') }}</a>
@@ -22,5 +22,9 @@
 		<a href="{{provider.get_edit_link(route='/admin/provider/notes')}}">{{ _('Notes') }}</a>
 	</li>
 	{% endif %}
+	
+	<li id="bookings" class="pull-right">
+		<a href="/{{ provider.vanity_url }}">{{ _('Public Profile') }}</a>
+	</li>
 </ul>
 {% endblock %}
