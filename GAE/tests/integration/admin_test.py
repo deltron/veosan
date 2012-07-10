@@ -54,9 +54,9 @@ class AdminTest(BaseTest):
         self.login_as_admin()
         
         # try to create another profile with the same email address
-        request_variables = { 'provider_email' : self._TEST_PROVIDER_EMAIL }
+        request_variables = { 'provider_email' : self._TEST_PROVIDER_EMAIL, 'vanity_url' : 'different_one' }
         response = self.testapp.post('/admin/provider/init', request_variables)
-        
+                
         # check for error message
         response.mustcontain("Provider already exists for email address")
         

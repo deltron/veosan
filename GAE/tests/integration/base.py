@@ -161,10 +161,10 @@ class BaseTest(unittest.TestCase):
         self.logout_provider()
 
      
-    def init_new_provider(self, provider_email=_TEST_PROVIDER_EMAIL):
+    def init_new_provider(self, provider_email=_TEST_PROVIDER_EMAIL, vanity_url=_TEST_PROVIDER_VANITY_URL):
         ''' initialize a new provider '''
         
-        request_variables = { 'provider_email' : provider_email }
+        request_variables = { 'provider_email' : provider_email, 'vanity_url' : vanity_url}
         response = self.testapp.post('/admin/provider/init', request_variables)
 
         self.assertEqual(response.status_int, 200)        
@@ -223,7 +223,6 @@ class BaseTest(unittest.TestCase):
         address_form['address'] = u"123 Main St."
         address_form['city'] = u"Westmount"
         address_form['postal_code'] = u"H1B2C3"
-        address_form['vanity_url'] = self._TEST_PROVIDER_VANITY_URL
 
         
         # submit it
@@ -265,7 +264,6 @@ class BaseTest(unittest.TestCase):
         self.assertEqual(address_form['address'].value, u"123 Main St.")
         self.assertEqual(address_form['city'].value, u"Westmount")
         self.assertEqual(address_form['postal_code'].value, u"H1B2C3")
-        self.assertEqual(address_form['vanity_url'].value, self._TEST_PROVIDER_VANITY_URL)
 
         
         # iterate over every field item, find the match in the provider object and check its equality
@@ -284,7 +282,6 @@ class BaseTest(unittest.TestCase):
         address_form['address'] = u"321 Primary St."
         address_form['city'] = u"Outremont"
         address_form['postal_code'] = u"C4B5C6"
-        address_form['vanity_url'] = u"jangofett"
 
 
         # submit it
@@ -314,8 +311,7 @@ class BaseTest(unittest.TestCase):
         provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
         
         # request the address page
-        request_variables = { 'key' : provider.key.urlsafe() }
-        response = self.testapp.get('/admin/provider/profile', request_variables)
+        response = self.testapp.get('/admin/provider/profile/%s' % provider.vanity_url)
          
         profile_form = response.forms[0] # address form
         

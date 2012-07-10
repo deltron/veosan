@@ -33,12 +33,16 @@ class ProviderTest(BaseTest):
         # request the address page
         request_variables = { 'key' : provider.key.urlsafe() }
         response = self.testapp.get('/provider/bookings', request_variables)
+                
         # patient name in navbar
         response.mustcontain(self._TEST_PROVIDER_EMAIL)
         response.mustcontain('Rendez-vous')
         response.mustcontain('Horaire')
         assert 'Administration' not in response 
-        assert 'Profile' not in response 
+        
+        # This doesn't work anymore because we show "Public Profile"
+        # assert 'Profile' not in response
+        
         assert 'Addresse' not in response 
 
 
