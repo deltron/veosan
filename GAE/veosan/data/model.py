@@ -3,6 +3,7 @@ import logging
 from datetime import datetime, timedelta, date, time
 from webapp2_extras.appengine.auth.models import User as Webapp2AuthUser
 from google.appengine.api import users
+from google.appengine.api.images import get_serving_url
 import util
 
 '''
@@ -114,6 +115,9 @@ class Provider(ndb.Model):
     # user
     user = ndb.KeyProperty(kind=User)
     
+    def get_profile_photo_image_url(self, size=None):
+        return get_serving_url(self.profile_photo_blob_key, size)
+        
     def get_edit_link(self, route='/provider/bookings'):
         return get_link(self, route)
  
