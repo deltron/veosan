@@ -177,13 +177,13 @@ class AdminTest(BaseTest):
         response = self.testapp.get('/admin/provider', request_variables)
         
         # make sure provider starts as Enabled
-        response.mustcontain("Current status is enable=True")
+        response.mustcontain("enable=True")
         response.mustcontain("Disable Provider") # button
 
         disable_form = response.forms[1]
         disable_response = disable_form.submit()
         
-        disable_response.mustcontain("Current status is enable=False")
+        disable_response.mustcontain("enable=False")
         disable_response.mustcontain("Enable Provider")
 
         self.logout_admin()
@@ -203,13 +203,13 @@ class AdminTest(BaseTest):
         response = self.testapp.get('/admin/provider', request_variables)
         
         # make sure provider starts as Enabled
-        response.mustcontain("Current status is enable=False")
+        response.mustcontain("enable=False")
         response.mustcontain("Enable Provider") # button
 
         disable_form = response.forms[1]
         disable_response = disable_form.submit()
         
-        disable_response.mustcontain("Current status is enable=True")
+        disable_response.mustcontain("enable=True")
         disable_response.mustcontain("Disable Provider")        
         
         # Booking should work
