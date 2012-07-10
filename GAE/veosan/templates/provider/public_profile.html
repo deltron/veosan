@@ -37,11 +37,13 @@
 			{% endfor %}
 		</ul>
 
+		{# Not for now
 		<h4>Home Care Visits</h4>
 		<ul class="unstyled">
 			<li>Downtown</li>
 			<li>West-Island</li>
 		</ul>
+		#}
 
 		{% if provider.address_enabled %}
 		<h4><a data-toggle="modal" href="#contact_modal" onclick="loadScript()">Address</a>
@@ -71,7 +73,7 @@
 		<h3>Experience</h3>
 		<ul class="unstyled">
 			<li>
-				<h6>Concordia Physio Sport Home Care Division</h6>
+				<h6>Concordia Physio Sport Home Care Division (1999-2004)</h6>
 				Manager
 			</li>
 			<li>
@@ -93,6 +95,7 @@
 			</li>
 		</ul>
 
+		{# Not for now
 		<h3>Publications</h3>
 		<ul class="unstyled">
 			<li>
@@ -100,6 +103,7 @@
 				Clinical and Radiological Investigation of Thoracic Spine Extension Motion During Arm Elevation
 			</li>
 		</ul>
+		#}
 
 		{% 	if provider.certifications|remove_empty_strings_from_list %}
 		<h3>Certifications</h3>
@@ -192,8 +196,10 @@
 {% endblock content %}
 
 {% block extra_javascript %}
-<script type="text/javascript"
-src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDmWzdH93nBMmpuTvw7DKQEV210PmUIu64&sensor=false"></script>
+
+{% if provider.address_enabled %}
+
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDmWzdH93nBMmpuTvw7DKQEV210PmUIu64&sensor=false"></script>
 
 <script type="text/javascript">
 	var geocoder;
@@ -241,5 +247,6 @@ src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDmWzdH93nBMmpuTvw7DKQEV210
 		document.body.appendChild(script);
 	}
 </script>
+{% endif %}
 
 {% endblock extra_javascript %}
