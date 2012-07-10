@@ -18,11 +18,8 @@
 
 	<div class="span12">
 		<p style="font-style:italic">Add a note about {{provider.full_name()}}</p>
-		<form class="form-inline" action="/admin/provider/notes" method="post">
-			<fieldset>
-				
-				<input type="hidden" name="provider_key" value="{{ provider.key.urlsafe() }}" />
-				
+		<form class="form-inline" action="/admin/provider/notes/{{ provider.vanity_url }}" method="post">
+			<fieldset>				
 				<div class="control-group">
 					<div class="controls">
 						{{ form.body }}

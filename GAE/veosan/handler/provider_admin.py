@@ -167,10 +167,9 @@ class ProviderNotesHandler(ProviderAdminBaseHandler):
         else:
             logging.info("Not Admin: Can't see provider notes page")
             
-    def post(self):
+    def post(self, vanity_url = None):
         if users.is_current_user_admin():
-            urlsafe_key = self.request.get('provider_key')
-            provider = db.get_from_urlsafe_key(urlsafe_key)
+            provider = db.get_provider_from_vanity_url(vanity_url)
             logging.info('type %s' % self.request.get('note_type'))
             provider.add_note(self.request.get('body'), note_type=self.request.get('note_type'))
             self.render_notes(provider)
