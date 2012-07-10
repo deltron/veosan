@@ -27,13 +27,9 @@ class User(Webapp2AuthUser):
     '''
     roles = ndb.StringProperty(repeated=True)
     
-    # for now...
-    # replace with dictionnary later...
-    # better yet find a way to mash into the webapp2 user token model
     signup_token = ndb.StringProperty()
     resetpassword_token = ndb.StringProperty()
-    
-    
+       
     confirmed = ndb.BooleanProperty()
     
     def get_email(self):
@@ -66,6 +62,24 @@ class Patient(ndb.Model):
 # List of provider status
 provider_statuses = ['prospect', 'contacted_phone', 'contacted_meeting', 'client_enabled', 'client_suspended', 'ex_client_disabled']
 
+class Education(ndb.Model):   
+    start_year = ndb.IntegerProperty()
+    end_year = ndb.IntegerProperty()
+
+    school_name = ndb.StringProperty()
+    degree_type = ndb.StringProperty()
+    degree_text = ndb.StringProperty()
+
+    description = ndb.StringProperty()
+
+class WorkExperience(ndb.Model):   
+    start_year = ndb.IntegerProperty()
+    end_year = ndb.IntegerProperty()
+
+    company_name = ndb.StringProperty()
+    title = ndb.StringProperty()
+
+    description = ndb.TextProperty()
 
 class Provider(ndb.Model):
     '''
@@ -105,12 +119,16 @@ class Provider(ndb.Model):
     quote = ndb.TextProperty()
     
     # unique name for public profile
+    # possible coercion to lower case?
     vanity_url = ndb.StringProperty()
     
+    # CV info
+    education = ndb.StructuredProperty(Education, repeated=True)
+    work_experience = ndb.StructuredProperty(WorkExperience, repeated=True)
+
     # account options
     booking_enabled = ndb.BooleanProperty(default=False)
     address_enabled = ndb.BooleanProperty(default=False)
-    
     
     # user
     user = ndb.KeyProperty(kind=User)
@@ -179,9 +197,7 @@ class Provider(ndb.Model):
         note.note_type = note_type
         note.user = users.get_current_user()
         note.put()
-            
-
-        
+      
 class Schedule(ndb.Model):
     provider = ndb.KeyProperty(kind=Provider) # name='schedule'
     day = ndb.IntegerProperty()
