@@ -91,18 +91,15 @@ class NewProviderInitHandler(AdminBaseHandler):
         if form.validate():
             # Init Provider
             provider_email = self.request.get('provider_email')
+            vanity_url = self.request.get('vanity_url')
             
-            # check if a provider exists with this address already
-            existing_provider = db.get_provider_from_email(provider_email)
-            if existing_provider:
-                error_message = 'Provider already exists for email address: %s' % (provider_email)
-                self.render_providers(error_message=error_message, form=form)        
+            # force the vanity URL to lowercase
+            vanity_url = vanity_url.lower()
 
-            else:
-                provider_key = db.initProvider(provider_email)
-                logging.info('(NewProviderInitHandler.post) initialized new provider with key : %s' % provider_key)
-                success_message = 'Initialized new provider for %s' % (provider_email)
-                self.render_providers(success_message=success_message, form=form)        
+            provider_key = db.init_provider(provider_email, vanity_url)
+            logging.info('(NewProviderInitHandler.post) initialized new provider with key : %s' % provider_key)
+            success_message = 'Initialized new provider for %s' % (provider_email)
+            self.render_providers(success_message=success_message, form=form)        
         else:
             # show error
             logging.info('Trying to create a provider with invalid email address: %s' % form.provider_email)

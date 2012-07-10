@@ -73,17 +73,9 @@
 	<div class="span6">
 		<h3>Create new provider</h3>
 		<form method="post" action="/admin/provider/init" class="well form-inline">
-			Generate a new ID for provider. You will have to login with their ID to complete the profile.
+			<p>Generate a new ID for provider. You will have to login with their ID to complete the profile.</p>
 			<fieldset>
-				{% if form.provider_email.errors %}
-				<p class="help-block">
-					{% for error in form.provider_email.errors %} <i class="icon-exclamation-sign"></i> {{ error }}
-					<br>
-					{% endfor %}
-				</p>
-				{% endif %}
-
-				{{ form.provider_email }}
+				{{ macro.makeStandardForm() }}
 
 				<button type="submit" class="btn btn-primary">
 					Initialize New Provider
@@ -96,10 +88,4 @@
 {% endblock content %} 
 
 {% block extra_javascript %}
-	<script>
-		$(function() {
-			$('a[rel=tooltip]').tooltip();
-			$('a[rel=popover]').popover();
-		});
-	</script>
 {% endblock extra_javascript %}

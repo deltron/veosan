@@ -19,12 +19,6 @@ class ProviderAddressForm(Form):
     address = TextField(_(u'Addresse'), [validators.Length(min=5, message='Address requis.')])
     city = TextField(_(u'City'), [validators.Length(min=3, message='Address requis.')])
     postal_code = TextField(_(u'Postal Code'), [validators.Length(min=6, message='Address requis.')])
-    vanity_url = TextField(_(u'Vanity URL'), [
-                                              validators.Length(min=4, message='Vanity URL should be at least 4 characters'), 
-                                              custom_validators.UniqueVanityURL(message=_(u'That name is already taken, please choose another one.'))
-                                              ])
-
-
 
 
 class ProviderPhotoForm(Form):

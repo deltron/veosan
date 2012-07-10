@@ -56,11 +56,12 @@ def fetch_bookings():
 def get_bookings_for_patient(patient):
     return Booking.query(Booking.patient == patient.key).fetch()
 
-def initProvider(provider_email):
+def init_provider(provider_email, vanity_url):
     ''' inititalize provider with email. return the provider's key '''
     new_provider = Provider()
     new_provider.email = provider_email
-    new_provider.enable = True
+    new_provider.vanity_url = vanity_url
+    new_provider.enable = True  # should this be false?
     provider_key = new_provider.put()
     return provider_key
 
