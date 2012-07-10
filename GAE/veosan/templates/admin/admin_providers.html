@@ -16,6 +16,7 @@
 					<th width="2%">Id</th>
 					<th width="5%">Category</th>
 					<th width="10%">Name</th>
+					<th width="10%">Profile URL</th>
 					<th width="10%">Email</th>
 					<th width="10%">Status</th>
 					<th width="10%">Created On</th>
@@ -33,6 +34,9 @@
 					</td>
 					<td>
 						<strong>{{p.last_name}}</strong>, {{p.first_name}}
+					</td>
+					<td>
+						<a href='/{{ p.vanity_url }}'>{{p.vanity_url}}</a>
 					</td>
 					<td>
 						{{p.email}}
