@@ -43,4 +43,5 @@ class ProviderProfileForm(Form):
 
 class ProviderNoteForm(Form):
     body = TextAreaField(_(u'Note'))
+    note_type = SelectField(_(u'Type'), choices=util.get_all_note_types())
     

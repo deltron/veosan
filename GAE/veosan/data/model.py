@@ -3,6 +3,7 @@ import logging
 from datetime import datetime, timedelta, date, time
 from webapp2_extras.appengine.auth.models import User as Webapp2AuthUser
 from google.appengine.api import users
+import util
 
 '''
     stored data 
@@ -165,11 +166,13 @@ class Provider(ndb.Model):
         ''' Get Notes in reverse chronological order'''
         return Note.query(Note.provider == self.key).order(-Note.created_on)
     
-    def add_note(self, body):
+    def add_note(self, body, note_type='admin'):
         ''' Add Note to this provider'''
         note = Note()
         note.provider = self.key
         note.body = body
+        logging.info('note_type %s' % note_type)
+        note.note_type = note_type
         note.user = users.get_current_user()
         note.put()
             
@@ -189,11 +192,20 @@ class Schedule(ndb.Model):
 class Note(ndb.Model):
     provider = ndb.KeyProperty(kind=Provider)
     body = ndb.TextProperty()
-    #note_type = ndb.StringProperty(choices=['call', 'meeting', 'admin']) 
+    note_type = ndb.StringProperty(choices=util.note_types) 
     created_on = ndb.DateTimeProperty(auto_now_add=True)
     user = ndb.UserProperty()
     #datetime = ndb.DateTimeProperty(auto_now_add=True)
     
+    def get_icon_name(self):
+        if self.note_type  == 'call':
+            return 'icon-comment'
+        elif self.note_type =='meeting':
+            return 'icon-plane'
+        elif self.note_type == 'admin':
+            return 'icon-wrench'
+        else:
+            return 'icon-question-sign'
     
     
 class Booking(ndb.Model):
