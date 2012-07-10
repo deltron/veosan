@@ -34,7 +34,7 @@ class AdminIndexHandler(AdminBaseHandler):
 
     @admin_required
     def get(self):
-        self.redirect('/admin/bookings')
+        self.redirect('/admin/providers')
 
 
 class AdminBookingsHandler(AdminBaseHandler):
