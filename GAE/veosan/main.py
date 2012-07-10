@@ -9,7 +9,7 @@ from webapp2_extras.routes import PathPrefixRoute
 from util import dump
 import util
 from utilities import time
-from handler import booking, provider, patient, provider_admin, admin, static, contact, blob, language, user
+from handler import booking, provider, patient, provider_admin, admin, static, contact, language, user
 from data.model import User
 
 
@@ -127,10 +127,6 @@ application = webapp2.WSGIApplication([
                                                Route('/feature/<feature_switch>', provider_admin.ProviderAccountFeaturesHandler),
                                             ]),
                                        ]),
-                                                                              
-                             
-                                       # blob
-                                       ('/serve/([^/]+)?', blob.BlobServeHandler),
                                        
                                        # language
                                        Route('/lang/<lang>', language.LanguageHandler),
