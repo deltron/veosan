@@ -5,10 +5,15 @@ from wtforms import validators
 from custom_form import CustomBooleanField
 from webapp2_extras.i18n import lazy_gettext as _
 
-class LoginForm(Form):
-    email = TextField(_(u'Email'), [validators.Email(message=_(u'Invalid email address.'))])
-    password = PasswordField(_(u'Password'))
-    remember_me = CustomBooleanField(_(u'Remember Me'))
+# veo
+from custom_form import CustomForm
+
+class LoginForm(CustomForm):
+    def _set_fields(self, form):        
+        setattr(form, 'email', TextField(_(u'Email'), [validators.Email(message=_(u'Invalid email address.'))]))
+        setattr(form, 'password', PasswordField(_(u'Password')))
+        setattr(form, 'remember_me', CustomBooleanField(_(u'Remember Me')))
+
 
 class ProviderTermsForm(Form):
     # terms agreement (required)

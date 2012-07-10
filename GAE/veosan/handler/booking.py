@@ -192,7 +192,7 @@ class BookingHandler(BookingBaseHandler):
                         booking.patient = existing_patient.key
                         booking.put()
                         # send to login page with booking.key set
-                        login_form = LoginForm()
+                        login_form = LoginForm().get_form()
                         login_form.email.data = email
                         self.render_template('user/login.html', form=login_form, booking=booking)
                     

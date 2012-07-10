@@ -7,10 +7,10 @@ from wtforms import Form
 from custom_form import CustomForm
 
 class ContactForm(CustomForm):
-    def __init__(self):
-        self.set_field('from_email', TextField(_(u'E-mail Address'), [validators.Email(message=_(u'Invalid email address.'))]))
-        self.set_field('subject', TextField(_(u'Subject'), [validators.Length(min=3, message=_(u'Subject required.'))]))
-        self.set_field('message_body', TextAreaField(_(u'Message')))
+    def _set_fields(self, form):        
+        setattr(form, 'from_email', TextField(_(u'E-mail Address'), [validators.Email(message=_(u'Invalid email address.'))]))
+        setattr(form, 'subject', TextField(_(u'Subject'), [validators.Length(min=3, message=_(u'Subject required.'))]))
+        setattr(form, 'message_body', TextAreaField(_(u'Message')))
 
 class SignupForm(Form):
     role = SelectField()

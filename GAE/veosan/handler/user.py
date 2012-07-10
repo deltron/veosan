@@ -52,7 +52,7 @@ class UserBaseHandler(BaseHandler):
                 logging.error('(UserBaseHandler.render_password_selection) no user given, cannot render password selection')
         
     def render_login(self, **kw):
-        self.render_template('user/login.html', form=LoginForm(), **kw)
+        self.render_template('user/login.html', form=LoginForm().get_form(), **kw)
 
 
 class ProviderTermsHandler(UserBaseHandler):
@@ -304,7 +304,7 @@ class LoginHandler(UserBaseHandler):
     def post(self):
         ''' checks username, password, logs in user and redirect to start page '''
         
-        login_form = LoginForm(self.request.POST)
+        login_form = LoginForm().get_form(self.request.POST)
         if login_form.validate():
             email = self.request.POST.get('email')
             password = self.request.POST.get('password')

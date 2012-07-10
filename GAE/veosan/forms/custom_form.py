@@ -78,13 +78,16 @@ class CustomBooleanField(BooleanField):
         else:
             return u'True'
 
-class CustomForm():
-    class F(Form):
-        pass
-    
+class CustomForm(object):
     def get_form(self, request=None, obj=None):
-        return self.F(request, obj)
+        class F(Form):
+            pass
+        
+        self._set_fields(F)
 
-    def set_field(self, field_name, widget):
-        setattr(self.F, field_name, widget)
+        return F(request, obj)
+
+    # override in child
+    def _set_fields(self, F):
+        pass
 
