@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from wtforms import Form, Field, TextField, SelectField, SelectMultipleField, FileField, BooleanField, PasswordField, HiddenField, TextAreaField
-from wtforms import validators, widgets
+from wtforms import Form, SelectMultipleField, BooleanField
+from wtforms import widgets
 from cgi import escape
-import util
 
 ''' 
 need to write our own list widget so the <label> doesn't appear after
