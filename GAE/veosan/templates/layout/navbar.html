@@ -18,10 +18,10 @@
 						<ul class="dropdown-menu">
 							{% if provider %}
 							<li>
-								<a href="{{provider.get_edit_link(route='/provider/bookings')}}">{{ _('Bookings') }}</a>
+								<a href="/provider/bookings/{{ provider.vanity_url }}">{{ _('Bookings') }}</a>
 							</li>
 							<li>
-								<a href="{{provider.get_edit_link(route='/provider/schedule')}}">{{ _('Schedule') }}</a>
+								<a href="/provider/schedule/{{ provider.vanity_url }}">{{ _('Schedule') }}</a>
 							</li>
 							{% endif%}
 							

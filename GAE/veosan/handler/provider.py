@@ -10,7 +10,7 @@ class ProviderBaseHandler(BaseHandler):
     def render_schedule(self, provider, availableIds, **kw):
         timeslots = time.getScheduleTimeslots()
         days = time.getWeekdays()
-        timeslot_ids = map(lambda x: "%s-%s-%s" % (x[0][0], x[1][1], x[1][2]),  [(d,ts) for d in days for ts in timeslots])
+        timeslot_ids = map(lambda x: "%s-%s-%s" % (x[0][0], x[1][1], x[1][2]), [(d, ts) for d in days for ts in timeslots])
         logging.info("timeslot ids %s" % timeslot_ids)
         skipped_available_ids = [a for a in availableIds if a not in timeslot_ids]
         logging.info("skipped available ids %s" % skipped_available_ids)
@@ -29,22 +29,21 @@ class ProviderBaseHandler(BaseHandler):
 class ProviderScheduleHandler(ProviderBaseHandler):
     
     @provider_required
-    def get(self):
-        provider = db.get_from_urlsafe_key(self.request.get('key'))
+    def get(self, vanity_url=None):
+        provider = db.get_provider_from_vanity_url(vanity_url)
         availableIds = provider.getAvailableScheduleIds()
         logging.info('available ids' + str(availableIds))
         self.render_schedule(provider, availableIds)
            
     @provider_required
-    def post(self):
+    def post(self, vanity_url=None):
         logging.debug('ProviderScheduleHandler POST')
-        urlsafe_key = self.request.get('key')
         day_time = self.request.get('day_time')
         day, startTime, endTime = day_time.split('-')
         operation = self.request.get('operation')
-        logging.info("SAVE SCHEDULE: " + urlsafe_key + " " + day + "-" + startTime + "-" + endTime + " " + operation)
+        logging.info("SAVE SCHEDULE: " + vanity_url + " " + day + "-" + startTime + "-" + endTime + " " + operation)
         
-        provider = db.get_from_urlsafe_key(urlsafe_key)
+        provider = db.get_provider_from_vanity_url(vanity_url)
         if (operation == 'add'):
             s = Schedule()
             s.provider = provider.key
@@ -66,10 +65,10 @@ class ProviderScheduleHandler(ProviderBaseHandler):
 class ProviderBookingsHandler(ProviderBaseHandler):
     
     @provider_required
-    def get(self):
-        provider = db.get_from_urlsafe_key(self.request.get('key'))
-        
-        self.render_bookings(self, provider)
+    def get(self, vanity_url=None):
+        provider = db.get_provider_from_vanity_url(vanity_url)
+        if provider:
+            self.render_bookings(self, provider)
 
 
 class ProviderPublicProfileHandler(ProviderBaseHandler):

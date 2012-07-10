@@ -328,7 +328,7 @@ class LoginHandler(UserBaseHandler):
                         provider = db.get_provider_from_user(user)
                         logging.info('(LoginHandler.post) User %s logged in as provider, redirecting to bookings page', user.get_email())
 
-                        self.redirect(provider.get_edit_link('/provider/bookings'))
+                        self.redirect('/provider/bookings/%s' % provider.vanity_url)
 
                     elif auth.PATIENT_ROLE in user.roles:
                         patient = db.get_patient_from_user(user)

@@ -19,13 +19,15 @@ def provider_required(handler_method):
         Decorator: Checks session for authenticated provider (or google admin)
     '''
     
-    def check_provider_key(self):
+    def check_provider_key(self, vanity_url = None):
         user = self.get_current_user()
         if user:
             provider = data.db.get_provider_from_user(user)
             
             # if there is a key in the request, make sure it matches the logged in user
-            if provider:
+            if vanity_url:
+                return provider.vanity_url == vanity_url
+            elif self.request.get('key'):                
                 return provider.key.urlsafe() == self.request.get('key')
             else:
                 logging.info('(decorator @provider_required.check_provider_key) provider_required failed. Provider key does not match request key %s != %s' % (provider.key.urlsafe(), self.request.get('key')))
@@ -33,13 +35,13 @@ def provider_required(handler_method):
             logging.info('(decorator @provider_required.check_provider_key) provider_required failed: User is None')
         return False
 
-    def check_provider_login(self, *args, **kwargs):
+    def check_provider_login(self, vanity_url = None, *args, **kwargs):
         # admin
         if users.is_current_user_admin():
-            handler_method(self, *args, **kwargs)
+            handler_method(self, vanity_url, *args, **kwargs)
         # provider logged in with key matching request key
-        elif check_provider_key(self):
-            handler_method(self, *args, **kwargs)
+        elif check_provider_key(self, vanity_url):
+            handler_method(self, vanity_url, *args, **kwargs)
         else:
             self.redirect('/login', abort=True)
             

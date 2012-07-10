@@ -84,8 +84,10 @@ application = webapp2.WSGIApplication([
                                        ('/patient/book', booking.BookingHandler),
                                   
                                        #provider
-                                       ('/provider/schedule', provider.ProviderScheduleHandler),
-                                       ('/provider/bookings', provider.ProviderBookingsHandler),
+                                       PathPrefixRoute('/provider', [
+                                            Route('/schedule/<vanity_url>', provider.ProviderScheduleHandler),
+                                            Route('/bookings/<vanity_url>', provider.ProviderBookingsHandler),
+                                       ]),
                                        
                                        # user
                                        ('/login', user.LoginHandler),
@@ -110,16 +112,20 @@ application = webapp2.WSGIApplication([
                                            Route('/data/delete', admin.AdminDeleteDataHandler),
                                            Route('/data/index_switch', admin.AdminIndexSwitchHandler),
 
-                                           # provider admin
-                                           Route('/provider', provider_admin.ProviderAdministrationHandler),
-                                           Route('/provider/init', admin.NewProviderInitHandler),
-                                           Route('/provider/solicit', admin.NewProviderSolicitHandler),
-                                           Route('/provider/enable', provider_admin.ProviderEnableHandler),
-                                           Route('/provider/profile/<vanity_url>', provider_admin.ProviderEditProfileHandler),
-                                           Route('/provider/address', provider_admin.ProviderEditAddressHandler),
-                                           Route('/provider/notes', provider_admin.ProviderNotesHandler),
-                                           Route('/provider/address/upload', provider_admin.ProviderAddressUploadHandler),
-                                           Route('/provider/feature/<feature_switch>', provider_admin.ProviderAccountFeaturesHandler),
+                                           PathPrefixRoute('/provider', [
+                                               # provider actions
+                                               Route('/init', admin.NewProviderInitHandler),
+                                               Route('/solicit', admin.NewProviderSolicitHandler),
+                                               Route('/enable', provider_admin.ProviderEnableHandler),
+                                               
+                                               # provider admin
+                                               Route('/admin/<vanity_url>', provider_admin.ProviderAdministrationHandler),
+                                               Route('/profile/<vanity_url>', provider_admin.ProviderEditProfileHandler),
+                                               Route('/address/<vanity_url>', provider_admin.ProviderEditAddressHandler),
+                                               Route('/notes/<vanity_url>', provider_admin.ProviderNotesHandler),
+                                               Route('/address/upload', provider_admin.ProviderAddressUploadHandler),
+                                               Route('/feature/<feature_switch>', provider_admin.ProviderAccountFeaturesHandler),
+                                            ]),
                                        ]),
                                                                               
                              

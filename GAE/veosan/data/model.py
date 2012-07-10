@@ -10,13 +10,6 @@ import util
     stored data 
 '''
 
-# headers must be strings not unicode
-def get_link(model_entity, route=None):
-    if route:
-        return '%s?key=%s' % (route, model_entity.key.urlsafe())
-    else:
-        logging.error('(model.get_link) Trying to get route key with no route')
-
 class SiteConfig(ndb.Model):
     booking_enabled = ndb.BooleanProperty()
     
@@ -135,10 +128,7 @@ class Provider(ndb.Model):
     
     def get_profile_photo_image_url(self, size=None):
         return get_serving_url(self.profile_photo_blob_key, size)
-        
-    def get_edit_link(self, route='/provider/bookings'):
-        return get_link(self, route)
- 
+
     def obfuscated_name(self):
         if self.last_name:
             first_letter_of_last_name = self.last_name[0]

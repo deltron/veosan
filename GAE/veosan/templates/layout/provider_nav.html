@@ -3,23 +3,23 @@
 {% block subnav %}
 <ul class="nav nav-tabs">
 	<li id="bookings" {% if "bookings" == active_page %} class="active" {% endif %}>
-		<a href="{{provider.get_edit_link(route='/provider/bookings')}}">{{ _('Bookings') }}</a>
+		<a href="/provider/bookings/{{ provider.vanity_url }}">{{ _('Bookings') }}</a>
 	</li>
 	<li id="schedule" {% if "schedule" == active_page %} class="active" {% endif %}>
-		<a href="{{provider.get_edit_link(route='/provider/schedule')}}">{{ _('Schedule') }}</a>
+		<a href="/provider/schedule/{{ provider.vanity_url }}">{{ _('Schedule') }}</a>
 	</li>
 	{% if 'admin' in roles %}
 	<li id="profile" {% if  "profile" == active_page %} class="active" {% endif %} style="font-style:italic">
 		<a href="/admin/provider/profile/{{ provider.vanity_url }}">{{ _('Profile') }}</a>
 	</li>
 	<li id="address" {% if  "address" == active_page %} class="active" {% endif %} style="font-style:italic">
-		<a href="{{provider.get_edit_link(route='/admin/provider/address')}}">{{ _('Address') }}</a>
+		<a href="/admin/provider/address/{{ provider.vanity_url }}">{{ _('Address') }}</a>
 	</li>
 	<li id="administration" {% if  "administration" == active_page %} class="active" {% endif %} style="font-style:italic">
-		<a href="{{provider.get_edit_link(route='/admin/provider')}}">{{ _('Administration') }}</a>
+		<a href="/admin/provider/admin/{{ provider.vanity_url }}">{{ _('Administration') }}</a>
 	</li>
 	<li id="notes" {% if  "notes" == active_page %} class="active" {% endif %} style="font-style:italic">
-		<a href="{{provider.get_edit_link(route='/admin/provider/notes')}}">{{ _('Notes') }}</a>
+		<a href="/admin/provider/notes/{{ provider.vanity_url }}">{{ _('Notes') }}</a>
 	</li>
 	{% endif %}
 	

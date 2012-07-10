@@ -31,8 +31,7 @@ class ProviderTest(BaseTest):
         # get the provider key
         provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
         # request the address page
-        request_variables = { 'key' : provider.key.urlsafe() }
-        response = self.testapp.get('/provider/bookings', request_variables)
+        response = self.testapp.get('/provider/bookings/%s' % provider.vanity_url)
                 
         # patient name in navbar
         response.mustcontain(self._TEST_PROVIDER_EMAIL)
@@ -170,8 +169,7 @@ class ProviderTest(BaseTest):
         provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
         
         # request the address page
-        request_variables = { 'key' : provider.key.urlsafe() }
-        response = self.testapp.get('/admin/provider/address', request_variables)
+        response = self.testapp.get('/admin/provider/address/%s' % provider.vanity_url)
                 
         photo_form = response.forms[1] # photo form
         

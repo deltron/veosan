@@ -61,16 +61,15 @@ class ProviderEditProfileHandler(ProviderAdminBaseHandler):
           
 
 class ProviderEditAddressHandler(ProviderAdminBaseHandler):
-    
     @admin_required
-    def get(self):
-        provider = db.get_from_urlsafe_key(self.request.get('key'))
+    def get(self, vanity_url = None):
+        provider = db.get_provider_from_vanity_url(vanity_url)
         logging.info("provider dump before edit:" + str(vars(provider)))
         form = ProviderAddressForm(obj=provider)
         self.render_address(provider, address_form=form)
 
     # admin_required
-    def post(self):
+    def post(self, vanity_url = None):
         form = ProviderAddressForm(self.request.POST)
         
         if form.validate():
@@ -102,8 +101,8 @@ class ProviderAddressUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
 class ProviderAdministrationHandler(ProviderAdminBaseHandler):
     
     @admin_required
-    def get(self):
-        provider = db.get_from_urlsafe_key(self.request.get('key'))   
+    def get(self, vanity_url = None):
+        provider = db.get_provider_from_vanity_url(vanity_url)
         if users.is_current_user_admin():
             self.render_administration(provider)
         else:

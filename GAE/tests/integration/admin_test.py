@@ -112,8 +112,7 @@ class AdminTest(BaseTest):
 
         # get the provider key
         provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
-        request_variables = { 'key' : provider.key.urlsafe() }
-        response = self.testapp.get('/admin/provider', request_variables)
+        response = self.testapp.get('/admin/provider/admin/%s' % provider.vanity_url)
 
         response.mustcontain('Provider Administration')
         response.mustcontain(self._TEST_PROVIDER_EMAIL)
@@ -158,8 +157,7 @@ class AdminTest(BaseTest):
         # get the provider key
         provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
         # request the address page
-        request_variables = { 'key' : provider.key.urlsafe() }
-        response = self.testapp.get('/provider/bookings', request_variables)
+        response = self.testapp.get('/provider/bookings/%s' % provider.vanity_url)
         # patient name in navbar
         response.mustcontain('Administration')
         response.mustcontain('Rendez-vous')
@@ -173,8 +171,7 @@ class AdminTest(BaseTest):
         self.login_as_admin()
         
         provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
-        request_variables = { 'key' : provider.key.urlsafe() }
-        response = self.testapp.get('/admin/provider', request_variables)
+        response = self.testapp.get('/admin/provider/admin/%s' % provider.vanity_url)
         
         # make sure provider starts as Enabled
         response.mustcontain("enable=True")
@@ -199,8 +196,7 @@ class AdminTest(BaseTest):
         self.login_as_admin()
         
         provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
-        request_variables = { 'key' : provider.key.urlsafe() }
-        response = self.testapp.get('/admin/provider', request_variables)
+        response = self.testapp.get('/admin/provider/admin/%s' % provider.vanity_url)
         
         # make sure provider starts as Enabled
         response.mustcontain("enable=False")

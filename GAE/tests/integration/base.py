@@ -182,8 +182,7 @@ class BaseTest(unittest.TestCase):
         ''' Send email to provider and activate'''
         # get the provider key
         provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
-        request_variables = { 'key' : provider.key.urlsafe() }
-        response = self.testapp.get('/admin/provider', request_variables)
+        response = self.testapp.get('/admin/provider/admin/%s' % provider.vanity_url)
 
         response.mustcontain('Provider Administration')
         response.mustcontain(self._TEST_PROVIDER_EMAIL)
@@ -208,8 +207,7 @@ class BaseTest(unittest.TestCase):
         provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
         
         # request the address page
-        request_variables = { 'key' : provider.key.urlsafe() }
-        response = self.testapp.get('/admin/provider/address', request_variables)
+        response = self.testapp.get('/admin/provider/address/%s' % provider.vanity_url)
         
         address_form = response.forms[0] # address form
         
@@ -249,8 +247,7 @@ class BaseTest(unittest.TestCase):
         provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
         
         # request the address page
-        request_variables = { 'key' : provider.key.urlsafe() }
-        response = self.testapp.get('/admin/provider/address', request_variables)
+        response = self.testapp.get('/admin/provider/address/%s' % provider.vanity_url)
         
         address_form = response.forms[0] # address form
         
@@ -391,8 +388,7 @@ class BaseTest(unittest.TestCase):
         provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
         
         # request the schedule page
-        request_variables = { 'key' : provider.key.urlsafe() }
-        response = self.testapp.get('/provider/schedule', request_variables)
+        response = self.testapp.get('/provider/schedule/%s' % provider.vanity_url)
         
         # TODO make this more comprehensible ie. monday-8-to-13
         monday_morning_id = '0-8-12'
@@ -414,14 +410,13 @@ class BaseTest(unittest.TestCase):
 
 
         # Click to select Monday morning        
-        request_variables = {'key': provider.key.urlsafe(), 'day_time': monday_morning_id, 'operation': 'add'}
-        response = self.testapp.post('/provider/schedule', request_variables)
+        request_variables = {'day_time': monday_morning_id, 'operation': 'add'}
+        response = self.testapp.post(str('/provider/schedule/%s' % provider.vanity_url), request_variables)
         
         # no javascript interpretation for jquery so request the page again...
         
         # reload page
-        request_variables = { 'key' : provider.key.urlsafe() }
-        response = self.testapp.get('/provider/schedule', request_variables)        
+        response = self.testapp.get(str('/provider/schedule/%s' % provider.vanity_url))
         
         provider = db.get_provider_from_email("unit_test@provider.com")
         
