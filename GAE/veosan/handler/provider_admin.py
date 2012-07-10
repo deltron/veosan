@@ -160,8 +160,8 @@ class ProviderAccountFeaturesHandler(ProviderAdminBaseHandler):
 class ProviderNotesHandler(ProviderAdminBaseHandler):
     
     @admin_required
-    def get(self):
-        provider = db.get_from_urlsafe_key(self.request.get('key')) 
+    def get(self, vanity_url = None):
+        provider = db.get_provider_from_vanity_url(vanity_url)
         if users.is_current_user_admin():
             self.render_notes(provider)
         else:
