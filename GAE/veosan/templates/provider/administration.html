@@ -99,9 +99,8 @@
 					<tr>
 						<td width="60%">Show address={{ provider.address_enabled }}</td>
 						<td width="40%">
-						<form method="post" action="/admin/provider/feature/address_enabled" class="form-inline">
+						<form method="post" action="/admin/provider/feature/address_enabled/{{ provider.vanity_url }}" class="form-inline">
 							<fieldset>
-								<input type="hidden" name="provider_key" value="{{ provider.key.urlsafe() }}" />
 								{% if provider.address_enabled %}
 								<button type="submit" class="btn btn-danger">
 									Disable Address Link
@@ -117,9 +116,8 @@
 					<tr>
 						<td width="60%">Show booking={{ provider.booking_enabled }}</td>
 						<td width="40%">
-						<form method="post" action="/admin/provider/feature/booking_enabled" class="form-inline">
+						<form method="post" action="/admin/provider/feature/booking_enabled/{{ provider.vanity_url }}" class="form-inline">
 							<fieldset>
-								<input type="hidden" name="provider_key" value="{{ provider.key.urlsafe() }}" />
 								{% if provider.booking_enabled %}
 								<button type="submit" class="btn btn-danger">
 									Disable Booking
