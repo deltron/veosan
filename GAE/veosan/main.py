@@ -9,7 +9,7 @@ from webapp2_extras.routes import PathPrefixRoute
 from util import dump
 import util
 from utilities import time
-from handler import booking, provider, patient, provider_admin, admin, static, contact, blob, language, user
+from handler import booking, provider, patient, provider_admin, admin, static, contact, language, user
 from data.model import User
 
 
@@ -121,17 +121,13 @@ application = webapp2.WSGIApplication([
                                                # provider admin
                                                Route('/admin/<vanity_url>', provider_admin.ProviderAdministrationHandler),
                                                Route('/profile/<vanity_url>', provider_admin.ProviderEditProfileHandler),
-                                               Route('/address/<vanity_url>', provider_admin.ProviderEditAddressHandler),
                                                Route('/notes/<vanity_url>', provider_admin.ProviderNotesHandler),
                                                Route('/notes/<vanity_url>/<note_key>/<operation>', provider_admin.ProviderNotesHandler),
-                                               Route('/address/upload', provider_admin.ProviderAddressUploadHandler),
+												Route('/address/<vanity_url>', provider_admin.ProviderEditAddressHandler),
+                                               Route('/address/upload/<vanity_url>', provider_admin.ProviderAddressUploadHandler),
                                                Route('/feature/<feature_switch>', provider_admin.ProviderAccountFeaturesHandler),
                                             ]),
                                        ]),
-                                                                              
-                             
-                                       # blob
-                                       ('/serve/([^/]+)?', blob.BlobServeHandler),
                                        
                                        # language
                                        Route('/lang/<lang>', language.LanguageHandler),

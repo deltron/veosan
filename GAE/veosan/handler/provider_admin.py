@@ -18,7 +18,7 @@ class ProviderAdminBaseHandler(BaseHandler):
         self.render_template('provider/profile.html', provider=provider, form=profile_form, **kw)
     
     def render_address(self, provider, address_form, **kw):
-        upload_url = blobstore.create_upload_url('/admin/provider/address/upload')
+        upload_url = blobstore.create_upload_url('/admin/provider/address/upload/%s' % provider.vanity_url)
         uploadForm = ProviderPhotoForm(self.request.GET)
         self.render_template('provider/address.html', provider=provider, form=address_form, uploadForm=uploadForm, upload_url=upload_url, **kw)
        
@@ -85,18 +85,19 @@ class ProviderEditAddressHandler(ProviderAdminBaseHandler):
 
 
 class ProviderAddressUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
-    
-    def post(self):
-        provider = db.get_from_urlsafe_key(self.request.get('key'))
-        logging.info("(ProviderAddressUploadHandler.post) Found provider: %s %s" % (provider.first_name, provider.last_name))
+    def post(self, vanity_url = None):
+        provider = db.get_provider_from_vanity_url(vanity_url)
+        logging.info("(ProviderAddressUploadHandler.post) Found provider: %s" % provider.email)
+        
         uploadForm = ProviderPhotoForm(self.request.POST)
         upload_files = self.get_uploads(uploadForm.profilePhoto.name)[0]
+        
         logging.info("(ProviderAddressUploadHandler.post) Uploaded blob key: %s " % upload_files.key())
         provider.profile_photo_blob_key = upload_files.key()
         provider.put()
         
         # redirect to address edit page        
-        self.redirect(provider.get_edit_link(str('/admin/provider/address'))) 
+        self.redirect('/admin/provider/address/%s' % provider.vanity_url) 
 
 class ProviderAdministrationHandler(ProviderAdminBaseHandler):
     
