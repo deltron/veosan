@@ -116,9 +116,9 @@ class AdminTest(BaseTest):
 
         response.mustcontain('Provider Administration')
         response.mustcontain(self._TEST_PROVIDER_EMAIL)
-        solicit_form = response.forms[0]
-        # sends an email to the provider
-        response = solicit_form.submit()
+
+        # hit the solicit button
+        response = self.testapp.get('/admin/provider/solicit/' + self._TEST_PROVIDER_VANITY_URL)
         
         # check error message is displayed
         response.mustcontain("Incomplete profile")
