@@ -9,17 +9,51 @@
 <!-- Form -->
 <div class="row">
 	<div class="span12">
-		<form method="post" action="" class="form-horizontal">
+		<form method="post" action="/admin/provider/profile/{{ provider.vanity_url }}" class="form-horizontal">
 			<fieldset>
-				{{ macro.makeStandardForm() }}
+				<div class="row">
+					<div class="span8">
+						{{ macro.make_standard_form(profile_form) }}
+					</div>
+					<!-- Experience -->
+					<div class="span4">
+						<h3>Education</h3>
+						<a data-toggle="modal" href="#education_modal" class="btn btn-primary">Add Education</a>
+					</div>
+				</div>
 			</fieldset>
-			<input type="hidden" name="provider_key" value="{{ provider.key.urlsafe() }}" />
 			<div class="form-actions">
 				<button type="submit" class="btn btn-primary">
-						{{ _('Save') }}
+					{{ _('Save') }}
 				</button>
 			</div>
 		</form>
 	</div>
 </div>
+
+<div class="modal hide" id="education_modal" style="display: none;">
+	<div class="modal-header">
+		<a class="close" data-dismiss="modal">×</a>
+		<h3>{{ _('Education') }}</h3>
+	</div>
+	<form method="post" action="/admin/provider/profile/education/{{ provider.vanity_url }}" class="form-horizontal">
+		<div class="modal-body">
+			{{ macro.make_standard_form(education_form) }}
+		</div>
+
+		<div class="modal-footer">
+			<button type="submit" class="btn btn-primary">
+				{{ _('Save') }}
+			</button>
+		</div>
+	</form>
+</div>
+{% endblock %}
+
+{% block extra_javascript %}
+
+{% if education_form.errors %}
+<script>$('#education_modal').modal('show')</script>
+{% endif %}
+
 {% endblock %}

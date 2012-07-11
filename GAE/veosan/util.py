@@ -54,7 +54,7 @@ def getAllSpecialitiesForPatient():
     return z
 
 
-def getAllSchools():
+def get_all_schools():
     return [("na", _(u"Not Applicable")),
             ("concordia", _(u"Concordia University")),
             ("mcgill", _(u"McGill University")),
@@ -62,6 +62,14 @@ def getAllSchools():
             ("uqtr", _(u"Universite de Quebec a Trois-Rivieres")),
             ("usherb", _(u"Universite de Sherbrooke"))
         ]
+    
+def get_all_degrees():
+    return [("bachelor", _(u"Bachelor's")),
+            ("masters", _(u"Master's")),
+            ("phd", _(u"Doctor (Ph.D)")),
+            ("md", _(u"Doctor (MD)")),
+        ]
+
 
 def getAllAssociations():
     return [("oppq", _(u"Ordre professionnel de la physiotherapie du Quebec (OPPQ)")),

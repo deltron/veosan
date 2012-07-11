@@ -120,7 +120,13 @@ application = webapp2.WSGIApplication([
                                                
                                                # provider admin
                                                Route('/admin/<vanity_url>', provider_admin.ProviderAdministrationHandler),
-                                               Route('/profile/<vanity_url>', provider_admin.ProviderEditProfileHandler),
+                                               
+                                               # provider profile
+                                               PathPrefixRoute('/profile', [
+                                                    Route('/<vanity_url>', provider_admin.ProviderEditProfileHandler),
+                                                    Route('/education/<vanity_url>', provider_admin.ProviderEducationHandler),
+                                               ]),
+                                               
                                                Route('/notes/<vanity_url>', provider_admin.ProviderNotesHandler),
                                                Route('/notes/<vanity_url>/<note_key>/<operation>', provider_admin.ProviderNotesHandler),
                                                Route('/address/<vanity_url>', provider_admin.ProviderEditAddressHandler),

@@ -34,6 +34,16 @@ class ProviderProfileForm(Form):
     certifications = MultiCheckboxField(_(u'Certifications'), choices=util.getAllCertifications())
     onsite = CustomBooleanField(_(u'I am willing to do on-site visits'))
 
+class ProviderEducationForm(Form):
+    start_year = TextField(_(u'Start Year'), [validators.Length(min=4, max=4, message='Your first year of school')])
+    end_year = TextField(_(u'End Year'), [validators.Length(min=4, max=4, message='Your first year of school')])
+
+    school_name = SelectField(_(u'School'), choices=util.get_all_schools())    
+    degree_type = SelectField(_(u'Degree'), choices=util.get_all_degrees())    
+    degree_text = TextField(_(u'Degree Text'))
+
+    description = TextAreaField(_(u'Description'))
+
 
 class ProviderNoteForm(Form):
     body = TextAreaField(_(u'Note'))

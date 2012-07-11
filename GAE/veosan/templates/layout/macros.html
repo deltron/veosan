@@ -21,8 +21,8 @@ Twitter Bootstrap horizontal form layout.
 
 #}
 
-{% macro makeStandardForm(name, inputClass='input-xlarge') -%}
-{% for field in form %}
+{% macro make_standard_form(form_name, inputClass='input-xlarge') -%}
+{% for field in form_name %}
 {% if field.type != "FileField" %}
 <div class="control-group {% if field.errors %} error {% endif %}">
 	{% if field.type == "CustomBooleanField" %}
@@ -36,7 +36,7 @@ Twitter Bootstrap horizontal form layout.
 		{% if field.type in ['MultiCheckboxField', 'CustomBooleanField'] %}
 		{{ field(class="checkbox") }}
 		{% elif field.type == 'TextAreaField' %}
-		{{ field(class="field span6", rows="10") }}
+		{{ field(class="field span4", rows="4") }}
 		{% else %}
 		{{ field(class=inputClass) }}
 		{% endif %}
@@ -45,6 +45,14 @@ Twitter Bootstrap horizontal form layout.
 {% endif %}
 {% endfor %}
 {%- endmacro %}
+
+{# backwards compatible makeStandardForm() form all old pages that
+	don't give form_name as a parameter	
+#}
+{% macro makeStandardForm(inputClass='input-xlarge') -%}
+   {{ make_standard_form(form, inputClass) }}
+{%- endmacro %}
+
 
 {#
 Macro to generate a provider bio

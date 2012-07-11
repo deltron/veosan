@@ -8,14 +8,14 @@ from google.appengine.ext.webapp import blobstore_handlers
 from base import BaseHandler
 import data.db as db
 from data.model import Note
-from forms.provider import ProviderProfileForm, ProviderAddressForm, ProviderPhotoForm, ProviderNoteForm
+from forms.provider import ProviderProfileForm, ProviderAddressForm, ProviderPhotoForm, ProviderNoteForm, ProviderEducationForm
 from handler.auth import admin_required
 from util import saved_message
 
 class ProviderAdminBaseHandler(BaseHandler):
 
-    def render_profile(self, provider, profile_form, **kw):
-        self.render_template('provider/profile.html', provider=provider, form=profile_form, **kw)
+    def render_profile(self, provider, **kw):
+        self.render_template('provider/profile.html', provider=provider, **kw)
     
     def render_address(self, provider, address_form, **kw):
         upload_url = blobstore.create_upload_url('/admin/provider/address/upload/%s' % provider.vanity_url)
@@ -43,21 +43,46 @@ class ProviderEditProfileHandler(ProviderAdminBaseHandler):
             
             logging.info("(ProviderEditProfileHandler.get) Edit profile for provider %s" % provider.email)
             
-            form = ProviderProfileForm(obj=provider)
-            self.render_profile(provider, profile_form=form)
+            profile_form = ProviderProfileForm(obj=provider)
+            education_form = ProviderEducationForm()
+            
+            self.render_profile(provider, profile_form=profile_form, education_form=education_form)
     
     # admin_required
     def post(self, vanity_url = None):
         form = ProviderProfileForm(self.request.POST)
         if form.validate():
             # Store Provider
-            key = db.storeProvider(self.request.POST)
-            provider = key.get()
+            provider = db.get_provider_from_vanity_url(vanity_url)
+            provider_key = db.storeProvider(provider, self.request.POST)
+            provider = provider_key.get()
             self.render_profile(provider, profile_form=form, success_message=saved_message)
         else:
             # show error
-            provider = db.getProvider(self.request)
+            provider = db.get_provider_from_vanity_url(vanity_url)
             self.render_profile(provider, profile_form=form)
+
+class ProviderEducationHandler(ProviderAdminBaseHandler):
+    
+    # admin_required
+    def post(self, vanity_url = None):
+        
+        education_form = ProviderEducationForm(self.request.POST)
+        if education_form.validate():
+            # Store Education
+            provider = db.get_provider_from_vanity_url(vanity_url)
+
+            # success, empty forms so you can add another one            
+            profile_form = ProviderProfileForm(obj=provider)
+            education_form = ProviderEducationForm()
+
+            self.render_profile(provider, profile_form=profile_form, education_form=education_form, success_message=saved_message)
+        else:
+            # show error
+            provider = db.get_provider_from_vanity_url(vanity_url)
+            
+            profile_form = ProviderProfileForm(obj=provider)
+            self.render_profile(provider, profile_form=profile_form, education_form=education_form)
           
 
 class ProviderEditAddressHandler(ProviderAdminBaseHandler):
