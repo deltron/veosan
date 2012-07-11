@@ -1,3 +1,16 @@
+{# Macro to display the errors in a given field for a form #}
+
+{% macro display_errors_for_field(field) -%}
+{% if field.errors %}
+<p class="help-block">
+	{% for error in field.errors %} <i class="icon-exclamation-sign"></i> {{ error }}
+	<br>
+	{% endfor %}
+</p>
+{% endif %}
+{%- endmacro %}
+	
+	
 {#
 
 Macro to generate a standard form.
@@ -18,14 +31,8 @@ Twitter Bootstrap horizontal form layout.
 	{{ field.label(class="control-label") }}
 	{% endif %}
 	<div class="controls">
-		{% if field.errors %}
-
-		<p class="help-block">
-			{% for error in field.errors %} <i class="icon-exclamation-sign"></i> {{ error }}
-			<br>
-			{% endfor %}
-		</p>
-		{% endif %}
+		{{ display_errors_for_field(field) }}
+		
 		{% if field.type in ['MultiCheckboxField', 'CustomBooleanField'] %}
 		{{ field(class="checkbox") }}
 		{% elif field.type == 'TextAreaField' %}
@@ -74,7 +81,9 @@ Macro to generate a provider bio
 				<h5>Specialities</h5>
 				<ul class="unstyled">
 					{% for s in provider.specialty %}
-						<li>{{ specialty_dict[s] }}</li>
+					<li>
+						{{ specialty_dict[s] }}
+					</li>
 					{% endfor %}
 				</ul>
 			</div>
