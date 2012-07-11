@@ -133,4 +133,12 @@ def get_provider_from_vanity_url(vanity_url):
 def get_site_config():
     return SiteConfig.query().get()
 
+def store(key, data):
+    # data is a MultiDict object from the request
+    logging.info("Storing on key:%s with data:%s" % (key, str(data)))
+    datastore_object = get_from_urlsafe_key(key)
+    # set all the properties
+    db_util.set_all_properties_on_entity_from_multidict(datastore_object, data)
+    # store
+    datastore_object.put()
     
