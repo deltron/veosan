@@ -252,9 +252,18 @@ class ProviderNotesHandler(ProviderAdminBaseHandler):
     def post(self, vanity_url=None, note_key=None, operation=None):
         if users.is_current_user_admin():
             provider = db.get_provider_from_vanity_url(vanity_url)
-            logging.info('type %s' % self.request.get('note_type'))
-            provider.add_note(self.request.get('body'), note_type=self.request.get('note_type'))
-            self.render_notes(provider)
+            if not operation:
+                logging.info('type %s' % self.request.get('note_type'))
+                provider.add_note(self.request.get('body'), note_type=self.request.get('note_type'))
+                self.render_notes(provider)
+            elif operation == 'edit':
+                # todo: VALIDATE FORM!!!
+                db.store(note_key, self.request.POST)
+            elif operation == 'delete':
+                logging.error('delete operation on notes is not handled')
+            else:
+                logging.error('unknown operation on notes:%s' % operation)
+            self.render_notes(provider) 
         else:
             logging.info("Not Admin: Can't see provider notes page")
             
