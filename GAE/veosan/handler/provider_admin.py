@@ -9,8 +9,8 @@ from google.appengine.ext.webapp import blobstore_handlers
 from base import BaseHandler
 import data.db as db
 import data.db_util as db_util
-from data.model import Note, Education
-from forms.provider import ProviderProfileForm, ProviderAddressForm, ProviderPhotoForm, ProviderNoteForm, ProviderStatusForm, ProviderEducationForm
+from data.model import Note, Education, Experience
+from forms.provider import ProviderProfileForm, ProviderAddressForm, ProviderPhotoForm, ProviderNoteForm, ProviderStatusForm, ProviderEducationForm, ProviderExperienceForm
 from handler.auth import admin_required
 from util import saved_message
 
@@ -52,8 +52,9 @@ class ProviderEditProfileHandler(ProviderAdminBaseHandler):
             
             profile_form = ProviderProfileForm(obj=provider)
             education_form = ProviderEducationForm()
+            experience_form = ProviderExperienceForm()
             
-            self.render_profile(provider, profile_form=profile_form, education_form=education_form)
+            self.render_profile(provider, profile_form=profile_form, education_form=education_form, experience_form=experience_form)
     
     # admin_required
     def post(self, vanity_url=None):
@@ -69,56 +70,83 @@ class ProviderEditProfileHandler(ProviderAdminBaseHandler):
             provider = db.get_provider_from_vanity_url(vanity_url)
             self.render_profile(provider, profile_form=form)
 
-class ProviderEducationHandler(ProviderAdminBaseHandler):
+class ProviderCVHandler(ProviderAdminBaseHandler):
     
-    def get(self, vanity_url=None, operation=None, key=None):
+    def get(self, vanity_url=None, section=None, operation=None, key=None):
         provider = db.get_provider_from_vanity_url(vanity_url)
         
         if operation == 'delete':
-            logging.info("(ProviderEducationHandler.get) Delete education %s " % key)
+            logging.info("(ProviderEducationHandler.get) Delete section %s " % key)
             
-            # , Education.provider == provider.key
-            education_key = ndb.Key(urlsafe=key)
+            section_key = ndb.Key(urlsafe=key)
             
-            if education_key:
-                education_key.delete()
+            if section_key:
+                section_key.delete()
             else:
-                logging.info("(ProviderEducationHandler.get) No education object found for key %s" % key)
+                logging.info("(ProviderEducationHandler.get) No section object found for key %s" % key)
             
         # success, empty forms so you can play again            
-        profile_form = ProviderProfileForm(obj=provider)
+        profile_form = ProviderProfileForm(obj=provider)        
         education_form = ProviderEducationForm()
+        experience_form = ProviderExperienceForm()
 
-        self.render_profile(provider, profile_form=profile_form, education_form=education_form, success_message=saved_message)
+        self.render_profile(provider, profile_form=profile_form, education_form=education_form, experience_form=experience_form, success_message=saved_message)
     
     # admin_required
-    def post(self, vanity_url=None, operation=None, key=None):
-        
-        education_form = ProviderEducationForm(self.request.POST)
-        if education_form.validate():
-            # Store Education
-            provider = db.get_provider_from_vanity_url(vanity_url)
+    def post(self, vanity_url=None, section=None, operation=None, key=None):
+        section_form = None
+
+        if section == 'education':
+            section_form = ProviderEducationForm(self.request.POST)
+        elif section == 'experience':
+            section_form = ProviderExperienceForm(self.request.POST)
+
+        provider = db.get_provider_from_vanity_url(vanity_url)
+
+        if section_form.validate():
+            # Store section
             
             if operation == 'add':
-                education = Education()
-                db_util.set_all_properties_on_entity_from_multidict(education, self.request.POST)
-                education.provider = provider.key
-                education.put()
+                section_object = None
+                
+                if section == 'education':
+                    section_object = Education()
+                elif section == 'experience':
+                    section_object = Experience()
+                    
+                db_util.set_all_properties_on_entity_from_multidict(section_object, self.request.POST)
+                section_object.provider = provider.key
+                section_object.put()
                 
                 # stored eduction
-                logging.info("(ProviderEducationHandler.post) Stored education %s " % education.key)
+                logging.info("(ProviderEducationHandler.post) Stored section %s " % section_object.key)
 
             # success, empty forms so you can add another one            
             profile_form = ProviderProfileForm(obj=provider)
             education_form = ProviderEducationForm()
+            experience_form = ProviderExperienceForm()
 
-            self.render_profile(provider, profile_form=profile_form, education_form=education_form, success_message=saved_message)
-        else:
-            # show error
-            provider = db.get_provider_from_vanity_url(vanity_url)
-            
+            self.render_profile(provider, profile_form=profile_form, education_form=education_form, experience_form=experience_form, success_message=saved_message)
+        else:            
             profile_form = ProviderProfileForm(obj=provider)
-            self.render_profile(provider, profile_form=profile_form, education_form=education_form)
+
+
+            if section == 'education':
+                # this one has errors
+                education_form = section_form
+                
+                # this one should be clean
+                experience_form = ProviderExperienceForm()
+
+            elif section == 'experience':
+                # this one has errors
+                experience_form = section_form
+                
+                # this one should be clean
+                education_form = ProviderEducationForm()
+
+            
+            self.render_profile(provider, profile_form=profile_form, education_form=education_form, experience_form=experience_form)
           
 
 class ProviderEditAddressHandler(ProviderAdminBaseHandler):

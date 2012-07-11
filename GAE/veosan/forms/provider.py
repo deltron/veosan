@@ -44,6 +44,15 @@ class ProviderEducationForm(Form):
 
     description = TextAreaField(_(u'Description'))
 
+class ProviderExperienceForm(Form):
+    start_year = TextField(_(u'Start Year'), [validators.Length(min=4, max=4, message='Your first year of school')])
+    end_year = TextField(_(u'End Year'), [validators.Length(min=4, max=4, message='Your first year of school')])
+
+    company_name = TextField(_(u'Company Name'))
+    title = TextField(_(u'Title'))
+
+    description = TextAreaField(_(u'Description'))
+
 
 class ProviderNoteForm(Form):
     body = TextAreaField(_(u'Note'))

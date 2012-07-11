@@ -53,15 +53,6 @@ class Patient(ndb.Model):
     
 
 
-class WorkExperience(ndb.Model):   
-    start_year = ndb.IntegerProperty()
-    end_year = ndb.IntegerProperty()
-
-    company_name = ndb.StringProperty()
-    title = ndb.StringProperty()
-
-    description = ndb.TextProperty()
-
 class Provider(ndb.Model):
     '''
     A provider
@@ -101,8 +92,6 @@ class Provider(ndb.Model):
     # possible coercion to lower case?
     vanity_url = ndb.StringProperty()
     
-    work_experience = ndb.StructuredProperty(WorkExperience, repeated=True)
-
     # account options
     booking_enabled = ndb.BooleanProperty(default=False)
     address_enabled = ndb.BooleanProperty(default=False)
@@ -165,7 +154,9 @@ class Provider(ndb.Model):
     def get_education(self):
         return Education.query(Education.provider == self.key).order(-Education.end_year)
 
-    
+    def get_experience(self):
+        return Experience.query(Experience.provider == self.key).order(-Experience.end_year)
+
     def add_note(self, body, note_type='admin'):
         ''' Add Note to this provider'''
         note = Note()
@@ -191,6 +182,19 @@ class Education(ndb.Model):
     degree_text = ndb.StringProperty()
 
     description = ndb.StringProperty()
+
+class Experience(ndb.Model):   
+    provider = ndb.KeyProperty(kind=Provider)
+
+    start_year = ndb.IntegerProperty()
+    end_year = ndb.IntegerProperty()
+
+    company_name = ndb.StringProperty()
+    title = ndb.StringProperty()
+
+    description = ndb.TextProperty()
+
+
 
 
 class Schedule(ndb.Model):

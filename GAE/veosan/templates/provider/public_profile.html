@@ -40,27 +40,29 @@
 		{# Not for now
 		<h4>Home Care Visits</h4>
 		<ul class="unstyled">
-			<li>Downtown</li>
-			<li>West-Island</li>
+			<li>
+				Downtown
+			</li>
+			<li>
+				West-Island
+			</li>
 		</ul>
 		#}
 
 		{% if provider.address_enabled %}
-		<h4><a data-toggle="modal" href="#contact_modal" onclick="loadScript()">Address</a>
-			<a data-toggle="modal" href="#contact_modal" onclick="loadScript()"><i class="bs-icon icon-share-alt"> </i></a>
-		</h4>
+		<h4><a data-toggle="modal" href="#contact_modal" onclick="loadScript()">Address</a><a data-toggle="modal" href="#contact_modal" onclick="loadScript()"><i class="bs-icon icon-share-alt"> </i></a></h4>
 		{% endif %}
-		
+
 		<br>
-		
+
 		{% if provider.booking_enabled %}
 		<button type="submit" class="btn btn-success btn-large" style="width:100%">
 			{{ _('Book Now') }}
 		</button>
 		{% endif %}
-		
+
 		{% if 'admin' in roles %}
-			<a href="/admin/provider/profile/{{ provider.vanity_url }}" class="btn btn-danger"><i>Edit Profile</i></a>
+		<a href="/admin/provider/profile/{{ provider.vanity_url }}" class="btn btn-danger"><i>Edit Profile</i></a>
 		{% endif %}
 
 	</div>
@@ -72,7 +74,6 @@
 		<br>
 		{% endif %}
 
-		
 		{% if provider.quote %}
 		<p style="font-style: italic; font-family:serif; font-size:x-large">
 			“ {{ provider.quote }} ”
@@ -80,16 +81,36 @@
 		<br>
 		{% endif %}
 
+
+		{% if provider.get_experience()|remove_empty_strings_from_list %}
+		<h3>Experience</h3>
+		<ul class="unstyled">
+			{% for e in provider.get_experience() %}
+			<li>
+				<h4>{{ e.title }}</h4>
+				<h6>{{ e.company_name }} ({{ e.start_year }}-{{ e.end_year }})</h6>
+				<p>
+					{{ e.description }}
+				</p>
+			</li>
+			{% endfor %}
+		</ul>
+		{% endif %}
+
+		{% if provider.get_education()|remove_empty_strings_from_list %}
 		<h3>Education</h3>
 		<ul class="unstyled">
 			{% for e in provider.get_education() %}
 			<li>
 				<h4>{{ e.degree_type|code_to_string }} {{ e.degree_text }}</h4>
 				<h6>{{ e.school_name|code_to_string }} ({{ e.start_year }}-{{ e.end_year }})</h6>
-				<p>{{ e.description }}</p>
+				<p>
+					{{ e.description }}
+				</p>
 			</li>
 			{% endfor %}
 		</ul>
+		{% endif %}
 
 		{# Not for now
 		<h3>Publications</h3>
