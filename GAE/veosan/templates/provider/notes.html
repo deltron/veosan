@@ -19,8 +19,6 @@
 		<p style="font-style:italic">Add a note about {{provider.full_name()}}</p>
 		<form class="form-inline" action="/admin/provider/notes/{{ provider.vanity_url }}" method="post">
 			<fieldset>
-				
-					
 				<table class="table">
 					<tr style="vertical-align: top">
 						<td>
@@ -50,9 +48,8 @@
 				</table>			
 
 			</fieldset>
-		</form>
+		</form> <!-- new note form -->
 		
-		<!-- Notes -->
 		<table class="table">
 			<thead>
 				<tr>
@@ -66,7 +63,7 @@
 					<!-- display -->
 					<tr id="{{n.key.id()}}" style="vertical-align: top" >
 						<td>
-							<i class="{{n.get_icon_name()}}"></i>
+							<i rel="tooltip" title="first tooltip"class="{{n.get_icon_name()}}"></i>
 							{{ n.body }}
 							<br>
 						</td>
@@ -82,18 +79,27 @@
 					</tr>
 					<!-- edit -->
 					<tr id="edit{{n.key.id()}}" style="display: none;">
-						<td>
-							{{ n.edit_form.body(style="width: 95%", rows=5) }}
-						</td>
-						
-						<td>
-							
-						</td>
-						<td>
-							
-						</td>
+						<form class="form-inline" action="/admin/provider/notes/{{ provider.vanity_url }}/edit/{{n.key.urlsafe()}}" method="post">
+							<td>
+								{{ n.edit_form.body(style="width: 90%", rows=5) }}
+							</td>
+							<td>
+								{{ n.edit_form.note_type(class="span2") }}
+								
+								<p style="font-style: italic">created: {{n.created_on|format_datetime_full}}</p>
+							</td>
+							<td>
+								<div class="control-group">
+									<div class="controls">
+										<button type="submit" class="btn btn-primary">
+											{{ _('Save Note') }}
+										</button>
+										<a href="/admin/provider/notes/{{ provider.vanity_url }}">Cancel</a>
+									</div>
+								</div>
+							</td>
+						</form>
 					</tr>
-					
 				{% endfor %}
 			</tbody>
 		</table>
