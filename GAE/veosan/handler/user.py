@@ -83,6 +83,10 @@ class ProviderTermsHandler(UserBaseHandler):
             # Save signature and terms agreement
             provider.terms_agreement = self.request.get('terms_agreement') == u'True'
             provider.terms_date = date.today()
+            
+            # set status to enabled
+            provider.status = 'client_enabled'
+            
             provider.put()
             
             user = provider.user.get()

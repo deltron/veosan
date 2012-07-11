@@ -116,9 +116,9 @@ class AdminTest(BaseTest):
 
         response.mustcontain('Provider Administration')
         response.mustcontain(self._TEST_PROVIDER_EMAIL)
-        solicit_form = response.forms[0]
-        # sends an email to the provider
-        response = solicit_form.submit()
+
+        # hit the solicit button
+        response = self.testapp.get('/admin/provider/solicit/' + self._TEST_PROVIDER_VANITY_URL)
         
         # check error message is displayed
         response.mustcontain("Incomplete profile")
@@ -166,22 +166,21 @@ class AdminTest(BaseTest):
         response.mustcontain('Adresse')
 
 
-    def test_provider_disable(self):
+    def test_provider_disable(self):       
         self.create_complete_provider_profile()
         self.login_as_admin()
         
         provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
         response = self.testapp.get('/admin/provider/admin/%s' % provider.vanity_url)
         
-        # make sure provider starts as Enabled
-        response.mustcontain("enable=True")
-        response.mustcontain("Disable Provider") # button
-
-        disable_form = response.forms[1]
-        disable_response = disable_form.submit()
+        # make sure provider starts as prospect
+        response.mustcontain("Current status is client_enabled")
         
-        disable_response.mustcontain("enable=False")
-        disable_response.mustcontain("Enable Provider")
+        status_form = response.forms[0]
+        status_form['status'] = 'client_suspended'
+        disabled_response = status_form.submit()
+
+        disabled_response.mustcontain("Current status is client_suspended")
 
         self.logout_admin()
         
@@ -198,15 +197,11 @@ class AdminTest(BaseTest):
         provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
         response = self.testapp.get('/admin/provider/admin/%s' % provider.vanity_url)
         
-        # make sure provider starts as Enabled
-        response.mustcontain("enable=False")
-        response.mustcontain("Enable Provider") # button
-
-        disable_form = response.forms[1]
-        disable_response = disable_form.submit()
+        status_form = response.forms[0]
+        status_form['status'] = 'client_enabled'
+        enabled_response = status_form.submit()
         
-        disable_response.mustcontain("enable=True")
-        disable_response.mustcontain("Disable Provider")        
+        enabled_response.mustcontain("Current status is client_enabled")
         
         # Booking should work
         response = self.book_appointment(util.CAT_OSTEO, testutil.next_monday_date_string() , 14)

@@ -25,34 +25,33 @@
 				Current status is {{ provider.status }}
 				<br>
 			</p>
-			
 
 			{% if provider.terms_agreement %}
-				Agreed to terms on {{ provider.terms_date }}
-				<br>
+			Agreed to terms on {{ provider.terms_date }}
+			<br>
 			{% else %}
-				Terms not signed
-				<br>
+			Terms not signed
+			<br>
 			{% endif %}
 			<br>
 			{% if provider.user %}
-				{% set u = provider.user.get() %}
-				User email: {{u.auth_ids|join}}
-				<br>
-				{% if u.password %} Password is set {% else %} Password is not set {% endif %}
-				<br>
+			{% set u = provider.user.get() %}
+			User email: {{u.auth_ids|join}}
+			<br>
+			{% if u.password %} Password is set {% else %} Password is not set {% endif %}
+			<br>
 			{% else %}
-				Provider is not activated. There is no user linked to this profile
-				<br>
+			Provider is not activated. There is no user linked to this profile
+			<br>
 			{% endif %}
 			<br>
-			
+
 			<form method="post" action="/admin/provider/status" class="form-inline">
 				<fieldset>
 					<input type="hidden" name="provider_key" value="{{ provider.key.urlsafe() }}" />
-					
+
 					{{ form.status() }}
-					
+
 					<button type="submit" class="btn btn-success">
 						Change Status
 					</button>
@@ -62,20 +61,12 @@
 		</div>
 
 		<h3>Solicit</h3>
-		<form method="post" action="/admin/provider/solicit" class="well form-inline">
-			<p>
-				Make sure profile is completed before sending the invitation for the provider to agree to the terms and take over his profile.
-			</p>
-			<fieldset>
-				<input type="hidden" name="provider_key" value="{{ provider.key.urlsafe() }}" />
-				<button type="submit" class="btn btn-primary">
-					Solicit Provider
-				</button>
-				<span>&lt;{{ provider.email }}&gt;</span>
-			</fieldset>
-		</form>
+		<p>
+			Make sure profile is completed before sending the invitation for the provider to agree to the terms and take over his profile.
+		</p>
+		<a href="/admin/provider/solicit/{{ provider.vanity_url }}" class="btn btn-primary"> Solicit Provider </a>
+		<span>&lt;{{ provider.email }}&gt;</span>
 
-		
 	</div>
 
 	<div class="span6">

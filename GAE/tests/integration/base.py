@@ -185,10 +185,9 @@ class BaseTest(unittest.TestCase):
         response = self.testapp.get('/admin/provider/admin/%s' % provider.vanity_url)
 
         response.mustcontain('Provider Administration')
-        response.mustcontain(self._TEST_PROVIDER_EMAIL)
-        solicit_form = response.forms[0]
-        # sends an email to the provider
-        solicit_form.submit()
+        
+        # hit the solicit button
+        response = self.testapp.get('/admin/provider/solicit/%s' % provider.vanity_url)
         
         # read the email and check content
         messages = self.mail_stub.get_sent_messages(to=self._TEST_PROVIDER_EMAIL)
@@ -315,7 +314,7 @@ class BaseTest(unittest.TestCase):
         # print profile_form.fields.values()
         
         # fill out the form
-        profile_form['category'] = 'osteopath'
+        profile_form['category'] = util.CAT_OSTEO
         
         profile_form.set('specialty', True, 0) # Sports
         profile_form.set('specialty', True, 2) # Cardio
@@ -482,6 +481,7 @@ class BaseTest(unittest.TestCase):
         booking_form['booking_time'] = hour_string
         # leave region to default (should be downtown)
         result_response = booking_form.submit()
+        
         return result_response
     
     def fill_booking_email_form(self, result_response, email=None):

@@ -53,16 +53,6 @@ class Patient(ndb.Model):
     
 
 
-class Education(ndb.Model):   
-    start_year = ndb.IntegerProperty()
-    end_year = ndb.IntegerProperty()
-
-    school_name = ndb.StringProperty()
-    degree_type = ndb.StringProperty()
-    degree_text = ndb.StringProperty()
-
-    description = ndb.StringProperty()
-
 class WorkExperience(ndb.Model):   
     start_year = ndb.IntegerProperty()
     end_year = ndb.IntegerProperty()
@@ -111,8 +101,6 @@ class Provider(ndb.Model):
     # possible coercion to lower case?
     vanity_url = ndb.StringProperty()
     
-    # CV info
-    education = ndb.StructuredProperty(Education, repeated=True)
     work_experience = ndb.StructuredProperty(WorkExperience, repeated=True)
 
     # account options
@@ -174,6 +162,10 @@ class Provider(ndb.Model):
         ''' Get Notes in reverse chronological order'''
         return Note.query(Note.provider == self.key).order(-Note.created_on)
     
+    def get_education(self):
+        return Education.query(Education.provider == self.key).order(-Education.end_year)
+
+    
     def add_note(self, body, note_type='admin'):
         ''' Add Note to this provider'''
         note = Note()
@@ -187,7 +179,20 @@ class Provider(ndb.Model):
     def is_enabled(self):
         return self.status == 'client_enabled'
     
-      
+
+class Education(ndb.Model):  
+    provider = ndb.KeyProperty(kind=Provider)
+ 
+    start_year = ndb.IntegerProperty()
+    end_year = ndb.IntegerProperty()
+
+    school_name = ndb.StringProperty()
+    degree_type = ndb.StringProperty()
+    degree_text = ndb.StringProperty()
+
+    description = ndb.StringProperty()
+
+
 class Schedule(ndb.Model):
     provider = ndb.KeyProperty(kind=Provider) # name='schedule'
     day = ndb.IntegerProperty()

@@ -65,39 +65,30 @@
 
 	</div>
 	<div class="span6">
+		{% if provider.bio %}
 		<p>
 			{{ provider.bio }}
 		</p>
-
 		<br>
+		{% endif %}
+
+		
+		{% if provider.quote %}
 		<p style="font-style: italic; font-family:serif; font-size:x-large">
 			“ {{ provider.quote }} ”
 		</p>
 		<br>
-
-		<h3>Experience</h3>
-		<ul class="unstyled">
-			<li>
-				<h6>Concordia Physio Sport Home Care Division (1999-2004)</h6>
-				Manager
-			</li>
-			<li>
-				<h6>Club Atwater</h6>
-				Consultant physiotherapist
-			</li>
-		</ul>
+		{% endif %}
 
 		<h3>Education</h3>
 		<ul class="unstyled">
+			{% for e in provider.get_education() %}
 			<li>
-				<h6>Masters in Clinical Physiotherapy</h6>
-				Graduation with High Distinction
-				Curtin University, Australia
+				<h5>{{ e.degree_type|code_to_string }} {{ e.degree_text }} </h5>
+				<h6>{{ e.school_name|code_to_string }} ({{ e.start_year }}-{{ e.end_year }})</h6>
+				<p>{{ e.description }}</p>
 			</li>
-			<li>
-				<h6>B.Sc. Physical Therapy</h6>
-				McGill University, Montréal
-			</li>
+			{% endfor %}
 		</ul>
 
 		{# Not for now
@@ -110,7 +101,7 @@
 		</ul>
 		#}
 
-		{% 	if provider.certifications|remove_empty_strings_from_list %}
+		{% if provider.certifications|remove_empty_strings_from_list %}
 		<h3>Certifications</h3>
 		<ul class="unstyled">
 			{% for c in provider.certifications %}

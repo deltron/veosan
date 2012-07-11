@@ -12,6 +12,7 @@ from data.model import SiteConfig
 import util
 from handler.auth import admin_required
 from google.appengine.ext import ndb
+from handler.provider_admin import ProviderAdminBaseHandler
 
 
 
@@ -112,8 +113,9 @@ class NewProviderSolicitHandler(BaseHandler):
         the sollicitation email to the provider to reset password and agree to terms.
     '''
     
-    def post(self):
-        provider = db.get_from_urlsafe_key(self.request.get('provider_key'))
+    @admin_required
+    def get(self, vanity_url = None):
+        provider = db.get_provider_from_vanity_url(vanity_url)
         
         # Check provider has at least a first name, last name and email before activation
         if provider.email and provider.first_name and provider.last_name: 
@@ -136,10 +138,10 @@ class NewProviderSolicitHandler(BaseHandler):
             
             # render the provider admin page
             success_message = 'Solicit email sent to %s' % provider.email
-            self.render_template('provider/administration.html', provider=provider, success_message=success_message)
+            ProviderAdminBaseHandler.render_administration(self, provider=provider, success_message=success_message)
         else:
             error_message = 'Incomplete profile for %s, email not sent' % provider.email
-            self.render_template('provider/administration.html', provider=provider, error_message=error_message)
+            ProviderAdminBaseHandler.render_administration(self, provider=provider, error_message=error_message)
 
 
 class AdminDataHandler(AdminBaseHandler):

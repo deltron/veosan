@@ -115,7 +115,7 @@ application = webapp2.WSGIApplication([
                                            PathPrefixRoute('/provider', [
                                                # provider actions
                                                Route('/init', admin.NewProviderInitHandler),
-                                               Route('/solicit', admin.NewProviderSolicitHandler),
+                                               Route('/solicit/<vanity_url>', admin.NewProviderSolicitHandler),
                                                Route('/status', provider_admin.ProviderStatusHandler),
                                                
                                                # provider admin
@@ -124,8 +124,11 @@ application = webapp2.WSGIApplication([
                                                # provider profile
                                                PathPrefixRoute('/profile', [
                                                     Route('/<vanity_url>', provider_admin.ProviderEditProfileHandler),
-                                                    Route('/education/<vanity_url>', provider_admin.ProviderEducationHandler),
+                                                    Route('/education/<vanity_url>/<operation>', provider_admin.ProviderEducationHandler),
+                                                    Route('/education/<vanity_url>/<operation>/<key>', provider_admin.ProviderEducationHandler),
+
                                                ]),
+
                                                
                                                Route('/notes/<vanity_url>', provider_admin.ProviderNotesHandler),
                                                Route('/notes/<vanity_url>/<note_key>/<operation>', provider_admin.ProviderNotesHandler),
