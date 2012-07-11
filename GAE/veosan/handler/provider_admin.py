@@ -122,12 +122,12 @@ class ProviderStatusHandler(ProviderAdminBaseHandler):
         self.render_administration(provider, success_message=success_message)
 
 
-class ProviderAccountFeaturesHandler(ProviderAdminBaseHandler):
-    def post(self, feature_switch=None):
-        provider = db.get_from_urlsafe_key(self.request.get('provider_key'))
+class ProviderFeaturesHandler(ProviderAdminBaseHandler):
+    def post(self, feature_switch=None, vanity_url=None):
         
         # validate features that can be switched
         if feature_switch in ['booking_enabled', 'address_enabled']:
+            provider = db.get_provider_from_vanity_url(vanity_url)
             
             # toggle state
             current_state = getattr(provider, feature_switch)
