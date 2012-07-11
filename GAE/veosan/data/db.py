@@ -78,10 +78,11 @@ def getOrCreateProvider(provider_key):
     return provider
 
 
-def storeProvider(r):
+def storeProvider(provider=None, r=None):
     # r is a MultiDict object from the request
     logging.info("Storing provider profile from request:" + str(r.__dict__))
-    provider = getOrCreateProvider(r['provider_key'])
+    if provider == None:
+        provider = getOrCreateProvider(r['provider_key'])
     
     # set all the properties
     db_util.set_all_properties_on_entity_from_multidict(provider, r)

@@ -7,13 +7,12 @@
 
 {% block content %}
 <!-- Form -->
-<form method="post" action="" class="form-horizontal">
+<form method="post" action="/admin/provider/profile/{{ provider.vanity_url }}" class="form-horizontal">
 	<div class="row">
 		<div class="span4">
 			<fieldset>
 				{{ macro.makeStandardForm() }}
 			</fieldset>
-			<input type="hidden" name="provider_key" value="{{provider.key.urlsafe()}}" />
 		</div>
 		<div class="span8" align="center">
 			{% if not provider.profile_photo_blob_key %}
