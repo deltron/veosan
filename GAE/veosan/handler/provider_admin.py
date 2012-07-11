@@ -24,7 +24,7 @@ class ProviderAdminBaseHandler(BaseHandler):
        
     def render_administration(self, provider, **kw):
         status_form = ProviderStatusForm(obj=provider)
-        self.render_template('provider/administration.html', provider=provider, **kw)
+        self.render_template('provider/administration.html', provider=provider, form=status_form, **kw)
     
     def render_notes(self, provider, **kw):
         notes = provider.get_notes()
