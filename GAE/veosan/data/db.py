@@ -61,7 +61,6 @@ def init_provider(provider_email, vanity_url):
     new_provider = Provider()
     new_provider.email = provider_email
     new_provider.vanity_url = vanity_url
-    new_provider.enable = True  # should this be false?
     provider_key = new_provider.put()
     return provider_key
 

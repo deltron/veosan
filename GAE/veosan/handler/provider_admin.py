@@ -8,7 +8,7 @@ from google.appengine.ext.webapp import blobstore_handlers
 from base import BaseHandler
 import data.db as db
 from data.model import Note
-from forms.provider import ProviderProfileForm, ProviderAddressForm, ProviderPhotoForm, ProviderNoteForm
+from forms.provider import ProviderProfileForm, ProviderAddressForm, ProviderPhotoForm, ProviderNoteForm, ProviderStatusForm
 from handler.auth import admin_required
 from util import saved_message
 
@@ -23,7 +23,8 @@ class ProviderAdminBaseHandler(BaseHandler):
         self.render_template('provider/address.html', provider=provider, form=address_form, uploadForm=uploadForm, upload_url=upload_url, **kw)
        
     def render_administration(self, provider, **kw):
-        self.render_template('provider/administration.html', provider=provider, **kw)
+        status_form = ProviderStatusForm(obj=provider)
+        self.render_template('provider/administration.html', provider=provider, form=status_form, **kw)
     
     def render_notes(self, provider, **kw):
         notes = provider.get_notes()
@@ -111,22 +112,13 @@ class ProviderAdministrationHandler(ProviderAdminBaseHandler):
         
 
   
-class ProviderEnableHandler(ProviderAdminBaseHandler):
+class ProviderStatusHandler(ProviderAdminBaseHandler):
     def post(self):
         provider = db.get_from_urlsafe_key(self.request.get('provider_key'))
-        
-        success_message = ''
-        
-        # toggle provider state
-        if provider.enable:
-            provider.enable = False
-            success_message = 'Provider is now disabled'            
-        else:
-            provider.enable = True        
-            success_message = 'Provider is now enabled'            
-
+        new_status = self.request.get('status')
+        provider.status = new_status
         provider.put()
-
+        success_message = 'status changed to %s' % new_status
         self.render_administration(provider, success_message=success_message)
 
 

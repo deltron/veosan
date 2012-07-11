@@ -7,7 +7,6 @@
 	<!-- TODO: Make this a block, reuse on provider list -->
 	{% if provider.recently_created() %} <span class="label label-success">new</span>{% endif %}
 	{% if not provider.terms_agreement %} <span class="label label-important">missing terms</span>{% endif %}
-	{% if not provider.enable %} <span class="label label-important">disabled</span>{% endif %}
 {% endblock %}
 
 {% block lead %} {{ _('Sales and Notes') }} {% endblock %}

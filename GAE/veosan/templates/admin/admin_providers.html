@@ -51,7 +51,6 @@
 						{{ p.status }}
 						{% if p.recently_created() %} <span class="label label-success">new</span>{% endif %}
 						{% if not p.terms_agreement %} <span class="label label-important">missing terms</span>{% endif %}
-						{% if not p.enable %} <span class="label label-important">disabled</span>{% endif %}
 						{% if p.onsite %} <span class="label label-info">onsite</span>{% endif %}
 					</td>
 					<td>

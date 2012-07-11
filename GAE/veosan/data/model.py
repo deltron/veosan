@@ -52,8 +52,6 @@ class Patient(ndb.Model):
         return Booking.query(Booking.patient == self.key).fetch()
     
 
-# List of provider status
-provider_statuses = ['prospect', 'contacted_phone', 'contacted_meeting', 'client_enabled', 'client_suspended', 'ex_client_disabled']
 
 class Education(ndb.Model):   
     start_year = ndb.IntegerProperty()
@@ -79,10 +77,8 @@ class Provider(ndb.Model):
     A provider
     '''
     created_on = ndb.DateTimeProperty(auto_now_add=True)
-    # enabled for referal search
-    enable = ndb.BooleanProperty()
     # sales status
-    status = ndb.StringProperty(default='prospect', choices=provider_statuses)
+    status = ndb.StringProperty(default='prospect', choices=util.provider_statuses)
 
     # terms
     terms_agreement = ndb.BooleanProperty()
@@ -187,6 +183,10 @@ class Provider(ndb.Model):
         note.note_type = note_type
         note.user = users.get_current_user()
         note.put()
+        
+    def is_enabled(self):
+        return self.status == 'client_enabled'
+    
       
 class Schedule(ndb.Model):
     provider = ndb.KeyProperty(kind=Provider) # name='schedule'
