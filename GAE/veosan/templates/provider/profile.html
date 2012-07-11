@@ -12,23 +12,48 @@
 		<form method="post" action="/admin/provider/profile/{{ provider.vanity_url }}" class="form-horizontal">
 			<fieldset>
 				<div class="row">
-					<div class="span8">
+					<div class="span6">
 						{{ macro.make_standard_form(profile_form) }}
 					</div>
 					<!-- Experience -->
-					<div class="span4">
+					<div class="span6">
 						<h3>Education</h3>
-						<a data-toggle="modal" href="#education_modal" class="btn btn-primary">Add Education</a>
-					</div>
+						<table width="100%" class="table table-condensed">
+
+							{% for e in provider.get_education() %}
+							<tr>
+								<td width="5%">
+								<a href="/admin/provider/profile/education/{{ provider.vanity_url }}/delete/{{ e.key.urlsafe() }}"> <i class="bs-icon icon-remove-circle"> </i> </a>
+								</td>
+								<td width="15%">
+									{{ e.start_year }} - {{ e.end_year }}
+									<br>
+									{{ e.school_name }}
+								</td>
+								<td width="80%">
+									{{ e.degree_type }}
+									{{ e.degree_text }}
+
+									<p>
+										{{ e.description }}
+									</p>
+
+								</td>
+					</tr>
+					{% endfor %}
+
+					</table>
+					<a data-toggle="modal" href="#education_modal" class="btn btn-primary">Add Education</a>
 				</div>
-			</fieldset>
-			<div class="form-actions">
-				<button type="submit" class="btn btn-primary">
-					{{ _('Save') }}
-				</button>
-			</div>
-		</form>
 	</div>
+	</fieldset>
+	<div class="form-actions">
+		<button type="submit" class="btn btn-primary">
+			{{ _('Save') }}
+		</button>
+	</div>
+	</form>
+</div>
 </div>
 
 <div class="modal hide" id="education_modal" style="display: none;">
@@ -36,7 +61,7 @@
 		<a class="close" data-dismiss="modal">×</a>
 		<h3>{{ _('Education') }}</h3>
 	</div>
-	<form method="post" action="/admin/provider/profile/education/{{ provider.vanity_url }}" class="form-horizontal">
+	<form method="post" action="/admin/provider/profile/education/{{ provider.vanity_url }}/add" class="form-horizontal">
 		<div class="modal-body">
 			{{ macro.make_standard_form(education_form) }}
 		</div>

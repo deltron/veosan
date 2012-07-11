@@ -3,11 +3,13 @@ import logging
 # GAE
 from google.appengine.api import users
 from google.appengine.ext import blobstore
+from google.appengine.ext import ndb
 from google.appengine.ext.webapp import blobstore_handlers
 # veo
 from base import BaseHandler
 import data.db as db
-from data.model import Note
+import data.db_util as db_util
+from data.model import Note, Education
 from forms.provider import ProviderProfileForm, ProviderAddressForm, ProviderPhotoForm, ProviderNoteForm, ProviderStatusForm, ProviderEducationForm
 from handler.auth import admin_required
 from util import saved_message
@@ -68,13 +70,42 @@ class ProviderEditProfileHandler(ProviderAdminBaseHandler):
 
 class ProviderEducationHandler(ProviderAdminBaseHandler):
     
+    def get(self, vanity_url=None, operation=None, key=None):
+        provider = db.get_provider_from_vanity_url(vanity_url)
+        
+        if operation == 'delete':
+            logging.info("(ProviderEducationHandler.get) Delete education %s " % key)
+            
+            # , Education.provider == provider.key
+            education_key = ndb.Key(urlsafe=key)
+            
+            if education_key:
+                education_key.delete()
+            else:
+                logging.info("(ProviderEducationHandler.get) No education object found for key %s" % key)
+            
+        # success, empty forms so you can play again            
+        profile_form = ProviderProfileForm(obj=provider)
+        education_form = ProviderEducationForm()
+
+        self.render_profile(provider, profile_form=profile_form, education_form=education_form, success_message=saved_message)
+    
     # admin_required
-    def post(self, vanity_url=None):
+    def post(self, vanity_url=None, operation=None, key=None):
         
         education_form = ProviderEducationForm(self.request.POST)
         if education_form.validate():
             # Store Education
             provider = db.get_provider_from_vanity_url(vanity_url)
+            
+            if operation == 'add':
+                education = Education()
+                db_util.set_all_properties_on_entity_from_multidict(education, self.request.POST)
+                education.provider = provider.key
+                education.put()
+                
+                # stored eduction
+                logging.info("(ProviderEducationHandler.post) Stored education %s " % education.key)
 
             # success, empty forms so you can add another one            
             profile_form = ProviderProfileForm(obj=provider)
