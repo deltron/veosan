@@ -83,7 +83,7 @@
 					<!-- edit -->
 					<tr id="edit{{n.key.id()}}" style="display: none;">
 						<td>
-							<p>NOTE EDIT</p>
+							{{ n.edit_form.body(style="width: 95%", rows=5) }}
 						</td>
 						
 						<td>
@@ -110,7 +110,6 @@
         $("#showEdit").click(function () {
         	tr_parent = $(this).parents("tr:first")
         	note_id = tr_parent.attr("id")
-            alert(note_id)
             tr_parent.hide()
             $("#edit"+note_id).show()
             //$("#editForm").css("display", "block");

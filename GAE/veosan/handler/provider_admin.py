@@ -27,9 +27,11 @@ class ProviderAdminBaseHandler(BaseHandler):
         self.render_template('provider/administration.html', provider=provider, form=status_form, **kw)
     
     def render_notes(self, provider, **kw):
-        notes = provider.get_notes()
-        logging.info('Notes count %s' % notes.count())
+        notes = provider.get_notes().fetch(10)
+        logging.info('Notes count %s' % len(notes))
         new_note_form = ProviderNoteForm()
+        notes[0].edit_form = ProviderNoteForm(obj=notes[0])
+        notes[1].edit_form = ProviderNoteForm()
         self.render_template('provider/notes.html', provider=provider, notes=notes, form=new_note_form, **kw)       
         
 
