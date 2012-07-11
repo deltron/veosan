@@ -314,7 +314,7 @@ class BaseTest(unittest.TestCase):
         # print profile_form.fields.values()
         
         # fill out the form
-        profile_form['category'] = 'osteopath'
+        profile_form['category'] = util.CAT_OSTEO
         
         profile_form.set('specialty', True, 0) # Sports
         profile_form.set('specialty', True, 2) # Cardio
@@ -481,6 +481,7 @@ class BaseTest(unittest.TestCase):
         booking_form['booking_time'] = hour_string
         # leave region to default (should be downtown)
         result_response = booking_form.submit()
+        
         return result_response
     
     def fill_booking_email_form(self, result_response, email=None):

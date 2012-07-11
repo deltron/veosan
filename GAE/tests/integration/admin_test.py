@@ -167,15 +167,16 @@ class AdminTest(BaseTest):
 
 
     def test_provider_disable(self):
+        self.fail("Update to use new status message system")
+        
         self.create_complete_provider_profile()
         self.login_as_admin()
         
         provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
         response = self.testapp.get('/admin/provider/admin/%s' % provider.vanity_url)
         
-        # make sure provider starts as Enabled
-        response.mustcontain("enable=True")
-        response.mustcontain("Disable Provider") # button
+        # make sure provider starts as prospect
+        response.mustcontain("Current status is prospect")
 
         disable_form = response.forms[1]
         disable_response = disable_form.submit()
