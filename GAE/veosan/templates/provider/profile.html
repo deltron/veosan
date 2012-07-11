@@ -22,38 +22,31 @@
 
 							{% for e in provider.get_education() %}
 							<tr>
-								<td width="5%">
-								<a href="/admin/provider/profile/education/{{ provider.vanity_url }}/delete/{{ e.key.urlsafe() }}"> <i class="bs-icon icon-remove-circle"> </i> </a>
-								</td>
-								<td width="15%">
-									{{ e.start_year }} - {{ e.end_year }}
-									<br>
-									{{ e.school_name }}
-								</td>
-								<td width="80%">
-									{{ e.degree_type }}
-									{{ e.degree_text }}
+								<td width="15%"> {{ e.start_year }} - {{ e.end_year }}
+								<br>
+								{{ e.school_name }} </td>
+								<td width="80%"> {{ e.degree_type }}
+								{{ e.degree_text }}
+								<p>
+									{{ e.description }}
+								</p></td>
+								<td width="5%"><a href="/admin/provider/profile/education/{{ provider.vanity_url }}/delete/{{ e.key.urlsafe() }}"> <i class="bs-icon icon-remove-circle"> </i> </a></td>
 
-									<p>
-										{{ e.description }}
-									</p>
+							</tr>
+							{% endfor %}
 
-								</td>
-					</tr>
-					{% endfor %}
-
-					</table>
-					<a data-toggle="modal" href="#education_modal" class="btn btn-primary">Add Education</a>
+						</table>
+						<a data-toggle="modal" href="#education_modal" class="btn btn-primary pull-right">Add Education</a>
+					</div>
 				</div>
+			</fieldset>
+			<div class="form-actions">
+				<button type="submit" class="btn btn-primary">
+					{{ _('Save') }}
+				</button>
+			</div>
+		</form>
 	</div>
-	</fieldset>
-	<div class="form-actions">
-		<button type="submit" class="btn btn-primary">
-			{{ _('Save') }}
-		</button>
-	</div>
-	</form>
-</div>
 </div>
 
 <div class="modal hide" id="education_modal" style="display: none;">
