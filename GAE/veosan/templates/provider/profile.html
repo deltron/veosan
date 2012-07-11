@@ -18,26 +18,22 @@
 					<!-- Experience -->
 					<div class="span6">
 						<h3>Education</h3>
-						<table width="100%" class="table table-condensed">
+						<ul class="unstyled">
 
 							{% for e in provider.get_education() %}
-							<tr>
-								<td width="15%"> {{ e.start_year }} - {{ e.end_year }}
-								<br>
-								{{ e.school_name }} </td>
-								<td width="80%"> {{ e.degree_type }}
-								{{ e.degree_text }}
+							<li>
+								<a href="/admin/provider/profile/education/{{ provider.vanity_url }}/delete/{{ e.key.urlsafe() }}" class="pull-right"> <i class="bs-icon icon-remove-circle"> </i> </a>
+
+								<h4>{{ e.degree_type|code_to_string }} {{ e.degree_text }}</h4>
+								<h6>{{ e.school_name|code_to_string }} ({{ e.start_year }}-{{ e.end_year }})</h6>
 								<p>
 									{{ e.description }}
-								</p></td>
-								<td width="5%"><a href="/admin/provider/profile/education/{{ provider.vanity_url }}/delete/{{ e.key.urlsafe() }}"> <i class="bs-icon icon-remove-circle"> </i> </a></td>
-
-							</tr>
+								</p>
+							</li>
 							{% endfor %}
-
-						</table>
-						<a data-toggle="modal" href="#education_modal" class="btn btn-primary pull-right">Add Education</a>
+						</ul>
 					</div>
+					<a data-toggle="modal" href="#education_modal" class="btn btn-primary pull-right">Add Education</a>
 				</div>
 			</fieldset>
 			<div class="form-actions">
