@@ -158,10 +158,11 @@ def remove_empty_strings_from_list(l):
 
 
 
-note_types = ['call', 'meeting', 'admin']
+note_types = ['call', 'email', 'meeting', 'admin']
 
 def get_all_note_types():
     return [('call', _(u'Call')),
+            ('email', _(u'Email')),
             ('meeting', _(u'Meeting')),
             ('admin', _(u'Admin'))]
     
