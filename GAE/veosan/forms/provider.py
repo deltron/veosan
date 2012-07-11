@@ -49,3 +49,6 @@ class ProviderNoteForm(Form):
     body = TextAreaField(_(u'Note'))
     note_type = SelectField(_(u'Type'), choices=util.get_all_note_types())
     
+    
+class ProviderStatusForm(Form):
+    status = SelectField(_(u'Status'), choices=util.get_all_status_types())

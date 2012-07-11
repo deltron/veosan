@@ -161,6 +161,13 @@ note_types = ['call', 'meeting', 'admin']
 def get_all_note_types():
     return [('call', _(u'Call')),
             ('meeting', _(u'Meeting')),
-            ('admin', _(u'Admin'))]    
+            ('admin', _(u'Admin'))]
+    
+# List of provider status
+provider_statuses = ['prospect', 'contacted_phone', 'contacted_meeting', 'client_enabled', 'client_suspended', 'ex_client_disabled']
+
+def get_all_status_types():
+    status_choices = map(lambda s: (s, _(s.capitalize())), provider_statuses)
+    return status_choices
 
 

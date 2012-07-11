@@ -7,7 +7,6 @@
 <!-- TODO: Make this a block, reuse on provider list -->
 {% if provider.recently_created() %} <span class="label label-success">new</span>{% endif %}
 {% if not provider.terms_agreement %} <span class="label label-important">missing terms</span>{% endif %}
-{% if not provider.enable %} <span class="label label-important">disabled</span>{% endif %}
 {% endblock %}
 
 {% block lead %} {{ _('Provider Administration') }} {% endblock %}
@@ -20,26 +19,46 @@
 
 	<div class="span6">
 
-		<h3>Terms and User</h3>
+		<h3>Status and Terms</h3>
 		<div class="well">
+			<p>
+				Current status is {{ provider.status }}
+				<br>
+			</p>
+			
+
 			{% if provider.terms_agreement %}
-			Agreed to terms on {{ provider.terms_date }}
-			<br>
+				Agreed to terms on {{ provider.terms_date }}
+				<br>
 			{% else %}
-			Terms not signed
-			<br>
+				Terms not signed
+				<br>
 			{% endif %}
 			<br>
 			{% if provider.user %}
-			{% set u = provider.user.get() %}
-			User email: {{u.auth_ids|join}}
-			<br>
-			{% if u.password %} Password is set {% else %} Password is not set {% endif %}
-			<br>
+				{% set u = provider.user.get() %}
+				User email: {{u.auth_ids|join}}
+				<br>
+				{% if u.password %} Password is set {% else %} Password is not set {% endif %}
+				<br>
 			{% else %}
-			Provider is not activated. There is no user linked to this profile
-			<br>
+				Provider is not activated. There is no user linked to this profile
+				<br>
 			{% endif %}
+			<br>
+			
+			<form method="post" action="/admin/provider/status" class="form-inline">
+				<fieldset>
+					<input type="hidden" name="provider_key" value="{{ provider.key.urlsafe() }}" />
+					
+					{{ form.status() }}
+					
+					<button type="submit" class="btn btn-success">
+						Change Status
+					</button>
+
+				</fieldset>
+			</form>
 		</div>
 
 		<h3>Solicit</h3>
@@ -56,28 +75,7 @@
 			</fieldset>
 		</form>
 
-		<h3>Status</h3>
-		<div class="well">
-			<p>
-				Current status is {{ provider.status }}
-				<br>
-				enable={{ provider.enable }}
-			</p>
-			<form method="post" action="/admin/provider/enable" class="form-inline">
-				<fieldset>
-					<input type="hidden" name="provider_key" value="{{ provider.key.urlsafe() }}" />
-					{% if provider.enable %}
-					<button type="submit" class="btn btn-danger">
-						Disable Provider
-					</button>
-					{% elif not provider.enable or provider.enable == None %}
-					<button type="submit" class="btn btn-success">
-						Enable Provider
-					</button>
-					{% endif %}
-				</fieldset>
-			</form>
-		</div>
+		
 	</div>
 
 	<div class="span6">

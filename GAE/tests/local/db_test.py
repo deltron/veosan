@@ -32,7 +32,7 @@ class DBTestCase(BaseTestCase):
         # create provider
         p = Provider()
         p.terms_agreement=True
-        p.enable=True
+        p.status = 'client_enabled'
         p.first_name = 'Best-Test'
         p.last_name = 'Phys-Io'
         p.category = testCategory
