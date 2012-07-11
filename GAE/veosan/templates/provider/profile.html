@@ -52,7 +52,7 @@
 
 {% block extra_javascript %}
 
-{% if education_form.errors %}
+{% if education_form and education_form.errors %}
 <script>$('#education_modal').modal('show')</script>
 {% endif %}
 

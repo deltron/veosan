@@ -185,10 +185,9 @@ class BaseTest(unittest.TestCase):
         response = self.testapp.get('/admin/provider/admin/%s' % provider.vanity_url)
 
         response.mustcontain('Provider Administration')
-        response.mustcontain(self._TEST_PROVIDER_EMAIL)
-        solicit_form = response.forms[0]
-        # sends an email to the provider
-        solicit_form.submit()
+        
+        # hit the solicit button
+        response = self.testapp.get('/admin/provider/solicit/%s' % provider.vanity_url)
         
         # read the email and check content
         messages = self.mail_stub.get_sent_messages(to=self._TEST_PROVIDER_EMAIL)

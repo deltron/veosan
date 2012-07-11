@@ -21,10 +21,11 @@ class ProviderAdminBaseHandler(BaseHandler):
         upload_url = blobstore.create_upload_url('/admin/provider/address/upload/%s' % provider.vanity_url)
         uploadForm = ProviderPhotoForm(self.request.GET)
         self.render_template('provider/address.html', provider=provider, form=address_form, uploadForm=uploadForm, upload_url=upload_url, **kw)
-       
-    def render_administration(self, provider, **kw):
+    
+    @staticmethod
+    def render_administration(handler, provider, **kw):
         status_form = ProviderStatusForm(obj=provider)
-        self.render_template('provider/administration.html', provider=provider, form=status_form, **kw)
+        handler.render_template('provider/administration.html', provider=provider, form=status_form, **kw)
     
     def render_notes(self, provider, **kw):
         notes = provider.get_notes()
@@ -36,7 +37,7 @@ class ProviderAdminBaseHandler(BaseHandler):
 class ProviderEditProfileHandler(ProviderAdminBaseHandler):
     
     @admin_required
-    def get(self, vanity_url = None):
+    def get(self, vanity_url=None):
         provider = None
         
         if vanity_url:
@@ -50,7 +51,7 @@ class ProviderEditProfileHandler(ProviderAdminBaseHandler):
             self.render_profile(provider, profile_form=profile_form, education_form=education_form)
     
     # admin_required
-    def post(self, vanity_url = None):
+    def post(self, vanity_url=None):
         form = ProviderProfileForm(self.request.POST)
         if form.validate():
             # Store Provider
@@ -66,7 +67,7 @@ class ProviderEditProfileHandler(ProviderAdminBaseHandler):
 class ProviderEducationHandler(ProviderAdminBaseHandler):
     
     # admin_required
-    def post(self, vanity_url = None):
+    def post(self, vanity_url=None):
         
         education_form = ProviderEducationForm(self.request.POST)
         if education_form.validate():
@@ -88,30 +89,31 @@ class ProviderEducationHandler(ProviderAdminBaseHandler):
 
 class ProviderEditAddressHandler(ProviderAdminBaseHandler):
     @admin_required
-    def get(self, vanity_url = None):
+    def get(self, vanity_url=None):
         provider = db.get_provider_from_vanity_url(vanity_url)
         logging.info("provider dump before edit:" + str(vars(provider)))
         form = ProviderAddressForm(obj=provider)
         self.render_address(provider, address_form=form)
 
     # admin_required
-    def post(self, vanity_url = None):
+    def post(self, vanity_url=None):
         form = ProviderAddressForm(self.request.POST)
         
         if form.validate():
             # Store Provider
-            provider_key = db.storeProvider(self.request.POST)
+            provider = db.get_provider_from_vanity_url(vanity_url)
+            provider_key = db.storeProvider(provider, self.request.POST)
             provider = provider_key.get()
-                        
+
             self.render_address(provider, address_form=form, success_message=saved_message)
         else:
             # show validation error
-            provider = db.getProvider(self.request)
+            provider = db.get_provider_from_vanity_url(vanity_url)
             self.render_address(provider, address_form=form)
 
 
 class ProviderAddressUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
-    def post(self, vanity_url = None):
+    def post(self, vanity_url=None):
         provider = db.get_provider_from_vanity_url(vanity_url)
         logging.info("(ProviderAddressUploadHandler.post) Found provider: %s" % provider.email)
         
@@ -128,10 +130,10 @@ class ProviderAddressUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
 class ProviderAdministrationHandler(ProviderAdminBaseHandler):
     
     @admin_required
-    def get(self, vanity_url = None):
+    def get(self, vanity_url=None):
         provider = db.get_provider_from_vanity_url(vanity_url)
         if users.is_current_user_admin():
-            self.render_administration(provider)
+            self.render_administration(self, provider)
         else:
             logging.info("Not Admin: Can't see provider administration page")
         
@@ -144,7 +146,7 @@ class ProviderStatusHandler(ProviderAdminBaseHandler):
         provider.status = new_status
         provider.put()
         success_message = 'status changed to %s' % new_status
-        self.render_administration(provider, success_message=success_message)
+        self.render_administration(self, provider, success_message=success_message)
 
 
 class ProviderFeaturesHandler(ProviderAdminBaseHandler):
@@ -169,7 +171,7 @@ class ProviderFeaturesHandler(ProviderAdminBaseHandler):
 
             provider.put()
             
-            self.render_administration(provider, success_message=success_message)
+            self.render_administration(self, provider, success_message=success_message)
 
         else:
             logging.error('Received unknown feature switch : %s' % feature_switch)
@@ -178,14 +180,14 @@ class ProviderFeaturesHandler(ProviderAdminBaseHandler):
 class ProviderNotesHandler(ProviderAdminBaseHandler):
     
     @admin_required
-    def get(self, vanity_url = None, note_key=None, operation=None):
+    def get(self, vanity_url=None, note_key=None, operation=None):
         provider = db.get_provider_from_vanity_url(vanity_url)
         if users.is_current_user_admin():
             self.render_notes(provider)
         else:
             logging.info("Not Admin: Can't see provider notes page")
             
-    def post(self, vanity_url = None, note_key=None, operation=None):
+    def post(self, vanity_url=None, note_key=None, operation=None):
         if users.is_current_user_admin():
             provider = db.get_provider_from_vanity_url(vanity_url)
             logging.info('type %s' % self.request.get('note_type'))

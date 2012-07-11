@@ -115,7 +115,7 @@ application = webapp2.WSGIApplication([
                                            PathPrefixRoute('/provider', [
                                                # provider actions
                                                Route('/init', admin.NewProviderInitHandler),
-                                               Route('/solicit', admin.NewProviderSolicitHandler),
+                                               Route('/solicit/<vanity_url>', admin.NewProviderSolicitHandler),
                                                Route('/status', provider_admin.ProviderStatusHandler),
                                                
                                                # provider admin
