@@ -30,8 +30,9 @@ class ProviderAdminBaseHandler(BaseHandler):
         notes = provider.get_notes().fetch(10)
         logging.info('Notes count %s' % len(notes))
         new_note_form = ProviderNoteForm()
-        notes[0].edit_form = ProviderNoteForm(obj=notes[0])
-        notes[1].edit_form = ProviderNoteForm()
+        # create a form for each note
+        for n in notes:
+            n.edit_form = ProviderNoteForm(obj=n)
         self.render_template('provider/notes.html', provider=provider, notes=notes, form=new_note_form, **kw)       
         
 
