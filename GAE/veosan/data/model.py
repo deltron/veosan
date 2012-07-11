@@ -163,7 +163,7 @@ class Provider(ndb.Model):
         return Note.query(Note.provider == self.key).order(-Note.created_on)
     
     def get_education(self):
-        return Education.query(Education.provider == self.key)
+        return Education.query(Education.provider == self.key).order(-Education.end_year)
 
     
     def add_note(self, body, note_type='admin'):

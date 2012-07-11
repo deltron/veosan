@@ -126,6 +126,8 @@ def create_untranslated_code_tuple_list():
     code_tuples_list = []
     code_tuples_list.append(get_all_regions())
     code_tuples_list.append(get_all_categories())
+    code_tuples_list.append(get_all_schools())
+    code_tuples_list.append(get_all_degrees())
     # more...
     
     # flatten

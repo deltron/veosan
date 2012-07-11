@@ -30,6 +30,12 @@ indexes:
   properties:
   - name: request_datetime
 
+- kind: Education
+  properties:
+  - name: provider
+  - name: end_year
+    direction: desc
+
 - kind: Note
   properties:
   - name: provider
