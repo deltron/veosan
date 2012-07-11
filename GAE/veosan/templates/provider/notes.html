@@ -19,26 +19,37 @@
 	<div class="span12">
 		<p style="font-style:italic">Add a note about {{provider.full_name()}}</p>
 		<form class="form-inline" action="/admin/provider/notes/{{ provider.vanity_url }}" method="post">
-			<fieldset>				
-				<div class="control-group">
-					<div class="controls">
-						{{ form.body }}
-					</div>
-				</div>
+			<fieldset>
 				
-				<div class="control-group">
-					<div class="controls">
-						{{ form.note_type }}
-					</div>
-				</div>
-				
-				<div class="control-group">
-					<div class="controls">
-						<button type="submit" class="btn btn-primary">
-							{{ _('Add Note') }}
-						</button>
-					</div>
-				</div>
+					
+				<table class="table">
+					<tr style="vertical-align: top">
+						<td>
+							<div class="control-group">
+								<div class="controls">
+									{{ form.body(style="width: 95%", rows=5) }}
+								</div>
+							</div>
+						</td>
+						
+						<td>
+							<div class="control-group">
+								<div class="controls">
+									{{ form.note_type(class="span2") }}
+								</div>
+							</div>
+							
+							<div class="control-group">
+								<div class="controls">
+									<button type="submit" class="btn btn-primary">
+										{{ _('Add Note') }}
+									</button>
+								</div>
+							</div>
+						</td>
+					</tr>
+				</table>			
+
 			</fieldset>
 		</form>
 		
@@ -46,29 +57,67 @@
 		<table class="table">
 			<thead>
 				<tr>
-					<th width="20%">created / user</th>
-					<th width="50%">Note</th>
+					<th width="30%">Note</th>	
+					<th width="10%">created / user</th>
+					<th width="5%"></th>
 				</th>
 			</thead>
 			<tbody>	
 				{% for n in notes %}
-					<tr style="vertical-align: top">
+					<!-- display -->
+					<tr id="{{n.key.id()}}" style="vertical-align: top" >
+						<td>
+							<i class="{{n.get_icon_name()}}"></i>
+							{{ n.body }}
+							<br>
+						</td>
 						<td>
 							{{n.created_on|format_datetime_full}}<br>
 							by {{n.user}}
 						</td>
 						<td>
-							<i class="{{n.get_icon_name()}}"></i> 
-							{{n.body}}
-							<br>
+							<i class="icon-pencil"></i> 
+							<a id="showEdit" href="#">Edit</a>
+						</td>
+    
+					</tr>
+					<!-- edit -->
+					<tr id="edit{{n.key.id()}}" style="display: none;">
+						<td>
+							<p>NOTE EDIT</p>
+						</td>
+						
+						<td>
+							
+						</td>
+						<td>
+							
 						</td>
 					</tr>
+					
 				{% endfor %}
 			</tbody>
 		</table>
 	</div>
-
 	
 </div>
 
 {% endblock %}
+
+
+{% block extra_javascript %}
+    <script type="text/javascript">
+
+        $("#showEdit").click(function () {
+        	tr_parent = $(this).parents("tr:first")
+        	note_id = tr_parent.attr("id")
+            alert(note_id)
+            tr_parent.hide()
+            $("#edit"+note_id).show()
+            //$("#editForm").css("display", "block");
+        });
+
+    </script>
+{% endblock extra_javascript %}
+
+

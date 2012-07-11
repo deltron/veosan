@@ -160,14 +160,14 @@ class ProviderAccountFeaturesHandler(ProviderAdminBaseHandler):
 class ProviderNotesHandler(ProviderAdminBaseHandler):
     
     @admin_required
-    def get(self, vanity_url = None):
+    def get(self, vanity_url = None, note_key=None, operation=None):
         provider = db.get_provider_from_vanity_url(vanity_url)
         if users.is_current_user_admin():
             self.render_notes(provider)
         else:
             logging.info("Not Admin: Can't see provider notes page")
             
-    def post(self, vanity_url = None):
+    def post(self, vanity_url = None, note_key=None, operation=None):
         if users.is_current_user_admin():
             provider = db.get_provider_from_vanity_url(vanity_url)
             logging.info('type %s' % self.request.get('note_type'))

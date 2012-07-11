@@ -123,6 +123,7 @@ application = webapp2.WSGIApplication([
                                                Route('/profile/<vanity_url>', provider_admin.ProviderEditProfileHandler),
                                                Route('/address/<vanity_url>', provider_admin.ProviderEditAddressHandler),
                                                Route('/notes/<vanity_url>', provider_admin.ProviderNotesHandler),
+                                               Route('/notes/<vanity_url>/<note_key>/<operation>', provider_admin.ProviderNotesHandler),
                                                Route('/address/upload', provider_admin.ProviderAddressUploadHandler),
                                                Route('/feature/<feature_switch>', provider_admin.ProviderAccountFeaturesHandler),
                                             ]),
