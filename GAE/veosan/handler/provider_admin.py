@@ -96,6 +96,8 @@ class ProviderCVHandler(ProviderAdminBaseHandler):
     def post(self, vanity_url=None, section=None, operation=None, key=None):
         section_form = None
 
+        forms = { 'education' : 'ProviderEducationForm' }
+
         if section == 'education':
             section_form = ProviderEducationForm(self.request.POST)
         elif section == 'experience':

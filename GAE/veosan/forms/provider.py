@@ -40,7 +40,7 @@ class ProviderEducationForm(Form):
 
     school_name = SelectField(_(u'School'), choices=util.get_all_schools())    
     degree_type = SelectField(_(u'Degree'), choices=util.get_all_degrees())    
-    degree_text = TextField(_(u'Degree Text'))
+    degree_title = TextField(_(u'Degree Title'))
 
     description = TextAreaField(_(u'Description'))
 

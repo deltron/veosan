@@ -102,7 +102,7 @@
 		<ul class="unstyled">
 			{% for e in provider.get_education() %}
 			<li>
-				<h4>{{ e.degree_type|code_to_string }} {{ e.degree_text }}</h4>
+				<h4>{{ e.degree_type|code_to_string }} {{ e.degree_title }}</h4>
 				<h6>{{ e.school_name|code_to_string }} ({{ e.start_year }}-{{ e.end_year }})</h6>
 				<p>
 					{{ e.description }}

@@ -179,9 +179,26 @@ class Education(ndb.Model):
 
     school_name = ndb.StringProperty()
     degree_type = ndb.StringProperty()
-    degree_text = ndb.StringProperty()
+    degree_title = ndb.StringProperty()
+
+    description = ndb.TextProperty()
+
+
+class ContinuingEducation(ndb.Model):  
+    provider = ndb.KeyProperty(kind=Provider)
+ 
+    year = ndb.IntegerProperty()
+    month = ndb.IntegerProperty()
+
+    hours = ndb.IntegerProperty()
+
+    name = ndb.StringProperty()
+    type = ndb.StringProperty()
+
+    title = ndb.StringProperty()
 
     description = ndb.StringProperty()
+
 
 class Experience(ndb.Model):   
     provider = ndb.KeyProperty(kind=Provider)

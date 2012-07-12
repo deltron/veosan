@@ -25,7 +25,7 @@
 								<li>
 									<a href="/admin/provider/profile/cv/education/{{ provider.vanity_url }}/delete/{{ e.key.urlsafe() }}" class="pull-right"> <i class="bs-icon icon-remove-circle"> </i> </a>
 
-									<h4>{{ e.degree_type|code_to_string }} {{ e.degree_text }}</h4>
+									<h4>{{ e.degree_type|code_to_string }} {{ e.degree_title }}</h4>
 									<h6>{{ e.school_name|code_to_string }} ({{ e.start_year }}-{{ e.end_year }})</h6>
 									<p>
 										{{ e.description }}
@@ -70,7 +70,7 @@
 		<a class="close" data-dismiss="modal">×</a>
 		<h3>{{ _('Education') }}</h3>
 	</div>
-	<form method="post" action="/admin/provider/profile/cv/education/{{ provider.vanity_url }}/add" class="form-horizontal">
+	<form method="post" action="/admin/provider/profile/cv/education/{{ provider.vanity_url }}/add" class="form-horizontal" id="education_form">
 		<div class="modal-body">
 			{{ macro.make_standard_form(education_form) }}
 		</div>
