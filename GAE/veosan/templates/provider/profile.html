@@ -88,7 +88,7 @@
 		<a class="close" data-dismiss="modal">×</a>
 		<h3>{{ _('Experience') }}</h3>
 	</div>
-	<form method="post" action="/admin/provider/profile/cv/experience/{{ provider.vanity_url }}/add" class="form-horizontal">
+	<form method="post" action="/admin/provider/profile/cv/experience/{{ provider.vanity_url }}/add" class="form-horizontal" id="experience_form">
 		<div class="modal-body">
 			{{ macro.make_standard_form(experience_form) }}
 		</div>

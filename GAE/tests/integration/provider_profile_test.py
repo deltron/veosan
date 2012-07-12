@@ -3,8 +3,6 @@
 from base import BaseTest
 import unittest
 from data import db
-from data.model import User
-import util
 
 class ProviderTest(BaseTest):
     
@@ -91,6 +89,96 @@ class ProviderTest(BaseTest):
         public_response_after_delete.mustcontain(no='Clinical Physiotherapy')
         public_response_after_delete.mustcontain(no='Université McGill')
         public_response_after_delete.mustcontain(no="Baccalauréat")
+
+
+    def test_add_experience_to_profile(self):
+        self.login_as_admin()
+        self.init_new_provider()
+
+        # fill profile section
+        self.fill_new_provider_profile_correctly_action()
+
+        response = self.testapp.get('/admin/provider/profile/' + self._TEST_PROVIDER_VANITY_URL)
+
+        experience_form = response.forms['experience_form']
+        
+        experience_form['start_year'] = 2003
+        experience_form['end_year'] = 2006
+        experience_form['company_name'] = 'Kinatex'
+        experience_form['title'] = 'Manual Physiotherapy'
+        experience_form['description'] = 'Worked with my hands'
+
+        response = experience_form.submit()
+        
+        # check on the profile admin page
+        response.mustcontain('2003-2006')
+        response.mustcontain('Kinatex')
+        response.mustcontain('Manual Physiotherapy')
+        response.mustcontain('Worked with my hands')
+        
+        
+        # check on the public profile
+        response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
+        response.mustcontain('2003-2006')
+        response.mustcontain('Kinatex')
+        response.mustcontain('Manual Physiotherapy')
+        response.mustcontain('Worked with my hands')
+
+
+
+    def test_delete_experience_from_profile(self):
+        self.login_as_admin()
+        self.init_new_provider()
+
+        # fill profile section
+        self.fill_new_provider_profile_correctly_action()
+
+        response = self.testapp.get('/admin/provider/profile/' + self._TEST_PROVIDER_VANITY_URL)
+
+        experience_form = response.forms['experience_form']
+        
+        experience_form['start_year'] = 2003
+        experience_form['end_year'] = 2006
+        experience_form['company_name'] = 'Kinatex'
+        experience_form['title'] = 'Manual Physiotherapy'
+        experience_form['description'] = 'Worked with my hands'
+
+        response = experience_form.submit()
+        
+        # check on the profile admin page
+        response.mustcontain('2003-2006')
+        response.mustcontain('Kinatex')
+        response.mustcontain('Manual Physiotherapy')
+        response.mustcontain('Worked with my hands')
+        
+        
+        # check on the public profile
+        response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
+        response.mustcontain('2003-2006')
+        response.mustcontain('Kinatex')
+        response.mustcontain('Manual Physiotherapy')
+        response.mustcontain('Worked with my hands')
+
+
+        
+        provider = db.get_provider_from_vanity_url(self._TEST_PROVIDER_VANITY_URL)
+        education = provider.get_experience().get()
+
+        response_after_delete = self.testapp.get('/admin/provider/profile/cv/experience/' + self._TEST_PROVIDER_VANITY_URL + "/delete/" + education.key.urlsafe())
+
+
+        # experience should be gone
+        response_after_delete.mustcontain(no='2003-2006')
+        response_after_delete.mustcontain(no='Kinatex')
+        response_after_delete.mustcontain(no='Manual Physiotherapy')
+        response_after_delete.mustcontain(no='Worked with my hands')
+                
+        # check on the public profile
+        public_response_after_delete = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
+        public_response_after_delete.mustcontain(no='2003-2006')
+        public_response_after_delete.mustcontain(no='Kinatex')
+        public_response_after_delete.mustcontain(no='Manual Physiotherapy')
+        public_response_after_delete.mustcontain(no='Worked with my hands')
 
 
 
