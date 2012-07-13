@@ -90,7 +90,7 @@
 				<h4>{{ e.title }}</h4>
 				<h6>{{ e.company_name }} ({{ e.start_year }}-{{ e.end_year }})</h6>
 				<p>
-					{{ e.description }}
+					{{ e.description|markdown|safe }}
 				</p>
 			</li>
 			{% endfor %}

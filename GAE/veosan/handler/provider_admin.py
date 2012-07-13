@@ -96,19 +96,37 @@ class ProviderCVHandler(ProviderAdminBaseHandler):
     @admin_required
     def get(self, vanity_url=None, section=None, operation=None, key=None):
         provider = db.get_provider_from_vanity_url(vanity_url)
-        
-        if operation == 'delete':
-            logging.info("(ProviderEducationHandler.get) Delete section %s " % key)
-            
-            section_key = ndb.Key(urlsafe=key)
-            
-            if section_key:
-                section_key.delete()
-            else:
-                logging.info("(ProviderEducationHandler.get) No section object found for key %s" % key)
-            
-        # success, empty forms so you can play again            
         kwargs = self.generate_blank_forms()
+        section_key = None
+
+        if key:
+            section_key = ndb.Key(urlsafe=key)
+        
+
+        if section_key:
+            if operation == 'delete':
+                logging.info("(ProviderEducationHandler.get) Delete section %s key=%s" % (section, key))
+                            
+                section_key.delete()
+                
+                # success, empty forms so you can play again            
+                kwargs = self.generate_blank_forms()
+            
+            if operation == 'edit':
+                logging.info("(ProviderEducationHandler.get) Edit section %s key=%s" % (section, key))
+                
+                # get the object
+                obj = section_key.get()
+                
+                # populate the form
+                kwargs[section + "_form"] = self.forms[section](obj=obj)
+                kwargs['edit'] = section
+                kwargs['edit_key'] = key
+
+
+        else:
+            logging.info("(ProviderEducationHandler.get) No section object found for key %s" % key)
+                
         
         self.render_cv(provider, **kwargs)
     
@@ -133,6 +151,21 @@ class ProviderCVHandler(ProviderAdminBaseHandler):
                 # stored eduction
                 logging.info("(ProviderEducationHandler.post) Stored section %s key=%s" % (section, section_object.key))
 
+            if operation == 'edit':
+                section_key = ndb.Key(urlsafe=key)
+        
+                if section_key:
+                    section_object = section_key.get()
+                        
+                    db_util.set_all_properties_on_entity_from_multidict(section_object, self.request.POST)
+                    section_object.provider = provider.key
+                    section_object.put()
+                    
+                    # stored eduction
+                    logging.info("(ProviderEducationHandler.post) Stored section %s key=%s" % (section, section_object.key))
+                else:
+                    logging.info("(ProviderEducationHandler.post) No section object found for key %s" % key)
+
             # success, empty forms so you can add another one            
             kwargs = self.generate_blank_forms()
 
@@ -146,6 +179,9 @@ class ProviderCVHandler(ProviderAdminBaseHandler):
                 else:
                     # blank form
                     kwargs[key + '_form'] = self.forms[key]()
+            
+            if operation == 'edit':
+                kwargs['edit'] = section
             
             self.render_cv(provider, **kwargs)
           

@@ -15,7 +15,7 @@
 
 			{% for e in provider.get_education() %}
 			<li>
-				<h4>{{ e.degree_type|code_to_string }} {{ e.degree_title }} <a href="/admin/provider/cv/education/{{ provider.vanity_url }}/delete/{{ e.key.urlsafe() }}"> <i class="bs-icon icon-remove-circle"> </i> </a></h4>
+				<h4>{{ e.degree_type|code_to_string }} {{ e.degree_title }} <a href="/admin/provider/cv/education/{{ provider.vanity_url }}/edit/{{ e.key.urlsafe() }}"><i class="bs-icon icon-edit"> </i></a></h4>
 				<h6>{{ e.school_name|code_to_string }} ({{ e.start_year }}-{{ e.end_year }})</h6>
 				<p>
 					{{ e.description }}
@@ -32,7 +32,7 @@
 			{% for e in provider.get_experience() %}
 			<li>
 
-				<h4>{{ e.title }} <a href="/admin/provider/cv/experience/{{ provider.vanity_url }}/delete/{{ e.key.urlsafe() }}"> <i class="bs-icon icon-remove-circle"> </i> </a></h4>
+				<h4>{{ e.title }} <a href="/admin/provider/cv/experience/{{ provider.vanity_url }}/edit/{{ e.key.urlsafe() }}"><i class="bs-icon icon-edit"> </i></a></h4>
 				<h6>{{ e.company_name }} ({{ e.start_year }}-{{ e.end_year }})</h6>
 				<p>
 					{{ e.description|markdown|safe }}
@@ -50,7 +50,7 @@
 			{% for e in provider.get_continuing_education() %}
 			<li>
 
-				<h4>{{ e.title }} <a href="/admin/provider/cv/continuing_education/{{ provider.vanity_url }}/delete/{{ e.key.urlsafe() }}"> <i class="bs-icon icon-remove-circle"> </i> </a></h4>
+				<h4>{{ e.title }} <a href="/admin/provider/cv/continuing_education/{{ provider.vanity_url }}/edit/{{ e.key.urlsafe() }}"><i class="bs-icon icon-edit"> </i></a></h4>
 				<h6>{{e.type}}, {{ e.hours }} hours ({{ e.year }}/{{ e.month }})</h6>
 				<p>
 					{{ e.description }}
@@ -64,30 +64,49 @@
 
 {# CV Sections #}
 
+{% set section_label = {
+	'education' : _('Education'), 
+	'experience' : _('Experience'),
+	'continuing_education' : _('Continuing Education'),
+} %}
+
+{% set section_form = {
+	'education' : education_form, 
+	'experience' : experience_form,
+	'continuing_education' : continuing_education_form,
+} %}
+
 {% for section in ('education', 'experience', 'continuing_education') %}
 
 <div class="modal hide" id="{{ section }}_modal" style="display: none;">
 	<div class="modal-header">
+		{% if edit %}
+		<a class="close" href="/admin/provider/cv/{{ provider.vanity_url }}">×</a>
+		{% else %}
 		<a class="close" data-dismiss="modal">×</a>
-		<h3>{{ section }}</h3>
-	</div>
-	<form method="post" action="/admin/provider/cv/{{ section }}/{{ provider.vanity_url }}/add" class="form-horizontal" id="{{ section }}_form">
-		<div class="modal-body">
-			{# sucks for now... how to do this dynamically? #}
+		{% endif %}
 
-			{% if section == 'education' %}
-			{{ macro.make_standard_form(education_form) }}
-			{% elif section == 'experience' %}
-			{{ macro.make_standard_form(experience_form) }}
-			{% elif section == 'continuing_education' %}
-			{{ macro.make_standard_form(continuing_education_form) }}
-			{% endif %}
+		<h3>{{ section_label[section] }}</h3>
+	</div>
+	{% if edit %}
+	{% set post_url = '/admin/provider/cv/' + section + '/' + provider.vanity_url + '/edit/' + edit_key %}
+	{% else %}
+	{% set post_url = '/admin/provider/cv/' + section + '/' + provider.vanity_url + '/add' %}
+	{% endif %}
+	<form method="post" action="{{ post_url }}" class="form-horizontal" id="{{ section }}_form">
+		<div class="modal-body">
+			{{ macro.make_standard_form(section_form[section]) }}
 		</div>
 
 		<div class="modal-footer">
+			{% if edit %}
+			<a class="btn btn-danger pull-left" href="/admin/provider/cv/{{ section }}/{{ provider.vanity_url }}/delete/{{ edit_key }}"> {{ _('Delete') }} </a>
+			{% endif %}
+
 			<button type="submit" class="btn btn-primary">
 				{{ _('Save') }}
 			</button>
+			<a class="btn" href="/admin/provider/cv/{{ provider.vanity_url }}">{{ _('Cancel') }}</a>
 		</div>
 	</form>
 </div>
@@ -97,13 +116,13 @@
 
 {% block extra_javascript %}
 
-{% if education_form and education_form.errors %}
+{% if education_form and (edit == 'education' or education_form.errors) %}
 <script>$('#education_modal').modal('show')</script>
 {% endif %}
-{% if experience_form and experience_form.errors %}
+{% if experience_form and (edit == 'experience' or experience_form.errors) %}
 <script>$('#experience_modal').modal('show')</script>
 {% endif %}
-{% if continuing_education_form and continuing_education_form.errors %}
+{% if continuing_education_form  and (edit == 'continuing_education' or continuing_education_form.errors) %}
 <script>$('#continuing_education_modal').modal('show')</script>
 {% endif %}
 
