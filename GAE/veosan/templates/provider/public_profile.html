@@ -1,7 +1,15 @@
 {% extends "/layout/base.html" %}
 
 {% block subhead %}
-{{provider.first_name or ''}} {{ provider.last_name}}
+
+{{provider.first_name or ''}} 
+
+{% if provider.address_enabled %}
+{{ provider.last_name}}
+{% else %}
+{{provider.last_name|first}}.
+{% endif %}
+
 {% endblock %}
 {% block lead %}
 {% if provider.credentials %}
