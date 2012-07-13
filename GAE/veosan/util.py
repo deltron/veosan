@@ -3,6 +3,8 @@
 
 from itertools import chain
 from webapp2_extras.i18n import lazy_gettext as _
+from markdown2 import markdown2
+import logging
 
 DEV_SERVERS = ('localhost:8080', 'veosan-stage.appspot.com')
 PRODUCTION_SERVERS = ('www.veosan.com')
@@ -162,7 +164,11 @@ def code_to_string(code):
 def remove_empty_strings_from_list(l):
     return filter (lambda a: a != u'', l)
 
-
+def markdown(text):
+    logging.info("hello?")
+    logging.info( "text=" + text )
+    logging.info( "markdown=" + markdown2.markdown(text) )
+    return markdown2.markdown(text)
 
 note_types = ['call', 'email', 'meeting', 'admin']
 

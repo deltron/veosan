@@ -35,7 +35,7 @@
 				<h4>{{ e.title }} <a href="/admin/provider/cv/experience/{{ provider.vanity_url }}/delete/{{ e.key.urlsafe() }}"> <i class="bs-icon icon-remove-circle"> </i> </a></h4>
 				<h6>{{ e.company_name }} ({{ e.start_year }}-{{ e.end_year }})</h6>
 				<p>
-					{{ e.description }}
+					{{ e.description|markdown|safe }}
 				</p>
 			</li>
 			{% endfor %}

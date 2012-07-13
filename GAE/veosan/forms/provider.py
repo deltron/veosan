@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from wtforms import Form, TextField, SelectField, FileField, TextAreaField
+from wtforms import Form, TextField, SelectField, FileField, TextAreaField, IntegerField, FloatField
 from wtforms import validators
 from custom_form import MultiCheckboxField, CustomBooleanField
 import custom_validators
@@ -35,8 +35,8 @@ class ProviderProfileForm(Form):
     onsite = CustomBooleanField(_(u'I am willing to do on-site visits'))
 
 class ProviderEducationForm(Form):
-    start_year = TextField(_(u'Start Year'), [validators.Length(min=4, max=4, message='Your first year of school')])
-    end_year = TextField(_(u'End Year'), [validators.Length(min=4, max=4, message='Your first year of school')])
+    start_year = IntegerField(_(u'Start Year'), [validators.NumberRange(min=1940, max=2100, message='Your first year')])
+    end_year = IntegerField(_(u'End Year'), [validators.NumberRange(min=1940, max=2100, message='Your last year')])
 
     school_name = SelectField(_(u'School'), choices=util.get_all_schools())    
     degree_type = SelectField(_(u'Degree'), choices=util.get_all_degrees())    
@@ -45,24 +45,18 @@ class ProviderEducationForm(Form):
     description = TextAreaField(_(u'Description'))
 
 class ProviderExperienceForm(Form):
-    start_year = TextField(_(u'Start Year'), [validators.Length(min=4, max=4, message='Your first year of school')])
-    end_year = TextField(_(u'End Year'), [validators.Length(min=4, max=4, message='Your first year of school')])
-
+    start_year = IntegerField(_(u'Start Year'), [validators.NumberRange(min=1940, max=2100, message='Your first year')])
+    end_year = IntegerField(_(u'End Year'), [validators.NumberRange(min=1940, max=2100, message='Your last year')])
     company_name = TextField(_(u'Company Name'))
     title = TextField(_(u'Title'))
-
     description = TextAreaField(_(u'Description'))
 
 class ProviderContinuingEducationForm(Form):
-    year = TextField(_(u'Year'))
-    month = TextField(_(u'Month'))
-
+    year = IntegerField(_(u'Year'), [validators.NumberRange(min=1940, max=2100)])
+    month = IntegerField(_(u'Month'), [validators.NumberRange(min=1, max=12)])
     type = SelectField(_(u'Type'), choices=util.get_all_continuing_education_types())    
-
-    hours = TextField(_(u'Hours'))
-
+    hours = FloatField(_(u'Hours'), [validators.NumberRange(min=0, max=1000)])
     title = TextField(_(u'Title'))
-
     description = TextAreaField(_(u'Description'))
 
 
