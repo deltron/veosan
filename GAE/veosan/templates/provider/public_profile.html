@@ -7,7 +7,9 @@
 {% if provider.address_enabled %}
 {{ provider.last_name}}
 {% else %}
-{{provider.last_name|first}}.
+{% if provider.last_name %}
+	{{ provider.last_name|first }}.
+{% endif %}
 {% endif %}
 
 {% endblock %}
