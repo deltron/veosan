@@ -13,7 +13,7 @@ class ProviderTest(BaseTest):
         # fill profile section
         self.fill_new_provider_profile_correctly_action()
 
-        response = self.testapp.get('/admin/provider/cv/' + self._TEST_PROVIDER_VANITY_URL)
+        response = self.testapp.get('/provider/cv/' + self._TEST_PROVIDER_VANITY_URL)
 
         education_form = response.forms['education_form']
         
@@ -51,7 +51,7 @@ class ProviderTest(BaseTest):
         # fill profile section
         self.fill_new_provider_profile_correctly_action()
 
-        response = self.testapp.get('/admin/provider/cv/' + self._TEST_PROVIDER_VANITY_URL)
+        response = self.testapp.get('/provider/cv/' + self._TEST_PROVIDER_VANITY_URL)
 
         education_form = response.forms['education_form']
         
@@ -73,7 +73,7 @@ class ProviderTest(BaseTest):
         provider = db.get_provider_from_vanity_url(self._TEST_PROVIDER_VANITY_URL)
         education = provider.get_education().get()
 
-        response_after_delete = self.testapp.get('/admin/provider/cv/education/' + self._TEST_PROVIDER_VANITY_URL + "/delete/" + education.key.urlsafe())
+        response_after_delete = self.testapp.get('/provider/cv/education/' + self._TEST_PROVIDER_VANITY_URL + "/delete/" + education.key.urlsafe())
 
 
         # education should be gone
@@ -98,7 +98,7 @@ class ProviderTest(BaseTest):
         # fill profile section
         self.fill_new_provider_profile_correctly_action()
 
-        response = self.testapp.get('/admin/provider/cv/' + self._TEST_PROVIDER_VANITY_URL)
+        response = self.testapp.get('/provider/cv/' + self._TEST_PROVIDER_VANITY_URL)
 
         experience_form = response.forms['experience_form']
         
@@ -133,7 +133,7 @@ class ProviderTest(BaseTest):
         # fill profile section
         self.fill_new_provider_profile_correctly_action()
 
-        response = self.testapp.get('/admin/provider/cv/' + self._TEST_PROVIDER_VANITY_URL)
+        response = self.testapp.get('/provider/cv/' + self._TEST_PROVIDER_VANITY_URL)
 
         experience_form = response.forms['experience_form']
         
@@ -164,7 +164,7 @@ class ProviderTest(BaseTest):
         provider = db.get_provider_from_vanity_url(self._TEST_PROVIDER_VANITY_URL)
         education = provider.get_experience().get()
 
-        response_after_delete = self.testapp.get('/admin/provider/cv/experience/' + self._TEST_PROVIDER_VANITY_URL + "/delete/" + education.key.urlsafe())
+        response_after_delete = self.testapp.get('/provider/cv/experience/' + self._TEST_PROVIDER_VANITY_URL + "/delete/" + education.key.urlsafe())
 
 
         # experience should be gone

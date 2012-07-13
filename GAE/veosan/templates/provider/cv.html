@@ -15,7 +15,7 @@
 
 			{% for e in provider.get_education() %}
 			<li>
-				<h4>{{ e.degree_type|code_to_string }} {{ e.degree_title }} <a href="/admin/provider/cv/education/{{ provider.vanity_url }}/edit/{{ e.key.urlsafe() }}"><i class="bs-icon icon-edit"> </i></a></h4>
+				<h4>{{ e.degree_type|code_to_string }} {{ e.degree_title }} <a href="/provider/cv/education/{{ provider.vanity_url }}/edit/{{ e.key.urlsafe() }}"><i class="bs-icon icon-edit"> </i></a></h4>
 				<h6>{{ e.school_name|code_to_string }} ({{ e.start_year }}-{{ e.end_year }})</h6>
 				<p>
 					{{ e.description }}
@@ -32,7 +32,7 @@
 			{% for e in provider.get_experience() %}
 			<li>
 
-				<h4>{{ e.title }} <a href="/admin/provider/cv/experience/{{ provider.vanity_url }}/edit/{{ e.key.urlsafe() }}"><i class="bs-icon icon-edit"> </i></a></h4>
+				<h4>{{ e.title }} <a href="/provider/cv/experience/{{ provider.vanity_url }}/edit/{{ e.key.urlsafe() }}"><i class="bs-icon icon-edit"> </i></a></h4>
 				<h6>{{ e.company_name }} ({{ e.start_year }}-{{ e.end_year }})</h6>
 				<p>
 					{{ e.description|markdown|safe }}
@@ -50,7 +50,7 @@
 			{% for e in provider.get_continuing_education() %}
 			<li>
 
-				<h4>{{ e.title }} <a href="/admin/provider/cv/continuing_education/{{ provider.vanity_url }}/edit/{{ e.key.urlsafe() }}"><i class="bs-icon icon-edit"> </i></a></h4>
+				<h4>{{ e.title }} <a href="/provider/cv/continuing_education/{{ provider.vanity_url }}/edit/{{ e.key.urlsafe() }}"><i class="bs-icon icon-edit"> </i></a></h4>
 				<h6>{{e.type}}, {{ e.hours }} hours ({{ e.year }}/{{ e.month }})</h6>
 				<p>
 					{{ e.description }}
@@ -81,7 +81,7 @@
 <div class="modal hide" id="{{ section }}_modal" style="display: none;">
 	<div class="modal-header">
 		{% if edit %}
-		<a class="close" href="/admin/provider/cv/{{ provider.vanity_url }}">×</a>
+		<a class="close" href="/provider/cv/{{ provider.vanity_url }}">×</a>
 		{% else %}
 		<a class="close" data-dismiss="modal">×</a>
 		{% endif %}
@@ -89,9 +89,9 @@
 		<h3>{{ section_label[section] }}</h3>
 	</div>
 	{% if edit %}
-	{% set post_url = '/admin/provider/cv/' + section + '/' + provider.vanity_url + '/edit/' + edit_key %}
+	{% set post_url = '/provider/cv/' + section + '/' + provider.vanity_url + '/edit/' + edit_key %}
 	{% else %}
-	{% set post_url = '/admin/provider/cv/' + section + '/' + provider.vanity_url + '/add' %}
+	{% set post_url = '/provider/cv/' + section + '/' + provider.vanity_url + '/add' %}
 	{% endif %}
 	<form method="post" action="{{ post_url }}" class="form-horizontal" id="{{ section }}_form">
 		<div class="modal-body">
@@ -100,13 +100,13 @@
 
 		<div class="modal-footer">
 			{% if edit %}
-			<a class="btn btn-danger pull-left" href="/admin/provider/cv/{{ section }}/{{ provider.vanity_url }}/delete/{{ edit_key }}"> {{ _('Delete') }} </a>
+			<a class="btn btn-danger pull-left" href="/provider/cv/{{ section }}/{{ provider.vanity_url }}/delete/{{ edit_key }}"> {{ _('Delete') }} </a>
 			{% endif %}
 
 			<button type="submit" class="btn btn-primary">
 				{{ _('Save') }}
 			</button>
-			<a class="btn" href="/admin/provider/cv/{{ provider.vanity_url }}">{{ _('Cancel') }}</a>
+			<a class="btn" href="/provider/cv/{{ provider.vanity_url }}">{{ _('Cancel') }}</a>
 		</div>
 	</form>
 </div>

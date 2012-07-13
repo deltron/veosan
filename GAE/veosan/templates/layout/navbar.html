@@ -7,9 +7,11 @@
 				<ul class="nav pull-right">
 					<!-- language -->
 					{% for l in other_languages %}
-					<li><a href="/lang/{{l}}">{{ language_labels[l] }}</a></li>
+					<li>
+						<a href="/lang/{{l}}">{{ language_labels[l] }}</a>
+					</li>
 					{% endfor %}
-					
+
 					{% if user %}
 					<!-- User menu -->
 
@@ -23,14 +25,23 @@
 							<li>
 								<a href="/provider/schedule/{{ provider.vanity_url }}">{{ _('Schedule') }}</a>
 							</li>
+							<li>
+								<a href="/provider/profile/{{ provider.vanity_url }}">{{ _('Profile') }}</a>
+							</li>
+							<li>
+								<a href="/provider/cv/{{ provider.vanity_url }}">{{ _('CV') }}</a>
+							</li>
+							<li>
+								<a href="/provider/address/{{ provider.vanity_url }}">{{ _('Address') }}</a>
+							</li>
 							{% endif%}
-							
+
 							{% if patient %}
 							<li>
 								<a href="/patient/bookings">{{ _('Bookings') }}</a>
 							</li>
 							{% endif%}
-							
+
 							{# Always show logout #}
 							<li class="divider"></li>
 							<li class="">
@@ -40,12 +51,7 @@
 							{% if provider and 'admin' in roles %}
 							{# Show provider administration menu items #}
 							<li class="divider"></li>
-							<li id="profile" style="font-style:italic">
-								<a href="{{provider.get_edit_link(route='/admin/provider/profile')}}">{{ _('Profile') }}</a>
-							</li>
-							<li id="address" style="font-style:italic">
-								<a href="{{provider.get_edit_link(route='/admin/provider/address')}}">{{ _('Address') }}</a>
-							</li>
+
 							<li id="administration" style="font-style:italic">
 								<a href="{{provider.get_edit_link(route='/admin/provider')}}">{{ _('Administration') }}</a>
 							</li>
@@ -54,11 +60,11 @@
 					</li>
 					{% else %}
 					{# No user logged in #}
-					
+
 					<li>
 						<a href="{{login_url}}">{{ _('My Account') }}</a>
 					</li>
-					
+
 					{% endif%}
 
 					{% if 'admin' in roles %}

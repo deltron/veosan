@@ -3,22 +3,16 @@ import logging
 # GAE
 from google.appengine.api import users
 from google.appengine.ext import blobstore
-from google.appengine.ext import ndb
 from google.appengine.ext.webapp import blobstore_handlers
 # veo
 from base import BaseHandler
 import data.db as db
-import data.db_util as db_util
-from data.model import Note, Education, Experience, ContinuingEducation
-from forms.provider import ProviderProfileForm, ProviderAddressForm, ProviderPhotoForm, ProviderNoteForm, ProviderStatusForm, ProviderEducationForm, ProviderContinuingEducationForm, ProviderExperienceForm
+from forms.provider import ProviderProfileForm, ProviderAddressForm, ProviderPhotoForm, ProviderNoteForm, ProviderStatusForm
 from handler.auth import admin_required
 from util import saved_message
 
 class ProviderAdminBaseHandler(BaseHandler):
     
-    def render_cv(self, provider, **kw):
-        self.render_template('provider/cv.html', provider=provider, **kw)
-
     def render_profile(self, provider, **kw):
         self.render_template('provider/profile.html', provider=provider, **kw)
     
@@ -54,10 +48,8 @@ class ProviderEditProfileHandler(ProviderAdminBaseHandler):
             logging.info("(ProviderEditProfileHandler.get) Edit profile for provider %s" % provider.email)
             
             profile_form = ProviderProfileForm(obj=provider)
-            education_form = ProviderEducationForm()
-            experience_form = ProviderExperienceForm()
             
-            self.render_profile(provider, profile_form=profile_form, education_form=education_form, experience_form=experience_form)
+            self.render_profile(provider, profile_form=profile_form)
     
     # admin_required
     def post(self, vanity_url=None):
@@ -72,119 +64,6 @@ class ProviderEditProfileHandler(ProviderAdminBaseHandler):
             # show error
             provider = db.get_provider_from_vanity_url(vanity_url)
             self.render_profile(provider, profile_form=form)
-
-class ProviderCVHandler(ProviderAdminBaseHandler):
-    forms = { 'education' : ProviderEducationForm,
-              'experience' : ProviderExperienceForm,
-              'continuing_education' : ProviderContinuingEducationForm,
-            }
-
-    objs = { 'education' : Education,
-             'experience' : Experience,
-             'continuing_education' : ContinuingEducation
-            }
-
-    def generate_blank_forms(self):
-        kwargs = {}
-        
-        # create blank forms
-        for key in self.forms:
-            kwargs[key + '_form'] = self.forms[key]()
-
-        return kwargs
-
-    @admin_required
-    def get(self, vanity_url=None, section=None, operation=None, key=None):
-        provider = db.get_provider_from_vanity_url(vanity_url)
-        kwargs = self.generate_blank_forms()
-        section_key = None
-
-        if key:
-            section_key = ndb.Key(urlsafe=key)
-        
-
-        if section_key:
-            if operation == 'delete':
-                logging.info("(ProviderEducationHandler.get) Delete section %s key=%s" % (section, key))
-                            
-                section_key.delete()
-                
-                # success, empty forms so you can play again            
-                kwargs = self.generate_blank_forms()
-            
-            if operation == 'edit':
-                logging.info("(ProviderEducationHandler.get) Edit section %s key=%s" % (section, key))
-                
-                # get the object
-                obj = section_key.get()
-                
-                # populate the form
-                kwargs[section + "_form"] = self.forms[section](obj=obj)
-                kwargs['edit'] = section
-                kwargs['edit_key'] = key
-
-
-        else:
-            logging.info("(ProviderEducationHandler.get) No section object found for key %s" % key)
-                
-        
-        self.render_cv(provider, **kwargs)
-    
-    # admin_required
-    def post(self, vanity_url=None, section=None, operation=None, key=None):
-
-        # instantiate and fill the section form
-        section_form = self.forms[section](self.request.POST)
-
-        provider = db.get_provider_from_vanity_url(vanity_url)
-
-        if section_form.validate():
-            # Store section
-            
-            if operation == 'add':
-                section_object = self.objs[section]()
-                    
-                db_util.set_all_properties_on_entity_from_multidict(section_object, self.request.POST)
-                section_object.provider = provider.key
-                section_object.put()
-                
-                # stored eduction
-                logging.info("(ProviderEducationHandler.post) Stored section %s key=%s" % (section, section_object.key))
-
-            if operation == 'edit':
-                section_key = ndb.Key(urlsafe=key)
-        
-                if section_key:
-                    section_object = section_key.get()
-                        
-                    db_util.set_all_properties_on_entity_from_multidict(section_object, self.request.POST)
-                    section_object.provider = provider.key
-                    section_object.put()
-                    
-                    # stored eduction
-                    logging.info("(ProviderEducationHandler.post) Stored section %s key=%s" % (section, section_object.key))
-                else:
-                    logging.info("(ProviderEducationHandler.post) No section object found for key %s" % key)
-
-            # success, empty forms so you can add another one            
-            kwargs = self.generate_blank_forms()
-
-            self.render_cv(provider, success_message=saved_message, **kwargs)
-        else:            
-            kwargs = {}
-            for key in self.forms:
-                if key == section:
-                    # this one has errors
-                    kwargs[key + "_form"] = section_form
-                else:
-                    # blank form
-                    kwargs[key + '_form'] = self.forms[key]()
-            
-            if operation == 'edit':
-                kwargs['edit'] = section
-            
-            self.render_cv(provider, **kwargs)
-          
 
 class ProviderEditAddressHandler(ProviderAdminBaseHandler):
     @admin_required

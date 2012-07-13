@@ -88,7 +88,14 @@ application = webapp2.WSGIApplication([
                                        PathPrefixRoute('/provider', [
                                             Route('/schedule/<vanity_url>', provider.ProviderScheduleHandler),
                                             Route('/bookings/<vanity_url>', provider.ProviderBookingsHandler),
-                                       ]),
+                                                                 
+                                            # CV sections (Education, Work Experience)
+                                            PathPrefixRoute('/cv', [
+                                                Route('/<vanity_url>', provider.ProviderCVHandler),
+                                                Route('/<section>/<vanity_url>/<operation>', provider.ProviderCVHandler),
+                                                Route('/<section>/<vanity_url>/<operation>/<key>', provider.ProviderCVHandler),
+                                            ]),
+                                        ]),
                                        
                                        # user
                                        ('/login', user.LoginHandler),
@@ -119,26 +126,23 @@ application = webapp2.WSGIApplication([
                                                Route('/solicit/<vanity_url>', admin.NewProviderSolicitHandler),
                                                Route('/status', provider_admin.ProviderStatusHandler),
                                                
+                                               
+                                                # provider profile
+                                               PathPrefixRoute('/profile', [
+                                                    Route('/<vanity_url>', provider_admin.ProviderEditProfileHandler),
+                                                ]),
+                                                                         
+                                                # Address
+                                               PathPrefixRoute('/address', [
+                                                    Route('/<vanity_url>', provider_admin.ProviderEditAddressHandler),
+                                                    Route('/upload/<vanity_url>', provider_admin.ProviderAddressUploadHandler),
+                                                ]),
+                                                   
                                                # provider admin
                                                Route('/admin/<vanity_url>', provider_admin.ProviderAdministrationHandler),
                                                
-                                               # provider profile
-                                               PathPrefixRoute('/profile', [
-                                                    Route('/<vanity_url>', provider_admin.ProviderEditProfileHandler),
-                                                    
-                                               ]),
-
-                                               # CV sections (Education, Work Experience)
-                                               PathPrefixRoute('/cv', [
-                                                    Route('/<vanity_url>', provider_admin.ProviderCVHandler),
-                                                    Route('/<section>/<vanity_url>/<operation>', provider_admin.ProviderCVHandler),
-                                                    Route('/<section>/<vanity_url>/<operation>/<key>', provider_admin.ProviderCVHandler),
-                                               ]),
-                                                                         
                                                Route('/notes/<vanity_url>', provider_admin.ProviderNotesHandler),
                                                Route('/notes/<vanity_url>/<operation>/<note_key>', provider_admin.ProviderNotesHandler),
-                                               Route('/address/<vanity_url>', provider_admin.ProviderEditAddressHandler),
-                                               Route('/address/upload/<vanity_url>', provider_admin.ProviderAddressUploadHandler),
                                                Route('/feature/<feature_switch>/<vanity_url>', provider_admin.ProviderFeaturesHandler),
                                             ]),
                                        ]),

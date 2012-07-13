@@ -11,20 +11,25 @@ class PublicProfileTest(BaseTest):
         self.create_complete_provider_profile()
     
         public_profile = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
-        public_profile.mustcontain("Fantastic Fox")
         
+        # by default address is hidden and no booking
+        public_profile.mustcontain("Fantastic F.")
+        public_profile.mustcontain(no="Address")
+
 
     def test_disable_enable_show_address(self):
         # create a new provider, vanity URL is bobafett
         self.create_complete_provider_profile()
     
         public_profile = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
-        public_profile.mustcontain("Fantastic Fox")
+        
+        # hide last name
+        public_profile.mustcontain("Fantastic F.")
         
         self.login_as_admin()
         
         public_profile.mustcontain(no="Address")
-
+        public_profile.mustcontain(no="Réservez Maintenant")
         
         # enable the address
         enable = self.testapp.post('/admin/provider/feature/address_enabled/' + self._TEST_PROVIDER_VANITY_URL)
@@ -38,7 +43,7 @@ class PublicProfileTest(BaseTest):
         disable = self.testapp.post('/admin/provider/feature/address_enabled/' + self._TEST_PROVIDER_VANITY_URL)
 
         public_profile = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
-        public_profile.mustcontain("Fantastic Fox")
+        public_profile.mustcontain("Fantastic F.")
         public_profile.mustcontain(no="Address")
         
         
@@ -47,26 +52,26 @@ class PublicProfileTest(BaseTest):
         self.create_complete_provider_profile()
     
         public_profile = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
-        public_profile.mustcontain("Fantastic Fox")
+        public_profile.mustcontain("Fantastic F.")
         
         self.login_as_admin()
         
         public_profile.mustcontain(no="Address")
 
         
-        # enable the address
+        # enable the booking
         enable = self.testapp.post('/admin/provider/feature/booking_enabled/' + self._TEST_PROVIDER_VANITY_URL)
         
         public_profile = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
-        public_profile.mustcontain("Fantastic Fox")
+        public_profile.mustcontain("Fantastic F.")
         public_profile.mustcontain("Réservez Maintenant")
         
         
-        # hit it again to disable the address
+        # hit it again to disable the booking
         disable = self.testapp.post('/admin/provider/feature/booking_enabled/' + self._TEST_PROVIDER_VANITY_URL)
 
         public_profile = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
-        public_profile.mustcontain("Fantastic Fox")
+        public_profile.mustcontain("Fantastic F.")
         public_profile.mustcontain(no="Réservez Maintenant")
         
         
