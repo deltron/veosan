@@ -9,12 +9,15 @@ from google.appengine.ext.webapp import blobstore_handlers
 from base import BaseHandler
 import data.db as db
 import data.db_util as db_util
-from data.model import Note, Education, Experience
-from forms.provider import ProviderProfileForm, ProviderAddressForm, ProviderPhotoForm, ProviderNoteForm, ProviderStatusForm, ProviderEducationForm, ProviderExperienceForm
+from data.model import Note, Education, Experience, ContinuingEducation
+from forms.provider import ProviderProfileForm, ProviderAddressForm, ProviderPhotoForm, ProviderNoteForm, ProviderStatusForm, ProviderEducationForm, ProviderContinuingEducationForm, ProviderExperienceForm
 from handler.auth import admin_required
 from util import saved_message
 
 class ProviderAdminBaseHandler(BaseHandler):
+    
+    def render_cv(self, provider, **kw):
+        self.render_template('provider/cv.html', provider=provider, **kw)
 
     def render_profile(self, provider, **kw):
         self.render_template('provider/profile.html', provider=provider, **kw)
@@ -71,7 +74,26 @@ class ProviderEditProfileHandler(ProviderAdminBaseHandler):
             self.render_profile(provider, profile_form=form)
 
 class ProviderCVHandler(ProviderAdminBaseHandler):
-    
+    forms = { 'education' : ProviderEducationForm,
+              'experience' : ProviderExperienceForm,
+              'continuing_education' : ProviderContinuingEducationForm,
+            }
+
+    objs = { 'education' : Education,
+             'experience' : Experience,
+             'continuing_education' : ContinuingEducation
+            }
+
+    def generate_blank_forms(self):
+        kwargs = {}
+        
+        # create blank forms
+        for key in self.forms:
+            kwargs[key + '_form'] = self.forms[key]()
+
+        return kwargs
+
+    @admin_required
     def get(self, vanity_url=None, section=None, operation=None, key=None):
         provider = db.get_provider_from_vanity_url(vanity_url)
         
@@ -86,22 +108,15 @@ class ProviderCVHandler(ProviderAdminBaseHandler):
                 logging.info("(ProviderEducationHandler.get) No section object found for key %s" % key)
             
         # success, empty forms so you can play again            
-        profile_form = ProviderProfileForm(obj=provider)        
-        education_form = ProviderEducationForm()
-        experience_form = ProviderExperienceForm()
-
-        self.render_profile(provider, profile_form=profile_form, education_form=education_form, experience_form=experience_form, success_message=saved_message)
+        kwargs = self.generate_blank_forms()
+        
+        self.render_cv(provider, **kwargs)
     
     # admin_required
     def post(self, vanity_url=None, section=None, operation=None, key=None):
-        section_form = None
 
-        forms = { 'education' : 'ProviderEducationForm' }
-
-        if section == 'education':
-            section_form = ProviderEducationForm(self.request.POST)
-        elif section == 'experience':
-            section_form = ProviderExperienceForm(self.request.POST)
+        # instantiate and fill the section form
+        section_form = self.forms[section](self.request.POST)
 
         provider = db.get_provider_from_vanity_url(vanity_url)
 
@@ -109,46 +124,30 @@ class ProviderCVHandler(ProviderAdminBaseHandler):
             # Store section
             
             if operation == 'add':
-                section_object = None
-                
-                if section == 'education':
-                    section_object = Education()
-                elif section == 'experience':
-                    section_object = Experience()
+                section_object = self.objs[section]()
                     
                 db_util.set_all_properties_on_entity_from_multidict(section_object, self.request.POST)
                 section_object.provider = provider.key
                 section_object.put()
                 
                 # stored eduction
-                logging.info("(ProviderEducationHandler.post) Stored section %s " % section_object.key)
+                logging.info("(ProviderEducationHandler.post) Stored section %s key=%s" % (section, section_object.key))
 
             # success, empty forms so you can add another one            
-            profile_form = ProviderProfileForm(obj=provider)
-            education_form = ProviderEducationForm()
-            experience_form = ProviderExperienceForm()
+            kwargs = self.generate_blank_forms()
 
-            self.render_profile(provider, profile_form=profile_form, education_form=education_form, experience_form=experience_form, success_message=saved_message)
+            self.render_cv(provider, success_message=saved_message, **kwargs)
         else:            
-            profile_form = ProviderProfileForm(obj=provider)
-
-
-            if section == 'education':
-                # this one has errors
-                education_form = section_form
-                
-                # this one should be clean
-                experience_form = ProviderExperienceForm()
-
-            elif section == 'experience':
-                # this one has errors
-                experience_form = section_form
-                
-                # this one should be clean
-                education_form = ProviderEducationForm()
-
+            kwargs = {}
+            for key in self.forms:
+                if key == section:
+                    # this one has errors
+                    kwargs[key + "_form"] = section_form
+                else:
+                    # blank form
+                    kwargs[key + '_form'] = self.forms[key]()
             
-            self.render_profile(provider, profile_form=profile_form, education_form=education_form, experience_form=experience_form)
+            self.render_cv(provider, **kwargs)
           
 
 class ProviderEditAddressHandler(ProviderAdminBaseHandler):

@@ -157,6 +157,10 @@ class Provider(ndb.Model):
     def get_experience(self):
         return Experience.query(Experience.provider == self.key).order(-Experience.end_year)
 
+    def get_continuing_education(self):
+        return ContinuingEducation.query(ContinuingEducation.provider == self.key).order(-ContinuingEducation.year, -ContinuingEducation.month)
+
+
     def add_note(self, body, note_type='admin'):
         ''' Add Note to this provider'''
         note = Note()
@@ -190,9 +194,8 @@ class ContinuingEducation(ndb.Model):
     year = ndb.IntegerProperty()
     month = ndb.IntegerProperty()
 
-    hours = ndb.IntegerProperty()
+    hours = ndb.FloatProperty()
 
-    name = ndb.StringProperty()
     type = ndb.StringProperty()
 
     title = ndb.StringProperty()

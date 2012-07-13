@@ -125,12 +125,15 @@ application = webapp2.WSGIApplication([
                                                PathPrefixRoute('/profile', [
                                                     Route('/<vanity_url>', provider_admin.ProviderEditProfileHandler),
                                                     
-                                                    # CV sections (Education, Work Experience)
-                                                    Route('/cv/<section>/<vanity_url>/<operation>', provider_admin.ProviderCVHandler),
-                                                    Route('/cv/<section>/<vanity_url>/<operation>/<key>', provider_admin.ProviderCVHandler),
                                                ]),
 
-                                               
+                                               # CV sections (Education, Work Experience)
+                                               PathPrefixRoute('/cv', [
+                                                    Route('/<vanity_url>', provider_admin.ProviderCVHandler),
+                                                    Route('/<section>/<vanity_url>/<operation>', provider_admin.ProviderCVHandler),
+                                                    Route('/<section>/<vanity_url>/<operation>/<key>', provider_admin.ProviderCVHandler),
+                                               ]),
+                                                                         
                                                Route('/notes/<vanity_url>', provider_admin.ProviderNotesHandler),
                                                Route('/notes/<vanity_url>/<operation>/<note_key>', provider_admin.ProviderNotesHandler),
                                                Route('/address/<vanity_url>', provider_admin.ProviderEditAddressHandler),

@@ -70,6 +70,12 @@ def get_all_degrees():
             ("md", _(u"Doctor (MD)")),
         ]
 
+def get_all_continuing_education_types():
+    return [("conference", _(u"Conference")),
+            ("training", _(u"Training")),
+            ("presentation", _(u"Presentation")),
+            ("committee", _(u"Committee")),
+        ]
 
 def getAllAssociations():
     return [("oppq", _(u"Ordre professionnel de la physiotherapie du Quebec (OPPQ)")),

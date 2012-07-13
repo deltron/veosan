@@ -112,6 +112,21 @@
 		</ul>
 		{% endif %}
 
+		{% if provider.get_continuing_education()|remove_empty_strings_from_list %}
+		<h3>Continuing Education</h3>
+		<ul class="unstyled">
+			{% for e in provider.get_continuing_education() %}
+			<li>
+				<h4>{{ e.title }}</h4>
+				<h6>{{e.type}}, {{ e.hours }} hours ({{ e.year }}/{{ e.month }})</h6>
+				<p>
+					{{ e.description }}
+				</p>
+			</li>
+			{% endfor %}
+		</ul>
+		{% endif %}
+
 		{# Not for now
 		<h3>Publications</h3>
 		<ul class="unstyled">

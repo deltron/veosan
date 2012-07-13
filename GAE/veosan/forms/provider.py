@@ -53,6 +53,19 @@ class ProviderExperienceForm(Form):
 
     description = TextAreaField(_(u'Description'))
 
+class ProviderContinuingEducationForm(Form):
+    year = TextField(_(u'Year'))
+    month = TextField(_(u'Month'))
+
+    type = SelectField(_(u'Type'), choices=util.get_all_continuing_education_types())    
+
+    hours = TextField(_(u'Hours'))
+
+    title = TextField(_(u'Title'))
+
+    description = TextAreaField(_(u'Description'))
+
+
 
 class ProviderNoteForm(Form):
     body = TextAreaField(_(u'Note'))

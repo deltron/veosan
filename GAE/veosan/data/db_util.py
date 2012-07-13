@@ -1,5 +1,5 @@
 import logging
-from google.appengine.ext.ndb import StringProperty, BooleanProperty, TextProperty, IntegerProperty
+from google.appengine.ext.ndb import StringProperty, BooleanProperty, TextProperty, IntegerProperty, FloatProperty
 
 def set_all_properties_on_entity_from_multidict(entity, multidict):
     ''' fancy way to set all properties on an entity from a multidict (posted form) '''
@@ -23,6 +23,11 @@ def set_all_properties_on_entity_from_multidict(entity, multidict):
             elif isinstance(property_type, IntegerProperty):
                 logging.info("saving key->value for Integer : " + prop + "->" + multidict.getone(prop))
                 integer_value = int(multidict.getone(prop))
+                setattr(entity, prop, integer_value)
+
+            elif isinstance(property_type, FloatProperty):
+                logging.info("saving key->value for Float : " + prop + "->" + multidict.getone(prop))
+                integer_value = float(multidict.getone(prop))
                 setattr(entity, prop, integer_value)
 
             elif isinstance(property_type, BooleanProperty):

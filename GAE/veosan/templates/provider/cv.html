@@ -1,0 +1,110 @@
+{% extends "/layout/provider_nav.html" %}
+
+{% set active_page = "cv" %}
+
+{% block subhead %}{{ _('CV') }}{% endblock %}
+{% block lead %}{{ _('Your history.') }}{% endblock %}
+
+{% block content %}
+<!-- Form -->
+<div class="row">
+	<div class="span6">
+		<!-- CV -->
+		<h3>Education</h3>
+		<ul class="unstyled">
+
+			{% for e in provider.get_education() %}
+			<li>
+				<h4>{{ e.degree_type|code_to_string }} {{ e.degree_title }} <a href="/admin/provider/cv/education/{{ provider.vanity_url }}/delete/{{ e.key.urlsafe() }}"> <i class="bs-icon icon-remove-circle"> </i> </a></h4>
+				<h6>{{ e.school_name|code_to_string }} ({{ e.start_year }}-{{ e.end_year }})</h6>
+				<p>
+					{{ e.description }}
+				</p>
+			</li>
+			{% endfor %}
+		</ul>
+		<a data-toggle="modal" href="#education_modal" class="btn btn-primary">Add Education</a>
+		<br>
+		<br>
+		<h3>Experience</h3>
+		<ul class="unstyled">
+
+			{% for e in provider.get_experience() %}
+			<li>
+
+				<h4>{{ e.title }} <a href="/admin/provider/cv/experience/{{ provider.vanity_url }}/delete/{{ e.key.urlsafe() }}"> <i class="bs-icon icon-remove-circle"> </i> </a></h4>
+				<h6>{{ e.company_name }} ({{ e.start_year }}-{{ e.end_year }})</h6>
+				<p>
+					{{ e.description }}
+				</p>
+			</li>
+			{% endfor %}
+		</ul>
+		<a data-toggle="modal" href="#experience_modal" class="btn btn-primary">Add Experience</a>
+
+		<br>
+		<br>
+		<h3>Continuing Education</h3>
+		<ul class="unstyled">
+
+			{% for e in provider.get_continuing_education() %}
+			<li>
+
+				<h4>{{ e.title }} <a href="/admin/provider/cv/continuing_education/{{ provider.vanity_url }}/delete/{{ e.key.urlsafe() }}"> <i class="bs-icon icon-remove-circle"> </i> </a></h4>
+				<h6>{{e.type}}, {{ e.hours }} hours ({{ e.year }}/{{ e.month }})</h6>
+				<p>
+					{{ e.description }}
+				</p>
+			</li>
+			{% endfor %}
+		</ul>
+		<a data-toggle="modal" href="#continuing_education_modal" class="btn btn-primary">Add Continuing Education</a>
+	</div>
+</div>
+
+{# CV Sections #}
+
+{% for section in ('education', 'experience', 'continuing_education') %}
+
+<div class="modal hide" id="{{ section }}_modal" style="display: none;">
+	<div class="modal-header">
+		<a class="close" data-dismiss="modal">×</a>
+		<h3>{{ section }}</h3>
+	</div>
+	<form method="post" action="/admin/provider/cv/{{ section }}/{{ provider.vanity_url }}/add" class="form-horizontal" id="{{ section }}_form">
+		<div class="modal-body">
+			{# sucks for now... how to do this dynamically? #}
+
+			{% if section == 'education' %}
+			{{ macro.make_standard_form(education_form) }}
+			{% elif section == 'experience' %}
+			{{ macro.make_standard_form(experience_form) }}
+			{% elif section == 'continuing_education' %}
+			{{ macro.make_standard_form(continuing_education_form) }}
+			{% endif %}
+		</div>
+
+		<div class="modal-footer">
+			<button type="submit" class="btn btn-primary">
+				{{ _('Save') }}
+			</button>
+		</div>
+	</form>
+</div>
+{% endfor %}
+
+{% endblock %}
+
+{% block extra_javascript %}
+
+{% if education_form and education_form.errors %}
+<script>$('#education_modal').modal('show')</script>
+{% endif %}
+{% if experience_form and experience_form.errors %}
+<script>$('#experience_modal').modal('show')</script>
+{% endif %}
+{% if continuing_education_form and continuing_education_form.errors %}
+<script>$('#continuing_education_modal').modal('show')</script>
+{% endif %}
+
+{% endblock %}
