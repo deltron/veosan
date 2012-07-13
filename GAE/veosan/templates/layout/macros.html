@@ -9,8 +9,7 @@
 </p>
 {% endif %}
 {%- endmacro %}
-	
-	
+
 {#
 
 Macro to generate a standard form.
@@ -32,7 +31,7 @@ Twitter Bootstrap horizontal form layout.
 	{% endif %}
 	<div class="controls">
 		{{ display_errors_for_field(field) }}
-		
+
 		{% if field.type in ['MultiCheckboxField', 'CustomBooleanField'] %}
 		{{ field(class="checkbox") }}
 		{% elif field.type == 'TextAreaField' %}
@@ -47,12 +46,11 @@ Twitter Bootstrap horizontal form layout.
 {%- endmacro %}
 
 {# backwards compatible makeStandardForm() form all old pages that
-	don't give form_name as a parameter	
+don't give form_name as a parameter
 #}
 {% macro makeStandardForm(inputClass='input-xlarge') -%}
-   {{ make_standard_form(form, inputClass) }}
+{{ make_standard_form(form, inputClass) }}
 {%- endmacro %}
-
 
 {#
 Macro to generate a provider bio
@@ -69,23 +67,7 @@ Macro to generate a provider bio
 				{% else %}
 				<img src="{{ provider.get_profile_photo_image_url(100) }}" width="100">
 				{% endif %}
-			</div>
-			<div class="span8">
-				<h3> {{provider.title or ''}} {{provider.first_name or ''}}
-				{% if provider.last_name %} {{provider.last_name|first}}. {% endif %} </h3>
-				{% if provider.credentials %}
-				<h6>{{ provider.credentials }}</h6>
-				{% endif %}
 
-				{% if provider.quote %}
-				<p style="font-style: italic">
-					{{ provider.quote }}
-				</p>
-				{% endif %}
-			</div>
-		</div>
-		<div class="row-fluid">
-			<div class="span4">
 				<h5>Specialities</h5>
 				<ul class="unstyled">
 					{% for s in provider.specialty %}
@@ -94,8 +76,23 @@ Macro to generate a provider bio
 					</li>
 					{% endfor %}
 				</ul>
+
 			</div>
 			<div class="span8">
+				<h3> {{provider.title or ''}} {{provider.first_name or ''}}
+				{% if provider.address_enabled %} {{provider.last_name}}
+				{% else %}
+				{% if provider.last_name %}
+				{{provider.last_name|first}}.
+				{% endif %}
+				{% endif %}</h3>
+				<h6>{{ category_dict[provider.category] }}</h6>
+
+				{% if provider.quote %}
+				<p style="font-style: italic">
+					{{ provider.quote }}
+				</p>
+				{% endif %}
 				<p>
 					{{ provider.bio }}
 				</p>
