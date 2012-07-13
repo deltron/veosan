@@ -14,9 +14,7 @@
 
 {% endblock %}
 {% block lead %}
-{% if provider.credentials %}
-{{ provider.credentials }}
-{% endif %}
+{{ category_dict[provider.category] }}
 {% endblock %}
 
 {% block content %}
