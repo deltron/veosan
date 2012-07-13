@@ -64,31 +64,29 @@
 
 {# CV Sections #}
 
+{% set sections = ('education', 'experience', 'continuing_education') %}
+
 {% set section_label = {
-	'education' : _('Education'), 
-	'experience' : _('Experience'),
-	'continuing_education' : _('Continuing Education'),
+'education' : _('Education'),
+'experience' : _('Experience'),
+'continuing_education' : _('Continuing Education'),
 } %}
 
 {% set section_form = {
-	'education' : education_form, 
-	'experience' : experience_form,
-	'continuing_education' : continuing_education_form,
+'education' : education_form,
+'experience' : experience_form,
+'continuing_education' : continuing_education_form,
 } %}
 
-{% for section in ('education', 'experience', 'continuing_education') %}
+{% for section in sections %}
 
 <div class="modal hide" id="{{ section }}_modal" style="display: none;">
 	<div class="modal-header">
-		{% if edit %}
-		<a class="close" href="/provider/cv/{{ provider.vanity_url }}">×</a>
-		{% else %}
 		<a class="close" data-dismiss="modal">×</a>
-		{% endif %}
 
 		<h3>{{ section_label[section] }}</h3>
 	</div>
-	{% if edit %}
+	{% if edit == section %}
 	{% set post_url = '/provider/cv/' + section + '/' + provider.vanity_url + '/edit/' + edit_key %}
 	{% else %}
 	{% set post_url = '/provider/cv/' + section + '/' + provider.vanity_url + '/add' %}
@@ -99,7 +97,7 @@
 		</div>
 
 		<div class="modal-footer">
-			{% if edit %}
+			{% if edit == section %}
 			<a class="btn btn-danger pull-left" href="/provider/cv/{{ section }}/{{ provider.vanity_url }}/delete/{{ edit_key }}"> {{ _('Delete') }} </a>
 			{% endif %}
 
@@ -114,16 +112,18 @@
 
 {% endblock %}
 
+{% for section in sections %}
+{% if edit == section or section_form[section].errors %}
 {% block extra_javascript %}
-
-{% if education_form and (edit == 'education' or education_form.errors) %}
-<script>$('#education_modal').modal('show')</script>
-{% endif %}
-{% if experience_form and (edit == 'experience' or experience_form.errors) %}
-<script>$('#experience_modal').modal('show')</script>
-{% endif %}
-{% if continuing_education_form  and (edit == 'continuing_education' or continuing_education_form.errors) %}
-<script>$('#continuing_education_modal').modal('show')</script>
-{% endif %}
-
+<script>
+	$('#{{ edit }}_modal').modal('show')
+	
+	$('#{{ edit }}_modal').on('hidden', function () {
+		window.location = "/provider/cv/{{ provider.vanity_url }}"
+	})
+</script>
 {% endblock %}
+
+{% endif %}
+{% endfor %}
+
