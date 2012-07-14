@@ -26,13 +26,7 @@
 								<a href="/provider/schedule/{{ provider.vanity_url }}">{{ _('Schedule') }}</a>
 							</li>
 							<li>
-								<a href="/provider/profile/{{ provider.vanity_url }}">{{ _('Profile') }}</a>
-							</li>
-							<li>
 								<a href="/provider/cv/{{ provider.vanity_url }}">{{ _('CV') }}</a>
-							</li>
-							<li>
-								<a href="/provider/address/{{ provider.vanity_url }}">{{ _('Address') }}</a>
 							</li>
 							{% endif%}
 
@@ -51,6 +45,12 @@
 							{% if provider and 'admin' in roles %}
 							{# Show provider administration menu items #}
 							<li class="divider"></li>
+							<li>
+								<a href="/provider/profile/{{ provider.vanity_url }}">{{ _('Profile') }}</a>
+							</li>
+							<li>
+								<a href="/provider/address/{{ provider.vanity_url }}">{{ _('Address') }}</a>
+							</li>
 
 							<li id="administration" style="font-style:italic">
 								<a href="{{provider.get_edit_link(route='/admin/provider')}}">{{ _('Administration') }}</a>
