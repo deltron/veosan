@@ -8,46 +8,83 @@
 {% block content %}
 <div class="row">
 	<div class="span12">
-	<div class="well">
-		<h3>{{provider.first_name}} {{provider.last_name}}</h3>
-		{{provider.address}}<br>
-		{{provider.city}}<br>
-		{{provider.postal_code}}<br>
-		{{provider.email}}<br>
-		{{provider.phone}}
-		<br>
-		<br>
-		<ol>
-			<li>
-				Provider (“provider”) is licensed to practice X (“profession”) by association Y in the Province of Quebec.
-			</li>
-			<li>
-				Provider will charge clients at the rate of $90 per session, reflecting the established reasonable and customary rate from insurance co in area.
-			</li>
-			<li>
-				For each new customer referred, provider will be billed at $20 per referral. New customer defined as X (not visited in the previous year?), payment terms (once per month?).
-			</li>
-			<li>
-				For each recurring customer provider will be billed at $10 per referral. Recurring customer defined as X (visited in the previous year?)
-			</li>
-			<li>
-				For an initial period of 1 year, provider agrees to accept new clients in any time slot from 8am to 6pm.
-			</li>
-			<li>
-				The company retains the right of first refusal to provide external booking services, electronic patient records, loyalty programs, advertising campaigns, customer relationship management and more for an initial period of 2 years, subject to automatic renewal on condition of having no less than 10 new patients referred during this period.
-			</li>
-			<li>
-				Provider must maintain a valid license to practise their profession and be in good standing with all relevant professional organizations, insurance companies, etc.
-			</li>
-		</ol>
-	</div>
+		<div class="well">
+			<h3>{{provider.first_name}} {{provider.last_name}}</h3>
+			{{provider.address}}
+			<br>
+			{{provider.city}}
+			<br>
+			{{provider.postal_code}}
+			<br>
+			{{provider.email}}
+			<br>
+			{{provider.phone}}
+			<br>
+			<br>
+			{# taken from simplenote #}
+			<p>
+				By using this web site ("Service"), you are agreeing to be bound by the following terms and conditions ("Terms of Use") set forth by Veosan, Inc. ("We").
+			</p>
 
-{% if provider.terms_agreement %}
-	<div class="alert alert-success">
-		Terms agreed on {{ provider.terms_date }}
-	</div>
-{% else %}
-{# show form if terms were not yet agreed #}
+			<h2>Basic Terms</h2>
+			<ol>
+				<li>
+					You are responsible for keeping your login and password safe.
+				</li>
+				<li>
+					You are responsible for the accuracy and completeness of your profile information.
+				</li>
+				<li>
+					We are not responsible for any information stored with the Service.
+				</li>
+			</ol>
+
+			<h2>General Terms</h2>
+			<ol>
+				<li>
+					We reserve the right to modify or terminate the Service for any reason, without notice at any time.
+				</li>
+				<li>
+					We reserve the right to alter these Terms of Use at any time. If there are any changes to these Terms of Use, users will be notified.
+				</li>
+				<li>
+					We reserve the right to refuse service to anyone for any reason at any time.
+				</li>
+			</ol>
+
+			{# terms first draft, let's try to make it more simple!!
+			<ol>
+				<li>
+					Provider (“provider”) is licensed to practice X (“profession”) by association Y in the Province of Quebec.
+				</li>
+				<li>
+					Provider will charge clients at the rate of $90 per session, reflecting the established reasonable and customary rate from insurance co in area.
+				</li>
+				<li>
+					For each new customer referred, provider will be billed at $20 per referral. New customer defined as X (not visited in the previous year?), payment terms (once per month?).
+				</li>
+				<li>
+					For each recurring customer provider will be billed at $10 per referral. Recurring customer defined as X (visited in the previous year?)
+				</li>
+				<li>
+					For an initial period of 1 year, provider agrees to accept new clients in any time slot from 8am to 6pm.
+				</li>
+				<li>
+					The company retains the right of first refusal to provide external booking services, electronic patient records, loyalty programs, advertising campaigns, customer relationship management and more for an initial period of 2 years, subject to automatic renewal on condition of having no less than 10 new patients referred during this period.
+				</li>
+				<li>
+					Provider must maintain a valid license to practise their profession and be in good standing with all relevant professional organizations, insurance companies, etc.
+				</li>
+			</ol>
+			#}
+		</div>
+
+		{% if provider.terms_agreement %}
+		<div class="alert alert-success">
+			Terms agreed on {{ provider.terms_date }}
+		</div>
+		{% else %}
+		{# show form if terms were not yet agreed #}
 		<form method="post" action="/provider/terms" class="form-horizontal">
 			<fieldset>
 				{{ macro.makeStandardForm() }}
@@ -59,8 +96,8 @@
 				</button>
 			</div>
 		</form>
-{% endif %}
-</div>
+		{% endif %}
+	</div>
 </div>
 
 {% endblock content %} 
