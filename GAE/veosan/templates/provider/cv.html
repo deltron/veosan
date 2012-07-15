@@ -10,13 +10,19 @@
 <div class="row">
 	<div class="span6">
 		<!-- CV -->
-		<h3>Education</h3>
+		<h3>{{ _('Education') }}</h3>
 		<ul class="unstyled">
 
 			{% for e in provider.get_education() %}
 			<li>
 				<h4>{{ e.degree_type|code_to_string }} {{ e.degree_title }} <a href="/provider/cv/education/{{ provider.vanity_url }}/edit/{{ e.key.urlsafe() }}"><i class="bs-icon icon-edit"> </i></a></h4>
-				<h6>{{ e.school_name|code_to_string }} ({{ e.start_year }}-{{ e.end_year }})</h6>
+				<h6>{{ e.school_name|code_to_string }} ({{ e.start_year }} -
+				{% if e.end_year %}
+				{{ e.end_year }})
+				{% else %}
+				{{ _('Present') }})
+				{% endif %}
+				</h6>
 				<p>
 					{{ e.description }}
 				</p>
@@ -26,14 +32,19 @@
 		<a data-toggle="modal" href="#education_modal" class="btn btn-primary">Add Education</a>
 		<br>
 		<br>
-		<h3>Experience</h3>
+		<h3>{{ _('Experience') }}</h3>
 		<ul class="unstyled">
 
 			{% for e in provider.get_experience() %}
 			<li>
 
 				<h4>{{ e.title }} <a href="/provider/cv/experience/{{ provider.vanity_url }}/edit/{{ e.key.urlsafe() }}"><i class="bs-icon icon-edit"> </i></a></h4>
-				<h6>{{ e.company_name }} ({{ e.start_year }}-{{ e.end_year }})</h6>
+				<h6>{{ e.company_name }} ({{ e.start_year }} -
+				{% if e.end_year %}
+				{{ e.end_year }})
+				{% else %}
+				{{ _('Present') }})
+				{% endif %}</h6>
 				<p>
 					{{ e.description|markdown|safe }}
 				</p>
@@ -44,14 +55,18 @@
 
 		<br>
 		<br>
-		<h3>Continuing Education</h3>
+		<h3>{{ _('Continuing Education') }}</h3>
 		<ul class="unstyled">
 
 			{% for e in provider.get_continuing_education() %}
 			<li>
 
 				<h4>{{ e.title }} <a href="/provider/cv/continuing_education/{{ provider.vanity_url }}/edit/{{ e.key.urlsafe() }}"><i class="bs-icon icon-edit"> </i></a></h4>
-				<h6>{{e.type}}, {{ e.hours }} hours ({{ e.year }}/{{ e.month }})</h6>
+				<h6>{{e.type}},
+				{% if e.hours  %}
+				{{ e.hours  }} hours
+				{% endif %}
+				({{ e.year }}/{{ e.month }})</h6>
 				<p>
 					{{ e.description }}
 				</p>
@@ -117,8 +132,8 @@
 {% block extra_javascript %}
 <script>
 	$('#{{ edit }}_modal').modal('show')
-	
-	$('#{{ edit }}_modal').on('hidden', function () {
+
+	$('#{{ edit }}_modal').on('hidden', function() {
 		window.location = "/provider/cv/{{ provider.vanity_url }}"
 	})
 </script>

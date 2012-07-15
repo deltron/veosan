@@ -60,9 +60,10 @@ def get_all_schools():
     return [("na", _(u"Not Applicable")),
             ("concordia", _(u"Concordia University")),
             ("mcgill", _(u"McGill University")),
-            ("udem", _(u"Universite de Montreal")),
-            ("uqtr", _(u"Universite de Quebec a Trois-Rivieres")),
-            ("usherb", _(u"Universite de Sherbrooke"))
+            ("laval", _(u"Université Laval")),
+            ("udem", _(u"Université de Montréal")),
+            ("uqtr", _(u"Université de Québec à Trois-Rivières")),
+            ("usherb", _(u"Université de Sherbrooke"))
         ]
     
 def get_all_degrees():

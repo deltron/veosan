@@ -358,6 +358,31 @@ msgstr "Le numéro de téléphone doit être dans le format suivant: 514-555-121
 msgid "Comments for your appointment"
 msgstr "Commentaires en vue de votre rendez-vous"
 
+#################
+# CV Page
+#################
+
+msgid "Education"
+msgstr "Éducation"
+
+msgid "Experience"
+msgstr "Expérience"
+
+msgid "Continuing Education"
+msgstr "Formation Continue"
+
+msgid "Present"
+msgstr "Présent"
+
+msgid "Position Title"
+msgstr "Titre"
+
+msgid "Start Year"
+msgstr "Première année"
+
+msgid "End Year"
+msgstr "Dernière année"
+
 
 #################
 # Profile Page
@@ -559,6 +584,9 @@ msgstr "Soir"
 # Degrees
 #################
 
+msgid "Degree"
+msgstr "Diplôme"
+
 msgid "Bachelor's"
 msgstr "Baccalauréat"
 
@@ -621,19 +649,19 @@ msgstr "Non Applicable"
 msgid "McGill University"
 msgstr "Université McGill"
 
-msgid "Universite de Montréal"
+msgid "Université de Montréal"
 msgstr "Université de Montréal"
 
-msgid "Universite de Sherbrooke"
+msgid "Université de Sherbrooke"
 msgstr "Université de Sherbrooke"
 
-msgid "Universite Laval"
+msgid "Université Laval"
 msgstr "Université Laval"
 
 msgid "Concordia University"
 msgstr "Université Concordia"
 
-msgid "Universite de Québec a Trois-Rivieres"
+msgid "Université de Québec à Trois-Rivières"
 msgstr "Université de Québec à Trois-Rivières"
 
 

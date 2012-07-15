@@ -36,7 +36,7 @@ class ProviderProfileForm(Form):
 
 class ProviderEducationForm(Form):
     start_year = IntegerField(_(u'Start Year'), [validators.NumberRange(min=1940, max=2100, message='Your first year')])
-    end_year = IntegerField(_(u'End Year'), [validators.NumberRange(min=1940, max=2100, message='Your last year')])
+    end_year = IntegerField(_(u'End Year'), [validators.NumberRange(min=1940, max=2100, message='Your last year'), validators.Optional()])
 
     school_name = SelectField(_(u'School'), choices=util.get_all_schools())    
     degree_type = SelectField(_(u'Degree'), choices=util.get_all_degrees())    
@@ -46,16 +46,16 @@ class ProviderEducationForm(Form):
 
 class ProviderExperienceForm(Form):
     start_year = IntegerField(_(u'Start Year'), [validators.NumberRange(min=1940, max=2100, message='Your first year')])
-    end_year = IntegerField(_(u'End Year'), [validators.NumberRange(min=1940, max=2100, message='Your last year')])
+    end_year = IntegerField(_(u'End Year'), [validators.NumberRange(min=1940, max=2100, message='Your last year'), validators.Optional()])
     company_name = TextField(_(u'Company Name'))
-    title = TextField(_(u'Title'))
+    title = TextField(_(u'Position Title'))
     description = TextAreaField(_(u'Description'))
 
 class ProviderContinuingEducationForm(Form):
     year = IntegerField(_(u'Year'), [validators.NumberRange(min=1940, max=2100)])
-    month = IntegerField(_(u'Month'), [validators.NumberRange(min=1, max=12)])
+    month = IntegerField(_(u'Month'), [validators.NumberRange(min=1, max=12), validators.Optional()])
     type = SelectField(_(u'Type'), choices=util.get_all_continuing_education_types())    
-    hours = FloatField(_(u'Hours'), [validators.NumberRange(min=0, max=1000)])
+    hours = FloatField(_(u'Hours'), [validators.NumberRange(min=0, max=1000), validators.Optional()])
     title = TextField(_(u'Title'))
     description = TextAreaField(_(u'Description'))
 

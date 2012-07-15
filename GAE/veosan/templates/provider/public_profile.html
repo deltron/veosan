@@ -2,13 +2,13 @@
 
 {% block subhead %}
 
-{{provider.first_name or ''}} 
+{{provider.first_name or ''}}
 
 {% if provider.address_enabled %}
 {{ provider.last_name}}
 {% else %}
 {% if provider.last_name %}
-	{{ provider.last_name|first }}.
+{{ provider.last_name|first }}.
 {% endif %}
 {% endif %}
 
@@ -89,14 +89,17 @@
 		<br>
 		{% endif %}
 
-
 		{% if provider.get_experience()|remove_empty_strings_from_list %}
-		<h3>Experience</h3>
+		<h3>{{ _('Experience') }}</h3>
 		<ul class="unstyled">
 			{% for e in provider.get_experience() %}
 			<li>
 				<h4>{{ e.title }}</h4>
-				<h6>{{ e.company_name }} ({{ e.start_year }}-{{ e.end_year }})</h6>
+				<h6>{{ e.company_name }} ({{ e.start_year }}-{% if e.end_year %}
+				{{ e.end_year }})
+				{% else %}
+				{{ _('Present') }})
+				{% endif %}</h6>
 				<p>
 					{{ e.description|markdown|safe }}
 				</p>
@@ -106,12 +109,16 @@
 		{% endif %}
 
 		{% if provider.get_education()|remove_empty_strings_from_list %}
-		<h3>Education</h3>
+		<h3>{{ _('Education') }}</h3>
 		<ul class="unstyled">
 			{% for e in provider.get_education() %}
 			<li>
 				<h4>{{ e.degree_type|code_to_string }} {{ e.degree_title }}</h4>
-				<h6>{{ e.school_name|code_to_string }} ({{ e.start_year }}-{{ e.end_year }})</h6>
+				<h6>{{ e.school_name|code_to_string }} ({{ e.start_year }}-{% if e.end_year %}
+				{{ e.end_year }})
+				{% else %}
+				{{ _('Present') }})
+				{% endif %})</h6>
 				<p>
 					{{ e.description }}
 				</p>
@@ -121,12 +128,14 @@
 		{% endif %}
 
 		{% if provider.get_continuing_education()|remove_empty_strings_from_list %}
-		<h3>Continuing Education</h3>
+		<h3>{ _('Continuing Education') }}</h3>
 		<ul class="unstyled">
 			{% for e in provider.get_continuing_education() %}
 			<li>
 				<h4>{{ e.title }}</h4>
-				<h6>{{e.type}}, {{ e.hours }} hours ({{ e.year }}/{{ e.month }})</h6>
+				<h6>{{e.type}}, {% if e.hours  %}
+				{{ e.hours  }} hours
+				{% endif %} ({{ e.year }}/{{ e.month }})</h6>
 				<p>
 					{{ e.description }}
 				</p>
