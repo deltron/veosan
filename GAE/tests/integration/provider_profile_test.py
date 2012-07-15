@@ -27,7 +27,7 @@ class ProviderTest(BaseTest):
         response = education_form.submit()
         
         # check on the profile admin page
-        response.mustcontain('1998-2002')
+        response.mustcontain('1998','2002')
         response.mustcontain('Université McGill')
         response.mustcontain('Graduated with honors')
         response.mustcontain('Clinical Physiotherapy')
@@ -36,7 +36,7 @@ class ProviderTest(BaseTest):
         
         # check on the public profile
         response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
-        response.mustcontain('1998-2002')
+        response.mustcontain('1998','2002')
         response.mustcontain('Université McGill')
         response.mustcontain('Graduated with honors')
         response.mustcontain('Clinical Physiotherapy')
@@ -64,7 +64,7 @@ class ProviderTest(BaseTest):
 
         response = education_form.submit()
         
-        response.mustcontain('1998-2002')
+        response.mustcontain('1998','2002')
         response.mustcontain('Université McGill')
         response.mustcontain('Graduated with honors')
         response.mustcontain('Clinical Physiotherapy')
@@ -77,14 +77,16 @@ class ProviderTest(BaseTest):
 
 
         # education should be gone
-        response_after_delete.mustcontain(no='1998-2002')
+        response_after_delete.mustcontain(no='1998')
+        response_after_delete.mustcontain(no='2002')
         response_after_delete.mustcontain(no='Graduated with honors')
         response_after_delete.mustcontain(no='Clinical Physiotherapy')
         # Mcgill and baccalaureat will be in the page because of form drop downs...
         
         # check on the public profile
         public_response_after_delete = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
-        public_response_after_delete.mustcontain(no='1998-2002')
+        public_response_after_delete.mustcontain(no='1998')
+        public_response_after_delete.mustcontain(no='2002')
         public_response_after_delete.mustcontain(no='Graduated with honors')
         public_response_after_delete.mustcontain(no='Clinical Physiotherapy')
         public_response_after_delete.mustcontain(no='Université McGill')
@@ -111,7 +113,7 @@ class ProviderTest(BaseTest):
         response = experience_form.submit()
         
         # check on the profile admin page
-        response.mustcontain('2003-2006')
+        response.mustcontain('2003','2006')
         response.mustcontain('Kinatex')
         response.mustcontain('Manual Physiotherapy')
         response.mustcontain('Worked with my hands')
@@ -119,7 +121,7 @@ class ProviderTest(BaseTest):
         
         # check on the public profile
         response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
-        response.mustcontain('2003-2006')
+        response.mustcontain('2003','2006')
         response.mustcontain('Kinatex')
         response.mustcontain('Manual Physiotherapy')
         response.mustcontain('Worked with my hands')
@@ -146,7 +148,7 @@ class ProviderTest(BaseTest):
         response = experience_form.submit()
         
         # check on the profile admin page
-        response.mustcontain('2003-2006')
+        response.mustcontain('2003','2006')
         response.mustcontain('Kinatex')
         response.mustcontain('Manual Physiotherapy')
         response.mustcontain('Worked with my hands')
@@ -154,7 +156,7 @@ class ProviderTest(BaseTest):
         
         # check on the public profile
         response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
-        response.mustcontain('2003-2006')
+        response.mustcontain('2003','2006')
         response.mustcontain('Kinatex')
         response.mustcontain('Manual Physiotherapy')
         response.mustcontain('Worked with my hands')
@@ -168,14 +170,16 @@ class ProviderTest(BaseTest):
 
 
         # experience should be gone
-        response_after_delete.mustcontain(no='2003-2006')
+        response_after_delete.mustcontain(no='2003')
+        response_after_delete.mustcontain(no='2006')
         response_after_delete.mustcontain(no='Kinatex')
         response_after_delete.mustcontain(no='Manual Physiotherapy')
         response_after_delete.mustcontain(no='Worked with my hands')
                 
         # check on the public profile
         public_response_after_delete = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
-        public_response_after_delete.mustcontain(no='2003-2006')
+        public_response_after_delete.mustcontain(no='2003')
+        public_response_after_delete.mustcontain(no='2006')
         public_response_after_delete.mustcontain(no='Kinatex')
         public_response_after_delete.mustcontain(no='Manual Physiotherapy')
         public_response_after_delete.mustcontain(no='Worked with my hands')
