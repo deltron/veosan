@@ -307,7 +307,7 @@ class BaseTest(unittest.TestCase):
         provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
         
         # request the address page
-        response = self.testapp.get('/admin/provider/profile/%s' % provider.vanity_url)
+        response = self.testapp.get('/provider/profile/%s' % provider.vanity_url)
          
         profile_form = response.forms[0] # address form
         
