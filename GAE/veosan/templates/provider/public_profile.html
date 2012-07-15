@@ -128,7 +128,7 @@
 		{% endif %}
 
 		{% if provider.get_continuing_education()|remove_empty_strings_from_list %}
-		<h3>{ _('Continuing Education') }}</h3>
+		<h3>{{ _('Continuing Education') }}</h3>
 		<ul class="unstyled">
 			{% for e in provider.get_continuing_education() %}
 			<li>
