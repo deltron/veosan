@@ -35,8 +35,10 @@ class ProviderTest(BaseTest):
                 
         # patient name in navbar
         response.mustcontain(self._TEST_PROVIDER_EMAIL)
-        response.mustcontain('Rendez-vous')
-        response.mustcontain('Horaire')
+        response.mustcontain('CV')
+        response.mustcontain('Profile')
+        response.mustcontain(no='Administration')
+
         assert 'Administration' not in response 
         
         # This doesn't work anymore because we show "Public Profile"
