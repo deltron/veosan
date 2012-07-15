@@ -7,14 +7,11 @@ from google.appengine.ext.webapp import blobstore_handlers
 # veo
 from base import BaseHandler
 import data.db as db
-from forms.provider import ProviderProfileForm, ProviderAddressForm, ProviderPhotoForm, ProviderNoteForm, ProviderStatusForm
+from forms.provider import ProviderAddressForm, ProviderPhotoForm, ProviderNoteForm, ProviderStatusForm
 from handler.auth import admin_required
 from util import saved_message
 
 class ProviderAdminBaseHandler(BaseHandler):
-    
-    def render_profile(self, provider, **kw):
-        self.render_template('provider/profile.html', provider=provider, **kw)
     
     def render_address(self, provider, address_form, **kw):
         upload_url = blobstore.create_upload_url('/admin/provider/address/upload/%s' % provider.vanity_url)
@@ -36,34 +33,6 @@ class ProviderAdminBaseHandler(BaseHandler):
         self.render_template('provider/notes.html', provider=provider, notes=notes, form=new_note_form, **kw)       
         
 
-class ProviderEditProfileHandler(ProviderAdminBaseHandler):
-    
-    @admin_required
-    def get(self, vanity_url=None):
-        provider = None
-        
-        if vanity_url:
-            provider = db.get_provider_from_vanity_url(vanity_url)
-            
-            logging.info("(ProviderEditProfileHandler.get) Edit profile for provider %s" % provider.email)
-            
-            profile_form = ProviderProfileForm(obj=provider)
-            
-            self.render_profile(provider, profile_form=profile_form)
-    
-    # admin_required
-    def post(self, vanity_url=None):
-        form = ProviderProfileForm(self.request.POST)
-        if form.validate():
-            # Store Provider
-            provider = db.get_provider_from_vanity_url(vanity_url)
-            provider_key = db.storeProvider(provider, self.request.POST)
-            provider = provider_key.get()
-            self.render_profile(provider, profile_form=form, success_message=saved_message)
-        else:
-            # show error
-            provider = db.get_provider_from_vanity_url(vanity_url)
-            self.render_profile(provider, profile_form=form)
 
 class ProviderEditAddressHandler(ProviderAdminBaseHandler):
     @admin_required

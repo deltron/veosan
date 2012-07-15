@@ -91,7 +91,7 @@ application = webapp2.WSGIApplication([
                                                   
                                             # provider profile
                                             PathPrefixRoute('/profile', [
-                                                Route('/<vanity_url>', provider_admin.ProviderEditProfileHandler),
+                                                Route('/<vanity_url>', provider.ProviderEditProfileHandler),
                                             ]),
                      
                                             # CV sections (Education, Work Experience)

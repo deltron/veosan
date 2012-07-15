@@ -5,13 +5,16 @@ from google.appengine.ext import ndb
 import data.db as db
 import data.db_util as db_util
 from data.model import Schedule, Education, Experience, ContinuingEducation
-from forms.provider import ProviderEducationForm, ProviderContinuingEducationForm, ProviderExperienceForm
+from forms.provider import ProviderEducationForm, ProviderContinuingEducationForm, ProviderExperienceForm, ProviderProfileForm
 from base import BaseHandler
 from handler.auth import provider_required
 from util import saved_message
 from utilities import time
 
-class ProviderBaseHandler(BaseHandler):       
+class ProviderBaseHandler(BaseHandler): 
+    def render_profile(self, provider, **kw):
+        self.render_template('provider/profile.html', provider=provider, **kw)    
+          
     def render_schedule(self, provider, availableIds, **kw):
         timeslots = time.getScheduleTimeslots()
         days = time.getWeekdays()
@@ -33,6 +36,34 @@ class ProviderBaseHandler(BaseHandler):
     def render_cv(self, provider, **kw):
         self.render_template('provider/cv.html', provider=provider, **kw)
 
+class ProviderEditProfileHandler(ProviderBaseHandler):
+
+    @provider_required    
+    def get(self, vanity_url=None):
+        provider = None
+        
+        if vanity_url:
+            provider = db.get_provider_from_vanity_url(vanity_url)
+            
+            logging.info("(ProviderEditProfileHandler.get) Edit profile for provider %s" % provider.email)
+            
+            profile_form = ProviderProfileForm(obj=provider)
+            
+            self.render_profile(provider, profile_form=profile_form)
+    
+    @provider_required    
+    def post(self, vanity_url=None):
+        form = ProviderProfileForm(self.request.POST)
+        if form.validate():
+            # Store Provider
+            provider = db.get_provider_from_vanity_url(vanity_url)
+            provider_key = db.storeProvider(provider, self.request.POST)
+            provider = provider_key.get()
+            self.render_profile(provider, profile_form=form, success_message=saved_message)
+        else:
+            # show error
+            provider = db.get_provider_from_vanity_url(vanity_url)
+            self.render_profile(provider, profile_form=form)
 
 
 class ProviderCVHandler(ProviderBaseHandler):
