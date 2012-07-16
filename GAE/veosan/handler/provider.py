@@ -47,13 +47,13 @@ class ProviderEditProfileHandler(ProviderBaseHandler):
             
             logging.info("(ProviderEditProfileHandler.get) Edit profile for provider %s" % provider.email)
             
-            profile_form = ProviderProfileForm(obj=provider)
+            profile_form = ProviderProfileForm().get_form(obj=provider)
             
             self.render_profile(provider, profile_form=profile_form)
     
     @provider_required    
     def post(self, vanity_url=None):
-        form = ProviderProfileForm(self.request.POST)
+        form = ProviderProfileForm().get_form(self.request.POST)
         if form.validate():
             # Store Provider
             provider = db.get_provider_from_vanity_url(vanity_url)
@@ -82,7 +82,7 @@ class ProviderCVHandler(ProviderBaseHandler):
         
         # create blank forms
         for key in self.forms:
-            kwargs[key + '_form'] = self.forms[key]()
+            kwargs[key + '_form'] = self.forms[key]().get_form()
 
         return kwargs
 
@@ -112,7 +112,7 @@ class ProviderCVHandler(ProviderBaseHandler):
                 obj = section_key.get()
                 
                 # populate the form
-                kwargs[section + "_form"] = self.forms[section](obj=obj)
+                kwargs[section + "_form"] = self.forms[section].get_form(obj=obj)
                 kwargs['edit'] = section
                 kwargs['edit_key'] = key
 
@@ -127,7 +127,7 @@ class ProviderCVHandler(ProviderBaseHandler):
     def post(self, vanity_url=None, section=None, operation=None, key=None):
 
         # instantiate and fill the section form
-        section_form = self.forms[section](self.request.POST)
+        section_form = self.forms[section]().get_form(self.request.POST)
 
         provider = db.get_provider_from_vanity_url(vanity_url)
 
@@ -171,7 +171,7 @@ class ProviderCVHandler(ProviderBaseHandler):
                     kwargs[key + "_form"] = section_form
                 else:
                     # blank form
-                    kwargs[key + '_form'] = self.forms[key]()
+                    kwargs[key + '_form'] = self.forms[key]().get_form()
             
             if operation == 'edit':
                 kwargs['edit'] = section

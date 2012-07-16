@@ -2,7 +2,7 @@
 
 from wtforms import Form, TextField, SelectField, FileField, TextAreaField, IntegerField, FloatField
 from wtforms import validators
-from custom_form import MultiCheckboxField, CustomBooleanField
+from custom_form import MultiCheckboxField, CustomBooleanField, CustomForm
 import custom_validators
 import util
 from webapp2_extras.i18n import lazy_gettext as _
@@ -24,40 +24,42 @@ class ProviderAddressForm(Form):
 class ProviderPhotoForm(Form):
     profilePhoto = FileField(_(u'Upload'))
 
-class ProviderProfileForm(Form):
-    category = SelectField(_(u'Category'), choices=util.get_all_categories())
-    specialty = MultiCheckboxField(_(u'Specialties'), choices=util.getAllSpecialities())
-    start_year = TextField(_(u'Active Since'), [validators.Length(min=4, max=4, message='Your first year of practice')])
-    bio = TextAreaField(_(u'Biography'))
-    quote = TextAreaField(_(u'Quote'))
-    associations = MultiCheckboxField(_(u'Associations'), choices=util.getAllAssociations())
-    certifications = MultiCheckboxField(_(u'Certifications'), choices=util.getAllCertifications())
-    onsite = CustomBooleanField(_(u'I am willing to do on-site visits'))
+class ProviderProfileForm(CustomForm):
+    def _set_fields(self, form):        
+        setattr(form, 'category', SelectField(_(u'Category'), choices=util.get_all_categories()))
+        setattr(form, 'specialty', MultiCheckboxField(_(u'Specialties'), choices=util.getAllSpecialities()))
+        setattr(form, 'start_year', TextField(_(u'Active Since'), [validators.Length(min=4, max=4, message='Your first year of practice')]))
+        setattr(form, 'bio', TextAreaField(_(u'Biography')))
+        setattr(form, 'quote', TextAreaField(_(u'Quote')))
+        setattr(form, 'associations', MultiCheckboxField(_(u'Associations'), choices=util.getAllAssociations()))
+        setattr(form, 'certifications', MultiCheckboxField(_(u'Certifications'), choices=util.getAllCertifications()))
+        setattr(form, 'onsite', CustomBooleanField(_(u'I am willing to do on-site visits')))
 
-class ProviderEducationForm(Form):
-    start_year = IntegerField(_(u'Start Year'), [validators.NumberRange(min=1940, max=2100, message='Your first year')])
-    end_year = IntegerField(_(u'End Year'), [validators.NumberRange(min=1940, max=2100, message='Your last year'), validators.Optional()])
+class ProviderEducationForm(CustomForm):
+    def _set_fields(self, form):        
+        setattr(form,'start_year', IntegerField(_(u'Start Year'), [validators.NumberRange(min=1940, max=2100, message='Your first year')]))
+        setattr(form,'end_year' ,IntegerField(_(u'End Year'), [validators.NumberRange(min=1940, max=2100, message='Your last year'), validators.Optional()]))
+        setattr(form,'school_name' , SelectField(_(u'School'), choices=util.get_all_schools()))   
+        setattr(form,'degree_type' , SelectField(_(u'Degree'), choices=util.get_all_degrees()))
+        setattr(form,'degree_title' , TextField(_(u'Degree Title')))
+        setattr(form,'description' , TextAreaField(_(u'Description')))
 
-    school_name = SelectField(_(u'School'), choices=util.get_all_schools())    
-    degree_type = SelectField(_(u'Degree'), choices=util.get_all_degrees())    
-    degree_title = TextField(_(u'Degree Title'))
+class ProviderExperienceForm(CustomForm):
+    def _set_fields(self, form):        
+        setattr(form,'start_year', IntegerField(_(u'Start Year'), [validators.NumberRange(min=1940, max=2100, message='Your first year')]))
+        setattr(form,'end_year',  IntegerField(_(u'End Year'), [validators.NumberRange(min=1940, max=2100, message='Your last year'), validators.Optional()]))
+        setattr(form,'company_name', TextField(_(u'Company Name')))
+        setattr(form,'title', TextField(_(u'Position Title')))
+        setattr(form,'description', TextAreaField(_(u'Description')))
 
-    description = TextAreaField(_(u'Description'))
-
-class ProviderExperienceForm(Form):
-    start_year = IntegerField(_(u'Start Year'), [validators.NumberRange(min=1940, max=2100, message='Your first year')])
-    end_year = IntegerField(_(u'End Year'), [validators.NumberRange(min=1940, max=2100, message='Your last year'), validators.Optional()])
-    company_name = TextField(_(u'Company Name'))
-    title = TextField(_(u'Position Title'))
-    description = TextAreaField(_(u'Description'))
-
-class ProviderContinuingEducationForm(Form):
-    year = IntegerField(_(u'Year'), [validators.NumberRange(min=1940, max=2100)])
-    month = IntegerField(_(u'Month'), [validators.NumberRange(min=1, max=12), validators.Optional()])
-    type = SelectField(_(u'Type'), choices=util.get_all_continuing_education_types())    
-    hours = FloatField(_(u'Hours'), [validators.NumberRange(min=0, max=1000), validators.Optional()])
-    title = TextField(_(u'Title'))
-    description = TextAreaField(_(u'Description'))
+class ProviderContinuingEducationForm(CustomForm):
+    def _set_fields(self, form):        
+        setattr(form,'year', IntegerField(_(u'Year'), [validators.NumberRange(min=1940, max=2100)]))
+        setattr(form,'month', IntegerField(_(u'Month'), [validators.NumberRange(min=1, max=12), validators.Optional()]))
+        setattr(form,'type', SelectField(_(u'Type'), choices=util.get_all_continuing_education_types()))    
+        setattr(form,'hours', FloatField(_(u'Hours'), [validators.NumberRange(min=0, max=1000), validators.Optional()]))
+        setattr(form,'title', TextField(_(u'Title')))
+        setattr(form,'description', TextAreaField(_(u'Description')))
 
 
 
