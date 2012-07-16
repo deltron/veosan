@@ -2,8 +2,6 @@
 import logging
 # GAE
 from google.appengine.api import users
-from google.appengine.ext import blobstore
-from google.appengine.ext.webapp import blobstore_handlers
 # veo
 from base import BaseHandler
 import data.db as db
@@ -14,9 +12,7 @@ from util import saved_message
 class ProviderAdminBaseHandler(BaseHandler):
     
     def render_address(self, provider, address_form, **kw):
-        upload_url = blobstore.create_upload_url('/admin/provider/address/upload/%s' % provider.vanity_url)
-        uploadForm = ProviderPhotoForm(self.request.GET)
-        self.render_template('provider/address.html', provider=provider, form=address_form, uploadForm=uploadForm, upload_url=upload_url, **kw)
+        self.render_template('provider/address.html', provider=provider, form=address_form, **kw)
     
     @staticmethod
     def render_administration(handler, provider, **kw):
@@ -59,20 +55,6 @@ class ProviderEditAddressHandler(ProviderAdminBaseHandler):
             self.render_address(provider, address_form=form)
 
 
-class ProviderAddressUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
-    def post(self, vanity_url=None):
-        provider = db.get_provider_from_vanity_url(vanity_url)
-        logging.info("(ProviderAddressUploadHandler.post) Found provider: %s" % provider.email)
-        
-        uploadForm = ProviderPhotoForm(self.request.POST)
-        upload_files = self.get_uploads(uploadForm.profilePhoto.name)[0]
-        
-        logging.info("(ProviderAddressUploadHandler.post) Uploaded blob key: %s " % upload_files.key())
-        provider.profile_photo_blob_key = upload_files.key()
-        provider.put()
-        
-        # redirect to address edit page        
-        self.redirect('/admin/provider/address/%s' % provider.vanity_url) 
 
 class ProviderAdministrationHandler(ProviderAdminBaseHandler):
     

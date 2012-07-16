@@ -1,11 +1,13 @@
 import logging
 from google.appengine.ext import ndb
+from google.appengine.ext import blobstore
+from google.appengine.ext.webapp import blobstore_handlers
 
 # veo
 import data.db as db
 import data.db_util as db_util
 from data.model import Schedule, Education, Experience, ContinuingEducation
-from forms.provider import ProviderEducationForm, ProviderContinuingEducationForm, ProviderExperienceForm, ProviderProfileForm
+from forms.provider import ProviderEducationForm, ProviderContinuingEducationForm, ProviderExperienceForm, ProviderProfileForm, ProviderPhotoForm
 from base import BaseHandler
 from handler.auth import provider_required
 from util import saved_message
@@ -13,7 +15,10 @@ from utilities import time
 
 class ProviderBaseHandler(BaseHandler): 
     def render_profile(self, provider, **kw):
-        self.render_template('provider/profile.html', provider=provider, **kw)    
+        upload_url = blobstore.create_upload_url('/provider/profile/photo/%s' % provider.vanity_url)
+        upload_form = ProviderPhotoForm().get_form(self.request.GET)
+        
+        self.render_template('provider/profile.html', provider=provider, upload_form=upload_form, upload_url=upload_url, **kw)    
           
     def render_schedule(self, provider, availableIds, **kw):
         timeslots = time.getScheduleTimeslots()
@@ -64,6 +69,23 @@ class ProviderEditProfileHandler(ProviderBaseHandler):
             # show error
             provider = db.get_provider_from_vanity_url(vanity_url)
             self.render_profile(provider, profile_form=form)
+
+class ProviderProfilePhotoUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
+    
+    @provider_required
+    def post(self, vanity_url=None):
+        provider = db.get_provider_from_vanity_url(vanity_url)
+        logging.info("(ProviderAddressUploadHandler.post) Found provider: %s" % provider.email)
+        
+        upload_form = ProviderPhotoForm().get_form(self.request.POST)
+        upload_files = self.get_uploads(upload_form.profile_photo.name)[0]
+        
+        logging.info("(ProviderAddressUploadHandler.post) Uploaded blob key: %s " % upload_files.key())
+        provider.profile_photo_blob_key = upload_files.key()
+        provider.put()
+        
+        # redirect to profile page        
+        self.redirect('/provider/profile/%s' % provider.vanity_url) 
 
 
 class ProviderCVHandler(ProviderBaseHandler):

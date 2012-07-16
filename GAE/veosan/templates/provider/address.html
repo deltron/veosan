@@ -14,17 +14,6 @@
 				{{ macro.makeStandardForm() }}
 			</fieldset>
 		</div>
-		<div class="span8" align="center">
-			{% if not provider.profile_photo_blob_key %}
-				<img src="/assets/img/default-profile.png" width="100" height="100">
-			{% else %}
-				<img src="{{ provider.get_profile_photo_image_url(300) }}" width="300">
-			{% endif %}
-
-			<br>
-			<br>
-			<a class="btn btn-mini" data-toggle="modal" href="#uploadProfileModal">{{ _('Upload') }}</a>
-		</div>
 	</div>
 	<div class="row">
 		<div class="span12">
@@ -36,21 +25,5 @@
 		</div>
 	</div>
 </form>
-<form action="{{ upload_url }}" method="post" enctype="multipart/form-data">
-	<div class="modal hide" id="uploadProfileModal" style="display: none;">
-		<div class="modal-header">
-			<a class="close" data-dismiss="modal">×</a>
-			<h3>{{ _('Upload') }}</h3>
-		</div>
-		<div class="modal-body">
-			{{ uploadForm.profilePhoto }}
-		</div>
-		<div class="modal-footer">
-			<button type="submit" class="btn btn-primary">
-				{{ _('Save') }}
-			</button>
-			<a class="btn" data-dismiss="modal">{{ _('Cancel') }}</a>
-		</div>
-	</div>
-</form>
+
 {% endblock %} 

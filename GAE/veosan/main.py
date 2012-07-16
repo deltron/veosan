@@ -92,6 +92,7 @@ application = webapp2.WSGIApplication([
                                             # provider profile
                                             PathPrefixRoute('/profile', [
                                                 Route('/<vanity_url>', provider.ProviderEditProfileHandler),
+                                                Route('/photo/<vanity_url>', provider.ProviderProfilePhotoUploadHandler),                                                
                                             ]),
                      
                                             # CV sections (Education, Work Experience)
@@ -136,7 +137,6 @@ application = webapp2.WSGIApplication([
                                                 # Address
                                                PathPrefixRoute('/address', [
                                                     Route('/<vanity_url>', provider_admin.ProviderEditAddressHandler),
-                                                    Route('/upload/<vanity_url>', provider_admin.ProviderAddressUploadHandler),
                                                 ]),
                                                    
                                                # provider admin
