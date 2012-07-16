@@ -362,14 +362,26 @@ msgstr "Commentaires en vue de votre rendez-vous"
 # CV Page
 #################
 
+msgid "Tell your story."
+msgstr "Votre histoire."
+
 msgid "Education"
-msgstr "Éducation"
+msgstr "Formation"
 
 msgid "Experience"
-msgstr "Expérience"
+msgstr "Expérience de travail"
 
 msgid "Continuing Education"
-msgstr "Formation Continue"
+msgstr "Formation continue"
+
+msgid "Add Education"
+msgstr "Ajouter une formation"
+
+msgid "Add Experience"
+msgstr "Ajouter une expérience de travail"
+
+msgid "Add Continuing Education"
+msgstr "Ajouter une formation continue"
 
 msgid "Present"
 msgstr "Présent"
