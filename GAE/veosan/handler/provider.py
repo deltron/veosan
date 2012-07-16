@@ -7,7 +7,7 @@ from google.appengine.ext.webapp import blobstore_handlers
 import data.db as db
 import data.db_util as db_util
 from data.model import Schedule, Education, Experience, ContinuingEducation
-from forms.provider import ProviderEducationForm, ProviderContinuingEducationForm, ProviderExperienceForm, ProviderProfileForm, ProviderPhotoForm
+from forms.provider import ProviderAddressForm, ProviderEducationForm, ProviderContinuingEducationForm, ProviderExperienceForm, ProviderProfileForm, ProviderPhotoForm
 from base import BaseHandler
 from handler.auth import provider_required
 from util import saved_message
@@ -40,6 +40,37 @@ class ProviderBaseHandler(BaseHandler):
 
     def render_cv(self, provider, **kw):
         self.render_template('provider/cv.html', provider=provider, **kw)
+
+    def render_address(self, provider, **kw):
+        self.render_template('provider/address.html', provider=provider, **kw)
+
+
+
+class ProviderEditAddressHandler(ProviderBaseHandler):
+    @provider_required
+    def get(self, vanity_url=None):
+        provider = db.get_provider_from_vanity_url(vanity_url)
+        logging.info("provider dump before edit:" + str(vars(provider)))
+        form = ProviderAddressForm().get_form(obj=provider)
+        self.render_address(provider, address_form=form)
+
+    @provider_required
+    def post(self, vanity_url=None):
+        form = ProviderAddressForm().get_form(self.request.POST)
+        
+        if form.validate():
+            # Store Provider
+            provider = db.get_provider_from_vanity_url(vanity_url)
+            provider_key = db.storeProvider(provider, self.request.POST)
+            provider = provider_key.get()
+
+            self.render_address(provider, address_form=form, success_message=saved_message)
+        else:
+            # show validation error
+            provider = db.get_provider_from_vanity_url(vanity_url)
+            self.render_address(provider, address_form=form)
+
+
 
 class ProviderEditProfileHandler(ProviderBaseHandler):
 

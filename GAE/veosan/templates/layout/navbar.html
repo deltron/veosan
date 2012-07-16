@@ -25,6 +25,10 @@
 							<li>
 								<a href="/provider/cv/{{ provider.vanity_url }}">{{ _('CV') }}</a>
 							</li>
+							<li>
+								<a href="/provider/address/{{ provider.vanity_url }}">{{ _('Address') }}</a>
+							</li>
+
 							{% endif%}
 
 							{% if patient %}
@@ -47,9 +51,6 @@
 							</li>
 							<li>
 								<a href="/provider/schedule/{{ provider.vanity_url }}">{{ _('Schedule') }}</a>
-							</li>
-							<li>
-								<a href="/provider/address/{{ provider.vanity_url }}">{{ _('Address') }}</a>
 							</li>
 
 							<li id="administration" style="font-style:italic">

@@ -58,18 +58,24 @@ class ProviderPhotoForm(CustomForm):
         setattr(form, 'profile_photo', FileField(_(u'Upload')))
 
 
-# Admin only
 
-class ProviderAddressForm(Form):
-    title = TextField(_(u'Title'))
-    first_name = TextField(_(u'First Name'), [validators.Length(min=1, message=_(u'First name is a required field'))])
-    last_name = TextField(_(u'Last Name'), [validators.Length(min=1, message=_(u'Last name is a required field'))])
-    credentials = TextField(_(u'Credentials'))
-    phone = TextField(_(u'Telephone'), [validators.Regexp(regex="^[2-9]\d{2}-\d{3}-\d{4}$", message=_(u'Please make sure phone number is in the following format: 514-555-1212'))])
-    location = SelectField(_(u'Location'), choices=util.get_all_regions())
-    address = TextField(_(u'Addresse'), [validators.Length(min=5, message='Address requis.')])
-    city = TextField(_(u'City'), [validators.Length(min=3, message='Address requis.')])
-    postal_code = TextField(_(u'Postal Code'), [validators.Length(min=6, message='Address requis.')])
+# Address
+
+class ProviderAddressForm(CustomForm):
+    def _set_fields(self, form):        
+        setattr(form, 'title', TextField(_(u'Title')))
+        setattr(form, 'first_name', TextField(_(u'First Name'), [validators.Length(min=1, message=_(u'First name is a required field'))]))
+        setattr(form, 'last_name', TextField(_(u'Last Name'), [validators.Length(min=1, message=_(u'Last name is a required field'))]))
+        setattr(form, 'credentials', TextField(_(u'Credentials')))
+        setattr(form, 'phone', TextField(_(u'Telephone'), [validators.Regexp(regex="^[2-9]\d{2}-\d{3}-\d{4}$", message=_(u'Please make sure phone number is in the following format: 514-555-1212'))]))
+        setattr(form, 'location', SelectField(_(u'Location'), choices=util.get_all_regions()))
+        setattr(form, 'address', TextField(_(u'Addresse'), [validators.Length(min=5, message='Address requis.')]))
+        setattr(form, 'city', TextField(_(u'City'), [validators.Length(min=3, message='Address requis.')]))
+        setattr(form, 'postal_code', TextField(_(u'Postal Code'), [validators.Length(min=6, message='Address requis.')]))
+
+
+
+# Admin only
 
 class ProviderNoteForm(Form):
     body = TextAreaField(_(u'Note'))
