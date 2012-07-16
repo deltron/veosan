@@ -44,10 +44,26 @@ indexes:
   - name: end_year
     direction: desc
 
+- kind: Education
+  properties:
+  - name: provider
+  - name: end_year
+    direction: desc
+  - name: start_year
+    direction: desc
+
 - kind: Experience
   properties:
   - name: provider
   - name: end_year
+    direction: desc
+
+- kind: Experience
+  properties:
+  - name: provider
+  - name: end_year
+    direction: desc
+  - name: start_year
     direction: desc
 
 - kind: Note

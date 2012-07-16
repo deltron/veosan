@@ -134,7 +134,7 @@ class ProviderCVHandler(ProviderBaseHandler):
                 obj = section_key.get()
                 
                 # populate the form
-                kwargs[section + "_form"] = self.forms[section].get_form(obj=obj)
+                kwargs[section + "_form"] = self.forms[section]().get_form(obj=obj)
                 kwargs['edit'] = section
                 kwargs['edit_key'] = key
 

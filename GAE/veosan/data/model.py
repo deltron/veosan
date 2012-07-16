@@ -151,11 +151,23 @@ class Provider(ndb.Model):
         ''' Get Notes in reverse chronological order'''
         return Note.query(Note.provider == self.key).order(-Note.created_on)
     
+    def order_cv_results(self, all):
+        # has a last_year attribute
+        completed = filter(lambda e: e.end_year != None, all)
+        
+        # present means no last_year attribute
+        present = filter(lambda e: e.end_year == None, all)
+        
+        # show present before completed
+        present.extend(completed)
+        
+        return present
+
     def get_education(self):
-        return Education.query(Education.provider == self.key).order(-Education.end_year)
+        return self.order_cv_results(Education.query(Education.provider == self.key).order(-Education.end_year, -Education.start_year))
 
     def get_experience(self):
-        return Experience.query(Experience.provider == self.key).order(-Experience.end_year)
+        return self.order_cv_results(Experience.query(Experience.provider == self.key).order(-Experience.end_year, -Experience.start_year))
 
     def get_continuing_education(self):
         return ContinuingEducation.query(ContinuingEducation.provider == self.key).order(-ContinuingEducation.year, -ContinuingEducation.month)
