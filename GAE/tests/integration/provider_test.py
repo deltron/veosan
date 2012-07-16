@@ -171,11 +171,11 @@ class ProviderTest(BaseTest):
         provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
         
         # request the address page
-        response = self.testapp.get('/admin/provider/address/%s' % provider.vanity_url)
+        response = self.testapp.get('/provider/profile/%s' % provider.vanity_url)
                 
         photo_form = response.forms[1] # photo form
         
-        photo_form['profilePhoto'] = ('profilePhoto', 'provider-test-image.png')
+        photo_form['profile_photo'] = ('profilePhoto', 'provider-test-image.png')
 
      #   response = photo_form.submit()
      #   response.showbrowser()
@@ -293,7 +293,7 @@ class ProviderTest(BaseTest):
         
         # follow response redirect after successful login
         response = response.follow()
-        response.mustcontain("Rendez-vous")
+        response.mustcontain("Profile")
 
     def test_provider_reset_password_twice_with_same_token(self):
         self.create_complete_provider_profile()

@@ -91,6 +91,10 @@ class BookingTest(BaseTest):
         
         # Check that booking is visible on provider's bookings list
         provider_response = self.login_as_provider()
+        
+        # go to bookings page
+        provider_response = self.testapp.get('/provider/bookings/%s' % self._TEST_PROVIDER_VANITY_URL)
+                
         # We should already be on the bookings page after the login
         provider_response.mustcontain('Pat Patient')
 
