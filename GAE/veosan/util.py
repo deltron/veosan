@@ -22,7 +22,13 @@ def is_dev_server(request):
             
 def get_all_regions():
     return [('mtl-downtown', _(u'Montreal - Downtown')),
-            ('mtl-westisland', _(u'Montreal - West-Island'))]    
+            ('mtl-westisland', _(u'Montreal - West-Island')),
+            ('mtl-east', _(u'Montreal - East')),
+            ('mtl-nord', _(u'Montreal - North')),
+            ('laval', _(u'Laval')),
+            ('south-short', _(u'South Shore')),
+            ('other', _(u'Other')),
+            ]    
     
 ## key, value
 CAT_PHYSIO = "physiotherapy"
@@ -38,7 +44,7 @@ def get_all_categories():
 # key, value
 def getAllSpecialities():
     return [("sports", _(u"Sports")),
-            ("geriatric", _(u"Geriatric")),            
+            ("geriatric", _(u"Geriatric")),
             ("cardiology", _(u"Cardiology")),
             ("pneumology", _(u"Pneumology")),
             ("orthopedic", _(u"Orthopedic")),
@@ -57,13 +63,14 @@ def getAllSpecialitiesForPatient():
 
 
 def get_all_schools():
-    return [("na", _(u"Not Applicable")),
+    return [
             ("concordia", _(u"Concordia University")),
             ("mcgill", _(u"McGill University")),
-            ("laval", _(u"Université Laval")),
             ("udem", _(u"Université de Montréal")),
             ("uqtr", _(u"Université de Québec à Trois-Rivières")),
-            ("usherb", _(u"Université de Sherbrooke"))
+            ("usherb", _(u"Université de Sherbrooke")),
+            ("laval", _(u"Université Laval")),
+            ("na", _(u"Other")),
         ]
     
 def get_all_degrees():
@@ -129,7 +136,7 @@ CODE_TUPLES = list(chain.from_iterable(CODE_TUPLES_LIST))
 CODE_DICT = dict(CODE_TUPLES)
 
 # hack for translations
-CODE_DICT_PER_LANG =  dict()
+CODE_DICT_PER_LANG = dict()
 
 def create_untranslated_code_tuple_list():
     code_tuples_list = []

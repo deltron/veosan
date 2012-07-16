@@ -389,11 +389,37 @@ msgstr "Présent"
 msgid "Position Title"
 msgstr "Titre"
 
+msgid "Degree Title"
+msgstr "Titre de vôtre diplôme"
+
 msgid "Start Year"
 msgstr "Première année"
 
 msgid "End Year"
 msgstr "Dernière année"
+
+msgid "Year"
+msgstr "Année"
+
+msgid "Month"
+msgstr "Mois"
+
+msgid "Hours"
+msgstr "Nombre d'heures"
+
+msgid "Conference"
+msgstr "Conférence"
+
+msgid "Training"
+msgstr "Formation"
+
+msgid "Presentation"
+msgstr "Présentation"
+
+msgid "Committee"
+msgstr "Committée"
+
+
 
 
 #################
@@ -576,6 +602,19 @@ msgstr "Montréal - Centre-Ville"
 
 msgid "Montreal - West-Island"
 msgstr "Montréal - Ouest de l'ile"
+
+msgid "Montreal - East"
+msgstr "Montréal - Est"
+
+msgid "Montreal - North"
+msgstr "Montréal - Nord"
+
+msgid "Laval"
+msgstr "Laval"
+
+msgid "South Shore"
+msgstr "Rive-sud"
+
 
 
 #################
