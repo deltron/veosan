@@ -13,7 +13,7 @@ class ProviderProfileForm(CustomForm):
     def _set_fields(self, form):        
         setattr(form, 'category', SelectField(_(u'Category'), choices=util.get_all_categories()))
         setattr(form, 'specialty', MultiCheckboxField(_(u'Specialties'), choices=util.getAllSpecialities()))
-        setattr(form, 'start_year', TextField(_(u'Active Since'), [validators.Length(min=4, max=4, message=_(u'Your first year of practice'))]))
+        setattr(form, 'start_year', IntegerField(_(u'Active Since'), [validators.NumberRange(min=1940, max=2100, message=_(u'Your first year'))]))
         setattr(form, 'bio', TextAreaField(_(u'Biography')))
         setattr(form, 'quote', TextAreaField(_(u'Quote')))
         setattr(form, 'associations', MultiCheckboxField(_(u'Associations'), choices=util.getAllAssociations()))
