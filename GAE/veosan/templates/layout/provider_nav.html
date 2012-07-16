@@ -9,7 +9,7 @@
 		<a href="/provider/cv/{{ provider.vanity_url }}">{{ _('CV') }}</a>
 	</li>
 	<li id="address" {% if  "address" == active_page %} class="active" {% endif %}>
-		<a href="/admin/provider/address/{{ provider.vanity_url }}">{{ _('Address') }}</a>
+		<a href="/provider/address/{{ provider.vanity_url }}">{{ _('Address') }}</a>
 	</li>
 
 	{% if 'admin' in roles %}
