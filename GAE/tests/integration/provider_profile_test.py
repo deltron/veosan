@@ -71,7 +71,7 @@ class ProviderTest(BaseTest):
         response.mustcontain("Baccalauréat")
         
         provider = db.get_provider_from_vanity_url(self._TEST_PROVIDER_VANITY_URL)
-        education = provider.get_education().get()
+        education = provider.get_education()[0]
 
         response_after_delete = self.testapp.get('/provider/cv/education/' + self._TEST_PROVIDER_VANITY_URL + "/delete/" + education.key.urlsafe())
 
@@ -164,7 +164,7 @@ class ProviderTest(BaseTest):
 
         
         provider = db.get_provider_from_vanity_url(self._TEST_PROVIDER_VANITY_URL)
-        education = provider.get_experience().get()
+        education = provider.get_experience()[0]
 
         response_after_delete = self.testapp.get('/provider/cv/experience/' + self._TEST_PROVIDER_VANITY_URL + "/delete/" + education.key.urlsafe())
 

@@ -206,7 +206,7 @@ class BaseTest(unittest.TestCase):
         provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
         
         # request the address page
-        response = self.testapp.get('/admin/provider/address/%s' % provider.vanity_url)
+        response = self.testapp.get('/provider/address/%s' % provider.vanity_url)
         
         address_form = response.forms[0] # address form
         
@@ -246,7 +246,7 @@ class BaseTest(unittest.TestCase):
         provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
         
         # request the address page
-        response = self.testapp.get('/admin/provider/address/%s' % provider.vanity_url)
+        response = self.testapp.get('/provider/address/%s' % provider.vanity_url)
         
         address_form = response.forms[0] # address form
         
