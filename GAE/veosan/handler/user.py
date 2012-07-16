@@ -330,9 +330,9 @@ class LoginHandler(UserBaseHandler):
                     # check role of user, redirect to appropriate page after login
                     if auth.PROVIDER_ROLE in user.roles:
                         provider = db.get_provider_from_user(user)
-                        logging.info('(LoginHandler.post) User %s logged in as provider, redirecting to bookings page', user.get_email())
+                        logging.info('(LoginHandler.post) User %s logged in as provider, redirecting to profile page', user.get_email())
 
-                        self.redirect('/provider/bookings/%s' % provider.vanity_url)
+                        self.redirect('/provider/profile/%s' % provider.vanity_url)
 
                     elif auth.PATIENT_ROLE in user.roles:
                         patient = db.get_patient_from_user(user)
