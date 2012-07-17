@@ -47,13 +47,17 @@ class ProviderBaseHandler(BaseHandler):
         self.render_template('provider/address.html', provider=provider, **kw)
 
 
-class ProviderNewHandler(ProviderBaseHandler):
+class ProviderMessageHandler(ProviderBaseHandler):
     @provider_required
-    def get(self, vanity_url=None):
+    def get(self, vanity_url=None, msg_key=None):
         provider = db.get_provider_from_vanity_url(vanity_url)
-        sucess_message = _("Welcome to Veosan! Please get started by completing your profile.")
+        
+        messages = { 'new' : _("Welcome to Veosan! Please get started by completing your profile."),
+                     'reset' : _("Welcome back! Password has been reset."),
+                    }
+        
         profile_form = ProviderProfileForm().get_form(obj=provider)
-        self.render_profile(provider, profile_form=profile_form, success_message=sucess_message)
+        self.render_profile(provider, profile_form=profile_form, success_message=messages[msg_key])
         
 
 class ProviderEditAddressHandler(ProviderBaseHandler):

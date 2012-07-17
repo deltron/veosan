@@ -86,10 +86,11 @@ application = webapp2.WSGIApplication([
                                   
                                        #provider
                                        PathPrefixRoute('/provider', [
-                                            # new providers are sent here
-                                            Route('/new/<vanity_url>', provider.ProviderNewHandler),
-
-                                            
+                                            # display a status message to the provider (new, reset, etc)                                            PathPrefixRoute('/profile', [
+                                            PathPrefixRoute('/message', [
+                                                Route('/<msg_key>/<vanity_url>', provider.ProviderMessageHandler),
+                                            ]),
+                                                                     
                                             Route('/schedule/<vanity_url>', provider.ProviderScheduleHandler),
                                             Route('/bookings/<vanity_url>', provider.ProviderBookingsHandler),
                                                   

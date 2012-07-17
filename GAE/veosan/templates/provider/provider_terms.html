@@ -9,18 +9,12 @@
 <div class="row">
 	<div class="span12">
 		<div class="well">
+			{% if provider.terms_agreement %}
 			<h3>{{provider.first_name}} {{provider.last_name}}</h3>
-			{{provider.address}}
-			<br>
-			{{provider.city}}
-			<br>
-			{{provider.postal_code}}
-			<br>
 			{{provider.email}}
 			<br>
-			{{provider.phone}}
 			<br>
-			<br>
+			{% endif %}
 			{# taken from simplenote #}
 			<p>
 				By using this web site ("Service"), you are agreeing to be bound by the following terms and conditions ("Terms of Use") set forth by Veosan, Inc. ("We").

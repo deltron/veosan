@@ -269,10 +269,11 @@ class ProviderTest(BaseTest):
         password_form['password_confirm'] = '654321'
 
         reset_post_response = password_form.submit()
+        reset_post_response = reset_post_response.follow()
         self.assertEqual(reset_post_response.status_int, 200)
         
-        reset_post_response.mustcontain('Welcome back! Password has been reset for %s' % user.get_email())
-        reset_post_response.mustcontain('Rendez-vous')
+        reset_post_response.mustcontain('Welcome back! Password has been reset.')
+        reset_post_response.mustcontain('Profile')
 
         # try to login with old credentials
         logout_response = self.testapp.get("/logout")
@@ -339,10 +340,12 @@ class ProviderTest(BaseTest):
         password_form['password_confirm'] = '654321'
 
         reset_post_response = password_form.submit()
+        reset_post_response = reset_post_response.follow()
+
         self.assertEqual(reset_post_response.status_int, 200)
         
-        reset_post_response.mustcontain('Welcome back! Password has been reset for %s' % user.get_email())
-        reset_post_response.mustcontain('Rendez-vous')
+        reset_post_response.mustcontain('Welcome back! Password has been reset.')
+        reset_post_response.mustcontain('Profile')
 
         # try to re-use the same password reset token
         reset_response = self.testapp.get(reset_url)

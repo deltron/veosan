@@ -1,18 +1,20 @@
-import logging, random, sha, urlparse
+import logging, urlparse
 from datetime import date
+
+# GAE
+from webapp2_extras.i18n import gettext as _
+from webapp2_extras import security 
+from webapp2_extras.auth import InvalidAuthIdError, InvalidPasswordError
+
 # veo
 from base import BaseHandler
 import data.db as db
 import auth
-from data import model
 from patient import PatientBaseHandler
 from provider import ProviderBaseHandler
 from booking import BookingBaseHandler
 from forms.user import ProviderTermsForm, PasswordForm, LoginForm
 import mail
-from webapp2_extras.i18n import gettext as _
-from webapp2_extras import security 
-from webapp2_extras.auth import InvalidAuthIdError, InvalidPasswordError
 
 
 class UserBaseHandler(BaseHandler):   
@@ -133,14 +135,8 @@ class PasswordHandler(UserBaseHandler):
                 self.delete_signup_token(user)
             
                 if provider:
-                    # send welcome email
-                    mail.emailProviderWelcomeMessage(self.jinja2, provider)
-                        
-                    # Provider is Activated
-                    # login automatically
-                    
                     # show welcome page
-                    self.redirect('/provider/new/' + provider.vanity_url)
+                    self.redirect('/provider/message/new/' + provider.vanity_url)
                                    
                 elif patient:
                     welcome_message = _("Welcome to Veosan! Profile confirmation successful.")
@@ -156,13 +152,11 @@ class PasswordHandler(UserBaseHandler):
 
                 self.login_user(user.get_email(), password)
 
-                success_message = _("Welcome back! Password has been reset for %s" % user.get_email())
-                
                 if auth.PROVIDER_ROLE in user.roles:
-                    ProviderBaseHandler.render_bookings(self, provider, success_message=success_message) 
+                    self.redirect('/provider/message/reset/' + provider.vanity_url)
                 
                 if auth.PATIENT_ROLE in user.roles:
-                    PatientBaseHandler.render_bookings(self, patient, success_message=success_message) 
+                    PatientBaseHandler.render_bookings(self, patient, success_message= _("Welcome back! Password has been reset.")) 
 
         # password form was not validate, re-render and try again!
         else:

@@ -40,9 +40,6 @@ class TermsTest(BaseTest):
             # email
             response.mustcontain(self._TEST_PROVIDER_EMAIL)
 
-            # phone and address
-            response.mustcontain("555-123-5678", "123 Main St.", "Westmount", "H1B2C3")
-
             # acceptance date
             response.mustcontain("Terms agreed on")
             
