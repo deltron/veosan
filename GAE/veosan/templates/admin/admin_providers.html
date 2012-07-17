@@ -28,7 +28,7 @@
 				{% for p in providers %}
 				<tr>
 					<td>
-						<a href="/provider/bookings/{{p.vanity_url}}">{{ p.key.id() }}</a>
+						<a href="/provider/profile/{{p.vanity_url}}">{{ p.key.id() }}</a>
 					</td>
 					<td>
 						{{ _(p.category|code_to_string) }}
