@@ -46,15 +46,15 @@
 							{% if provider and 'admin' in roles %}
 							{# Show provider administration menu items #}
 							<li class="divider"></li>
-							<li>
+							<li style="font-style:italic">
 								<a href="/provider/bookings/{{ provider.vanity_url }}">{{ _('Bookings') }}</a>
 							</li>
-							<li>
+							<li style="font-style:italic">
 								<a href="/provider/schedule/{{ provider.vanity_url }}">{{ _('Schedule') }}</a>
 							</li>
 
 							<li id="administration" style="font-style:italic">
-								<a href="/provider/bookings/{{ provider.vanity_url }}">{{ _('Administration') }}</a>
+								<a href="/provider/admin/{{ provider.vanity_url }}">{{ _('Administration') }}</a>
 							</li>
 							{% endif%}
 						</ul>
