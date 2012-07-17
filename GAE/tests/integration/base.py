@@ -324,7 +324,7 @@ class BaseTest(unittest.TestCase):
 
         profile_form.set('certifications', True, 1) # Active Release Therapy (ART)
 
-        profile_form.set('onsite', True, 0) # onsite visits
+        profile_form.set('practice_sites', True, 0) # onsite visits
 
 
         profile_form['start_year'] = '2002'
@@ -348,7 +348,7 @@ class BaseTest(unittest.TestCase):
         
         response.mustcontain('input checked id="certifications-1" name="certifications" type="checkbox" value="art"')        
 
-        response.mustcontain('input checked class="checkbox" id="onsite" name="onsite" type="checkbox" value="True"')        
+        response.mustcontain('input checked id="practice_sites-0" name="practice_sites" type="checkbox" value="onsite"')        
 
         response.mustcontain('option selected value="osteopath"')
         
@@ -378,7 +378,7 @@ class BaseTest(unittest.TestCase):
         self.assertIn('art', provider.certifications)
         self.assertNotIn('mckenzie', provider.certifications)
 
-        self.assertTrue(provider.onsite)
+        self.assertIn('onsite', provider.practice_sites)
 
         
     def provider_schedule_set_one_timeslot_action(self):

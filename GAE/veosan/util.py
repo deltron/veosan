@@ -93,6 +93,25 @@ def getAllAssociations():
             ("campt", _(u"Canadian Academy of Manipulative Physiotherapy (CAMPT)"))
         ]
 
+def getAllSites():
+    return [("onsite", _(u"I am willing to do on-site visits")),
+            ("clinic", _(u"I have a clinic patients can visit")),
+        ]
+
+def get_all_spoken_languages():
+    return [
+           # ("ar", _(u"Arabic")),
+           # ("cn", _(u"Chinese")),
+            ("en", _(u"English")),
+            ("fr", _(u"French")),
+           # ("gr", _(u"Greek")),
+           # ("it", _(u"Italian")),
+           # ("pt", _(u"Portuguese")),            
+           # ("es", _(u"Spanish")),
+           # ("ro", _(u"Romanian")),            
+           # ("vn", _(u"Vietnamese")),
+        ]
+
 def getAllCertifications():
     return [("mckenzie", _(u"McKenzie Method")),
             ("art", _(u"Active Release Therapy (ART)"))

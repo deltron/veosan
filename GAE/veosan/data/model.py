@@ -70,8 +70,10 @@ class Provider(ndb.Model):
     specialty = ndb.StringProperty(repeated=True)
     associations = ndb.StringProperty(repeated=True)
     certifications = ndb.StringProperty(repeated=True)
-    onsite = ndb.BooleanProperty()
+    practice_sites = ndb.StringProperty(repeated=True)
+    spoken_languages = ndb.StringProperty(repeated=True)
     start_year = ndb.StringProperty()
+
     
     # address
     first_name = ndb.StringProperty()
