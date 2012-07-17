@@ -39,9 +39,9 @@ def email_booking_to_patient(jinja2, booking, activation_url=None):
 def emailSolicitProvider(jinja2, provider, activation_url):
     ''' Send solicitation email to provider '''
     message = mail.EmailMessage()
-    message.sender = VEOSAN_SUPPORT_ADDRESS
+    message.sender = 'Veosan <' + VEOSAN_SUPPORT_ADDRESS + '>'
     message.to = provider.email
-    message.subject = u'veosan - Please confirm your profile %s' % provider.full_name()
+    message.subject = u'Veosan Account Activation'
     kw = {'provider': provider, 'activation_url': activation_url}
     message.body = jinja2.render_template('email/provider_solicit.txt', **kw)
     try:
@@ -54,7 +54,7 @@ def email_user_password_reset(jinja2, user, activation_url):
     message = mail.EmailMessage()
     message.sender = VEOSAN_SUPPORT_ADDRESS
     message.to = user.get_email()
-    message.subject = u'veosan - password reset instructions'
+    message.subject = u'Veosan - password reset instructions'
     message.body = jinja2.render_template('email/provider_passwordreset.txt', activation_url=activation_url)
     try:
         message.send()

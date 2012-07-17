@@ -27,7 +27,7 @@ class UserBaseHandler(BaseHandler):
 
     def render_password_selection(self, user=None, password_form=None, **kw):
         if not password_form:
-            password_form = PasswordForm()
+            password_form = PasswordForm().get_form()
             
         if not user:
             user = self.get_current_user()
@@ -102,9 +102,16 @@ class PasswordHandler(UserBaseHandler):
         self.render_password_selection(user=user, signup_token=signup_token)
         
     def post(self, signup_token = None):
-        password_form = PasswordForm(self.request.POST)
+        password_form = PasswordForm().get_form(self.request.POST)
         
         user = db.get_user_from_signup_token(signup_token)
+        
+        # check for password reset token
+        if user == None:
+            user = db.get_user_from_resetpassword_token(signup_token)
+        
+        provider = db.get_provider_from_user(user)
+        patient = db.get_patient_from_user(user)
         
         if user and password_form.validate():        
             # get password from request
@@ -124,9 +131,6 @@ class PasswordHandler(UserBaseHandler):
                 
                 # delete the signup token
                 self.delete_signup_token(user)
-            
-                provider = db.get_provider_from_user(user)
-                patient = db.get_patient_from_user(user)
             
                 if provider:
                     # send welcome email
@@ -175,7 +179,7 @@ class ResetPasswordHandler(UserBaseHandler):
             user = self.validate_resetpassword_token(resetpassword_token)
             if user:            
                 # got a good user for that password reset token, show the password form
-                self.render_password_selection(user=user)
+                self.render_password_selection(user=user, signup_token=resetpassword_token)
             else:
                 # no user found for password reset key, send them to the login page
                 error_message = "Sorry, we can't find anyone for that password reset link. Links are expired after 24 hours, please try again."
@@ -245,7 +249,7 @@ class ActivationHandler(UserBaseHandler):
                     
                     if patient:
                         # make the patient choose a password
-                        self.render_password_selection(user=user)
+                        self.render_password_selection(user=user, signup_token=signup_token)
                     else:
                         # no patient found for user & token combination, send them to the login page
                         logging.info('(ActivationHandler) no patient found for user & token combination')

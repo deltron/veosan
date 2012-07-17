@@ -550,8 +550,8 @@ msgstr "J'accepte les conditions d'utilisation"
 msgid "Select your password"
 msgstr "Choisissez votre mot de passe"
 
-msgid "Welcome to Veosan! Please review your profile and open your schedule."
-msgstr "Bienvenue chez Veosan! Veuillez révisez votre profile et planifiez votre horraire."
+msgid "Welcome to Veosan! Please get started by completing your profile."
+msgstr "Bienvenue chez Veosan! Veuillez révisez votre profile pour commencer."
 
 
 #################

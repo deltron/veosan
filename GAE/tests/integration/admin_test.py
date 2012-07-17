@@ -104,6 +104,7 @@ class AdminTest(BaseTest):
         if "Initialized new provider for " in response:
             self.assertTrue(False, "A provider was created without an email address")
             
+    ''' Not relevant anymore - they fill their own profile
 
     def test_new_provider_solicit_with_empty_profile(self):
         # set things up
@@ -125,8 +126,7 @@ class AdminTest(BaseTest):
 
         # make sure no email is sent
         messages = self.mail_stub.get_sent_messages(to=self._TEST_PROVIDER_EMAIL)
-        self.assertEqual(0, len(messages))
-
+        self.assertEqual(0, len(messages)) '''
 
     def test_bookings_page_as_admin(self):
         # TODO create a booking

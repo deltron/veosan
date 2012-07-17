@@ -72,6 +72,7 @@ class ProviderTest(BaseTest):
         
         # password page
         password_choice_response = terms_form.submit()
+        password_choice_response = password_choice_response.follow()
         password_choice_response.mustcontain('Choisissez votre mot de passe')
         password_form = password_choice_response.forms[0]
         password_form['password'] = 'abc'
@@ -106,6 +107,7 @@ class ProviderTest(BaseTest):
         
         # password page
         password_choice_response = terms_form.submit()
+        password_choice_response = password_choice_response.follow()
         password_choice_response.mustcontain('Choisissez votre mot de passe')
         password_form = password_choice_response.forms[0]
         password_form['password'] = self._TEST_PROVIDER_PASSWORD
@@ -152,6 +154,7 @@ class ProviderTest(BaseTest):
         terms_form = terms_response.forms[0]
         terms_form['terms_agreement'] = '1'
         terms_response = terms_form.submit()
+        terms_response = terms_response.follow()
         terms_response.mustcontain('Choisissez votre mot de passe')
 
 
@@ -204,6 +207,7 @@ class ProviderTest(BaseTest):
         
         # password page
         password_choice_response = terms_form.submit()
+        password_choice_response = password_choice_response.follow()
         password_choice_response.mustcontain('Choisissez votre mot de passe')
         password_form = password_choice_response.forms[0]
         password_form['password'] = 'abcdef'
@@ -211,7 +215,8 @@ class ProviderTest(BaseTest):
         
         # password has been set
         welcome_response = password_form.submit()
-        welcome_response.mustcontain("Rendez-vous")
+        welcome_response = welcome_response.follow()
+        welcome_response.mustcontain("Profile")
 
         self.logout_provider()
         
@@ -245,7 +250,7 @@ class ProviderTest(BaseTest):
 
         user = db.get_user_from_email(self._TEST_PROVIDER_EMAIL)
 
-        self.assertEqual(m.subject, 'veosan - password reset instructions' )
+        self.assertEqual(m.subject, 'Veosan - password reset instructions' )
         self.assertEqual(m.sender, 'support@veosan.com')
         self.assertIn('Please click the link below to choose a new password', m.body.payload)
 
@@ -315,7 +320,7 @@ class ProviderTest(BaseTest):
 
         user = db.get_user_from_email(self._TEST_PROVIDER_EMAIL)
 
-        self.assertEqual(m.subject, 'veosan - password reset instructions')
+        self.assertEqual(m.subject, 'Veosan - password reset instructions')
         self.assertEqual(m.sender, 'support@veosan.com')
         self.assertIn('Please click the link below to choose a new password', m.body.payload)
 

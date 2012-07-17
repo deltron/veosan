@@ -55,10 +55,10 @@ class LanguageTest(BaseTest):
         
         # now change language (default is french, so this should switch to english)
         # set the referer header manually (language switching depends on referer)
-        headers = { 'referer': '/provider/terms/' + self._TEST_PROVIDER_VANITY_URL }
+        headers = { 'referer': str('/user/password/' + user.signup_token) }
         english_password_response = self.testapp.get('/lang/en', headers=headers)
         redirect_response = english_password_response.follow()
-        redirect_response.mustcontain("Choose your password")
+        redirect_response.mustcontain("Select your password")
 
         
 if __name__ == "__main__":

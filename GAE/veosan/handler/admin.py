@@ -118,7 +118,7 @@ class NewProviderSolicitHandler(BaseHandler):
         provider = db.get_provider_from_vanity_url(vanity_url)
         
         # Check provider has at least a first name, last name and email before activation
-        if provider.email and provider.first_name and provider.last_name: 
+        if provider.email: 
             # create a blank user with provider role
             if provider.user: 
                 user = provider.user.get()

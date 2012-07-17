@@ -193,7 +193,7 @@ class BaseTest(unittest.TestCase):
         messages = self.mail_stub.get_sent_messages(to=self._TEST_PROVIDER_EMAIL)
         self.assertEqual(1, len(messages))
         m = messages[0]
-        self.assertEqual(m.subject, 'veosan - Please confirm your profile %s' % provider.full_name())
+        self.assertEqual(m.subject, 'Veosan Account Activation')
         
         # assert that activation link is in the email body
         user = User.query(User.key == provider.user).get()
@@ -451,6 +451,7 @@ class BaseTest(unittest.TestCase):
         terms_form['terms_agreement'] = '1'
         # password page
         password_choice_response = terms_form.submit()
+        password_choice_response = password_choice_response.follow()
         
         password_choice_response.mustcontain('Choisissez votre mot de passe')
         password_form = password_choice_response.forms[0]
@@ -458,6 +459,7 @@ class BaseTest(unittest.TestCase):
         password_form['password_confirm'] = self._TEST_PROVIDER_PASSWORD
 
         welcome_response = password_form.submit()
+        welcome_response = welcome_response.follow()
         self.assertEqual(welcome_response.status_int, 200)
         welcome_response.mustcontain(u'Bienvenue chez Veosan!')
 
@@ -544,7 +546,8 @@ class BaseTest(unittest.TestCase):
  
         # click link in email
         activation_response = self.testapp.get('/user/activation/%s' % str(user.signup_token))
-        
+     
+      
         # choose a password
         activation_response.mustcontain('Choisissez votre mot de passe')
         activation_response_form = activation_response.forms[0]

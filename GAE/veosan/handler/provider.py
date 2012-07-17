@@ -51,11 +51,10 @@ class ProviderNewHandler(ProviderBaseHandler):
     @provider_required
     def get(self, vanity_url=None):
         provider = db.get_provider_from_vanity_url(vanity_url)
-        sucess_message = _("Welcome to Veosan! Please get started by completing your profile")
+        sucess_message = _("Welcome to Veosan! Please get started by completing your profile.")
         profile_form = ProviderProfileForm().get_form(obj=provider)
         self.render_profile(provider, profile_form=profile_form, success_message=sucess_message)
         
-
 
 class ProviderEditAddressHandler(ProviderBaseHandler):
     @provider_required
