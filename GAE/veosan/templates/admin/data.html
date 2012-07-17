@@ -46,7 +46,7 @@
 			<p>
 				Current status is booking_enabled={{ site_config.booking_enabled }}
 			</p>
-			<form method="post" action="/admin/data/index_switch" class="form-inline">
+			<form method="post" action="/admin/site_config/booking_enabled" class="form-inline">
 				<fieldset>
 					{% if site_config.booking_enabled %}
 					<button type="submit" class="btn btn-success">
@@ -55,6 +55,29 @@
 					{% elif not site_config.booking_enabled or site_config.booking_enabled == None %}
 					<button type="submit" class="btn btn-danger">
 						Enable Booking on Index Page
+					</button>
+					{% endif %}
+				</fieldset>
+			</form>
+		</div>
+	</div>
+
+	<div class="span6">
+		<h3>Enable/disable Google Analytics</h3>
+
+		<div class="well">
+			<p>
+				Current status is google_analytics_enabled={{ site_config.google_analytics_enabled }}
+			</p>
+			<form method="post" action="/admin/site_config/google_analytics_enabled" class="form-inline">
+				<fieldset>
+					{% if site_config.google_analytics_enabled %}
+					<button type="submit" class="btn btn-success">
+						Disable Google Analytics
+					</button>
+					{% elif not site_config.google_analytics_enabled or site_config.google_analytics_enabled == None %}
+					<button type="submit" class="btn btn-danger">
+						Enable Google Analytics
 					</button>
 					{% endif %}
 				</fieldset>

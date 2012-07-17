@@ -12,7 +12,7 @@ import util
 
 class SiteConfig(ndb.Model):
     booking_enabled = ndb.BooleanProperty()
-    
+    google_analytics_enabled = ndb.BooleanProperty()
 
 class User(Webapp2AuthUser):
     '''

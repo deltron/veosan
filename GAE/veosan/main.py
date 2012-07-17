@@ -143,7 +143,8 @@ application = webapp2.WSGIApplication([
                                            Route('/data', admin.AdminDataHandler),
                                            Route('/data/stage', admin.AdminStageDataHandler),
                                            Route('/data/delete', admin.AdminDeleteDataHandler),
-                                           Route('/data/index_switch', admin.AdminIndexSwitchHandler),
+
+                                           Route('/site_config/<feature>', admin.AdminSiteConfigHandler),
 
                                            PathPrefixRoute('/provider', [
                                                # provider actions

@@ -38,6 +38,34 @@ class AdminIndexHandler(AdminBaseHandler):
         self.redirect('/admin/providers')
 
 
+class AdminSiteConfigHandler(AdminBaseHandler):
+    def post(self, feature=None):
+        
+        # validate features that can be switched
+        if feature in ['booking_enabled', 'google_analytics_enabled']:            
+            site_config = db.get_site_config()
+
+            # toggle state
+            current_state = getattr(site_config, feature)
+            
+            if current_state:           
+                setattr(site_config, feature, False)
+                success_message = 'feature %s is now set to %s' % (feature, False)
+                    
+            else:
+                setattr(site_config, feature, True)
+                success_message = 'feature %s is now set to %s' % (feature, True)
+
+            site_config.put()
+            
+            self.render_data(success_message=success_message)
+
+        else:
+            logging.error('Received unknown feature switch : %s' % feature)
+
+
+
+
 class AdminBookingsHandler(AdminBaseHandler):
     '''Administer Bookings'''
     
@@ -114,7 +142,7 @@ class NewProviderSolicitHandler(BaseHandler):
     '''
     
     @admin_required
-    def get(self, vanity_url = None):
+    def get(self, vanity_url=None):
         provider = db.get_provider_from_vanity_url(vanity_url)
         
         # Check provider has at least a first name, last name and email before activation
@@ -187,25 +215,5 @@ class AdminDeleteDataHandler(AdminBaseHandler):
             self.render_data(error_message="Production server, cannot delete")
 
 
-class AdminIndexSwitchHandler(AdminBaseHandler):
-    ''' Toggle display of signup on index page '''
 
-    def post(self):
-        site_config = db.get_site_config()
-
-        if site_config:
-            logging.info('(AdminIndexSwitchHandler.post) Current status booking_enabled = %s ' % site_config.booking_enabled)
-    
-            if site_config.booking_enabled:
-                site_config.booking_enabled = False
-            else:
-                site_config.booking_enabled = True
-    
-            site_config.put()
-            logging.info('(AdminIndexSwitchHandler.post) New status is booking_enabled = %s ' % site_config.booking_enabled)
-        else:
-            logging.info('(AdminIndexSwitchHandler.post) No site configuration!')
-
-        self.render_data()
-        
         

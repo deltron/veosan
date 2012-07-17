@@ -99,6 +99,7 @@ class BaseHandler(webapp2.RequestHandler):
 
         kw['language_labels'] = util.LANGUAGE_LABELS
         
+        
         # ---------------
         # Set this to true to show booking block on Index
         # ---------------
@@ -106,6 +107,8 @@ class BaseHandler(webapp2.RequestHandler):
         site_config = db.get_site_config()
         if site_config:
             kw['booking_enabled'] = site_config.booking_enabled
+            kw['google_analytics_enabled'] = site_config.google_analytics_enabled
+
         else:
             # no site configuration exists in database, create one
             site_config = SiteConfig()
@@ -113,8 +116,11 @@ class BaseHandler(webapp2.RequestHandler):
             # take defaul state for booking enabled from util 
             # (so it can be set before the handler is called in unit tests)
             site_config.booking_enabled = util.BOOKING_ENABLED
+            site_config.google_analytics_enabled = False
+            
             site_config.put()
             kw['booking_enabled'] = site_config.booking_enabled
+            kw['google_analytics_enabled'] = site_config.google_analytics_enabled
 
         
         # render
