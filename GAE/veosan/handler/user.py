@@ -23,7 +23,7 @@ class UserBaseHandler(BaseHandler):
     
         
     def render_terms(self, provider, terms_form, **kw):
-        self.render_template('provider/provider_terms.html', provider=provider, form=terms_form, **kw)
+        self.render_template('provider/provider_terms.html', provider=provider, terms_form=terms_form, **kw)
 
     def render_password_selection(self, user=None, password_form=None, **kw):
         if not password_form:
@@ -56,29 +56,25 @@ class UserBaseHandler(BaseHandler):
 
 
 class ProviderTermsHandler(UserBaseHandler):
-    def get(self):
-        provider = None
+    def get(self, vanity_url = None):
+        # get provider from vanity url
+        provider = db.get_provider_from_vanity_url(vanity_url)
         
-        # get the provider key
-        key = self.request.get('key')
-        if key:
-            provider = db.get_from_urlsafe_key(key)
-        
-        # if no key, try to find out who the provider is by checking the logged in user
-        else:
+        # if no provider, try to get one by checking the logged in user
+        if provider == None:
             user = self.get_current_user()
             # make sure user is a provider
             if user and auth.PROVIDER_ROLE in user.roles:
                 provider = db.get_provider_from_user(user)
             else:
-                logging.error("(ProviderTermsHandler.get) Requested terms but can't get the provider from a key or user")
+                logging.error("(ProviderTermsHandler.get) Requested terms but can't get the provider from a key or user")   
         
-        terms_form = ProviderTermsForm(obj=provider)
+        terms_form = ProviderTermsForm().get_form(obj=provider)
         self.render_terms(provider, terms_form=terms_form)
     
-    def post(self):
-        provider = db.get_from_urlsafe_key(self.request.get('provider_key'))
-        terms_form = ProviderTermsForm(self.request.POST)
+    def post(self, vanity_url = None):
+        provider = db.get_provider_from_vanity_url(vanity_url)
+        terms_form = ProviderTermsForm().get_form(self.request.POST)
         if terms_form.validate():
             # Save signature and terms agreement
             provider.terms_agreement = self.request.get('terms_agreement') == u'True'
@@ -92,10 +88,84 @@ class ProviderTermsHandler(UserBaseHandler):
             user = provider.user.get()
             
             # Go to the password selection page
-            self.render_password_selection(user=user)
+            self.redirect('/user/password/' + user.signup_token)
         else:
             # did not click "I accept"
             self.render_terms(provider, terms_form=terms_form)
+
+
+
+class PasswordHandler(UserBaseHandler):
+    def get(self, signup_token = None):
+        user = db.get_user_from_signup_token(signup_token)
+        
+        self.render_password_selection(user=user, signup_token=signup_token)
+        
+    def post(self, signup_token = None):
+        password_form = PasswordForm(self.request.POST)
+        
+        user = db.get_user_from_signup_token(signup_token)
+        
+        if user and password_form.validate():        
+            # get password from request
+            password = self.request.get('password')
+                
+            # hash password (same as passing password_raw to user_create)
+            password_hash = security.generate_password_hash(password, length=12)    
+            user.password = password_hash
+            user.put()
+            
+            # login with new password
+            self.login_user(user.get_email(), password)
+
+            if user.signup_token:
+                # new user
+                logging.info('(PasswordHandler.post) New user just set their password: %s' % user.get_email())
+                
+                # delete the signup token
+                self.delete_signup_token(user)
+            
+                provider = db.get_provider_from_user(user)
+                patient = db.get_patient_from_user(user)
+            
+                if provider:
+                    # send welcome email
+                    mail.emailProviderWelcomeMessage(self.jinja2, provider)
+                        
+                    # Provider is Activated
+                    # login automatically
+                    
+                    # show welcome page
+                    self.redirect('/provider/new/' + provider.vanity_url)
+                                   
+                elif patient:
+                    welcome_message = _("Welcome to Veosan! Profile confirmation successful.")
+                    BookingBaseHandler.render_confirmed_patient(self, patient, success_message=welcome_message)
+
+            elif user.resetpassword_token:
+                # not a returning user, must be a password reset
+               
+                # clear the password reset key to prevent further shenanigans
+                self.delete_resetpassword_token(user)
+                
+                logging.info('(PasswordHandler.post) Set new password for email %s' % user.get_email())
+
+                self.login_user(user.get_email(), password)
+
+                success_message = _("Welcome back! Password has been reset for %s" % user.get_email())
+                
+                if auth.PROVIDER_ROLE in user.roles:
+                    ProviderBaseHandler.render_bookings(self, provider, success_message=success_message) 
+                
+                if auth.PATIENT_ROLE in user.roles:
+                    PatientBaseHandler.render_bookings(self, patient, success_message=success_message) 
+
+        # password form was not validate, re-render and try again!
+        else:
+            self.render_password_selection(user, password_form=password_form, signup_token=signup_token)
+
+        
+
 
 class ResetPasswordHandler(UserBaseHandler):
     def get(self, resetpassword_token=None):
@@ -143,89 +213,6 @@ class ResetPasswordHandler(UserBaseHandler):
                 self.render_login()
 
 
-class PasswordHandler(UserBaseHandler):
-    def get(self):
-        self.render_password_selection()
-        
-    def post(self):
-        password_form = PasswordForm(self.request.POST)
-        provider = None
-        patient = None
-        user = None
-        
-        # get role from request
-        role = self.request.get('role')
-
-        if role == auth.PROVIDER_ROLE:
-            provider = db.get_from_urlsafe_key(self.request.get('key'))
-            if provider:
-                user = db.get_user_from_email(provider.email)
-
-        elif role == auth.PATIENT_ROLE:
-            patient = db.get_from_urlsafe_key(self.request.get('key'))
-            if patient:
-                user = db.get_user_from_email(patient.email)
-
-        else:
-            logging.info('(PasswordHandler.post) Got nonsense role %s in password_form for user' % role)
-
-        if user and password_form.validate():
-                
-            # get password from request
-            password = self.request.get('password')
-                
-            # hash password (same as passing password_raw to user_create)
-            password_hash = security.generate_password_hash(password, length=12)    
-            user.password = password_hash
-            user.put()
-            
-            # login with new password
-            self.login_user(user.get_email(), password)
-
-            if user.signup_token:
-                # new user
-                logging.info('(PasswordHandler.post) New user just set their password: %s' % user.get_email())
-                
-                # delete the signup token
-                self.delete_signup_token(user)
-            
-                if provider:
-                    # send welcome email
-                    mail.emailProviderWelcomeMessage(self.jinja2, provider)
-                        
-                    # Provider is Activated
-                    # login automatically
-                    
-                    welcome_message = _("Welcome to Veosan! Please review your profile and open your schedule.")
-                    ProviderBaseHandler.render_bookings(self, provider, success_message=welcome_message)
-               
-                elif patient:
-                    welcome_message = _("Welcome to Veosan! Profile confirmation successful.")
-                    BookingBaseHandler.render_confirmed_patient(self, patient, success_message=welcome_message)
-
-            elif user.resetpassword_token:
-                # not a returning user, must be a password reset
-               
-                # clear the password reset key to prevent further shenanigans
-                self.delete_resetpassword_token(user)
-                
-                logging.info('(PasswordHandler.post) Set new password for email %s' % user.get_email())
-
-                self.login_user(user.get_email(), password)
-
-                success_message = _("Welcome back! Password has been reset for %s" % user.get_email())
-                
-                if auth.PROVIDER_ROLE in user.roles:
-                    ProviderBaseHandler.render_bookings(self, provider, success_message=success_message) 
-                
-                if auth.PATIENT_ROLE in user.roles:
-                    PatientBaseHandler.render_bookings(self, patient, success_message=success_message) 
-
-        # password form was not validate, re-render and try again!
-        else:
-            self.render_password_selection(user, password_form=password_form)
-
-        
 class ActivationHandler(UserBaseHandler):
     def get(self, signup_token=None):
         if signup_token:
@@ -243,8 +230,8 @@ class ActivationHandler(UserBaseHandler):
                         provider.terms_date = None
 
                         # show terms page
-                        terms_form = ProviderTermsForm(obj=provider)
-                        self.render_terms(provider, terms_form=terms_form)
+                        terms_form = ProviderTermsForm().get_form(obj=provider)
+                        self.render_terms(provider, terms_form=terms_form, signup_token=signup_token)
                         
                     else:
                         # no provider found for user & token combination, send them to the login page

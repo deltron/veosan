@@ -2,6 +2,7 @@ import logging
 from google.appengine.ext import ndb
 from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers
+from webapp2_extras.i18n import lazy_gettext as _
 
 # veo
 import data.db as db
@@ -14,6 +15,7 @@ from util import saved_message
 from utilities import time
 
 class ProviderBaseHandler(BaseHandler): 
+
     def render_profile(self, provider, **kw):
         upload_url = blobstore.create_upload_url('/provider/profile/photo/%s' % provider.vanity_url)
         upload_form = ProviderPhotoForm().get_form(self.request.GET)
@@ -44,6 +46,15 @@ class ProviderBaseHandler(BaseHandler):
     def render_address(self, provider, **kw):
         self.render_template('provider/address.html', provider=provider, **kw)
 
+
+class ProviderNewHandler(ProviderBaseHandler):
+    @provider_required
+    def get(self, vanity_url=None):
+        provider = db.get_provider_from_vanity_url(vanity_url)
+        sucess_message = _("Welcome to Veosan! Please get started by completing your profile")
+        profile_form = ProviderProfileForm().get_form(obj=provider)
+        self.render_profile(provider, profile_form=profile_form, success_message=sucess_message)
+        
 
 
 class ProviderEditAddressHandler(ProviderBaseHandler):

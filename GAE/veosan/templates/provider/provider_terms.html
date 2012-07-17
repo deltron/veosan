@@ -35,6 +35,9 @@
 					You are responsible for the accuracy and completeness of your profile information.
 				</li>
 				<li>
+					You are responsible for having the license and insurance coverage necessary to provide private health-care services to patients.
+				</li>
+				<li>
 					We are not responsible for any information stored with the Service.
 				</li>
 			</ol>
@@ -85,11 +88,10 @@
 		</div>
 		{% else %}
 		{# show form if terms were not yet agreed #}
-		<form method="post" action="/provider/terms" class="form-horizontal">
+		<form method="post" action="/provider/terms/{{ provider.vanity_url }}" class="form-horizontal">
 			<fieldset>
-				{{ macro.makeStandardForm() }}
+				{{ macro.make_standard_form(terms_form) }}
 			</fieldset>
-			<input type="hidden" name="provider_key" value="{{ provider.key.urlsafe() }}" />
 			<div class="form-actions">
 				<button type="submit" class="btn btn-primary">
 					{{ _('I Agree') }}

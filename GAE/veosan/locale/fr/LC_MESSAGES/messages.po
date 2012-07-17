@@ -405,7 +405,7 @@ msgid "Month"
 msgstr "Mois"
 
 msgid "Hours"
-msgstr "Nombre d'heures"
+msgstr "Heures"
 
 msgid "Conference"
 msgstr "Conférence"

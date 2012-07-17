@@ -86,6 +86,10 @@ application = webapp2.WSGIApplication([
                                   
                                        #provider
                                        PathPrefixRoute('/provider', [
+                                            # new providers are sent here
+                                            Route('/new/<vanity_url>', provider.ProviderNewHandler),
+
+                                            
                                             Route('/schedule/<vanity_url>', provider.ProviderScheduleHandler),
                                             Route('/bookings/<vanity_url>', provider.ProviderBookingsHandler),
                                                   
@@ -106,18 +110,27 @@ application = webapp2.WSGIApplication([
                                             PathPrefixRoute('/address', [
                                                 Route('/<vanity_url>', provider.ProviderEditAddressHandler),
                                             ]),
+
+                                            Route('/signup', user.ProviderSignupHandler),
+                                            
+                                            # terms display
+                                            Route('/terms/<vanity_url>', user.ProviderTermsHandler),
                                         ]),
                                        
-                                       # user
                                        ('/login', user.LoginHandler),
                                        ('/logout', user.LogoutHandler),
-                                       ('/user/password', user.PasswordHandler),
-                                       ('/user/resetpassword', user.ResetPasswordHandler),
-                                       Route('/user/resetpassword/<resetpassword_token>', handler=user.ResetPasswordHandler),
-                                       ('/provider/signup', user.ProviderSignupHandler),
-                                       ('/provider/terms', user.ProviderTermsHandler),
-                                       Route('/user/activation/<signup_token>', handler=user.ActivationHandler),
 
+
+                                       # user
+                                       PathPrefixRoute('/user', [
+                                            Route('/activation/<signup_token>', handler=user.ActivationHandler),
+                                            Route('/password/<signup_token>', user.PasswordHandler),
+                                            Route('/resetpassword', user.ResetPasswordHandler),
+                                            Route('/resetpassword/<resetpassword_token>', handler=user.ResetPasswordHandler),
+                                       ]),
+                                       
+                                       
+                                       
                                        # admin
                                        Route('/admin', admin.AdminIndexHandler),
 

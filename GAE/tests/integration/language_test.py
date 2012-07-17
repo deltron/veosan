@@ -28,8 +28,6 @@ class LanguageTest(BaseTest):
         contact_page_en.mustcontain("Send")
         
         
-
-'''
     def test_provider_switch_languages_before_setting_password(self):
         self.login_as_admin()
         # init a provider
@@ -57,11 +55,11 @@ class LanguageTest(BaseTest):
         
         # now change language (default is french, so this should switch to english)
         # set the referer header manually (language switching depends on referer)
-        headers = { 'referer': '/provider/terms' }
+        headers = { 'referer': '/provider/terms/' + self._TEST_PROVIDER_VANITY_URL }
         english_password_response = self.testapp.get('/lang/en', headers=headers)
         redirect_response = english_password_response.follow()
         redirect_response.mustcontain("Choose your password")
-'''
+
         
 if __name__ == "__main__":
     unittest.main()

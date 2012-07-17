@@ -32,7 +32,7 @@ class TermsTest(BaseTest):
             response.mustcontain("Conditions pour fournisseurs")
             
             # click on the provider terms link
-            response = self.testapp.get('/provider/terms')
+            response = self.testapp.get('/provider/terms/' + self._TEST_PROVIDER_VANITY_URL)
             
             # Check first name, last name
             response.mustcontain("Fantastic", "Fox")
