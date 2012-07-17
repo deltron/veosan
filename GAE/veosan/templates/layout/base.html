@@ -70,14 +70,14 @@
 			{% if error_message %}
 			<!-- Error Message -->
 			<div class="alert alert-error">
-				{{error_message}}
+				{{error_message|safe}}
 			</div>
 			{% endif %}
 			
 			{% if success_message %}
 			<!-- Success Message -->
 			<div class="alert alert-success">
-				{{success_message}}
+				{{success_message|safe}}
 			</div>
 			{% endif %}
 			
