@@ -134,7 +134,9 @@ application = webapp2.WSGIApplication([
                                             Route('/resetpassword/<resetpassword_token>', handler=user.ResetPasswordHandler),
                                        ]),
                                        
-                                       
+                                       # sales material
+                                       Route('/sales', static.SalesHandler),
+                                       Route('/sales/<page>', static.SalesHandler),
                                        
                                        # admin
                                        Route('/admin', admin.AdminIndexHandler),

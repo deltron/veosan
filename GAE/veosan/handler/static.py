@@ -27,3 +27,15 @@ class RobotsHandler(BaseHandler):
     def get(self):
         self.render_template("robots.txt")
 
+
+class SalesHandler(BaseHandler):
+    def get(self, page=None):
+        pages = { 'position' : 'sales/position.html',
+                  'price' : 'sales/price.html',
+                 }
+        if page:
+            self.render_template(pages[page])
+        else:
+            self.render_template("sales/index.html")
+
+

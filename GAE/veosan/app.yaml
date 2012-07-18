@@ -29,7 +29,11 @@ handlers:
 - url: /admin/.*
   script: main.application
   login: admin
-  
+
+- url: /sales/.*
+  script: main.application
+  login: admin
+
 - url: /.*
   script: main.application
 
