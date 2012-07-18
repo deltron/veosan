@@ -104,6 +104,45 @@ class AdminTest(BaseTest):
         if "Initialized new provider for " in response:
             self.assertTrue(False, "A provider was created without an email address")
             
+            
+            
+    def test_admin_provider_init_with_duplicate_vanity_url(self):
+        self.create_complete_provider_profile()
+
+        # log back in as admin        
+        self.login_as_admin()
+        
+        # try to create another profile with the same vanity url address
+        request_variables = { 'provider_email' : 'differe@one.com', 'vanity_url' : self._TEST_PROVIDER_VANITY_URL }
+        response = self.testapp.post('/admin/provider/init', request_variables)
+                
+        # check for error message
+        response.mustcontain("That name is already taken, please choose another one.")
+        
+    def test_admin_provider_init_with_reserved_vanity_url(self):
+        # log back in as admin        
+        self.login_as_admin()
+        
+        # try to create another profile with the same vanity url address
+        request_variables = { 'provider_email' : self._TEST_PROVIDER_EMAIL, 'vanity_url' : 'admin' }
+        response = self.testapp.post('/admin/provider/init', request_variables)
+                
+        # check for error message
+        response.mustcontain("That URL contains a reserved word.")
+        
+        request_variables = { 'provider_email' : self._TEST_PROVIDER_EMAIL, 'vanity_url' : 'provider' }
+        response = self.testapp.post('/admin/provider/init', request_variables)
+                
+        # check for error message
+        response.mustcontain("That URL contains a reserved word.")
+
+        request_variables = { 'provider_email' : self._TEST_PROVIDER_EMAIL, 'vanity_url' : 'login' }
+        response = self.testapp.post('/admin/provider/init', request_variables)
+                
+        # check for error message
+        response.mustcontain("That URL contains a reserved word.")
+
+            
     ''' Not relevant anymore - they fill their own profile
 
     def test_new_provider_solicit_with_empty_profile(self):
