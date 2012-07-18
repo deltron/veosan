@@ -392,6 +392,9 @@ msgstr "Titre"
 msgid "Degree Title"
 msgstr "Titre de vôtre diplôme"
 
+msgid "Continuing Education Title"
+msgstr "Titre de vôtre formation continue"
+
 msgid "Start Year"
 msgstr "Première année"
 
