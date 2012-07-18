@@ -58,7 +58,7 @@ class NewPatientHandler(PatientBaseHandler):
         # validate form
         if patient_form.validate():
             # create a patient from the form
-            patient = db.store_patient(self.request.POST)
+            patient = db.store_patient(self.request.POST, patient_form)
             
             # set the patient email from the booking object
             patient.email = booking.request_email

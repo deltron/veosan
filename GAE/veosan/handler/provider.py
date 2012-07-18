@@ -75,7 +75,7 @@ class ProviderEditAddressHandler(ProviderBaseHandler):
         if form.validate():
             # Store Provider
             provider = db.get_provider_from_vanity_url(vanity_url)
-            provider_key = db.storeProvider(provider, self.request.POST)
+            provider_key = db.storeProvider(provider, self.request.POST, form)
             provider = provider_key.get()
 
             self.render_address(provider, address_form=form, success_message=saved_message)
@@ -204,7 +204,7 @@ class ProviderCVHandler(ProviderBaseHandler):
             if operation == 'add':
                 section_object = self.objs[section]()
                     
-                db_util.set_all_properties_on_entity_from_multidict(section_object, self.request.POST)
+                db_util.set_all_properties_on_entity_from_multidict(section_object, self.request.POST, section_form)
                 section_object.provider = provider.key
                 section_object.put()
                 
@@ -217,7 +217,7 @@ class ProviderCVHandler(ProviderBaseHandler):
                 if section_key:
                     section_object = section_key.get()
                         
-                    db_util.set_all_properties_on_entity_from_multidict(section_object, self.request.POST)
+                    db_util.set_all_properties_on_entity_from_multidict(section_object, self.request.POST, section_form)
                     section_object.provider = provider.key
                     section_object.put()
                     

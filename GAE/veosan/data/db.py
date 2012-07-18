@@ -30,13 +30,13 @@ def storeBooking(r, patient=None, provider=None):
     booking.put()
     return booking
     
-def store_patient(r):
+def store_patient(r, form):
     # r is a MultiDict object from the request
     logging.info("Storing patient profile from request:" + str(r.__dict__))
     patient = Patient()
     
     # set all the properties
-    db_util.set_all_properties_on_entity_from_multidict(patient, r)
+    db_util.set_all_properties_on_entity_from_multidict(patient, r, form)
 
     # store
     patient.put()
@@ -134,12 +134,12 @@ def get_provider_from_vanity_url(vanity_url):
 def get_site_config():
     return SiteConfig.query().get()
 
-def store(key, data):
+def store(key, data, form):
     # data is a MultiDict object from the request
     logging.info("Storing on key:%s with data:%s" % (key, str(data)))
     datastore_object = get_from_urlsafe_key(key)
     # set all the properties
-    db_util.set_all_properties_on_entity_from_multidict(datastore_object, data)
+    db_util.set_all_properties_on_entity_from_multidict(datastore_object, data, form)
     # store
     datastore_object.put()
     
