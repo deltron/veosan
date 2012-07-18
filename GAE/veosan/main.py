@@ -66,6 +66,10 @@ application = webapp2.WSGIApplication([
                                        # GAE Warmup Requests
                                        ('/_ah/warmup', static.WarmupHandler),
                                        
+                                       # robots.txt and sitemap.xml for search engines
+                                       ('/robots.txt', static.RobotsHandler),
+                                       ('/sitemap.xml', static.SitemapHandler),
+                                       
                                        # General pages
                                        ('/', booking.IndexHandler),
                                        ('/next', booking.SearchNextHandler),
@@ -167,6 +171,7 @@ application = webapp2.WSGIApplication([
                                        # if nothing above matches, try to find a provider
                                        # if this doesn't find someone it should throw a 404 (or back to index page?)
                                        Route('/<vanity_url>', handler=provider.ProviderPublicProfileHandler),
+                                       Route('/<vanity_url>/', handler=provider.ProviderPublicProfileHandler),
                                       ], debug=True,
                                       config=webapp2_config)
 

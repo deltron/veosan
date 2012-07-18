@@ -99,6 +99,8 @@ def get_provider_from_email(email):
     logging.debug('Provider for email %s is %s' % (email, provider))
     return provider   
 
+def get_all_vanity_urls():
+    return Provider.query().fetch(projection=['vanity_url'])
 
 def get_user_from_email(email):
     return User.query(User.auth_ids == email).get()
