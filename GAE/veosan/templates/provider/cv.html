@@ -62,9 +62,9 @@
 			<li>
 
 				<h4>{{ e.title }} <a href="/provider/cv/continuing_education/{{ provider.vanity_url }}/edit/{{ e.key.urlsafe() }}"><i class="bs-icon icon-edit"> </i></a></h4>
-				<h6>{{e.type}},
+				<h6>{{ e.type|code_to_string }},
 				{% if e.hours  %}
-				{{ e.hours  }} hours
+				{{ e.hours  }} {{ _('Hours') }}
 				{% endif %}
 				({{ e.year }}/{{ e.month }})</h6>
 				<p>

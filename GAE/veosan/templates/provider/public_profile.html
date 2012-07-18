@@ -137,7 +137,7 @@
 			{% for e in provider.get_continuing_education() %}
 			<li>
 				<h4>{{ e.title }}</h4>
-				<h6>{{e.type}}, {% if e.hours  %}
+				<h6>{{ e.type|code_to_string }}, {% if e.hours  %}
 				{{ e.hours  }} {{ _('Hours') }}
 				{% endif %} ({{ e.year }}/{{ e.month }})</h6>
 				<p>
