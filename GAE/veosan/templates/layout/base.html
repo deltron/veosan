@@ -8,18 +8,7 @@
 			{{ _('Veosan!') }}
 			{# show provider name in title for SEO #}
 			
-			{{provider.first_name or ''}}
-
-			{% if provider.address_enabled %}
-			{% if provider.last_name %}
-			{{ provider.last_name }}
-			{% endif %}
-			{% else %}
-			{% if provider.last_name %}
-			{{ provider.last_name|first }}.
-			{% endif %}
-			{% endif %}
-			
+			{{ macro.display_provider_name(provider) }}
 			({{ category_dict[provider.category] }})
 
 			

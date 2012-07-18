@@ -1,19 +1,7 @@
 {% extends "/layout/base.html" %}
 
 {% block subhead %}
-
-{{provider.first_name or ''}}
-
-{% if provider.address_enabled %}
-{% if provider.last_name %}
-{{ provider.last_name }}
-{% endif %}
-{% else %}
-{% if provider.last_name %}
-{{ provider.last_name|first }}.
-{% endif %}
-{% endif %}
-
+{{ macro.display_provider_name(provider) }}
 {% endblock %}
 {% block lead %}
 {{ category_dict[provider.category] }}

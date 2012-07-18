@@ -102,3 +102,22 @@ Macro to generate a provider bio
 </div>
 
 {%- endmacro %}
+
+
+{#
+	Macro to generate provider name
+#}
+
+{% macro display_provider_name(provider) -%}
+
+{{provider.first_name or ''}}
+
+{% if provider.last_name %}
+	{% if provider.address_enabled %}
+		{{ provider.last_name }}
+	{% else %}
+		{{ provider.last_name|first }}.
+	{% endif %}
+{% endif %}
+
+{%- endmacro %}
