@@ -48,7 +48,7 @@ class ProviderContinuingEducationForm(CustomForm):
         setattr(form, 'month', IntegerField(_(u'Month'), [validators.NumberRange(min=1, max=12), validators.Optional()]))
         setattr(form, 'type', SelectField(_(u'Type'), choices=util.get_all_continuing_education_types()))    
         setattr(form, 'hours', FloatField(_(u'Hours'), [validators.NumberRange(min=0, max=1000), validators.Optional()]))
-        setattr(form, 'title', TextField(_(u'Title')))
+        setattr(form, 'title', TextField(_(u'Continuing Education Title')))
         setattr(form, 'description', TextAreaField(_(u'Description')))
 
 
