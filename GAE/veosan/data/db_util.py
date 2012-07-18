@@ -6,8 +6,7 @@ def set_all_properties_on_entity_from_multidict(entity, multidict, form):
     field_list = []
     for field in form:
         field_list.append(field.name)
-    print field_list
-    
+            
     for prop in iter(entity.to_dict()):
         # check if it's in the form
         if prop in field_list:
