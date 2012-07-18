@@ -31,6 +31,7 @@ class RobotsHandler(BaseHandler):
 class SalesHandler(BaseHandler):
     def get(self, page=None):
         pages = {
+                  'who' : 'sales/who.html',
                   'price' : 'sales/price.html',
                  }
         if page:
