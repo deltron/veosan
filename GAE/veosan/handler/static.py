@@ -30,7 +30,7 @@ class RobotsHandler(BaseHandler):
 
 class SalesHandler(BaseHandler):
     def get(self, page=None):
-        pages = { 'position' : 'sales/position.html',
+        pages = {
                   'price' : 'sales/price.html',
                  }
         if page:
