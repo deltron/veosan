@@ -86,4 +86,29 @@
 	</div>
 </div>
 
-{% endblock content %} 
+<div class="row">
+	<div class="span6">
+		<h3>Enable/disable Facebook Like Buttons</h3>
+
+		<div class="well">
+			<p>
+				Current status is facebook_like_enabled={{ site_config.facebook_like_enabled }}
+			</p>
+			<form method="post" action="/admin/site_config/facebook_like_enabled" class="form-inline">
+				<fieldset>
+					{% if site_config.facebook_like_enabled %}
+					<button type="submit" class="btn btn-success">
+						Disable Facebook Like
+					</button>
+					{% elif not site_config.facebook_like_enabled or site_config.facebook_like_enabled == None %}
+					<button type="submit" class="btn btn-danger">
+						Enable Facebook Like
+					</button>
+					{% endif %}
+				</fieldset>
+			</form>
+		</div>
+	</div>
+</div>
+
+{% endblock content %}

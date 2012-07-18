@@ -45,7 +45,7 @@ class AdminSiteConfigHandler(AdminBaseHandler):
     def post(self, feature=None):
         
         # validate features that can be switched
-        if feature in ['booking_enabled', 'google_analytics_enabled']:            
+        if feature in ['booking_enabled', 'google_analytics_enabled', 'facebook_like_enabled']:            
             site_config = db.get_site_config()
 
             # toggle state

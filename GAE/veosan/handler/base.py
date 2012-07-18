@@ -108,6 +108,7 @@ class BaseHandler(webapp2.RequestHandler):
         if site_config:
             kw['booking_enabled'] = site_config.booking_enabled
             kw['google_analytics_enabled'] = site_config.google_analytics_enabled
+            kw['facebook_like_enabled'] = site_config.facebook_like_enabled
 
         else:
             # no site configuration exists in database, create one
