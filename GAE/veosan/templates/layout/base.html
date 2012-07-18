@@ -5,12 +5,10 @@
 	<head>
 		<meta charset="utf-8">
 		<title> {% if provider %}
-			{{ _('Veosan!') }}
 			{# show provider name in title for SEO #}
-			
 			{{ macro.display_provider_name(provider) }}
-			({{ category_dict[provider.category] }})
-
+			- {{ category_dict[provider.category] }}
+			{{ _('at Veosan') }}
 			
 			{% else %}
 			{# default title #}

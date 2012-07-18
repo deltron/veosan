@@ -33,6 +33,10 @@ msgstr "Commencez avec un rendez-vous aujourd'hui!"
 msgid "veosan"
 msgstr "veosan"
 
+msgid "at Veosan"
+msgstr "chez Veosan"
+
+
 #################
 # Signup
 #################
