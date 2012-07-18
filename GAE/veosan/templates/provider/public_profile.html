@@ -13,9 +13,11 @@
 	<!-- left column -->
 	<div class="span2">
 		{% if provider.profile_photo_blob_key == None %}
-		<img src="/assets/img/default-profile.png" width="150" height="150">
+		<img src="/assets/img/default-profile.png" width="150" height="150"
+			alt="{{ macro.display_provider_name(provider) }} - {{ category_dict[provider.category] }}">
 		{% else %}
-		<img src="{{ provider.get_profile_photo_image_url(150) }}" width="150">
+		<img src="{{ provider.get_profile_photo_image_url(150) }}" width="150" 
+			alt="{{ macro.display_provider_name(provider) }} - {{ category_dict[provider.category] }}">
 		{% endif %}
 		<br>
 		<br>
