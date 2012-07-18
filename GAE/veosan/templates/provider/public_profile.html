@@ -29,13 +29,16 @@
 		{% endif %}
 		<br>
 		<br>
+		{% if provider.category|remove_empty_strings_from_list %}
 		<h4>{{ _("Category") }}</h4>
 		<ul class="unstyled">
 			<li>
 				{{ category_dict[provider.category] }}
 			</li>
 		</ul>
+		{% endif %}
 
+		{% if provider.specialty|remove_empty_strings_from_list %}
 		<h4>{{ _("Specialties") }}</h4>
 		<ul class="unstyled">
 			{% for s in provider.specialty %}
@@ -44,6 +47,7 @@
 			</li>
 			{% endfor %}
 		</ul>
+		{% endif %}
 
 		{# Not for now
 		<h4>Home Care Visits</h4>
