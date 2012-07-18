@@ -159,7 +159,7 @@
 		#}
 
 		{% if provider.certifications|remove_empty_strings_from_list %}
-		<h3>Certifications</h3>
+		<h3>{{ _('Certifications') }}</h3>
 		<ul class="unstyled">
 			{% for c in provider.certifications %}
 			<li>
@@ -170,7 +170,7 @@
 		{% endif %}
 
 		{% if provider.associations|remove_empty_strings_from_list %}
-		<h3>Association Memberships</h3>
+		<h3>{{ _('Association Memberships') }}</h3>
 		<ul class="unstyled">
 			{% for a in provider.associations %}
 			<li>

@@ -422,6 +422,8 @@ msgstr "Présentation"
 msgid "Committee"
 msgstr "Committée"
 
+msgid "Association Memberships"
+msgstr "Membre de l'association"
 
 
 
