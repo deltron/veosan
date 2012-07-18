@@ -185,6 +185,35 @@ class ProviderTest(BaseTest):
         public_response_after_delete.mustcontain(no='Worked with my hands')
 
 
+    def test_uncheck_specialties(self):
+        self.login_as_admin()
+        self.init_new_provider()
+
+        # fill profile section
+        self.fill_new_provider_profile_correctly_action()
+
+        response = self.testapp.get('/provider/profile/' + self._TEST_PROVIDER_VANITY_URL)
+
+        profile_form = response.forms[0] # address form
+        profile_form.set('specialty', False, 0) # Sports
+        profile_form.set('specialty', False, 2) # Cardio
+
+        response = profile_form.submit()
+        
+        # verify unchecked
+        response.mustcontain('input id="specialty-0" name="specialty" type="checkbox" value="sports"')        
+        response.mustcontain('input id="specialty-2" name="specialty" type="checkbox" value="cardiology"')  
+
+        # navigate away
+        self.testapp.get('/provider/cv/' + self._TEST_PROVIDER_VANITY_URL)
+
+        # navigate back
+        response = self.testapp.get('/provider/profile/' + self._TEST_PROVIDER_VANITY_URL)
+        response.mustcontain('input id="specialty-0" name="specialty" type="checkbox" value="sports"')        
+        response.mustcontain('input id="specialty-2" name="specialty" type="checkbox" value="cardiology"')  
+        response.mustcontain(no='input checked id="specialty-0" name="specialty" type="checkbox" value="sports"')        
+        response.mustcontain(no='input checked id="specialty-2" name="specialty" type="checkbox" value="cardiology"')  
+
 
 if __name__ == "__main__":
     unittest.main()

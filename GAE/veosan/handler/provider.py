@@ -107,7 +107,7 @@ class ProviderEditProfileHandler(ProviderBaseHandler):
         if form.validate():
             # Store Provider
             provider = db.get_provider_from_vanity_url(vanity_url)
-            provider_key = db.storeProvider(provider, self.request.POST)
+            provider_key = db.storeProvider(provider, self.request.POST, form=form)
             provider = provider_key.get()
             self.render_profile(provider, profile_form=form, success_message=saved_message)
         else:
