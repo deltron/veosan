@@ -93,6 +93,7 @@ class Provider(ndb.Model):
     # unique name for public profile
     # possible coercion to lower case?
     vanity_url = ndb.StringProperty()
+    profile_views = ndb.IntegerProperty(default=0)
     
     # account options
     booking_enabled = ndb.BooleanProperty(default=False)

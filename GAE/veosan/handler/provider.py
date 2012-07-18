@@ -303,8 +303,14 @@ class ProviderPublicProfileHandler(ProviderBaseHandler):
         if provider:
             logging.info('(ProviderPublicProfileHandler.get) Found provider %s, rendering profile' % provider.email)
 
+            # increment view count, store async
+            # we don't really care if it doesn't work
+            provider.profile_views += 1
+            future = provider.put_async()
+            
             # found a provider, render profile
             self.render_public_profile(provider)
+            future.get_result()
         else:
             logging.info('(ProviderPublicProfileHandler.get) No provider found, sending to index')
 
