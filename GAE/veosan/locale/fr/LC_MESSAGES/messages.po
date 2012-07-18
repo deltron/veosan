@@ -21,8 +21,8 @@ msgstr ""
 # Title & brand
 #################
 
-msgid "veosan! find a health care professional today"
-msgstr "veosan! trouvez des soins aujourd'hui"
+msgid "Veosan! Find a Health Care Professional"
+msgstr "Veosan! Trouvez des soins aujourd'hui"
 
 msgid "The better way to care"
 msgstr "La santé à votre portée"
