@@ -1,0 +1,51 @@
+{% extends "/layout/base.html" %}
+
+{% block subhead %}{{ _("Alternatives") }}{% endblock %}
+
+{% block lead %}
+But I already have a...
+{% endblock %}
+{% block content %}
+
+<div class="row">
+	<div class="span6">
+		<div style="font-size:large">
+			<h2>Facebook or LinkedIn page</h2>
+			<ul>
+				<li>
+					Facebook is a great place to connect with your friends, but it's not a professional site.
+				</li>
+				<li>
+					Our profiles are designed and optimized specifically for health care professionals
+				</li>
+				<li>
+					We reduce the friction between a patient visiting a profile and a patient visiting you for care
+				</li>
+				<li>
+					Our tools are built right into the site for an appointment directly with you
+				</li>
+			</ul>
+
+			<br>
+
+			<h2>Page from my professional association</h2>
+			<ul>
+				<li>
+					These pages don't have much substance, you can't upload a picture or talk about yourself
+				</li>
+				<li>
+					They don't get you much more than a spot in the yellow pages
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="span6">
+		<h1>Every day we are out there, promoting your profile with our network. You are the rock stars in our universe, and we are here to get your album played!</h1>
+	</div>
+</div>
+<div align="center">
+	<a href="/sales/who"><img src="/assets/img/left-arrow.png"></a>
+	<a href="/sales/community"><img src="/assets/img/right-arrow.png"></a>
+</div>
+
+{% endblock %}

@@ -34,6 +34,10 @@ class SalesHandler(BaseHandler):
         pages = {
                   'who' : 'sales/who.html',
                   'price' : 'sales/price.html',
+                  'corporate' : 'sales/corporate.html',
+                  'institution' : 'sales/institution.html',
+                  'competition' : 'sales/competition.html',
+                  'community' : 'sales/community.html',
                  }
         if page:
             self.render_template(pages[page])
