@@ -66,9 +66,9 @@ webapp2_config['webapp2_extras.auth'] = {
 application = webapp2.WSGIApplication([
                                        # handle custom domains
                                        # match everything that is not veosan.com
-                                       DomainRoute(r'www\.<domain:(?!veosan.com)>', [
-                                          Route('/', handler=static.DomainDispatcher)
-                                       ]),
+                                       #DomainRoute(r'www.<domain:(?!veosan\.com)+>', [                                        
+                                       #   Route('/', handler=static.DomainDispatcher)
+                                       #]),
                                        
                                        # GAE Warmup Requests
                                        ('/_ah/warmup', static.WarmupHandler),
