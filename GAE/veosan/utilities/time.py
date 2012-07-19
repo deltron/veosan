@@ -40,7 +40,7 @@ def getDatesList():
     ''' Return a list of date from tomorrow to 3 weeks from now'''
     datesList = []
     d = date.today()
-    logging.info(d)
+    #logging.info(d)
     oneDay = timedelta(days=1)
     for n in range(21):
         d = d + oneDay

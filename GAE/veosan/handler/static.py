@@ -34,7 +34,6 @@ class SalesHandler(BaseHandler):
         pages = {
                   'who' : 'sales/who.html',
                   'price' : 'sales/price.html',
-                  'prepaid' : 'sales/prepaid.html',
                  }
         if page:
             self.render_template(pages[page])
@@ -44,9 +43,11 @@ class SalesHandler(BaseHandler):
 
 class DomainDispatcher(BaseHandler):
     def get(self, domain=None):
+        logging.info("(DomainDispatcher) activated with domain %s " % domain)
+            
         provider = db.get_provider_from_domain(domain)
         if provider:
             logging.info("(DomainDispatcher) Received domain %s and matched to provider vanity_url %s " % (domain, provider.vanity_url))
-            self.redirect('http://www.veosan.com/' + provider.vanity_url)
+            self.redirect('http://www.veosan.com/%s' % (str(provider.vanity_url)))
         else:
             self.redirect('http://www.veosan.com/')
