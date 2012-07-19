@@ -22,6 +22,7 @@
 		
 		<br>
 		<br>
+		
 		{% if provider.category and provider.category|remove_empty_strings_from_list %}
 		<h4>{{ _("Category") }}</h4>
 		<ul class="unstyled">
@@ -56,8 +57,9 @@
 
 		{% if provider.address_enabled %}
 		<h4><a data-toggle="modal" href="#contact_modal" onclick="loadScript()">Address</a><a data-toggle="modal" href="#contact_modal" onclick="loadScript()"><i class="bs-icon icon-share-alt"> </i></a></h4>
+		<br>
 		{% endif %}
-
+		
 
 		{% if facebook_like_enabled %}
 		<div class="fb-like" data-href="http://www.veosan.com/{{ provider.vanity_url }}" data-send="true" data-layout="button_count" data-width="150" data-show-faces="false"></div>
