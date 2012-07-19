@@ -40,3 +40,8 @@ class SalesHandler(BaseHandler):
             self.render_template("sales/index.html")
 
 
+class DomainDispatcher(BaseHandler):
+    def get(self, domain=None):
+        provider = db.get_provider_from_domain(domain)
+        self.redirect('http://www.veosan.com/' + provider.vanity_url)
+

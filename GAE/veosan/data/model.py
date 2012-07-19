@@ -95,6 +95,7 @@ class Provider(ndb.Model):
     # unique name for public profile
     # possible coercion to lower case?
     vanity_url = ndb.StringProperty()
+    vanity_domain = ndb.StringProperty()
     profile_views = ndb.IntegerProperty(default=0)
     
     # account options

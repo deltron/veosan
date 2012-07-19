@@ -4,7 +4,8 @@ import os, logging
 # GAE
 import webapp2
 from webapp2 import Route
-from webapp2_extras.routes import PathPrefixRoute
+from webapp2_extras.routes import PathPrefixRoute, DomainRoute
+
 # veo
 from util import dump
 import util
@@ -63,6 +64,12 @@ webapp2_config['webapp2_extras.auth'] = {
 
 
 application = webapp2.WSGIApplication([
+                                       # handle custom domains
+                                       # match everything that is not veosan.com
+                                       DomainRoute(r'www\.<domain:(?!veosan.com)>', [
+                                          Route('/', handler=static.DomainDispatcher)
+                                       ]),
+                                       
                                        # GAE Warmup Requests
                                        ('/_ah/warmup', static.WarmupHandler),
                                        
@@ -160,7 +167,11 @@ application = webapp2.WSGIApplication([
                                                                                                   
                                                # provider admin
                                                Route('/admin/<vanity_url>', provider_admin.ProviderAdministrationHandler),
-                                               
+                                            
+                                               Route('/domain/<vanity_url>', provider_admin.ProviderDomainHandler),
+                                            
+                                            
+                
                                                Route('/notes/<vanity_url>', provider_admin.ProviderNotesHandler),
                                                Route('/notes/<vanity_url>/<operation>/<note_key>', provider_admin.ProviderNotesHandler),
                                                Route('/feature/<feature_switch>/<vanity_url>', provider_admin.ProviderFeaturesHandler),

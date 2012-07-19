@@ -130,7 +130,15 @@ def get_provider_from_vanity_url(vanity_url):
         return Provider.query(Provider.vanity_url == vanity_url).get()
     else:
         return None  
-    
+
+def get_provider_from_domain(domain):
+    '''returns the first provider profile liked to domain. Returns None if domain is not provided '''
+    if domain:
+        return Provider.query(Provider.vanity_domain == domain).get()
+    else:
+        return None  
+
+
 def get_site_config():
     return SiteConfig.query().get()
 

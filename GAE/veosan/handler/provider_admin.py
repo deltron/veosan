@@ -106,3 +106,14 @@ class ProviderNotesHandler(ProviderAdminBaseHandler):
         else:
             logging.info("Not Admin: Can't see provider notes page")
             
+
+class ProviderDomainHandler(ProviderAdminBaseHandler):
+    def post(self, vanity_url=None):
+        provider = db.get_provider_from_vanity_url(vanity_url)
+        provider.vanity_domain = self.request.get('domain')
+        provider.put()
+        
+        logging.info("(ProviderDomainHandler) Provider %s setting vanity domain to %s" % (provider.email, provider.vanity_domain))
+
+        self.redirect('/admin/provider/admin/' + provider.vanity_url)
+
