@@ -5,6 +5,26 @@
 {% block subhead %}{{ _('Curriculum Vitae') }}{% endblock %}
 {% block lead %}{{ _('Tell your story.') }}{% endblock %}
 
+{# 
+	set up CV Sections 
+	------------------
+#}
+
+{% set sections = ('education', 'experience', 'continuing_education') %}
+
+{% set section_label = {
+'education' : _('Education'),
+'experience' : _('Experience'),
+'continuing_education' : _('Continuing Education'),
+} %}
+
+{% set section_form = {
+'education' : education_form,
+'experience' : experience_form,
+'continuing_education' : continuing_education_form,
+} %}
+
+
 {% block content %}
 <!-- Form -->
 <div class="row">
@@ -79,19 +99,7 @@
 
 {# CV Sections #}
 
-{% set sections = ('education', 'experience', 'continuing_education') %}
 
-{% set section_label = {
-'education' : _('Education'),
-'experience' : _('Experience'),
-'continuing_education' : _('Continuing Education'),
-} %}
-
-{% set section_form = {
-'education' : education_form,
-'experience' : experience_form,
-'continuing_education' : continuing_education_form,
-} %}
 
 {% for section in sections %}
 
@@ -127,18 +135,20 @@
 
 {% endblock %}
 
+
+
+{% block extra_javascript %}
+
 {% for section in sections %}
 {% if edit == section or section_form[section].errors %}
-{% block extra_javascript %}
 <script>
-	$('#{{ edit }}_modal').modal('show')
+	$('#{{ section }}_modal').modal('show')
 
-	$('#{{ edit }}_modal').on('hidden', function() {
+	$('#{{ section }}_modal').on('hidden', function() {
 		window.location = "/provider/cv/{{ provider.vanity_url }}"
 	})
 </script>
-{% endblock %}
-
 {% endif %}
 {% endfor %}
 
+{% endblock %}
