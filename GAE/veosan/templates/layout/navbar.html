@@ -5,13 +5,6 @@
 			<a class="brand" href="/">{{ _('veosan') }}</a>
 			<div class="nav-collapse">
 				<ul class="nav pull-right">
-					<!-- language -->
-					{% for l in other_languages %}
-					<li>
-						<a href="/lang/{{l}}">{{ language_labels[l] }}</a>
-					</li>
-					{% endfor %}
-
 					{% if user %}
 					<!-- User menu -->
 
@@ -71,8 +64,16 @@
 					<li>
 						<a href="{{login_url}}">{{ _('My Account') }}</a>
 					</li>
-
 					{% endif%}
+					
+					
+					<!-- language -->
+					{% for l in other_languages %}
+					<li>
+						<a href="/lang/{{l}}">{{ language_labels[l] }}</a>
+					</li>
+					{% endfor %}
+
 
 					{% if 'admin' in roles %}
 					{# Possible to have no user logged in but still have an admin logged in #}
