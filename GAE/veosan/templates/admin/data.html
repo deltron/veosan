@@ -109,6 +109,28 @@
 			</form>
 		</div>
 	</div>
+	<div class="span6">
+		<h3>Enable/disable Public Signups</h3>
+
+		<div class="well">
+			<p>
+				Current status is signup_enabled={{ site_config.signup_enabled }}
+			</p>
+			<form method="post" action="/admin/site_config/signup_enabled" class="form-inline">
+				<fieldset>
+					{% if site_config.signup_enabled %}
+					<button type="submit" class="btn btn-success">
+						Disable Public Signups
+					</button>
+					{% elif not site_config.signup_enabled or site_config.signup_enabled == None %}
+					<button type="submit" class="btn btn-danger">
+						Enable Public Signups
+					</button>
+					{% endif %}
+				</fieldset>
+			</form>
+		</div>
+	</div>
 </div>
 
 {% endblock content %}

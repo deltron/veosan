@@ -109,6 +109,7 @@ class BaseHandler(webapp2.RequestHandler):
             kw['booking_enabled'] = site_config.booking_enabled
             kw['google_analytics_enabled'] = site_config.google_analytics_enabled
             kw['facebook_like_enabled'] = site_config.facebook_like_enabled
+            kw['signup_enabled'] = site_config.signup_enabled
 
         else:
             # no site configuration exists in database, create one
@@ -122,6 +123,8 @@ class BaseHandler(webapp2.RequestHandler):
             site_config.put()
             kw['booking_enabled'] = site_config.booking_enabled
             kw['google_analytics_enabled'] = site_config.google_analytics_enabled
+            kw['facebook_like_enabled'] = site_config.facebook_like_enabled
+            kw['signup_enabled'] = site_config.signup_enabled
 
         
         # render

@@ -8,14 +8,10 @@ import logging, urlparse
 from forms.admin import NewProviderForm
 from base import BaseHandler
 import data.db as db, mail
-from data.model import SiteConfig
 import util
 from handler.auth import admin_required
 from google.appengine.ext import ndb
 from handler.provider_admin import ProviderAdminBaseHandler
-from webapp2 import BaseRoute
-from webapp2_extras.routes import PathPrefixRoute
-import re
 
 
 
@@ -45,7 +41,7 @@ class AdminSiteConfigHandler(AdminBaseHandler):
     def post(self, feature=None):
         
         # validate features that can be switched
-        if feature in ['booking_enabled', 'google_analytics_enabled', 'facebook_like_enabled']:            
+        if feature in ['booking_enabled', 'google_analytics_enabled', 'facebook_like_enabled', 'signup_enabled']:            
             site_config = db.get_site_config()
 
             # toggle state

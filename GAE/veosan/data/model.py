@@ -14,6 +14,7 @@ class SiteConfig(ndb.Model):
     booking_enabled = ndb.BooleanProperty(default=False)
     google_analytics_enabled = ndb.BooleanProperty(default=False)
     facebook_like_enabled = ndb.BooleanProperty(default=False)
+    signup_enabled = ndb.BooleanProperty(default=False)
 
 
 class User(Webapp2AuthUser):
