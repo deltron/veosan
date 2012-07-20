@@ -108,12 +108,11 @@
      	$(this).tooltip('toggle')
      	
      	post_data = {
-     		key: "{{ provider.key.urlsafe() }}",
      		day_time: $(this).attr("id"),
      		operation: op
      	}
      	// post a save for the clicked schedule
-     	$.post('/provider/schedule', post_data)
+     	$.post('/provider/schedule/{{ provider.vanity_url }}', post_data)
     });
 </script>
 {% endblock extra_javascript %}
