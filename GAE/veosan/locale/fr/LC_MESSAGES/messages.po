@@ -86,6 +86,9 @@ msgstr "Cette adresse est déjà utilisée, s'il vous plaît choisir un autre."
 msgid "Your personal address requires at least 6 characters."
 msgstr "Votre adresse personnelle requiert au moins 6 caractères."
 
+msgid "Create Your Account"
+msgstr "Créez votre compte"
+
 #################
 # Navbar
 #################
