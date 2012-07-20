@@ -115,7 +115,7 @@ class ProviderEditProfileHandler(ProviderBaseHandler):
             provider = db.get_provider_from_vanity_url(vanity_url)
             self.render_profile(provider, profile_form=form)
 
-class ProviderProfilePhotoUploadHandler(blobstore_handlers.BlobstoreUploadHandler):
+class ProviderProfilePhotoUploadHandler(ProviderBaseHandler, blobstore_handlers.BlobstoreUploadHandler):
     
     @provider_required
     def post(self, vanity_url=None):
