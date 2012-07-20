@@ -82,7 +82,9 @@ application = webapp2.WSGIApplication([
                                        ('/next', booking.SearchNextHandler),
                                        ('/full', booking.FullyBookedHandler),
                                        ('/contact', contact.ContactHandler),
+                                       ('/teaser', contact.TeaserHandler),
                                        ('/signup', contact.SignupHandler),
+
 
                                        # Static Pages
                                        Route('/about', handler=static.StaticHandler, name='about'),
@@ -123,8 +125,6 @@ application = webapp2.WSGIApplication([
                                                 Route('/<vanity_url>', provider.ProviderEditAddressHandler),
                                             ]),
 
-                                            Route('/signup', user.ProviderSignupHandler),
-                                            
                                             # terms display
                                             Route('/terms/<vanity_url>', user.ProviderTermsHandler),
                                         ]),

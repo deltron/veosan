@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from handler.base import BaseHandler
-from forms.contact import ContactForm, SignupForm
+from forms.contact import ContactForm, TeaserForm, NewProviderForm
 import mail
 import util
 import logging
@@ -24,18 +24,18 @@ class ContactHandler(BaseHandler):
         else:
             self.render_template('contact.html', form=contact_form)
             
-class SignupHandler(BaseHandler):
+class TeaserHandler(BaseHandler):
     def get_form(self, request=None):
         if request:
-            signup_form = SignupForm(request)
+            signup_form = TeaserForm(request)
         else:
-            signup_form = SignupForm()
+            signup_form = TeaserForm()
             
         signup_form.role.choices = util.get_signup_roles()
         
         return signup_form
 
-    def get(self):        
+    def get(self):
         self.redirect("/")
     
     def post(self):        
@@ -65,3 +65,16 @@ class SignupHandler(BaseHandler):
         else:
             self.render_template('index.html', signup_form=signup_form)
 
+
+class SignupHandler(BaseHandler):
+    def get(self):
+        new_provider_form = NewProviderForm().get_form()
+        self.render_template('user/signup.html', new_provider_form=new_provider_form)
+
+    def post(self):
+        new_provider_form = NewProviderForm().get_form(self.request.POST)
+        
+        if new_provider_form.validate():
+            pass
+        else:
+            self.render_template('user/signup.html', new_provider_form=new_provider_form)

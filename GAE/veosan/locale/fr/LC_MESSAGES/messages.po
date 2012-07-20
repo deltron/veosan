@@ -77,6 +77,14 @@ msgstr "Créer un nouveau compte"
 msgid "Oops. I forgot my password."
 msgstr "Oops. J'ai oublié mon mot de passe."
 
+msgid "Your personal address can only contain letters and numbers."
+msgstr "Votre adresse personnelle ne peut contenir que des lettres et des chiffres."
+
+msgid "That address is already being used, please choose another one."
+msgstr "Cette adresse est déjà utilisée, s'il vous plaît choisir un autre."
+
+msgid "Your personal address requires at least 6 characters."
+msgstr "Votre adresse personnelle requiert au moins 6 caractères."
 
 #################
 # Navbar

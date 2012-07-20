@@ -260,25 +260,6 @@ class ActivationHandler(UserBaseHandler):
             logging.info('(ActivationHandler) No signup token in request')
             self.redirect("/login")
 
-          
-class ProviderSignupHandler(UserBaseHandler):
-    def post(self):
-        provider_email = self.request.get('provider_email')
-        provider_postalcode = self.request.get('provider_postalcode')
-
-        message = "Received sign-up request from email->%s postal_code->%s" % (provider_email, provider_postalcode)
-
-        logging.info(message)
-
-        from_email = "support@veosan.com"
-        subject = "Request for signup from provider"
-
-        mail.email_contact_form(self.jinja2, from_email, subject, message)
-
-        success_message = 'Thanks for your interest. We will be in touch soon!'
-        self.render_login(success_message=success_message)
-        
-        
 
 class LoginHandler(UserBaseHandler):
     '''
