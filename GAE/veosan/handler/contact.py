@@ -6,6 +6,7 @@ import mail
 import util
 import logging
 from webapp2_extras.i18n import gettext as _
+from data import db
 
 class ContactHandler(BaseHandler):
     def get(self):
@@ -75,6 +76,24 @@ class SignupHandler(BaseHandler):
         new_provider_form = NewProviderForm().get_form(self.request.POST)
         
         if new_provider_form.validate():
-            pass
+            email = self.request.get('email')
+            vanity_url = self.request.get('vanity_url')
+
+            # force the inputs to lowercase
+            email = email.lower()
+            vanity_url = vanity_url.lower()
+
+            provider_key = db.init_provider(email, vanity_url)
+            logging.info('(SignupHandler.post) Initialized new provider vanity_url=%s email=%s' % (vanity_url, email))
+            provider = provider_key.get()
+            
+            # now create an empty user for the provider
+            user = self.create_empty_user_for_provider(provider)
+            
+            # create a signup token for new user
+            token = self.create_signup_token(user)
+
+            # send them over to the password page with this token
+            self.redirect('/user/password/' + user.signup_token)
         else:
             self.render_template('user/signup.html', new_provider_form=new_provider_form)

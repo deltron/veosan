@@ -609,6 +609,11 @@ msgstr "Choisissez votre mot de passe"
 msgid "Welcome to Veosan! Please get started by completing your profile."
 msgstr "Bienvenue chez Veosan! Veuillez révisez votre profile pour commencer."
 
+msgid "Password must be at least 6 characters."
+msgstr "Votre mot de passe doit contenir au moins 6 caractères."
+
+msgid "Passwords do not match."
+msgstr "Les mots de passe ne correspondent pas."
 
 #################
 # Booking results
