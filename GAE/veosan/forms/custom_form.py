@@ -3,6 +3,7 @@
 from wtforms import Form, SelectMultipleField, BooleanField
 from wtforms import widgets
 from cgi import escape
+from webapp2_extras.i18n import lazy_gettext as _
 
 ''' 
 need to write our own list widget so the <label> doesn't appear after
@@ -79,7 +80,7 @@ class CustomBooleanField(BooleanField):
 
 class CustomForm(object):
     def get_form(self, request=None, obj=None):
-        class F(Form):
+        class F(TranslatedBaseForm):
             pass
         
         self._set_fields(F)
@@ -90,3 +91,13 @@ class CustomForm(object):
     def _set_fields(self, F):
         pass
 
+class TranslatedBaseForm(Form):
+    class MyTranslations(object):
+        def gettext(self, string):
+            return _(string)
+
+        #def ngettext(self, singular, plural, n):
+        #    pass
+
+    def _get_translations(self):
+        return self.MyTranslations()
