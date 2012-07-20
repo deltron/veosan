@@ -397,7 +397,7 @@ msgid "Degree Title"
 msgstr "Titre de vôtre diplôme"
 
 msgid "Continuing Education Title"
-msgstr "Titre de vôtre formation continue"
+msgstr "Titre de vôtre formation"
 
 msgid "Start Year"
 msgstr "Première année"
@@ -429,6 +429,14 @@ msgstr "Committée"
 msgid "Association Memberships"
 msgstr "Membre de l'association"
 
+msgid "Please enter a valid year."
+msgstr "SVP entrez une année valide."
+
+msgid "Please enter a valid month."
+msgstr "SVP entrez un mois valide."
+
+msgid "Please enter a valid number of hours."
+msgstr "SVP entrez un nombre d'heures valide."
 
 
 #################
@@ -463,7 +471,7 @@ msgid "I am willing to do on-site visits"
 msgstr "J'accepte de faire des visites chez les clients"
 
 msgid "I have a clinic patients can visit"
-msgstr "I have a clinic patients can visit"
+msgstr "J'ai accès à une clinique que les patients peuvent visiter"
 
 msgid "Spoken Languages"
 msgstr "Langages parlées"
@@ -476,6 +484,12 @@ msgstr "Anglais"
 
 msgid "French"
 msgstr "Français"
+
+msgid "Please enter your first year of practice"
+msgstr "SVP entrer votre première année de pratique"
+
+msgid "Public Profile"
+msgstr "Profile Public"
 
 
 #################
@@ -739,5 +753,25 @@ msgstr "Université Concordia"
 msgid "Université de Québec à Trois-Rivières"
 msgstr "Université de Québec à Trois-Rivières"
 
+####################
+# Welcome email
+####################
 
+msgid "Hi!"
+msgstr "Bonjour!"
+
+msgid "Thanks for creating an account, please activate your profile by clicking on the link below:"
+msgstr "Merci d'avoir créé un compte, s'il vous plaît activer votre profil en cliquant sur le lien ci-dessous:"
+
+msgid "Veosan Account Activation"
+msgstr "Activation de votre compte Veosan"
+
+####################
+# WTForms
+####################
+msgid "Not a valid integer value"
+msgstr "Ceci n'est pas un chiffre valide."
+
+msgid "This field is required."
+msgstr "Ce champs est requis."
 

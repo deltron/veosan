@@ -41,13 +41,13 @@ def emailSolicitProvider(jinja2, provider, activation_url):
     message = mail.EmailMessage()
     message.sender = 'Veosan <' + VEOSAN_SUPPORT_ADDRESS + '>'
     message.to = provider.email
-    message.subject = u'Veosan Account Activation'
+    message.subject = _('Veosan Account Activation')
     kw = {'provider': provider, 'activation_url': activation_url}
     message.body = jinja2.render_template('email/provider_solicit.txt', **kw)
     try:
         message.send()
     except Exception as e:
-        logging.error('Email to provider not sent. %s' % e)
+        logging.error('(emailSolicitProvider) Email to provider %s not sent. %s' % (provider.email, e))
         
 def email_user_password_reset(jinja2, user, activation_url):
     ''' Send solicitation email to provider '''
