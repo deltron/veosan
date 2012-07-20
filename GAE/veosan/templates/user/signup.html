@@ -6,11 +6,10 @@
 <div class="row">
 	<div class="span6">
 		<h1>{{ _('Sign Up') }}</h1>
-		<br>
 		<form method="post" action="/signup" class="form-inline">
 			<fieldset>
 				<div class="control-group {% if new_provider_form.vanity_url.errors %} error {% endif %}">
-					<h3>{{ _('Personalized Address' )}}</h3>
+					<h3 style="margin-top: 18px">{{ _('Personalized Address' )}}</h3>
 					<p>
 						Your personal address allows people to find and remember you easily.
 						<br>
@@ -20,9 +19,8 @@
 						<span class="add-on">&nbsp;veosan.com&nbsp;</span><span class="add-on">/</span>{{ new_provider_form.vanity_url(class="span2") }}
 					</div>
 				</div>
-				<br>
 				<div class="control-group {% if new_provider_form.email.errors %} error {% endif %}">
-					<h3>{{ _('E-mail Address' )}}</h3>
+					<h3 style="margin-top: 18px">{{ _('E-mail Address' )}}</h3>
 					<p>
 						Please enter your email address below to get started.
 						<br>
@@ -32,10 +30,9 @@
 						{{ new_provider_form.email(class="span3") }}
 					</div>
 				</div>
-				<br>
 				<div class="control-group">
 					<div class="controls">
-						<button type="submit" class="btn btn-primary btn-large">
+						<button type="submit" class="btn btn-primary btn-large" style="margin-top: 18px">
 							{{ _('Create Your Account') }}
 						</button>
 					</div>
@@ -44,11 +41,14 @@
 		</form>
 	</div>
 	<div class="span6">
-		<h1>Online Presence</h1>
+		<h1>Be Present</h1>
 		<h2>Before this, you didn't exist! Get a professional profile that sets you apart.</h2>
 		<br>
 		<h1>Get Social</h1>
-		<h2>Share your page with friends and connect with patients.</h2>
+		<h2>Share your page with friends and connect with patients and prospective employers.</h2>
+		<br>
+		<h1>Be Productive</h1>
+		<h2>Get a sneak peak at new features that allow you to run your practice and discover new patients.</h2>
 	</div>
 </div>
 
