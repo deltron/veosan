@@ -34,11 +34,15 @@ def get_all_regions():
 CAT_PHYSIO = "physiotherapy"
 CAT_CHIRO = "chiropractor"
 CAT_OSTEO = "osteopath"
+CAT_ADMIN = "administration"
 
 def get_all_categories():
-    return [(CAT_PHYSIO, _(u"Physiotherapist")),
+    return [
+            (CAT_PHYSIO, _(u"Physiotherapist")),
             (CAT_CHIRO, _(u"Chiropractor")),
-            (CAT_OSTEO, _(u"Osteopath"))]
+            (CAT_OSTEO, _(u"Osteopath")),
+            (CAT_ADMIN, _(u"Health Care Administration")),
+            ]
            
 
 # key, value
