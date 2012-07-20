@@ -19,7 +19,7 @@
 			<div class="span6">
 				<ul class="unstyled">
 					<li>
-						<h2><a data-toggle="modal" href="#create_account_modal">{{ _("Create an Account") }}</a></h2>
+						<h2><a href="/signup">{{ _("Create an Account") }}</a></h2>
 					</li>
 					<li>
 						&nbsp;
@@ -41,39 +41,6 @@
 		</div>
 	</div>
 </form>
-
-<div class="modal hide" id="create_account_modal" style="display: none;">
-	<div class="modal-header">
-		<a class="close" data-dismiss="modal">×</a>
-		<h3>{{ _("Create an Account") }}</h3>
-	</div>
-	<div class="modal-body marketing">
-		{% if booking_enabled %}
-		<i class="bs-icon icon-heart"></i><h3>{{ _("For Patients") }}</h3>
-		<p>
-			Creating an account is easy! Just <a href="/">book an appointment</a> to get started today.
-		</p>
-
-		<i class="bs-icon icon-briefcase"></i><h3>{{ _("For Health Care Providers") }}</h3>
-		<p>
-			Membership on our platform is currently by invitation-only. Please enter your details below and we will be in touch!
-		</p>
-
-		<form method="post" action="/provider/signup" class="form-inline">
-			<fieldset>
-				<input id="provider_email" name="provider_email" type="text" placeholder="Email Address">
-				<input id="provider_postalcode" name="provider_postalcode" type="text" placeholder="Postal Code" class="input-small">
-				<button type="submit" class="btn btn-primary">
-					Submit
-				</button>
-			</fieldset>
-		</form>
-		{% else %}
-		{{ _("We are currently opening accounts on a limited basis, please sign up on the <a href='/'>home page</a>.") }}
-
-		{% endif %}
-	</div>
-</div>
 
 <div class="modal hide" id="forgot_password" style="display: none;">
 	<div class="modal-header">
