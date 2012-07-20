@@ -62,6 +62,12 @@
 					{% else %}
 					{# No user logged in #}
 
+					{% if site_config.signup_enabled %}
+					<li>
+						<a href="/signup">{{ _('Sign Up') }}</a>
+					</li>
+					{% endif %}
+					
 					<li>
 						<a href="{{login_url}}">{{ _('My Account') }}</a>
 					</li>

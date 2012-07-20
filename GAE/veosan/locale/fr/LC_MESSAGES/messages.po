@@ -41,6 +41,9 @@ msgstr "chez Veosan"
 # Signup
 #################
 
+msgid "Sign Up"
+msgstr "S'inscrire"
+
 msgid "For Health Care Specialists"
 msgstr "Pour les spécialistes de la santé"
 

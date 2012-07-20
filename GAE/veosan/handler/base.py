@@ -106,10 +106,10 @@ class BaseHandler(webapp2.RequestHandler):
         
         site_config = db.get_site_config()
         if site_config:
+            kw['site_config'] = site_config
             kw['booking_enabled'] = site_config.booking_enabled
             kw['google_analytics_enabled'] = site_config.google_analytics_enabled
             kw['facebook_like_enabled'] = site_config.facebook_like_enabled
-            kw['signup_enabled'] = site_config.signup_enabled
 
         else:
             # no site configuration exists in database, create one
@@ -118,13 +118,12 @@ class BaseHandler(webapp2.RequestHandler):
             # take defaul state for booking enabled from util 
             # (so it can be set before the handler is called in unit tests)
             site_config.booking_enabled = util.BOOKING_ENABLED
-            site_config.google_analytics_enabled = False
             
             site_config.put()
+            kw['site_config'] = site_config
             kw['booking_enabled'] = site_config.booking_enabled
             kw['google_analytics_enabled'] = site_config.google_analytics_enabled
             kw['facebook_like_enabled'] = site_config.facebook_like_enabled
-            kw['signup_enabled'] = site_config.signup_enabled
 
         
         # render
