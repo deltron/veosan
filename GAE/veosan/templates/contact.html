@@ -9,7 +9,12 @@
 		{% if not (error_message or success_message) %}
 
 		<div class=" well">
+			<p>	
 			{{ _('We want to know what you think about our service. If you have any feedback regarding the web site or the care you have received please let us know in the form below.') }}
+			</p>
+			<p>
+			{{ _("If you want to talk to a real person right now, please don't hesitate to give us a call at (514) 998-1286. Thanks!") }}
+			</p>
 		</div>
 
 		<form method="post" action="/contact" class="form-horizontal">
