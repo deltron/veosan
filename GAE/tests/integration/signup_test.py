@@ -10,7 +10,27 @@ from data import db
 class SignupTest(BaseTest):
     
     def test_signup(self):
-        pass
+        ''' Basic signup process for a new provider '''
+        response = self.testapp.get("/signup")
+        
+        signup_form = response.forms['signup_form'] 
+        signup_form['email'] = self._TEST_PROVIDER_EMAIL
+        signup_form['vanity_url'] = self._TEST_PROVIDER_VANITY_URL
+        password_choice_response = signup_form.submit()
+        password_choice_response = password_choice_response.follow()
+        
+        password_choice_response.mustcontain('Choisissez votre mot de passe')
+        password_form = password_choice_response.forms[0]
+        password_form['password'] = self._TEST_PROVIDER_PASSWORD
+        password_form['password_confirm'] = self._TEST_PROVIDER_PASSWORD
+
+        welcome_response = password_form.submit()
+        welcome_response = welcome_response.follow()
+        self.assertEqual(welcome_response.status_int, 200)
+        welcome_response.mustcontain(u'Bienvenue chez Veosan!')
+
+        
+        
     
         ''' Test signup as anonymous user '''
         '''

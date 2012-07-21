@@ -6,7 +6,7 @@
 <div class="row">
 	<div class="span6">
 		<h1>{{ _('Sign Up') }}</h1>
-		<form method="post" action="/signup" class="form-inline">
+		<form method="post" action="/signup" class="form-inline" id='signup_form'>
 			<fieldset>
 				<div class="control-group {% if new_provider_form.email.errors %} error {% endif %}">
 					<h3 style="margin-top: 18px">{{ _('E-mail Address' )}}</h3>
