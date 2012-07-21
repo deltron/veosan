@@ -16,7 +16,7 @@
 					</p>
 					<div class="controls">
 						{{ macro.display_errors_for_field(new_provider_form.email) }}
-						{{ new_provider_form.email(class="span3") }}
+						{{ new_provider_form.email(class="span3", placeholder=_('E-mail Address')) }}
 					</div>
 				</div>
 				<div class="control-group {% if new_provider_form.vanity_url.errors %} error {% endif %}">
@@ -27,7 +27,7 @@
 					</p>
 					{{ macro.display_errors_for_field(new_provider_form.vanity_url) }}
 					<div class="input-prepend">
-						<span class="add-on">&nbsp;veosan.com&nbsp;</span><span class="add-on">/</span>{{ new_provider_form.vanity_url(class="span2") }}
+						<span class="add-on">&nbsp;veosan.com&nbsp;</span><span class="add-on">/</span>{{ new_provider_form.vanity_url(class="span2", placeholder=_('Personal Link')) }}
 					</div>
 				</div>
 				<div class="control-group">
