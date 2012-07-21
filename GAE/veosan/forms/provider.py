@@ -64,14 +64,14 @@ class ProviderPhotoForm(CustomForm):
 class ProviderAddressForm(CustomForm):
     def _set_fields(self, form):        
         setattr(form, 'title', TextField(_(u'Title')))
-        setattr(form, 'first_name', TextField(_(u'First Name'), [validators.Length(min=1, message=_(u'First name is a required field'))]))
-        setattr(form, 'last_name', TextField(_(u'Last Name'), [validators.Length(min=1, message=_(u'Last name is a required field'))]))
+        setattr(form, 'first_name', TextField(_(u'First Name')))
+        setattr(form, 'last_name', TextField(_(u'Last Name')))
         setattr(form, 'credentials', TextField(_(u'Credentials')))
-        setattr(form, 'phone', TextField(_(u'Telephone'), [validators.Regexp(regex="^[2-9]\d{2}-\d{3}-\d{4}$", message=_(u'Please make sure phone number is in the following format: 514-555-1212'))]))
+        setattr(form, 'phone', TextField(_(u'Telephone'), [validators.Optional(), validators.Regexp(regex="^[2-9]\d{2}-\d{3}-\d{4}$", message=_(u'Please make sure phone number is in the following format: 514-555-1212'))]))
         setattr(form, 'location', SelectField(_(u'Location'), choices=util.get_all_regions()))
-        setattr(form, 'address', TextField(_(u'Addresse'), [validators.Length(min=5, message='Address requis.')]))
-        setattr(form, 'city', TextField(_(u'City'), [validators.Length(min=3, message='Address requis.')]))
-        setattr(form, 'postal_code', TextField(_(u'Postal Code'), [validators.Length(min=6, message='Address requis.')]))
+        setattr(form, 'address', TextField(_(u'Addresse')))
+        setattr(form, 'city', TextField(_(u'City')))
+        setattr(form, 'postal_code', TextField(_(u'Postal Code'), validators.Regexp(regex="^[a-zA-Z][0-9][a-zA-Z][0-9][a-zA-Z][0-9]$", message=_(u'Please make sure your postal code is in the following format: A1B2C3'))))
 
 
 
