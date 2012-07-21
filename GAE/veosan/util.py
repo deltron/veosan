@@ -26,22 +26,17 @@ def get_all_regions():
             ('mtl-east', _(u'Montreal - East')),
             ('mtl-nord', _(u'Montreal - North')),
             ('laval', _(u'Laval')),
-            ('south-short', _(u'South Shore')),
+            ('south-shore', _(u'South Shore')),
             ('other', _(u'Other')),
             ]    
-    
-## key, value
-CAT_PHYSIO = "physiotherapy"
-CAT_CHIRO = "chiropractor"
-CAT_OSTEO = "osteopath"
-CAT_ADMIN = "administration"
 
 def get_all_categories():
     return [
-            (CAT_PHYSIO, _(u"Physiotherapist")),
-            (CAT_CHIRO, _(u"Chiropractor")),
-            (CAT_OSTEO, _(u"Osteopath")),
-            (CAT_ADMIN, _(u"Health Care Administration")),
+            ("administration", _(u"Health Care Administration")),
+            ("physiotherapy", _(u"Physiotherapist")),
+            ("chiropractor", _(u"Chiropractor")),
+            ("osteopath", _(u"Osteopath")),
+            ("audiology", _(u"Audiology")),
             ]
            
 
