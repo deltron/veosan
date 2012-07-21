@@ -16,10 +16,10 @@ class ContactForm(CustomForm):
 class NewProviderForm(CustomForm):
     def _set_fields(self, form):        
         setattr(form, 'vanity_url', TextField(_(u'Account name'), [
-                                              validators.Length(min=6, message=_('Your personal address requires at least 6 characters.')), 
+                                              validators.Length(min=6, message=_('Your personal link requires at least 6 characters.')), 
                                               custom_validators.UniqueVanityURL(message=_(u'That address is already being used, please choose another one.')),
                                               custom_validators.ReservedVanityURL(message=_(u'That address is already being used, please choose another one.')),
-                                              validators.Regexp(u'^[a-zA-Z0-9]+$', message=_(u'Your personal address can only contain letters and numbers.')),
+                                              validators.Regexp(u'^[a-zA-Z0-9]+$', message=_(u'Your personal link can only contain letters and numbers.')),
                                               ]))
     
         setattr(form, 'email', TextField(_(u'E-mail Address'), [
