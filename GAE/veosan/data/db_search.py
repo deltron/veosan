@@ -37,9 +37,9 @@ def provider_search(booking):
     request_category = booking.request_category
     request_location = booking.request_location
     # match on location and category, sort by experience (ascending start_year)
-    providers_wide_query = Provider.query(Provider.category==request_category, Provider.location==request_location, Provider.status=='client_enabled', Provider.terms_agreement==True).order(Provider.start_year, Provider.created_on)
+    providers_wide_query = Provider.query(Provider.category==request_category, Provider.status=='client_enabled', Provider.terms_agreement==True).order(Provider.start_year, Provider.created_on)
     if booking.request_homecare:
-        providers_wide_query = providers_wide_query.filter(Provider.onsite==True)
+        providers_wide_query = providers_wide_query.filter(Provider.practice_sites=='onsite')
     logging.info('Found %s providers offering %s in %s (enabled and with terms)' % (providers_wide_query.count(), request_category, request_location))
     # sort by best available timeslot and filter out booking conflicts
     booking_responses = filter_and_sort_providers_based_on_schedule(booking, providers_wide_query)

@@ -216,7 +216,6 @@ class BaseTest(unittest.TestCase):
         address_form['last_name'] = u"Fox"
         address_form['credentials'] = u"Ph.D"
         address_form['phone'] = u"555-123-5678"
-        address_form['location'] = u"mtl-downtown"
         address_form['address'] = u"123 Main St."
         address_form['city'] = u"Westmount"
         address_form['postal_code'] = u"H1B2C3"
@@ -256,7 +255,6 @@ class BaseTest(unittest.TestCase):
         self.assertEqual(address_form['last_name'].value, u"Fox")
         self.assertEqual(address_form['credentials'].value, u"Ph.D")
         self.assertEqual(address_form['phone'].value, u"555-123-5678")
-        self.assertEqual(address_form['location'].value, u"mtl-downtown")
         self.assertEqual(address_form['address'].value, u"123 Main St.")
         self.assertEqual(address_form['city'].value, u"Westmount")
         self.assertEqual(address_form['postal_code'].value, u"H1B2C3")
@@ -274,7 +272,6 @@ class BaseTest(unittest.TestCase):
         address_form['last_name'] = u"Otter"
         address_form['credentials'] = u"M.Sc"
         address_form['phone'] = u"555-987-6543"
-        address_form['location'] = u"mtl-westisland"
         address_form['address'] = u"321 Primary St."
         address_form['city'] = u"Outremont"
         address_form['postal_code'] = u"C4B5C6"
@@ -314,7 +311,7 @@ class BaseTest(unittest.TestCase):
         # print profile_form.fields.values()
         
         # fill out the form
-        profile_form['category'] = util.CAT_OSTEO
+        profile_form['category'] = 'osteopath'
         
         profile_form.set('specialty', True, 0) # Sports
         profile_form.set('specialty', True, 2) # Cardio
@@ -485,7 +482,7 @@ class BaseTest(unittest.TestCase):
         return result_response
     
     def fill_booking_email_form(self, result_response, email=None):
-        # email form (second form on page)
+        # email form (second form on page)        
         hidden_form = result_response.forms[0]
         email_form = result_response.forms[1]
         # Replacing: new_patient_response = email_form.submit()

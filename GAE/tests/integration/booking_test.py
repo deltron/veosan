@@ -15,7 +15,7 @@ class BookingTest(BaseTest):
         self.create_complete_provider_profile()
         # at this point there is one fully completed profile with a single timeslot available (Monday 8-13)
         # try to book monday 8am
-        response = self.book_appointment(util.CAT_OSTEO, testutil.next_monday_date_string(), 8)
+        response = self.book_appointment('osteopath', testutil.next_monday_date_string(), 8)
         # verify provider name
         response.mustcontain("Mr. Fantastic F.")
         # verify location
@@ -32,7 +32,7 @@ class BookingTest(BaseTest):
         ''' Create a booking in a timeslot with no availability '''
         self.create_complete_provider_profile()
         # Out Schedule is open only on Monday, try to book Tuesday
-        response = self.book_appointment(util.CAT_OSTEO, testutil.next_weekday_date_string(testutil.TUESDAY), 14)
+        response = self.book_appointment('osteopath', testutil.next_weekday_date_string(testutil.TUESDAY), 14)
         # verify error messages
         response.mustcontain("Malheureusement, il n'y a pas de professionnels disponibles qui répondent à vos besoins")
 
@@ -47,7 +47,7 @@ class BookingTest(BaseTest):
         
         # at this point there is one fully completed profile with a single timeslot available (Monday 8-13)
         # go back to the main page and try to book monday 8am
-        booking_response = self.book_appointment(util.CAT_OSTEO, testutil.next_weekday_date_string(testutil.MONDAY), 8)
+        booking_response = self.book_appointment('osteopath', testutil.next_weekday_date_string(testutil.MONDAY), 8)
 
         # verify provider name
         booking_response.mustcontain("Mr. Fantastic F.")
@@ -65,7 +65,7 @@ class BookingTest(BaseTest):
         
         # now try to book again
         # go back to the main page and try to book monday 8am again
-        response = self.book_appointment(util.CAT_OSTEO, testutil.next_weekday_date_string(testutil.MONDAY), 8)
+        response = self.book_appointment('osteopath', testutil.next_weekday_date_string(testutil.MONDAY), 8)
 
         # get the next slot
         response.mustcontain("9:00")
@@ -82,7 +82,7 @@ class BookingTest(BaseTest):
         self.logout_provider()
         # at this point there is one fully completed profile with a single timeslot available (Monday 8-13)
         # go back to the main page and try to book monday 8am
-        booking_response = self.book_appointment(util.CAT_OSTEO, testutil.next_weekday_date_string(testutil.MONDAY), 8)
+        booking_response = self.book_appointment('osteopath', testutil.next_weekday_date_string(testutil.MONDAY), 8)
 
         # fill out patient profile, receive email and set password
         new_patient_response = self.fill_booking_email_form(booking_response, self._TEST_PATIENT_EMAIL)
@@ -164,7 +164,7 @@ class BookingTest(BaseTest):
         self.logout_provider()
         # at this point there is one fully completed profile with a single timeslot available (Monday 8-13)
         # go back to the main page and try to book monday 8am
-        response = self.book_appointment(util.CAT_OSTEO, testutil.next_weekday_date_string(testutil.MONDAY), 8)
+        response = self.book_appointment('osteopath', testutil.next_weekday_date_string(testutil.MONDAY), 8)
         # email form
         new_patient_response = self.fill_booking_email_form(response, self._TEST_PATIENT_EMAIL)
         

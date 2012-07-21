@@ -68,7 +68,7 @@ class BookingTestCase(BaseTestCase):
         providers = create_test_providers()
         # create booking request - Saturday at 10 PM
         sat_at_10 = testutil.create_datetime_from_weekday_and_hour(5, 22)
-        booking_request = Booking(request_category=util.CAT_OSTEO, request_location='mtl-downtown', request_datetime=sat_at_10)
+        booking_request = Booking(request_category='osteopath', request_location='mtl-downtown', request_datetime=sat_at_10)
         booking_responses = db_search.provider_search(booking_request)
         logging.info('Booking Respones:')
         # assert top provider is p2

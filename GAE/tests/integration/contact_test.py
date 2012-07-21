@@ -44,7 +44,7 @@ class ContactTest(BaseTest):
             response = contact_form.submit()
             
             # check the user received the proper error message            
-            response.mustcontain("Addresse courriel invalide.")
+            response.mustcontain("Adresse courriel invalide.")
             
  
         def test_feedback_email_no_subject(self):
@@ -60,7 +60,7 @@ class ContactTest(BaseTest):
             response = contact_form.submit()
             
             # check the user received the proper error message            
-            response.mustcontain("Addresse courriel invalide.")
+            response.mustcontain("Adresse courriel invalide.")
                     
 
 

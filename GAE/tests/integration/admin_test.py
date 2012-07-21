@@ -74,7 +74,7 @@ class AdminTest(BaseTest):
         # this should fail with an error message
         
         # check for error message
-        response.mustcontain("Addresse courriel invalide.")
+        response.mustcontain("Adresse courriel invalide.")
         
         # if anything below here is in the response, it's not good!
     
@@ -96,7 +96,7 @@ class AdminTest(BaseTest):
         # this should fail with an error message
         
         # check for error message
-        response.mustcontain("Addresse courriel invalide.")
+        response.mustcontain("Adresse courriel invalide.")
         
         # if anything below here is in the response, it's not good!
     
@@ -225,7 +225,7 @@ class AdminTest(BaseTest):
         
         # now try to make a booking with this guy        
         # at this point there is one fully completed profile with a single timeslot available (Monday 8-13)
-        response = self.book_appointment(util.CAT_OSTEO, testutil.next_monday_date_string() , 14)
+        response = self.book_appointment('osteopath', testutil.next_monday_date_string() , 14)
         
         # verify error messages
         response.mustcontain("Malheureusement, il n'y a pas de professionnels disponibles qui répondent à vos besoins")
@@ -243,14 +243,14 @@ class AdminTest(BaseTest):
         enabled_response.mustcontain("Current status is client_enabled")
         
         # Booking should work
-        response = self.book_appointment(util.CAT_OSTEO, testutil.next_monday_date_string() , 14)
+        response = self.book_appointment('osteopath', testutil.next_monday_date_string() , 14)
         response.mustcontain("Mr. Fantastic F.")
 
     def test_admin_booking_dashboard_provider_and_patient_confirmed(self):
         ''' The base case, a patient made an appointment and confirmed it '''
         
         self.create_complete_provider_profile()
-        booking_response = self.book_appointment(util.CAT_OSTEO, testutil.next_monday_date_string(), 8)
+        booking_response = self.book_appointment('osteopath', testutil.next_monday_date_string(), 8)
         
         # fill out patient profile, receive email and set password
         new_patient_response = self.fill_booking_email_form(booking_response, self._TEST_PATIENT_EMAIL)
@@ -273,7 +273,7 @@ class AdminTest(BaseTest):
         ''' Visitor chose a provider, then never filled their email '''
         
         self.create_complete_provider_profile()
-        booking_response = self.book_appointment(util.CAT_OSTEO, testutil.next_monday_date_string(), 8)
+        booking_response = self.book_appointment('osteopath', testutil.next_monday_date_string(), 8)
 
         self.logout_patient()                
         self.login_as_admin()
@@ -290,7 +290,7 @@ class AdminTest(BaseTest):
         ''' Visitor chose a provider, filled their email, didn't fill the profile '''
         
         self.create_complete_provider_profile()
-        booking_response = self.book_appointment(util.CAT_OSTEO, testutil.next_monday_date_string(), 8)
+        booking_response = self.book_appointment('osteopath', testutil.next_monday_date_string(), 8)
         new_patient_response = self.fill_booking_email_form(booking_response, self._TEST_PATIENT_EMAIL)
 
         self.logout_patient()                
@@ -308,7 +308,7 @@ class AdminTest(BaseTest):
         ''' Visitor chose a provider, filled their email, filled the profile but didn't click the email link '''
         
         self.create_complete_provider_profile()
-        booking_response = self.book_appointment(util.CAT_OSTEO, testutil.next_monday_date_string(), 8)
+        booking_response = self.book_appointment('osteopath', testutil.next_monday_date_string(), 8)
         new_patient_response = self.fill_booking_email_form(booking_response, self._TEST_PATIENT_EMAIL)
         booking_confirm_response = self.fill_new_patient_profile(new_patient_response)
 
@@ -326,7 +326,7 @@ class AdminTest(BaseTest):
         ''' No provider was available for the requested date/time '''
 
         self.create_complete_provider_profile()
-        booking_response = self.book_appointment(util.CAT_PHYSIO, testutil.next_monday_date_string(), 17)
+        booking_response = self.book_appointment('physiotherapy', testutil.next_monday_date_string(), 17)
         
         self.logout_patient()                
         self.login_as_admin()
