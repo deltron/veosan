@@ -26,8 +26,9 @@ class ContactTest(BaseTest):
             
             
             self.assertEqual(m.subject, 'Quick brown foxes')
-            self.assertEqual(m.sender, 'foo_tester@bar.com')
-            self.assertEqual(m.body.payload, 'I need to see someone about a horse.')
+            self.assertEqual(m.sender, 'support@veosan.com')
+            self.assertIn('I need to see someone about a horse.', m.body.payload)
+            self.assertIn('foo_tester@bar.com', m.body.payload)
 
 
         def test_feedback_email_invalid_from_address(self):

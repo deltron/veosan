@@ -12,9 +12,9 @@ class SignupTest(BaseTest):
     def test_signup(self):
         pass
     
-        ''' not relevant anymore '''
         ''' Test signup as anonymous user '''
-        response = self.testapp.get("/login")
+        '''
+        response = self.testapp.get("/teaser")
         
         signup_form = response.forms[1] # signup form
         signup_form['provider_email'] = 'test_signup@tester.com'
@@ -32,7 +32,7 @@ class SignupTest(BaseTest):
         self.assertEqual(m.subject, 'Request for signup from provider')
         self.assertEqual(m.sender, 'support@veosan.com')
         self.assertEqual(m.body.payload, 'Received sign-up request from email->test_signup@tester.com postal_code->H1H2C2')
-
+        '''
         
         
 if __name__ == "__main__":

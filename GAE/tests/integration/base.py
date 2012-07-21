@@ -327,7 +327,6 @@ class BaseTest(unittest.TestCase):
         profile_form.set('practice_sites', True, 0) # onsite visits
 
 
-        profile_form['start_year'] = '2002'
         profile_form['bio'] = "Areas of interest include treatment and management of spinal conditions with an emphasis on manual therapy and rehabilitative exercise."        
         profile_form['quote'] = "The quick brown fox jumped over the lazy dog."
 
@@ -335,7 +334,6 @@ class BaseTest(unittest.TestCase):
         response = profile_form.submit()
         response.mustcontain("Vos modifications ont été enregistrées.")
 
-        response.mustcontain("2002")
         response.mustcontain("Areas of interest include treatment and management")
         response.mustcontain("The quick brown fox jumped over the lazy dog")
 

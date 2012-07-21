@@ -80,7 +80,7 @@ class ProviderTest(BaseTest):
 
         welcome_response = password_form.submit()
         self.assertEqual(welcome_response.status_int, 200)
-        welcome_response.mustcontain('Password needs at least 6 characters')
+        welcome_response.mustcontain('Votre mot de passe doit contenir au moins 6 caractères.')
                                      
                                      
     def test_provider_solicit_password_not_matched(self):
@@ -115,7 +115,7 @@ class ProviderTest(BaseTest):
 
         welcome_response = password_form.submit()
         self.assertEqual(welcome_response.status_int, 200)
-        welcome_response.mustcontain('Passwords do not match')
+        welcome_response.mustcontain('Les mots de passe ne correspondent pas.')
 
 
     def test_provider_accept_terms_navigate_away(self):
@@ -237,7 +237,7 @@ class ProviderTest(BaseTest):
         
         login_response = self.testapp.get("/login")
 
-        resetpassword_form = login_response.forms[2] # reset passwod is 3rd form on page
+        resetpassword_form = login_response.forms['resetpassword_form'] # reset passwod is 3rd form on page
         resetpassword_form['email'] = self._TEST_PROVIDER_EMAIL
         response = resetpassword_form.submit()
         
@@ -308,7 +308,7 @@ class ProviderTest(BaseTest):
         
         login_response = self.testapp.get("/login")
 
-        resetpassword_form = login_response.forms[2] # reset passwod is 3rd form on page
+        resetpassword_form = login_response.forms['resetpassword_form'] # reset passwod is 3rd form on page
         resetpassword_form['email'] = self._TEST_PROVIDER_EMAIL
         response = resetpassword_form.submit()
         
