@@ -11,7 +11,7 @@ from webapp2_extras.i18n import lazy_gettext as _
 
 class ProviderProfileForm(CustomForm):
     def _set_fields(self, form):        
-        setattr(form, 'category', SelectField(_(u'Category'), choices=util.get_all_categories()))
+        setattr(form, 'category', SelectField(_(u'Category'), choices=util.get_all_categories_for_profile_editing()))
         setattr(form, 'specialty', MultiCheckboxField(_(u'Specialties'), choices=util.getAllSpecialities()))
         setattr(form, 'bio', TextAreaField(_(u'Biography')))
         setattr(form, 'quote', TextAreaField(_(u'Quote')))
@@ -71,7 +71,7 @@ class ProviderAddressForm(CustomForm):
         setattr(form, 'location', SelectField(_(u'Location'), choices=util.get_all_regions()))
         setattr(form, 'address', TextField(_(u'Addresse')))
         setattr(form, 'city', TextField(_(u'City')))
-        setattr(form, 'postal_code', TextField(_(u'Postal Code'), validators.Regexp(regex="^[a-zA-Z][0-9][a-zA-Z][0-9][a-zA-Z][0-9]$", message=_(u'Please make sure your postal code is in the following format: A1B2C3'))))
+        setattr(form, 'postal_code', TextField(_(u'Postal Code'), [validators.Optional(), validators.Regexp(regex="^[a-zA-Z][0-9][a-zA-Z][0-9][a-zA-Z][0-9]$", message=_(u'Please make sure your postal code is in the following format: A1B2C3'))]))
 
 
 
