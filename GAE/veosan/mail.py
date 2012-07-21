@@ -68,8 +68,10 @@ def emailProviderWelcomeMessage(jinja2, provider):
 def email_contact_form(jinja2, from_email, subject, message_body):
     logging.info('Feedback from %s | subject: %s\n\nMESSAGE\n=========\n%s' % (from_email, subject, message_body))
     
+    message_body = "From: %s\n\n\n%s" % (from_email, message_body)
+    
     message = mail.EmailMessage()
-    message.sender = from_email
+    message.sender = VEOSAN_SUPPORT_ADDRESS
     message.to = VEOSAN_SUPPORT_ADDRESS
     message.subject = subject
     message.body = message_body
