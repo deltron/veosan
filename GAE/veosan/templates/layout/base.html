@@ -4,7 +4,7 @@
 <html lang="{{ lang }}">
 	<head>
 		<meta charset="utf-8">
-		<title> {% if provider %}
+		<title> {% if provider and provider.last_name %}
 			{# show provider name in title for SEO #}
 			{{ macro.display_provider_name(provider) }}
 			- {{ category_dict[provider.category] }}
