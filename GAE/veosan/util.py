@@ -38,7 +38,21 @@ def get_all_categories():
             ("osteopath", _(u"Osteopath")),
             ("audiology", _(u"Audiology")),
             ]
-           
+
+def get_all_categories_for_profile_editing():
+    # at the begining
+    all_categories = [("nothing", "")]
+    
+    # add categories 
+    # TODO : eventually group them
+    all_categories.extend(get_all_categories())
+     
+    # at the end
+    all_categories.extend([
+                             ("other", _(u"Other")),
+                          ])
+    
+    return all_categories
 
 # key, value
 def getAllSpecialities():
@@ -160,6 +174,7 @@ def create_untranslated_code_tuple_list():
     code_tuples_list = []
     code_tuples_list.append(get_all_regions())
     code_tuples_list.append(get_all_categories())
+    code_tuples_list.append(get_all_categories_for_profile_editing())
     code_tuples_list.append(get_all_schools())
     code_tuples_list.append(get_all_degrees())
     code_tuples_list.append(get_all_continuing_education_types())
