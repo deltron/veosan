@@ -56,7 +56,7 @@ class TeaserHandler(BaseHandler):
 
             logging.info(message)
 
-            from_email = "signup@veosan.com"
+            from_email = mail.VEOSAN_SUPPORT_ADDRESS
             subject = "Request for signup : %s" % email
 
             mail.email_contact_form(self.jinja2, from_email, subject, message)
