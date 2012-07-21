@@ -71,23 +71,38 @@ msgstr "Nous ouvrons présentement des comptes par invitation, veuillez vous ins
 msgid "Thanks for your interest. We will be in touch soon!"
 msgstr "Merci pour votre intérêt. Nous serons en contact bientôt!"
 
+msgid "Personal Link"
+msgstr "Lien personnalisé"
+
 msgid "Create an Account"
 msgstr "Créer un nouveau compte"
 
 msgid "Oops. I forgot my password."
 msgstr "Oops. J'ai oublié mon mot de passe."
 
-msgid "Your personal address can only contain letters and numbers."
-msgstr "Votre adresse personnelle ne peut contenir que des lettres et des chiffres."
+msgid "Your personal link can only contain letters and numbers."
+msgstr "Votre lien personnalisé ne peut contenir que des lettres et des chiffres."
 
 msgid "That address is already being used, please choose another one."
 msgstr "Cette adresse est déjà utilisée, s'il vous plaît choisir un autre."
 
-msgid "Your personal address requires at least 6 characters."
-msgstr "Votre adresse personnelle requiert au moins 6 caractères."
+msgid "Your personal link requires at least 6 characters."
+msgstr "Votre lien personnalisé requiert au moins 6 caractères."
 
 msgid "Create Your Account"
 msgstr "Créez votre compte"
+
+msgid "Please enter your email address below to get started."
+msgstr "SVP entrez votre adresse courriel ci-dessous pour commencer."
+
+msgid "The new network for health care professionals."
+msgstr "Le nouveau réseau des professionnels de soins de santé."
+
+msgid "Your personal link allows people to find and remember you easily."
+msgstr "Votre lien personnalisé permet aux gens de vous trouver et se souvenir facilement de votre profile."
+
+msgid "Be Present"
+msgstr "Soyez présent"
 
 #################
 # Navbar
@@ -254,7 +269,7 @@ msgid "E-mail Address"
 msgstr "Adresse courriel"
 
 msgid "Invalid email address."
-msgstr "Addresse courriel invalide."
+msgstr "Adresse courriel invalide."
 
 msgid "Book Now"
 msgstr "Réservez Maintenant"
@@ -529,6 +544,8 @@ msgstr "Ville"
 msgid "Postal Code"
 msgstr "Code postale"
 
+msgid "Please make sure your postal code is in the following format: A1B2C3"
+msgstr "SVP assurez-vous que votre code postal est dans le format suivant: A1B2C3"
 
 #################
 # Schedule Page
@@ -652,6 +669,9 @@ msgstr "Ostéopathe"
 
 msgid "Chiropractor"
 msgstr "Chiropraticien"
+
+msgid "Health Care Administration"
+msgstr "Administration des soins de santé"
 
 
 #################
