@@ -68,7 +68,6 @@ class ProviderAddressForm(CustomForm):
         setattr(form, 'last_name', TextField(_(u'Last Name')))
         setattr(form, 'credentials', TextField(_(u'Credentials')))
         setattr(form, 'phone', TextField(_(u'Telephone'), [validators.Optional(), validators.Regexp(regex="^[2-9]\d{2}-\d{3}-\d{4}$", message=_(u'Please make sure phone number is in the following format: 514-555-1212'))]))
-        setattr(form, 'location', SelectField(_(u'Location'), choices=util.get_all_regions()))
         setattr(form, 'address', TextField(_(u'Addresse')))
         setattr(form, 'city', TextField(_(u'City')))
         setattr(form, 'postal_code', TextField(_(u'Postal Code'), [validators.Optional(), validators.Regexp(regex="^[a-zA-Z][0-9][a-zA-Z][0-9][a-zA-Z][0-9]$", message=_(u'Please make sure your postal code is in the following format: A1B2C3'))]))
