@@ -11,7 +11,7 @@
 				<div class="control-group {% if new_provider_form.email.errors %} error {% endif %}">
 					<h3 style="margin-top: 18px">{{ _('E-mail Address' )}}</h3>
 					<p>
-						Please enter your email address below to get started.
+						{{ _('Please enter your email address below to get started.') }}
 						<br>
 					</p>
 					<div class="controls">
@@ -22,7 +22,7 @@
 				<div class="control-group {% if new_provider_form.vanity_url.errors %} error {% endif %}">
 					<h3 style="margin-top: 18px">{{ _('Personal Link' )}}</h3>
 					<p>
-						Your personal address allows people to find and remember you easily.
+						{{ _('Your personal link allows people to find and remember you easily.') }}
 						<br>
 					</p>
 					{{ macro.display_errors_for_field(new_provider_form.vanity_url) }}
@@ -41,7 +41,7 @@
 		</form>
 	</div>
 	<div class="span6">
-		<h1>Be Present</h1>
+		<h1>{{ _('Be Present') }}</h1>
 		<h2>Before this, you didn't exist! Get a professional profile that sets you apart.</h2>
 		<br>
 		<h1>Get Social</h1>
