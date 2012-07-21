@@ -673,6 +673,9 @@ msgstr "Chiropraticien"
 msgid "Health Care Administration"
 msgstr "Administration des soins de santé"
 
+msgid "Audiology"
+msgstr "Audiologie"
+
 
 #################
 # Regions
