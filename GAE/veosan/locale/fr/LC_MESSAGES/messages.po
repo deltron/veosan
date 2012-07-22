@@ -520,6 +520,9 @@ msgstr "Actif depuis"
 msgid "Member of order since"
 msgstr "Membre de l'ordre depuis"
 
+msgid "Organization Memberships"
+msgstr "Membre de"
+
 msgid "I am willing to do on-site visits"
 msgstr "J'accepte de faire des visites chez les clients"
 
@@ -780,7 +783,7 @@ msgid "Master's"
 msgstr "Maîtrise"
 
 #################
-# Associations
+# Associations List
 #################
 
 msgid "Ordre professionnel de la physiotherapie du Quebec (OPPQ)"
@@ -792,7 +795,8 @@ msgstr "Canadian Physiotherapy Association (CPA)"
 msgid "Canadian Academy of Manipulative Physiotherapy (CAMPT)"
 msgstr "Canadian Academy of Manipulative Physiotherapy (CAMPT)"
 
-
+msgid "Ordre des infirmières et infirmiers du Québec (OIIQ)"
+msgstr "Ordre des infirmières et infirmiers du Québec (OIIQ)"
 
 #################
 # Specialities

@@ -118,7 +118,8 @@ def get_all_continuing_education_types():
 def getAllAssociations():
     return [("oppq", _(u"Ordre professionnel de la physiotherapie du Quebec (OPPQ)")),
             ("cpa", _(u"Canadian Physiotherapy Association (CPA)")),
-            ("campt", _(u"Canadian Academy of Manipulative Physiotherapy (CAMPT)"))
+            ("campt", _(u"Canadian Academy of Manipulative Physiotherapy (CAMPT)")),
+            ("oiiq", _(u"Ordre des infirmières et infirmiers du Québec (OIIQ)")),
         ]
 
 def getAllSites():
