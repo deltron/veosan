@@ -83,6 +83,12 @@ def getAllSpecialitiesForPatient():
         ])
     return z
 
+def get_all_titles():
+    return [
+            ("mr", _('Mr.')),
+            ("mrs", _('Mrs.')),
+            ("dr", _('Dr.')),
+            ]
 
 def get_all_schools():
     return [
@@ -202,6 +208,8 @@ def create_untranslated_code_tuple_list():
     code_tuples_list.append(get_all_schools())
     code_tuples_list.append(get_all_degrees())
     code_tuples_list.append(get_all_continuing_education_types())
+    code_tuples_list.append(get_all_titles())
+
     # more...
     
     # flatten

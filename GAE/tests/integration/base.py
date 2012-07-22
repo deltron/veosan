@@ -211,7 +211,7 @@ class BaseTest(unittest.TestCase):
         address_form = response.forms[0] # address form
         
         # fill out the form
-        address_form['title'] = u"Mr."
+        address_form['title'] = u"mr"
         address_form['first_name'] = u"Fantastic"
         address_form['last_name'] = u"Fox"
         address_form['credentials'] = u"Ph.D"
@@ -250,7 +250,7 @@ class BaseTest(unittest.TestCase):
         address_form = response.forms[0] # address form
         
         # verify form contains correct info
-        self.assertEqual(address_form['title'].value, u"Mr.")
+        self.assertEqual(address_form['title'].value, u"mr")
         self.assertEqual(address_form['first_name'].value, u"Fantastic")
         self.assertEqual(address_form['last_name'].value, u"Fox")
         self.assertEqual(address_form['credentials'].value, u"Ph.D")
@@ -267,7 +267,7 @@ class BaseTest(unittest.TestCase):
                 self.assertEquals(address_form[k].value, getattr(provider, k))
 
         # make some changes to the form
-        address_form['title'] = u"Mrs."
+        address_form['title'] = u"mrs"
         address_form['first_name'] = u"Linda"
         address_form['last_name'] = u"Otter"
         address_form['credentials'] = u"M.Sc"

@@ -244,7 +244,7 @@ class AdminTest(BaseTest):
         
         # Booking should work
         response = self.book_appointment('osteopath', testutil.next_monday_date_string() , 14)
-        response.mustcontain("Mr. Fantastic F.")
+        response.mustcontain("M. Fantastic F.")
 
     def test_admin_booking_dashboard_provider_and_patient_confirmed(self):
         ''' The base case, a patient made an appointment and confirmed it '''

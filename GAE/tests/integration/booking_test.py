@@ -17,7 +17,7 @@ class BookingTest(BaseTest):
         # try to book monday 8am
         response = self.book_appointment('osteopath', testutil.next_monday_date_string(), 8)
         # verify provider name
-        response.mustcontain("Mr. Fantastic F.")
+        response.mustcontain("M. Fantastic F.")
         # verify location
         response.mustcontain("123 Main St.")
         response.mustcontain("Westmount")
@@ -50,7 +50,7 @@ class BookingTest(BaseTest):
         booking_response = self.book_appointment('osteopath', testutil.next_weekday_date_string(testutil.MONDAY), 8)
 
         # verify provider name
-        booking_response.mustcontain("Mr. Fantastic F.")
+        booking_response.mustcontain("M. Fantastic F.")
         # verify location
         booking_response.mustcontain("123 Main St.")
         booking_response.mustcontain("Westmount")
@@ -69,7 +69,7 @@ class BookingTest(BaseTest):
 
         # get the next slot
         response.mustcontain("9:00")
-        response.mustcontain("Mr. Fantastic F.")
+        response.mustcontain("M. Fantastic F.")
         response.mustcontain("123 Main St.")
         response.mustcontain("Westmount")
 

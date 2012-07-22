@@ -39,10 +39,10 @@ Twitter Bootstrap horizontal form layout.
 		{% else %}
 		{{ field(class=inputClass) }}
 		{% endif %}
-		
+
 		{% if field.description %}
 		<p class="help-block" style="font-style:italic; font-size:small; color:#999999">
-		{{ field.description }}
+			{{ field.description }}
 		</p>
 		{% endif %}
 	</div>
@@ -85,7 +85,7 @@ Macro to generate a provider bio
 
 			</div>
 			<div class="span8">
-				<h3> {{provider.title or ''}} {{provider.first_name or ''}}
+				<h3> {{provider.title|code_to_string or ''}} {{provider.first_name or ''}}
 				{% if provider.address_enabled %} {{provider.last_name}}
 				{% else %}
 				{% if provider.last_name %}
@@ -109,9 +109,8 @@ Macro to generate a provider bio
 
 {%- endmacro %}
 
-
 {#
-	Macro to generate provider name
+Macro to generate provider name
 #}
 
 {% macro display_provider_name(provider) -%}
@@ -119,11 +118,7 @@ Macro to generate a provider bio
 {{provider.first_name or ''}}
 
 {% if provider.last_name %}
-	{% if provider.address_enabled %}
-		{{ provider.last_name }}
-	{% else %}
-		{{ provider.last_name|first }}.
-	{% endif %}
+{{ provider.last_name }}
 {% endif %}
 
 {%- endmacro %}
