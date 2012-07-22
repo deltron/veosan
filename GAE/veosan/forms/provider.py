@@ -37,7 +37,8 @@ class ProviderEducationForm(CustomForm):
 class ProviderExperienceForm(CustomForm):
     def _set_fields(self, form):        
         setattr(form, 'start_year', IntegerField(_(u'Start Year'), [validators.NumberRange(min=1940, max=2100, message=_(u'Please enter a valid year.'))]))
-        setattr(form, 'end_year', IntegerField(_(u'End Year'), [validators.NumberRange(min=1940, max=2100, message=_(u'Please enter a valid year.')), validators.Optional()]))
+        setattr(form, 'end_year', IntegerField(_(u'End Year'), description=_(u'Leave empty for present'), 
+                                                validators=[validators.NumberRange(min=1940, max=2100, message=_(u'Please enter a valid year.')), validators.Optional()]))
         setattr(form, 'company_name', TextField(_(u'Company Name')))
         setattr(form, 'title', TextField(_(u'Position Title')))
         setattr(form, 'description', TextAreaField(_(u'Description')))
