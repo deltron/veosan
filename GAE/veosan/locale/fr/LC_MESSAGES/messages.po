@@ -96,13 +96,33 @@ msgid "Please enter your email address below to get started."
 msgstr "SVP entrez votre adresse courriel ci-dessous pour commencer."
 
 msgid "The new network for health care professionals."
-msgstr "Le nouveau réseau des professionnels de soins de santé."
+msgstr "Le nouveau réseau des professionnels de la santé."
 
 msgid "Your personal link allows people to find and remember you easily."
 msgstr "Votre lien personnalisé permet aux gens de vous trouver et se souvenir facilement de votre profile."
 
 msgid "Be Present"
 msgstr "Soyez présent"
+
+msgid "Get Social"
+msgstr "Branchez-vous"
+
+msgid "Be Productive"
+msgstr "Soyez productif"
+
+msgid "Before this, you didn't exist! Get a professional profile that sets you apart."
+msgstr "Rehaussez votre visibilité! Obtenez un profil professionnel qui vous démarque."
+
+msgid "Share your page with friends and connect with patients and prospective employers."
+msgstr "Partagez votre page avec vos amis et rejoignez des patients et employeurs potentiels."
+
+msgid "Get a sneak peek at new features that allow you to run your practice and discover new patients."
+msgstr "Obtenez un avant-goût des nouvelles fonctions qui vous aide à gérer votre pratique et à découvrir des nouveaux patients."
+
+msgid "For example, if your name is Gerald Raymond you can use <i>graymond</i>"
+msgstr "Par exemple, si votre nom est Gérald Raymond, vous pouvez utiliser <i>graymond</i>"
+
+
 
 #################
 # Navbar
