@@ -13,7 +13,7 @@ class PublicProfileTest(BaseTest):
         public_profile = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
         
         # by default address is hidden and no booking
-        public_profile.mustcontain("Fantastic F.")
+        public_profile.mustcontain("Fantastic Fox")
         public_profile.mustcontain(no="Address")
 
 
@@ -24,7 +24,7 @@ class PublicProfileTest(BaseTest):
         public_profile = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
         
         # hide last name
-        public_profile.mustcontain("Fantastic F.")
+        public_profile.mustcontain("Fantastic Fox")
         
         self.login_as_admin()
         
@@ -43,7 +43,7 @@ class PublicProfileTest(BaseTest):
         disable = self.testapp.post('/admin/provider/feature/address_enabled/' + self._TEST_PROVIDER_VANITY_URL)
 
         public_profile = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
-        public_profile.mustcontain("Fantastic F.")
+        public_profile.mustcontain("Fantastic Fox")
         public_profile.mustcontain(no="Address")
         
         
@@ -52,7 +52,7 @@ class PublicProfileTest(BaseTest):
         self.create_complete_provider_profile()
     
         public_profile = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
-        public_profile.mustcontain("Fantastic F.")
+        public_profile.mustcontain("Fantastic Fox")
         
         self.login_as_admin()
         
@@ -63,7 +63,7 @@ class PublicProfileTest(BaseTest):
         enable = self.testapp.post('/admin/provider/feature/booking_enabled/' + self._TEST_PROVIDER_VANITY_URL)
         
         public_profile = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
-        public_profile.mustcontain("Fantastic F.")
+        public_profile.mustcontain("Fantastic Fox")
         public_profile.mustcontain("Réservez Maintenant")
         
         
@@ -71,7 +71,7 @@ class PublicProfileTest(BaseTest):
         disable = self.testapp.post('/admin/provider/feature/booking_enabled/' + self._TEST_PROVIDER_VANITY_URL)
 
         public_profile = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
-        public_profile.mustcontain("Fantastic F.")
+        public_profile.mustcontain("Fantastic Fox")
         public_profile.mustcontain(no="Réservez Maintenant")
         
         
