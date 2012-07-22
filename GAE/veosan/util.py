@@ -32,11 +32,16 @@ def get_all_regions():
 
 def get_all_categories():
     return [
-            ("administration", _(u"Health Care Administration")),
-            ("physiotherapy", _(u"Physiotherapist")),
             ("chiropractor", _(u"Chiropractor")),
+            ("doctor", _('Doctor')),
+            ("administration", _(u"Health Care Administration")),
             ("osteopath", _(u"Osteopath")),
-            ("audiology", _(u"Audiology")),
+            ("occupational_therapy", _('Occupational Therapist')),
+            ("nurse", _('Nurse')),
+            ("physiotherapy", _(u"Physiotherapist")),
+            ("psychology", _(u"Psychologist")),
+            ("podiatrist", _('Podiastrist')),
+
             ]
 
 def get_all_categories_for_profile_editing():
@@ -44,9 +49,13 @@ def get_all_categories_for_profile_editing():
     all_categories = [("nothing", "")]
     
     # add categories 
-    # TODO : eventually group them
-    all_categories.extend(get_all_categories())
-     
+    # TODO : eventually group them    
+    # sort by alphabetical order in language
+    sorted = get_all_categories()
+    sorted.sort(key=lambda x: x[1])
+    
+    all_categories.extend(sorted)
+    
     # at the end
     all_categories.extend([
                              ("other", _(u"Other")),
@@ -150,6 +159,21 @@ def get_signup_roles():
             ("provider", _(u"I'm health care professional")),
             ("other", _(u"Other"))]
 
+def get_all_months():
+    return [
+            ("jan", _(u"January")),
+            ("feb", _(u"February")),
+            ("mar", _(u"March")),
+            ("apr", _(u"April")),
+            ("may", _(u"May")),
+            ("jun", _(u"June")),
+            ("jul", _(u"July")),
+            ("aug", _(u"August")),
+            ("sep", _(u"September")),
+            ("oct", _(u"October")),
+            ("nov", _(u"November")),
+            ("dec", _(u"December")),
+            ]
 
 
 ''' dump properties '''
