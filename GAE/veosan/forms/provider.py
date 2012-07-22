@@ -15,7 +15,7 @@ class ProviderProfileForm(CustomForm):
         setattr(form, 'specialty', MultiCheckboxField(_(u'Specialties'), choices=util.getAllSpecialities()))
         setattr(form, 'bio', TextAreaField(_(u'Biography')))
         setattr(form, 'quote', TextAreaField(_(u'Quote')))
-        setattr(form, 'associations', MultiCheckboxField(_(u'Associations'), choices=util.getAllAssociations()))
+        setattr(form, 'associations', MultiCheckboxField(_(u'Organization Memberships'), choices=util.getAllAssociations()))
         setattr(form, 'certifications', MultiCheckboxField(_(u'Certifications'), choices=util.getAllCertifications()))
         setattr(form, 'practice_sites', MultiCheckboxField(_(u'Practice Sites'), choices=util.getAllSites()))
         setattr(form, 'spoken_languages', MultiCheckboxField(_(u'Spoken Languages'), choices=util.get_all_spoken_languages()))
