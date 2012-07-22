@@ -99,7 +99,7 @@ msgid "The new network for health care professionals."
 msgstr "Le nouveau réseau des professionnels de la santé."
 
 msgid "Your personal link allows people to find and remember you easily."
-msgstr "Votre lien personnalisé permet aux gens de vous trouver et se souvenir facilement de votre profile."
+msgstr "Votre lien personnalisé permet aux gens de vous trouver et se souvenir facilement de votre profil."
 
 msgid "Be Present"
 msgstr "Soyez présent"
@@ -138,7 +138,7 @@ msgid "Schedule"
 msgstr "Horaire"
 
 msgid "Profile"
-msgstr "Profile"
+msgstr "Profil"
 
 msgid "Address"
 msgstr "Adresse"
@@ -360,7 +360,7 @@ msgid "New Patient"
 msgstr "Nouveau patient"
 
 msgid "Please complete your profile"
-msgstr "SVP complétez votre profile."
+msgstr "SVP complétez votre profil."
 
 msgid "First Name"
 msgstr "Prénom"
@@ -542,10 +542,16 @@ msgid "Please enter your first year of practice"
 msgstr "SVP entrer votre première année de pratique"
 
 msgid "Public Profile"
-msgstr "Profile Public"
+msgstr "Profil Public"
 
-msgid "Pssst. We want to know what you think about this page!"
+msgid "Pssst. Hey...we want to know what you think about this page!"
 msgstr "Pssst. Nous voulons savoir ce que vous pensez de cette page!"
+
+msgid "You can <a href='/contact'> get in touch with us here</a>."
+msgstr "Vous pouvez <a href='/contact'>entrer en contact avec nous ici</a>."
+
+msgid "Let us know if you think something is missing or can be improved. Or if you're feeling nice, tell us you think it looks good! We love to hear feedback from our users."
+msgstr "Laissez-nous savoir s'il y aurait quelque chose à rajouter sur cette page. Ou, si vous vous sentez bien, dites-nous que tout est beau! On aime entendre les commentaires de nos utilisateurs."
 
 #################
 # Address Page
