@@ -555,10 +555,22 @@ msgid "Get patients in your neighborhood by completing your contact information.
 msgstr "Trouvez des patients dans vôtre quartier en fournissant vos coordonées."
 
 msgid "Title"
-msgstr "Salutation"
+msgstr "Titre"
+
+msgid "Mr."
+msgstr "M."
+
+msgid "Mrs."
+msgstr "Mme."
+
+msgid "Dr."
+msgstr "Dr"
 
 msgid "Credentials"
 msgstr "Lettres de créance"
+
+msgid "Letters that go after your name, ex: M.Sc. or M.D."
+msgstr "Les lettres qui vont après votre nom, ex: M.Sc. ou M.D."
 
 msgid "City"
 msgstr "Ville"
@@ -705,7 +717,7 @@ msgid "Psychologist"
 msgstr "Psychologue"
 
 msgid "Podiastrist"
-msgstr "Podiatres"
+msgstr "Podiatre"
 
 msgid "Doctor"
 msgstr "Médecin"
