@@ -39,6 +39,12 @@ Twitter Bootstrap horizontal form layout.
 		{% else %}
 		{{ field(class=inputClass) }}
 		{% endif %}
+		
+		{% if field.description %}
+		<p class="help-block" style="font-style:italic; font-size:small; color:#999999">
+		{{ field.description }}
+		</p>
+		{% endif %}
 	</div>
 </div>
 {% endif %}
