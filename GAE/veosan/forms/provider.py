@@ -65,10 +65,10 @@ class ProviderPhotoForm(CustomForm):
 
 class ProviderAddressForm(CustomForm):
     def _set_fields(self, form):        
-        setattr(form, 'title', TextField(_(u'Title')))
+        setattr(form, 'title', SelectField(_(u'Title'), choices=util.get_all_titles()))
         setattr(form, 'first_name', TextField(_(u'First Name')))
         setattr(form, 'last_name', TextField(_(u'Last Name')))
-        setattr(form, 'credentials', TextField(_(u'Credentials')))
+        setattr(form, 'credentials', TextField(_(u'Credentials'), description=_('Letters that go after your name, ex: M.Sc. or M.D.')))
         setattr(form, 'phone', TextField(_(u'Telephone'), [validators.Optional(), validators.Regexp(regex="^[2-9]\d{2}-\d{3}-\d{4}$", message=_(u'Please make sure phone number is in the following format: 514-555-1212'))]))
         setattr(form, 'address', TextField(_(u'Addresse')))
         setattr(form, 'city', TextField(_(u'City')))
