@@ -489,6 +489,8 @@ msgstr "SVP entrez un mois valide."
 msgid "Please enter a valid number of hours."
 msgstr "SVP entrez un nombre d'heures valide."
 
+msgid "Leave empty for present"
+msgstr "Laisser vide pour le présent"
 
 #################
 # Profile Page
@@ -693,9 +695,20 @@ msgstr "Chiropraticien"
 msgid "Health Care Administration"
 msgstr "Administration des soins de santé"
 
-msgid "Audiology"
-msgstr "Audiologie"
+msgid "Occupational Therapist"
+msgstr "Ergothérapeute"
 
+msgid "Nurse"
+msgstr "Infirmière ou infirmier"
+
+msgid "Psychologist"
+msgstr "Psychologue"
+
+msgid "Podiastrist"
+msgstr "Podiatres"
+
+msgid "Doctor"
+msgstr "Médecin"
 
 #################
 # Regions
@@ -747,10 +760,6 @@ msgstr "Baccalauréat"
 
 msgid "Master's"
 msgstr "Maîtrise"
-
-msgid "Doctor"
-msgstr "Doctorat"
-
 
 #################
 # Associations
