@@ -36,7 +36,7 @@ class ProviderTest(BaseTest):
         # patient name in navbar
         response.mustcontain(self._TEST_PROVIDER_EMAIL)
         response.mustcontain('CV')
-        response.mustcontain('Profile')
+        response.mustcontain('Profil')
         response.mustcontain(no='Administration')
 
         assert 'Administration' not in response 
@@ -216,7 +216,7 @@ class ProviderTest(BaseTest):
         # password has been set
         welcome_response = password_form.submit()
         welcome_response = welcome_response.follow()
-        welcome_response.mustcontain("Profile")
+        welcome_response.mustcontain("Profil")
 
         self.logout_provider()
         
@@ -242,7 +242,7 @@ class ProviderTest(BaseTest):
         response = resetpassword_form.submit()
         
         # terms agreement                       
-        response.mustcontain("Password reset instructions sent to %s" % self._TEST_PROVIDER_EMAIL)
+        response.mustcontain("Un courriel a été envoyé à votre adresse courriel afin de réinitialiser votre mot de passe.")
         
         messages = self.mail_stub.get_sent_messages(to=self._TEST_PROVIDER_EMAIL)
         self.assertEqual(2, len(messages))
@@ -273,7 +273,7 @@ class ProviderTest(BaseTest):
         self.assertEqual(reset_post_response.status_int, 200)
         
         reset_post_response.mustcontain('Welcome back! Password has been reset.')
-        reset_post_response.mustcontain('Profile')
+        reset_post_response.mustcontain('Profil')
 
         # try to login with old credentials
         logout_response = self.testapp.get("/logout")
@@ -299,7 +299,7 @@ class ProviderTest(BaseTest):
         
         # follow response redirect after successful login
         response = response.follow()
-        response.mustcontain("Profile")
+        response.mustcontain("Profil")
 
     def test_provider_reset_password_twice_with_same_token(self):
         self.create_complete_provider_profile()
@@ -313,7 +313,7 @@ class ProviderTest(BaseTest):
         response = resetpassword_form.submit()
         
         # terms agreement                       
-        response.mustcontain("Password reset instructions sent to %s" % self._TEST_PROVIDER_EMAIL)
+        response.mustcontain("Un courriel a été envoyé à votre adresse courriel afin de réinitialiser votre mot de passe.")
         
         messages = self.mail_stub.get_sent_messages(to=self._TEST_PROVIDER_EMAIL)
         self.assertEqual(2, len(messages))
@@ -345,7 +345,7 @@ class ProviderTest(BaseTest):
         self.assertEqual(reset_post_response.status_int, 200)
         
         reset_post_response.mustcontain('Welcome back! Password has been reset.')
-        reset_post_response.mustcontain('Profile')
+        reset_post_response.mustcontain('Profil')
 
         # try to re-use the same password reset token
         reset_response = self.testapp.get(reset_url)

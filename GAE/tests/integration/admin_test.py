@@ -201,7 +201,7 @@ class AdminTest(BaseTest):
         response.mustcontain('Administration')
         response.mustcontain('Rendez-vous')
         response.mustcontain('Horaire')
-        response.mustcontain('Profile')
+        response.mustcontain('Profil')
         response.mustcontain('Adresse')
 
 

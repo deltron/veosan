@@ -24,7 +24,7 @@ class AuthenticationTest(BaseTest):
         # email in the header
         login_welcome_page.mustcontain(self._TEST_PROVIDER_EMAIL)
         # login lands on booking page
-        login_welcome_page.mustcontain('Profile')
+        login_welcome_page.mustcontain('Profil')
         
 
     def test_provider_login_fail(self):

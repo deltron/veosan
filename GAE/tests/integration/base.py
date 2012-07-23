@@ -100,7 +100,7 @@ class BaseTest(unittest.TestCase):
         response = login_redirect.follow()
         
         # default page for provider after login is bookings
-        response.mustcontain("Profile")
+        response.mustcontain("Profil")
         return response
         
 
