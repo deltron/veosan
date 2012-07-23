@@ -253,8 +253,13 @@ class BaseHandler(webapp2.RequestHandler):
                 event.user = user.key
         else:
             user = None
+            
+        referer = self.request.headers.get('Referer')
+        if referer:
+            event.referer = referer
         
-        event.description = msg
+        if msg:
+            event.description = msg
         
         # save async so we don't slow anything don't
         # don't really care if it doesn't work (not critical information)

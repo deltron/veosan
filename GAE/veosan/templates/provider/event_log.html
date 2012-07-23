@@ -18,21 +18,19 @@
 			</thead>
 			<tbody>
 				{% for e in events %}
-			
-					{% if e.description.find("Provider Logged In") >= 0 %}
-					  	<tr style="background-color: #BDECB6">
+
+				{% if e.description.find("Provider Logged In") >= 0 %}
+				<tr style="background-color: #BDECB6">
 					{% elif e.description.find("Error") >= 0 %}
-					  	<tr style="background-color: #FF7878">
+				<tr style="background-color: #FF7878">
 					{% else %}
-						<tr>
+				<tr>
 					{% endif %}
-					
-					<td>
-						{{ e.created_on|format_datetime_withseconds_convert_east_tz }}
-					</td>
-					<td>
-						{{ e.description }}
-					</td>
+
+					<td> {{ e.created_on|format_datetime_withseconds_convert_east_tz }} </td>
+					<td> {{ e.description }}
+					<br>
+					<span style="font-size:x-small; color:#aaaaaa"> {{ e.referer }} </span></td>
 				</tr>
 				{% endfor %}
 			</tbody>
@@ -40,5 +38,5 @@
 	</div>
 </div>
 
-{% endblock content %} 
+{% endblock content %}
 

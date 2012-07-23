@@ -189,6 +189,9 @@ class ProviderCVHandler(ProviderBaseHandler):
                 # success, empty forms so you can play again            
                 kwargs = self.generate_blank_forms()
             
+                # log the event
+                self.log_event(user=provider.user, msg="Edit CV: %s %s success" % (operation, section))
+
             if operation == 'edit':
                 logging.info("(ProviderEducationHandler.get) Edit section %s key=%s" % (section, key))
                 
@@ -270,6 +273,54 @@ class ProviderCVHandler(ProviderBaseHandler):
             self.log_event(user=provider.user, msg="Edit CV: %s %s validation error" % (operation, section))
 
 
+class ProviderPublicProfileHandler(ProviderBaseHandler):
+    
+    def get(self, vanity_url=None):
+        # convert to lowercase
+        vanity_url = vanity_url.lower()
+        
+        logging.info('(ProviderPublicProfileHandler.get) Received vanity_url: %s' % vanity_url)
+        provider = db.get_provider_from_vanity_url(vanity_url)
+        if provider:
+            logging.info('(ProviderPublicProfileHandler.get) Found provider %s, rendering profile' % provider.email)
+            
+            # found a provider, render profile
+            self.render_public_profile(provider)
+            
+            # increment view count, store async
+            # we don't really care if it doesn't work
+            # old --> use event log instead
+            provider.profile_views += 1
+            provider.put_async()
+
+            # log the event
+            user = self.get_current_user()
+            if user and user.key == provider.user:
+                self.log_event(user=provider.user, msg="Public profile: self-view")
+            else:
+                self.log_event(user=provider.user, msg="Public profile: public view")
+                
+        else:
+            logging.info('(ProviderPublicProfileHandler.get) No provider found, sending to index')
+
+            # nobody found, send them to the homepage
+            self.redirect("/")
+            
+            
+# BOOKING AND SCHEDULE STUFF
+# *************************************
+
+class ProviderBookingsHandler(ProviderBaseHandler):
+    
+    @provider_required
+    def get(self, vanity_url=None):
+        provider = db.get_provider_from_vanity_url(vanity_url)
+        if provider:
+            self.render_bookings(self, provider)
+
+
+
+
 
 class ProviderScheduleHandler(ProviderBaseHandler):
     
@@ -307,44 +358,3 @@ class ProviderScheduleHandler(ProviderBaseHandler):
         else:
             logging.info('Wrong operation save schedule:' + operation)
 
-class ProviderBookingsHandler(ProviderBaseHandler):
-    
-    @provider_required
-    def get(self, vanity_url=None):
-        provider = db.get_provider_from_vanity_url(vanity_url)
-        if provider:
-            self.render_bookings(self, provider)
-
-
-class ProviderPublicProfileHandler(ProviderBaseHandler):
-    
-    def get(self, vanity_url=None):
-        # convert to lowercase
-        vanity_url = vanity_url.lower()
-        
-        logging.info('(ProviderPublicProfileHandler.get) Received vanity_url: %s' % vanity_url)
-        provider = db.get_provider_from_vanity_url(vanity_url)
-        if provider:
-            logging.info('(ProviderPublicProfileHandler.get) Found provider %s, rendering profile' % provider.email)
-            
-            # found a provider, render profile
-            self.render_public_profile(provider)
-            
-            # increment view count, store async
-            # we don't really care if it doesn't work
-            # old --> use event log instead
-            provider.profile_views += 1
-            provider.put_async()
-
-            # log the event
-            user = self.get_current_user()
-            if user and user.key == provider.user:
-                self.log_event(user=provider.user, msg="Public profile: self-view")
-            else:
-                self.log_event(user=provider.user, msg="Public profile: public view")
-                
-        else:
-            logging.info('(ProviderPublicProfileHandler.get) No provider found, sending to index')
-
-            # nobody found, send them to the homepage
-            self.redirect("/")

@@ -238,6 +238,7 @@ class LogEvent(ndb.Model):
 
     created_on = ndb.DateTimeProperty(auto_now_add=True)
     description = ndb.StringProperty()
+    referer = ndb.StringProperty()
 
 
 class Schedule(ndb.Model):
