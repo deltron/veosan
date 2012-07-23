@@ -1,0 +1,44 @@
+{% extends "/layout/provider_nav.html" %}
+
+{% set active_page = "logs" %}
+
+{% block subhead %}Event Log{% endblock %}
+{% block lead %}Keep track of what's what{% endblock %}
+
+{% block content %}
+<!-- span -->
+<div class="row">
+	<div class="span12">
+		<table class="table">
+			<thead>
+				<tr>
+					<th width="25%">Date</th>
+					<th width="75%">Description</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for e in events %}
+			
+					{% if e.description.find("Provider Logged In") >= 0 %}
+					  	<tr style="background-color: #BDECB6">
+					{% elif e.description.find("Error") >= 0 %}
+					  	<tr style="background-color: #FF7878">
+					{% else %}
+						<tr>
+					{% endif %}
+					
+					<td>
+						{{ e.created_on|format_datetime_withseconds_convert_east_tz }}
+					</td>
+					<td>
+						{{ e.description }}
+					</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</div>
+
+{% endblock content %} 
+

@@ -8,7 +8,9 @@ import data
 import handler.auth
 import util
 from data import db
-from data.model import SiteConfig
+from data.model import SiteConfig, LogEvent, User
+from google.appengine.ext.ndb.key import Key
+from google.appengine.ext import ndb
 
 class BaseHandler(webapp2.RequestHandler):
     '''
@@ -147,6 +149,7 @@ class BaseHandler(webapp2.RequestHandler):
             super(BaseHandler, self).dispatch()
         finally:
             self.session_store.save_sessions(self.response)
+            
 
     @webapp2.cached_property
     def auth(self):
@@ -235,6 +238,27 @@ class BaseHandler(webapp2.RequestHandler):
         else:
             logging.info('(BaseHandler.create_empty_user_for_patient) New shell user creation failed. Probably existing email: %s' % new_user.get_email())
             return None
+
+
+### Logging stuff
+    def log_event(self, user = None, msg = None):
+        event = LogEvent()
+        
+        # try to attach the event to a user
+        if user:
+            # this is probably not super efficient
+            if isinstance(user, Key):
+                event.user = user
+            elif isinstance(user, User):
+                event.user = user.key
+        else:
+            user = None
+        
+        event.description = msg
+        
+        # save async so we don't slow anything don't
+        # don't really care if it doesn't work (not critical information)
+        event.put_async()
 
 
 ### Token stuff

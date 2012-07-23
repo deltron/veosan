@@ -79,10 +79,17 @@ class ProviderEditAddressHandler(ProviderBaseHandler):
             provider = provider_key.get()
 
             self.render_address(provider, address_form=form, success_message=saved_message)
+
+            # log the event
+            self.log_event(user=provider.user, msg="Edit Address: Success")
+
         else:
             # show validation error
             provider = db.get_provider_from_vanity_url(vanity_url)
             self.render_address(provider, address_form=form)
+            
+            # log the event
+            self.log_event(user=provider.user, msg="Edit Address: Validation Error")
 
 
 
@@ -95,7 +102,7 @@ class ProviderEditProfileHandler(ProviderBaseHandler):
         if vanity_url:
             provider = db.get_provider_from_vanity_url(vanity_url)
             
-            logging.info("(ProviderEditProfileHandler.get) Edit profile for provider %s" % provider.email)
+            logging.debug("(ProviderEditProfileHandler.get) Edit profile for provider %s" % provider.email)
             
             profile_form = ProviderProfileForm().get_form(obj=provider)
             
@@ -110,10 +117,17 @@ class ProviderEditProfileHandler(ProviderBaseHandler):
             provider_key = db.storeProvider(provider, self.request.POST, form=form)
             provider = provider_key.get()
             self.render_profile(provider, profile_form=form, success_message=saved_message)
+
+            # log the event
+            self.log_event(user=provider.user, msg="Edit Profile: Success")
+
         else:
             # show error
             provider = db.get_provider_from_vanity_url(vanity_url)
             self.render_profile(provider, profile_form=form)
+            
+            # log the event
+            self.log_event(user=provider.user, msg="Edit Profile: Validation Error")
 
 class ProviderProfilePhotoUploadHandler(ProviderBaseHandler, blobstore_handlers.BlobstoreUploadHandler):
     
@@ -131,6 +145,9 @@ class ProviderProfilePhotoUploadHandler(ProviderBaseHandler, blobstore_handlers.
         
         # redirect to profile page        
         self.redirect('/provider/profile/%s' % provider.vanity_url) 
+
+        # log the event
+        self.log_event(user=provider.user, msg="Edit Profile: Upload Photo")
 
 
 class ProviderCVHandler(ProviderBaseHandler):
@@ -209,7 +226,7 @@ class ProviderCVHandler(ProviderBaseHandler):
                 section_object.put()
                 
                 # stored eduction
-                logging.info("(ProviderEducationHandler.post) Stored section %s key=%s" % (section, section_object.key))
+                logging.debug("(ProviderEducationHandler.post) Stored section %s key=%s" % (section, section_object.key))
 
             if operation == 'edit':
                 section_key = ndb.Key(urlsafe=key)
@@ -230,6 +247,10 @@ class ProviderCVHandler(ProviderBaseHandler):
             kwargs = self.generate_blank_forms()
 
             self.render_cv(provider, success_message=saved_message, **kwargs)
+            
+            # log the event
+            self.log_event(user=provider.user, msg="Edit CV: %s %s success" % (operation, section))
+
         else:            
             kwargs = {}
             for key in self.forms:
@@ -244,7 +265,10 @@ class ProviderCVHandler(ProviderBaseHandler):
                 kwargs['edit'] = section
             
             self.render_cv(provider, **kwargs)
-          
+            
+            # log the event
+            self.log_event(user=provider.user, msg="Edit CV: %s %s validation error" % (operation, section))
+
 
 
 class ProviderScheduleHandler(ProviderBaseHandler):
@@ -302,15 +326,23 @@ class ProviderPublicProfileHandler(ProviderBaseHandler):
         provider = db.get_provider_from_vanity_url(vanity_url)
         if provider:
             logging.info('(ProviderPublicProfileHandler.get) Found provider %s, rendering profile' % provider.email)
-
-            # increment view count, store async
-            # we don't really care if it doesn't work
-            provider.profile_views += 1
-            future = provider.put_async()
             
             # found a provider, render profile
             self.render_public_profile(provider)
-            future.get_result()
+            
+            # increment view count, store async
+            # we don't really care if it doesn't work
+            # old --> use event log instead
+            provider.profile_views += 1
+            provider.put_async()
+
+            # log the event
+            user = self.get_current_user()
+            if user and user.key == provider.user:
+                self.log_event(user=provider.user, msg="Public profile: self-view")
+            else:
+                self.log_event(user=provider.user, msg="Public profile: public view")
+                
         else:
             logging.info('(ProviderPublicProfileHandler.get) No provider found, sending to index')
 

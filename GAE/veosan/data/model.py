@@ -233,7 +233,11 @@ class Experience(ndb.Model):
 
     description = ndb.TextProperty()
 
+class LogEvent(ndb.Model):
+    user = ndb.KeyProperty(kind=User)
 
+    created_on = ndb.DateTimeProperty(auto_now_add=True)
+    description = ndb.StringProperty()
 
 
 class Schedule(ndb.Model):

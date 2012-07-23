@@ -288,6 +288,7 @@ class LoginHandler(UserBaseHandler):
                 # login was succesful, User is in the session
                 booking_key = self.request.POST.get('booking_key')
                 
+                
                 if booking_key:
                     # special redirect for login during booking flow
                     self.redirect('/patient/book?bk=%s' % booking_key)
@@ -299,6 +300,9 @@ class LoginHandler(UserBaseHandler):
                         logging.info('(LoginHandler.post) User %s logged in as provider, redirecting to profile page', user.get_email())
 
                         self.redirect('/provider/profile/%s' % provider.vanity_url)
+
+                        # log the event
+                        self.log_event(user, "Provider Logged In")
 
                     elif auth.PATIENT_ROLE in user.roles:
                         patient = db.get_patient_from_user(user)
@@ -328,7 +332,10 @@ class LogoutHandler(UserBaseHandler):
     def get(self):
         user = self.get_current_user()
         if user:
-            logging.info("(LogoutHandler.get) Logging out user: %s" % user.get_email())
+            logging.debug("(LogoutHandler.get) Logging out user: %s" % user.get_email())
+            
+            # log the event
+            self.log_event(user, "Logged out")
 
         self.auth.unset_session()
         self.redirect('/')

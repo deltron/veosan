@@ -117,3 +117,16 @@ class ProviderDomainHandler(ProviderAdminBaseHandler):
 
         self.redirect('/admin/provider/admin/' + provider.vanity_url)
 
+
+class ProviderEventLogHandler(ProviderAdminBaseHandler):
+    @admin_required
+    def get(self, vanity_url=None):
+        provider = db.get_provider_from_vanity_url(vanity_url)
+        
+        user = provider.user.get()
+        
+        events = db.get_events_for_user(user)
+        
+        self.render_template("/provider/event_log.html", provider=provider, events=events)
+
+

@@ -5,7 +5,7 @@
 from google.appengine.ext import ndb
 import logging
 from datetime import datetime, date, time
-from data.model import Booking, Patient, Provider, User, SiteConfig
+from data.model import Booking, Patient, Provider, User, SiteConfig, LogEvent
 import db_util
   
 def get_from_urlsafe_key(urlsafe_key):
@@ -137,6 +137,15 @@ def get_provider_from_domain(domain):
         return Provider.query(Provider.vanity_domain == domain).get()
     else:
         return None  
+
+
+def get_events_for_user(user):
+    ''' returns all the log events for a user '''
+    if user:
+        return LogEvent.query(LogEvent.user == user.key).order(-LogEvent.created_on).fetch()
+    else:
+        return None  
+
 
 
 def get_site_config():

@@ -25,6 +25,9 @@
 	<li id="notes" {% if  "notes" == active_page %} class="active" {% endif %} style="font-style:italic">
 		<a href="/admin/provider/notes/{{ provider.vanity_url }}">{{ _('Notes') }}</a>
 	</li>
+	<li id="notes" {% if  "logs" == active_page %} class="active" {% endif %} style="font-style:italic">
+		<a href="/admin/provider/logs/{{ provider.vanity_url }}">{{ _('Event Logs') }}</a>
+	</li>
 	{% endif %}
 	
 	<li id="bookings" class="pull-right">

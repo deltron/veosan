@@ -66,6 +66,12 @@ indexes:
   - name: start_year
     direction: desc
 
+- kind: LogEvent
+  properties:
+  - name: user
+  - name: created_on
+    direction: desc
+
 - kind: Note
   properties:
   - name: provider
