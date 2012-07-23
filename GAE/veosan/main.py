@@ -12,6 +12,7 @@ import util
 from utilities import time
 from handler import booking, provider, patient, provider_admin, admin, static, contact, language, user
 from data.model import User
+from google.appengine.ext import ndb
 
 
 jinja_filters = {}
@@ -64,7 +65,7 @@ webapp2_config['webapp2_extras.auth'] = {
                                          }
 
 
-application = webapp2.WSGIApplication([
+application = ndb.toplevel(webapp2.WSGIApplication([
                                        # handle custom domains
                                        # match everything that is not veosan.com
                                        DomainRoute(r'www.<domain:((?!veosan\.com).)*$>', [                                        
@@ -189,5 +190,5 @@ application = webapp2.WSGIApplication([
                                        Route('/<vanity_url>', handler=provider.ProviderPublicProfileHandler),
                                        Route('/<vanity_url>/', handler=provider.ProviderPublicProfileHandler),
                                       ], debug=True,
-                                      config=webapp2_config)
+                                      config=webapp2_config))
 
