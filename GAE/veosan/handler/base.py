@@ -216,6 +216,9 @@ class BaseHandler(webapp2.RequestHandler):
             provider.user = new_user.key
             provider.put()
             
+            # make sure user is saved properly
+            new_user.put()
+            
             return new_user
         else:
             logging.info('(BaseHandler.create_empty_user_for_provider) New shell user creation failed. Probably existing email: %s' % new_user.get_email())

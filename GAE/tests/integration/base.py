@@ -6,7 +6,7 @@ import unittest, webtest
 from StringIO import StringIO
 
 
-# clik
+# veo
 import main
 import data.db as db
 from handler import auth
@@ -14,6 +14,7 @@ from data.model import Patient
 from datetime import datetime
 from data.model import User, Booking
 import util
+from google.appengine.datastore import datastore_stub_util
 
 class BaseTest(unittest.TestCase):
     util.BOOKING_ENABLED = True
@@ -41,7 +42,8 @@ class BaseTest(unittest.TestCase):
         
         self.testbed = testbed.Testbed()
         self.testbed.activate()
-        self.testbed.init_datastore_v3_stub()
+        self.policy = datastore_stub_util.PseudoRandomHRConsistencyPolicy(probability=1)
+        self.testbed.init_datastore_v3_stub(consistency_policy=self.policy)
         self.testbed.init_blobstore_stub()
         self.testbed.init_memcache_stub()
         self.testbed.init_user_stub()
@@ -189,6 +191,8 @@ class BaseTest(unittest.TestCase):
         # hit the solicit button
         response = self.testapp.get('/admin/provider/solicit/%s' % provider.vanity_url)
         
+        response = self.testapp.get("/")
+        
         # read the email and check content
         messages = self.mail_stub.get_sent_messages(to=self._TEST_PROVIDER_EMAIL)
         self.assertEqual(1, len(messages))
@@ -196,7 +200,7 @@ class BaseTest(unittest.TestCase):
         self.assertEqual(m.subject, 'Activation de votre compte Veosan')
         
         # assert that activation link is in the email body
-        user = User.query(User.key == provider.user).get()
+        user = db.get_user_from_email(self._TEST_PROVIDER_EMAIL)
         self.assertTrue('http://localhost/user/activation/%s' % user.signup_token in m.body.payload)
  
 
