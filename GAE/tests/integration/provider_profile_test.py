@@ -42,6 +42,9 @@ class ProviderTest(BaseTest):
         response.mustcontain('Clinical Physiotherapy')
         response.mustcontain("Baccalauréat")
 
+        # check the event log
+        self.assert_msg_in_log("")
+
 
 
     def test_delete_education_from_profile(self):

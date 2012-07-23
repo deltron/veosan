@@ -67,6 +67,19 @@ class BaseTest(unittest.TestCase):
         self.handler.close()
 
 
+    def assert_msg_in_log(self, msg):
+        events = db.get_events_all()
+        log_present = False
+        try:
+            # usual case is there is > 1 result
+            log_present = any(msg in event.description for event in events)
+        except TypeError:
+            # if there is only one, check it
+            log_present = msg in events.description
+        
+        self.assertTrue(log_present, "Event log message missing: %s" % msg)
+
+
     
     ##
     ## Testbed Authentication methods
@@ -103,6 +116,10 @@ class BaseTest(unittest.TestCase):
         
         # default page for provider after login is bookings
         response.mustcontain("Profil")
+        
+        # check the event log
+        self.assert_msg_in_log("Provider Logged In")
+
         return response
         
 
@@ -110,6 +127,10 @@ class BaseTest(unittest.TestCase):
         logout_redirect = self.testapp.get('/logout')
         logout_response = logout_redirect.follow()
         logout_response.mustcontain('Mon Compte')
+        
+        # check the event log
+        self.assert_msg_in_log("Logged out")
+
     
     def login_as_patient(self):
         response = self.testapp.get('/login')
@@ -242,7 +263,9 @@ class BaseTest(unittest.TestCase):
         response = self.testapp.get('/admin/providers')
         response.mustcontain("Fox")
         response.mustcontain("unit_test@provider.com")
-
+        
+        # check the event log
+        self.assert_msg_in_log("Edit Address: Success")
 
     def modify_provider_address_action(self):
         # get the provider key
@@ -300,6 +323,8 @@ class BaseTest(unittest.TestCase):
         response.mustcontain("Linda")
         response.mustcontain("unit_test@provider.com")
 
+        # check the event log
+        self.assert_msg_in_log("Edit Address: Success")
 
         
     def fill_new_provider_profile_correctly_action(self):
@@ -379,7 +404,10 @@ class BaseTest(unittest.TestCase):
 
         self.assertIn('onsite', provider.practice_sites)
 
-        
+        # check the event log
+        self.assert_msg_in_log("Edit Profile: Success")
+
+
     def provider_schedule_set_one_timeslot_action(self):
 
         # get the provider key
@@ -462,6 +490,7 @@ class BaseTest(unittest.TestCase):
         self.assertEqual(welcome_response.status_int, 200)
         welcome_response.mustcontain(u'Bienvenue chez Veosan!')
 
+        self.assert_msg_in_log("New account created for user")
 
     ###
     ### Patient Methods
