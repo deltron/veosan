@@ -203,7 +203,7 @@ class ResetPasswordHandler(UserBaseHandler):
                 mail.email_user_password_reset(self.jinja2, user, passwordreset_url)
             
                 # render the login page with success message
-                success_message = 'Password reset instructions sent to %s' % user.get_email()
+                success_message = _('Password reset instructions have been sent to your address on file.')
                 logging.info("(ProviderResetPasswordHandler.post) " + success_message)
                 self.render_login(success_message=success_message)
             else:

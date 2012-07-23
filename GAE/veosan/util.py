@@ -38,11 +38,12 @@ def get_all_categories():
             ("osteopath", _(u"Osteopath")),
             ("occupational_therapy", _('Occupational Therapist')),
             ("nurse", _('Nurse')),
+            ("auxiliary_nurse", _(u"Auxiliary Nurse")),
             ("physiotherapy", _(u"Physiotherapist")),
             ("psychology", _(u"Psychologist")),
             ("podiatrist", _('Podiastrist')),
-
-            ]
+            ("kinesiology", _('Kinesiology')),
+        ]
 
 def get_all_categories_for_profile_editing():
     # at the begining
@@ -87,6 +88,7 @@ def get_all_titles():
     return [
             ("mr", _('Mr.')),
             ("mrs", _('Mrs.')),
+            ("ms", _('Ms.')),
             ("dr", _('Dr.')),
             ]
 

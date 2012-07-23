@@ -51,10 +51,10 @@ msgid "Membership on our platform is currently by invitation."
 msgstr "L'abonnement à notre site se fait uniquement par invitation."
 
 msgid "Please enter your email address."
-msgstr "SVP entrer votre addresse courriel."
+msgstr "SVP entrer votre adresse courriel."
 
 msgid "Please enter your postal code."
-msgstr "SVP entrer votre code postale."
+msgstr "SVP entrer votre code postal."
 
 msgid "I'm a patient"
 msgstr "Je suis un patient"
@@ -111,13 +111,13 @@ msgid "Be Productive"
 msgstr "Soyez productif"
 
 msgid "Before this, you didn't exist! Get a professional profile that sets you apart."
-msgstr "Rehaussez votre visibilité! Obtenez un profil professionnel qui vous démarque."
+msgstr "Rehaussez votre visibilité! Obtenez un profil professionnel qui vous démarquera."
 
 msgid "Share your page with friends and connect with patients and prospective employers."
 msgstr "Partagez votre page avec vos amis et rejoignez des patients et employeurs potentiels."
 
 msgid "Get a sneak peek at new features that allow you to run your practice and discover new patients."
-msgstr "Obtenez un avant-goût des nouvelles fonctions qui vous aide à gérer votre pratique et à découvrir des nouveaux patients."
+msgstr "Obtenez un avant-goût des nouvelles fonctions qui vous aideront à gérer votre pratique et à découvrir des nouveaux patients."
 
 msgid "For example, if your name is Gerald Raymond you can use <i>graymond</i>"
 msgstr "Par exemple, si votre nom est Gérald Raymond, vous pouvez utiliser <i>graymond</i>"
@@ -264,7 +264,7 @@ msgid "Sorry, there was an error sending your comments. Please call (514) 998-12
 msgstr "Désolé, il y avait une erreur d'envoyer vos commentaires. S'il vous plaît appelez (514) 998-1286 pour parler à quelqu'un."
 
 msgid "If you want to talk to a real person right now, please don't hesitate to give us a call at (514) 998-1286. Thanks!"
-msgstr "Si vous voulez parler à quelqu'un tout de suite, n'hésitez pas d'appelez au (514) 998-1286. Merci!"
+msgstr "Si vous voulez parler à quelqu'un tout de suite, n'hésitez pas à nous contacter au (514) 998-1286. Merci!"
 
 #################
 # Index page
@@ -497,7 +497,7 @@ msgstr "Laisser vide pour le présent"
 #################
 
 msgid "Fill out your profile for better patient matches."
-msgstr "Remplissez votre profile afin de cibler des meilleurs patients."
+msgstr "Remplissez votre profil afin de cibler des meilleurs patients."
 
 msgid "Specialties"
 msgstr "Spécialités"
@@ -530,7 +530,7 @@ msgid "I have a clinic patients can visit"
 msgstr "J'ai accès à une clinique que les patients peuvent visiter"
 
 msgid "Spoken Languages"
-msgstr "Langages parlées"
+msgstr "Langues parlées"
 
 msgid "Practice Sites"
 msgstr "Sites de pratique"
@@ -554,7 +554,7 @@ msgid "You can <a href='/contact'> get in touch with us here</a>."
 msgstr "Vous pouvez <a href='/contact'>entrer en contact avec nous ici</a>."
 
 msgid "Let us know if you think something is missing or can be improved. Or if you're feeling nice, tell us you think it looks good! We love to hear feedback from our users."
-msgstr "Laissez-nous savoir s'il y aurait quelque chose à rajouter sur cette page. Ou, si vous vous sentez bien, dites-nous que tout est beau! On aime entendre les commentaires de nos utilisateurs."
+msgstr "Laissez-nous savoir s'il y aurait quelque chose à rajouter sur cette page. Ou, si le coeur vous en dit, faites-nous signe que tout est beau! On aime recevoir les commentaires de nos utilisateurs."
 
 #################
 # Address Page
@@ -570,10 +570,13 @@ msgid "Mr."
 msgstr "M."
 
 msgid "Mrs."
-msgstr "Mme."
+msgstr "Mme"
 
 msgid "Dr."
 msgstr "Dr"
+
+msgid "Ms."
+msgstr "Mlle"
 
 msgid "Credentials"
 msgstr "Lettres de créance"
@@ -585,7 +588,7 @@ msgid "City"
 msgstr "Ville"
 
 msgid "Postal Code"
-msgstr "Code postale"
+msgstr "Code postal"
 
 msgid "Please make sure your postal code is in the following format: A1B2C3"
 msgstr "SVP assurez-vous que votre code postal est dans le format suivant: A1B2C3"
@@ -647,6 +650,9 @@ msgstr "Aucun problème! S'il vous plaît, entrez votre adresse courriel ci-dess
 
 msgid "We are currently opening accounts on a limited basis, please sign up on the <a href='/'>home page</a>."
 msgstr "Nous ouvrons présentement des comptes par invitation, veuillez vous inscrire sur la <a href='/'>page principale</a>."
+
+msgid "Password reset instructions have been sent to your address on file."
+msgstr "Un courriel a été envoyé à votre adresse courriel afin de réinitialiser votre mot de passe."
 
 #################
 # Terms page
@@ -721,6 +727,12 @@ msgstr "Ergothérapeute"
 
 msgid "Nurse"
 msgstr "Infirmière ou infirmier"
+
+msgid "Auxiliary Nurse"
+msgstr "Infirmière ou infirmier auxiliaire"
+
+msgid "Kinesiology"
+msgstr "Kinésiologue"
 
 msgid "Psychologist"
 msgstr "Psychologue"
