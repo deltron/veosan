@@ -19,13 +19,13 @@ jinja_filters['format_datetime_with_weekday'] = time.format_datetime_with_weekda
 jinja_filters['format_date_weekday_after'] = time.format_date_weekday_after
 jinja_filters['format_datetime_full'] = time.format_datetime_full
 jinja_filters['format_datetime_noseconds'] = time.format_datetime_noseconds
+jinja_filters['format_datetime_withseconds_convert_east_tz'] = time.format_datetime_withseconds_convert_east_tz
 jinja_filters['format_hour'] = time.format_hour
 jinja_filters['format_30min_period'] = time.format_30min_period
 jinja_filters['code_to_string'] = util.code_to_string
 jinja_filters['dump'] = dump
 jinja_filters['remove_empty_strings_from_list'] = util.remove_empty_strings_from_list
 jinja_filters['markdown'] = util.markdown
-
 
 jinja_environment_args = {
         'autoescape': True,
@@ -51,7 +51,8 @@ webapp2_config['webapp2_extras.jinja2'] = {
 
 webapp2_config['webapp2_extras.i18n'] = {
                                          'translations_path': locale_path,
-                                         'default_locale': 'en'
+                                         'default_locale': 'en',
+                                         'default_timezone': 'America/Montreal',
                                          }
 
 webapp2_config['webapp2_extras.sessions'] = {
@@ -168,10 +169,12 @@ application = webapp2.WSGIApplication([
                                                # provider admin
                                                Route('/admin/<vanity_url>', provider_admin.ProviderAdministrationHandler),
                                             
+                                               # custom domain
                                                Route('/domain/<vanity_url>', provider_admin.ProviderDomainHandler),
                                             
-                                            
-                
+                                               # logs
+                                               Route('/logs/<vanity_url>', provider_admin.ProviderEventLogHandler),
+
                                                Route('/notes/<vanity_url>', provider_admin.ProviderNotesHandler),
                                                Route('/notes/<vanity_url>/<operation>/<note_key>', provider_admin.ProviderNotesHandler),
                                                Route('/feature/<feature_switch>/<vanity_url>', provider_admin.ProviderFeaturesHandler),
