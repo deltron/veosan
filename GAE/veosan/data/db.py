@@ -2,7 +2,7 @@
     database access
 '''
 #from google.appengine.ext import db as gdb
-from google.appengine.ext import ndb
+from google.appengine.ext import ndb, db as gdb
 import logging
 from datetime import datetime, date, time
 from data.model import Booking, Patient, Provider, User, SiteConfig, LogEvent
@@ -146,6 +146,9 @@ def get_events_for_user(user):
     else:
         return None  
 
+def get_events_all():
+    ''' returns all the log events '''
+    return LogEvent.query().order(-LogEvent.created_on).fetch()
 
 
 def get_site_config():

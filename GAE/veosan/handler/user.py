@@ -137,6 +137,8 @@ class PasswordHandler(UserBaseHandler):
                 if provider:
                     # show welcome page
                     self.redirect('/provider/message/new/' + provider.vanity_url)
+                    
+                    self.log_event(user, "New account created for user")
                                    
                 elif patient:
                     welcome_message = _("Welcome to Veosan! Profile confirmation successful.")
@@ -154,6 +156,8 @@ class PasswordHandler(UserBaseHandler):
 
                 if auth.PROVIDER_ROLE in user.roles:
                     self.redirect('/provider/message/reset/' + provider.vanity_url)
+                    self.log_event(user, "Password reset for user")
+
                 
                 if auth.PATIENT_ROLE in user.roles:
                     PatientBaseHandler.render_bookings(self, patient, success_message= _("Welcome back! Password has been reset.")) 
