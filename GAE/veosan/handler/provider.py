@@ -225,6 +225,8 @@ class ProviderCVHandler(ProviderBaseHandler):
                 section_object = self.objs[section]()
                     
                 db_util.set_all_properties_on_entity_from_multidict(section_object, self.request.POST, section_form)
+                #db_util.set_all_properties_on_entity_from_form(section_object, section_form)
+
                 section_object.provider = provider.key
                 section_object.put()
                 

@@ -4,13 +4,17 @@ from wtforms import Form, PasswordField, TextField
 from wtforms import validators
 from custom_form import CustomBooleanField
 from webapp2_extras.i18n import lazy_gettext as _
+import custom_filters
 
 # veo
 from custom_form import CustomForm
 
 class LoginForm(CustomForm):
     def _set_fields(self, form):        
-        setattr(form, 'email', TextField(_(u'Email'), [validators.Email(message=_(u'Invalid email address.'))]))
+        setattr(form, 'email', TextField(_(u'Email'), 
+                                validators=[validators.Email(message=_(u'Invalid email address.'))],
+                                filters=[custom_filters.to_lowercase]           
+                            ))
         setattr(form, 'password', PasswordField(_(u'Password')))
         setattr(form, 'remember_me', CustomBooleanField(_(u'Remember Me')))
 
