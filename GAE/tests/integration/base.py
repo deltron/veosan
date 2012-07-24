@@ -67,17 +67,17 @@ class BaseTest(unittest.TestCase):
         self.handler.close()
 
 
-    def assert_msg_in_log(self, msg):
+    def assert_msg_in_log(self, msg, admin = False):
         events = db.get_events_all()
         log_present = False
         try:
             # usual case is there is > 1 result
-            log_present = any(msg in event.description for event in events)
+            log_present = any((msg in event.description and event.admin == admin) for event in events)
         except TypeError:
             # if there is only one, check it
-            log_present = msg in events.description
+            log_present = msg in events.description and events.admin == admin
         
-        self.assertTrue(log_present, "Event log message missing: %s" % msg)
+        self.assertTrue(log_present, "Event log message missing: %s, admin=%s" % (msg,admin))
 
 
     
@@ -265,7 +265,7 @@ class BaseTest(unittest.TestCase):
         response.mustcontain("unit_test@provider.com")
         
         # check the event log
-        self.assert_msg_in_log("Edit Address: Success")
+        self.assert_msg_in_log("Edit Address: Success", admin=True)
 
     def modify_provider_address_action(self):
         # get the provider key
@@ -324,7 +324,7 @@ class BaseTest(unittest.TestCase):
         response.mustcontain("unit_test@provider.com")
 
         # check the event log
-        self.assert_msg_in_log("Edit Address: Success")
+        self.assert_msg_in_log("Edit Address: Success", admin=True)
 
         
     def fill_new_provider_profile_correctly_action(self):
@@ -405,7 +405,7 @@ class BaseTest(unittest.TestCase):
         self.assertIn('onsite', provider.practice_sites)
 
         # check the event log
-        self.assert_msg_in_log("Edit Profile: Success")
+        self.assert_msg_in_log("Edit Profile: Success", admin=True)
 
 
     def provider_schedule_set_one_timeslot_action(self):

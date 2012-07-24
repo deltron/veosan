@@ -263,8 +263,15 @@ class BaseHandler(webapp2.RequestHandler):
         
         if msg:
             event.description = msg
-        
-        # save async so we don't slow anything don't
+            
+        google_user = users.get_current_user()
+        if google_user:
+            # check google account for admin
+            if users.is_current_user_admin():
+                event.admin = True
+
+
+        # save async so we don't slow anything down
         # don't really care if it doesn't work (not critical information)
         event.put_async()
 

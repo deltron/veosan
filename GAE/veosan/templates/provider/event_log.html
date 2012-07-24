@@ -19,16 +19,19 @@
 			<tbody>
 				{% for e in events %}
 
-				{% if e.description.find("Provider Logged In") >= 0 %}
+				{% if "Provider Logged In" in e.description %}
 				<tr style="background-color: #BDECB6">
-					{% elif e.description.find("Error") >= 0 %}
+					{% elif "Error" in e.description %}
 				<tr style="background-color: #FF7878">
+					{% elif e.admin %}
+				<tr style="background-color: #cccccc">
 					{% else %}
 				<tr>
 					{% endif %}
 
 					<td> {{ e.created_on|format_datetime_withseconds_convert_east_tz }} </td>
-					<td> {{ e.description }}
+					<td> 
+						{% if e.admin %}(ADMIN){% endif %} {{ e.description }}
 					<br>
 					<span style="font-size:x-small; color:#aaaaaa"> {{ e.referer }} </span></td>
 				</tr>

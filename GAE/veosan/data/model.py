@@ -235,6 +235,7 @@ class Experience(ndb.Model):
 
 class LogEvent(ndb.Model):
     user = ndb.KeyProperty(kind=User)
+    admin = ndb.BooleanProperty(default=False)
 
     created_on = ndb.DateTimeProperty(auto_now_add=True)
     description = ndb.StringProperty()
