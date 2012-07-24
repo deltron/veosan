@@ -224,6 +224,43 @@ class ProviderTest(BaseTest):
         self.assert_msg_in_log("Edit Profile: Success", admin=True)
 
 
+    def test_add_experience_to_profile_with_markdown(self):
+        self.login_as_admin()
+        self.init_new_provider()
+
+        # fill profile section
+        self.fill_new_provider_profile_correctly_action()
+
+        response = self.testapp.get('/provider/cv/' + self._TEST_PROVIDER_VANITY_URL)
+
+        experience_form = response.forms['experience_form']
+        
+        experience_form['start_year'] = 2003
+        experience_form['end_year'] = 2006
+        experience_form['company_name'] = 'Kinatex'
+        experience_form['title'] = 'Manual Physiotherapy'
+        experience_form['description'] = 'Par1\n\nPar2* Worked with my hands\n * Item two'
+
+        response = experience_form.submit()
+        
+        # check on the profile admin page
+        response.mustcontain('2003','2006')
+        response.mustcontain('Kinatex')
+        response.mustcontain('Manual Physiotherapy')
+        response.mustcontain('<p>Par1</p>')
+        
+        
+        # check on the public profile
+        response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
+        response.mustcontain('2003','2006')
+        response.mustcontain('Kinatex')
+        response.mustcontain('Manual Physiotherapy')
+        response.mustcontain('Worked with my hands')
+
+        self.assert_msg_in_log("Edit CV: add experience success", admin=True)
+
+
+
 if __name__ == "__main__":
     unittest.main()
     

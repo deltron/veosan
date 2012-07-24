@@ -159,6 +159,10 @@ class BaseTest(unittest.TestCase):
     ## PROVIDER AND ADMIN METHODS
     ######################################################################
     
+    def create_complete_provider_profile_selfserve(self):
+        self.self_signup_provider()
+    
+    # this is the old way
     def create_complete_provider_profile(self):
         '''
             Test init provider with address, profile and one timeslot together.
@@ -184,6 +188,24 @@ class BaseTest(unittest.TestCase):
         self.logout_provider()
 
      
+    def self_signup_provider(self, provider_email=_TEST_PROVIDER_EMAIL, vanity_url=_TEST_PROVIDER_VANITY_URL):
+        response = self.testapp.post('/signup')
+        
+        signup_form = response.forms['signup_form']
+        signup_form['email'] = provider_email
+        signup_form['vanity_url'] = vanity_url
+        
+        password_response = signup_form.submit().follow()
+        password_response.mustcontain('Mot de passe')
+        
+        password_form = password_response.forms[0]
+        password_form['password'] = self._TEST_PROVIDER_PASSWORD
+        password_form['password_confirm'] = self._TEST_PROVIDER_PASSWORD
+        
+        profile_response = password_form.submit().follow()
+        profile_response.mustcontain("Bienvenue")
+        
+             
     def init_new_provider(self, provider_email=_TEST_PROVIDER_EMAIL, vanity_url=_TEST_PROVIDER_VANITY_URL):
         ''' initialize a new provider '''
         
@@ -327,7 +349,7 @@ class BaseTest(unittest.TestCase):
         self.assert_msg_in_log("Edit Address: Success", admin=True)
 
         
-    def fill_new_provider_profile_correctly_action(self):
+    def fill_new_provider_profile_correctly_action(self, as_admin=True):
 
         # get the provider key
         provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
@@ -405,7 +427,7 @@ class BaseTest(unittest.TestCase):
         self.assertIn('onsite', provider.practice_sites)
 
         # check the event log
-        self.assert_msg_in_log("Edit Profile: Success", admin=True)
+        self.assert_msg_in_log("Edit Profile: Success", admin=as_admin)
 
 
     def provider_schedule_set_one_timeslot_action(self):

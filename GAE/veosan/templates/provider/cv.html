@@ -44,7 +44,7 @@
 				{% endif %}
 				</h6>
 				<p>
-					{{ e.description }}
+					{{ e.description|markdown|safe }}
 				</p>
 			</li>
 			{% endfor %}
@@ -88,7 +88,7 @@
 				{% endif %}
 				({{ e.year }}/{{ e.month }})</h6>
 				<p>
-					{{ e.description }}
+					{{ e.description|markdown|safe }}
 				</p>
 			</li>
 			{% endfor %}

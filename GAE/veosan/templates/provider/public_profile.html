@@ -145,7 +145,7 @@
 				{{ _('Present') }})
 				{% endif %}</h6>
 				<p>
-					{{ e.description }}
+					{{ e.description|markdown|safe }}
 				</p>
 			</li>
 			{% endfor %}
@@ -162,7 +162,7 @@
 				{{ e.hours  }} {{ _('Hours') }}
 				{% endif %} ({{ e.year }}/{{ e.month }})</h6>
 				<p>
-					{{ e.description }}
+					{{ e.description|markdown|safe }}
 				</p>
 			</li>
 			{% endfor %}
