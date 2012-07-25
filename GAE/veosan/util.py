@@ -242,7 +242,8 @@ def remove_empty_strings_from_list(l):
     return filter (lambda a: a != u'', l)
 
 def markdown(text):
-    return markdown2.markdown(text)
+    if text:
+        return markdown2.markdown(text)
 
 note_types = ['call', 'email', 'meeting', 'admin']
 

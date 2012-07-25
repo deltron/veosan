@@ -6,7 +6,6 @@ from google.appengine.ext import ndb, db as gdb
 import logging
 from datetime import datetime, date, time
 from data.model import Booking, Patient, Provider, User, SiteConfig, LogEvent
-import db_util
   
 def get_from_urlsafe_key(urlsafe_key):
     logging.info('(db.get_from_urlsafe_key) Getting from urlsafe key: %s' % urlsafe_key)
@@ -36,7 +35,7 @@ def store_patient(r, form):
     patient = Patient()
     
     # set all the properties
-    db_util.set_all_properties_on_entity_from_multidict(patient, r, form)
+    form.populate_obj(patient)
 
     # store
     patient.put()
@@ -85,7 +84,7 @@ def storeProvider(provider=None, r=None, form=None):
         provider = getOrCreateProvider(r['provider_key'])
     
     # set all the properties
-    db_util.set_all_properties_on_entity_from_multidict(provider, r, form)
+    form.populate_obj(provider)
     
     # store
     provider_key = provider.put()
@@ -159,7 +158,7 @@ def store(key, data, form):
     logging.info("Storing on key:%s with data:%s" % (key, str(data)))
     datastore_object = get_from_urlsafe_key(key)
     # set all the properties
-    db_util.set_all_properties_on_entity_from_multidict(datastore_object, data, form)
+    form.populate_obj(datastore_object)
     # store
     datastore_object.put()
     

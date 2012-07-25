@@ -1,6 +1,3 @@
-import re
-
-
 def to_lowercase(value):
     if value:
         return value.lower()
@@ -9,6 +6,6 @@ def to_lowercase(value):
 
 def escape_brackets(value):
     if value:
-        #replace_left = value.replace('not', 'zot')
-        #replace_right = replace_left.replace('>', ')')
-        return re.sub('not','zot',value)
+        value = value.replace('<', '&lt;')
+        value = value.replace('>', '&gt;')
+        return value

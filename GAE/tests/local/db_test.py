@@ -2,7 +2,7 @@
 import logging
 from datetime import datetime
 from base_test import BaseTestCase
-from data import db, db_util, db_search
+from data import db, db_search
 from data.model import Provider, Booking, Schedule
 from webob import MultiDict
 
@@ -22,7 +22,7 @@ class DBTestCase(BaseTestCase):
     def test_set_property_on_entity_from_multidict(self):
         entity = db.Provider()
         multidict = MultiDict({ 'last_name': 'lntest' })
-        db_util.set_all_properties_on_entity_from_multidict(entity, multidict)
+        #db_util.set_all_properties_on_entity_from_multidict(entity, multidict)
         self.assertEquals(entity.last_name, 'lntest')
 
     def testFindBestProviderForBooking(self):

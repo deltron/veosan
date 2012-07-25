@@ -41,7 +41,7 @@ class ProviderExperienceForm(CustomForm):
         setattr(form, 'end_year', IntegerField(_(u'End Year'), description=_(u'Leave empty for present'), 
                                                 validators=[validators.NumberRange(min=1940, max=2100, message=_(u'Please enter a valid year.')), validators.Optional()]))
         setattr(form, 'company_name', TextField(_(u'Company Name')))
-        setattr(form, 'title', TextField(_(u'Position Title'), filters=[custom_filters.escape_brackets]))
+        setattr(form, 'title', TextField(_(u'Position Title')))
         setattr(form, 'description', TextAreaField(_(u'Description'), filters=[custom_filters.escape_brackets]))
 
 class ProviderContinuingEducationForm(CustomForm):

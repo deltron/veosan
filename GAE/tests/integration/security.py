@@ -50,13 +50,10 @@ class SecurityTest(BaseTest):
         experience_form['start_year'] = 2003
         experience_form['end_year'] = 2006
         experience_form['company_name'] = 'Kinatex'
-        experience_form['title'] = '<not allowed in here!'
-        
-        #experience_form['title'] = 'Manual Physiotherapy'
-        #experience_form['description'] = "<not allowed in here!"
+        experience_form['title'] = 'Manual Physiotherapy'
+        experience_form['description'] = "<not allowed in here!"
 
         response2 = experience_form.submit()
         
-        response2.showbrowser()
-        response2.mustcontain('(not allowed in here!')
+        response2.mustcontain('&lt;not allowed in here!')
         response2.mustcontain(no='<not allowed in here!')
