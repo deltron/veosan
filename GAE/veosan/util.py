@@ -29,6 +29,28 @@ def get_all_regions():
             ('south-shore', _(u'South Shore')),
             ('other', _(u'Other')),
             ]    
+    
+def get_all_provinces():
+    return [('ab', _('Alberta')),
+            ('bc', _('British Columbia')),
+            ('mb', _('Manitoba')),
+            ('nb', _('New Brunswick')),
+            ('nl', _('Newfoundland and Labrador')),
+            ('ns', _('Nova Scotia')),
+            ('nt', _('Northwest Territories')),
+            ('nu', _('Nunavut')),
+            ('on', _('Ontario')),
+            ('pe', _('Prince Edward Island')),
+            ('qc', _('Quebec')),
+            ('sk', _('Saskatchewan')),
+            ('yt', _('Yukon Territory')),
+        ]
+
+def get_all_provinces_sorted():
+    sorted = get_all_provinces()
+    sorted.sort(key=lambda x: x[1])
+    return sorted
+
 
 def get_all_categories():
     return [

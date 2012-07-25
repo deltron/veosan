@@ -89,6 +89,7 @@ class Provider(ndb.Model):
     address = ndb.StringProperty()
     city = ndb.StringProperty()
     postal_code = ndb.StringProperty()
+    province = ndb.StringProperty()
     profile_photo_blob_key = ndb.BlobKeyProperty()
     bio = ndb.TextProperty()
     quote = ndb.TextProperty()

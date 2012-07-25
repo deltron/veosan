@@ -492,6 +492,9 @@ msgstr "SVP entrez un nombre d'heures valide."
 msgid "Leave empty for present"
 msgstr "Laisser vide pour le présent"
 
+msgid "Organization Name"
+msgstr "Nom de l'organization"
+
 #################
 # Profile Page
 #################
@@ -765,7 +768,48 @@ msgstr "Laval"
 msgid "South Shore"
 msgstr "Rive-sud"
 
+#################
+# Provinces
+#################
 
+msgid "Alberta"
+msgstr "Alberta"
+
+msgid "British Columbia"
+msgstr "Colombie-Britannique"
+
+msgid "Prince Edward Island"
+msgstr "Ile-du-Prince-Édouard"
+
+msgid "Manitoba"
+msgstr "Manitoba"
+
+msgid "New Brunswick"
+msgstr "Nouveau-Brunswick"
+
+msgid "Nova Scotia"
+msgstr "Nouvelle-Écosse"
+
+msgid "Nunavut"
+msgstr "Nunavut"
+
+msgid "Ontario"
+msgstr "Ontario"
+
+msgid "Quebec"
+msgstr "Québec"
+
+msgid "Saskatchewan"
+msgstr "Saskatchewan"
+
+msgid "Newfoundland and Labrador"
+msgstr "Terre-Neuve-et-Labrador"
+
+msgid "Yukon Territory"
+msgstr "Territoire du Yukon"
+
+msgid "Northwest Territories"
+msgstr "Territoires du Nord-Ouest"
 
 #################
 # Schedule Periods

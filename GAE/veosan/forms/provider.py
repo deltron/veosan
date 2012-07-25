@@ -40,7 +40,7 @@ class ProviderExperienceForm(CustomForm):
         setattr(form, 'start_year', IntegerField(_(u'Start Year'), [validators.NumberRange(min=1940, max=2100, message=_(u'Please enter a valid year.'))]))
         setattr(form, 'end_year', IntegerField(_(u'End Year'), description=_(u'Leave empty for present'), 
                                                 validators=[validators.NumberRange(min=1940, max=2100, message=_(u'Please enter a valid year.')), validators.Optional()]))
-        setattr(form, 'company_name', TextField(_(u'Company Name')))
+        setattr(form, 'company_name', TextField(_(u'Organization Name')))
         setattr(form, 'title', TextField(_(u'Position Title')))
         setattr(form, 'description', TextAreaField(_(u'Description'), filters=[custom_filters.escape_brackets]))
 
@@ -73,6 +73,7 @@ class ProviderAddressForm(CustomForm):
         setattr(form, 'phone', TextField(_(u'Telephone'), [validators.Optional(), validators.Regexp(regex="^[2-9]\d{2}-\d{3}-\d{4}$", message=_(u'Please make sure phone number is in the following format: 514-555-1212'))]))
         setattr(form, 'address', TextField(_(u'Addresse')))
         setattr(form, 'city', TextField(_(u'City')))
+        setattr(form, 'province', SelectField(_(u'Province'), choices=util.get_all_provinces_sorted()))
         setattr(form, 'postal_code', TextField(_(u'Postal Code'), [validators.Optional(), validators.Regexp(regex="^[a-zA-Z][0-9][a-zA-Z][0-9][a-zA-Z][0-9]$", message=_(u'Please make sure your postal code is in the following format: A1B2C3'))]))
 
 
