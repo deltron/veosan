@@ -53,7 +53,7 @@ msgstr "Pour les patients"
 msgid "For Health Care Specialists"
 msgstr "Pour les spécialistes de la santé"
 
-msgid "Veosan is now open to all health-care professionals."
+msgid "Veosan is now open to all health care professionals."
 msgstr "Veosan est maintenant ouvert à tous les professionnels de la santé."
 
 msgid "Sign up below to get started today!"
@@ -78,7 +78,7 @@ msgid "I'm a patient"
 msgstr "Je suis un patient"
 
 msgid "I'm health care professional"
-msgstr "Je suis un professionel de la santé"
+msgstr "Je suis un professionnel de la santé"
 
 msgid "Other"
 msgstr "Autre"
@@ -156,7 +156,7 @@ msgid "Please choose your professional category."
 msgstr "Veuillez choisir votre profession."
 
 msgid "The Best Match"
-msgstr "Un professionel qui vous correspond"
+msgstr "Un professionnel qui répond à vos besoins"
 
 msgid "We match your needs to the best providers in your area, visits can be scheduled right to your home."
 msgstr "Notre but est de trouver le professionnel qui répond parfaitement à vos besoins. Les consultations peuvent être faites à votre domicile."
