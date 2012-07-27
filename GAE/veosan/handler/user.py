@@ -353,7 +353,7 @@ class ProviderSignupHandler1(UserBaseHandler):
     def get(self, lang_key = None):
         if lang_key and lang_key in util.LANGUAGES:
             self.set_language(lang_key)
-            self.install_translations(lang_key)
+            self.redirect('/signup/provider')            
 
         provider_signup_form = ProviderSignupForm1().get_form()
         
@@ -398,7 +398,7 @@ class PatientSignupHandler(UserBaseHandler):
     def get(self, lang_key = None):
         if lang_key and lang_key in util.LANGUAGES:
             self.set_language(lang_key)
-            self.install_translations(lang_key)
+            self.redirect('/signup/patient')            
 
         patient_signup_form = PatientSignupForm().get_form()
         
