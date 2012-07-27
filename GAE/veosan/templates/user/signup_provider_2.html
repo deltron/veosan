@@ -5,16 +5,6 @@
 {% block content %}
 <div class="row">
 	<div class="span6">
-		<h1>{{ _('Be Present') }}</h1>
-		<h2>{{ _("Before this, you didn't exist! Get a professional profile that sets you apart.") }}</h2>
-		<br>
-		<h1>{{ _('Get Social') }}</h1>
-		<h2>{{ _('Share your page with friends and connect with patients and prospective employers.') }}</h2>
-		<br>
-		<h1>{{ _('Be Productive') }}</h1>
-		<h2>{{ _('Get a sneak peek at new features that allow you to run your practice and discover new patients.') }}</h2>
-	</div>
-	<div class="span6">
 		<h1>{{ _('Sign Up') }}</h1>
 		<form method="post" action="/signup/provider2" class="form-inline" id='signup_form'>
 			<fieldset>
@@ -26,6 +16,9 @@
 
 				{{ macro.display_errors_for_field(provider_signup_form2.email) }}
 				{{ provider_signup_form2.email }}
+
+				{{ macro.display_errors_for_field(provider_signup_form2.postal_code) }}
+				{{ provider_signup_form2.postal_code }}
 
 				
 				<div class="control-group {% if provider_signup_form2.category.errors %} error {% endif %}">

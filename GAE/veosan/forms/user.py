@@ -46,6 +46,10 @@ class ProviderSignupForm1(CustomForm):
                                                      ],
                                                      filters=[custom_filters.to_lowercase]           
                                          ))
+        setattr(form, 'postal_code', TextField(_(u'Postal Code'), validators=[
+                                                                validators.Regexp(regex="^[a-zA-Z][0-9][a-zA-Z][0-9][a-zA-Z][0-9]$", message=_(u'Please make sure your postal code is in the following format: A1B2C3'))
+                                                                ],
+                                                                filters=[custom_filters.to_uppercase]))
 
 class ProviderSignupForm2(CustomForm):
     def _set_fields(self, form):        
@@ -57,6 +61,10 @@ class ProviderSignupForm2(CustomForm):
                                                      ],
                                                      filters=[custom_filters.to_lowercase]           
                                          ))
+        setattr(form, 'postal_code', HiddenField(_(u'Postal Code'), validators=[
+                                                                validators.Regexp(regex="^[a-zA-Z][0-9][a-zA-Z][0-9][a-zA-Z][0-9]$", message=_(u'Please make sure your postal code is in the following format: A1B2C3'))
+                                                                ],
+                                                                filters=[custom_filters.to_uppercase]))
         setattr(form, 'category', SelectField(_(u'Category'), choices=util.get_all_categories_for_profile_editing()))
         setattr(form, 'vanity_url', TextField(_(u'Account name'), validators=[
                                               validators.Length(min=6, message=_('Your personal link requires at least 6 characters.')),
