@@ -189,13 +189,21 @@ class BaseTest(unittest.TestCase):
 
      
     def self_signup_provider(self, provider_email=_TEST_PROVIDER_EMAIL, vanity_url=_TEST_PROVIDER_VANITY_URL):
-        response = self.testapp.post('/signup')
+        response = self.testapp.post('/signup/provider')
         
-        signup_form = response.forms['signup_form']
+        signup_form = response.forms['provider_signup_form']
+        signup_form['first_name'] = 'first'
+        signup_form['last_name'] = 'last'
         signup_form['email'] = provider_email
-        signup_form['vanity_url'] = vanity_url
-        
-        password_response = signup_form.submit().follow()
+        signup_form['postal_code'] = 'h1h1h1'
+        response = signup_form.submit()
+
+        signup_form2 = response.forms['provider_signup_form2']
+        signup_form2['category'] = 'osteopath'
+        signup_form2['vanity_url'] = vanity_url
+
+
+        password_response = signup_form2.submit().follow()
         password_response.mustcontain('Mot de passe')
         
         password_form = password_response.forms[0]

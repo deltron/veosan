@@ -21,7 +21,7 @@
 			<h4>{{ _('Veosan is now open to all health-care professionals.') }} </h4>
 			<h4>{{ _('Sign up below to get started today!') }} </h4>
 			<br>
-			<form method="post" action="/signup/provider" class="form-vertical">
+			<form method="post" action="/signup/provider" class="form-vertical" id="provider_signup_form">
 				<fieldset>
 
 					{{ macro.display_errors_for_field(provider_signup_form.first_name) }}

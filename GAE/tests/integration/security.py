@@ -27,9 +27,9 @@ class SecurityTest(BaseTest):
     
     def test_form_filters_email_address(self): 
         # create first provider
-        response = self.testapp.post('/signup')
+        response = self.testapp.post('/signup/provider')
         
-        signup_form = response.forms['signup_form']
+        signup_form = response.forms['provider_signup_form']
         signup_form['email'] = 'miXed@CaSe.CoM'
         
         password_response = signup_form.submit()
