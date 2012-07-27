@@ -13,8 +13,11 @@ import auth
 from patient import PatientBaseHandler
 from provider import ProviderBaseHandler
 from booking import BookingBaseHandler
-from forms.user import ProviderTermsForm, PasswordForm, LoginForm
+from forms.user import ProviderTermsForm, PasswordForm, LoginForm, ProviderSignupForm1, ProviderSignupForm2, PatientSignupForm
 import mail
+import util
+from data.model import Provider, Patient
+from google.appengine.ext import ndb
 
 
 class UserBaseHandler(BaseHandler):   
@@ -343,4 +346,76 @@ class LogoutHandler(UserBaseHandler):
 
         self.auth.unset_session()
         self.redirect('/')
+
+
+
+class ProviderSignupHandler1(UserBaseHandler):
+    def get(self, lang_key = None):
+        if lang_key and lang_key in util.LANGUAGES:
+            self.set_language(lang_key)
+            self.install_translations(lang_key)
+
+        provider_signup_form = ProviderSignupForm1().get_form()
+        
+        self.render_template('user/signup_provider_1.html', provider_signup_form=provider_signup_form)      
+
+    def post(self, lang_key = None):
+        provider_signup_form = ProviderSignupForm1().get_form(self.request.POST)
+
+        if provider_signup_form.validate():
+            # populate second form from first one
+            provider_signup_form2 = ProviderSignupForm2().get_form(self.request.POST)
+            
+            # on to the next step
+            self.render_template('user/signup_provider_2.html', provider_signup_form2=provider_signup_form2)
+        else:
+            self.render_template('user/signup_provider_1.html', provider_signup_form=provider_signup_form)
+
+class ProviderSignupHandler2(UserBaseHandler):
+    def post(self, lang_key = None):
+        provider_signup_form2 = ProviderSignupForm2().get_form(self.request.POST)
+        
+        if provider_signup_form2.validate():
+            
+            # init the provider
+            provider = Provider()
+            provider_signup_form2.populate_obj(provider)
+            provider.put()
+            
+            # now create an empty user for the provider
+            user = self.create_empty_user_for_provider(provider)
+            
+            # create a signup token for new user
+            token = self.create_signup_token(user)
+
+            # send them over to the password page with this token
+            self.redirect('/user/password/' + user.signup_token)
+        else:
+            self.render_template('user/signup_provider_2.html', provider_signup_form2=provider_signup_form2)
+            
+
+class PatientSignupHandler(UserBaseHandler):
+    def get(self, lang_key = None):
+        if lang_key and lang_key in util.LANGUAGES:
+            self.set_language(lang_key)
+            self.install_translations(lang_key)
+
+        patient_signup_form = PatientSignupForm().get_form()
+        
+        self.render_template('/user/signup_patient.html', patient_signup_form=patient_signup_form)      
+
+    def post(self, lang_key = None):
+        patient_signup_form = PatientSignupForm().get_form(self.request.POST)
+        
+        if patient_signup_form.validate():
+            
+            # init the patient
+            patient = Patient()
+            patient_signup_form.populate_obj(patient)
+            patient.put()
+            
+            msg = _('Thanks for your interest. We will be in touch soon!')
+            self.render_template('user/signup_patient.html', success_message=msg, patient_signup_form=patient_signup_form)
+        else:
+            self.render_template('user/signup_patient.html', patient_signup_form=patient_signup_form)
 

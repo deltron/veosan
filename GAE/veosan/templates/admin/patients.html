@@ -13,7 +13,8 @@
 			<thead>
 				<tr>
 					<th>Name</th>
-					<th>email</th>
+					<th>Email</th>
+					<th>Created On</th>
 					<th>confirmed</th>
 					<th>appointments</th>
 				</tr>
@@ -23,7 +24,12 @@
 				<tr>
 					<td>{{ p.last_name }},  {{ p.first_name }}</td>
 					<td>{{ p.email }}</td>
-					<td>{{ p.user.get().confirmed }}</td>
+					<td>{{ p.created_on }}</td>
+					<td>
+					{% if p.user %}
+						{{ p.user.get().confirmed }}	
+					{% endif %}
+					</td>
 					
 					<td>
 						<ul>
@@ -32,6 +38,7 @@
 						{% endfor %}
 						</ul>
 					</td>
+					  
 				</tr>
 				{% endfor %}
 			</tbody>

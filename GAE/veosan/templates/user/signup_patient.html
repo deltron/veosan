@@ -1,0 +1,48 @@
+{% extends "/layout/base.html" %}
+
+{% block subhead %} {{ _('The better way to care')}} {% endblock %}
+
+{% block content %}
+
+<div class="row">
+	<div class="span6">
+		<div class="well">
+			<h1>{{ _('For Patients') }}</h1>
+			<h4> {{ _('Veosan is currently opening patient accounts on a limited basis.') }} </h4>
+			<h4> {{ _('Please sign up below to be notified when Veosan is ready for you.') }} </h4>
+			<br>
+			<form method="post" action="/signup/patient" class="form-vertical">
+				<fieldset>
+					{{ macro.display_errors_for_field(patient_signup_form.first_name) }}
+					{{ patient_signup_form.first_name(class="span3", placeholder=patient_signup_form.first_name.label.text) }}
+
+					{{ macro.display_errors_for_field(patient_signup_form.last_name) }}
+					{{ patient_signup_form.last_name(class="span3", placeholder=patient_signup_form.last_name.label.text) }}
+
+					{{ macro.display_errors_for_field(patient_signup_form.email) }}
+					{{ patient_signup_form.email(class="span3", placeholder=patient_signup_form.email.label.text) }}
+
+					{{ macro.display_errors_for_field(patient_signup_form.postal_code) }}
+					{{ patient_signup_form.postal_code(class="span3", placeholder=patient_signup_form.postal_code.label.text) }}
+
+					<br>
+					<button type="submit" class="btn btn-large btn-success">
+						{{ _('Get Invited') }}
+					</button>
+				</fieldset>
+			</form>
+		</div>
+	</div>
+	<div class="span6">
+		<h1>{{ _("The Best Match") }}</h1>
+		<h2> {{ _("We match your needs to the best providers in your area, visits can be scheduled right to your home.") }} </h2>
+		<br>
+		<h1>{{ _("Simple Booking") }}</h1>
+		<h2> {{ _("Booking an appointment is just one step away. Don't waste any more time on the phone. ") }} </h2>
+		<br>
+		<h1>{{ _("Quality and Experience") }}</h1>
+		<h2> {{ _("Our professionals are screened to meet the highest industry standards.") }} </h2>
+	</div>
+</div>
+
+{% endblock content %}

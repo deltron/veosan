@@ -6,29 +6,35 @@
 <div class="row">
 	<div class="span6">
 		<h1>{{ _('Sign Up') }}</h1>
-		<form method="post" action="/signup" class="form-inline" id='signup_form'>
+		<form method="post" action="/signup/provider2" class="form-inline" id='signup_form'>
 			<fieldset>
-				<div class="control-group {% if new_provider_form.email.errors %} error {% endif %}">
-					<h3 style="margin-top: 18px">{{ _('E-mail Address' )}}</h3>
-					<p>
-						{{ _('Please enter your email address below to get started.') }}
-						<br>
-					</p>
+				{{ macro.display_errors_for_field(provider_signup_form2.first_name) }}
+				{{ provider_signup_form2.first_name }}
+
+				{{ macro.display_errors_for_field(provider_signup_form2.last_name) }}
+				{{ provider_signup_form2.last_name }}
+
+				{{ macro.display_errors_for_field(provider_signup_form2.email) }}
+				{{ provider_signup_form2.email }}
+
+				
+				<div class="control-group {% if provider_signup_form2.category.errors %} error {% endif %}">
+					<h3 style="margin-top: 18px">{{ _('Please choose your professional category.') }}</h3>
 					<div class="controls">
-						{{ macro.display_errors_for_field(new_provider_form.email) }}
-						{{ new_provider_form.email(class="span3", placeholder=_('E-mail Address')) }}
+						{{ macro.display_errors_for_field(provider_signup_form2.category) }}
+						{{ provider_signup_form2.category(class="span3") }}
 					</div>
 				</div>
-				<div class="control-group {% if new_provider_form.vanity_url.errors %} error {% endif %}">
+				<div class="control-group {% if provider_signup_form2.vanity_url.errors %} error {% endif %}">
 					<h3 style="margin-top: 18px">{{ _('Personal Link' )}}</h3>
 					<p>
 						{{ _('Your personal link allows people to find and remember you easily.') }}
 						{{ _('For example, if your name is Gerald Raymond you can use <i>graymond</i>')}}
 						<br>
 					</p>
-					{{ macro.display_errors_for_field(new_provider_form.vanity_url) }}
+					{{ macro.display_errors_for_field(provider_signup_form2.vanity_url) }}
 					<div class="input-prepend">
-						<span class="add-on">&nbsp;veosan.com&nbsp;</span><span class="add-on">/</span>{{ new_provider_form.vanity_url(class="span2", placeholder=_('Personal Link')) }}
+						<span class="add-on">&nbsp;veosan.com&nbsp;</span><span class="add-on">/</span>{{ provider_signup_form2.vanity_url(class="span2", placeholder=_('Personal Link')) }}
 					</div>
 				</div>
 				<div class="control-group">

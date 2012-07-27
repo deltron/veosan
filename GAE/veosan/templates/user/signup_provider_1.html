@@ -1,0 +1,46 @@
+{% extends "/layout/base.html" %}
+
+{% block subhead %} {{ _('The new network for health care professionals.')}} {% endblock %}
+
+{% block content %}
+
+<div class="row">
+	<div class="span6">
+		<div class="well">
+			<h1>{{ _('For Professionals') }}</h1>
+			<h4> Veosan is now open to all health-care professionals. </h4>
+			<h4> Sign up below to get started today! </h4>
+			<br>
+			<form method="post" action="/signup/provider" class="form-vertical">
+				<fieldset>
+
+					{{ macro.display_errors_for_field(provider_signup_form.first_name) }}
+					{{ provider_signup_form.first_name(class="span3", placeholder=provider_signup_form.first_name.label.text) }}
+
+					{{ macro.display_errors_for_field(provider_signup_form.last_name) }}
+					{{ provider_signup_form.last_name(class="span3", placeholder=provider_signup_form.last_name.label.text) }}
+
+					{{ macro.display_errors_for_field(provider_signup_form.email) }}
+					{{ provider_signup_form.email(class="span3", placeholder=provider_signup_form.email.label.text) }}
+
+					<br>
+					<button type="submit" class="btn btn-large btn-success">
+						{{ _('Join Now') }}
+					</button>
+				</fieldset>
+			</form>
+		</div>
+	</div>
+	<div class="span6">
+		<h1>{{ _('Be Present') }}</h1>
+		<h2>{{ _("Before this, you didn't exist! Get a professional profile that sets you apart.") }}</h2>
+		<br>
+		<h1>{{ _('Get Social') }}</h1>
+		<h2>{{ _('Share your page with friends and connect with patients and prospective employers.') }}</h2>
+		<br>
+		<h1>{{ _('Be Productive') }}</h1>
+		<h2>{{ _('Get a sneak peek at new features that allow you to run your practice and discover new patients.') }}</h2>
+	</div>
+</div>
+
+{% endblock content %}

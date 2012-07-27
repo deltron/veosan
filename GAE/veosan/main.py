@@ -81,11 +81,12 @@ application = ndb.toplevel(webapp2.WSGIApplication([
                                        
                                        # General pages
                                        ('/', booking.IndexHandler),
+                                       
+                                       
+                                       # booking stuff
                                        ('/next', booking.SearchNextHandler),
                                        ('/full', booking.FullyBookedHandler),
                                        ('/contact', contact.ContactHandler),
-                                       ('/teaser', contact.TeaserHandler),
-                                       ('/signup', contact.SignupHandler),
 
 
                                        # Static Pages
@@ -95,10 +96,21 @@ application = ndb.toplevel(webapp2.WSGIApplication([
                                        Route('/privacy', handler=static.StaticHandler, name='privacy'),
                                        
                                        # Patient
-                                       ('/patient/bookings', patient.ListPatientBookings),
-                                       ('/patient/new', patient.NewPatientHandler),
-                                       ('/patient/book', booking.BookingHandler),
+                                       PathPrefixRoute('/patient', [
+                                            Route('/bookings', patient.ListPatientBookings),
+                                            Route('/new', patient.NewPatientHandler),
+                                            Route('/book', booking.BookingHandler),
+                                       ]),
                                   
+                                       #signups
+                                       PathPrefixRoute('/signup', [
+                                            Route('/patient', user.PatientSignupHandler),
+                                            Route('/provider', user.ProviderSignupHandler1),
+                                            Route('/provider2', user.ProviderSignupHandler2),
+                                            Route('/patient/<lang_key>', user.PatientSignupHandler),
+                                            Route('/provider/<lang_key>', user.ProviderSignupHandler1),
+                                       ]),
+                                                    
                                        #provider
                                        PathPrefixRoute('/provider', [
                                             # display a status message to the provider (new, reset, etc)                                            PathPrefixRoute('/profile', [

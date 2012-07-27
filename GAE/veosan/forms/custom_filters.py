@@ -9,3 +9,11 @@ def escape_brackets(value):
         value = value.replace('<', '&lt;')
         value = value.replace('>', '&gt;')
         return value
+
+def to_uppercase(value):
+    if value:
+        return value.upper()
+    else:
+        return value
+
+

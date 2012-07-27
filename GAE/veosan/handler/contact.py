@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from handler.base import BaseHandler
-from forms.contact import ContactForm, TeaserForm, NewProviderForm
+from forms.contact import ContactForm
 import mail
 import util
 import logging
@@ -32,8 +32,6 @@ class TeaserHandler(BaseHandler):
         else:
             signup_form = TeaserForm()
             
-        signup_form.role.choices = util.get_signup_roles()
-        
         return signup_form
 
     def get(self):

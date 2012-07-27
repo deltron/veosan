@@ -7,7 +7,6 @@ import mail
 from forms.base import BookingForm, email_only_booking_form
 from forms.patient import PatientForm
 from forms.user import LoginForm
-from forms.contact import TeaserForm
 from handler.base import BaseHandler
 from handler.auth import patient_required
 from handler.patient import PatientBaseHandler
@@ -77,12 +76,7 @@ class IndexHandler(BookingBaseHandler):
     def get(self):
         # for showing booking block
         bookingform = self.create_booking_form(self.request.GET)
-        
-        # for showing signup block
-        signup_form = TeaserForm()
-        signup_form.role.choices = util.get_signup_roles()
-        
-        self.render_template('index.html', form=bookingform, signup_form=signup_form)
+        self.render_template('index.html', form=bookingform)
         
     def post(self):        
         ''' Renders 2nd page: Result + Confirm button
