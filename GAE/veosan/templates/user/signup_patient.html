@@ -21,20 +21,10 @@
 			<h4> {{ _('Veosan is currently opening patient accounts on a limited basis.') }} </h4>
 			<h4> {{ _('Please sign up below to be notified when Veosan is ready for you.') }} </h4>
 			<br>
-			<form method="post" action="/signup/patient" class="form-vertical">
+			<form method="post" action="/signup/patient" class="form-horizontal">
 				<fieldset>
-					{{ macro.display_errors_for_field(patient_signup_form.first_name) }}
-					{{ patient_signup_form.first_name(class="span3", placeholder=patient_signup_form.first_name.label.text) }}
-
-					{{ macro.display_errors_for_field(patient_signup_form.last_name) }}
-					{{ patient_signup_form.last_name(class="span3", placeholder=patient_signup_form.last_name.label.text) }}
-
-					{{ macro.display_errors_for_field(patient_signup_form.email) }}
-					{{ patient_signup_form.email(class="span3", placeholder=patient_signup_form.email.label.text) }}
-
-					{{ macro.display_errors_for_field(patient_signup_form.postal_code) }}
-					{{ patient_signup_form.postal_code(class="span3", placeholder=patient_signup_form.postal_code.label.text) }}
-
+					{{ macro.make_standard_form(patient_signup_form, inputClass="input-medium")}}
+					
 					<br>
 					<button type="submit" class="btn btn-large btn-success">
 						{{ _('Get Invited') }}

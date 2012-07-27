@@ -21,20 +21,9 @@
 			<h4>{{ _('Veosan is now open to all health care professionals.') }} </h4>
 			<h4>{{ _('Sign up below to get started today!') }} </h4>
 			<br>
-			<form method="post" action="/signup/provider" class="form-vertical" id="provider_signup_form">
+			<form method="post" action="/signup/provider" class="form-horizontal" id="provider_signup_form">
 				<fieldset>
-
-					{{ macro.display_errors_for_field(provider_signup_form.first_name) }}
-					{{ provider_signup_form.first_name(class="span3", placeholder=provider_signup_form.first_name.label.text) }}
-
-					{{ macro.display_errors_for_field(provider_signup_form.last_name) }}
-					{{ provider_signup_form.last_name(class="span3", placeholder=provider_signup_form.last_name.label.text) }}
-
-					{{ macro.display_errors_for_field(provider_signup_form.email) }}
-					{{ provider_signup_form.email(class="span3", placeholder=provider_signup_form.email.label.text) }}
-
-					{{ macro.display_errors_for_field(provider_signup_form.postal_code) }}
-					{{ provider_signup_form.postal_code(class="span3", placeholder=provider_signup_form.postal_code.label.text) }}
+					{{ macro.make_standard_form(provider_signup_form, inputClass="input-medium")}}
 
 					<br>
 					<button type="submit" class="btn btn-large btn-success">
