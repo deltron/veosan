@@ -44,8 +44,26 @@ msgstr "chez Veosan"
 msgid "Sign Up"
 msgstr "S'inscrire"
 
+msgid "For Professionals"
+msgstr "Pour les professionnels"
+
+msgid "For Patients"
+msgstr "Pour les patients"
+
 msgid "For Health Care Specialists"
 msgstr "Pour les spécialistes de la santé"
+
+msgid "Veosan is now open to all health-care professionals."
+msgstr "Veosan est maintenant ouvert à tous les professionnels de la santé."
+
+msgid "Sign up below to get started today!"
+msgstr "Inscrivez-vous ci-dessous pour commencer aujourd'hui!"
+
+msgid "Join Now"
+msgstr "S'inscrire"
+
+msgid "Get Invited"
+msgstr "S'inscrire"
 
 msgid "Membership on our platform is currently by invitation."
 msgstr "L'abonnement à notre site se fait uniquement par invitation."
@@ -67,6 +85,12 @@ msgstr "Autre"
 
 msgid "We are currently opening accounts on a limited basis, please sign up below."
 msgstr "Nous ouvrons présentement des comptes par invitation, veuillez vous inscrire ci-dessous." 
+
+msgid "Veosan is currently opening patient accounts on a limited basis."
+msgstr "Veosan ouvre présentement des comptes pour les patients par invitation."
+
+msgid "Please sign up below to be notified when Veosan is ready for you."
+msgstr "Veuillez vous inscrire ci-dessous pour recevoir des nouvelles quand Veosan sera prêt pour vous."
 
 msgid "Thanks for your interest. We will be in touch soon!"
 msgstr "Merci pour votre intérêt. Nous serons en contact bientôt!"
@@ -122,7 +146,26 @@ msgstr "Obtenez un avant-goût des nouvelles fonctions qui vous aideront à gér
 msgid "For example, if your name is Gerald Raymond you can use <i>graymond</i>"
 msgstr "Par exemple, si votre nom est Gérald Raymond, vous pouvez utiliser <i>graymond</i>"
 
+msgid "First name required."
+msgstr "Prénom requis."
 
+msgid "Last name required."
+msgstr "Nom de famille requis."
+
+msgid "Please choose your professional category."
+msgstr "Veuillez choisir votre profession."
+
+msgid "The Best Match"
+msgstr "Un professionel qui vous correspond"
+
+msgid "We match your needs to the best providers in your area, visits can be scheduled right to your home."
+msgstr "Notre but est de trouver le professionnel qui répond parfaitement à vos besoins. Les consultations peuvent être faites à votre domicile."
+
+msgid "Booking an appointment is just one step away. Don't waste any more time on the phone."
+msgstr "Prendre un rendez-vous est facile! Ne perdez plus de temps au téléphone."
+
+msgid "Our professionals are screened to meet the highest industry standards."
+msgstr "Nos professionnels sont évalués afin d’assurer qu’ils répondent aux plus hauts standards de qualité."
 
 #################
 # Navbar
