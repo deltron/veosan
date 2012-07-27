@@ -21,16 +21,7 @@ saved_message = _(u'Your changes were saved.')
 def is_dev_server(request):
     return request.host in DEV_SERVERS
             
-def get_all_regions():
-    return [('mtl-downtown', _(u'Montreal - Downtown')),
-            ('mtl-westisland', _(u'Montreal - West-Island')),
-            ('mtl-east', _(u'Montreal - East')),
-            ('mtl-nord', _(u'Montreal - North')),
-            ('laval', _(u'Laval')),
-            ('south-shore', _(u'South Shore')),
-            ('other', _(u'Other')),
-            ]    
-    
+
 def get_all_provinces():
     return [('ab', _('Alberta')),
             ('bc', _('British Columbia')),
@@ -48,9 +39,15 @@ def get_all_provinces():
         ]
 
 def get_all_provinces_sorted():
+     # at the begining
+    all_provinces = [("nothing", "")]
+
     sorted = get_all_provinces()
     sorted.sort(key=lambda x: x[1])
-    return sorted
+    
+    all_provinces.extend(sorted)
+      
+    return all_provinces
 
 
 def get_all_categories():
