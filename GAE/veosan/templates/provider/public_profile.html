@@ -9,21 +9,21 @@
 
 {% block content %}
 
-		{% if facebook_like_enabled %}
-		<div id="fb-root"></div>
-		<script>
-			( function(d, s, id) {
-					var js, fjs = d.getElementsByTagName(s)[0];
-					if (d.getElementById(id))
-						return;
-					js = d.createElement(s);
-					js.id = id;
-					js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
-					fjs.parentNode.insertBefore(js, fjs);
-				}(document, 'script', 'facebook-jssdk'));
-		</script>
-		{% endif %}
-		
+{% if facebook_like_enabled %}
+<div id="fb-root"></div>
+<script>
+	( function(d, s, id) {
+			var js, fjs = d.getElementsByTagName(s)[0];
+			if (d.getElementById(id))
+				return;
+			js = d.createElement(s);
+			js.id = id;
+			js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+			fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk')); 
+</script>
+{% endif %}
+
 <div class="row">
 	<!-- left column -->
 	<div class="span2">
@@ -34,10 +34,10 @@
 		<img src="{{ provider.get_profile_photo_image_url(150) }}" width="150"
 		alt="{{ macro.display_provider_name(provider) }} - {{ category_dict[provider.category] }}">
 		{% endif %}
-		
+
 		<br>
 		<br>
-		
+
 		{% if provider.category and provider.category|remove_empty_strings_from_list %}
 		<h4>{{ _("Category") }}</h4>
 		<ul class="unstyled">
@@ -74,7 +74,6 @@
 		<h4><a data-toggle="modal" href="#contact_modal" onclick="loadScript()">Address</a><a data-toggle="modal" href="#contact_modal" onclick="loadScript()"><i class="bs-icon icon-share-alt"> </i></a></h4>
 		<br>
 		{% endif %}
-		
 
 		{% if facebook_like_enabled %}
 		<div class="fb-like" data-href="http://www.veosan.com/{{ provider.vanity_url }}" data-send="true" data-layout="button_count" data-width="150" data-show-faces="false"></div>
@@ -91,8 +90,6 @@
 			{{ _('Book Now') }}
 		</button>
 		{% endif %}
-		
-		
 
 		{% if 'admin' in roles %}
 		<a href="/provider/profile/{{ provider.vanity_url }}" class="btn btn-danger"><i>Edit Profile</i></a>
@@ -125,9 +122,12 @@
 				{% else %}
 				{{ _('Present') }})
 				{% endif %}</h6>
+				{% if e.description %}
 				<p>
 					{{ e.description|markdown|safe }}
 				</p>
+				{% endif %}
+
 			</li>
 			{% endfor %}
 		</ul>
@@ -144,9 +144,12 @@
 				{% else %}
 				{{ _('Present') }})
 				{% endif %}</h6>
+				{% if e.description %}
 				<p>
 					{{ e.description|markdown|safe }}
 				</p>
+				{% endif %}
+
 			</li>
 			{% endfor %}
 		</ul>
@@ -161,9 +164,11 @@
 				<h6>{{ e.type|code_to_string }}, {% if e.hours  %}
 				{{ e.hours  }} {{ _('Hours') }}
 				{% endif %} ({{ e.year }}/{{ e.month }})</h6>
+				{% if e.description %}
 				<p>
 					{{ e.description|markdown|safe }}
 				</p>
+				{% endif %}
 			</li>
 			{% endfor %}
 		</ul>
@@ -274,11 +279,14 @@
 {% if facebook_like_enabled %}
 <!-- Place this tag after the last +1 button tag. -->
 <script type="text/javascript">
-  (function() {
-    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-    po.src = 'https://apis.google.com/js/plusone.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-  })();
+	(function() {
+		var po = document.createElement('script');
+		po.type = 'text/javascript';
+		po.async = true;
+		po.src = 'https://apis.google.com/js/plusone.js';
+		var s = document.getElementsByTagName('script')[0];
+		s.parentNode.insertBefore(po, s);
+	})(); 
 </script>
 {% endif %}
 

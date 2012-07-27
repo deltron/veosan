@@ -5,9 +5,9 @@
 {% block subhead %}{{ _('Curriculum Vitae') }}{% endblock %}
 {% block lead %}{{ _('Tell your story.') }}{% endblock %}
 
-{# 
-	set up CV Sections 
-	------------------
+{#
+set up CV Sections
+------------------
 #}
 
 {% set sections = ('education', 'experience', 'continuing_education') %}
@@ -23,7 +23,6 @@
 'experience' : experience_form,
 'continuing_education' : continuing_education_form,
 } %}
-
 
 {% block content %}
 <!-- Form -->
@@ -41,11 +40,12 @@
 				{{ e.end_year }})
 				{% else %}
 				{{ _('Present') }})
-				{% endif %}
-				</h6>
+				{% endif %} </h6>
+				{% if e.description %}
 				<p>
 					{{ e.description|markdown|safe }}
 				</p>
+				{% endif %}
 			</li>
 			{% endfor %}
 		</ul>
@@ -65,9 +65,12 @@
 				{% else %}
 				{{ _('Present') }})
 				{% endif %}</h6>
+				{% if e.description %}
 				<p>
-					{{ e.description|markdown|safe }}
+						{{ e.description|markdown|safe }}
 				</p>
+				{% endif %}
+
 			</li>
 			{% endfor %}
 		</ul>
@@ -87,9 +90,11 @@
 				{{ e.hours  }} {{ _('Hours') }}
 				{% endif %}
 				({{ e.year }}/{{ e.month }})</h6>
+				{% if e.description %}
 				<p>
 					{{ e.description|markdown|safe }}
 				</p>
+				{% endif %}
 			</li>
 			{% endfor %}
 		</ul>
@@ -98,8 +103,6 @@
 </div>
 
 {# CV Sections #}
-
-
 
 {% for section in sections %}
 
@@ -134,8 +137,6 @@
 {% endfor %}
 
 {% endblock %}
-
-
 
 {% block extra_javascript %}
 
