@@ -96,7 +96,7 @@
 		{% endif %}
 
 	</div>
-	<div class="span6">
+	<div class="span5">
 		{% if provider.bio %}
 		<p>
 			{{ provider.bio }}
@@ -117,11 +117,8 @@
 			{% for e in provider.get_experience() %}
 			<li>
 				<h4>{{ e.title }}</h4>
-				<h6>{{ e.company_name }} ({{ e.start_year }}-{% if e.end_year %}
-				{{ e.end_year }})
-				{% else %}
-				{{ _('Present') }})
-				{% endif %}</h6>
+				<h6>{{ e.company_name }}
+				{{ macro.display_cv_years(e.start_year, e.end_year) }} </h6>
 				{% if e.description %}
 				<p>
 					{{ e.description|markdown|safe }}
@@ -139,11 +136,13 @@
 			{% for e in provider.get_education() %}
 			<li>
 				<h4>{{ e.degree_type|code_to_string }} {{ e.degree_title }}</h4>
-				<h6>{{ e.school_name|code_to_string }} ({{ e.start_year }}-{% if e.end_year %}
-				{{ e.end_year }})
+				<h6> {% if e.school_name == 'other' %}
+				{{ e.other }}
 				{% else %}
-				{{ _('Present') }})
-				{% endif %}</h6>
+				{{ e.school_name|code_to_string }}
+				{% endif %}
+
+				{{ macro.display_cv_years(e.start_year, e.end_year) }} </h6>
 				{% if e.description %}
 				<p>
 					{{ e.description|markdown|safe }}
@@ -173,39 +172,43 @@
 			{% endfor %}
 		</ul>
 		{% endif %}
+	</div>
 
-		{# Not for now
-		<h3>Publications</h3>
+	<div class="span5">
+		{% if provider.get_organization()|remove_empty_strings_from_list %}
+		<h3>{{ _('Organization Memberships') }}</h3>
 		<ul class="unstyled">
+			{% for e in provider.get_organization() %}
 			<li>
-				<h6>Journal of Orthopaedic &amp; Sports Physical Therapy</h6>
-				Clinical and Radiological Investigation of Thoracic Spine Extension Motion During Arm Elevation
+				<h4> {% if e.organization == 'other' %}
+				{{ e.other }}
+				{% else %}
+				{{ association_dict[e.organization] }}
+				{% endif %} </h4>
+				<h6>{{ macro.display_cv_years(e.start_year, e.end_year) }}</h6>
 			</li>
+			{% endfor %}
 		</ul>
-		#}
+		{% endif %}
 
-		{% if provider.certifications|remove_empty_strings_from_list %}
+		{% if provider.get_certification()|remove_empty_strings_from_list %}
 		<h3>{{ _('Certifications') }}</h3>
 		<ul class="unstyled">
-			{% for c in provider.certifications %}
+			{% for e in provider.get_certification() %}
 			<li>
-				{{ certification_dict[c] }}
+				<h4> {% if e.certification == 'other' %}
+				{{ e.other }}
+				{% else %}
+				{{ certification_dict[e.certification] }}
+				{% endif %} </h4>
+				<h6>{{ e.year }} </h6>
 			</li>
 			{% endfor %}
 		</ul>
 		{% endif %}
 
-		{% if provider.associations|remove_empty_strings_from_list %}
-		<h3>{{ _('Association Memberships') }}</h3>
-		<ul class="unstyled">
-			{% for a in provider.associations %}
-			<li>
-				{{ association_dict[a] }}
-			</li>
-			{% endfor %}
-		</ul>
-		{% endif %}
 	</div>
+
 </div>
 
 {% if provider.address_enabled %}

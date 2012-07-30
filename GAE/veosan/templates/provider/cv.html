@@ -10,37 +10,43 @@ set up CV Sections
 ------------------
 #}
 
-{% set sections = ('education', 'experience', 'continuing_education') %}
+{% set sections = ('education', 'experience', 'continuing_education',
+'organization', 'certification' ) %}
 
 {% set section_label = {
 'education' : _('Education'),
 'experience' : _('Experience'),
 'continuing_education' : _('Continuing Education'),
+'organization' : _('Organization Memberships'),
+'certification' : _('Certification'),
 } %}
 
 {% set section_form = {
 'education' : education_form,
 'experience' : experience_form,
 'continuing_education' : continuing_education_form,
+'organization' : organization_form,
+'certification' : certification_form,
 } %}
 
 {% block content %}
 <!-- Form -->
 <div class="row">
-	<div class="span8">
+	<div class="span6">
 		<!-- CV -->
 		<h3>{{ _('Education') }}</h3>
 		<ul class="unstyled">
-
 			{% for e in provider.get_education() %}
 			<li>
 				<h4>{{ e.degree_type|code_to_string }} {{ e.degree_title }} <a href="/provider/cv/education/{{ provider.vanity_url }}/edit/{{ e.key.urlsafe() }}"><i class="bs-icon icon-edit"> </i></a></h4>
-				<h6>{{ e.school_name|code_to_string }} ({{ e.start_year }} -
-				{% if e.end_year %}
-				{{ e.end_year }})
-				{% else %}
-				{{ _('Present') }})
-				{% endif %} </h6>
+				<h6>
+					{% if e.school_name == 'other' %}
+					  {{ e.other }}
+					{% else %}
+					  {{ e.school_name|code_to_string }}
+					{% endif %}
+				
+				{{ macro.display_cv_years(e.start_year, e.end_year) }} </h6>
 				{% if e.description %}
 				<p>
 					{{ e.description|markdown|safe }}
@@ -59,15 +65,11 @@ set up CV Sections
 			<li>
 
 				<h4>{{ e.title }} <a href="/provider/cv/experience/{{ provider.vanity_url }}/edit/{{ e.key.urlsafe() }}"><i class="bs-icon icon-edit"> </i></a></h4>
-				<h6>{{ e.company_name }} ({{ e.start_year }} -
-				{% if e.end_year %}
-				{{ e.end_year }})
-				{% else %}
-				{{ _('Present') }})
-				{% endif %}</h6>
+				<h6>{{ e.company_name }}				
+					{{ macro.display_cv_years(e.start_year, e.end_year) }} </h6>
 				{% if e.description %}
 				<p>
-						{{ e.description|markdown|safe }}
+					{{ e.description|markdown|safe }}
 				</p>
 				{% endif %}
 
@@ -76,14 +78,12 @@ set up CV Sections
 		</ul>
 		<a data-toggle="modal" href="#experience_modal" class="btn btn-primary">{{ _('Add Experience') }}</a>
 
-		<br>
-		<br>
+	</div>
+	<div class="span6">
 		<h3>{{ _('Continuing Education') }}</h3>
 		<ul class="unstyled">
-
 			{% for e in provider.get_continuing_education() %}
 			<li>
-
 				<h4>{{ e.title }} <a href="/provider/cv/continuing_education/{{ provider.vanity_url }}/edit/{{ e.key.urlsafe() }}"><i class="bs-icon icon-edit"> </i></a></h4>
 				<h6>{{ e.type|code_to_string }},
 				{% if e.hours  %}
@@ -99,6 +99,48 @@ set up CV Sections
 			{% endfor %}
 		</ul>
 		<a data-toggle="modal" href="#continuing_education_modal" class="btn btn-primary">{{ _('Add Continuing Education') }}</a>
+		<br>
+		<br>
+		<h3>{{ _('Organization Memberships') }}</h3>
+		<ul class="unstyled">
+			{% for e in provider.get_organization() %}
+			<li>
+				<h4>
+					{% if e.organization == 'other' %}
+						{{ e.other }}
+					{% else %}
+						{{ association_dict[e.organization] }}
+					{% endif %}
+					
+					<a href="/provider/cv/organization/{{ provider.vanity_url }}/edit/{{ e.key.urlsafe() }}"><i class="bs-icon icon-edit"> </i></a>
+				</h4>
+				<h6>{{ macro.display_cv_years(e.start_year, e.end_year) }} </h6>
+			</li>
+			{% endfor %}
+		</ul>
+		<a data-toggle="modal" href="#organization_modal" class="btn btn-primary">{{ _('Add Organization Membership') }}</a>
+
+		<br>
+		<br>
+		<h3>{{ _('Certifications') }}</h3>
+		<ul class="unstyled">
+			{% for e in provider.get_certification() %}
+			<li>
+				<h4>
+					{% if e.certification == 'other' %}
+						{{ e.other }}
+					{% else %}
+						{{ certification_dict[e.certification] }}
+					{% endif %}
+
+					<a href="/provider/cv/certification/{{ provider.vanity_url }}/edit/{{ e.key.urlsafe() }}"><i class="bs-icon icon-edit"> </i></a>
+				</h4>
+				<h6>{{ e.year }} </h6>
+			</li>
+			{% endfor %}
+		</ul>
+		<a data-toggle="modal" href="#certification_modal" class="btn btn-primary">{{ _('Add Certification') }}</a>
+
 	</div>
 </div>
 
