@@ -78,6 +78,28 @@ indexes:
   - name: created_on
     direction: desc
 
+- kind: ProfessionalCertification
+  properties:
+  - name: provider
+  - name: end_year
+    direction: desc
+  - name: start_year
+    direction: desc
+
+- kind: ProfessionalCertification
+  properties:
+  - name: provider
+  - name: year
+    direction: desc
+
+- kind: ProfessionalOrganization
+  properties:
+  - name: provider
+  - name: end_year
+    direction: desc
+  - name: start_year
+    direction: desc
+
 - kind: Provider
   properties:
   - name: category

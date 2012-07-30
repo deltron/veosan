@@ -45,6 +45,102 @@ class ProviderTest(BaseTest):
         # check the event log
         self.assert_msg_in_log("Edit CV: add education success", admin=True)
 
+    def test_add_education_nothing_and_other(self):
+        self.self_signup_provider()
+
+        response = self.testapp.get('/provider/cv/' + self._TEST_PROVIDER_VANITY_URL)
+
+        education_form = response.forms['education_form']
+        
+        education_form['start_year'] = 1998
+        education_form['end_year'] = 2002
+        education_form['school_name'] = 'nothing'
+        education_form['degree_type'] = 'bachelor'
+        education_form['degree_title'] = 'Clinical Physiotherapy'
+        education_form['description'] = 'Graduated with honors'
+
+        response = education_form.submit()
+                
+        # error should appear asking to choose something
+        response.mustcontain('1998','2002')
+        response.mustcontain('Graduated with honors')
+        response.mustcontain('Clinical Physiotherapy')
+        response.mustcontain("Baccalauréat")
+        response.mustcontain("Please choose something from the list.")
+        
+        education_form2 = response.forms['education_form']
+        
+        education_form2['school_name'] = 'other'
+        response2 = education_form2.submit()
+
+        # error should appear asking to write in other
+        #response2.showbrowser()
+        response2.mustcontain("Please enter an organization name")
+
+        education_form3 = response2.forms['education_form']
+        education_form3['other'] = 'Curtain University'
+        response3 = education_form3.submit()
+        
+        response3.mustcontain('Curtain University')
+        
+        # check on the public profile
+        response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
+        response.mustcontain('1998','2002')
+        response.mustcontain('Curtain University')
+        response.mustcontain('Graduated with honors')
+        response.mustcontain('Clinical Physiotherapy')
+        response.mustcontain("Baccalauréat")
+
+        # check the event log
+        self.assert_msg_in_log("Edit CV: add education success", admin=False)
+
+    def test_everything_correct_then_edit_and_change_valid_field_to_invalid(self):
+        self.self_signup_provider()
+
+        response = self.testapp.get('/provider/cv/' + self._TEST_PROVIDER_VANITY_URL)
+
+        education_form = response.forms['education_form']
+        
+        education_form['start_year'] = 1998
+        education_form['end_year'] = 2002
+        education_form['school_name'] = 'other'
+        education_form['other'] = 'Curtain University'
+        education_form['degree_type'] = 'bachelor'
+        education_form['degree_title'] = 'Clinical Physiotherapy'
+        education_form['description'] = 'Graduated with honors'
+
+        response = education_form.submit()
+                
+        # all good
+        response.mustcontain('1998','2002')
+        response.mustcontain('Graduated with honors')
+        response.mustcontain('Clinical Physiotherapy')
+        response.mustcontain("Baccalauréat")
+        response.mustcontain("Curtain University")
+
+        # now edit
+        provider = db.get_provider_from_vanity_url(self._TEST_PROVIDER_VANITY_URL)
+        education = provider.get_education()[0]
+        education_key = education.key.urlsafe()
+        edit_response = self.testapp.get('/provider/cv/education/' + self._TEST_PROVIDER_VANITY_URL + '/edit/' + education_key)
+                
+        # change a valid field to invalid       
+        edit_form = edit_response.forms['education_form']
+        edit_form['start_year'] = 19988991
+        error_response = edit_form.submit()
+        
+        error_response.mustcontain('SVP entrez une année valide.')
+        error_response.mustcontain('19988991')
+
+        # now change it to valid again
+        edit_form_corrected = error_response.forms['education_form']
+        edit_form_corrected['start_year'] = 1979
+        saved_response = edit_form_corrected.submit()
+        saved_response.mustcontain('1979')
+        saved_response.mustcontain('Vos modifications ont été enregistrées.')
+        
+        # check the event log
+        self.assert_msg_in_log("Edit CV: add education success", admin=False)
 
 
     def test_delete_education_from_profile(self):
