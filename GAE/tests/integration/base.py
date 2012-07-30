@@ -375,11 +375,6 @@ class BaseTest(unittest.TestCase):
         profile_form.set('specialty', True, 0) # Sports
         profile_form.set('specialty', True, 2) # Cardio
 
-        profile_form.set('associations', True, 0) # Ordre professionnel de la physiothérapie du Québec (OPPQ)
-        profile_form.set('associations', True, 2) # Canadian Academy of Manipulative Physiotherapy (CAMPT)
-
-        profile_form.set('certifications', True, 1) # Active Release Therapy (ART)
-
         profile_form.set('practice_sites', True, 0) # onsite visits
 
 
@@ -396,11 +391,6 @@ class BaseTest(unittest.TestCase):
         # TODO - switch to Beautiful Soup to parse HTML?
         response.mustcontain('input checked id="specialty-0" name="specialty" type="checkbox" value="sports"')        
         response.mustcontain('input checked id="specialty-2" name="specialty" type="checkbox" value="cardiology"')  
-
-        response.mustcontain('input checked id="associations-0" name="associations" type="checkbox" value="oppq"')        
-        response.mustcontain('input checked id="associations-2" name="associations" type="checkbox" value="campt"')
-        
-        response.mustcontain('input checked id="certifications-1" name="certifications" type="checkbox" value="art"')        
 
         response.mustcontain('input checked id="practice_sites-0" name="practice_sites" type="checkbox" value="onsite"')        
 
@@ -425,13 +415,6 @@ class BaseTest(unittest.TestCase):
         self.assertIn('cardiology', provider.specialty)
         self.assertNotIn('geriatric', provider.specialty)
         
-        self.assertIn('oppq', provider.associations)
-        self.assertIn('campt', provider.associations)
-        self.assertNotIn('cpa', provider.associations)
-
-        self.assertIn('art', provider.certifications)
-        self.assertNotIn('mckenzie', provider.certifications)
-
         self.assertIn('onsite', provider.practice_sites)
 
         # check the event log
