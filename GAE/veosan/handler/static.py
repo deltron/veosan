@@ -55,3 +55,10 @@ class DomainDispatcher(BaseHandler):
             self.redirect('http://www.veosan.com/%s' % (str(provider.vanity_url)))
         else:
             self.redirect('http://www.veosan.com/')
+
+
+class WelcomeHandler(BaseHandler):
+    def get(self, domain=None):
+        self.render_template("provider/welcome.html")
+
+
