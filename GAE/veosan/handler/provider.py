@@ -6,8 +6,10 @@ from webapp2_extras.i18n import lazy_gettext as _
 
 # veo
 import data.db as db
-from data.model import Schedule, Education, Experience, ContinuingEducation
-from forms.provider import ProviderAddressForm, ProviderEducationForm, ProviderContinuingEducationForm, ProviderExperienceForm, ProviderProfileForm, ProviderPhotoForm
+from data.model import Schedule, Education, Experience, ContinuingEducation, \
+    ProfessionalOrganization, ProfessionalCertification
+from forms.provider import ProviderAddressForm, ProviderEducationForm, ProviderContinuingEducationForm, ProviderExperienceForm, ProviderProfileForm, ProviderPhotoForm, \
+    ProviderCertificationForm, ProviderOrganizationForm
 from base import BaseHandler
 from handler.auth import provider_required
 from util import saved_message
@@ -153,11 +155,15 @@ class ProviderCVHandler(ProviderBaseHandler):
     forms = { 'education' : ProviderEducationForm,
               'experience' : ProviderExperienceForm,
               'continuing_education' : ProviderContinuingEducationForm,
+              'organization' : ProviderOrganizationForm,
+              'certification' : ProviderCertificationForm,
             }
 
     objs = { 'education' : Education,
              'experience' : Experience,
-             'continuing_education' : ContinuingEducation
+             'continuing_education' : ContinuingEducation,
+             'organization' : ProfessionalOrganization,
+             'certification' : ProfessionalCertification,
             }
 
     def generate_blank_forms(self):
@@ -173,17 +179,16 @@ class ProviderCVHandler(ProviderBaseHandler):
     def get(self, vanity_url=None, section=None, operation=None, key=None):
         provider = db.get_provider_from_vanity_url(vanity_url)
         kwargs = self.generate_blank_forms()
-        section_key = None
+        section_object_key = None
 
         if key:
-            section_key = ndb.Key(urlsafe=key)
+            section_object_key = ndb.Key(urlsafe=key)
         
-
-        if section_key:
+        if section_object_key:
             if operation == 'delete':
                 logging.info("(ProviderEducationHandler.get) Delete section %s key=%s" % (section, key))
                             
-                section_key.delete()
+                section_object_key.delete()
                 
                 # success, empty forms so you can play again            
                 kwargs = self.generate_blank_forms()
@@ -195,7 +200,7 @@ class ProviderCVHandler(ProviderBaseHandler):
                 logging.info("(ProviderEducationHandler.get) Edit section %s key=%s" % (section, key))
                 
                 # get the object
-                obj = section_key.get()
+                obj = section_object_key.get()
                 
                 # populate the form
                 kwargs[section + "_form"] = self.forms[section]().get_form(obj=obj)
@@ -221,26 +226,25 @@ class ProviderCVHandler(ProviderBaseHandler):
             # Store section
             
             if operation == 'add':
-                section_object = self.objs[section]()
+                new_section_object = self.objs[section]()
                     
-                section_form.populate_obj(section_object)
+                section_form.populate_obj(new_section_object)
 
-                section_object.provider = provider.key
-                section_object.put()
+                new_section_object.provider = provider.key
+                new_section_object.put()
                 
                 # stored eduction
-                logging.debug("(ProviderEducationHandler.post) Stored section %s key=%s" % (section, section_object.key))
+                logging.debug("(ProviderEducationHandler.post) Stored section %s key=%s" % (section, new_section_object.key))
 
             if operation == 'edit':
-                section_key = ndb.Key(urlsafe=key)
+                section_object_key = ndb.Key(urlsafe=key)
         
-                if section_key:
-                    section_object = section_key.get()
+                if section_object_key:
+                    section_object = section_object_key.get()
                     section_form.populate_obj(section_object)
-                    section_object.provider = provider.key
                     section_object.put()
                     
-                    # stored eduction
+                    # stored
                     logging.info("(ProviderEducationHandler.post) Stored section %s key=%s" % (section, section_object.key))
                 else:
                     logging.info("(ProviderEducationHandler.post) No section object found for key %s" % key)
@@ -255,16 +259,17 @@ class ProviderCVHandler(ProviderBaseHandler):
 
         else:            
             kwargs = {}
-            for key in self.forms:
-                if key == section:
+            for k in self.forms:
+                if k == section:
                     # this one has errors
-                    kwargs[key + "_form"] = section_form
+                    kwargs[k + '_form'] = section_form
                 else:
                     # blank form
-                    kwargs[key + '_form'] = self.forms[key]().get_form()
+                    kwargs[k + '_form'] = self.forms[k]().get_form()
             
             if operation == 'edit':
                 kwargs['edit'] = section
+                kwargs['edit_key'] = key
             
             self.render_cv(provider, **kwargs)
             
