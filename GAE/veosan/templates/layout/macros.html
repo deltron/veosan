@@ -122,3 +122,20 @@ Macro to generate provider name
 {% endif %}
 
 {%- endmacro %}
+
+
+
+{#
+Macro to display year in CV
+#}
+
+{% macro display_cv_years(start_year, end_year) -%}
+
+({{ start_year }} -
+				{% if end_year %}
+				{{ end_year }})
+				{% else %}
+				{{ _('Present') }})
+				{% endif %}
+				
+{%- endmacro %}
