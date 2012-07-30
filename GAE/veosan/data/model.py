@@ -71,13 +71,19 @@ class Provider(ndb.Model):
     # profile
     category = ndb.StringProperty()
     specialty = ndb.StringProperty(repeated=True)
-    associations = ndb.StringProperty(repeated=True)
-    certifications = ndb.StringProperty(repeated=True)
     practice_sites = ndb.StringProperty(repeated=True)
     spoken_languages = ndb.StringProperty(repeated=True)
-    start_year = ndb.StringProperty()
+    profile_photo_blob_key = ndb.BlobKeyProperty()
+    bio = ndb.TextProperty()
+    quote = ndb.TextProperty()
 
     
+    # deprecated
+    associations = ndb.StringProperty(repeated=True)
+    certifications = ndb.StringProperty(repeated=True)
+    start_year = ndb.StringProperty()
+
+
     # address
     first_name = ndb.StringProperty()
     last_name = ndb.StringProperty()
@@ -90,9 +96,6 @@ class Provider(ndb.Model):
     city = ndb.StringProperty()
     postal_code = ndb.StringProperty()
     province = ndb.StringProperty()
-    profile_photo_blob_key = ndb.BlobKeyProperty()
-    bio = ndb.TextProperty()
-    quote = ndb.TextProperty()
     
     # unique name for public profile
     # possible coercion to lower case?
@@ -180,6 +183,13 @@ class Provider(ndb.Model):
     def get_continuing_education(self):
         return ContinuingEducation.query(ContinuingEducation.provider == self.key).order(-ContinuingEducation.year, -ContinuingEducation.month)
 
+    def get_organization(self):
+        return ProfessionalOrganization.query(ProfessionalOrganization.provider == self.key).order(-ProfessionalOrganization.end_year, -ProfessionalOrganization.start_year)
+
+    def get_certification(self):
+        return ProfessionalCertification.query(ProfessionalCertification.provider == self.key).order(-ProfessionalCertification.year)
+
+
 
     def add_note(self, body, note_type='admin'):
         ''' Add Note to this provider'''
@@ -202,6 +212,8 @@ class Education(ndb.Model):
     end_year = ndb.IntegerProperty()
 
     school_name = ndb.StringProperty()
+    other = ndb.StringProperty()
+
     degree_type = ndb.StringProperty()
     degree_title = ndb.StringProperty()
 
@@ -233,6 +245,22 @@ class Experience(ndb.Model):
     title = ndb.StringProperty()
 
     description = ndb.TextProperty()
+
+
+class ProfessionalOrganization(ndb.Model):   
+    provider = ndb.KeyProperty(kind=Provider)
+    organization = ndb.StringProperty()
+    other = ndb.StringProperty()
+    start_year = ndb.IntegerProperty()
+    end_year = ndb.IntegerProperty()
+
+    
+class ProfessionalCertification(ndb.Model):   
+    provider = ndb.KeyProperty(kind=Provider)
+    certification = ndb.StringProperty()
+    other = ndb.StringProperty()
+    year = ndb.IntegerProperty()
+
 
 class LogEvent(ndb.Model):
     user = ndb.KeyProperty(kind=User)
