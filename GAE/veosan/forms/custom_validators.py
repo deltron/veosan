@@ -6,6 +6,7 @@ from webapp2_extras.routes import PathPrefixRoute
 import re
 import logging
 import main
+from wtforms.validators import Required
 
 class UniqueVanityURL(object):
     def __init__(self, message=None):
@@ -91,3 +92,27 @@ class NoWhitespace(object):
     def __call__(self, form, field):
         if ' ' in field.data:
             raise ValidationError(self.message)
+
+class DisallowNoChoiceInSelect(object):
+    def __init__(self, message=None):
+        self.message = message
+
+    def __call__(self, form, field):
+        if field.data == "nothing":
+            raise ValidationError(self.message)
+
+
+class RequiredIfOther(Required):
+    # a validator which makes a field required if
+    # another field is set to "other" (ie select field)
+
+    def __init__(self, other_field_name, *args, **kwargs):
+        self.other_field_name = other_field_name
+        super(RequiredIfOther, self).__init__(*args, **kwargs)
+
+    def __call__(self, form, field):
+        other_field = form._fields.get(self.other_field_name)
+        if other_field is None:
+            raise Exception('no field named "%s" in form' % self.other_field_name)
+        if other_field.data == "other":
+            super(RequiredIfOther, self).__call__(form, field)
