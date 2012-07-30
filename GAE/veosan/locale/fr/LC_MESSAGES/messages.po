@@ -538,6 +538,22 @@ msgstr "Laisser vide pour le présent"
 msgid "Organization Name"
 msgstr "Nom de l'organization"
 
+msgid "Please enter the organization name here if not in the list"
+msgstr "SVP entrez le nom de l'organisation ici s'il n'apparaît pas dans la liste"
+
+msgid "Please enter the certificate name here if not in the list"
+msgstr "SVP entrez le nom du certificat ici s'il n'apparaît pas dans la liste"
+
+msgid "Please choose an option from the list. If none of the options seems to fit, please choose \"Other\" and write in the field below."
+msgstr "SVP choisir une option. Si aucun choix ne s'applique, veuillez sélectionner «Autre» et inscrire votre choix dans la case ci-dessous."
+
+msgid "Please enter an organization name"
+msgstr "SVP entrez le nom de l'organisation"
+
+msgid "Please enter a certificate name"
+msgstr "SVP entrez le nom du certificat"
+
+
 #################
 # Profile Page
 #################

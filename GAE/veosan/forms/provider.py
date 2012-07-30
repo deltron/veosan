@@ -27,7 +27,7 @@ class ProviderEducationForm(CustomForm):
     def _set_fields(self, form):        
         setattr(form, 'school_name' , SelectField(_(u'School'), 
                                                   choices=util.get_all_schools_for_form(),
-                                                  validators=[custom_validators.DisallowNoChoiceInSelect(message=_('Please choose something from the list. If nothing is applicable please choose "Other" and write the description below.'))]
+                                                  validators=[custom_validators.DisallowNoChoiceInSelect(message=_('Please choose an option from the list. If none of the options seems to fit, please choose "Other" and write in the field below.'))]
                                             ))   
         setattr(form, 'other', TextField(_(u'Other'), 
                                          description=_(u'Please enter the organization name here if not in the list'),
@@ -64,7 +64,7 @@ class ProviderOrganizationForm(CustomForm):
     def _set_fields(self, form):        
         setattr(form, 'organization', SelectField(_(u'Organization Title'), 
                                                   choices=util.get_all_organizations_for_form(),
-                                                  validators=[custom_validators.DisallowNoChoiceInSelect(message=_('Please choose something from the list. If nothing is applicable please choose "Other" and write the description below.'))]
+                                                  validators=[custom_validators.DisallowNoChoiceInSelect(message=_('Please choose an option from the list. If none of the options seems to fit, please choose "Other" and write in the field below.'))]
                                             ))
         setattr(form, 'other', TextField(_(u'Other'), 
                                          description=_(u'Please enter the organization name here if not in the list'),
@@ -79,7 +79,7 @@ class ProviderCertificationForm(CustomForm):
     def _set_fields(self, form):        
         setattr(form, 'certification', SelectField(_(u'Certification Title'), 
                                                     choices=util.get_all_certifications_for_form(),
-                                                    validators=[custom_validators.DisallowNoChoiceInSelect(message=_('Please choose something from the list. If nothing is applicable please choose "Other" and write the description below.'))]
+                                                    validators=[custom_validators.DisallowNoChoiceInSelect(message=_('Please choose an option from the list. If none of the options seems to fit, please choose "Other" and write in the field below.'))]
                                             ))
         setattr(form, 'other', TextField(_(u'Other'), 
                                          description=_(u'Please enter the certificate name here if not in the list'),

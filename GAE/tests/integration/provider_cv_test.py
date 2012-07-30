@@ -66,7 +66,7 @@ class ProviderTest(BaseTest):
         response.mustcontain('Graduated with honors')
         response.mustcontain('Clinical Physiotherapy')
         response.mustcontain("Baccalauréat")
-        response.mustcontain("Please choose something from the list.")
+        response.mustcontain("SVP choisir une option. Si aucun choix ne")
         
         education_form2 = response.forms['education_form']
         
@@ -75,7 +75,7 @@ class ProviderTest(BaseTest):
 
         # error should appear asking to write in other
         #response2.showbrowser()
-        response2.mustcontain("Please enter an organization name")
+        response2.mustcontain("SVP entrez le nom de")
 
         education_form3 = response2.forms['education_form']
         education_form3['other'] = 'Curtain University'
