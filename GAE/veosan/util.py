@@ -49,16 +49,7 @@ def get_all_provinces():
         ]
 
 def get_all_provinces_sorted():
-     # at the begining
-    all_provinces = [("nothing", "")]
-
-    sorted = get_all_provinces()
-    sorted.sort(key=lambda x: x[1])
-    
-    all_provinces.extend(sorted)
-      
-    return all_provinces
-
+    return massage_list(get_all_provinces())
 
 def get_all_categories():
     return [
@@ -76,23 +67,33 @@ def get_all_categories():
         ]
 
 def get_all_categories_for_profile_editing():
-    # at the begining
-    all_categories = [("nothing", "")]
-    
-    # add categories 
-    # TODO : eventually group them    
-    # sort by alphabetical order in language
-    sorted = get_all_categories()
-    sorted.sort(key=lambda x: x[1])
-    
-    all_categories.extend(sorted)
-    
-    # at the end
-    all_categories.extend([
-                             ("other", _(u"Other")),
-                          ])
-    
-    return all_categories
+    return massage_list(get_all_categories())
+
+def massage_list(l):
+    ''' Massage a list for display by:
+            1. sorting in alphabetical order of display language
+            2. add empty to start of list
+            3. add Other at the end
+    '''
+    l = sort_list(l)
+    l = add_nothing_at_start(l)
+    l = add_other_at_end(l)
+    return l
+
+def sort_list(l):
+    ''' sort labels by alphabetical order in display language '''
+    l.sort(key=lambda x: x[1])
+    return l
+
+def add_nothing_at_start(l):
+    l.insert(0, ("nothing", ""))
+    return l
+
+def add_other_at_end(l):
+    l.extend([("other", _(u"Other"))])
+    return l
+
+
 
 # key, value
 def getAllSpecialities():
@@ -130,8 +131,11 @@ def get_all_schools():
             ("uqtr", _(u"Université de Québec à Trois-Rivières")),
             ("usherb", _(u"Université de Sherbrooke")),
             ("laval", _(u"Université Laval")),
-            ("na", _(u"Other")),
         ]
+    
+def get_all_schools_for_form():
+    return massage_list(get_all_schools())
+
     
 def get_all_degrees():
     return [("bachelor", _(u"Bachelor's")),
@@ -154,6 +158,18 @@ def getAllAssociations():
             ("oiiq", _(u"Ordre des infirmières et infirmiers du Québec (OIIQ)")),
         ]
 
+def get_all_organizations_for_form():
+    return massage_list(getAllAssociations())
+
+def getAllCertifications():
+    return [("mckenzie", _(u"McKenzie Method")),
+            ("art", _(u"Active Release Therapy (ART)")),
+        ]
+
+def get_all_certifications_for_form():
+    return massage_list(getAllCertifications())
+
+
 def getAllSites():
     return [("onsite", _(u"I am willing to do on-site visits")),
             ("clinic", _(u"I have a clinic patients can visit")),
@@ -173,10 +189,6 @@ def get_all_spoken_languages():
            # ("vn", _(u"Vietnamese")),
         ]
 
-def getAllCertifications():
-    return [("mckenzie", _(u"McKenzie Method")),
-            ("art", _(u"Active Release Therapy (ART)"))
-        ]
 
 
 def getAllInsurance():
