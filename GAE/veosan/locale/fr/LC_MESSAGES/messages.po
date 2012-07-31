@@ -902,7 +902,7 @@ msgstr "Maîtrise"
 #################
 
 msgid "Ordre professionnel de la physiotherapie du Quebec (OPPQ)"
-msgstr "Ordre professionnel de la physiothérapie du Québec (OPPQ)"
+msgstr "L'Ordre professionnel de la physiothérapie du Québec (OPPQ)"
 
 msgid "Canadian Physiotherapy Association (CPA)"
 msgstr "Canadian Physiotherapy Association (CPA)"
@@ -911,7 +911,20 @@ msgid "Canadian Academy of Manipulative Physiotherapy (CAMPT)"
 msgstr "Canadian Academy of Manipulative Physiotherapy (CAMPT)"
 
 msgid "Ordre des infirmières et infirmiers du Québec (OIIQ)"
-msgstr "Ordre des infirmières et infirmiers du Québec (OIIQ)"
+msgstr "L'Ordre des infirmières et infirmiers du Québec (OIIQ)"
+
+msgid "Canadian Medical Association (CMA)"
+msgstr "L'Association médicale canadienne (AMC)"
+
+msgid "Fédération des médecins résidents du Québec (FMRQ)"
+msgstr "Fédération des médecins résidents du Québec (FMRQ)"
+
+msgid "Canadian Chiropractic Association (CCA)"
+msgstr "L’Association chiropratique canadienne (ACC)"
+
+msgid "Association des chiropraticiens du Québec (ACQ)"
+msgstr "Association des chiropraticiens du Québec (ACQ)"
+
 
 #################
 # Specialities

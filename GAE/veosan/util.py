@@ -153,6 +153,10 @@ def get_all_continuing_education_types():
 
 def getAllAssociations():
     return [("oppq", _(u"Ordre professionnel de la physiotherapie du Quebec (OPPQ)")),
+            ("acq", _(u"Association des chiropraticiens du Québec (ACQ)")),
+            ("cca", _(u"Canadian Chiropractic Association (CCA)")),
+            ("cma", _(u"Canadian Medical Association (CMA)")),
+            ("fmrq", _(u"Fédération des médecins résidents du Québec (FMRQ)")),
             ("cpa", _(u"Canadian Physiotherapy Association (CPA)")),
             ("campt", _(u"Canadian Academy of Manipulative Physiotherapy (CAMPT)")),
             ("oiiq", _(u"Ordre des infirmières et infirmiers du Québec (OIIQ)")),
