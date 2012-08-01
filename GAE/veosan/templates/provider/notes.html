@@ -35,6 +35,11 @@
 									{{ form.note_type(class="span2") }}
 								</div>
 							</div>
+							<div class="control-group">
+								<div class="controls">
+									{{ form.event_date() }}
+								</div>
+							</div>
 							
 							<div class="control-group">
 								<div class="controls">
@@ -71,7 +76,7 @@
 							<br>
 						</td>
 						<td>
-							{{n.note_type|capitalize}} on [Event Date]
+							{{n.note_type|capitalize}} on {{n.event_date}}
 						</td>
 						<td>
 							<p style="font-style: italic">
@@ -90,7 +95,7 @@
 								{{ n.edit_form.body(style="width: 90%", rows=5) }}
 							</td>
 							<td>
-								[date edit]
+								{{ n.edit_form.event_date() }}
 							</td>
 							<td>
 								<div class="control-group">
