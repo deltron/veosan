@@ -301,7 +301,9 @@ class ProviderTest(BaseTest):
         profile_form.set('specialty', False, 0) # Sports
         profile_form.set('specialty', False, 2) # Cardio
 
-        response = profile_form.submit()
+        response = profile_form.submit().follow()
+        
+        response = self.testapp.get('/provider/profile/' + self._TEST_PROVIDER_VANITY_URL)
         
         # verify unchecked
         response.mustcontain('input id="specialty-0" name="specialty" type="checkbox" value="sports"')        
@@ -419,7 +421,8 @@ class ProviderTest(BaseTest):
         # check again
         response = self.testapp.get('/provider/profile/' + self._TEST_PROVIDER_VANITY_URL)
         response.mustcontain("Prochaine étape: ajouter quelque chose à votre CV")
-        response2 = response.submit().follow()
+        
+        response2 = response.forms[0].submit().follow()
         response2.mustcontain("Curriculum Vitae")
 
         # add another thing to the CV (4)
