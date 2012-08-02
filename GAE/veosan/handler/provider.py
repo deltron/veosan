@@ -113,7 +113,12 @@ class ProviderEditProfileHandler(ProviderBaseHandler):
             provider = db.get_provider_from_vanity_url(vanity_url)
             provider_key = db.storeProvider(provider, self.request.POST, form=form)
             provider = provider_key.get()
-            self.render_profile(provider, profile_form=form, success_message=saved_message)
+            
+            # check CV count and redirect if <= 3 items
+            if provider.get_cv_items_count() <= 3:
+                self.redirect('/provider/cv/%s' % provider.vanity_url)
+            else:
+                self.render_profile(provider, profile_form=form, success_message=saved_message)
 
             # log the event
             self.log_event(user=provider.user, msg="Edit Profile: Success")

@@ -419,10 +419,11 @@ class ProviderTest(BaseTest):
         # check again
         response = self.testapp.get('/provider/profile/' + self._TEST_PROVIDER_VANITY_URL)
         response.mustcontain("Prochaine étape: ajouter quelque chose à votre CV")
+        response2 = response.submit().follow()
+        response2.mustcontain("Curriculum Vitae")
 
         # add another thing to the CV (4)
         response = self.testapp.get('/provider/cv/' + self._TEST_PROVIDER_VANITY_URL)
-        
         
         experience_form = response.forms['continuing_education_form']
         experience_form['title'] = 'SomeEd'
