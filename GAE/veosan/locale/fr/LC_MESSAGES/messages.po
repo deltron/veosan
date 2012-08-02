@@ -463,6 +463,9 @@ msgstr "Commentaires en vue de votre rendez-vous"
 msgid "Tell your story."
 msgstr "Votre histoire."
 
+msgid "Your story sets you apart."
+msgstr "Votre histoire vous démarque."
+
 msgid "Education"
 msgstr "Formation"
 
