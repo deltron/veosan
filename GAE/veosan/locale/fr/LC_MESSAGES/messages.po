@@ -805,6 +805,12 @@ msgstr "Podiatre"
 msgid "Doctor"
 msgstr "Médecin"
 
+msgid "Dentist"
+msgstr "Dentiste"
+
+msgid "Denturist"
+msgstr "Denturologiste"
+
 #################
 # Regions
 #################
@@ -924,6 +930,12 @@ msgstr "L’Association chiropratique canadienne (ACC)"
 
 msgid "Association des chiropraticiens du Québec (ACQ)"
 msgstr "Association des chiropraticiens du Québec (ACQ)"
+
+msgid "L’Ordre des denturologistes du Québec"
+msgstr "L’Ordre des denturologistes du Québec"
+
+msgid "Ordre des dentistes du Québec"
+msgstr "Ordre des dentistes du Québec"
 
 
 #################

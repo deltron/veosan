@@ -64,6 +64,9 @@ def get_all_categories():
             ("psychology", _(u"Psychologist")),
             ("podiatrist", _('Podiastrist')),
             ("kinesiology", _('Kinesiology')),
+            ("dentist", _('Dentist')),
+            ("denturist", _('Denturist')),
+
         ]
 
 def get_all_categories_for_profile_editing():
@@ -160,6 +163,10 @@ def getAllAssociations():
             ("cpa", _(u"Canadian Physiotherapy Association (CPA)")),
             ("campt", _(u"Canadian Academy of Manipulative Physiotherapy (CAMPT)")),
             ("oiiq", _(u"Ordre des infirmières et infirmiers du Québec (OIIQ)")),
+            ("odq_denture", _(u"L’Ordre des denturologistes du Québec (ODQ)")),
+            ("odq", _(u"Ordre des dentistes du Québec (ODQ)")),
+
+        
         ]
 
 def get_all_organizations_for_form():
