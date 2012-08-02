@@ -40,6 +40,25 @@
 						<span class="add-on">&nbsp;veosan.com&nbsp;</span><span class="add-on">/</span>{{ provider_signup_form2.vanity_url(class="span2", placeholder=_('Personal Link')) }}
 					</div>
 				</div>
+				
+				<h3 style="margin-top: 18px">{{ _('Please choose your password.') }}</h3>
+				<div class="control-group {% if provider_signup_form2.password.errors %} error {% endif %}">
+					{{ provider_signup_form2.password.label(class="control-label") }}
+					<div class="controls">
+
+						{{ macro.display_errors_for_field(provider_signup_form2.password) }}
+						{{ provider_signup_form2.password(class="span3") }}
+					</div>
+				</div>
+				
+				<div class="control-group {% if provider_signup_form2.password_confirm.errors %} error {% endif %}">
+					{{ provider_signup_form2.password_confirm.label(class="control-label") }}
+					<div class="controls">
+						{{ macro.display_errors_for_field(provider_signup_form2.password_confirm) }}
+						{{ provider_signup_form2.password_confirm(class="span3") }}
+					</div>
+				</div>
+
 				<div class="control-group">
 					<div class="controls">
 						<button type="submit" class="btn btn-primary btn-large" style="margin-top: 18px">

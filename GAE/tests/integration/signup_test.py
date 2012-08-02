@@ -49,20 +49,14 @@ class SignupTest(BaseTest):
         signup_form2 = response.forms['provider_signup_form2']
         signup_form2['category'] = 'osteopath'
         signup_form2['vanity_url'] = self._TEST_PROVIDER_VANITY_URL
+        signup_form2['password'] = self._TEST_PROVIDER_PASSWORD
+        signup_form2['password_confirm'] = self._TEST_PROVIDER_PASSWORD
 
 
-        password_response = signup_form2.submit().follow()
-        password_response.mustcontain('Mot de passe')
-        
-        password_form = password_response.forms[0]
-        password_form['password'] = self._TEST_PROVIDER_PASSWORD
-        password_form['password_confirm'] = self._TEST_PROVIDER_PASSWORD
-        
-        profile_response = password_form.submit().follow()
+        profile_response = signup_form2.submit().follow()
         profile_response.mustcontain("Bienvenue")
 
-        
-        
+
         
 if __name__ == "__main__":
     logging.basicConfig(stream=sys.stderr)
