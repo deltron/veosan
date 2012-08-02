@@ -263,7 +263,6 @@ class BaseTest(unittest.TestCase):
         address_form['title'] = u"mr"
         address_form['first_name'] = u"Fantastic"
         address_form['last_name'] = u"Fox"
-        address_form['credentials'] = u"Ph.D"
         address_form['phone'] = u"555-123-5678"
         address_form['address'] = u"123 Main St."
         address_form['city'] = u"Westmount"
@@ -304,7 +303,6 @@ class BaseTest(unittest.TestCase):
         self.assertEqual(address_form['title'].value, u"mr")
         self.assertEqual(address_form['first_name'].value, u"Fantastic")
         self.assertEqual(address_form['last_name'].value, u"Fox")
-        self.assertEqual(address_form['credentials'].value, u"Ph.D")
         self.assertEqual(address_form['phone'].value, u"555-123-5678")
         self.assertEqual(address_form['address'].value, u"123 Main St.")
         self.assertEqual(address_form['city'].value, u"Westmount")
@@ -321,7 +319,6 @@ class BaseTest(unittest.TestCase):
         address_form['title'] = u"mrs"
         address_form['first_name'] = u"Linda"
         address_form['last_name'] = u"Otter"
-        address_form['credentials'] = u"M.Sc"
         address_form['phone'] = u"555-987-6543"
         address_form['address'] = u"321 Primary St."
         address_form['city'] = u"Outremont"
