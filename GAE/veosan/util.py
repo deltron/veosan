@@ -65,8 +65,8 @@ def get_all_categories():
             ("podiatrist", _('Podiastrist')),
             ("kinesiology", _('Kinesiology')),
             ("dentist", _('Dentist')),
-            ("denturist", _('Denturist')),
-
+            ("dietitian", _('Dietitian')),
+            ("nutritionist", _('Nutritionist')),
         ]
 
 def get_all_categories_for_profile_editing():
@@ -165,8 +165,8 @@ def getAllAssociations():
             ("oiiq", _(u"Ordre des infirmières et infirmiers du Québec (OIIQ)")),
             ("odq_denture", _(u"L’Ordre des denturologistes du Québec (ODQ)")),
             ("odq", _(u"Ordre des dentistes du Québec (ODQ)")),
-
-        
+            ("dc", _(u"Dietitians of Canada (DC)")),
+            ("opdq", _(u"Ordre professionnel des diététistes du Québec (OPDQ)")),
         ]
 
 def get_all_organizations_for_form():

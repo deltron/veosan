@@ -814,6 +814,12 @@ msgstr "Dentiste"
 msgid "Denturist"
 msgstr "Denturologiste"
 
+msgid "Dietitian"
+msgstr "Diététicien"
+
+msgid "Nutritionist"
+msgstr "Nutritionniste"
+
 #################
 # Regions
 #################
@@ -940,6 +946,11 @@ msgstr "L’Ordre des denturologistes du Québec"
 msgid "Ordre des dentistes du Québec"
 msgstr "Ordre des dentistes du Québec"
 
+msgid "Dietitians of Canada (DC)"
+msgstr "Les diététistes du Canada (DC)"
+
+msgid "Ordre professionnel des diététistes du Québec (OPDQ)"
+msgstr "Ordre professionnel des diététistes du Québec (OPDQ)"
 
 #################
 # Specialities
