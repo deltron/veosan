@@ -357,6 +357,83 @@ class ProviderTest(BaseTest):
 
 
 
+    def test_change_save_button_less_than_3_cv_items(self):
+        self.login_as_admin()
+        self.init_new_provider()
+
+        # fill profile section
+        self.fill_new_provider_profile_correctly_action()
+
+        response = self.testapp.get('/provider/profile/' + self._TEST_PROVIDER_VANITY_URL)
+        response.mustcontain("Prochaine étape: ajouter quelque chose à votre CV")
+
+        # add one thing to the CV
+        response = self.testapp.get('/provider/cv/' + self._TEST_PROVIDER_VANITY_URL)
+
+        experience_form = response.forms['experience_form']
+        
+        experience_form['start_year'] = 2003
+        experience_form['end_year'] = 2006
+        experience_form['company_name'] = 'Kinatex'
+        experience_form['title'] = 'Manual Physiotherapy'
+        experience_form['description'] = 'Par1\n\nPar2* Worked with my hands\n * Item two'
+
+        response = experience_form.submit()
+        
+        # check again
+        response = self.testapp.get('/provider/profile/' + self._TEST_PROVIDER_VANITY_URL)
+        response.mustcontain("Prochaine étape: ajouter quelque chose à votre CV")
+
+        # add another thing to the CV (1)
+        response = self.testapp.get('/provider/cv/' + self._TEST_PROVIDER_VANITY_URL)
+
+        experience_form = response.forms['education_form']
+        experience_form['start_year'] = 2003
+        experience_form['end_year'] = 2006
+        experience_form['school_name'] = 'mcgill'
+        experience_form.submit()
+
+        # check again
+        response = self.testapp.get('/provider/profile/' + self._TEST_PROVIDER_VANITY_URL)
+        response.mustcontain("Prochaine étape: ajouter quelque chose à votre CV")
+
+        # add another thing to the CV (2)
+        response = self.testapp.get('/provider/cv/' + self._TEST_PROVIDER_VANITY_URL)
+
+        experience_form = response.forms['organization_form']
+        experience_form['start_year'] = 1992
+        experience_form['organization'] = 'odq'
+        experience_form.submit()
+
+        # check again
+        response = self.testapp.get('/provider/profile/' + self._TEST_PROVIDER_VANITY_URL)
+        response.mustcontain("Prochaine étape: ajouter quelque chose à votre CV")
+
+        # add another thing to the CV (3)
+        response = self.testapp.get('/provider/cv/' + self._TEST_PROVIDER_VANITY_URL)
+
+        experience_form = response.forms['continuing_education_form']
+        experience_form['title'] = 'SomeEd'
+        experience_form.submit()
+
+        # check again
+        response = self.testapp.get('/provider/profile/' + self._TEST_PROVIDER_VANITY_URL)
+        response.mustcontain("Prochaine étape: ajouter quelque chose à votre CV")
+
+        # add another thing to the CV (4)
+        response = self.testapp.get('/provider/cv/' + self._TEST_PROVIDER_VANITY_URL)
+        
+        
+        experience_form = response.forms['continuing_education_form']
+        experience_form['title'] = 'SomeEd'
+        experience_form['year'] = '2008'
+        experience_form.submit()
+
+        # check again
+        response = self.testapp.get('/provider/profile/' + self._TEST_PROVIDER_VANITY_URL)
+        response.mustcontain(no="Prochaine étape: ajouter quelque chose à votre CV")
+
+
 if __name__ == "__main__":
     unittest.main()
     

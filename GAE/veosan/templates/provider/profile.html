@@ -46,7 +46,7 @@
 	<div class="row">
 		<div class="span12 form-actions">
 			<button type="submit" class="btn btn-primary">
-				{% if provider.get_cv_items_count() < 3 %}
+				{% if provider.get_cv_items_count() <= 3 %}
 					{{ _('Next Step: Add Something to Your CV') }}
 				{% else %}
 					{{ _('Save') }}
