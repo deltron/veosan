@@ -33,6 +33,7 @@ class ProviderEducationForm(CustomForm):
                                          description=_(u'Please enter the organization name here if not in the list'),
                                          validators=[custom_validators.RequiredIfOther('school_name', message=_('Please enter an organization name'))]
                                     ))
+        setattr(form, 'location', TextField(_(u'Location')))
 
         setattr(form, 'start_year', IntegerField(_(u'Start Year'), [validators.NumberRange(min=1940, max=2100, message=_(u'Please enter a valid year.'))]))
         setattr(form, 'end_year' , IntegerField(_(u'End Year'), description=_(u'Leave empty for present'), 
@@ -44,6 +45,7 @@ class ProviderEducationForm(CustomForm):
 class ProviderExperienceForm(CustomForm):
     def _set_fields(self, form):        
         setattr(form, 'company_name', TextField(_(u'Organization Name')))
+        setattr(form, 'location', TextField(_(u'Location')))
         setattr(form, 'title', TextField(_(u'Position Title')))
 
         setattr(form, 'start_year', IntegerField(_(u'Start Year'), [validators.NumberRange(min=1940, max=2100, message=_(u'Please enter a valid year.'))]))

@@ -213,6 +213,7 @@ class Education(ndb.Model):
 
     school_name = ndb.StringProperty()
     other = ndb.StringProperty()
+    location = ndb.StringProperty()
 
     degree_type = ndb.StringProperty()
     degree_title = ndb.StringProperty()
@@ -243,6 +244,7 @@ class Experience(ndb.Model):
 
     company_name = ndb.StringProperty()
     title = ndb.StringProperty()
+    location = ndb.StringProperty()
 
     description = ndb.TextProperty()
 
@@ -253,7 +255,7 @@ class ProfessionalOrganization(ndb.Model):
     other = ndb.StringProperty()
     start_year = ndb.IntegerProperty()
     end_year = ndb.IntegerProperty()
-
+    location = ndb.StringProperty()
     
 class ProfessionalCertification(ndb.Model):   
     provider = ndb.KeyProperty(kind=Provider)
