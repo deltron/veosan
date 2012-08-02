@@ -67,6 +67,7 @@ def get_all_categories():
             ("dentist", _('Dentist')),
             ("dietitian", _('Dietitian')),
             ("nutritionist", _('Nutritionist')),
+            ("optometrist", _('Optometrist')),
         ]
 
 def get_all_categories_for_profile_editing():
