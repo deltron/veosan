@@ -98,16 +98,12 @@ class ProviderEditProfileHandler(ProviderBaseHandler):
 
     @provider_required    
     def get(self, vanity_url=None):
-        provider = None
+        provider = db.get_provider_from_vanity_url(vanity_url)
+        profile_form = ProviderProfileForm().get_form(obj=provider)
         
-        if vanity_url:
-            provider = db.get_provider_from_vanity_url(vanity_url)
-            
-            logging.debug("(ProviderEditProfileHandler.get) Edit profile for provider %s" % provider.email)
-            
-            profile_form = ProviderProfileForm().get_form(obj=provider)
-            
-            self.render_profile(provider, profile_form=profile_form)
+        logging.debug("(ProviderEditProfileHandler.get) Edit profile for provider %s" % provider.email)
+
+        self.render_profile(provider, profile_form=profile_form)
     
     @provider_required    
     def post(self, vanity_url=None):

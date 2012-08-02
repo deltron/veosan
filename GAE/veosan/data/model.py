@@ -148,7 +148,7 @@ class Provider(ndb.Model):
         return ids
     
     def isAvailable(self, day, time):
-        count =  self.schedule.filter('day = ', day).filter('time = ', time).count()
+        count = self.schedule.filter('day = ', day).filter('time = ', time).count()
         logging.info("is available? " + str(day) + " " + str(time) + " count:" + str(count))
         return count > 0
     
@@ -189,7 +189,14 @@ class Provider(ndb.Model):
     def get_certification(self):
         return ProfessionalCertification.query(ProfessionalCertification.provider == self.key).order(-ProfessionalCertification.year)
 
-
+    def get_cv_items_count(self):
+        return sum([
+                   Education.query(Education.provider == self.key).count(),
+                   Experience.query(Experience.provider == self.key).count(),
+                   ContinuingEducation.query(ContinuingEducation.provider == self.key).count(),
+                   ProfessionalOrganization.query(ProfessionalOrganization.provider == self.key).count(),
+                   ProfessionalCertification.query(ProfessionalCertification.provider == self.key).count(),
+                ])
 
     def add_note(self, body, note_type='admin'):
         ''' Add Note to this provider'''
@@ -293,9 +300,9 @@ class Note(ndb.Model):
     #datetime = ndb.DateTimeProperty(auto_now_add=True)
     
     def get_icon_name(self):
-        if self.note_type  == 'call':
+        if self.note_type == 'call':
             return 'icon-comment'
-        elif self.note_type =='meeting':
+        elif self.note_type == 'meeting':
             return 'icon-plane'
         elif self.note_type == 'admin':
             return 'icon-wrench'
