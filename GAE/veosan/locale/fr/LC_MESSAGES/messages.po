@@ -250,6 +250,9 @@ msgstr "Précédent"
 msgid "Upload"
 msgstr "Télécharger"
 
+msgid "Upload Your Profile Photo"
+msgstr "Téléchargez votre photo"
+
 msgid "Submit"
 msgstr "Soumettre"
 
