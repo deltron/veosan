@@ -77,25 +77,23 @@ class Provider(ndb.Model):
     bio = ndb.TextProperty()
     quote = ndb.TextProperty()
 
+    # address
+    first_name = ndb.StringProperty()
+    last_name = ndb.StringProperty()
+    title = ndb.StringProperty()
+    email = ndb.StringProperty()
+    phone = ndb.StringProperty()
+    address = ndb.StringProperty()
+    city = ndb.StringProperty()
+    postal_code = ndb.StringProperty()
+    province = ndb.StringProperty()
     
     # deprecated
     associations = ndb.StringProperty(repeated=True)
     certifications = ndb.StringProperty(repeated=True)
     start_year = ndb.StringProperty()
-
-
-    # address
-    first_name = ndb.StringProperty()
-    last_name = ndb.StringProperty()
-    title = ndb.StringProperty()
-    credentials = ndb.StringProperty()
-    email = ndb.StringProperty()
-    phone = ndb.StringProperty()
     location = ndb.StringProperty()
-    address = ndb.StringProperty()
-    city = ndb.StringProperty()
-    postal_code = ndb.StringProperty()
-    province = ndb.StringProperty()
+    credentials = ndb.StringProperty()
     
     # unique name for public profile
     # possible coercion to lower case?
@@ -198,6 +196,24 @@ class Provider(ndb.Model):
                    ProfessionalCertification.query(ProfessionalCertification.provider == self.key).count(),
                 ])
 
+    def is_address_complete(self):
+        if (not self.phone or (self.phone and len(self.phone) < 10)):
+            return False
+        if (not self.address or (self.address and len(self.address) < 3)):
+            return False
+        if (not self.city or (self.city and len(self.city) < 3)):
+            return False
+        if (not self.postal_code or (self.postal_code and len(self.postal_code) < 6)):
+            return False
+        if (not self.province or (self.province and len(self.province) < 2)):
+            return False
+        if (not self.first_name or (self.first_name and len(self.first_name) < 2)):
+            return False
+        if (not self.last_name or (self.last_name and len(self.last_name) < 2)):
+            return False
+        return True
+
+        
     def add_note(self, body, note_type='admin'):
         ''' Add Note to this provider'''
         note = Note()
