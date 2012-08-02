@@ -310,7 +310,16 @@ class ProviderPublicProfileHandler(ProviderBaseHandler):
             # nobody found, send them to the homepage
             self.redirect("/")
             
-            
+
+
+class WelcomeHandler(ProviderBaseHandler):
+    def get(self, vanity_url=None):
+        provider = db.get_provider_from_vanity_url(vanity_url)
+
+        self.render_template("provider/welcome.html", provider=provider)
+
+
+
 # BOOKING AND SCHEDULE STUFF
 # *************************************
 
@@ -361,6 +370,7 @@ class ProviderScheduleHandler(ProviderBaseHandler):
                 logging.error("Can't find schedule to delete")  
         else:
             logging.info('Wrong operation save schedule:' + operation)
+
 
 
 
