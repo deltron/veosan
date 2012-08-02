@@ -168,6 +168,8 @@ def getAllAssociations():
             ("odq", _(u"Ordre des dentistes du Québec (ODQ)")),
             ("dc", _(u"Dietitians of Canada (DC)")),
             ("opdq", _(u"Ordre professionnel des diététistes du Québec (OPDQ)")),
+            ("cao", _(u"Canadian Association of Optometrists (CAO)")),
+            ("aoq", _(u"L'Association des optométristes du Québec (AOQ)")),
         ]
 
 def get_all_organizations_for_form():

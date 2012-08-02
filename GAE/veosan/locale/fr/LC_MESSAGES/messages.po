@@ -621,6 +621,9 @@ msgstr "Vous pouvez <a href='/contact'>entrer en contact avec nous ici</a>."
 msgid "Let us know if you think something is missing or can be improved. Or if you're feeling nice, tell us you think it looks good! We love to hear feedback from our users."
 msgstr "Laissez-nous savoir s'il y aurait quelque chose à rajouter sur cette page. Ou, si le coeur vous en dit, faites-nous signe que tout est beau! On aime recevoir les commentaires de nos utilisateurs."
 
+msgid "Next Step: Add Something to Your CV"
+msgstr "Prochaine étape: ajouter quelque chose à votre CV"
+
 #################
 # Address Page
 #################
@@ -820,6 +823,9 @@ msgstr "Diététicien"
 msgid "Nutritionist"
 msgstr "Nutritionniste"
 
+msgid "Optometrist"
+msgstr "Optométriste"
+
 #################
 # Regions
 #################
@@ -951,6 +957,12 @@ msgstr "Les diététistes du Canada (DC)"
 
 msgid "Ordre professionnel des diététistes du Québec (OPDQ)"
 msgstr "Ordre professionnel des diététistes du Québec (OPDQ)"
+
+msgid "Canadian Association of Optometrists (CAO)"
+msgstr "L’Association canadienne des optométristes (ACO)"
+
+msgid "L'Association des optométristes du Québec (AOQ)"
+msgstr "L'Association des optométristes du Québec (AOQ)"
 
 #################
 # Specialities
