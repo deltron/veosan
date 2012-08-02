@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from wtforms import Form, TextField, SelectField, FileField, TextAreaField, IntegerField, FloatField
+from wtforms import Form, TextField, SelectField, FileField, TextAreaField, IntegerField, FloatField, DateField
 from wtforms import validators
 from custom_form import MultiCheckboxField, CustomForm
 import util
@@ -117,6 +117,7 @@ class ProviderAddressForm(CustomForm):
 class ProviderNoteForm(Form):
     body = TextAreaField(_(u'Note'))
     note_type = SelectField(_(u'Type'), choices=util.get_all_note_types())
+    event_date = DateField(_(u'Date'))
     
 class ProviderStatusForm(Form):
     status = SelectField(_(u'Status'), choices=util.get_all_status_types())

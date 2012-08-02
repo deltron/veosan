@@ -94,7 +94,6 @@ class ProviderNotesHandler(ProviderAdminBaseHandler):
             if not operation:
                 logging.info('type %s' % self.request.get('note_type'))
                 provider.add_note(self.request.get('body'), note_type=self.request.get('note_type'))
-                self.render_notes(provider)
             elif operation == 'edit':
                 # todo: VALIDATE FORM!!!
                 db.store(note_key, self.request.POST)
