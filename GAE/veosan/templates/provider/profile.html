@@ -15,35 +15,35 @@
 			</fieldset>
 		</div>
 		<div class="span6">
-			<div class="well" style="width: 50%; margin: 0px auto;">
-				<h2> What's Next? </h2>
-				<p>Here are some things you can do to improve your profile and make it easier for patients to find you.</p>
+			<div class="well" style="width: 60%; margin: 0px auto;">
+				<h2>{{ _("What's Next?") }}</h2>
+				<p>{{ _('Here are some things you can do to improve your profile and make it easier for patients to find you.') }}</p>
 				<ol style="font-size:large">
-					<li><del>Account setup</del> <i class="bs-icon icon-ok"> </i></li>
+					<li><del>{{ _('Account setup') }}</del> <i class="bs-icon icon-ok"> </i></li>
 
 					{% if not provider.profile_photo_blob_key %}
-					<li>Upload your photo</li>
+					<li>{{ _('Upload your photo') }}</li>
 					{% else %}
-					<li><del>Upload your photo</del> <i class="bs-icon icon-ok"> </i></li>
+					<li><del>{{ _('Upload your photo') }}</del> <i class="bs-icon icon-ok"> </i></li>
 					{% endif %}
 
 					{% if (not provider.bio or (provider.bio and provider.bio|length < 10))
 								 or (not provider.quote or (provider.quote and provider.quote|length < 10)) %}
-					<li>Write your bio and quote</li>
+					<li>{{ _('Write your bio and quote') }}</li>
 					{% else %}
-					<li><del>Write your bio and quote</del> <i class="bs-icon icon-ok"> </i></li>
+					<li><del>{{ _('Write your bio and quote') }}</del> <i class="bs-icon icon-ok"> </i></li>
 					{% endif %}
 					
 					{% if provider.get_cv_items_count() <= 3 %}
-					<li>Fill in your CV</li>
+					<li>{{ _('Fill in your CV') }}</li>
 					{% else %}
-					<li><del>Fill in your CV</del> <i class="bs-icon icon-ok"> </i></li>
+					<li><del>{{ _('Fill in your CV') }}</del> <i class="bs-icon icon-ok"> </i></li>
 					{% endif %}
 					
 					{% if not provider.is_address_complete() %}
-					<li>Complete your address</li>
+					<li>{{ _('Complete your address') }}</li>
 					{% else %}
-					<li><del>Complete your address</del> <i class="bs-icon icon-ok"> </i></li>
+					<li><del>{{ _('Complete your address') }}</del> <i class="bs-icon icon-ok"> </i></li>
 					{% endif %}
 
 				</ol>

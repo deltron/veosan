@@ -10,12 +10,12 @@ class ProviderTest(BaseTest):
 
         # step 1 - bio and quote
         response = self.testapp.get('/provider/profile/' + self._TEST_PROVIDER_VANITY_URL)
-        response.mustcontain("<li>Write your bio and quote</li>")
+        response.mustcontain("<li>Écrivez votre biographie et commentaire</li>")
         
         profile_form = response.forms['profile_form']
         profile_form['bio'] = 'This is my biography more words long!'
         response = profile_form.submit()
-        response.mustcontain("<li>Write your bio and quote</li>")
+        response.mustcontain("<li>Écrivez votre biographie et commentaire</li>")
 
         profile_form = response.forms['profile_form']
         profile_form['quote'] = 'This is my quote hello goodbye!'
@@ -25,7 +25,7 @@ class ProviderTest(BaseTest):
 
         # check if it's struck out
         response = self.testapp.get('/provider/profile/' + self._TEST_PROVIDER_VANITY_URL)
-        response.mustcontain("<li><del>Write your bio and quote</del>")
+        response.mustcontain("<li><del>Écrivez votre biographie et commentaire</del>")
 
         # fill out the CV
         response = self.testapp.get('/provider/cv/' + self._TEST_PROVIDER_VANITY_URL)
@@ -58,7 +58,7 @@ class ProviderTest(BaseTest):
 
         # check if it's struck out
         response = self.testapp.get('/provider/profile/' + self._TEST_PROVIDER_VANITY_URL)
-        response.mustcontain("<li><del>Fill in your CV</del>")
+        response.mustcontain("<li><del>Remplissez votre CV</del>")
 
         # fill the address
         response = self.testapp.get('/provider/address/%s' % self._TEST_PROVIDER_VANITY_URL)
@@ -76,7 +76,7 @@ class ProviderTest(BaseTest):
         address_form.submit()
 
         response = self.testapp.get('/provider/profile/' + self._TEST_PROVIDER_VANITY_URL)
-        response.mustcontain("<li><del>Complete your address</del>")
+        response.mustcontain("<li><del>Complétez votre adresse</del>")
 
 
     def test_change_save_button_less_than_3_cv_items(self):

@@ -627,6 +627,27 @@ msgstr "Laissez-nous savoir s'il y aurait quelque chose à rajouter sur cette pa
 msgid "Next Step: Add Something to Your CV"
 msgstr "Prochaine étape: ajouter quelque chose à votre CV"
 
+msgid "What's Next?"
+msgstr "Les prochaines étapes"
+
+msgid "Here are some things you can do to improve your profile and make it easier for patients to find you."
+msgstr "Voici ce que vous pouvez faire pour améliorer votre profil et le rendre plus accessible pour les patients."
+
+msgid "Upload your photo"
+msgstr "Téléchargez votre photo"
+
+msgid "Fill in your CV"
+msgstr "Remplissez votre CV"
+
+msgid "Account setup"
+msgstr "Activez votre compte"
+
+msgid "Complete your address"
+msgstr "Complétez votre adresse"
+
+msgid "Write your bio and quote"
+msgstr "Écrivez votre biographie et commentaire"
+
 #################
 # Address Page
 #################
