@@ -627,6 +627,12 @@ msgstr "Laissez-nous savoir s'il y aurait quelque chose à rajouter sur cette pa
 msgid "Next Step: Add Something to Your CV"
 msgstr "Prochaine étape: ajouter quelque chose à votre CV"
 
+msgid "Next Step: Fill in Your Biography and Quote"
+msgstr "Prochaine étape: écrire votre biographie et commentaire"
+
+msgid "Next Step: Complete Your Address"
+msgstr "Prochaine étape: completez votre adresse"
+
 msgid "What's Next?"
 msgstr "Les prochaines étapes"
 
@@ -647,6 +653,8 @@ msgstr "Complétez votre adresse"
 
 msgid "Write your bio and quote"
 msgstr "Écrivez votre biographie et commentaire"
+
+
 
 #################
 # Address Page
