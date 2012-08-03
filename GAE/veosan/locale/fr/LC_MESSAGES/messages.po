@@ -460,6 +460,25 @@ msgid "Comments for your appointment"
 msgstr "Commentaires en vue de votre rendez-vous"
 
 #################
+# Welcome Page
+#################
+
+msgid "Welcome!"
+msgstr "Bienvenue!"
+
+msgid "How to Navigate the Site"
+msgstr "Comment naviguer sur le site"
+
+msgid "Tell Us a Bit About Yourself"
+msgstr "Parlez-nous un peu de vous"
+
+msgid "Set Yourself Apart"
+msgstr "Démarquez-vous"
+
+msgid "Say Cheese! Don't Forget to Upload Your Photo"
+msgstr "Souriez! N'oubliez pas de télécharger votre photo"
+
+#################
 # CV Page
 #################
 

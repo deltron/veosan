@@ -2,14 +2,14 @@
 
 {% set active_page = "welcome" %}
 
-{% block subhead %}Welcome!{% endblock %}
+{% block subhead %}{{ _('Welcome!') }}{% endblock %}
 {% block lead %}Hi there, thanks for signing up to Veosan, the best place to connect with patients. Here's a quick tour to get you started!{% endblock %}
 
 {% block content %}
 
 <div class="row">
 	<div class="span6">
-		<h3>How to navigate the site</h3>
+		<h3>{{ _('How to Navigate the Site') }}</h3>
 		<p>
 			You can change pages by clicking on the tabs.
 		</p>
@@ -27,7 +27,7 @@
 		<img src="/assets/img/navigation-tabs.png">
 		<br>
 		<br>
-		<h3>Tell us a bit about yourself</h3>
+		<h3>{{ _('Tell Us a Bit About Yourself') }}</h3>
 		<p>
 			Make it easy for people to find you by completing your CV.
 		</p>
@@ -35,14 +35,14 @@
 
 	</div>
 	<div class="span6">
-		<h3>Set yourself apart</h3>
+		<h3>{{ _('Set Yourself Apart') }}</h3>
 		<p>
 			Your bio and quote are a way to tell your story in your own words. If you can't think of what to say, get in touch with us and we'll help you write a great biography.
 		</p>
 		<img src="/assets/img/profile-bio-crop.png">
 		<br>
 		<br>
-		<h3>Say cheese! Don't forget to upload your photo</h3>
+		<h3>{{ _("Say Cheese! Don't Forget to Upload Your Photo") }}</h3>
 		<p>
 			A good profile photo makes patients feel comfortable dealing with you. We also have professional photographers that can help you look your best, get in touch to schedule a quick photo shoot.
 		</p>
