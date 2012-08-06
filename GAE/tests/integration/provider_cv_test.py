@@ -45,39 +45,33 @@ class ProviderTest(BaseTest):
         # check the event log
         self.assert_msg_in_log("Edit CV: add education success", admin=True)
 
-    def test_add_education_nothing_and_other(self):
+    def test_add_organization_nothing_and_other(self):
         self.self_signup_provider()
 
         response = self.testapp.get('/provider/cv/' + self._TEST_PROVIDER_VANITY_URL)
 
-        education_form = response.forms['education_form']
+        education_form = response.forms['organization_form']
         
         education_form['start_year'] = 1998
         education_form['end_year'] = 2002
-        education_form['school_name'] = 'nothing'
-        education_form['degree_type'] = 'bachelor'
-        education_form['degree_title'] = 'Clinical Physiotherapy'
-        education_form['description'] = 'Graduated with honors'
+        education_form['organization'] = 'nothing'
 
         response = education_form.submit()
                 
         # error should appear asking to choose something
         response.mustcontain('1998','2002')
-        response.mustcontain('Graduated with honors')
-        response.mustcontain('Clinical Physiotherapy')
-        response.mustcontain("Baccalauréat")
         response.mustcontain("SVP choisir une option. Si aucun choix ne")
+
+        education_form2 = response.forms['organization_form']
         
-        education_form2 = response.forms['education_form']
-        
-        education_form2['school_name'] = 'other'
+        education_form2['organization'] = 'other'
         response2 = education_form2.submit()
 
         # error should appear asking to write in other
         #response2.showbrowser()
         response2.mustcontain("SVP entrez le nom de")
 
-        education_form3 = response2.forms['education_form']
+        education_form3 = response2.forms['organization_form']
         education_form3['other'] = 'Curtain University'
         response3 = education_form3.submit()
         
@@ -87,12 +81,9 @@ class ProviderTest(BaseTest):
         response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
         response.mustcontain('1998','2002')
         response.mustcontain('Curtain University')
-        response.mustcontain('Graduated with honors')
-        response.mustcontain('Clinical Physiotherapy')
-        response.mustcontain("Baccalauréat")
 
         # check the event log
-        self.assert_msg_in_log("Edit CV: add education success", admin=False)
+        self.assert_msg_in_log("Edit CV: add organization success", admin=False)
 
     def test_everything_correct_then_edit_and_change_valid_field_to_invalid(self):
         self.self_signup_provider()
@@ -103,8 +94,7 @@ class ProviderTest(BaseTest):
         
         education_form['start_year'] = 1998
         education_form['end_year'] = 2002
-        education_form['school_name'] = 'other'
-        education_form['other'] = 'Curtain University'
+        education_form['school_name'] = 'Curtain University'
         education_form['degree_type'] = 'bachelor'
         education_form['degree_title'] = 'Clinical Physiotherapy'
         education_form['description'] = 'Graduated with honors'
