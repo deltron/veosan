@@ -25,14 +25,8 @@ class ProviderProfileForm(CustomForm):
 
 class ProviderEducationForm(CustomForm):
     def _set_fields(self, form):        
-        setattr(form, 'school_name' , SelectField(_(u'School'), 
-                                                  choices=util.get_all_schools_for_form(),
-                                                  validators=[custom_validators.DisallowNoChoiceInSelect(message=_('Please choose an option from the list. If none of the options seems to fit, please choose "Other" and write in the field below.'))]
-                                            ))   
-        setattr(form, 'other', TextField(_(u'Other'), 
-                                         description=_(u'Please enter the organization name here if not in the list'),
-                                         validators=[custom_validators.RequiredIfOther('school_name', message=_('Please enter an organization name'))]
-                                    ))
+        setattr(form, 'school_name', TextField(_(u'School'), 
+                                               validators=[validators.Length(min=2, message=_(u'School name required.'))]))  
         setattr(form, 'location', TextField(_(u'Location')))
 
         setattr(form, 'start_year', IntegerField(_(u'Start Year'), [validators.NumberRange(min=1940, max=2100, message=_(u'Please enter a valid year.'))]))

@@ -142,7 +142,9 @@ def get_all_schools_for_form():
 
     
 def get_all_degrees():
-    return [("bachelor", _(u"Bachelor's")),
+    return [
+            ("dec", _(u"Technical (DEC)")),
+            ("bachelor", _(u"Bachelor's")),
             ("masters", _(u"Master's")),
             ("phd", _(u"Doctor (Ph.D)")),
             ("md", _(u"Doctor (MD)")),
