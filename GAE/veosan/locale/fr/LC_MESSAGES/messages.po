@@ -587,6 +587,8 @@ msgstr "SVP entrez le nom de l'organisation"
 msgid "Please enter a certificate name"
 msgstr "SVP entrez le nom du certificat"
 
+msgid "Certification Title"
+msgstr "Titre du certificat"
 
 #################
 # Profile Page
