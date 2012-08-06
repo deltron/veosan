@@ -167,6 +167,9 @@ msgstr "Prendre un rendez-vous est facile! Ne perdez plus de temps au téléphon
 msgid "Our professionals are screened to meet the highest industry standards."
 msgstr "Nos professionnels sont évalués afin d’assurer qu’ils répondent aux plus hauts standards de qualité."
 
+msgid "Already a member? Sign in here."
+msgstr "Déjà membre? Connectez-vous ici."
+
 #################
 # Navbar
 #################
