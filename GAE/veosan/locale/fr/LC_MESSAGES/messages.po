@@ -509,6 +509,12 @@ msgstr "Ajouter une expérience de travail"
 msgid "Add Continuing Education"
 msgstr "Ajouter une formation continue"
 
+msgid "Add Organization Membership"
+msgstr "Ajouter un groupe professionnel"
+
+msgid "Add Certification"
+msgstr "Ajouter une certification"
+
 msgid "Present"
 msgstr "Présent"
 
@@ -611,7 +617,7 @@ msgid "Member of order since"
 msgstr "Membre de l'ordre depuis"
 
 msgid "Organization Memberships"
-msgstr "Membre de"
+msgstr "Groupes professionnels"
 
 msgid "I am willing to do on-site visits"
 msgstr "J'accepte de faire des visites chez les clients"
@@ -971,6 +977,9 @@ msgstr "Baccalauréat"
 
 msgid "Master's"
 msgstr "Maîtrise"
+
+msgid "Technical (DEC)"
+msgstr "Technique (DEC)"
 
 #################
 # Associations List
