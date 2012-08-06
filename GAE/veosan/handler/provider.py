@@ -114,16 +114,7 @@ class ProviderEditProfileHandler(ProviderBaseHandler):
             provider_key = db.storeProvider(provider, self.request.POST, form=form)
             provider = provider_key.get()
             
-            # check what step we are at and redirect appropriately
-            if (provider.bio is None or (provider.bio and len(provider.bio) < 10)) or (provider.quote is None or (provider.quote and len(provider.quote) < 10)):
-                message = _('Your changes were saved, the next step is to complete your biography and quote.')
-                self.render_profile(provider, profile_form=form, success_message=message)
-            elif provider.get_cv_items_count() <= 3:
-                self.redirect('/provider/cv/%s' % provider.vanity_url)
-            elif not provider.is_address_complete():
-                self.redirect('/provider/address/%s' % provider.vanity_url)
-            else:
-                self.render_profile(provider, profile_form=form, success_message=saved_message)
+            self.render_profile(provider, profile_form=form, success_message=saved_message)
 
             # log the event
             self.log_event(user=provider.user, msg="Edit Profile: Success")

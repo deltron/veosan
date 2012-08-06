@@ -372,9 +372,8 @@ class BaseTest(unittest.TestCase):
         profile_form['bio'] = "Areas of interest include treatment and management of spinal conditions with an emphasis on manual therapy and rehabilitative exercise."        
         profile_form['quote'] = "The quick brown fox jumped over the lazy dog."
 
-        # submit it (redirected to CV because not complete)
-        response = profile_form.submit().follow()
-        response.mustcontain("Curriculum Vitae")
+        # submit it
+        response = profile_form.submit()
         
         # go back to the profile page
         
