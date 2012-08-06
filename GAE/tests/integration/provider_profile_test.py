@@ -10,22 +10,20 @@ class ProviderTest(BaseTest):
 
         # step 1 - bio and quote
         response = self.testapp.get('/provider/profile/' + self._TEST_PROVIDER_VANITY_URL)
-        response.mustcontain("<li>Écrivez votre biographie et commentaire</li>")
+        response.mustcontain("Écrivez votre biographie et commentaire")
         
         profile_form = response.forms['profile_form']
         profile_form['bio'] = 'This is my biography more words long!'
         response = profile_form.submit()
-        response.mustcontain("<li>Écrivez votre biographie et commentaire</li>")
+        response.mustcontain("Écrivez votre biographie et commentaire")
 
         profile_form = response.forms['profile_form']
         profile_form['quote'] = 'This is my quote hello goodbye!'
-        response = profile_form.submit().follow()
-        # redirects you to CV page for next step
-        response.mustcontain("Curriculum Vitae")
+        response = profile_form.submit()
 
         # check if it's struck out
         response = self.testapp.get('/provider/profile/' + self._TEST_PROVIDER_VANITY_URL)
-        response.mustcontain("<li><del>Écrivez votre biographie et commentaire</del>")
+        response.mustcontain("<del>Écrivez votre biographie et commentaire</del>")
 
         # fill out the CV
         response = self.testapp.get('/provider/cv/' + self._TEST_PROVIDER_VANITY_URL)
@@ -58,7 +56,7 @@ class ProviderTest(BaseTest):
 
         # check if it's struck out
         response = self.testapp.get('/provider/profile/' + self._TEST_PROVIDER_VANITY_URL)
-        response.mustcontain("<li><del>Remplissez votre CV</del>")
+        response.mustcontain("<del>Remplissez votre CV</del>")
 
         # fill the address
         response = self.testapp.get('/provider/address/%s' % self._TEST_PROVIDER_VANITY_URL)
@@ -76,7 +74,7 @@ class ProviderTest(BaseTest):
         address_form.submit()
 
         response = self.testapp.get('/provider/profile/' + self._TEST_PROVIDER_VANITY_URL)
-        response.mustcontain("<li><del>Complétez votre adresse</del>")
+        response.mustcontain("<del>Complétez votre adresse</del>")
 
 
     def test_change_save_button_less_than_3_cv_items(self):
@@ -86,7 +84,7 @@ class ProviderTest(BaseTest):
         self.fill_new_provider_profile_correctly_action()
 
         response = self.testapp.get('/provider/profile/' + self._TEST_PROVIDER_VANITY_URL)
-        response.mustcontain("Prochaine étape: ajouter quelque chose à votre CV")
+        response.mustcontain("Remplissez votre CV")
 
         # add one thing to the CV (1)
         response = self.testapp.get('/provider/cv/' + self._TEST_PROVIDER_VANITY_URL)
@@ -103,7 +101,7 @@ class ProviderTest(BaseTest):
         
         # check again
         response = self.testapp.get('/provider/profile/' + self._TEST_PROVIDER_VANITY_URL)
-        response.mustcontain("Prochaine étape: ajouter quelque chose à votre CV")
+        response.mustcontain("Remplissez votre CV")
 
         # add another thing to the CV (2)
         response = self.testapp.get('/provider/cv/' + self._TEST_PROVIDER_VANITY_URL)
@@ -116,7 +114,7 @@ class ProviderTest(BaseTest):
 
         # check again
         response = self.testapp.get('/provider/profile/' + self._TEST_PROVIDER_VANITY_URL)
-        response.mustcontain("Prochaine étape: ajouter quelque chose à votre CV")
+        response.mustcontain("Remplissez votre CV")
 
         # add another thing to the CV (3)
         response = self.testapp.get('/provider/cv/' + self._TEST_PROVIDER_VANITY_URL)
@@ -128,7 +126,7 @@ class ProviderTest(BaseTest):
 
         # check again
         response = self.testapp.get('/provider/profile/' + self._TEST_PROVIDER_VANITY_URL)
-        response.mustcontain("Prochaine étape: ajouter quelque chose à votre CV")
+        response.mustcontain("Remplissez votre CV")
 
         # add another thing to the CV (4)
         response = self.testapp.get('/provider/cv/' + self._TEST_PROVIDER_VANITY_URL)
@@ -139,10 +137,8 @@ class ProviderTest(BaseTest):
 
         # check again
         response = self.testapp.get('/provider/profile/' + self._TEST_PROVIDER_VANITY_URL)
-        response.mustcontain("Prochaine étape: ajouter quelque chose à votre CV")
+        response.mustcontain("Remplissez votre CV")
         
-        response2 = response.forms[0].submit().follow()
-        response2.mustcontain("Curriculum Vitae")
 
         # add another thing to the CV (4)
         response = self.testapp.get('/provider/cv/' + self._TEST_PROVIDER_VANITY_URL)
@@ -154,7 +150,7 @@ class ProviderTest(BaseTest):
 
         # check again
         response = self.testapp.get('/provider/profile/' + self._TEST_PROVIDER_VANITY_URL)
-        response.mustcontain(no="Prochaine étape: ajouter quelque chose à votre CV")
+        response.mustcontain("<del>Remplissez votre CV</del>")
 
 
 if __name__ == "__main__":
