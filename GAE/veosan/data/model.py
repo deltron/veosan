@@ -288,7 +288,7 @@ class LogEvent(ndb.Model):
 
 class Schedule(ndb.Model):
     provider = ndb.KeyProperty(kind=Provider) # name='schedule'
-    day = ndb.IntegerProperty()
+    day = ndb.StringProperty()
     start_time = ndb.IntegerProperty()
     end_time = ndb.IntegerProperty()
     

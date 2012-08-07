@@ -19,11 +19,11 @@ Timeslot = namedtuple('Timeslot', "start end")
 
 
 def create_one_hour_timeslot(datetime_start):
-    datetime_end = datetime.combine(datetime_start.date(), time(datetime_start.time().hour+1, datetime_start.time().minute))
+    datetime_end = datetime.combine(datetime_start.date(), time(datetime_start.time().hour + 1, datetime_start.time().minute))
     return Timeslot(datetime_start, datetime_end)
     
 def create_one_hour_timeslot_on_date(date, start):
-    return Timeslot( datetime.combine(date, time(start)), datetime.combine(date, time(start+1)))
+    return Timeslot(datetime.combine(date, time(start)), datetime.combine(date, time(start + 1)))
 
 def create_one_hour_timeslots_over_range(date, start_hour, end_hour):
     return map(partial(create_one_hour_timeslot_on_date, date), range(start_hour, end_hour))
@@ -57,18 +57,23 @@ def getTimesList():
 
 def getScheduleTimeslots():
     # returns a list of list(name, start time, end time)
-    return ( ( _(u"Morning"), '8', '12'),
-             ( _(u"Afternoon"), '12', '18'),
-             ( _(u"Evening"), '18', '21')
+    return ((_(u"Morning"), '8', '12'),
+             (_(u"Afternoon"), '12', '18'),
+             (_(u"Evening"), '18', '21')
             )
 
 def get_days_of_the_week():
-    cal = calendar.Calendar(0)
-    weekdays_lower = [(day, calendar.day_name[day]) for day in cal.iterweekdays()]
-    logging.info('Weekdays from cal: %s' % weekdays_lower)
-    weekdays = map( lambda s: (s[0], s[1].capitalize()), weekdays_lower)
-    logging.info('Weekdays: %s' % weekdays)
-    return weekdays
+    return [ ('monday', _('Monday')),
+             ('tuesday', _('Tuesday')),
+             ('wednesday', _('Wednesday')),
+             ('thursday', _('Thursday')),
+             ('friday', _('Friday')),
+             ('saturday', _('Saturday')),
+             ('sunday', _('Sunday')),
+           ]
+
+ 
+ 
 
 ###
 ###  Date and Time Formating
@@ -80,16 +85,16 @@ def format_date_weekday_after(date):
 def format_datetime_with_weekday(datetime):
     lang = _('en')
     if (lang == 'fr'):
-        return "%s %s %s" % (format_datetime(datetime, "EEEE 'le' d MMMM yyyy"),  _(u"at"), format_datetime(datetime, "H:mm"))
+        return "%s %s %s" % (format_datetime(datetime, "EEEE 'le' d MMMM yyyy"), _(u"at"), format_datetime(datetime, "H:mm"))
     else:
-        return "%s %s %s" % (format_datetime(datetime, "EEEE MMMM d, yyyy"),  _(u"at"), format_datetime(datetime, "H:mm a"))
+        return "%s %s %s" % (format_datetime(datetime, "EEEE MMMM d, yyyy"), _(u"at"), format_datetime(datetime, "H:mm a"))
 
 def format_datetime_full(datetime):
     lang = _('en')
     if (lang == 'fr'):
-        return "%s %s %s" % (format_datetime(datetime, "EEEE 'le' d MMMM yyyy"),  _(u"at"), format_datetime(datetime, "H:mm"))
+        return "%s %s %s" % (format_datetime(datetime, "EEEE 'le' d MMMM yyyy"), _(u"at"), format_datetime(datetime, "H:mm"))
     else:
-        return "%s %s %s" % (format_datetime(datetime, "EEEE d MMMM yyyy"),  _(u"at"), format_datetime(datetime, "H:mm a"))
+        return "%s %s %s" % (format_datetime(datetime, "EEEE d MMMM yyyy"), _(u"at"), format_datetime(datetime, "H:mm a"))
         
 
 def format_hour(hour):

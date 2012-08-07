@@ -1,0 +1,72 @@
+{% extends "/layout/provider_nav.html" %}
+
+{% set active_page = "social" %}
+
+{% block subhead %}{{ _('Social') }}{% endblock %}
+{% block lead %}Share stuff with your friends{% endblock %}
+
+{% block content %}
+
+<div class="row">
+	<div class="span6">
+		<h2>Your Network</h2>
+		<ul>
+			<li>
+				You are connected with 43 other professionals.
+			</li>
+			<li>
+				List
+			</li>
+			<li>
+				Find more.
+			</li>
+			<li>
+				Send invites.
+			</li>
+		</ul>
+
+	</div>
+	<div class="span6">
+		<h2><a href="#">Invite a health care professional</a></h2>
+		<br>
+		<h2>Invite a patient to view your profile</h2>
+		<ul>
+			<li>
+				email
+			</li>
+		</ul>
+		<br>
+		<h2>Web Link</h2>
+		<p>
+			Here's a link you can paste in an email or put on your business cards.
+			You can change this address by upgrading your account.
+		</p>
+		<code>
+			veosan.com/{{ provider.vanity_url }}</code>
+
+		<br>
+		<br>
+		<h2>Facebook, Twitter, LinkedIn, Google Plus, etc.</h2>
+	</div>
+</div>
+
+
+<div class="modal hide" id="invite_provider_modal" style="display: none;">
+	<div class="modal-header">
+		<a class="close" data-dismiss="modal">×</a>
+
+		<h3>Invite a professional</h3>
+	</div>
+	<form method="post" action="" class="form-horizontal" id="invite_provider_form">
+		<div class="modal-body">
+		</div>
+
+		<div class="modal-footer">
+			<button type="submit" class="btn btn-primary">
+				{{ _('Save') }}
+			</button>
+		</div>
+	</form>
+</div>
+
+{% endblock %}
