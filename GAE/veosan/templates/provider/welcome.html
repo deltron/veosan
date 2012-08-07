@@ -25,28 +25,40 @@
 			</li>
 		</ol>
 		<img src="/assets/img/navigation-tabs.png">
-		<br>
-		<br>
-		<h3>{{ _('Tell Us a Bit About Yourself') }}</h3>
-		<p>
-			Make it easy for people to find you by completing your CV.
-		</p>
-		<img src="/assets/img/profile-cv-crop.png">
-
 	</div>
 	<div class="span6">
-		<h3>{{ _('Set Yourself Apart') }}</h3>
-		<p>
-			Your bio and quote are a way to tell your story in your own words. If you can't think of what to say, get in touch with us and we'll help you write a great biography.
-		</p>
-		<img src="/assets/img/profile-bio-crop.png">
-		<br>
-		<br>
-		<h3>{{ _("Say Cheese! Don't Forget to Upload Your Photo") }}</h3>
-		<p>
-			A good profile photo makes patients feel comfortable dealing with you. We also have professional photographers that can help you look your best, get in touch to schedule a quick photo shoot.
-		</p>
-		<img src="/assets/img/profile-image-crop.png">
+
+		<div id="tour_carousel" class="carousel slide">
+			<!-- Carousel items -->
+			<div class="carousel-inner" style="width:80%; margin: 0px auto; height:400px">
+				<div class="item active">
+					<h2>{{ _('Set Yourself Apart') }}</h2>
+					<br>
+					<img src="/assets/img/profile-bio-crop.png" height="180">
+					<br>
+					<h3> Your bio and quote are a way to tell your story in your own words. If you can't think of what to say, get in touch with us and we'll help you write a great biography. </h3>
+				</div>
+				<div class="item">
+					<h2>{{ _("Say Cheese! Don't Forget to Upload Your Photo") }}</h2>
+					<br>
+					<img src="/assets/img/profile-image-crop.png" height="180">
+					<br>
+					<h3> A good profile photo makes patients feel comfortable dealing with you. We also have professional photographers that can help you look your best, get in touch to schedule a quick photo shoot. </h3>
+				</div>
+				<div class="item">
+					<h2>{{ _('Tell Us a Bit About Yourself') }}</h2>
+					<br>
+					<img src="/assets/img/profile-cv-crop.png" height="180">
+					<br>
+					<h3> Make it easy for people to find you by completing your CV. </h3>
+				</div>
+
+			</div>
+			<!-- Carousel nav -->
+			<a class="carousel-control left" href="#tour_carousel" data-slide="prev">&lsaquo;</a>
+			<a class="carousel-control right" href="#tour_carousel" data-slide="next">&rsaquo;</a>
+		</div>
 	</div>
 </div>
+
 {% endblock %}
