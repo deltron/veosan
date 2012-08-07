@@ -345,7 +345,7 @@ class ProviderScheduleHandler(ProviderBaseHandler):
         if key:
             schedule_key = ndb.Key(urlsafe=key)
         if operation == 'delete':
-            logging.info("(ProviderEducationHandler.get) Delete section %s key=%s" % key)    
+            logging.info("(ProviderEducationHandler.get) Delete section key=%s" % key)    
             schedule_key.delete()        
             # log the event
             self.log_event(user=provider.user, msg="Schedule delete")
