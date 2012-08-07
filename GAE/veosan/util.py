@@ -5,6 +5,7 @@ from itertools import chain
 from webapp2_extras.i18n import lazy_gettext as _
 from markdown2 import markdown2
 import logging
+from utilities import time
 
 DEV_SERVERS = ('localhost:8080', 'veosan-stage.appspot.com')
 PRODUCTION_SERVERS = ('www.veosan.com')
@@ -350,8 +351,8 @@ class Timeblock():
 
 def create_schedule_map_map(schedules):
     smm = dict()
-    for d in range(0,7):
-        smm[d] = dict()
+    for (key, label) in time.get_days_of_the_week():
+        smm[key] = dict()
     for s in schedules:
         smm[s.day][s.start_time] = Timeblock(s.start_time, s.end_time, True)
     logging.info('smm %s' % smm)

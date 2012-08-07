@@ -15,9 +15,9 @@
 			<!-- header week days --> 
 			<thead>
 				<th></th>
-				{% for day in days %}
+				{% for (day_key, day_label) in days %}
 				<th style="min-width: 55px; text-align: center">
-					{{day[1]}} <br><br>
+					{{ day_label }} <br><br>
 					<a data-toggle="modal" href="#add_modal" class="btn btn-primary">{{ _('Add Time') }}</a>
 				</th>
 				{% endfor %}
@@ -31,20 +31,16 @@
 					{{hour}}
 				</td>
 				
-				{% for day in days %}
-					{% set d = day[0] %}
-					{% if schedules[d].has_key(hour) %}
-				
-						{% set s = schedules[d][hour] %}
+				{% for (day_key, day_label)  in days %}
+					{% if schedules[day_key].has_key(hour) %}
+						{% set s = schedules[day_key][hour] %}
 						<td id="tt" style="text-align: center;" rowspan="{{s.span}}">
-							{% set button_id = day[0] ~ '-' ~ ts_start_time ~ '-' ~ ts_end_time %}
-							
-							<a id="{{button_id}}" href="#" class="btn btn-mini btn-success" rel="tooltip" title="{{ _('Free') }}" style="width: 70%; height: 100%">
+							<a href="#" class="btn btn-mini btn-success" rel="tooltip" title="{{ _('Free') }}" style="width: 70%; height: 100%">
 								<div style="width: 100%">
-									<strong>{{day[1]}} <br> 
+									<strong>{{day_label}} <br> 
 									{{ts_name}}</strong> <br>
 									<br>
-									<i id="{{button_id}}" class="icon-ok-circle"></i> <br>
+									<i class="icon-ok-circle"> </i> <br>
 									<br>
 									<small>{{s.start|format_hour}}-{{s.end|format_hour}}</small><br>
 								</div> 
@@ -55,6 +51,7 @@
 						<td>-</td>	
 					{% endif %}
 				</td>
+				
 				{% endfor %}
 			</tr>
 			{% endfor %}

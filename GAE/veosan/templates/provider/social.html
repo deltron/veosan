@@ -27,15 +27,7 @@
 
 	</div>
 	<div class="span6">
-		<h2>Invite a health care professional</h2>
-		<ul>
-			<li>
-				email
-			</li>
-			<li>
-				category
-			</li>
-		</ul>
+		<h2><a href="#">Invite a health care professional</a></h2>
 		<br>
 		<h2>Invite a patient to view your profile</h2>
 		<ul>
@@ -56,6 +48,25 @@
 		<br>
 		<h2>Facebook, Twitter, LinkedIn, Google Plus, etc.</h2>
 	</div>
+</div>
+
+
+<div class="modal hide" id="invite_provider_modal" style="display: none;">
+	<div class="modal-header">
+		<a class="close" data-dismiss="modal">×</a>
+
+		<h3>Invite a professional</h3>
+	</div>
+	<form method="post" action="" class="form-horizontal" id="invite_provider_form">
+		<div class="modal-body">
+		</div>
+
+		<div class="modal-footer">
+			<button type="submit" class="btn btn-primary">
+				{{ _('Save') }}
+			</button>
+		</div>
+	</form>
 </div>
 
 {% endblock %}

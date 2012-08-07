@@ -108,8 +108,7 @@ class ProviderAddressForm(CustomForm):
 
 class ProviderScheduleForm(CustomForm):
     def _set_fields(self, form):        
-        #setattr(form, 'day', SelectField(_(u'Day'), choices=get_days_of_the_week()))
-        setattr(form, 'day', IntegerField(_(u'Day')))
+        setattr(form, 'day', SelectField(_(u'Day'), choices=get_days_of_the_week()))
         setattr(form, 'start_time', IntegerField(_(u'Start Time')))
         setattr(form, 'end_time', IntegerField(_(u'End Time')))
 

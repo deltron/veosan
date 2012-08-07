@@ -23,22 +23,6 @@ class ProviderBaseHandler(BaseHandler):
         upload_form = ProviderPhotoForm().get_form(self.request.GET)
         self.render_template('provider/profile.html', provider=provider, upload_form=upload_form, upload_url=upload_url, **kw)    
 
-    def render_schedule(self, provider, schedule_form=None, **kw):
-        sq = provider.get_schedules()
-        logging.info("schedule count: %s" % sq.count())
-        schedules = sq.fetch()
-        days = time.get_days_of_the_week()
-        schedule_mapmap = util.create_schedule_map_map(schedules)
-        if not schedule_form:
-            schedule_form = ProviderScheduleForm().get_form()
-        self.render_template('provider/schedule.html', provider=provider, schedules=schedule_mapmap, days=days, schedule_form=schedule_form, **kw)
-        
-        #timeslot_ids = map(lambda x: "%s-%s-%s" % (x[0][0], x[1][1], x[1][2]), [(d, ts) for d in days for ts in timeslots])
-        #logging.info("timeslot ids %s" % timeslot_ids)
-        #skipped_available_ids = [a for a in availableIds if a not in timeslot_ids]
-        #logging.info("skipped available ids %s" % skipped_available_ids)
-
-  
     @staticmethod
     def render_bookings(handler, provider, **kw):
         bookings = provider.get_future_bookings()
@@ -342,7 +326,17 @@ class ProviderBookingsHandler(ProviderBaseHandler):
 
 
 
-class ProviderScheduleHandler(ProviderBaseHandler):
+class ProviderScheduleHandler(ProviderBaseHandler):  
+    def render_schedule(self, provider, schedule_form=None, **kw):
+        sq = provider.get_schedules()
+        logging.info("schedule count: %s" % sq.count())
+        schedules = sq.fetch()
+        days = time.get_days_of_the_week()
+        schedule_mapmap = util.create_schedule_map_map(schedules)
+        if not schedule_form:
+            schedule_form = ProviderScheduleForm().get_form()
+        self.render_template('provider/schedule.html', provider=provider, schedules=schedule_mapmap, days=days, schedule_form=schedule_form, **kw)
+        
     
     @provider_required
     def get(self, vanity_url=None):
@@ -372,8 +366,6 @@ class ProviderScheduleHandler(ProviderBaseHandler):
             error_messages = schedule_form.errors
             logging.info('Schedule form did not validate: %s' % error_messages)
             
-            
-                
         self.render_schedule(provider, error_messages=error_messages)
         
         
