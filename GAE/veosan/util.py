@@ -324,11 +324,23 @@ def get_all_status_types():
 
     
 
+class ScheduleMap(dict):
+    
+    def within_span(self, day_key, hour_key):
+        day_schedules = self[day_key]
+        logging.info('checking span %s %s against %s' % (day_key, hour_key, day_schedules))
+        for key in day_schedules.keys():
+            s = day_schedules[key]
+            
+            if (hour_key >= s.start_time) & (hour_key < s.end_time):
+                logging.info('TRUE %s %s ' % (s.start_time, s. end_time))
+                return True
+        return False
+        
         
 
-
 def create_schedule_map_map(schedules):
-    smm = dict()
+    smm = ScheduleMap()
     for (key, label) in time.get_days_of_the_week():
         smm[key] = dict()
     for s in schedules:

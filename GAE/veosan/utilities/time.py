@@ -107,7 +107,10 @@ def format_hour(hour):
         else :
             AMPM = u'AM'
             hour_en = hour
-            if (int(hour) > 12):
+            if (int(hour) == 12):
+                hour_en = hour
+                AMPM = u'AM'
+            elif (int(hour) > 12):
                 hour_en = int(hour) - 12
                 AMPM = u'PM'
             return u'%s %s' % (hour_en, AMPM)
