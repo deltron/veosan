@@ -116,3 +116,19 @@ class RequiredIfOther(Required):
             raise Exception('no field named "%s" in form' % self.other_field_name)
         if other_field.data == "other":
             super(RequiredIfOther, self).__call__(form, field)
+
+
+class StartTimeAfterEndTime(object):
+    # a validator which makes sure the end time is after
+    # the start time
+
+    def __init__(self, start_time_field, message=None, *args, **kwargs):
+        self.start_time_field = start_time_field
+        self.message = message
+
+    def __call__(self, form, field):
+        start_time_field = form._fields.get(self.start_time_field)
+        if start_time_field is None:
+            raise Exception('no field named "%s" in form' % self.start_time_field)
+        if int(field.data) <= int(start_time_field.data):
+            raise ValidationError(self.message)

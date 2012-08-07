@@ -420,12 +420,19 @@ class ProviderScheduleHandler(ProviderBaseHandler):
 
             else:
                 logging.error('Operation Not handled %s' % operation)
+                
+            self.render_schedule(provider)
+
         else:
             error_messages = schedule_form.errors
             logging.info('Schedule form did not validate: %s' % error_messages)
             
-        self.render_schedule(provider, error_messages=error_messages)
-        
+            kwargs = {}
+            kwargs['schedule_form'] = schedule_form
+            kwargs['edit_key'] = key
+
+            self.render_schedule(provider, **kwargs)
+
         
         
         
