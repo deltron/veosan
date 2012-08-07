@@ -385,11 +385,21 @@ class ProviderSignupHandler2(UserBaseHandler):
             # now create an empty user for the provider
             user = self.create_empty_user_for_provider(provider)
             
-            # create a signup token for new user
-            token = self.create_signup_token(user)
+            # set the password for the user
+            password = provider_signup_form2.password.data
+            password_hash = security.generate_password_hash(password, length=12)    
+            user.password = password_hash
+            user.put()
+            
+            # login with new password
+            self.login_user(user.get_email(), password)
 
-            # send them over to the password page with this token
-            self.redirect('/user/password/' + user.signup_token)
+            # new user
+            logging.info('(PasswordHandler.post) New user just set their password: %s' % user.get_email())
+                
+            self.redirect('/provider/message/new/' + provider.vanity_url)
+                    
+            self.log_event(user, "New account created for user")            # create a signup token for new user
         else:
             self.render_template('user/signup_provider_2.html', provider_signup_form2=provider_signup_form2)
             

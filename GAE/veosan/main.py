@@ -118,7 +118,7 @@ application = ndb.toplevel(webapp2.WSGIApplication([
                                                 Route('/<msg_key>/<vanity_url>', provider.ProviderMessageHandler),
                                             ]),
 
-                                            Route('/welcome', static.WelcomeHandler),
+                                            Route('/welcome/<vanity_url>', provider.WelcomeHandler),
                                             Route('/bookings/<vanity_url>', provider.ProviderBookingsHandler),
                                                   
                                             # provider profile

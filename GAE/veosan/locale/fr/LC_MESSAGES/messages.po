@@ -167,6 +167,18 @@ msgstr "Prendre un rendez-vous est facile! Ne perdez plus de temps au téléphon
 msgid "Our professionals are screened to meet the highest industry standards."
 msgstr "Nos professionnels sont évalués afin d’assurer qu’ils répondent aux plus hauts standards de qualité."
 
+msgid "Already a member? Sign in here."
+msgstr "Déjà membre? Connectez-vous ici."
+
+msgid "Almost done!"
+msgstr "Presque fini!"
+
+msgid "You are just one click away from having your own online presence."
+msgstr "Il vous reste juste un clic avant d'avoir votre propre présence en ligne."
+
+msgid "Your profile will help patients get to know you. The more you share, the more you will be discovered by new patients."
+msgstr "Votre profil aidera les patients à mieux vous connaître. Plus vous partagez, plus vous serez découvert par de nouveaux patients."
+
 #################
 # Navbar
 #################
@@ -249,6 +261,9 @@ msgstr "Précédent"
 
 msgid "Upload"
 msgstr "Télécharger"
+
+msgid "Upload Your Profile Photo"
+msgstr "Téléchargez votre photo"
 
 msgid "Submit"
 msgstr "Soumettre"
@@ -457,11 +472,33 @@ msgid "Comments for your appointment"
 msgstr "Commentaires en vue de votre rendez-vous"
 
 #################
+# Welcome Page
+#################
+
+msgid "Welcome!"
+msgstr "Bienvenue!"
+
+msgid "How to Navigate the Site"
+msgstr "Comment naviguer sur le site"
+
+msgid "Tell Us a Bit About Yourself"
+msgstr "Parlez-nous un peu de vous"
+
+msgid "Set Yourself Apart"
+msgstr "Démarquez-vous"
+
+msgid "Say Cheese! Don't Forget to Upload Your Photo"
+msgstr "Souriez! N'oubliez pas de télécharger votre photo"
+
+#################
 # CV Page
 #################
 
 msgid "Tell your story."
 msgstr "Votre histoire."
+
+msgid "Your story sets you apart."
+msgstr "Votre histoire vous démarque."
 
 msgid "Education"
 msgstr "Formation"
@@ -480,6 +517,12 @@ msgstr "Ajouter une expérience de travail"
 
 msgid "Add Continuing Education"
 msgstr "Ajouter une formation continue"
+
+msgid "Add Organization Membership"
+msgstr "Ajouter un groupe professionnel"
+
+msgid "Add Certification"
+msgstr "Ajouter une certification"
 
 msgid "Present"
 msgstr "Présent"
@@ -553,6 +596,8 @@ msgstr "SVP entrez le nom de l'organisation"
 msgid "Please enter a certificate name"
 msgstr "SVP entrez le nom du certificat"
 
+msgid "Certification Title"
+msgstr "Titre du certificat"
 
 #################
 # Profile Page
@@ -583,7 +628,7 @@ msgid "Member of order since"
 msgstr "Membre de l'ordre depuis"
 
 msgid "Organization Memberships"
-msgstr "Membre de"
+msgstr "Groupes professionnel"
 
 msgid "I am willing to do on-site visits"
 msgstr "J'accepte de faire des visites chez les clients"
@@ -617,6 +662,38 @@ msgstr "Vous pouvez <a href='/contact'>entrer en contact avec nous ici</a>."
 
 msgid "Let us know if you think something is missing or can be improved. Or if you're feeling nice, tell us you think it looks good! We love to hear feedback from our users."
 msgstr "Laissez-nous savoir s'il y aurait quelque chose à rajouter sur cette page. Ou, si le coeur vous en dit, faites-nous signe que tout est beau! On aime recevoir les commentaires de nos utilisateurs."
+
+msgid "Next Step: Add Something to Your CV"
+msgstr "Prochaine étape: ajouter quelque chose à votre CV"
+
+msgid "Next Step: Fill in Your Biography and Quote"
+msgstr "Prochaine étape: écrire votre biographie et commentaire"
+
+msgid "Next Step: Complete Your Address"
+msgstr "Prochaine étape: completez votre adresse"
+
+msgid "What's Next?"
+msgstr "Les prochaines étapes"
+
+msgid "Here are some things you can do to improve your profile and make it easier for patients to find you."
+msgstr "Voici ce que vous pouvez faire pour améliorer votre profil et le rendre plus accessible pour les patients."
+
+msgid "Upload your photo"
+msgstr "Téléchargez votre photo"
+
+msgid "Fill in your CV"
+msgstr "Remplissez votre CV"
+
+msgid "Account setup"
+msgstr "Activez votre compte"
+
+msgid "Complete your address"
+msgstr "Complétez votre adresse"
+
+msgid "Write your bio and quote"
+msgstr "Écrivez votre biographie et commentaire"
+
+
 
 #################
 # Address Page
@@ -805,6 +882,21 @@ msgstr "Podiatre"
 msgid "Doctor"
 msgstr "Médecin"
 
+msgid "Dentist"
+msgstr "Dentiste"
+
+msgid "Denturist"
+msgstr "Denturologiste"
+
+msgid "Dietitian"
+msgstr "Diététicien"
+
+msgid "Nutritionist"
+msgstr "Nutritionniste"
+
+msgid "Optometrist"
+msgstr "Optométriste"
+
 #################
 # Regions
 #################
@@ -897,6 +989,9 @@ msgstr "Baccalauréat"
 msgid "Master's"
 msgstr "Maîtrise"
 
+msgid "Technical (DEC)"
+msgstr "Technique (DEC)"
+
 #################
 # Associations List
 #################
@@ -925,6 +1020,23 @@ msgstr "L’Association chiropratique canadienne (ACC)"
 msgid "Association des chiropraticiens du Québec (ACQ)"
 msgstr "Association des chiropraticiens du Québec (ACQ)"
 
+msgid "L’Ordre des denturologistes du Québec"
+msgstr "L’Ordre des denturologistes du Québec"
+
+msgid "Ordre des dentistes du Québec"
+msgstr "Ordre des dentistes du Québec"
+
+msgid "Dietitians of Canada (DC)"
+msgstr "Les diététistes du Canada (DC)"
+
+msgid "Ordre professionnel des diététistes du Québec (OPDQ)"
+msgstr "Ordre professionnel des diététistes du Québec (OPDQ)"
+
+msgid "Canadian Association of Optometrists (CAO)"
+msgstr "L’Association canadienne des optométristes (ACO)"
+
+msgid "L'Association des optométristes du Québec (AOQ)"
+msgstr "L'Association des optométristes du Québec (AOQ)"
 
 #################
 # Specialities

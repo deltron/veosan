@@ -24,11 +24,14 @@
 			<form method="post" action="/signup/patient" class="form-horizontal">
 				<fieldset>
 					{{ macro.make_standard_form(patient_signup_form, inputClass="input-medium")}}
-					
-					<br>
-					<button type="submit" class="btn btn-large btn-success">
-						{{ _('Get Invited') }}
-					</button>
+
+					<div class="control-group">
+						<div class="controls">
+							<button type="submit" class="btn btn-large btn-success">
+								{{ _('Get Invited') }}
+							</button>
+						</div>
+					</div>
 				</fieldset>
 			</form>
 		</div>

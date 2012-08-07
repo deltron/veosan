@@ -77,25 +77,23 @@ class Provider(ndb.Model):
     bio = ndb.TextProperty()
     quote = ndb.TextProperty()
 
+    # address
+    first_name = ndb.StringProperty()
+    last_name = ndb.StringProperty()
+    title = ndb.StringProperty()
+    email = ndb.StringProperty()
+    phone = ndb.StringProperty()
+    address = ndb.StringProperty()
+    city = ndb.StringProperty()
+    postal_code = ndb.StringProperty()
+    province = ndb.StringProperty()
     
     # deprecated
     associations = ndb.StringProperty(repeated=True)
     certifications = ndb.StringProperty(repeated=True)
     start_year = ndb.StringProperty()
-
-
-    # address
-    first_name = ndb.StringProperty()
-    last_name = ndb.StringProperty()
-    title = ndb.StringProperty()
-    credentials = ndb.StringProperty()
-    email = ndb.StringProperty()
-    phone = ndb.StringProperty()
     location = ndb.StringProperty()
-    address = ndb.StringProperty()
-    city = ndb.StringProperty()
-    postal_code = ndb.StringProperty()
-    province = ndb.StringProperty()
+    credentials = ndb.StringProperty()
     
     # unique name for public profile
     # possible coercion to lower case?
@@ -138,7 +136,7 @@ class Provider(ndb.Model):
         return Schedule.query(Schedule.provider == self.key).order(Schedule.day, Schedule.start_time)
     
     def isAvailable(self, day, time):
-        count =  self.schedule.filter('day = ', day).filter('time = ', time).count()
+        count = self.schedule.filter('day = ', day).filter('time = ', time).count()
         logging.info("is available? " + str(day) + " " + str(time) + " count:" + str(count))
         return count > 0
     
@@ -179,8 +177,33 @@ class Provider(ndb.Model):
     def get_certification(self):
         return ProfessionalCertification.query(ProfessionalCertification.provider == self.key).order(-ProfessionalCertification.year)
 
+    def get_cv_items_count(self):
+        return sum([
+                   Education.query(Education.provider == self.key).count(),
+                   Experience.query(Experience.provider == self.key).count(),
+                   ContinuingEducation.query(ContinuingEducation.provider == self.key).count(),
+                   ProfessionalOrganization.query(ProfessionalOrganization.provider == self.key).count(),
+                   ProfessionalCertification.query(ProfessionalCertification.provider == self.key).count(),
+                ])
 
+    def is_address_complete(self):
+        if (not self.phone or (self.phone and len(self.phone) < 10)):
+            return False
+        if (not self.address or (self.address and len(self.address) < 3)):
+            return False
+        if (not self.city or (self.city and len(self.city) < 3)):
+            return False
+        if (not self.postal_code or (self.postal_code and len(self.postal_code) < 6)):
+            return False
+        if (not self.province or (self.province and len(self.province) < 2)):
+            return False
+        if (not self.first_name or (self.first_name and len(self.first_name) < 2)):
+            return False
+        if (not self.last_name or (self.last_name and len(self.last_name) < 2)):
+            return False
+        return True
 
+        
     def add_note(self, body, note_type='admin'):
         ''' Add Note to this provider'''
         note = Note()
@@ -203,6 +226,7 @@ class Education(ndb.Model):
 
     school_name = ndb.StringProperty()
     other = ndb.StringProperty()
+    location = ndb.StringProperty()
 
     degree_type = ndb.StringProperty()
     degree_title = ndb.StringProperty()
@@ -233,6 +257,7 @@ class Experience(ndb.Model):
 
     company_name = ndb.StringProperty()
     title = ndb.StringProperty()
+    location = ndb.StringProperty()
 
     description = ndb.TextProperty()
 
@@ -243,7 +268,7 @@ class ProfessionalOrganization(ndb.Model):
     other = ndb.StringProperty()
     start_year = ndb.IntegerProperty()
     end_year = ndb.IntegerProperty()
-
+    location = ndb.StringProperty()
     
 class ProfessionalCertification(ndb.Model):   
     provider = ndb.KeyProperty(kind=Provider)
@@ -280,9 +305,9 @@ class Note(ndb.Model):
     #datetime = ndb.DateTimeProperty(auto_now_add=True)
     
     def get_icon_name(self):
-        if self.note_type  == 'call':
+        if self.note_type == 'call':
             return 'icon-comment'
-        elif self.note_type =='meeting':
+        elif self.note_type == 'meeting':
             return 'icon-plane'
         elif self.note_type == 'admin':
             return 'icon-wrench'

@@ -105,16 +105,12 @@ class ProviderEditProfileHandler(ProviderBaseHandler):
 
     @provider_required    
     def get(self, vanity_url=None):
-        provider = None
+        provider = db.get_provider_from_vanity_url(vanity_url)
+        profile_form = ProviderProfileForm().get_form(obj=provider)
         
-        if vanity_url:
-            provider = db.get_provider_from_vanity_url(vanity_url)
-            
-            logging.debug("(ProviderEditProfileHandler.get) Edit profile for provider %s" % provider.email)
-            
-            profile_form = ProviderProfileForm().get_form(obj=provider)
-            
-            self.render_profile(provider, profile_form=profile_form)
+        logging.debug("(ProviderEditProfileHandler.get) Edit profile for provider %s" % provider.email)
+
+        self.render_profile(provider, profile_form=profile_form)
     
     @provider_required    
     def post(self, vanity_url=None):
@@ -124,6 +120,7 @@ class ProviderEditProfileHandler(ProviderBaseHandler):
             provider = db.get_provider_from_vanity_url(vanity_url)
             provider_key = db.storeProvider(provider, self.request.POST, form=form)
             provider = provider_key.get()
+            
             self.render_profile(provider, profile_form=form, success_message=saved_message)
 
             # log the event
@@ -317,7 +314,16 @@ class ProviderPublicProfileHandler(ProviderBaseHandler):
             # nobody found, send them to the homepage
             self.redirect("/")
             
-            
+
+
+class WelcomeHandler(ProviderBaseHandler):
+    def get(self, vanity_url=None):
+        provider = db.get_provider_from_vanity_url(vanity_url)
+
+        self.render_template("provider/welcome.html", provider=provider)
+
+
+
 # BOOKING AND SCHEDULE STUFF
 # *************************************
 
@@ -369,4 +375,5 @@ class ProviderScheduleHandler(ProviderBaseHandler):
         
         
         
+
 

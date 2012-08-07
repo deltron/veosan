@@ -7,7 +7,7 @@
 
 {% block content %}
 <!-- Form -->
-<form method="post" action="/provider/profile/{{ provider.vanity_url }}" class="form-horizontal">
+<form method="post" action="/provider/profile/{{ provider.vanity_url }}" class="form-horizontal" id="profile_form">
 	<div class="row">
 		<div class="span6">
 			<fieldset>
@@ -15,17 +15,75 @@
 			</fieldset>
 		</div>
 		<div class="span6">
+			<div class="well" style="width: 60%; margin: 0px auto;">
+				<h2>{{ _("What's Next?") }}</h2>
+				<p>
+					{{ _('Here are some things you can do to improve your profile and make it easier for patients to find you.') }}
+				</p>
+				<ol style="font-size:large">
+					<li>
+						<del>{{ _('Account setup') }}</del><i class="bs-icon icon-ok"> </i>
+					</li>
+
+					{% if not provider.profile_photo_blob_key %}
+					<li>
+						{{ _('Upload your photo') }}
+					</li>
+					{% else %}
+					<li>
+						<del>{{ _('Upload your photo') }}</del><i class="bs-icon icon-ok"> </i>
+					</li>
+					{% endif %}
+
+					{% if (not provider.bio or (provider.bio and provider.bio|length < 10))
+					or (not provider.quote or (provider.quote and provider.quote|length < 10)) %}
+					<li>
+						{{ _('Write your bio and quote') }}
+					</li>
+					{% else %}
+					<li>
+						<del>{{ _('Write your bio and quote') }}</del><i class="bs-icon icon-ok"> </i>
+					</li>
+					{% endif %}
+
+					{% if provider.get_cv_items_count() <= 3 %}
+					<li>
+						{{ _('Fill in your CV') }}
+					</li>
+					{% else %}
+					<li>
+						<del>{{ _('Fill in your CV') }}</del><i class="bs-icon icon-ok"> </i>
+					</li>
+					{% endif %}
+
+					{% if not provider.is_address_complete() %}
+					<li>
+						{{ _('Complete your address') }}
+					</li>
+					{% else %}
+					<li>
+						<del>{{ _('Complete your address') }}</del><i class="bs-icon icon-ok"> </i>
+					</li>
+					{% endif %}
+
+				</ol>
+			</div>
+			<br>
+			<br>
+			<br>
+
 			<div align="center">
-				{% if not provider.profile_photo_blob_key %}
-				<img src="/assets/img/default-profile.png" width="100" height="100">
+				<a data-toggle="modal" href="#upload_photo_modal"> {% if not provider.profile_photo_blob_key %} <img src="/assets/img/default-profile.png" width="100" height="100"></a>
 				{% else %}
-				<img src="{{ provider.get_profile_photo_image_url(200) }}" width="200">
+				<img src="{{ provider.get_profile_photo_image_url(200) }}" width="200"></a>
 				{% endif %}
 
 				<br>
 				<br>
-				<a class="btn btn-primary" data-toggle="modal" href="#upload_photo_modal">{{ _('Upload') }}</a>
+				<a class="btn btn-primary" data-toggle="modal" href="#upload_photo_modal">{{ _('Upload Your Profile Photo') }}</a>
 			</div>
+
+			{#
 			<br>
 			<br>
 			<br>
@@ -41,6 +99,7 @@
 					{{ _("You can <a href='/contact'> get in touch with us here</a>.") }}
 				</p>
 			</div>
+			#}
 		</div>
 	</div>
 	<div class="row">
@@ -56,7 +115,7 @@
 	<div class="modal hide" id="upload_photo_modal" style="display: none;">
 		<div class="modal-header">
 			<a class="close" data-dismiss="modal">×</a>
-			<h3>{{ _('Upload') }}</h3>
+			<h3>{{ _('Upload Your Profile Photo') }}</h3>
 		</div>
 		<div class="modal-body">
 			{{ upload_form.profile_photo }}

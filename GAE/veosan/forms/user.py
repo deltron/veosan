@@ -74,6 +74,11 @@ class ProviderSignupForm2(CustomForm):
                                               ],
                                               filters=[custom_filters.to_lowercase]           
                                         ))
+        setattr(form, 'password', PasswordField(_(u'Password'), [
+                                validators.Length(min=6, message=_(u'Password must be at least 6 characters.')),
+                                validators.EqualTo('password_confirm', _(u"Passwords do not match."))]))
+        setattr(form, 'password_confirm', PasswordField(_(u'Password Confirmation')))
+
 
 class PatientSignupForm(CustomForm):
     def _set_fields(self, form):        

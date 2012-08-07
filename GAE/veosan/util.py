@@ -64,6 +64,10 @@ def get_all_categories():
             ("psychology", _(u"Psychologist")),
             ("podiatrist", _('Podiastrist')),
             ("kinesiology", _('Kinesiology')),
+            ("dentist", _('Dentist')),
+            ("dietitian", _('Dietitian')),
+            ("nutritionist", _('Nutritionist')),
+            ("optometrist", _('Optometrist')),
         ]
 
 def get_all_categories_for_profile_editing():
@@ -138,7 +142,9 @@ def get_all_schools_for_form():
 
     
 def get_all_degrees():
-    return [("bachelor", _(u"Bachelor's")),
+    return [
+            ("dec", _(u"Technical (DEC)")),
+            ("bachelor", _(u"Bachelor's")),
             ("masters", _(u"Master's")),
             ("phd", _(u"Doctor (Ph.D)")),
             ("md", _(u"Doctor (MD)")),
@@ -160,6 +166,12 @@ def getAllAssociations():
             ("cpa", _(u"Canadian Physiotherapy Association (CPA)")),
             ("campt", _(u"Canadian Academy of Manipulative Physiotherapy (CAMPT)")),
             ("oiiq", _(u"Ordre des infirmières et infirmiers du Québec (OIIQ)")),
+            ("odq_denture", _(u"L’Ordre des denturologistes du Québec (ODQ)")),
+            ("odq", _(u"Ordre des dentistes du Québec (ODQ)")),
+            ("dc", _(u"Dietitians of Canada (DC)")),
+            ("opdq", _(u"Ordre professionnel des diététistes du Québec (OPDQ)")),
+            ("cao", _(u"Canadian Association of Optometrists (CAO)")),
+            ("aoq", _(u"L'Association des optométristes du Québec (AOQ)")),
         ]
 
 def get_all_organizations_for_form():

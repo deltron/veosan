@@ -45,39 +45,33 @@ class ProviderTest(BaseTest):
         # check the event log
         self.assert_msg_in_log("Edit CV: add education success", admin=True)
 
-    def test_add_education_nothing_and_other(self):
+    def test_add_organization_nothing_and_other(self):
         self.self_signup_provider()
 
         response = self.testapp.get('/provider/cv/' + self._TEST_PROVIDER_VANITY_URL)
 
-        education_form = response.forms['education_form']
+        education_form = response.forms['organization_form']
         
         education_form['start_year'] = 1998
         education_form['end_year'] = 2002
-        education_form['school_name'] = 'nothing'
-        education_form['degree_type'] = 'bachelor'
-        education_form['degree_title'] = 'Clinical Physiotherapy'
-        education_form['description'] = 'Graduated with honors'
+        education_form['organization'] = 'nothing'
 
         response = education_form.submit()
                 
         # error should appear asking to choose something
         response.mustcontain('1998','2002')
-        response.mustcontain('Graduated with honors')
-        response.mustcontain('Clinical Physiotherapy')
-        response.mustcontain("Baccalauréat")
         response.mustcontain("SVP choisir une option. Si aucun choix ne")
+
+        education_form2 = response.forms['organization_form']
         
-        education_form2 = response.forms['education_form']
-        
-        education_form2['school_name'] = 'other'
+        education_form2['organization'] = 'other'
         response2 = education_form2.submit()
 
         # error should appear asking to write in other
         #response2.showbrowser()
         response2.mustcontain("SVP entrez le nom de")
 
-        education_form3 = response2.forms['education_form']
+        education_form3 = response2.forms['organization_form']
         education_form3['other'] = 'Curtain University'
         response3 = education_form3.submit()
         
@@ -87,12 +81,9 @@ class ProviderTest(BaseTest):
         response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
         response.mustcontain('1998','2002')
         response.mustcontain('Curtain University')
-        response.mustcontain('Graduated with honors')
-        response.mustcontain('Clinical Physiotherapy')
-        response.mustcontain("Baccalauréat")
 
         # check the event log
-        self.assert_msg_in_log("Edit CV: add education success", admin=False)
+        self.assert_msg_in_log("Edit CV: add organization success", admin=False)
 
     def test_everything_correct_then_edit_and_change_valid_field_to_invalid(self):
         self.self_signup_provider()
@@ -103,8 +94,7 @@ class ProviderTest(BaseTest):
         
         education_form['start_year'] = 1998
         education_form['end_year'] = 2002
-        education_form['school_name'] = 'other'
-        education_form['other'] = 'Curtain University'
+        education_form['school_name'] = 'Curtain University'
         education_form['degree_type'] = 'bachelor'
         education_form['degree_title'] = 'Clinical Physiotherapy'
         education_form['description'] = 'Graduated with honors'
@@ -303,6 +293,8 @@ class ProviderTest(BaseTest):
 
         response = profile_form.submit()
         
+        response = self.testapp.get('/provider/profile/' + self._TEST_PROVIDER_VANITY_URL)
+        
         # verify unchecked
         response.mustcontain('input id="specialty-0" name="specialty" type="checkbox" value="sports"')        
         response.mustcontain('input id="specialty-2" name="specialty" type="checkbox" value="cardiology"')  
@@ -355,6 +347,81 @@ class ProviderTest(BaseTest):
 
         self.assert_msg_in_log("Edit CV: add experience success", admin=True)
 
+
+
+    def test_change_save_button_less_than_3_cv_items(self):
+        self.login_as_admin()
+        self.init_new_provider()
+
+        # fill profile section
+        self.fill_new_provider_profile_correctly_action()
+
+        response = self.testapp.get('/provider/profile/' + self._TEST_PROVIDER_VANITY_URL)
+
+        # add one thing to the CV
+        response = self.testapp.get('/provider/cv/' + self._TEST_PROVIDER_VANITY_URL)
+
+        experience_form = response.forms['experience_form']
+        
+        experience_form['start_year'] = 2003
+        experience_form['end_year'] = 2006
+        experience_form['company_name'] = 'Kinatex'
+        experience_form['title'] = 'Manual Physiotherapy'
+        experience_form['description'] = 'Par1\n\nPar2* Worked with my hands\n * Item two'
+
+        response = experience_form.submit()
+        
+        # check again
+        response = self.testapp.get('/provider/profile/' + self._TEST_PROVIDER_VANITY_URL)
+        response.mustcontain("Remplissez votre CV")
+
+        # add another thing to the CV (1)
+        response = self.testapp.get('/provider/cv/' + self._TEST_PROVIDER_VANITY_URL)
+
+        experience_form = response.forms['education_form']
+        experience_form['start_year'] = 2003
+        experience_form['end_year'] = 2006
+        experience_form['school_name'] = 'mcgill'
+        experience_form.submit()
+
+        # check again
+        response = self.testapp.get('/provider/profile/' + self._TEST_PROVIDER_VANITY_URL)
+        response.mustcontain("Remplissez votre CV")
+
+        # add another thing to the CV (2)
+        response = self.testapp.get('/provider/cv/' + self._TEST_PROVIDER_VANITY_URL)
+
+        experience_form = response.forms['organization_form']
+        experience_form['start_year'] = 1992
+        experience_form['organization'] = 'odq'
+        experience_form.submit()
+
+        # check again
+        response = self.testapp.get('/provider/profile/' + self._TEST_PROVIDER_VANITY_URL)
+        response.mustcontain("Remplissez votre CV")
+
+        # add another thing to the CV (3)
+        response = self.testapp.get('/provider/cv/' + self._TEST_PROVIDER_VANITY_URL)
+
+        experience_form = response.forms['continuing_education_form']
+        experience_form['title'] = 'SomeEd'
+        experience_form.submit()
+
+        # check again
+        response = self.testapp.get('/provider/profile/' + self._TEST_PROVIDER_VANITY_URL)
+        response.mustcontain("Remplissez votre CV")
+
+        # add another thing to the CV (4)
+        response = self.testapp.get('/provider/cv/' + self._TEST_PROVIDER_VANITY_URL)
+        
+        experience_form = response.forms['continuing_education_form']
+        experience_form['title'] = 'SomeEd'
+        experience_form['year'] = '2008'
+        experience_form.submit()
+
+        # check again
+        response = self.testapp.get('/provider/profile/' + self._TEST_PROVIDER_VANITY_URL)
+        response.mustcontain("<del>Remplissez votre CV</del>")
 
 
 if __name__ == "__main__":

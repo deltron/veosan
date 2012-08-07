@@ -25,12 +25,18 @@
 				<fieldset>
 					{{ macro.make_standard_form(provider_signup_form, inputClass="input-medium")}}
 
-					<br>
-					<button type="submit" class="btn btn-large btn-success">
-						{{ _('Join Now') }}
-					</button>
+					<div class="control-group">
+						<div class="controls">
+							<button type="submit" class="btn btn-large btn-success">
+								{{ _('Join Now') }}
+							</button>
+						</div>
+					</div>
 				</fieldset>
 			</form>
+			
+			
+			<h4><a href="/login">{{ _('Already a member? Sign in here.') }}</a></h4>
 		</div>
 	</div>
 </div>
