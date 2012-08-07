@@ -292,9 +292,14 @@ class Schedule(ndb.Model):
     start_time = ndb.IntegerProperty()
     end_time = ndb.IntegerProperty()
     
-    def reprezent(self):
-        return '[Schedule day:%s from %s to %s]' % (self.day, self.start_time, self.end_time)
+    def __repr__(self):
+        return 'Schedule %s-%s' % (self.start_time, self.end_time)
 
+    @property
+    def span(self):
+        return self.end_time - self.start_time
+    
+    
  
 class Note(ndb.Model):
     provider = ndb.KeyProperty(kind=Provider)

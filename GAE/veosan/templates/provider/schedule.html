@@ -18,7 +18,7 @@
 				{% for day in days %}
 				<th style="min-width: 55px; text-align: center">
 					{{day[1]}} <br><br>
-					<a data-toggle="modal" href="#add_modal" class="btn btn-primary">{{ _('Add Time') }}</a>
+					<a data-toggle="modal" href="#schedule_form_modal" class="btn btn-primary">{{ _('Add Time') }}</a>
 				</th>
 				{% endfor %}
 			</thead>
@@ -27,8 +27,8 @@
 			<!-- columns -->
 			{% for hour in range(9,18) %}
 			<tr>
-				<td> 
-					{{hour}}
+				<td style="text-align: right;"> 
+					{{hour|format_hour}}
 				</td>
 				
 				{% for day in days %}
@@ -39,14 +39,12 @@
 						<td id="tt" style="text-align: center;" rowspan="{{s.span}}">
 							{% set button_id = day[0] ~ '-' ~ ts_start_time ~ '-' ~ ts_end_time %}
 							
-							<a id="{{button_id}}" href="#" class="btn btn-mini btn-success" rel="tooltip" title="{{ _('Free') }}" style="width: 70%; height: 100%">
-								<div style="width: 100%">
-									<strong>{{day[1]}} <br> 
-									{{ts_name}}</strong> <br>
+							<a id="{{button_id}}" href="/provider/schedule/{{ provider.vanity_url }}/edit/{{ s.key.urlsafe() }}"
+								class="btn btn-mini btn-success" rel="tooltip" title="{{ _('Free') }}" style="width: 70%; height: 100%;">
+								<div style="width: 100%; vertical-align: middle">
+									<strong>{{day[1]}}</strong> <br>
 									<br>
-									<i id="{{button_id}}" class="icon-ok-circle"></i> <br>
-									<br>
-									<small>{{s.start|format_hour}}-{{s.end|format_hour}}</small><br>
+									<small>{{s.start_time|format_hour}}-{{s.end_time|format_hour}}</small><br>
 								</div> 
 							</a>
 						
@@ -71,15 +69,15 @@
 
 
 {# Modal for Add Available Time #}
-<div class="modal hide" id="add_modal" style="display: none;">
+<div class="modal hide" id="schedule_form_modal" style="display: none;">
 	<div class="modal-header">
 		<a class="close" data-dismiss="modal">×</a>
 		<h3>Add an Available Timeslot</h3>
 	</div>
-	{% if edit == section %}
-	{% set post_url = '/provider/schedule/' + provider.vanity_url + '/edit/' + edit_key %}
+	{% if edit_key %}
+		{% set post_url = '/provider/schedule/' + provider.vanity_url + '/edit/' + edit_key %}
 	{% else %}
-	{% set post_url = '/provider/schedule/' + provider.vanity_url + '/add' %}
+		{% set post_url = '/provider/schedule/' + provider.vanity_url + '/add' %}
 	{% endif %}
 	<form method="post" action="{{ post_url }}" class="form-horizontal" id="add_form">
 		<div class="modal-body">
@@ -87,7 +85,7 @@
 		</div>
 
 		<div class="modal-footer">
-			{% if edit == section %}
+			{% if edit_key %}
 			<a class="btn btn-danger pull-left" href="/provider/schedule/{{ provider.vanity_url }}/delete/{{ edit_key }}"> {{ _('Delete') }} </a>
 			{% endif %}
 
@@ -101,3 +99,22 @@
 </div>
 
 {% endblock %}
+
+
+
+
+{% block extra_javascript %}
+
+
+{% if edit_key or schedule_form.errors %}
+<script>
+	$('#schedule_form_modal').modal('show')
+
+	$('#schedule_form_modal').on('hidden', function() {
+		window.location = "/provider/cv/{{ provider.vanity_url }}"
+	})
+</script>
+{% endif %}
+
+{% endblock %}
+

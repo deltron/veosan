@@ -23,20 +23,6 @@ class ProviderBaseHandler(BaseHandler):
         upload_form = ProviderPhotoForm().get_form(self.request.GET)
         self.render_template('provider/profile.html', provider=provider, upload_form=upload_form, upload_url=upload_url, **kw)    
 
-    def render_schedule(self, provider, schedule_form=None, **kw):
-        sq = provider.get_schedules()
-        logging.info("schedule count: %s" % sq.count())
-        schedules = sq.fetch()
-        days = time.get_days_of_the_week()
-        schedule_mapmap = util.create_schedule_map_map(schedules)
-        if not schedule_form:
-            schedule_form = ProviderScheduleForm().get_form()
-        self.render_template('provider/schedule.html', provider=provider, schedules=schedule_mapmap, days=days, schedule_form=schedule_form, **kw)
-        
-        #timeslot_ids = map(lambda x: "%s-%s-%s" % (x[0][0], x[1][1], x[1][2]), [(d, ts) for d in days for ts in timeslots])
-        #logging.info("timeslot ids %s" % timeslot_ids)
-        #skipped_available_ids = [a for a in availableIds if a not in timeslot_ids]
-        #logging.info("skipped available ids %s" % skipped_available_ids)
 
   
     @staticmethod
@@ -339,10 +325,39 @@ class ProviderBookingsHandler(ProviderBaseHandler):
 
 class ProviderScheduleHandler(ProviderBaseHandler):
     
+    def render_schedule(self, provider, schedule_form=None, **kw):
+        sq = provider.get_schedules()
+        logging.info("schedule count: %s" % sq.count())
+        schedules = sq.fetch()
+        days = time.get_days_of_the_week()
+        schedule_mapmap = util.create_schedule_map_map(schedules)
+        if not schedule_form:
+            schedule_form = ProviderScheduleForm().get_form()
+        self.render_template('provider/schedule.html', provider=provider, schedules=schedule_mapmap, days=days, schedule_form=schedule_form, **kw)
+        
+        
     @provider_required
-    def get(self, vanity_url=None):
+    def get(self, vanity_url=None, operation=None, key=None):
         provider = db.get_provider_from_vanity_url(vanity_url)
-        self.render_schedule(provider)
+        kwargs = {}
+        if key:
+            schedule_key = ndb.Key(urlsafe=key)
+        if operation == 'delete':
+            logging.info("(ProviderEducationHandler.get) Delete section %s key=%s" % key)    
+            schedule_key.delete()        
+            # log the event
+            self.log_event(user=provider.user, msg="Schedule delete")
+
+        if operation == 'edit':
+            logging.info("(ProviderEducationHandler.get) Edit schedule key=%s" % key)
+            # get the object
+            obj = schedule_key.get()
+            # populate the form
+            kwargs['schedule_form'] = ProviderScheduleForm().get_form(obj=obj)
+            kwargs['edit_key'] = key
+
+        self.render_schedule(provider, **kwargs)
+           
            
     @provider_required
     def post(self, vanity_url=None, operation=None, key=None):
@@ -361,14 +376,26 @@ class ProviderScheduleHandler(ProviderBaseHandler):
                 new_schedule.put()
                 # stored eduction
                 logging.debug("(ProviderSchedule.post) New schedule %s " % new_schedule)
+                
+            elif operation == 'edit':
+                schedule_key = ndb.Key(urlsafe=key)
+        
+                if schedule_key:
+                    schedule = schedule_key.get()
+                    schedule_form.populate_obj(schedule)
+                    schedule.put()
+                    # stored
+                    logging.info("(ProviderEducationHandler.post) Stored schedule key=%s" % schedule.key)
+                else:
+                    logging.info("(ProviderEducationHandler.post) No schedule found for key %s" % key)
+
             else:
                 logging.error('Operation Not handled %s' % operation)
         else:
             error_messages = schedule_form.errors
             logging.info('Schedule form did not validate: %s' % error_messages)
             
-            
-                
+
         self.render_schedule(provider, error_messages=error_messages)
         
         
