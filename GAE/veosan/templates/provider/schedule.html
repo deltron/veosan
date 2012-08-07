@@ -18,7 +18,6 @@
 				{% for (day_key, day_label) in days %}
 				<th style="min-width: 55px; text-align: center">
 					{{ day_label }} <br><br>
-					<a data-toggle="modal" href="#schedule_form_modal" class="btn btn-primary">{{ _('Add Time') }}</a>
 				</th>
 				{% endfor %}
 			</thead>
@@ -47,7 +46,9 @@
 						<!-- pass -->
 					{% else %}
 						<td style="text-align: center;"> 
-							<a style="color: grey" href="/provider/schedule/{{ provider.vanity_url }}/add/{{day_key}}/{{hour_key}}">[ + ]</a> 
+							<a class="btn btn-small" href="/provider/schedule/{{ provider.vanity_url }}/add/{{day_key}}/{{hour_key}}">
+								
+								<i class="bs-icon icon-plus"> </i></a> 
 						</td>	
 					{% endif %}
 				</td>
@@ -108,7 +109,7 @@
 	$('#schedule_form_modal').modal('show')
 
 	$('#schedule_form_modal').on('hidden', function() {
-		window.location = "/provider/cv/{{ provider.vanity_url }}"
+		window.location = "/provider/schedule/{{ provider.vanity_url }}"
 	})
 </script>
 {% endif %}
