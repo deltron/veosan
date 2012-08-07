@@ -339,13 +339,23 @@ class ProviderScheduleHandler(ProviderBaseHandler):
         
     
     @provider_required
-    def get(self, vanity_url=None, operation=None, key=None):
+    def get(self, vanity_url=None, operation=None, key=None, day=None, start_time=None):
         provider = db.get_provider_from_vanity_url(vanity_url)
         kwargs = {}
         if key:
             schedule_key = ndb.Key(urlsafe=key)
+        if operation == 'add':
+            logging.info("(ProviderEducationHandler.get) Add schedule key=%s" % key)
+            # create temp schedule
+            new_schedule = Schedule()
+            new_schedule.day = day
+            new_schedule.start_time = int(start_time)
+            new_schedule.end_time = new_schedule.start_time + 4
+            kwargs['schedule_form'] = ProviderScheduleForm().get_form(obj=new_schedule)
+            kwargs['add'] = 'add'
+            
         if operation == 'delete':
-            logging.info("(ProviderEducationHandler.get) Delete section key=%s" % key)    
+            logging.info("(ProviderEducationHandler.get) Delete schedule key=%s" % key)    
             schedule_key.delete()        
             # log the event
             self.log_event(user=provider.user, msg="Schedule delete")
