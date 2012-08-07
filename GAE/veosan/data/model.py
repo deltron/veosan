@@ -293,7 +293,7 @@ class Schedule(ndb.Model):
     end_time = ndb.IntegerProperty()
     
     def __repr__(self):
-        return 'Schedule %s-%s' % (self.start_time, self.end_time)
+        return 'Schedule %s %s-%s' % (self.day, self.start_time, self.end_time)
 
     @property
     def span(self):
