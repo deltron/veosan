@@ -136,11 +136,8 @@
 			{% for e in provider.get_education() %}
 			<li>
 				<h4>{{ e.degree_type|code_to_string }} {{ e.degree_title }}</h4>
-				<h6> {% if e.school_name == 'other' %}
-				{{ e.other }}
-				{% else %}
-				{{ e.school_name|code_to_string }}
-				{% endif %}
+				<h6> 
+				{{ e.school_name }}
 
 				{{ macro.display_cv_years(e.start_year, e.end_year) }} </h6>
 				{% if e.description %}
