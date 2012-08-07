@@ -307,3 +307,74 @@ def get_all_status_types():
     return status_choices
 
 
+
+
+# Timeblock represents a period on the calendar using two times
+class Timeblock():
+    
+    start = None
+    
+    end = None
+    
+    available = False
+    
+    def __init__(self, start, end, avail):
+        self.start = start
+        self.end = end
+        self.available = avail
+    
+    @property
+    def span(self):
+        return self.end - self.start
+    
+    def __repr__(self):
+        if self.available:
+            pre = '+'
+        else:
+            pre = '-'
+        return '%s%s-%s' % (pre, self.start, self.end)
+        
+
+
+def create_schedule_map_map(schedules):
+    smm = dict()
+    for d in range(0,7):
+        smm[d] = dict()
+    for s in schedules:
+        smm[s.day][s.start_time] = Timeblock(s.start_time, s.end_time, True)
+    logging.info('smm %s' % smm)
+    return smm
+    
+
+def convert_schedules_to_table(schedules):
+    schedule_table = dict()
+    logging.info(schedules)
+    if schedules:
+        min_time = min(9, min(schedules, key=lambda s: s.start_time).start_time)
+        max_time = max(17, max(schedules, key=lambda s: s.end_time).end_time)
+    else:
+        min_time = 9
+        max_time = 17
+    # for each day
+    for d in range(0,7):
+        today_schedules = sorted(filter(lambda s: s.day==d, schedules), key=lambda s: s.start_time)
+        logging.info('today schedules %s %s' % (d, today_schedules))
+        today_table = map(lambda s: Timeblock(s.start_time, s.end_time, True), today_schedules)
+        logging.info('today table %s %s' % (d, today_table))
+        if today_table:
+            today_first_available_time = today_table[0].start
+            logging.info('today first available time:%s' % today_first_available_time)
+            if today_first_available_time != min_time:
+                # add first empty Timeblock
+                morning_unavailable_slot = Timeblock(min_time, today_first_available_time, False)
+                logging.info(morning_unavailable_slot)
+                today_table.insert(0, morning_unavailable_slot)
+                
+            schedule_table[d] = today_table
+        else:
+            # not available all day
+            schedule_table[d] = [Timeblock(min_time, max_time, False)]
+        logging.info('today table with blanks %s %s' % (d, today_table))
+        logging.info(schedule_table)
+    return schedule_table
+        

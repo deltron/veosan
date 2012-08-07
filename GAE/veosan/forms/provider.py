@@ -4,6 +4,7 @@ from wtforms import Form, TextField, SelectField, FileField, TextAreaField, Inte
 from wtforms import validators
 from custom_form import MultiCheckboxField, CustomForm
 import util
+from utilities.time import get_days_of_the_week
 from webapp2_extras.i18n import lazy_gettext as _
 from forms import custom_filters, custom_validators
 
@@ -110,7 +111,12 @@ class ProviderAddressForm(CustomForm):
         setattr(form, 'province', SelectField(_(u'Province'), choices=util.get_all_provinces_sorted()))
         setattr(form, 'postal_code', TextField(_(u'Postal Code'), [validators.Optional(), validators.Regexp(regex="^[a-zA-Z][0-9][a-zA-Z][0-9][a-zA-Z][0-9]$", message=_(u'Please make sure your postal code is in the following format: A1B2C3'))]))
 
-
+class ProviderScheduleForm(CustomForm):
+    def _set_fields(self, form):        
+        #setattr(form, 'day', SelectField(_(u'Day'), choices=get_days_of_the_week()))
+        setattr(form, 'day', IntegerField(_(u'Day')))
+        setattr(form, 'start_time', IntegerField(_(u'Start Time')))
+        setattr(form, 'end_time', IntegerField(_(u'End Time')))
 
 # Admin only
 

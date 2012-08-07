@@ -9,13 +9,14 @@ from collections import namedtuple
 from functools import partial
 from webapp2_extras.i18n import format_date, format_datetime
 from webapp2_extras.i18n import lazy_gettext as _
-    
+
 ###
 ### TimeSlots and DatetimeSlot
 ###
 
 # Timeslot represents a period on the calendar using two datetimes
 Timeslot = namedtuple('Timeslot', "start end")
+
 
 def create_one_hour_timeslot(datetime_start):
     datetime_end = datetime.combine(datetime_start.date(), time(datetime_start.time().hour+1, datetime_start.time().minute))
@@ -61,7 +62,7 @@ def getScheduleTimeslots():
              ( _(u"Evening"), '18', '21')
             )
 
-def getWeekdays():
+def get_days_of_the_week():
     cal = calendar.Calendar(0)
     weekdays_lower = [(day, calendar.day_name[day]) for day in cal.iterweekdays()]
     logging.info('Weekdays from cal: %s' % weekdays_lower)
