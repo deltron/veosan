@@ -353,7 +353,15 @@ class ProviderScheduleHandler(ProviderBaseHandler):
             schedule_form = ProviderScheduleForm().get_form()
             schedule_form.day.data = day
             schedule_form.start_time.data = start_time
-            schedule_form.end_time.data = str(int(start_time) + 4)
+            
+            
+            end_time = int(start_time) + 4
+            max_time = max([k[0] for k in time.get_time_list()])
+            if end_time > max_time:
+                end_time = max_time
+            
+            schedule_form.end_time.data = str(end_time)
+            
             kwargs['schedule_form'] = schedule_form
             kwargs['add'] = 'add'
             self.render_schedule(provider, **kwargs)
