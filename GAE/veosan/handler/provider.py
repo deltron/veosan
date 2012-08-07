@@ -346,6 +346,7 @@ class ProviderScheduleHandler(ProviderBaseHandler):
         kwargs = {}
         if key:
             schedule_key = ndb.Key(urlsafe=key)
+            
         if operation == 'add':
             logging.info("(ProviderEducationHandler.get) Add schedule key=%s" % key)
             #new_schedule.end_time = new_schedule.start_time + 4
@@ -355,23 +356,29 @@ class ProviderScheduleHandler(ProviderBaseHandler):
             schedule_form.end_time.data = str(int(start_time) + 4)
             kwargs['schedule_form'] = schedule_form
             kwargs['add'] = 'add'
+            self.render_schedule(provider, **kwargs)
+
             
-        if operation == 'delete':
+        elif operation == 'delete':
             logging.info("(ProviderEducationHandler.get) Delete schedule key=%s" % key)    
             schedule_key.delete()        
             # log the event
             self.log_event(user=provider.user, msg="Schedule delete")
+            
+            self.redirect('/provider/schedule/%s' % provider.vanity_url)
 
-        if operation == 'edit':
+        elif operation == 'edit':
             logging.info("(ProviderEducationHandler.get) Edit schedule key=%s" % key)
             # get the object
             obj = schedule_key.get()
             # populate the form
             kwargs['schedule_form'] = ProviderScheduleForm().get_form(obj=obj)
             kwargs['edit_key'] = key
-
-        self.render_schedule(provider, **kwargs)
-           
+            
+            self.render_schedule(provider, **kwargs)
+        
+        else:
+            self.render_schedule(provider, **kwargs)
            
     @provider_required
     def post(self, vanity_url=None, operation=None, key=None):
