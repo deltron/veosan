@@ -619,7 +619,7 @@ msgid "Member of order since"
 msgstr "Membre de l'ordre depuis"
 
 msgid "Organization Memberships"
-msgstr "Groupes professionnels"
+msgstr "Groupes professionnel"
 
 msgid "I am willing to do on-site visits"
 msgstr "J'accepte de faire des visites chez les clients"
