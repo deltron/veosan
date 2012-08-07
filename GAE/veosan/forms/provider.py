@@ -4,7 +4,7 @@ from wtforms import Form, TextField, SelectField, FileField, TextAreaField, Inte
 from wtforms import validators
 from custom_form import MultiCheckboxField, CustomForm
 import util
-from utilities.time import get_days_of_the_week
+from utilities.time import get_days_of_the_week, get_time_list
 from webapp2_extras.i18n import lazy_gettext as _
 from forms import custom_filters, custom_validators
 
@@ -109,8 +109,12 @@ class ProviderAddressForm(CustomForm):
 class ProviderScheduleForm(CustomForm):
     def _set_fields(self, form):        
         setattr(form, 'day', SelectField(_(u'Day'), choices=get_days_of_the_week()))
-        setattr(form, 'start_time', IntegerField(_(u'Start Time')))
-        setattr(form, 'end_time', IntegerField(_(u'End Time')))
+        setattr(form, 'start_time', SelectField(_(u'Start Time'), 
+                                                choices=get_time_list(),
+                                                filters=[custom_filters.string_to_int]))
+        setattr(form, 'end_time', SelectField(_(u'End Time'),
+                                                choices=get_time_list(),
+                                                filters=[custom_filters.string_to_int]))
 
 # Admin only
 

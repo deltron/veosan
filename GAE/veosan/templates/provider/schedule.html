@@ -25,15 +25,14 @@
 			
 			
 			<!-- columns -->
-			{% for hour in range(7,22) %}
+			{% for (hour_key, hour_label) in times %}
 			<tr>
 				<td style="text-align: right;"> 
-					{{hour|format_hour}}
+					{{ hour_label }}
 				</td>
-				
 				{% for (day_key, day_label)  in days %}
-					{% if schedules[day_key].has_key(hour) %}
-						{% set s = schedules[day_key][hour] %}
+					{% if schedules[day_key].has_key(hour_key) %}
+						{% set s = schedules[day_key][hour_key] %}
 						<td id="tt" style="text-align: center;" rowspan="{{s.span}}">
 							<a href="/provider/schedule/{{ provider.vanity_url }}/edit/{{ s.key.urlsafe() }}" 
 								class="btn btn-mini btn-success" rel="tooltip" title="{{ _('Free') }}" style="width: 70%; height: 100%">

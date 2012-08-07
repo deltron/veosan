@@ -16,4 +16,10 @@ def to_uppercase(value):
     else:
         return value
 
+def string_to_int(value):
+    if value:
+        return int(value)
+    else:
+        return value
+
 

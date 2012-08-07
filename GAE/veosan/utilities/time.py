@@ -49,11 +49,12 @@ def getDatesList():
         datesList.append(dateTuple)
     return datesList
 
-def getTimesList():
-    # this doesn't work for am/pm in english
-    startTimeList = range(8, 21)
-    timeStringList = map(lambda x: (unicode(x), formatTimeToOneHourPeriod(x)), startTimeList)
-    return timeStringList
+def get_time_list():
+    time_list = []
+    for t in range(7, 22):
+        time_list.append((t, format_hour(t)))
+    
+    return time_list
 
 def getScheduleTimeslots():
     # returns a list of list(name, start time, end time)
@@ -72,8 +73,8 @@ def get_days_of_the_week():
              ('sunday', _('Sunday')),
            ]
 
- 
- 
+
+
 
 ###
 ###  Date and Time Formating
