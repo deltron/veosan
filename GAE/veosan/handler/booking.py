@@ -68,7 +68,7 @@ class BookingBaseHandler(BaseHandler):
         bookingform.category.choices = util.get_all_categories()
         bookingform.location.choices = util.get_all_regions()
         bookingform.booking_date.choices = time.getDatesList()
-        bookingform.booking_time.choices = time.getTimesList()
+        bookingform.booking_time.choices = time.get_time_list()
         return bookingform
     
     
