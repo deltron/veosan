@@ -138,7 +138,7 @@ application = ndb.toplevel(webapp2.WSGIApplication([
                                             # Schedule
                                             PathPrefixRoute('/schedule', [
                                                 Route('/<vanity_url>', provider.ProviderScheduleHandler),
-                                                #Route('/<vanity_url>/<operation>', provider.ProviderScheduleHandler),
+                                                Route('/<vanity_url>/<operation>', provider.ProviderScheduleHandler),
                                                 Route('/<vanity_url>/<operation>/<day>/<start_time>', provider.ProviderScheduleHandler),
                                                 Route('/<vanity_url>/<operation>/<key>', provider.ProviderScheduleHandler),
                                                 

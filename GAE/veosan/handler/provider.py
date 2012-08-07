@@ -348,12 +348,12 @@ class ProviderScheduleHandler(ProviderBaseHandler):
             schedule_key = ndb.Key(urlsafe=key)
         if operation == 'add':
             logging.info("(ProviderEducationHandler.get) Add schedule key=%s" % key)
-            # create temp schedule
-            new_schedule = Schedule()
-            new_schedule.day = day
-            new_schedule.start_time = int(start_time)
-            new_schedule.end_time = new_schedule.start_time + 4
-            kwargs['schedule_form'] = ProviderScheduleForm().get_form(obj=new_schedule)
+            #new_schedule.end_time = new_schedule.start_time + 4
+            schedule_form = ProviderScheduleForm().get_form()
+            schedule_form.day.data = day
+            schedule_form.start_time.data = start_time
+            schedule_form.end_time.data = str(int(start_time) + 4)
+            kwargs['schedule_form'] = schedule_form
             kwargs['add'] = 'add'
             
         if operation == 'delete':
