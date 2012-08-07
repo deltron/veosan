@@ -16,6 +16,9 @@
 	<li id="welcome" {% if "welcome" == active_page %} class="active" {% endif %} style="font-style:italic">
 		<a href="/provider/welcome/{{ provider.vanity_url }}">{{ _('Welcome') }}</a>
 	</li>
+	<li id="social" {% if "social" == active_page %} class="active" {% endif %} style="font-style:italic">
+		<a href="/provider/social/{{ provider.vanity_url }}">{{ _('Social') }}</a>
+	</li>
 	<li id="bookings" {% if "bookings" == active_page %} class="active" {% endif %} style="font-style:italic">
 		<a href="/provider/bookings/{{ provider.vanity_url }}">{{ _('Bookings') }}</a>
 	</li>

@@ -1,0 +1,61 @@
+{% extends "/layout/provider_nav.html" %}
+
+{% set active_page = "social" %}
+
+{% block subhead %}{{ _('Social') }}{% endblock %}
+{% block lead %}Share stuff with your friends{% endblock %}
+
+{% block content %}
+
+<div class="row">
+	<div class="span6">
+		<h2>Your Network</h2>
+		<ul>
+			<li>
+				You are connected with 43 other professionals.
+			</li>
+			<li>
+				List
+			</li>
+			<li>
+				Find more.
+			</li>
+			<li>
+				Send invites.
+			</li>
+		</ul>
+
+	</div>
+	<div class="span6">
+		<h2>Invite a health care professional</h2>
+		<ul>
+			<li>
+				email
+			</li>
+			<li>
+				category
+			</li>
+		</ul>
+		<br>
+		<h2>Invite a patient to view your profile</h2>
+		<ul>
+			<li>
+				email
+			</li>
+		</ul>
+		<br>
+		<h2>Web Link</h2>
+		<p>
+			Here's a link you can paste in an email or put on your business cards.
+			You can change this address by upgrading your account.
+		</p>
+		<code>
+			veosan.com/{{ provider.vanity_url }}</code>
+
+		<br>
+		<br>
+		<h2>Facebook, Twitter, LinkedIn, Google Plus, etc.</h2>
+	</div>
+</div>
+
+{% endblock %}

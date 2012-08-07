@@ -322,6 +322,11 @@ class WelcomeHandler(ProviderBaseHandler):
 
         self.render_template("provider/welcome.html", provider=provider)
 
+class SocialHandler(ProviderBaseHandler):
+    def get(self, vanity_url=None):
+        provider = db.get_provider_from_vanity_url(vanity_url)
+
+        self.render_template("provider/social.html", provider=provider)
 
 
 # BOOKING AND SCHEDULE STUFF
