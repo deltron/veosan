@@ -9,9 +9,10 @@ import data.db as db
 from data.model import Schedule, Education, Experience, ContinuingEducation, \
     ProfessionalOrganization, ProfessionalCertification
 from forms.provider import ProviderAddressForm, ProviderEducationForm, ProviderContinuingEducationForm, ProviderExperienceForm, ProviderProfileForm, ProviderPhotoForm, \
-    ProviderCertificationForm, ProviderOrganizationForm
+    ProviderCertificationForm, ProviderOrganizationForm, ProviderScheduleForm
 from base import BaseHandler
 from handler.auth import provider_required
+import util
 from util import saved_message
 from utilities import time
 
@@ -20,18 +21,24 @@ class ProviderBaseHandler(BaseHandler):
     def render_profile(self, provider, **kw):
         upload_url = blobstore.create_upload_url('/provider/profile/photo/%s' % provider.vanity_url)
         upload_form = ProviderPhotoForm().get_form(self.request.GET)
-        
         self.render_template('provider/profile.html', provider=provider, upload_form=upload_form, upload_url=upload_url, **kw)    
-          
-    def render_schedule(self, provider, availableIds, **kw):
-        timeslots = time.getScheduleTimeslots()
-        days = time.getWeekdays()
-        timeslot_ids = map(lambda x: "%s-%s-%s" % (x[0][0], x[1][1], x[1][2]), [(d, ts) for d in days for ts in timeslots])
-        logging.info("timeslot ids %s" % timeslot_ids)
-        skipped_available_ids = [a for a in availableIds if a not in timeslot_ids]
-        logging.info("skipped available ids %s" % skipped_available_ids)
-        self.render_template('provider/schedule.html', provider=provider, availableIds=availableIds, timeslots=timeslots, days=days, skipped_available_ids=skipped_available_ids, **kw)
-    
+
+    def render_schedule(self, provider, schedule_form=None, **kw):
+        sq = provider.get_schedules()
+        logging.info("schedule count: %s" % sq.count())
+        schedules = sq.fetch()
+        days = time.get_days_of_the_week()
+        schedule_mapmap = util.create_schedule_map_map(schedules)
+        if not schedule_form:
+            schedule_form = ProviderScheduleForm().get_form()
+        self.render_template('provider/schedule.html', provider=provider, schedules=schedule_mapmap, days=days, schedule_form=schedule_form, **kw)
+        
+        #timeslot_ids = map(lambda x: "%s-%s-%s" % (x[0][0], x[1][1], x[1][2]), [(d, ts) for d in days for ts in timeslots])
+        #logging.info("timeslot ids %s" % timeslot_ids)
+        #skipped_available_ids = [a for a in availableIds if a not in timeslot_ids]
+        #logging.info("skipped available ids %s" % skipped_available_ids)
+
+  
     @staticmethod
     def render_bookings(handler, provider, **kw):
         bookings = provider.get_future_bookings()
@@ -330,44 +337,43 @@ class ProviderBookingsHandler(ProviderBaseHandler):
 
 
 
-
-
 class ProviderScheduleHandler(ProviderBaseHandler):
     
     @provider_required
     def get(self, vanity_url=None):
         provider = db.get_provider_from_vanity_url(vanity_url)
-        availableIds = provider.getAvailableScheduleIds()
-        logging.info('available ids' + str(availableIds))
-        self.render_schedule(provider, availableIds)
+        self.render_schedule(provider)
            
     @provider_required
-    def post(self, vanity_url=None):
-        logging.debug('ProviderScheduleHandler POST')
-        day_time = self.request.get('day_time')
-        day, startTime, endTime = day_time.split('-')
-        operation = self.request.get('operation')
-        logging.info("SAVE SCHEDULE: " + vanity_url + " " + day + "-" + startTime + "-" + endTime + " " + operation)
-        
+    def post(self, vanity_url=None, operation=None, key=None):
+        logging.info('ProviderScheduleHandler POST')        
+        # instantiate and fill the form
+        schedule_form = ProviderScheduleForm().get_form(self.request.POST, obj=Schedule())
         provider = db.get_provider_from_vanity_url(vanity_url)
-        if (operation == 'add'):
-            s = Schedule()
-            s.provider = provider.key
-            s.day = int(day)
-            s.startTime = int(startTime)
-            s.endTime = int(endTime)
-            new_schedule_key = s.put()
-            logging.info('New Schedule saved: %s' % new_schedule_key)
-        elif (operation == 'remove'):
-            schedule_to_delete = Schedule.query(Schedule.provider == provider.key, Schedule.day == int(day), Schedule.startTime == int(startTime)).get()
-            logging.info('deleting schedule' + str(schedule_to_delete))
-            if (schedule_to_delete):
-                schedule_to_delete.key.delete()
+        error_messages = None
+        
+        if schedule_form.validate():
+            # Store schedule
+            if operation == 'add':
+                new_schedule = Schedule()
+                schedule_form.populate_obj(new_schedule)
+                new_schedule.provider = provider.key
+                new_schedule.put()
+                # stored eduction
+                logging.debug("(ProviderSchedule.post) New schedule %s " % new_schedule)
             else:
-                logging.error("Can't find schedule to delete")  
+                logging.error('Operation Not handled %s' % operation)
         else:
-            logging.info('Wrong operation save schedule:' + operation)
-
-
+            error_messages = schedule_form.errors
+            logging.info('Schedule form did not validate: %s' % error_messages)
+            
+            
+                
+        self.render_schedule(provider, error_messages=error_messages)
+        
+        
+        
+        
+        
 
 

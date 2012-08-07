@@ -133,3 +133,9 @@ indexes:
   - name: location
   - name: terms_agreement
   - name: start_year
+
+- kind: Schedule
+  properties:
+  - name: provider
+  - name: day
+  - name: start_time

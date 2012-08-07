@@ -119,7 +119,6 @@ application = ndb.toplevel(webapp2.WSGIApplication([
                                             ]),
 
                                             Route('/welcome/<vanity_url>', provider.WelcomeHandler),
-                                            Route('/schedule/<vanity_url>', provider.ProviderScheduleHandler),
                                             Route('/bookings/<vanity_url>', provider.ProviderBookingsHandler),
                                                   
                                             # provider profile
@@ -134,7 +133,13 @@ application = ndb.toplevel(webapp2.WSGIApplication([
                                                 Route('/<section>/<vanity_url>/<operation>', provider.ProviderCVHandler),
                                                 Route('/<section>/<vanity_url>/<operation>/<key>', provider.ProviderCVHandler),
                                             ]),
-                                                                                                                                                                    
+                                            
+                                            # Schedule
+                                            PathPrefixRoute('/schedule', [
+                                                Route('/<vanity_url>', provider.ProviderScheduleHandler),
+                                                Route('/<vanity_url>/<operation>', provider.ProviderScheduleHandler),
+                                                Route('/<vanity_url>/<operation>/<key>', provider.ProviderScheduleHandler),
+                                            ]),                                                                                                                        
                                             # Address
                                             PathPrefixRoute('/address', [
                                                 Route('/<vanity_url>', provider.ProviderEditAddressHandler),

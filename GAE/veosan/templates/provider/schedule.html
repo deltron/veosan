@@ -6,114 +6,98 @@
 {% block lead %}{{ _('Organize your time.') }}{% endblock %}
 
 {% block content %}
+
+
 <div class="row">
 	<div class="span12">
 		<table class="table table-condensed centered">
+			
+			<!-- header week days --> 
 			<thead>
 				<th></th>
 				{% for day in days %}
 				<th style="min-width: 55px; text-align: center">
-					{{day[1]}}
+					{{day[1]}} <br><br>
+					<a data-toggle="modal" href="#add_modal" class="btn btn-primary">{{ _('Add Time') }}</a>
 				</th>
 				{% endfor %}
 			</thead>
 			
-			<!-- timeslots are (name, starttime, endtime) -->
-			{% for (ts_name, ts_start_time, ts_end_time) in timeslots %}
+			
+			<!-- columns -->
+			{% for hour in range(9,18) %}
 			<tr>
 				<td> 
-					{{ts_name}}
-					<br>
-					<small>{{ts_start_time|format_hour}}-{{ts_end_time|format_hour}}</small>
+					{{hour}}
 				</td>
 				
 				{% for day in days %}
-				<td id="tt" style="text-align: center;">
-					{% set button_id = day[0] ~ '-' ~ ts_start_time ~ '-' ~ ts_end_time %}
-					{% if button_id in availableIds %}
-						<a id="{{button_id}}" href="#" class="btn btn-mini btn-success" rel="tooltip" title="{{ _('Free') }}" style="width: 70%">
-							<div style="width: 100%">
-								<strong>{{day[1]}} <br> 
-								{{ts_name}}</strong> <br>
-								<br>
-								<i id="{{button_id}}" class="icon-ok-circle"></i> <br>
-								<!--{{ _('Busy') }}<br> -->
-								<br>
-								<small>{{ts_start_time|format_hour}}-{{ts_end_time|format_hour}}</small><br>
-								<!-- <code>{{button_id}}</code> -->
-							</div> 
-						</a>
+					{% set d = day[0] %}
+					{% if schedules[d].has_key(hour) %}
+				
+						{% set s = schedules[d][hour] %}
+						<td id="tt" style="text-align: center;" rowspan="{{s.span}}">
+							{% set button_id = day[0] ~ '-' ~ ts_start_time ~ '-' ~ ts_end_time %}
+							
+							<a id="{{button_id}}" href="#" class="btn btn-mini btn-success" rel="tooltip" title="{{ _('Free') }}" style="width: 70%; height: 100%">
+								<div style="width: 100%">
+									<strong>{{day[1]}} <br> 
+									{{ts_name}}</strong> <br>
+									<br>
+									<i id="{{button_id}}" class="icon-ok-circle"></i> <br>
+									<br>
+									<small>{{s.start|format_hour}}-{{s.end|format_hour}}</small><br>
+								</div> 
+							</a>
+						
+						
 					{% else %}
-						<a id="{{button_id}}" href="#" class="btn btn-mini" rel="tooltip" title="{{ _('Busy') }}" style="width: 70%">
-							<div style="width: 100%">
-								<strong>{{day[1]}} <br> 
-								{{ts_name}}</strong> <br>
-								<br>
-								<i id="{{button_id}}" class="icon-ban-circle"></i> <br>
-								<!--{{ _('Busy') }}<br> -->
-								<br>
-								<small>{{ts_start_time|format_hour}}-{{ts_end_time|format_hour}}</small><br>
-								<!-- <code>{{button_id}}</code> -->
-							</div> 
-						</a>
+						<td>-</td>	
 					{% endif %}
 				</td>
 				{% endfor %}
 			</tr>
 			{% endfor %}
+
+			
+			
 		</table>
 	</div>
 	
-	{% if 'admin' in roles %}
-		<h3>Undisplayed Availble Timeslots</h3>
-		{% for sai in skipped_available_ids %}
-			<li>{{sai}}</li>
-		{% endfor %}
-	{% endif %}
+	<p>schedules: {{ schedules }}</p>
 	
 </div>
+
+
+
+{# Modal for Add Available Time #}
+<div class="modal hide" id="add_modal" style="display: none;">
+	<div class="modal-header">
+		<a class="close" data-dismiss="modal">×</a>
+		<h3>Add an Available Timeslot</h3>
+	</div>
+	{% if edit == section %}
+	{% set post_url = '/provider/schedule/' + provider.vanity_url + '/edit/' + edit_key %}
+	{% else %}
+	{% set post_url = '/provider/schedule/' + provider.vanity_url + '/add' %}
+	{% endif %}
+	<form method="post" action="{{ post_url }}" class="form-horizontal" id="add_form">
+		<div class="modal-body">
+			{{ macro.make_standard_form(schedule_form) }}
+		</div>
+
+		<div class="modal-footer">
+			{% if edit == section %}
+			<a class="btn btn-danger pull-left" href="/provider/schedule/{{ provider.vanity_url }}/delete/{{ edit_key }}"> {{ _('Delete') }} </a>
+			{% endif %}
+
+			<button type="submit" class="btn btn-primary">
+				{{ _('Save') }}
+			</button>
+			<a class="btn" href="/provider/schedule/{{ provider.vanity_url }}">{{ _('Cancel') }}</a>
+		</div>
+
+	</form>
+</div>
+
 {% endblock %}
-
-
-{% block extra_javascript %}
-<script>
-	$(function() {
-		$('a[rel=tooltip]').tooltip();
-	});
-
-    $("#tt a").click(function () {
-    	//alert("I am an alert box! " + $("#b14").attr("Class"));
-    	
-     	$(this).toggleClass("btn-success");
-     	// TODO change icon inside the <a>
-     	var $icon = $(this).find('div i');
-     	var $new_tooltip = ''
-     	
-     	if ($(this).hasClass('btn-success')) {
-     		op = 'add'
-     		$icon.addClass('icon-ok-circle')
-     		$icon.removeClass('icon-ban-circle')
-			$new_tooltip = '{{ _("Free") }}'
-     	}
-     	else {
-     		op = 'remove'
-     		$icon.addClass('icon-ban-circle')
-     		$icon.removeClass('icon-ok-circle')
-     		//$(this).attr('title', 'Not Free')
-     		$new_tooltip = '{{ _("Busy") }}'
-     	}
-     	// Weird workaround for tooltip change	
-     	$(this).attr('data-original-title', $new_tooltip).tooltip('fixTitle'); 	
-     	$(this).tooltip('toggle') 
-     	$(this).tooltip('toggle')
-     	
-     	post_data = {
-     		day_time: $(this).attr("id"),
-     		operation: op
-     	}
-     	// post a save for the clicked schedule
-     	$.post('/provider/schedule/{{ provider.vanity_url }}', post_data)
-    });
-</script>
-{% endblock extra_javascript %}
-

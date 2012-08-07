@@ -132,18 +132,8 @@ class Provider(ndb.Model):
         datetime_24h_ago = datetime.now() - timedelta(hours=24)
         return self.created_on > datetime_24h_ago
     
-    def get_schedule(self):
-        return Schedule.query(Schedule.provider == self.key)
-    
-    def getAvailableScheduleIds(self):
-        logging.info('Getting schedules for provider: %s' % self.key);
-        ids = list()
-        sq = Schedule.query(Schedule.provider == self.key)
-        logging.info('schedule count %s' % sq.count())
-        for s in sq:
-            schedule_id = str(s.day) + '-' + str(s.startTime) + '-' + str(s.endTime)
-            ids.append(schedule_id)
-        return ids
+    def get_schedules(self):
+        return Schedule.query(Schedule.provider == self.key).order(Schedule.day, Schedule.start_time)
     
     def isAvailable(self, day, time):
         count = self.schedule.filter('day = ', day).filter('time = ', time).count()
@@ -299,13 +289,12 @@ class LogEvent(ndb.Model):
 class Schedule(ndb.Model):
     provider = ndb.KeyProperty(kind=Provider) # name='schedule'
     day = ndb.IntegerProperty()
-    startTime = ndb.IntegerProperty()
-    endTime = ndb.IntegerProperty()
+    start_time = ndb.IntegerProperty()
+    end_time = ndb.IntegerProperty()
     
-    def repr(self):
-        # String representation for debuging, I'm too scared to override the __repr__() 
-        return '[Schedule day:%s from %s to %s]' % (self.day, self.startTime, self.endTime)
- 
+    def reprezent(self):
+        return '[Schedule day:%s from %s to %s]' % (self.day, self.start_time, self.end_time)
+
  
 class Note(ndb.Model):
     provider = ndb.KeyProperty(kind=Provider)
