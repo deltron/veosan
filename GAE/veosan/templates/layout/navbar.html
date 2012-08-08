@@ -12,6 +12,12 @@
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ user.get_email() }} <b class="caret"></b></a>
 						<ul class="dropdown-menu">
 							{% if provider %}
+							{% if user.display_welcome_page %}
+							<li id="welcome" {% if "welcome" == active_page %} class="active" {% endif %}>
+								<a href="/provider/welcome/{{ provider.vanity_url }}">{{ _('Welcome') }}</a>
+							</li>
+							{% endif %}
+
 							<li>
 								<a href="/provider/profile/{{ provider.vanity_url }}">{{ _('Profile') }}</a>
 							</li>
