@@ -320,30 +320,28 @@ def get_all_status_types():
     return status_choices
 
 
-
-
 class ScheduleMap(dict):
+    '''
+        Map of schedules keyed by day and start hour to simplify display
+    '''
     
     def within_span(self, day_key, hour_key):
+        '''
+            Check if a day/hour intersect in within the continuation of a schedule starting earlier
+        '''
         day_schedules = self[day_key]
-        logging.info('checking span %s %s against %s' % (day_key, hour_key, day_schedules))
         for key in day_schedules.keys():
             s = day_schedules[key]
-            
-            if (hour_key >= s.start_time) & (hour_key < s.end_time):
-                logging.info('TRUE %s %s ' % (s.start_time, s. end_time))
-                return True
-        return False
-        
-        
+            return (hour_key >= s.start_time) & (hour_key < s.end_time)
+    
 
-def create_schedule_map_map(schedules):
-    smm = ScheduleMap()
+def create_schedule_map(schedules):
+    sm = ScheduleMap()
     for (key, label) in time.get_days_of_the_week():
-        smm[key] = dict()
+        sm[key] = dict()
     for s in schedules:
-        smm[s.day][s.start_time] = s
-    logging.info('smm %s' % smm)
-    return smm
+        sm[s.day][s.start_time] = s
+    logging.debug('smm %s' % sm)
+    return sm
 
         

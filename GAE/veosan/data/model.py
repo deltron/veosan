@@ -293,17 +293,20 @@ class Schedule(ndb.Model):
     end_time = ndb.IntegerProperty()
     
     def _pre_put_hook(self):
-        logging.info('Schedule overlap check')
+        ''' Checks if about-to-be-saved schedule overlaps an existing schedule. if yes, merges them and deletes the old schedule'''
+        logging.info('Schedule overlap check (pre-put)')
         sq = Schedule.query(Schedule.provider == self.provider, Schedule.day == self.day)
         for s in sq:
             if self.overlaps(s):
                 self.merge(s)
+                logging.info('deleting merged schedule %s' % s)
                 s.key.delete()
         
     def __repr__(self):
         return 'Schedule %s %s-%s' % (self.day, self.start_time, self.end_time)
 
     def overlaps(self, s):
+        ''' Returns true if schedule s overlaps or touches (start == end) the current schedule '''
         # same day
         if self.day != s.day:
             return False
@@ -319,6 +322,7 @@ class Schedule(ndb.Model):
         return early.end_time >= late.start_time
 
     def merge(self, s):
+        ''' merged sechdule s into the current schedule '''
         if s.day == self.day:
             self.start_time = min(self.start_time, s.start_time)
             self.end_time = max(self.end_time, s.end_time)

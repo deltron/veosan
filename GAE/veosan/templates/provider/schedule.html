@@ -24,30 +24,33 @@
 
 			<!-- columns -->
 			{% for (hour_key, hour_label) in times %}
-			{% if loop.last %}
-				{# don't show the last row #}
-			{% else %}
-			<tr>
+				{% if loop.last %}
+					{# don't show the last row #}
+				{% else %}
+				<tr>
 				<td style="text-align: right;"> {{ hour_label }} </td>
 				{% for (day_key, day_label) in days %}
-
-				{% if schedules[day_key].has_key(hour_key) %}
-				{% set s = schedules[day_key][hour_key] %}
-				<td style="text-align: center;" rowspan="{{s.span}}"><a href="/provider/schedule/{{ provider.vanity_url }}/edit/{{ s.key.urlsafe() }}"
-				class="btn btn-mini btn-success" style="width: 70%; height: 100%">
-				<div style="width: 100%">
-					<strong>{{day_label}}</strong>
-					<br>
-					<br>
-					<small>{{s.start_time|format_hour}}-{{s.end_time|format_hour}}</small>
-					<br>
-				</div> </a> {% elif schedules.within_span(day_key, hour_key) %} <!-- pass --> {% else %} <td style="text-align: center;"><a class="btn btn-small" href="/provider/schedule/{{ provider.vanity_url }}/add/{{day_key}}/{{hour_key}}"> <i class="bs-icon icon-plus"> </i></a></td>
-				{% endif %}
-				</td>
-
+	
+					{% if schedules[day_key].has_key(hour_key) %}
+						{% set s = schedules[day_key][hour_key] %}
+						<td style="text-align: center;" rowspan="{{s.span}}"><a href="/provider/schedule/{{ provider.vanity_url }}/edit/{{ s.key.urlsafe() }}"
+						class="btn btn-mini btn-success" style="width: 70%; height: 100%">
+						<div style="width: 100%">
+							<strong>{{day_label}}</strong>
+							<br>
+							<br>
+							<small>{{s.start_time|format_hour}}-{{s.end_time|format_hour}}</small>
+							<br>
+						</div> </a> 
+					{% elif schedules.within_span(day_key, hour_key) %}
+						<!-- pass --> 
+					{% else %}
+						<td style="text-align: center;"><a class="btn btn-small" href="/provider/schedule/{{ provider.vanity_url }}/add/{{day_key}}/{{hour_key}}"> <i class="bs-icon icon-plus"> </i></a></td>
+					{% endif %}
+					</td>
 				{% endfor %}
-			</tr>
-			{% endif %}
+				</tr>
+				{% endif %}
 			{% endfor %}
 
 		</table>

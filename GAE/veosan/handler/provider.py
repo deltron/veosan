@@ -330,7 +330,6 @@ class ProviderScheduleHandler(ProviderBaseHandler):
      
     def render_schedule(self, provider, schedule_form=None, **kw):
         sq = provider.get_schedules()
-        logging.info("schedule count: %s" % sq.count())
         schedules = sq.fetch()
         days = time.get_days_of_the_week()
         times = time.get_time_list()
