@@ -16,8 +16,7 @@ class AdminTest(BaseTest):
         ''' fill out the new provider's address '''
         
         # init a provider
-        self.login_as_admin()
-        self.init_new_provider()
+        self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
         self.fill_new_provider_address_correctly_action()
         
     def test_fill_new_provider_profile_correctly(self):
@@ -32,8 +31,7 @@ class AdminTest(BaseTest):
         ''' fill out the new provider's address then modify it '''
         
         # init a provider
-        self.login_as_admin()
-        self.init_new_provider()
+        self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
         self.fill_new_provider_address_correctly_action()
         self.modify_provider_address_action()
 
@@ -42,8 +40,7 @@ class AdminTest(BaseTest):
         ''' Enable bookings in one timeslot '''
         
         # init a provider
-        self.login_as_admin()
-        self.init_new_provider()
+        self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
         self.provider_schedule_set_one_timeslot_action()
         
         

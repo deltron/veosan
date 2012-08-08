@@ -52,9 +52,7 @@ class PublicProfileTest(BaseTest):
         
         # hide last name
         public_profile.mustcontain("Fantastic Fox")
-        
-        self.login_as_admin()
-        
+                
         public_profile.mustcontain(no="Address")
         public_profile.mustcontain(no="Réservez Maintenant")
         

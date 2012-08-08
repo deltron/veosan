@@ -119,13 +119,14 @@ class ProviderTest(BaseTest):
 
 
     def test_provider_accept_terms_navigate_away(self):
-        self.login_as_admin()
-        # init a provider
-        self.init_new_provider()
+        # KILL THIS?
+        
+        self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
         # fill all sections
         self.fill_new_provider_address_correctly_action()
         self.fill_new_provider_profile_correctly_action()
         # solicit
+        self.login_as_admin()
         self.solicit_provider()
         self.logout_admin()
         
