@@ -58,7 +58,11 @@
 
 </div>
 
-{# Modal for Add Available Time #}
+{# Modal for Add/Edit/Delete Available Time
+	Don't generate if not adding, editing, or deleting.
+	
+	 #}
+{% if edit_key or add or schedule_form.errors %}
 <div class="modal hide" id="schedule_form_modal" style="display: none;">
 	<div class="modal-header">
 		<a class="close" data-dismiss="modal">×</a>
@@ -87,6 +91,7 @@
 
 	</form>
 </div>
+{% endif %}
 
 {% endblock %}
 
