@@ -6,6 +6,7 @@ from google.appengine.api import users
 from base import BaseHandler
 import data.db as db
 from forms.provider import ProviderNoteForm, ProviderStatusForm
+from data.model import Note
 from handler.auth import admin_required
 from util import saved_message
 
@@ -16,15 +17,7 @@ class ProviderAdminBaseHandler(BaseHandler):
         status_form = ProviderStatusForm(obj=provider)
         handler.render_template('provider/administration.html', provider=provider, form=status_form, **kw)
     
-    def render_notes(self, provider, **kw):
-        notes = provider.get_notes().fetch(10)
-        logging.info('Notes count %s' % len(notes))
-        new_note_form = ProviderNoteForm()
-        # create a form for each note
-        for n in notes:
-            n.edit_form = ProviderNoteForm(obj=n)
-        self.render_template('provider/notes.html', provider=provider, notes=notes, form=new_note_form, **kw)       
-        
+     
 
 
 
@@ -80,6 +73,16 @@ class ProviderFeaturesHandler(ProviderAdminBaseHandler):
 
 class ProviderNotesHandler(ProviderAdminBaseHandler):
     
+    def render_notes(self, provider, **kw):
+        notes = provider.get_notes().fetch(10)
+        logging.info('Notes count %s' % len(notes))
+        new_note_form = ProviderNoteForm().get_form()
+        # create a form for each note
+        for n in notes:
+            n.edit_form = ProviderNoteForm().get_form(obj=n)
+        self.render_template('provider/notes.html', provider=provider, notes=notes, form=new_note_form, **kw)  
+        
+        
     @admin_required
     def get(self, vanity_url=None, note_key=None, operation=None):
         provider = db.get_provider_from_vanity_url(vanity_url)
@@ -91,17 +94,29 @@ class ProviderNotesHandler(ProviderAdminBaseHandler):
     def post(self, vanity_url=None, note_key=None, operation=None):
         if users.is_current_user_admin():
             provider = db.get_provider_from_vanity_url(vanity_url)
-            if not operation:
-                logging.info('type %s' % self.request.get('note_type'))
-                provider.add_note(self.request.get('body'), note_type=self.request.get('note_type'))
-            elif operation == 'edit':
-                # todo: VALIDATE FORM!!!
-                db.store(note_key, self.request.POST)
-            elif operation == 'delete':
-                logging.error('delete operation on notes is not handled')
+            note_form = ProviderNoteForm().get_form(self.request.POST)
+            if note_form.validate():
+                if not operation:
+                    new_note = Note()
+                    note_form.populate_obj(new_note)
+                    new_note.user = users.get_current_user()
+                    new_note.provider = provider.key
+                    new_note.put()
+                    
+                elif operation == 'edit':
+                    db.store(note_key, note_form, self.request.POST)
+                    
+                elif operation == 'delete':
+                    logging.error('delete operation on notes is not handled')
+                else:
+                    logging.error('unknown operation on notes:%s' % operation)
+                self.render_notes(provider) 
             else:
-                logging.error('unknown operation on notes:%s' % operation)
-            self.render_notes(provider) 
+                # validation failed
+                # TODO redraw same window with edit message
+                self.render_notes(provider, error_message=note_form.error) 
+                
+            
         else:
             logging.info("Not Admin: Can't see provider notes page")
             

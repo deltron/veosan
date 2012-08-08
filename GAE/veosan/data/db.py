@@ -153,7 +153,7 @@ def get_events_all():
 def get_site_config():
     return SiteConfig.query().get()
 
-def store(key, data, form):
+def store(key, form, data):
     # data is a MultiDict object from the request
     logging.info("Storing on key:%s with data:%s" % (key, str(data)))
     datastore_object = get_from_urlsafe_key(key)

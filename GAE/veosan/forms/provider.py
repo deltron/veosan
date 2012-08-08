@@ -7,6 +7,7 @@ import util
 from utilities.time import get_days_of_the_week, get_time_list
 from webapp2_extras.i18n import lazy_gettext as _
 from forms import custom_filters, custom_validators
+from datetime import date
 
 
 # Profile
@@ -122,10 +123,11 @@ class ProviderScheduleForm(CustomForm):
 
 # Admin only
 
-class ProviderNoteForm(Form):
-    body = TextAreaField(_(u'Note'))
-    note_type = SelectField(_(u'Type'), choices=util.get_all_note_types())
-    event_date = DateField(_(u'Date'))
+class ProviderNoteForm(CustomForm):
+    def _set_fields(self, form): 
+        setattr(form, 'body', TextAreaField(_(u'Note')))
+        setattr(form, 'note_type', SelectField(_(u'Type'), choices=util.get_all_note_types()))
+        setattr(form, 'event_date', DateField(_(u'Date', coerce=date)))
     
 class ProviderStatusForm(Form):
     status = SelectField(_(u'Status'), choices=util.get_all_status_types())

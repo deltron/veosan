@@ -203,17 +203,6 @@ class Provider(ndb.Model):
             return False
         return True
 
-        
-    def add_note(self, body, note_type='admin'):
-        ''' Add Note to this provider'''
-        note = Note()
-        note.provider = self.key
-        note.body = body
-        logging.info('note_type %s' % note_type)
-        note.note_type = note_type
-        note.user = users.get_current_user()
-        note.put()
-        
     def is_enabled(self):
         return self.status == 'client_enabled'
     
@@ -341,7 +330,7 @@ class Note(ndb.Model):
     note_type = ndb.StringProperty(choices=util.note_types) 
     created_on = ndb.DateTimeProperty(auto_now_add=True)
     user = ndb.UserProperty()
-    #datetime = ndb.DateTimeProperty(auto_now_add=True)
+    event_date = ndb.DateProperty(auto_now_add=True)
     
     def get_icon_name(self):
         if self.note_type == 'call':
