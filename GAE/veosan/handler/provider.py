@@ -301,8 +301,15 @@ class ProviderPublicProfileHandler(ProviderBaseHandler):
 
 
 class WelcomeHandler(ProviderBaseHandler):
-    def get(self, vanity_url=None):
+    def get(self, vanity_url=None, disable=None):
         provider = db.get_provider_from_vanity_url(vanity_url)
+
+        if disable == 'disable':
+            user = provider.user.get()
+            user.display_welcome_page = False
+            user.put()
+            self.redirect('/provider/profile/' + provider.vanity_url)
+            return # don't render template after redirect
 
         self.render_template("provider/welcome.html", provider=provider)
 

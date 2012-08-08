@@ -397,7 +397,7 @@ class ProviderSignupHandler2(UserBaseHandler):
             # new user
             logging.info('(PasswordHandler.post) New user just set their password: %s' % user.get_email())
                 
-            self.redirect('/provider/message/new/' + provider.vanity_url)
+            self.redirect('/provider/welcome/' + provider.vanity_url)
                     
             self.log_event(user, "New account created for user")            # create a signup token for new user
         else:

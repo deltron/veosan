@@ -28,6 +28,8 @@ class User(Webapp2AuthUser):
        
     confirmed = ndb.BooleanProperty()
     
+    display_welcome_page = ndb.BooleanProperty(default=True)
+    
     def get_email(self):
         return self.auth_ids[0]
 

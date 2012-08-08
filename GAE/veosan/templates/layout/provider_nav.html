@@ -2,9 +2,11 @@
 
 {% block subnav %}
 <ul class="nav nav-tabs">
+	{% if user.display_welcome_page %}
 	<li id="welcome" {% if "welcome" == active_page %} class="active" {% endif %}>
 		<a href="/provider/welcome/{{ provider.vanity_url }}">{{ _('Welcome') }}</a>
 	</li>
+	{% endif %}
 	<li id="profile" {% if  "profile" == active_page %} class="active" {% endif %}>
 		<a href="/provider/profile/{{ provider.vanity_url }}">{{ _('Profile') }}</a>
 	</li>
