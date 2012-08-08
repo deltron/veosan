@@ -2,6 +2,9 @@
 
 {% block subnav %}
 <ul class="nav nav-tabs">
+	<li id="welcome" {% if "welcome" == active_page %} class="active" {% endif %}>
+		<a href="/provider/welcome/{{ provider.vanity_url }}">{{ _('Welcome') }}</a>
+	</li>
 	<li id="profile" {% if  "profile" == active_page %} class="active" {% endif %}>
 		<a href="/provider/profile/{{ provider.vanity_url }}">{{ _('Profile') }}</a>
 	</li>
@@ -13,9 +16,6 @@
 	</li>
 
 	{% if 'admin' in roles %}
-	<li id="welcome" {% if "welcome" == active_page %} class="active" {% endif %} style="font-style:italic">
-		<a href="/provider/welcome/{{ provider.vanity_url }}">{{ _('Welcome') }}</a>
-	</li>
 	<li id="social" {% if "social" == active_page %} class="active" {% endif %} style="font-style:italic">
 		<a href="/provider/social/{{ provider.vanity_url }}">{{ _('Social') }}</a>
 	</li>

@@ -3,7 +3,7 @@
 {% set active_page = "welcome" %}
 
 {% block subhead %}{{ _('Welcome!') }}{% endblock %}
-{% block lead %}Hi there, thanks for signing up to Veosan, the best place to connect with patients. Here's a quick tour to get you started!{% endblock %}
+{% block lead %}{{ _("Hi there, thanks for signing up to Veosan, the best place to connect with patients. Here's a quick tour to get you started!") }}{% endblock %}
 
 {% block content %}
 
@@ -27,7 +27,8 @@
 		<img src="/assets/img/navigation-tabs.png">
 
 		<div class="alert alert-info">
-			<a class="close" href="#">&times;</a> Cool, I get it. Don't show this page again.
+			<a class="close" href="/provider/welcome/{{ provider.vanity_url }}/disable">&times;</a> 
+			<a href="/provider/welcome/{{ provider.vanity_url }}/disable">{{ _("Thanks for showing me around. Please don't display this welcome page again.") }}</a>
 		</div>
 	</div>
 	<div class="span6">
@@ -42,7 +43,7 @@
 						<img src="/assets/img/profile-bio-crop.png" width="280" height="200">
 					</div>
 					<br>
-					<h3> Your bio and quote are a way to tell your story in your own words. This is a good opportunity to make a personal connection with visitors to your profile. </h3>
+					<h3>{{ _('Your bio and quote are a way to tell your story in your own words. This is a good opportunity to make a personal connection with visitors to your profile.') }} </h3>
 				</div>
 				<div class="item">
 					<div align="center">
@@ -51,7 +52,7 @@
 						<img src="/assets/img/profile-image-crop.png" width="280" height="200">
 					</div>
 					<br>
-					<h3> A good profile photo makes patients feel comfortable with you. Profiles with photos get up to 8 times more traffic.</h3>
+					<h3> {{ _('A good profile photo makes patients feel comfortable with you. Profiles with photos get up to 8 times more views.') }} </h3>
 				</div>
 				<div class="item">
 					<div align="center">
@@ -60,7 +61,7 @@
 						<img src="/assets/img/profile-cv-crop.png" width="280" height="200">
 					</div>
 					<br>
-					<h3>Build trust by completing your CV and showing your skills. Things like education, work experience, and professional memberships can all be listed here.</h3>
+					<h3> {{ _('Build trust by completing your CV and showing your skills. Things like education, work experience, and professional memberships can all be listed here.') }}</h3>
 				</div>
 
 			</div>

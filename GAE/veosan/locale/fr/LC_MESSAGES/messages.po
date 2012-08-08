@@ -478,6 +478,12 @@ msgstr "Commentaires en vue de votre rendez-vous"
 msgid "Welcome!"
 msgstr "Bienvenue!"
 
+msgid "Welcome"
+msgstr "Bienvenue"
+
+msgid "Hi there, thanks for signing up to Veosan, the best place to connect with patients. Here's a quick tour to get you started!"
+msgstr "Bonjour, merci de vous être inscris à Veosan, le meilleur endroit pour établir des connexions avec des patients. Voici un petit tour pour débuter."
+
 msgid "How to Navigate the Site"
 msgstr "Comment naviguer sur le site"
 
@@ -489,6 +495,18 @@ msgstr "Démarquez-vous"
 
 msgid "Say Cheese! Don't Forget to Upload Your Photo"
 msgstr "Souriez! N'oubliez pas de télécharger votre photo"
+
+msgid "Your bio and quote are a way to tell your story in your own words. This is a good opportunity to make a personal connection with visitors to your profile."
+msgstr "Votre biographie et commentaire vous permettent de raconter votre histoire dans vos propres mots. C’est une occasion idéale de faire une connexion personnelle avec les patients qui visitent votre profil."
+
+msgid "Build trust by completing your CV and showing your skills. Things like education, work experience, and professional memberships can all be listed here."
+msgstr "Bâtissez de la confiance avec vos patients en complètent votre CV et en démontrent vos compétences. Votre éducation, expérience de travail et adhérences professionnelles peuvent êtres indiquer ici."
+
+msgid "A good profile photo makes patients feel comfortable with you. Profiles with photos get up to 8 times more views."
+msgstr "Choisir la bonne photo pour vôtre profil aidera les patients à se sentir plus à l'aise avec vous. Des profils accompagnés d'une photo se font visionner jusqu'à 8 fois plus souvent."
+
+msgid "Thanks for showing me around. Please don't display this welcome page again."
+msgstr "Merci, je comprends. SVP ne plus afficher la page d'accueil."
 
 #################
 # CV Page
