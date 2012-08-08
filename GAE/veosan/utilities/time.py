@@ -51,7 +51,7 @@ def getDatesList():
 
 def get_time_list():
     time_list = []
-    for t in range(7, 22):
+    for t in range(7, 23):
         time_list.append((t, format_hour(t)))
     
     return time_list
