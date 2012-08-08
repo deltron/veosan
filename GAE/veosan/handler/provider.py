@@ -352,7 +352,7 @@ class ProviderScheduleHandler(ProviderBaseHandler):
             #new_schedule.end_time = new_schedule.start_time + 4
             schedule_form = ProviderScheduleForm().get_form()
             schedule_form.day.data = day
-            schedule_form.start_time.data = start_time
+            schedule_form.start_time.data = int(start_time)
             
             
             end_time = int(start_time) + 4
@@ -360,7 +360,7 @@ class ProviderScheduleHandler(ProviderBaseHandler):
             if end_time > max_time:
                 end_time = max_time
             
-            schedule_form.end_time.data = str(end_time)
+            schedule_form.end_time.data = int(end_time)
             
             kwargs['schedule_form'] = schedule_form
             kwargs['add'] = 'add'
