@@ -39,11 +39,12 @@ class ProviderTest(BaseTest):
         pass
 
     def test_merge_overlapping_times(self):
-        # verify modal is populated with correct info
         pass
 
-    def test_merge_overlapping_times(self):
+    def test_end_time_in_range(self):
+        # for example when you click on 8pm +4 hours, end_time should max out at 10pm
         pass
+
 
 if __name__ == "__main__":
     unittest.main()
