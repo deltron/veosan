@@ -332,7 +332,10 @@ class ScheduleMap(dict):
         day_schedules = self[day_key]
         for key in day_schedules.keys():
             s = day_schedules[key]
-            return (hour_key >= s.start_time) & (hour_key < s.end_time)
+            if (hour_key >= s.start_time) & (hour_key < s.end_time):
+                return True 
+        # if no schedules match return false
+        return False
     
 
 def create_schedule_map(schedules):

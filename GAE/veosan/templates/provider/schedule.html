@@ -46,7 +46,7 @@
 							<br>
 						</div> </a> 
 					{% elif schedules.within_span(day_key, hour_key) %}
-						<!-- pass --> 
+						<!-- pass {{day_key}} {{hour_key|format_hour}} --> 
 					{% else %}
 						<td style="text-align: center;"><a class="btn btn-small" href="/provider/schedule/{{ provider.vanity_url }}/add/{{day_key}}/{{hour_key}}"> <i class="bs-icon icon-plus"> </i></a></td>
 					{% endif %}
