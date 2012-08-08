@@ -423,50 +423,40 @@ class BaseTest(unittest.TestCase):
         # request the schedule page
         response = self.testapp.get('/provider/schedule/%s' % provider.vanity_url)
         
-        # TODO make this more comprehensible ie. monday-8-to-13
-        monday_morning_id = '0-8-12'
-        
-        # Check a ids
-        monday_morning_a = response.html.find('a', attrs={'id': monday_morning_id})
-        self.assertTrue(monday_morning_a != None, 'The tag a with id %s should exist'.format(monday_morning_id))
-        response.mustcontain(monday_morning_id)
-        
-        # Check the square is grayed out
-        self.assertEqual(monday_morning_a['class'], 'btn btn-mini', 'Monday morning should be gray box')
+        # Check that schedule is empty
 
-        # Check the tooltip unavailable
-        self.assertEqual(monday_morning_a['title'], 'Non-disponible', 'Monday morning should be non disponible')
-
-        # Check the icon is a circle with cross
-        monday_morning_i = response.html.find('i', attrs={'id': monday_morning_id})
-        self.assertEqual(monday_morning_i['class'], 'icon-ban-circle', 'Monday morning should be ban icon')
-
-
-        # Click to select Monday morning        
-        request_variables = {'day_time': monday_morning_id, 'operation': 'add'}
-        response = self.testapp.post(str('/provider/schedule/%s' % provider.vanity_url), request_variables)
+        # Add an available schedule Monday morning 9-12       
+        schedule_form = response.forms['schedule_form']
         
-        # no javascript interpretation for jquery so request the page again...
+        # check the form selects are filled with values
         
-        # reload page
-        response = self.testapp.get(str('/provider/schedule/%s' % provider.vanity_url))
+        schedule_form['day'] = 'monday'
+        schedule_form['start_time'] = 9
+        schedule_form['end_time'] = 12
+        response = schedule_form.submit()
         
         provider = db.get_provider_from_email("unit_test@provider.com")
         
         # check one schedule was saved in the database
-        schedule_count = provider.get_schedule().count()
+        schedule_count = provider.get_schedules().count()
         self.assertEqual(schedule_count , 1, 'Provider should have a schedule')
         
+        response.mustcontain('9 AM-12 PM')
+        
         # check if square for day is green
-        monday_morning_a = response.html.find('a', attrs={'id': monday_morning_id})
-        self.assertEqual(monday_morning_a['class'], 'btn btn-mini btn-success', 'Monday morning should be green')
+        monday_morning_td = response.html.find('td', attrs={'rowspan': '3'})
+        logging.info('TSET: %s ' % monday_morning_td.__class__)
+        self.assertIsNotNone(monday_morning_td, 'schedule td with rowspan 3 does not exist')
 
+        monday_morning_a = monday_morning_td.find('a')
+        self.assertIsNotNone(monday_morning_a, 'schedule button does not exist')
+        
         # Check the tooltip is now available
-        self.assertEqual(monday_morning_a['title'], 'Disponible', 'Monday morning should be disponible')
+        #self.assertEqual(monday_morning_a['title'], 'Disponible', 'Monday morning should be disponible')
 
         # check if the icon changed
-        monday_morning_i = response.html.find('i', attrs={'id': monday_morning_id})
-        self.assertEqual(monday_morning_i['class'], 'icon-ok-circle', 'Monday morning should be ok icon')
+        #monday_morning_i = response.html.find('i', attrs={'id': monday_morning_id})
+        #self.assertEqual(monday_morning_i['class'], 'icon-ok-circle', 'Monday morning should be ok icon')
 
 
    

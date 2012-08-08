@@ -69,7 +69,7 @@
 	{% else %}
 		{% set post_url = '/provider/schedule/' + provider.vanity_url + '/add' %}
 	{% endif %}
-	<form method="post" action="{{ post_url }}" class="form-horizontal" id="add_form">
+	<form method="post" action="{{ post_url }}" class="form-horizontal" id="schedule_form">
 		<div class="modal-body">
 			{{ macro.make_standard_form(schedule_form) }}
 		</div>

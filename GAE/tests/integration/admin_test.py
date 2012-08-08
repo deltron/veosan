@@ -332,6 +332,7 @@ class AdminTest(BaseTest):
         self.login_as_admin()
         response = self.testapp.get('/admin/bookings')
         # admin booking shows no results
+        #response.showbrowser()
         response.mustcontain('No search results')
 
 
