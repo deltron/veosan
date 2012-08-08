@@ -326,7 +326,8 @@ class ProviderBookingsHandler(ProviderBaseHandler):
 
 
 
-class ProviderScheduleHandler(ProviderBaseHandler):  
+class ProviderScheduleHandler(ProviderBaseHandler): 
+     
     def render_schedule(self, provider, schedule_form=None, **kw):
         sq = provider.get_schedules()
         logging.info("schedule count: %s" % sq.count())

@@ -322,8 +322,6 @@ def get_all_status_types():
 
 
 
-    
-
 class ScheduleMap(dict):
     
     def within_span(self, day_key, hour_key):
@@ -347,6 +345,5 @@ def create_schedule_map_map(schedules):
         smm[s.day][s.start_time] = s
     logging.info('smm %s' % smm)
     return smm
-    
 
         

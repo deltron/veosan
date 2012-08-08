@@ -292,8 +292,36 @@ class Schedule(ndb.Model):
     start_time = ndb.IntegerProperty()
     end_time = ndb.IntegerProperty()
     
+    def _pre_put_hook(self):
+        logging.info('Schedule overlap check')
+        sq = Schedule.query(Schedule.provider == self.provider, Schedule.day == self.day)
+        for s in sq:
+            if self.overlaps(s):
+                self.merge(s)
+                s.key.delete()
+        
     def __repr__(self):
         return 'Schedule %s %s-%s' % (self.day, self.start_time, self.end_time)
+
+    def overlaps(self, s):
+        # same day
+        if self.day != s.day:
+            return False
+        if self.start_time < s.start_time:
+            early = self
+            late = s
+        elif self.start_time > s.start_time:
+            early = self
+            late = self
+        else:
+            # same start_time is an overlap
+            return True
+        return early.end_time >= late.start_time
+
+    def merge(self, s):
+        if s.day == self.day:
+            self.start_time = min(self.start_time, s.start_time)
+            self.end_time = max(self.end_time, s.end_time)
 
     @property
     def span(self):
