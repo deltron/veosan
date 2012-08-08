@@ -111,10 +111,10 @@ class ProviderScheduleForm(CustomForm):
         setattr(form, 'day', SelectField(_(u'Day'), choices=get_days_of_the_week()))
         setattr(form, 'start_time', SelectField(_(u'Start Time'), 
                                                 choices=get_time_list(),
-                                                filters=[custom_filters.string_to_int]))
+                                                coerce=int))
         setattr(form, 'end_time', SelectField(_(u'End Time'),
                                                 choices=get_time_list(),
-                                                filters=[custom_filters.string_to_int],
+                                                coerce=int,
                                                 validators=[custom_validators.StartTimeAfterEndTime('start_time', message=_('End time must be after start time'))]))
 
 # Admin only
