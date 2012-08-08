@@ -298,12 +298,14 @@ class Schedule(ndb.Model):
         sq = Schedule.query(Schedule.provider == self.provider, Schedule.day == self.day)
         for s in sq:
             if self.overlaps(s):
+                logging.info('Schedules overlap, merging %s %s' % (self, s))
                 self.merge(s)
+                logging.info('Merged schedule into %s' % self)
                 logging.info('deleting merged schedule %s' % s)
                 s.key.delete()
         
     def __repr__(self):
-        return 'Schedule %s %s-%s' % (self.day, self.start_time, self.end_time)
+        return '[%s from %s-%s]' % (self.day, self.start_time, self.end_time)
 
     def overlaps(self, s):
         ''' Returns true if schedule s overlaps or touches (start == end) the current schedule '''
@@ -314,7 +316,7 @@ class Schedule(ndb.Model):
             early = self
             late = s
         elif self.start_time > s.start_time:
-            early = self
+            early = s
             late = self
         else:
             # same start_time is an overlap
