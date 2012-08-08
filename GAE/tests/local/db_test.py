@@ -18,12 +18,44 @@ class DBTestCase(BaseTestCase):
         key = db.storeBooking(values, None, None)
         print key
 
+    def test_schedule_no_merge(self):
+        s1 = Schedule(day='monday', start_time=9, end_time=13)
+        s1.put()
+        s2 = Schedule(day='monday', start_time=14, end_time=18)
+        s2.put()
+        # check that there was no merge
+        self.assertEquals(s2.start_time, 14)
+        self.assertEquals(s2.end_time, 18)
+      
+    def test_schedule_simple_merge(self):
+        s1 = Schedule(day='monday', start_time=9, end_time=15)
+        s1.put()
+        s2 = Schedule(day='monday', start_time=13, end_time=18)
+        s2.put()
+        # check that merge was done
+        self.assertEquals(s2.start_time, 9)
+        self.assertEquals(s2.end_time, 18)
 
-    def test_set_property_on_entity_from_multidict(self):
-        entity = db.Provider()
-        multidict = MultiDict({ 'last_name': 'lntest' })
-        #db_util.set_all_properties_on_entity_from_multidict(entity, multidict)
-        self.assertEquals(entity.last_name, 'lntest')
+    def test_schedule_double_merge(self):
+        s1 = Schedule(day='monday', start_time=8, end_time=11)
+        s1.put()
+        s2 = Schedule(day='monday', start_time=14, end_time=18)
+        s2.put()
+        # check - no merge
+        self.assertEquals(s2.start_time, 14)
+        self.assertEquals(s2.end_time, 18)
+        s3 = Schedule(day='monday', start_time=10, end_time=14)
+        s3.put()
+        # check that merge was done
+        self.assertEquals(s3.start_time, 8)
+        self.assertEquals(s3.end_time, 18)
+        
+        schedules = Schedule.query(Schedule.day=='monday').fetch()
+        self.assertEquals(len(schedules), 1, 'Should only be one schedule stored')
+        self.assertEquals(schedules[0].start_time, 8)
+        self.assertEquals(schedules[0].end_time, 18)
+        self.assertEquals(schedules[0].day, 'monday')
+                
 
     def testFindBestProviderForBooking(self):
         testCategory = u'physiotherapy'
@@ -40,7 +72,7 @@ class DBTestCase(BaseTestCase):
         pkey = p.put()
         # add a provider's schedule (Thursday Morning)
         s = Schedule()
-        s.day = 3
+        s.day = 'wednesday'
         s.startTime = 8
         s.endTime = 12
         s.provider = p.key
