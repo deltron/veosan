@@ -508,6 +508,18 @@ msgstr "Choisir la bonne photo pour vôtre profil aidera les patients à se sent
 msgid "Thanks for showing me around. Please don't display this welcome page again."
 msgstr "Merci, je comprends. SVP ne plus afficher la page d'accueil."
 
+msgid "Tell patients a bit about yourself"
+msgstr "Permettez aux patients mieux vous connaitre"
+
+msgid "Let patients learn about your background"
+msgstr "Démontrez votre expérience aux patients"
+
+msgid "Help patients locate you easily"
+msgstr "Aidez les patients à vous trouver plus facilement"
+
+msgid "You can change pages by clicking on the tabs."
+msgstr "Vous pouvez changez la page en cliquant sur les onglets."
+
 #################
 # CV Page
 #################

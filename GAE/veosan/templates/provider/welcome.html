@@ -11,19 +11,18 @@
 	<div class="span6">
 		<h3>{{ _('How to Navigate the Site') }}</h3>
 		<p>
-			You can change pages by clicking on the tabs.
+			{{ _('You can change pages by clicking on the tabs.') }}
 		</p>
-		<ol>
-			<li>
-				Profile - Fill in your information
-			</li>
-			<li>
-				CV - Fill in your background
-			</li>
-			<li>
-				Address - Where you can be found
-			</li>
-		</ol>
+		<dl class="dl-horizontal">
+			<dt>{{ _('Profile') }}</dt>
+			<dd>{{ _('Tell patients a bit about yourself') }}</dd>
+
+			<dt>{{ _('CV') }}</dt>
+			<dd>{{ _('Let patients learn about your background') }}</dd>
+
+			<dt>{{ _('Address') }}</dt>
+			<dd>{{ _('Help patients locate you easily') }}</dd>
+		</dl>
 		<img src="/assets/img/navigation-tabs.png">
 
 		<div class="alert alert-info">
