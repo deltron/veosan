@@ -106,6 +106,9 @@ class ProviderAddressForm(CustomForm):
         setattr(form, 'province', SelectField(_(u'Province'), choices=util.get_all_provinces_sorted()))
         setattr(form, 'postal_code', TextField(_(u'Postal Code'), [validators.Optional(), validators.Regexp(regex="^[a-zA-Z][0-9][a-zA-Z][0-9][a-zA-Z][0-9]$", message=_(u'Please make sure your postal code is in the following format: A1B2C3'))]))
 
+
+# Schedule
+
 class ProviderScheduleForm(CustomForm):
     def _set_fields(self, form):        
         setattr(form, 'day', SelectField(_(u'Day'), choices=get_days_of_the_week()))
