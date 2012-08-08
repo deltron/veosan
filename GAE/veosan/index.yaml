@@ -134,6 +134,14 @@ indexes:
   - name: terms_agreement
   - name: start_year
 
+- kind: Provider
+  properties:
+  - name: category
+  - name: status
+  - name: terms_agreement
+  - name: start_year
+  - name: created_on
+
 - kind: Schedule
   properties:
   - name: provider

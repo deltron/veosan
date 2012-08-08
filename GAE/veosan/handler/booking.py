@@ -61,34 +61,26 @@ class BookingBaseHandler(BaseHandler):
 
     def renderFullyBooked(self, booking, emailForm=None, **kw):
         self.render_template('search/no_result.html', booking=booking, form=emailForm, **kw) 
-        
-    def create_booking_form(self, payload):
-        bookingform = BookingForm(payload)
-        # set choices at run time because can't find a way to do lazy date and time localization in form declaration
-        bookingform.category.choices = util.get_all_categories()
-        bookingform.location.choices = util.get_all_regions()
-        bookingform.booking_date.choices = time.getDatesList()
-        bookingform.booking_time.choices = time.get_time_list()
-        return bookingform
     
     
 class IndexHandler(BookingBaseHandler):
     def get(self):
         # for showing booking block
-        bookingform = self.create_booking_form(self.request.GET)
-        self.render_template('index.html', form=bookingform)
+        booking_form = BookingForm().get_form(self.request.GET)
+        self.render_template('index.html', form=booking_form)
         
     def post(self):        
         ''' Renders 2nd page: Result + Confirm button
         TODO: Replace with passing booking properties and provider key, saving only after the patient logging ??? 
         '''
-        booking_form = self.create_booking_form(self.request.POST)
+        booking_form = BookingForm().get_form(self.request.POST)
         if booking_form.validate():
             booking = db.storeBooking(self.request.POST, None, None)
             logging.debug('(IndexHandler) Created booking: %s' % booking)
             self.search_and_render_results(booking)
         else:
-            self.render_template('index.html', form=booking_form)
+            logging.warn('Validation error in booking form %s' % booking_form.errors)
+            self.render_template('index.html', form=booking_form, error_message=booking_form.errors)
 
                 
 class SearchNextHandler(BookingBaseHandler):
