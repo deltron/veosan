@@ -19,7 +19,7 @@ class ProviderTest(BaseTest):
         
         education_form['start_year'] = 1998
         education_form['end_year'] = 2002
-        education_form['school_name'] = 'mcgill'
+        education_form['school_name'] = 'Université McGill'
         education_form['degree_type'] = 'bachelor'
         education_form['degree_title'] = 'Clinical Physiotherapy'
         education_form['description'] = 'Graduated with honors'
@@ -146,7 +146,7 @@ class ProviderTest(BaseTest):
         
         education_form['start_year'] = 1998
         education_form['end_year'] = 2002
-        education_form['school_name'] = 'mcgill'
+        education_form['school_name'] = 'Université McGill'
         education_form['degree_type'] = 'bachelor'
         education_form['degree_title'] = 'Clinical Physiotherapy'
         education_form['description'] = 'Graduated with honors'
