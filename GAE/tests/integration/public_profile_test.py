@@ -59,6 +59,7 @@ class PublicProfileTest(BaseTest):
         public_profile.mustcontain(no="Réservez Maintenant")
         
         # enable the address
+        self.login_as_admin()
         enable = self.testapp.post('/admin/provider/feature/address_enabled/' + self._TEST_PROVIDER_VANITY_URL)
         
         public_profile = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)

@@ -172,9 +172,8 @@ class BaseTest(unittest.TestCase):
             
             There is one timeslot available (Monday at 8am)
         '''
-        self.login_as_admin()
-        # init a provider
-        self.init_new_provider()
+        self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
+        
         # fill all sections
         self.fill_new_provider_address_correctly_action()
         self.fill_new_provider_profile_correctly_action()
@@ -283,12 +282,13 @@ class BaseTest(unittest.TestCase):
                 self.assertEquals(address_form[k].value, getattr(provider, k))
 
         # go back to the admin page, check the name is updated
+        self.login_as_admin()
         response = self.testapp.get('/admin/providers')
         response.mustcontain("Fox")
         response.mustcontain("unit_test@provider.com")
         
         # check the event log
-        self.assert_msg_in_log("Edit Address: Success", admin=True)
+        self.assert_msg_in_log("Edit Address: Success", admin=False)
 
     def modify_provider_address_action(self):
         # get the provider key
@@ -425,7 +425,9 @@ class BaseTest(unittest.TestCase):
         
         # Check that schedule is empty
 
-        # Add an available schedule Monday morning 9-12       
+        # Add an available schedule Monday morning 9-12   
+        response = self.testapp.get('/provider/schedule/%s/add/monday/9' % provider.vanity_url)
+    
         schedule_form = response.forms['schedule_form']
         
         # check the form selects are filled with values
