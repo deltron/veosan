@@ -33,8 +33,11 @@
 	
 					{% if schedules[day_key].has_key(hour_key) %}
 						{% set s = schedules[day_key][hour_key] %}
-						<td style="text-align: center;" rowspan="{{s.span}}"><a href="/provider/schedule/{{ provider.vanity_url }}/edit/{{ s.key.urlsafe() }}"
-						class="btn btn-mini btn-success" style="width: 70%; height: 100%">
+						<td style="text-align: center;" rowspan="{{s.span}}">
+							
+							<a id="{{day_key}}_{{hour_key}}_link" 
+							   href="/provider/schedule/{{ provider.vanity_url }}/edit/{{ s.key.urlsafe() }}" 
+							   class="btn btn-mini btn-success" style="width: 70%; height: 100%">
 						<div style="width: 100%">
 							<strong>{{day_label}}</strong>
 							<br>
