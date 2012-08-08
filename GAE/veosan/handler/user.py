@@ -306,7 +306,11 @@ class LoginHandler(UserBaseHandler):
                         provider = db.get_provider_from_user(user)
                         logging.info('(LoginHandler.post) User %s logged in as provider, redirecting to profile page', user.get_email())
 
-                        self.redirect('/provider/profile/%s' % provider.vanity_url)
+
+                        if user.display_welcome_page:     
+                            self.redirect('/provider/welcome/' + provider.vanity_url)
+                        else:
+                            self.redirect('/provider/profile/%s' % provider.vanity_url)
 
                         # log the event
                         self.log_event(user, "Provider Logged In")
