@@ -51,7 +51,7 @@ def getDatesList():
 
 def get_time_list():
     time_list = []
-    for t in range(7, 22):
+    for t in range(7, 23):
         time_list.append((t, format_hour(t)))
     
     return time_list
@@ -109,7 +109,7 @@ def format_hour(hour):
             hour_en = hour
             if (int(hour) == 12):
                 hour_en = hour
-                AMPM = u'AM'
+                AMPM = u'PM'
             elif (int(hour) > 12):
                 hour_en = int(hour) - 12
                 AMPM = u'PM'

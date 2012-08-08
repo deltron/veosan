@@ -7,62 +7,53 @@
 
 {% block content %}
 
-
 <div class="row">
 	<div class="span12">
 		<table class="table table-condensed centered">
-			
-			<!-- header week days --> 
+
+			<!-- header week days -->
 			<thead>
 				<th></th>
 				{% for (day_key, day_label) in days %}
-				<th style="min-width: 55px; text-align: center">
-					{{ day_label }} <br><br>
+				<th style="min-width: 55px; text-align: center"> {{ day_label }}
+				<br>
+				<br>
 				</th>
 				{% endfor %}
 			</thead>
-			
-			
+
 			<!-- columns -->
 			{% for (hour_key, hour_label) in times %}
+			{% if loop.last %}
+				{# don't show the last row #}
+			{% else %}
 			<tr>
-				<td style="text-align: right;"> 
-					{{ hour_label }}
-				</td>
+				<td style="text-align: right;"> {{ hour_label }} </td>
 				{% for (day_key, day_label) in days %}
-				
-					{% if schedules[day_key].has_key(hour_key) %}
-						{% set s = schedules[day_key][hour_key] %}
-						<td style="text-align: center;" rowspan="{{s.span}}">
-							<a href="/provider/schedule/{{ provider.vanity_url }}/edit/{{ s.key.urlsafe() }}" 
-								class="btn btn-mini btn-success" style="width: 70%; height: 100%">
-								<div style="width: 100%">
-									<strong>{{day_label}}</strong> <br>
-									<br>
-									<small>{{s.start_time|format_hour}}-{{s.end_time|format_hour}}</small><br>
-								</div> 
-							</a>
-					{% elif schedules.within_span(day_key, hour_key) %}
-						<!-- pass -->
-					{% else %}
-						<td style="text-align: center;"> 
-							<a class="btn btn-small" href="/provider/schedule/{{ provider.vanity_url }}/add/{{day_key}}/{{hour_key}}">
-								
-								<i class="bs-icon icon-plus"> </i></a> 
-						</td>	
-					{% endif %}
+
+				{% if schedules[day_key].has_key(hour_key) %}
+				{% set s = schedules[day_key][hour_key] %}
+				<td style="text-align: center;" rowspan="{{s.span}}"><a href="/provider/schedule/{{ provider.vanity_url }}/edit/{{ s.key.urlsafe() }}"
+				class="btn btn-mini btn-success" style="width: 70%; height: 100%">
+				<div style="width: 100%">
+					<strong>{{day_label}}</strong>
+					<br>
+					<br>
+					<small>{{s.start_time|format_hour}}-{{s.end_time|format_hour}}</small>
+					<br>
+				</div> </a> {% elif schedules.within_span(day_key, hour_key) %} <!-- pass --> {% else %} <td style="text-align: center;"><a class="btn btn-small" href="/provider/schedule/{{ provider.vanity_url }}/add/{{day_key}}/{{hour_key}}"> <i class="bs-icon icon-plus"> </i></a></td>
+				{% endif %}
 				</td>
-				
+
 				{% endfor %}
 			</tr>
+			{% endif %}
 			{% endfor %}
-			
+
 		</table>
 	</div>
-	
+
 </div>
-
-
 
 {# Modal for Add Available Time #}
 <div class="modal hide" id="schedule_form_modal" style="display: none;">
@@ -96,11 +87,7 @@
 
 {% endblock %}
 
-
-
-
 {% block extra_javascript %}
-
 
 {% if edit_key or add or schedule_form.errors %}
 <script>
