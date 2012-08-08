@@ -109,7 +109,7 @@ def format_hour(hour):
             hour_en = hour
             if (int(hour) == 12):
                 hour_en = hour
-                AMPM = u'AM'
+                AMPM = u'PM'
             elif (int(hour) > 12):
                 hour_en = int(hour) - 12
                 AMPM = u'PM'
