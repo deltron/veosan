@@ -56,12 +56,12 @@ class ProviderFeaturesHandler(ProviderAdminBaseHandler):
             if current_state:           
                 setattr(provider, feature_switch, False)
                 success_message = 'feature %s is now set to %s' % (feature_switch, False)
-                provider.add_note('%s = False' % feature_switch)
+                #provider.add_note('%s = False' % feature_switch)
                     
             else:
                 setattr(provider, feature_switch, True)
                 success_message = 'feature %s is now set to %s' % (feature_switch, True)
-                provider.add_note('%s = True' % feature_switch)
+                #provider.add_note('%s = True' % feature_switch)
 
             provider.put()
             

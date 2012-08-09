@@ -249,6 +249,7 @@ class BaseTest(unittest.TestCase):
         self.assertEqual(address_form['city'].value, u"Westmount")
         self.assertEqual(address_form['postal_code'].value, u"H1B2C3")
 
+        provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
         
         # iterate over every field item, find the match in the provider object and check its equality
         # with database
@@ -271,7 +272,7 @@ class BaseTest(unittest.TestCase):
         response.mustcontain("Vos modifications ont été enregistrées.")
 
         # check values in database
-        provider = db.get_provider_from_email("unit_test@provider.com")
+        provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
         
         # iterate over every field item, find the match in the provider object and check its equality
         # possible we miss something here?
@@ -446,7 +447,7 @@ class BaseTest(unittest.TestCase):
         booking_form['category'] = category
         booking_form['booking_date'] = date_string
         booking_form['booking_time'] = hour_string
-        # leave region to default (should be downtown)
+
         result_response = booking_form.submit()
         
         return result_response
