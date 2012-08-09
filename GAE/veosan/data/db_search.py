@@ -38,6 +38,10 @@ def provider_search(booking):
     #request_location = booking.request_location
     # match on location and category, sort by experience (ascending start_year)
     providers_wide_query = Provider.query(Provider.category==request_category).order(Provider.start_year, Provider.created_on)
+
+    # remove disabled providers (ie. keep only enabled)
+    providers_wide_query = providers_wide_query.filter(Provider.status.IN(['prospect', 'contacted_phone', 'contacted_meeting', 'client_enabled']))
+        
     #if booking.request_homecare:
     #    providers_wide_query = providers_wide_query.filter(Provider.practice_sites=='onsite')
     logging.info('Found %s providers offering %s (enabled and with terms)' % (providers_wide_query.count(), request_category))

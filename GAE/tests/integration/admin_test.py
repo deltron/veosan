@@ -87,9 +87,9 @@ class AdminTest(BaseTest):
         
         provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
         response = self.testapp.get('/admin/provider/admin/%s' % provider.vanity_url)
-        
+
         # make sure provider starts as prospect
-        response.mustcontain("Current status is client_enabled")
+        response.mustcontain("Current status is prospect")
         
         status_form = response.forms[0]
         status_form['status'] = 'client_suspended'
@@ -101,7 +101,7 @@ class AdminTest(BaseTest):
         
         # now try to make a booking with this guy        
         # at this point there is one fully completed profile with a single timeslot available (Monday 8-13)
-        response = self.book_appointment('osteopath', testutil.next_monday_date_string() , 14)
+        response = self.book_appointment('osteopath', testutil.next_monday_date_string() , 18)
         
         # verify error messages
         response.mustcontain("Malheureusement, il n'y a pas de professionnels disponibles qui répondent à vos besoins")

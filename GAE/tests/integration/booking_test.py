@@ -142,20 +142,7 @@ class BookingTest(BaseTest):
         # Title check
         booking_confirm_page.mustcontain('Thank you Pat!')
      
-     
-    def test_booking_fail_with_provider_without_terms_agreement(self):
-        ''' Create a booking in the timeslot after another booking is made in the same timeslot '''
-        
-        self.create_complete_provider_profile()
-        provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
-        provider.terms_agreement = False
-        provider.terms_date = None
-        provider.put()
-        # book appointment
-        response = self.book_appointment('osteopath', testutil.next_monday_date_string(), '8')
-        response.mustcontain('Malheureusement')
-        
-        
+             
     def test_booking_new_patient_terms_not_agreed(self):
         ''' Create a booking in the available timeslot, but don't agree to terms on new patient page '''
         
