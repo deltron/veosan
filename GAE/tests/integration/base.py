@@ -193,7 +193,10 @@ class BaseTest(unittest.TestCase):
         signup_form2['password_confirm'] = self._TEST_PROVIDER_PASSWORD
 
         profile_response = signup_form2.submit().follow()
-        profile_response.mustcontain("Bienvenue")
+        
+        # should be on the welcome page
+        profile_response.mustcontain("Bienvenue!")
+        profile_response.mustcontain("Comment naviguer sur le site")
         
     def fill_new_provider_address_correctly_action(self):
         # request the address page
@@ -402,34 +405,7 @@ class BaseTest(unittest.TestCase):
 
 
    
-    def activate_provider_from_email(self):
-        '''
-            Click on activation link, 
-        '''
-        provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
-        # terms page
-        user = User.query(User.key == provider.user).get()
 
-        activation_url = 'http://localhost/user/activation/%s' % user.signup_token
-        terms_response = self.testapp.get(activation_url)
-        terms_response.mustcontain("J'accepte les conditions d'utilisation")
-        terms_form = terms_response.forms[0]
-        terms_form['terms_agreement'] = '1'
-        # password page
-        password_choice_response = terms_form.submit()
-        password_choice_response = password_choice_response.follow()
-        
-        password_choice_response.mustcontain('Choisissez votre mot de passe')
-        password_form = password_choice_response.forms[0]
-        password_form['password'] = self._TEST_PROVIDER_PASSWORD
-        password_form['password_confirm'] = self._TEST_PROVIDER_PASSWORD
-
-        welcome_response = password_form.submit()
-        welcome_response = welcome_response.follow()
-        self.assertEqual(welcome_response.status_int, 200)
-        welcome_response.mustcontain(u'Bienvenue chez Veosan!')
-
-        self.assert_msg_in_log("New account created for user")
 
     ###
     ### Patient Methods
