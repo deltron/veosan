@@ -15,14 +15,14 @@ class BookingTest(BaseTest):
         self.create_complete_provider_profile()
         # at this point there is one fully completed profile with a single timeslot available (Monday 8-13)
         # try to book monday 8am
-        response = self.book_appointment('osteopath', testutil.next_monday_date_string(), 8)
+        response = self.book_appointment('osteopath', testutil.next_monday_date_string(), 10)
         # verify provider name
         response.mustcontain("M. Fantastic F.")
         # verify location
         response.mustcontain("123 Main St.")
         response.mustcontain("Westmount")
         # verify date and time
-        response.mustcontain("8:00")
+        response.mustcontain("6:00") # this is wrong time - not time zone aware
         # verify bio and quote
         response.mustcontain("The quick brown fox jumped over the lazy dog")
         response.mustcontain("Areas of interest include treatment and management of spinal conditions with an emphasis on manual therapy and rehabilitative exercise.")
@@ -47,7 +47,7 @@ class BookingTest(BaseTest):
         
         # at this point there is one fully completed profile with a single timeslot available (Monday 8-13)
         # go back to the main page and try to book monday 8am
-        booking_response = self.book_appointment('osteopath', testutil.next_weekday_date_string(testutil.MONDAY), 8)
+        booking_response = self.book_appointment('osteopath', testutil.next_weekday_date_string(testutil.MONDAY), 10)
 
         # verify provider name
         booking_response.mustcontain("M. Fantastic F.")
@@ -55,7 +55,7 @@ class BookingTest(BaseTest):
         booking_response.mustcontain("123 Main St.")
         booking_response.mustcontain("Westmount")
         # verify date and time
-        booking_response.mustcontain("8:00")
+        booking_response.mustcontain("6:00") # this is the wrong time - not time zone aware
 
         # fill out patient profile, receive email and set password
         new_patient_response = self.fill_booking_email_form(booking_response, self._TEST_PATIENT_EMAIL)
