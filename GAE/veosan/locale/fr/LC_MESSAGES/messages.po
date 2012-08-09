@@ -915,7 +915,7 @@ msgstr "Médecin"
 msgid "Dentist"
 msgstr "Dentiste"
 
-msgid "Denturist"
+msgid "Denturologist"
 msgstr "Denturologiste"
 
 msgid "Dietitian"
