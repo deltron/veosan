@@ -33,19 +33,18 @@
 
 				{% if schedules[day_key].has_key(hour_key) %}
 				{% set s = schedules[day_key][hour_key] %}
-				<td rowspan="{{s.span}}">
-				<div align="center">
-						<a id="{{day_key}}_{{hour_key}}_link"
-							href="/provider/schedule/{{ provider.vanity_url }}/edit/{{ s.key.urlsafe() }}"
-							class="btn btn-success" style="width:75%;"> <strong>{{day_label}}</strong>
-						<br>
-						<br>
-						<small>{{s.start_time|format_hour}}-{{s.end_time|format_hour}}</small> 
-					</a>
-				</div> 
-				{% elif schedules.within_span(day_key, hour_key) %}
-				 <!-- pass {{day_key}} {{hour_key|format_hour}} --> 
-				 {% else %} <td style="text-align: center;"><a class="btn btn-small" href="/provider/schedule/{{ provider.vanity_url }}/add/{{day_key}}/{{hour_key}}"> <i class="bs-icon icon-plus"> </i></a></td>
+				<td rowspan="{{s.span}}" style="height:100%"><a id="{{day_key}}_{{hour_key}}_link"
+				href="/provider/schedule/{{ provider.vanity_url }}/edit/{{ s.key.urlsafe() }}"
+				class="btn btn-success" style="width:75%; height:100%;">
+				<div align="center" style="height:100%">
+					<strong>{{day_label}}</strong>
+					<br>
+					<br>
+					<small>{{s.start_time|format_hour}}-{{s.end_time|format_hour}}</small>
+				</div> </a> 
+				{% elif schedules.within_span(day_key, hour_key) %} 
+				<!-- pass {{day_key}} {{hour_key|format_hour}} --> 
+				{% else %} <td style="text-align: center;"><a class="btn btn-small" href="/provider/schedule/{{ provider.vanity_url }}/add/{{day_key}}/{{hour_key}}"> <i class="bs-icon icon-plus"> </i></a></td>
 				{% endif %}
 				</td>
 				{% endfor %}
