@@ -1,7 +1,7 @@
 import logging
 from data.model import Provider, Schedule, Booking
 from datetime import datetime, time
-from utilities.time import create_one_hour_timeslots_over_range, create_one_hour_timeslot, timeslot_distance
+from utilities.time import create_one_hour_timeslots_over_range, create_one_hour_timeslot, timeslot_distance, get_days_of_the_week
 
 
 class BookingResponse():
@@ -35,27 +35,30 @@ def provider_search(booking):
     display_general_provider_universe_stats(booking)
     # unpack booking request
     request_category = booking.request_category
-    request_location = booking.request_location
+    #request_location = booking.request_location
     # match on location and category, sort by experience (ascending start_year)
-    providers_wide_query = Provider.query(Provider.category==request_category, Provider.status=='client_enabled', Provider.terms_agreement==True).order(Provider.start_year, Provider.created_on)
-    if booking.request_homecare:
-        providers_wide_query = providers_wide_query.filter(Provider.practice_sites=='onsite')
-    logging.info('Found %s providers offering %s in %s (enabled and with terms)' % (providers_wide_query.count(), request_category, request_location))
+    providers_wide_query = Provider.query(Provider.category==request_category).order(Provider.start_year, Provider.created_on)
+    #if booking.request_homecare:
+    #    providers_wide_query = providers_wide_query.filter(Provider.practice_sites=='onsite')
+    logging.info('Found %s providers offering %s (enabled and with terms)' % (providers_wide_query.count(), request_category))
     # sort by best available timeslot and filter out booking conflicts
     booking_responses = filter_and_sort_providers_based_on_schedule(booking, providers_wide_query)
-    logging.info('Returning %s booking-responses offering %s in %s at requested date and time' % (len(booking_responses), request_category, request_location))
+    logging.info('Returning %s booking-responses offering %s at requested date and time' % (len(booking_responses), request_category))
     return booking_responses
 
 
 def display_general_provider_universe_stats(booking):
     # unpack booking request
     request_category = booking.request_category
-    request_location = booking.request_location
+    
+    # ignore location for now
+    #request_location = booking.request_location
+    
     # general debug stats
     providerUniverseCount = Provider.query().count()
     logging.info('Total provider universe: %s' % providerUniverseCount)
-    broadMatchCount = Provider.query(Provider.category==request_category, Provider.location==request_location).count()
-    logging.info('Found %s providers offering %s in %s (ignoring enable and terms agreement)' % (broadMatchCount, request_category, request_location))
+    broadMatchCount = Provider.query(Provider.category==request_category).count()
+    logging.info('Found %s providers offering %s (ignoring enable and terms agreement)' % (broadMatchCount, request_category))
 
 
 def filter_and_sort_providers_based_on_schedule(booking, providerQuery):
@@ -110,12 +113,18 @@ def get_sorted_schedule_timeslots(provider, request_timeslot):
         Get a provider's timeslots ordered by proximity to the requested time
         This method is limited to the day of the request for now. Eventually expand to multi-day search
     '''
+    
+    # returns day of week (0=monday, 1=tuesday, etc.)
     request_day = request_timeslot.start.weekday()
+    
+    # map the number to the actual day
+    request_day_key = get_days_of_the_week()[request_day][0]
+    
     request_date = request_timeslot.start.date()
-    scheduleQuery = Schedule.query(Schedule.provider==provider.key, Schedule.day==request_day)
+    scheduleQuery = Schedule.query(Schedule.provider==provider.key, Schedule.day==request_day_key)
     timeslots = []
     for s in scheduleQuery:
-        ts = create_one_hour_timeslots_over_range(request_date, s.startTime, s.endTime)
+        ts = create_one_hour_timeslots_over_range(request_date, s.start_time, s.end_time)
         timeslots = timeslots + ts
     # sort
     sorted_timeslots = sorted(timeslots, key=lambda t: timeslot_distance(t, request_timeslot))
