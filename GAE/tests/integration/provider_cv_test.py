@@ -7,9 +7,8 @@ from data import db
 class ProviderTest(BaseTest):
     
     def test_add_education_to_profile(self):
-        self.login_as_admin()
-        self.init_new_provider()
-
+        self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
+        
         # fill profile section
         self.fill_new_provider_profile_correctly_action()
 
@@ -43,7 +42,7 @@ class ProviderTest(BaseTest):
         response.mustcontain("Baccalauréat")
 
         # check the event log
-        self.assert_msg_in_log("Edit CV: add education success", admin=True)
+        #self.assert_msg_in_log("Edit CV: add education success", admin=True)
 
     def test_add_organization_nothing_and_other(self):
         self.self_signup_provider()
@@ -134,8 +133,7 @@ class ProviderTest(BaseTest):
 
 
     def test_delete_education_from_profile(self):
-        self.login_as_admin()
-        self.init_new_provider()
+        self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
 
         # fill profile section
         self.fill_new_provider_profile_correctly_action()
@@ -181,13 +179,12 @@ class ProviderTest(BaseTest):
         public_response_after_delete.mustcontain(no='Université McGill')
         public_response_after_delete.mustcontain(no="Baccalauréat")
 
-        self.assert_msg_in_log("Edit CV: delete education success", admin=True)
+        self.assert_msg_in_log("Edit CV: delete education success", admin=False)
 
 
     def test_add_experience_to_profile(self):
-        self.login_as_admin()
-        self.init_new_provider()
-
+        self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
+        
         # fill profile section
         self.fill_new_provider_profile_correctly_action()
 
@@ -217,12 +214,11 @@ class ProviderTest(BaseTest):
         response.mustcontain('Manual Physiotherapy')
         response.mustcontain('Worked with my hands')
 
-        self.assert_msg_in_log("Edit CV: add experience success", admin=True)
+        #self.assert_msg_in_log("Edit CV: add experience success", admin=True)
 
 
     def test_delete_experience_from_profile(self):
-        self.login_as_admin()
-        self.init_new_provider()
+        self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
 
         # fill profile section
         self.fill_new_provider_profile_correctly_action()
@@ -276,12 +272,11 @@ class ProviderTest(BaseTest):
         public_response_after_delete.mustcontain(no='Manual Physiotherapy')
         public_response_after_delete.mustcontain(no='Worked with my hands')
 
-        self.assert_msg_in_log("Edit CV: delete experience success", admin=True)
+        self.assert_msg_in_log("Edit CV: delete experience success", admin=False)
 
     def test_uncheck_specialties(self):
-        self.login_as_admin()
-        self.init_new_provider()
-        
+        self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
+
         # fill profile section
         self.fill_new_provider_profile_correctly_action()
 
@@ -309,12 +304,12 @@ class ProviderTest(BaseTest):
         response.mustcontain(no='input checked id="specialty-0" name="specialty" type="checkbox" value="sports"')        
         response.mustcontain(no='input checked id="specialty-2" name="specialty" type="checkbox" value="cardiology"')  
         
-        self.assert_msg_in_log("Edit Profile: Success", admin=True)
+        self.assert_msg_in_log("Edit Profile: Success", admin=False)
 
 
     def test_add_experience_to_profile_with_markdown(self):
-        self.login_as_admin()
-        self.init_new_provider()
+        self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
+
 
         # fill profile section
         self.fill_new_provider_profile_correctly_action()
@@ -345,14 +340,12 @@ class ProviderTest(BaseTest):
         response.mustcontain('Manual Physiotherapy')
         response.mustcontain('Worked with my hands')
 
-        self.assert_msg_in_log("Edit CV: add experience success", admin=True)
+        self.assert_msg_in_log("Edit CV: add experience success", admin=False)
 
 
 
     def test_change_save_button_less_than_3_cv_items(self):
-        self.login_as_admin()
-        self.init_new_provider()
-
+        self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
         # fill profile section
         self.fill_new_provider_profile_correctly_action()
 

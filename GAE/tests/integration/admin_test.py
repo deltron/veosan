@@ -23,8 +23,7 @@ class AdminTest(BaseTest):
         ''' fill out the new provider's profile '''
         
         # init a provider
-        self.login_as_admin()
-        self.init_new_provider()
+        self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
         self.fill_new_provider_profile_correctly_action()
 
     def test_fill_new_provider_address_then_modify(self):
@@ -186,8 +185,7 @@ class AdminTest(BaseTest):
 
     def test_admin_sees_all_tabs_for_provider(self):
         # setup a provider
-        self.create_complete_provider_profile()
-        self.logout_provider()
+        self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
         # login as admin
         self.login_as_admin()
         # get the provider key

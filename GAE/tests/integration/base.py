@@ -118,7 +118,7 @@ class BaseTest(unittest.TestCase):
         response.mustcontain("Profil")
         
         # check the event log
-        self.assert_msg_in_log("Provider Logged In")
+        #self.assert_msg_in_log("Provider Logged In")
 
         return response
         
@@ -128,9 +128,6 @@ class BaseTest(unittest.TestCase):
         logout_response = logout_redirect.follow()
         logout_response.mustcontain('Mon Compte')
         
-        # check the event log
-        self.assert_msg_in_log("Logged out")
-
     
     def login_as_patient(self):
         response = self.testapp.get('/login')
@@ -162,7 +159,6 @@ class BaseTest(unittest.TestCase):
     def create_complete_provider_profile_selfserve(self):
         self.self_signup_provider()
     
-    # this is the old way
     def create_complete_provider_profile(self):
         '''
             Test init provider with address, profile and one timeslot together.
@@ -178,11 +174,7 @@ class BaseTest(unittest.TestCase):
         self.fill_new_provider_address_correctly_action()
         self.fill_new_provider_profile_correctly_action()
         self.provider_schedule_set_one_timeslot_action()
-        # solicit
-        self.solicit_provider()
-        self.logout_admin()
-        # terms agreement
-        self.activate_provider_from_email()
+
         # logout
         self.logout_provider()
 
@@ -205,49 +197,6 @@ class BaseTest(unittest.TestCase):
 
         profile_response = signup_form2.submit().follow()
         profile_response.mustcontain("Bienvenue")
-        
-             
-    def init_new_provider(self, provider_email=_TEST_PROVIDER_EMAIL, vanity_url=_TEST_PROVIDER_VANITY_URL):
-        ''' initialize a new provider '''
-        
-        request_variables = { 'provider_email' : provider_email, 'vanity_url' : vanity_url}
-        response = self.testapp.post('/admin/provider/init', request_variables)
-
-        self.assertEqual(response.status_int, 200)        
-        response.mustcontain("Initialized new provider for %s" % provider_email)
-        response.mustcontain("new")
-        response.mustcontain("missing terms")
-        response.mustcontain(provider_email)
-        
-        # check badges are present
-        response.mustcontain('<span class="label label-success">new</span>')
-        response.mustcontain('<span class="label label-important">missing terms</span>')
-
-
-    def solicit_provider(self):
-        ''' Send email to provider and activate'''
-        # get the provider key
-        provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
-        response = self.testapp.get('/admin/provider/admin/%s' % provider.vanity_url)
-
-        response.mustcontain('Provider Administration')
-        
-        # hit the solicit button
-        response = self.testapp.get('/admin/provider/solicit/%s' % provider.vanity_url)
-        
-        response = self.testapp.get("/")
-        
-        # read the email and check content
-        messages = self.mail_stub.get_sent_messages(to=self._TEST_PROVIDER_EMAIL)
-        self.assertEqual(1, len(messages))
-        m = messages[0]
-        self.assertEqual(m.subject, 'Activation de votre compte Veosan')
-        
-        # assert that activation link is in the email body
-        user = db.get_user_from_email(self._TEST_PROVIDER_EMAIL)
-        self.assertTrue('http://localhost/user/activation/%s' % user.signup_token in m.body.payload)
- 
-
         
     def fill_new_provider_address_correctly_action(self):
         # get the provider key

@@ -15,6 +15,10 @@ class TermsTest(BaseTest):
         
             
         def test_terms_provider_logged_in(self):
+            pass
+        
+        
+            # to do
             ''' Check the terms page for a provider that has accepted them '''
 
             self.create_complete_provider_profile()

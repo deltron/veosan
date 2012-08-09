@@ -27,9 +27,7 @@ class User(Webapp2AuthUser):
     resetpassword_token = ndb.StringProperty()
        
     confirmed = ndb.BooleanProperty()
-    
-    display_welcome_page = ndb.BooleanProperty(default=True)
-    
+        
     def get_email(self):
         return self.auth_ids[0]
 
@@ -106,7 +104,8 @@ class Provider(ndb.Model):
     # account options
     booking_enabled = ndb.BooleanProperty(default=False)
     address_enabled = ndb.BooleanProperty(default=False)
-    
+    display_welcome_page = ndb.BooleanProperty(default=True)
+
     # user
     user = ndb.KeyProperty(kind=User)
     

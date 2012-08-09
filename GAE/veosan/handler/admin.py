@@ -107,69 +107,6 @@ class AdminPatientsHandler(AdminBaseHandler):
         patients = db.fetch_patients()
         self.render_template('admin/patients.html', patients=patients)
 
-                  
-class NewProviderInitHandler(AdminBaseHandler):
-    '''
-        Create a unique ID for the new provider, initalize profile with defaults.
-        This allows the admin to login with their ID to fill out and customize the profile
-    '''
-
-    def post(self):
-        form = NewProviderForm(self.request.POST)
-        if form.validate():
-            # Init Provider
-            provider_email = self.request.get('provider_email')
-            vanity_url = self.request.get('vanity_url')
-            
-            # force the vanity URL to lowercase
-            vanity_url = vanity_url.lower()
-
-            provider_key = db.init_provider(provider_email, vanity_url)
-            logging.info('(NewProviderInitHandler.post) initialized new provider with key : %s' % provider_key)
-            success_message = 'Initialized new provider for %s' % (provider_email)
-            self.render_providers(success_message=success_message, form=form)        
-        else:
-            # show error
-            logging.info('Trying to create a provider with invalid email address: %s' % form.provider_email)
-            self.render_providers(form=form)
-        
-        
-class NewProviderSolicitHandler(BaseHandler):
-    '''
-        Assumes profile has been completed to admin's satisfaction, now send out
-        the sollicitation email to the provider to reset password and agree to terms.
-    '''
-    
-    @admin_required
-    def get(self, vanity_url=None):
-        provider = db.get_provider_from_vanity_url(vanity_url)
-        
-        # Check provider has at least a first name, last name and email before activation
-        if provider.email: 
-            # create a blank user with provider role
-            if provider.user: 
-                user = provider.user.get()
-            else:    
-                user = self.create_empty_user_for_provider(provider)
-            
-            # create a signup token for new user
-            token = self.create_signup_token(user)
-            
-            # activation url
-            url_obj = urlparse.urlparse(self.request.url)
-            activation_url = urlparse.urlunparse((url_obj.scheme, url_obj.netloc, '/user/activation/' + token, '', '', ''))
-            logging.info('(NewProviderSolicitHandler.post) generated activation url for user %s : %s ' % (provider.email, activation_url))
-            
-            # send email
-            mail.emailSolicitProvider(self.jinja2, provider, activation_url)
-            
-            # render the provider admin page
-            success_message = 'Solicit email sent to %s' % provider.email
-            ProviderAdminBaseHandler.render_administration(self, provider=provider, success_message=success_message)
-        else:
-            error_message = 'Incomplete profile for %s, email not sent' % provider.email
-            ProviderAdminBaseHandler.render_administration(self, provider=provider, error_message=error_message)
-
 
 class AdminDataHandler(AdminBaseHandler):
     ''' Administer Providers '''
