@@ -305,9 +305,8 @@ class WelcomeHandler(ProviderBaseHandler):
         provider = db.get_provider_from_vanity_url(vanity_url)
 
         if disable == 'disable':
-            user = provider.user.get()
-            user.display_welcome_page = False
-            user.put()
+            provider.display_welcome_page = False
+            provider.put()
             self.redirect('/provider/profile/' + provider.vanity_url)
             return # don't render template after redirect
 

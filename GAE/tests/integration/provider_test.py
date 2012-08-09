@@ -163,7 +163,32 @@ class ProviderTest(BaseTest):
         reset_response = self.testapp.get(reset_url)
         reset_response.mustcontain("Links are expired after 24 hours, please try again")
 
-    
+    def test_disabled_welcome_page(self):
+        self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
+        
+        self.login_as_provider()
+        
+        # disable the welcome page
+        response = self.testapp.get("/provider/welcome/%s/disable" % self._TEST_PROVIDER_VANITY_URL)
+        response = response.follow()
+        response.mustcontain(no="Bienvenue!")        
+        response.mustcontain(no="Comment naviguer sur le site")
+        response.mustcontain("Les prochaines étapes")        
+        
+        self.logout_provider()
+        
+        response = self.testapp.get('/login')
+        
+        login_form = response.forms[0]
+        login_form['email'] = self._TEST_PROVIDER_EMAIL
+        login_form['password'] = self._TEST_PROVIDER_PASSWORD
+        login_redirect = login_form.submit()
+        response = login_redirect.follow()
+        
+        # make sure we don't land on the welcome page but the profile page instead
+        response.mustcontain(no="Comment naviguer sur le site")
+        response.mustcontain("Les prochaines étapes")        
+        
 
 if __name__ == "__main__":
     unittest.main()
