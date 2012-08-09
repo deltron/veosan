@@ -16,6 +16,7 @@ class TermsTest(BaseTest):
             
         def test_terms_provider_logged_in(self):
             pass
+            return
         
         
             # to do

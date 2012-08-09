@@ -285,7 +285,7 @@ class AdminTest(BaseTest):
         ''' Visitor chose a provider, filled their email, didn't fill the profile '''
         
         self.create_complete_provider_profile()
-        booking_response = self.book_appointment('osteopath', testutil.next_monday_date_string(), 8)
+        booking_response = self.book_appointment('osteopath', testutil.next_monday_date_string(), 10)
         new_patient_response = self.fill_booking_email_form(booking_response, self._TEST_PATIENT_EMAIL)
 
         self.logout_patient()                

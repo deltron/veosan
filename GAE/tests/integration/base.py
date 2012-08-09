@@ -162,11 +162,8 @@ class BaseTest(unittest.TestCase):
     def create_complete_provider_profile(self):
         '''
             Test init provider with address, profile and one timeslot together.
-            This happens in two strokes:
-            1. The admin create the profile and solicits the provider
-            2. The provider receives the email and activates his account
             
-            There is one timeslot available (Monday at 8am)
+            There is one timeslot available (Monday at 9am)
         '''
         self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
         
@@ -199,11 +196,8 @@ class BaseTest(unittest.TestCase):
         profile_response.mustcontain("Bienvenue")
         
     def fill_new_provider_address_correctly_action(self):
-        # get the provider key
-        provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
-        
         # request the address page
-        response = self.testapp.get('/provider/address/%s' % provider.vanity_url)
+        response = self.testapp.get('/provider/address/%s' % self._TEST_PROVIDER_VANITY_URL)
         
         address_form = response.forms[0] # address form
         
@@ -235,16 +229,14 @@ class BaseTest(unittest.TestCase):
         response = self.testapp.get('/admin/providers')
         response.mustcontain("Fox")
         response.mustcontain("unit_test@provider.com")
+        self.logout_admin()
         
         # check the event log
         #self.assert_msg_in_log("Edit Address: Success", admin=False)
 
-    def modify_provider_address_action(self):
-        # get the provider key
-        provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
-        
+    def modify_provider_address_action(self):        
         # request the address page
-        response = self.testapp.get('/provider/address/%s' % provider.vanity_url)
+        response = self.testapp.get('/provider/address/%s' % self._TEST_PROVIDER_VANITY_URL)
         
         address_form = response.forms[0] # address form
         
@@ -298,12 +290,9 @@ class BaseTest(unittest.TestCase):
 
         
     def fill_new_provider_profile_correctly_action(self, as_admin=True):
-
-        # get the provider key
-        provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
         
         # request the address page
-        response = self.testapp.get('/provider/profile/%s' % provider.vanity_url)
+        response = self.testapp.get('/provider/profile/%s' % self._TEST_PROVIDER_VANITY_URL)
          
         profile_form = response.forms[0] # address form
         
@@ -326,7 +315,7 @@ class BaseTest(unittest.TestCase):
         
         # go back to the profile page
         
-        response = self.testapp.get('/provider/profile/%s' % provider.vanity_url)
+        response = self.testapp.get('/provider/profile/%s' % self._TEST_PROVIDER_VANITY_URL)
 
         response.mustcontain("Areas of interest include treatment and management")
         response.mustcontain("The quick brown fox jumped over the lazy dog")

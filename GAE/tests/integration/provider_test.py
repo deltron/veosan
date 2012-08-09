@@ -7,83 +7,33 @@ from data.model import User
 
 class ProviderTest(BaseTest):
     def test_provider_schedule_set_one_timeslot_action_as_provider(self):
-        self.login_as_admin()
-        self.init_new_provider()
+        self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
+        
         # fill all sections
         self.fill_new_provider_address_correctly_action()
         self.fill_new_provider_profile_correctly_action()
-        self.solicit_provider()
-        self.logout_admin()
-        # terms agreement
-        self.activate_provider_from_email()
-        self.logout_provider()
-        
-        self.login_as_provider()
+
         self.provider_schedule_set_one_timeslot_action()
 
 
     def test_administration_tab_not_visible_to_provider(self):
         # setup a provider
         self.create_complete_provider_profile()
-        self.logout_provider()
-        # login as provider
         self.login_as_provider()
-        # get the provider key
-        provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
-        # request the address page
-        response = self.testapp.get('/provider/bookings/%s' % provider.vanity_url)
+
+        # request the profile page
+        response = self.testapp.get('/provider/profile/%s' % self._TEST_PROVIDER_VANITY_URL)
                 
         # patient name in navbar
         response.mustcontain(self._TEST_PROVIDER_EMAIL)
         response.mustcontain('CV')
         response.mustcontain('Profil')
-        response.mustcontain(no='Administration')
-
-        assert 'Administration' not in response 
-        
-        # This doesn't work anymore because we show "Public Profile"
-        # assert 'Profile' not in response
-        
-        assert 'Addresse' not in response 
+        response.mustcontain(no='Admin Logout')
+        response.mustcontain(no='/provider/admin/')
+        assert 'Admin Logout' not in response 
 
 
         
-    def test_provider_solicit_password_too_short(self):
-        self.login_as_admin()
-        # init a provider
-        self.init_new_provider()
-        # fill all sections
-        self.fill_new_provider_address_correctly_action()
-        self.fill_new_provider_profile_correctly_action()
-        self.provider_schedule_set_one_timeslot_action()
-        # solicit
-        self.solicit_provider()
-        self.logout_admin()
-        
-        # terms agreement                       
-        provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
-        # terms page
-        user = User.query(User.key == provider.user).get()
-        activation_url = '/user/activation/%s' % user.signup_token
-        terms_response = self.testapp.get(activation_url)
-        terms_response.mustcontain("J'accepte les conditions d'utilisation")
-        terms_form = terms_response.forms[0]
-        terms_form['terms_agreement'] = '1'
-        
-        # password page
-        password_choice_response = terms_form.submit()
-        password_choice_response = password_choice_response.follow()
-        password_choice_response.mustcontain('Choisissez votre mot de passe')
-        password_form = password_choice_response.forms[0]
-        password_form['password'] = 'abc'
-        password_form['password_confirm'] = 'abc'
-
-        welcome_response = password_form.submit()
-        self.assertEqual(welcome_response.status_int, 200)
-        welcome_response.mustcontain('Votre mot de passe doit contenir au moins 6 caractères.')
-                                     
-                            
-
 
     def test_upload_image_to_correct_address(self):
         ''' Upload a test image for the new provider '''
@@ -107,8 +57,8 @@ class ProviderTest(BaseTest):
         response.mustcontain("Un courriel a été envoyé à votre adresse courriel afin de réinitialiser votre mot de passe.")
         
         messages = self.mail_stub.get_sent_messages(to=self._TEST_PROVIDER_EMAIL)
-        self.assertEqual(2, len(messages))
-        m = messages[1]    
+        self.assertEqual(1, len(messages))
+        m = messages[0]    
 
         user = db.get_user_from_email(self._TEST_PROVIDER_EMAIL)
 
@@ -178,8 +128,8 @@ class ProviderTest(BaseTest):
         response.mustcontain("Un courriel a été envoyé à votre adresse courriel afin de réinitialiser votre mot de passe.")
         
         messages = self.mail_stub.get_sent_messages(to=self._TEST_PROVIDER_EMAIL)
-        self.assertEqual(2, len(messages))
-        m = messages[1]    
+        self.assertEqual(1, len(messages))
+        m = messages[0]    
 
         user = db.get_user_from_email(self._TEST_PROVIDER_EMAIL)
 
