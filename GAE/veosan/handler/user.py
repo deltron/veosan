@@ -369,6 +369,9 @@ class ProviderSignupHandler1(UserBaseHandler):
         if provider_signup_form.validate():
             # populate second form from first one
             provider_signup_form2 = ProviderSignupForm2().get_form(self.request.POST)
+            # pre-populate vanity_url with first and last name
+            vanity_url = self.request.get('first_name') + self.request.get('last_name')
+            provider_signup_form2.vanity_url.data = vanity_url.lower()
             
             # on to the next step
             self.render_template('user/signup_provider_2.html', provider_signup_form2=provider_signup_form2)
