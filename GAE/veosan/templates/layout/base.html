@@ -84,36 +84,44 @@
 	<body>
 		{% include "/layout/navbar.html" with context %}
 
-		
+		{# microdata #}
 		<div class="container">
-			{% block subnav %}{% endblock %}
-			<header class="page-header">
-				<h2>{% block subhead %}{% endblock %}</h2>
-				<p class="lead">
-					{% block lead %}{% endblock %}
-				</p>
-			</header>
-
-			{% if error_message %}
-			<!-- Error Message -->
-			<div class="alert alert-error">
-				{{error_message|safe}}
-			</div>
+			{% if active_page == 'public_profile' %}
+			<div itemscope itemtype="http://schema.org/Person">
 			{% endif %}
+			
+				{% block subnav %}{% endblock %}
+				<header class="page-header">
+					<h2>{% block subhead %}{% endblock %}</h2>
+					<p class="lead">
+						{% block lead %}{% endblock %}
+					</p>
+				</header>
 
-			{% if success_message %}
-			<!-- Success Message -->
-			<div class="alert alert-success">
-				{{success_message|safe}}
-			</div>
+				{% if error_message %}
+				<!-- Error Message -->
+				<div class="alert alert-error">
+					{{error_message|safe}}
+				</div>
+				{% endif %}
+
+				{% if success_message %}
+				<!-- Success Message -->
+				<div class="alert alert-success">
+					{{success_message|safe}}
+				</div>
+				{% endif %}
+
+				{% block content %}
+				<!-- content goes here -->
+				{% endblock %}
+				
+			{% if active_page == 'public_profile' %}
+			</div> {# end microdata #}
 			{% endif %}
-
-			{% block content %}
-			<!-- content goes here -->
-			{% endblock %}
-
 			{% include "/layout/footer.html" with context %}
 		</div>
+
 		<!-- /container -->
 
 		<!-- Le javascript
@@ -124,6 +132,5 @@
 		<script src="/assets/js/bootstrap.min.js"></script>
 
 		{% block extra_javascript %}{% endblock %}
-
 	</body>
 </html>

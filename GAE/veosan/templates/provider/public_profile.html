@@ -1,10 +1,13 @@
 {% extends "/layout/base.html" %}
 
+{% set active_page = "public_profile" %}
+
+
 {% block subhead %}
-{{ macro.display_provider_name(provider) }}
+<span itemprop="name">{{ macro.display_provider_name(provider) }}</span>
 {% endblock %}
 {% block lead %}
-{{ category_dict[provider.category] }}
+<span itemprop="jobTitle">{{ category_dict[provider.category] }}</span>
 {% endblock %}
 
 {% block content %}
@@ -29,23 +32,16 @@
 	<div class="span2">
 		{% if provider.profile_photo_blob_key == None %}
 		<img src="/assets/img/default-profile.png" width="150" height="150"
-		alt="{{ macro.display_provider_name(provider) }} - {{ category_dict[provider.category] }}">
+		alt="{{ macro.display_provider_name(provider) }} - {{ category_dict[provider.category] }}"
+		itemprop="image">
 		{% else %}
 		<img src="{{ provider.get_profile_photo_image_url(150) }}" width="150"
-		alt="{{ macro.display_provider_name(provider) }} - {{ category_dict[provider.category] }}">
+		alt="{{ macro.display_provider_name(provider) }} - {{ category_dict[provider.category] }}"
+		itemprop="image">
 		{% endif %}
 
 		<br>
 		<br>
-
-		{% if provider.category and provider.category|remove_empty_strings_from_list %}
-		<h4>{{ _("Category") }}</h4>
-		<ul class="unstyled">
-			<li>
-				{{ category_dict[provider.category] }}
-			</li>
-		</ul>
-		{% endif %}
 
 		{% if provider.specialty|remove_empty_strings_from_list %}
 		<h4>{{ _("Specialties") }}</h4>
@@ -57,18 +53,6 @@
 			{% endfor %}
 		</ul>
 		{% endif %}
-
-		{# Not for now
-		<h4>Home Care Visits</h4>
-		<ul class="unstyled">
-			<li>
-				Downtown
-			</li>
-			<li>
-				West-Island
-			</li>
-		</ul>
-		#}
 
 		{% if provider.address_enabled %}
 		<h4><a data-toggle="modal" href="#contact_modal" onclick="loadScript()">Address</a><a data-toggle="modal" href="#contact_modal" onclick="loadScript()"><i class="bs-icon icon-share-alt"> </i></a></h4>
@@ -99,7 +83,7 @@
 	<div class="span5">
 		{% if provider.bio %}
 		<p>
-			{{ provider.bio }}
+			<span itemprop="description"> {{ provider.bio }} </span>
 		</p>
 		<br>
 		{% endif %}
@@ -136,8 +120,7 @@
 			{% for e in provider.get_education() %}
 			<li>
 				<h4>{{ e.degree_type|code_to_string }} {{ e.degree_title }}</h4>
-				<h6> 
-				{{ e.school_name }}
+				<h6> {{ e.school_name }}
 
 				{{ macro.display_cv_years(e.start_year, e.end_year) }} </h6>
 				{% if e.description %}
@@ -342,3 +325,5 @@
 {% endif %}
 
 {% endblock extra_javascript %}
+
+</div>
