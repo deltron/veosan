@@ -67,8 +67,6 @@ class SignupTest(BaseTest):
         response = signup_form.submit()
 
         #hidden field contains postal code
-        response.showbrowser()
-
         response.mustcontain('H1H1H1')
 
         signup_form2 = response.forms['provider_signup_form2']
