@@ -34,9 +34,9 @@
 		<br>
 		<h3>{{ _('Change Your Personal Link') }}</h3>
 		<p>
-			You can also change your personal link below.
+			{{ _('You can also change your personal link below.') }}
 		</p>
-		<form method="post" action="/provider/address/{{ provider.vanity_url }}/change_url" class="form-inline" id="vanity_url_form">
+		<form method="post" action="/provider/address/change_url/{{ provider.vanity_url }}" class="form-inline" id="vanity_url_form">
 			{{ macro.display_errors_for_field(vanity_url_form.vanity_url) }}
 
 			<div class="input-prepend">
@@ -46,8 +46,8 @@
 				{{ _('Change') }}
 			</button>
 		</form>
-		<span class="label label-warning">Warning!</span>
-		<br>If you change your personal address the old one will not be valid anymore.
+		<span class="label label-warning">{{ _('Warning!') }}</span>
+		<br>{{ _('If you change your personal address the old one will not be valid anymore.') }}
 	</div>
 </div>
 

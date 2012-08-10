@@ -185,6 +185,18 @@ msgstr "Vous pouvez utiliser l'adresse ci-dessous pour partager votre profil dan
 msgid "Change Your Personal Link"
 msgstr "Changer votre lien personnalisé"
 
+msgid "You can also change your personal link below."
+msgstr "Vous pouvez aussi modifier votre lien personnalisé dans le formulaire ci-dessous."
+
+msgid "Warning!"
+msgstr "Attention!"
+
+msgid "Change"
+msgstr "Changer"
+
+msgid "If you change your personal address the old one will not be valid anymore."
+msgstr "L'ancienne adresse ne sera plus valide si vous changez votre lien personnalisé."
+
 #################
 # Navbar
 #################
