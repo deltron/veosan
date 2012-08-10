@@ -5,6 +5,8 @@ from datetime import date
 from webapp2_extras.i18n import gettext as _
 from webapp2_extras import security 
 from webapp2_extras.auth import InvalidAuthIdError, InvalidPasswordError
+from webapp2 import BaseRoute
+from webapp2_extras.routes import PathPrefixRoute
 
 # veo
 from base import BaseHandler
@@ -18,6 +20,8 @@ import mail
 import util
 from data.model import Provider, Patient
 from google.appengine.ext import ndb
+import webapp2
+import re
 
 
 class UserBaseHandler(BaseHandler):   
@@ -393,7 +397,7 @@ class ProviderSignupHandler2(UserBaseHandler):
             
             # remove any non-alpha
             vanity_url = ''.join([c for c in vanity_url if c.isalpha()])
-                        
+            
             # check if it's taken
             increment = 0
             while db.get_provider_from_vanity_url(vanity_url) is not None:
@@ -404,6 +408,37 @@ class ProviderSignupHandler2(UserBaseHandler):
                 
                 # add a new number
                 vanity_url = vanity_url + str(increment)
+            
+            
+            # check if it's a reserved word
+            route_list = webapp2.get_app().router.match_routes
+            regex_to_check = []
+            for route in route_list:
+                if isinstance(route, BaseRoute):
+                    regex_to_check.append(route.template)
+                elif isinstance(route, PathPrefixRoute):
+                    regex_to_check.append(route.prefix)
+
+            reserved_url = False
+            for regex in regex_to_check:
+                # remove leading slash
+                regex = regex.replace("/", "", 1)
+                # remove anything after trailing slash
+                regex = regex.split("/")[0]
+                
+                if re.match(regex, vanity_url):
+                    reserved_url = True
+            
+            if reserved_url:
+                increment = increment + 1
+                
+                # strip previous number
+                vanity_url = ''.join([c for c in vanity_url if c.isalpha()])
+                
+                # add a new number
+                vanity_url = vanity_url + str(increment)
+            
+            
             
             provider.vanity_url = vanity_url           
             # save provider
