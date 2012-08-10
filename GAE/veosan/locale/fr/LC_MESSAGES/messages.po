@@ -179,6 +179,12 @@ msgstr "Il vous reste juste un clic avant d'avoir votre propre présence en lign
 msgid "Your profile will help patients get to know you. The more you share, the more you will be discovered by new patients."
 msgstr "Votre profil aidera les patients à mieux vous connaître. Plus vous partagez, plus vous serez découvert par de nouveaux patients."
 
+msgid "You can use the address below to share your profile in emails or on your business card."
+msgstr "Vous pouvez utiliser l'adresse ci-dessous pour partager votre profil dans un courriel ou bien sur vos carte d'affaires."
+
+msgid "Change Your Personal Link"
+msgstr "Changer votre lien personnalisé"
+
 #################
 # Navbar
 #################
