@@ -14,7 +14,6 @@ from datetime import date
 
 class ProviderProfileForm(CustomForm):
     def _set_fields(self, form):
-        setattr(form, 'category', SelectField(_(u'Category'), choices=util.get_all_categories_for_profile_editing()))
         setattr(form, 'specialty', MultiCheckboxField(_(u'Specialties'), choices=util.getAllSpecialities()))
         setattr(form, 'bio', TextAreaField(_(u'Biography'), filters=[lambda x: custom_filters.escape_brackets(x)]))
         setattr(form, 'quote', TextAreaField(_(u'Quote'), filters=[lambda x: custom_filters.escape_brackets(x)]))
