@@ -29,18 +29,6 @@
 							{{ provider_signup_form2.category(class="span3") }}
 						</div>
 					</div>
-					<div class="control-group {% if provider_signup_form2.vanity_url.errors %} error {% endif %}">
-						<h3 style="margin-top: 18px">{{ _('Personal Link' )}}</h3>
-						<p>
-							{{ _('Your personal link allows people to find and remember you easily.') }}
-							{{ _('For example, if your name is Gerald Raymond you can use <i>graymond</i>')}}
-							<br>
-						</p>
-						{{ macro.display_errors_for_field(provider_signup_form2.vanity_url) }}
-						<div class="input-prepend">
-							<span class="add-on">&nbsp;veosan.com&nbsp;</span><span class="add-on">/</span>{{ provider_signup_form2.vanity_url(class="span2", placeholder=_('Personal Link')) }}
-						</div>
-					</div>
 
 					<h3 style="margin-top: 18px">{{ _('Please choose your password.') }}</h3>
 					<div class="control-group {% if provider_signup_form2.password.errors %} error {% endif %}">

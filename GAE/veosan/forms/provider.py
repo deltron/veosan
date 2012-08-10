@@ -108,6 +108,16 @@ class ProviderAddressForm(CustomForm):
                                                validators=[validators.Optional(), validators.Regexp(regex="^[a-zA-Z][0-9][a-zA-Z][0-9][a-zA-Z][0-9]$", message=_(u'Please make sure your postal code is in the following format: A1B2C3'))],
                                                filters=[custom_filters.remove_spaces, custom_filters.to_uppercase]))
 
+class ProviderVanityURLForm(CustomForm):
+    def _set_fields(self, form):        
+        setattr(form, 'vanity_url', TextField(_(u'Account name'), validators=[
+                                              validators.Length(min=6, message=_('Your personal link requires at least 6 characters.')),
+                                              custom_validators.UniqueVanityURL(message=_(u'That address is already being used, please choose another one.')),
+                                              custom_validators.ReservedVanityURL(message=_(u'That address is already being used, please choose another one.')),
+                                              validators.Regexp(u'^[a-zA-Z0-9]+$', message=_(u'Your personal link can only contain letters and numbers.')),
+                                              ],
+                                              filters=[custom_filters.to_lowercase]           
+                                        ))
 
 # Schedule
 

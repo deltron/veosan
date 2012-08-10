@@ -66,14 +66,7 @@ class ProviderSignupForm2(CustomForm):
                                                                 ],
                                                                 filters=[custom_filters.remove_spaces, custom_filters.to_uppercase]))
         setattr(form, 'category', SelectField(_(u'Category'), choices=util.get_all_categories_for_profile_editing()))
-        setattr(form, 'vanity_url', TextField(_(u'Account name'), validators=[
-                                              validators.Length(min=6, message=_('Your personal link requires at least 6 characters.')),
-                                              custom_validators.UniqueVanityURL(message=_(u'That address is already being used, please choose another one.')),
-                                              custom_validators.ReservedVanityURL(message=_(u'That address is already being used, please choose another one.')),
-                                              validators.Regexp(u'^[a-zA-Z0-9]+$', message=_(u'Your personal link can only contain letters and numbers.')),
-                                              ],
-                                              filters=[custom_filters.to_lowercase]           
-                                        ))
+
         setattr(form, 'password', PasswordField(_(u'Password'), [
                                 validators.Length(min=6, message=_(u'Password must be at least 6 characters.')),
                                 validators.EqualTo('password_confirm', _(u"Passwords do not match."))]))
