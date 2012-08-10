@@ -135,13 +135,13 @@ msgid "Be Productive"
 msgstr "Soyez productif"
 
 msgid "Before this, you didn't exist! Get a professional profile that sets you apart."
-msgstr "Rehaussez votre visibilité! Obtenez un profil professionnel qui vous démarquera."
+msgstr "améliorez votre visibilité! Obtenez un profil professionnel qui vous démarquera."
 
 msgid "Share your page with friends and connect with patients and prospective employers."
-msgstr "Partagez votre page avec vos amis et rejoignez des patients et employeurs potentiels."
+msgstr "Partagez votre page avec votre réseau et rejoignez des patients et employeurs potentiels."
 
 msgid "Get the tools you need to run your practice and discover new patients."
-msgstr "Obtenez des outils qui vous aideront à gérer votre pratique et à découvrir des nouveaux patients."
+msgstr "Obtenez des outils qui vous aideront à gérer votre cabinet et à découvrir des nouveaux patients."
 
 msgid "For example, if your name is Gerald Raymond you can use <i>graymond</i>"
 msgstr "Par exemple, si votre nom est Gérald Raymond, vous pouvez utiliser <i>graymond</i>"
