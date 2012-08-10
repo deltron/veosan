@@ -52,10 +52,33 @@ class SignupTest(BaseTest):
         signup_form2['password'] = self._TEST_PROVIDER_PASSWORD
         signup_form2['password_confirm'] = self._TEST_PROVIDER_PASSWORD
 
-
         profile_response = signup_form2.submit().follow()
         profile_response.mustcontain("Bienvenue")
 
+    def test_signup_space_in_postal_code(self):
+        ''' Basic signup process for a new provider '''
+        response = self.testapp.post('/signup/provider')
+        
+        signup_form = response.forms['provider_signup_form']
+        signup_form['first_name'] = 'first'
+        signup_form['last_name'] = 'last'
+        signup_form['email'] = self._TEST_PROVIDER_EMAIL
+        signup_form['postal_code'] = 'h1h 1h1'
+        response = signup_form.submit()
+
+        #hidden field contains postal code
+        response.showbrowser()
+
+        response.mustcontain('H1H1H1')
+
+        signup_form2 = response.forms['provider_signup_form2']
+        signup_form2['category'] = 'osteopath'
+        signup_form2['vanity_url'] = self._TEST_PROVIDER_VANITY_URL
+        signup_form2['password'] = self._TEST_PROVIDER_PASSWORD
+        signup_form2['password_confirm'] = self._TEST_PROVIDER_PASSWORD
+
+        profile_response = signup_form2.submit().follow()
+        profile_response.mustcontain("Bienvenue")
 
         
 if __name__ == "__main__":
