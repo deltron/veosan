@@ -22,4 +22,8 @@ def string_to_int(value):
     else:
         return value
 
-
+def remove_spaces(value):
+    if value:
+        return value.replace(" ", "")
+    else:
+        return value

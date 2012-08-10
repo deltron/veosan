@@ -49,7 +49,7 @@ class ProviderSignupForm1(CustomForm):
         setattr(form, 'postal_code', TextField(_(u'Postal Code'), validators=[
                                                                 validators.Regexp(regex="^[a-zA-Z][0-9][a-zA-Z][0-9][a-zA-Z][0-9]$", message=_(u'Please make sure your postal code is in the following format: A1B2C3'))
                                                                 ],
-                                                                filters=[custom_filters.to_uppercase]))
+                                                                filters=[custom_filters.remove_spaces, custom_filters.to_uppercase]))
 
 class ProviderSignupForm2(CustomForm):
     def _set_fields(self, form):        
