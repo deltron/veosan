@@ -386,6 +386,8 @@ class SocialHandler(ProviderBaseHandler):
             form.populate_obj(invite)
             invite.put()
             
+            # send the actual email...
+            
             message = "Invitation sent to %s %s (%s) " % (invite.first_name, invite.last_name, invite.email)
             
             # new form for next invite
