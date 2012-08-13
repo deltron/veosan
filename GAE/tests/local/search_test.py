@@ -33,8 +33,8 @@ class BookingTestCase(BaseTestCase):
         logging.info("providers: %s" % providers)
         self.assertEqual(len(providers), Provider.query().count())
         # create booking request
-        next_monday_at_9 = testutil.create_datetime_from_weekday_and_hour(5, 15)
-        booking_request = Booking(request_category=util.CAT_PHYSIO, request_location='mtl-downtown', request_datetime=next_monday_at_9)
+        next_monday_at_9 = testutil.create_datetime_from_weekday_and_hour(testutil.MONDAY, 15)
+        booking_request = Booking(request_category='physiotherapy', request_location='mtl-downtown', request_datetime=next_monday_at_9)
         booking_responses = db_search.provider_search(booking_request)
         logging.info('Booking Respones:')
         for br in booking_responses:
@@ -48,13 +48,13 @@ class BookingTestCase(BaseTestCase):
         br2 = booking_responses[1]
         self.assertFalse(br2.is_perfect_match(booking_request))
         # assert top provider is p2
-        self.assertEqual(providers[1][0], booking_responses[0].provider.key)
+        self.assertEqual(providers[2][0], booking_responses[0].provider.key)
         
     def test_find_providers_all_imperfect_matches(self):
         providers = create_test_providers()
         # create booking request - Saturday at 10 PM
-        sat_at_10 = testutil.create_datetime_from_weekday_and_hour(5, 22)
-        booking_request = Booking(request_category=util.CAT_PHYSIO, request_location='mtl-downtown', request_datetime=sat_at_10)
+        sat_at_10 = testutil.create_datetime_from_weekday_and_hour(testutil.MONDAY, 22)
+        booking_request = Booking(request_category='physiotherapy', request_location='mtl-downtown', request_datetime=sat_at_10)
         booking_responses = db_search.provider_search(booking_request)
         logging.info('Booking Respones:')
         for br in booking_responses:

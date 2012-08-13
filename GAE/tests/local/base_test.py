@@ -24,7 +24,7 @@ class BaseTestCase(unittest.TestCase):
         self.stream = StringIO()
         self.handler = logging.StreamHandler(self.stream)
         self.log = logging.getLogger()
-        self.log.setLevel(logging.INFO)
+        self.log.setLevel(logging.DEBUG)
         # en francais
 
     def tearDown(self):

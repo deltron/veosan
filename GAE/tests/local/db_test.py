@@ -69,12 +69,13 @@ class DBTestCase(BaseTestCase):
         p.last_name = 'Phys-Io'
         p.category = testCategory
         p.location = testLocation
+        p.vanity_url = 'physio_guy'
         pkey = p.put()
         # add a provider's schedule (Thursday Morning)
         s = Schedule()
-        s.day = 'wednesday'
-        s.startTime = 8
-        s.endTime = 12
+        s.day = 'thursday'
+        s.start_time = 8
+        s.end_time = 12
         s.provider = p.key
         s.put()
         # create provider with no schedule
