@@ -119,6 +119,21 @@ class ProviderVanityURLForm(CustomForm):
                                               filters=[custom_filters.to_lowercase]           
                                         ))
 
+class ProviderInviteForm(CustomForm):
+    def _set_fields(self, form):        
+        setattr(form, 'first_name', TextField(_(u'First Name'), [validators.Length(min=2, message=_(u'First name required.'))]))
+        setattr(form, 'last_name', TextField(_(u'Last Name'), [validators.Length(min=2, message=_(u'Last name required.'))]))
+        setattr(form, 'email', TextField(_(u'E-mail Address'), validators=[
+                                                      validators.Email(message=_(u'Invalid email address.')),
+                                                      custom_validators.UniqueEmail(message=_(u'That address is already being used, please choose another one.')),
+                                                     ],
+                                                     filters=[custom_filters.to_lowercase]           
+                                         ))
+        setattr(form, 'note', TextAreaField(_(u'Add a note to the invitation (optional)'),
+                                            default = _("I've been using Veosan and thought you might like to try it out. Here's an invitation to create an account.")))
+
+
+
 # Schedule
 
 class ProviderScheduleForm(CustomForm):
