@@ -22,6 +22,7 @@ from data.model import Provider, Patient
 from google.appengine.ext import ndb
 import webapp2
 import re
+from data import search_index
 
 
 class UserBaseHandler(BaseHandler):   
@@ -462,6 +463,9 @@ class ProviderSignupHandler2(UserBaseHandler):
             self.redirect('/provider/welcome/' + provider.vanity_url)
                     
             self.log_event(user, "New account created for user")            # create a signup token for new user
+                        
+            # update the index
+            search_index.IndexProvider(provider)
         else:
             self.render_template('user/signup_provider_2.html', provider_signup_form2=provider_signup_form2)
             

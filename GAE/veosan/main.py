@@ -154,6 +154,11 @@ application = ndb.toplevel(webapp2.WSGIApplication([
                                                 Route('/change_url/<vanity_url>', provider.ProviderChangeURLHandler),
                                             ]),
 
+                                            # Address
+                                            PathPrefixRoute('/search', [
+                                                Route('/<vanity_url>', provider.ProviderSearchHandler),
+                                            ]),
+
                                             # terms display
                                             Route('/terms/<vanity_url>', user.ProviderTermsHandler),
                                         ]),
