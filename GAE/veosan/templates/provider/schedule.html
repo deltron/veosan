@@ -33,7 +33,7 @@
 
 				{% if schedules[day_key].has_key(hour_key) %}
 				{% set s = schedules[day_key][hour_key] %}
-				<td rowspan="{{s.span}}" style="height:100%"><a id="{{day_key}}_{{hour_key}}_link"
+				<td rowspan="{{s.span}}" style="height:100%; text-align: center" ><a id="{{day_key}}_{{hour_key}}_link"
 				href="/provider/schedule/{{ provider.vanity_url }}/edit/{{ s.key.urlsafe() }}"
 				class="btn btn-success" style="width:75%; height:100%;">
 				<div align="center" style="height:100%">
