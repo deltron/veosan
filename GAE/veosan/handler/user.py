@@ -5,6 +5,8 @@ from datetime import date
 from webapp2_extras.i18n import gettext as _
 from webapp2_extras import security 
 from webapp2_extras.auth import InvalidAuthIdError, InvalidPasswordError
+from webapp2 import BaseRoute
+from webapp2_extras.routes import PathPrefixRoute
 
 # veo
 from base import BaseHandler
@@ -18,6 +20,8 @@ import mail
 import util
 from data.model import Provider, Patient
 from google.appengine.ext import ndb
+import webapp2
+import re
 
 
 class UserBaseHandler(BaseHandler):   
@@ -369,9 +373,6 @@ class ProviderSignupHandler1(UserBaseHandler):
         if provider_signup_form.validate():
             # populate second form from first one
             provider_signup_form2 = ProviderSignupForm2().get_form(self.request.POST)
-            # pre-populate vanity_url with first and last name
-            vanity_url = self.request.get('first_name') + self.request.get('last_name')
-            provider_signup_form2.vanity_url.data = vanity_url.lower()
             
             # on to the next step
             self.render_template('user/signup_provider_2.html', provider_signup_form2=provider_signup_form2)
@@ -382,11 +383,65 @@ class ProviderSignupHandler2(UserBaseHandler):
     def post(self, lang_key = None):
         provider_signup_form2 = ProviderSignupForm2().get_form(self.request.POST)
         
-        if provider_signup_form2.validate():
-            
+        if provider_signup_form2.validate():            
             # init the provider
             provider = Provider()
             provider_signup_form2.populate_obj(provider)
+            
+            # pre-populate vanity_url with first name + last name + number if collision
+            first_name_first_letter = provider.first_name
+            last_name = provider.last_name
+            
+            vanity_url = first_name_first_letter + last_name
+            vanity_url = vanity_url.lower()
+            
+            # remove any non-alpha
+            vanity_url = ''.join([c for c in vanity_url if c.isalpha()])
+            
+            # check if it's taken
+            increment = 0
+            while db.get_provider_from_vanity_url(vanity_url) is not None:
+                increment = increment + 1
+                
+                # strip previous number
+                vanity_url = ''.join([c for c in vanity_url if c.isalpha()])
+                
+                # add a new number
+                vanity_url = vanity_url + str(increment)
+            
+            
+            # check if it's a reserved word
+            route_list = webapp2.get_app().router.match_routes
+            regex_to_check = []
+            for route in route_list:
+                if isinstance(route, BaseRoute):
+                    regex_to_check.append(route.template)
+                elif isinstance(route, PathPrefixRoute):
+                    regex_to_check.append(route.prefix)
+
+            reserved_url = False
+            for regex in regex_to_check:
+                # remove leading slash
+                regex = regex.replace("/", "", 1)
+                # remove anything after trailing slash
+                regex = regex.split("/")[0]
+                
+                if re.match(regex, vanity_url):
+                    reserved_url = True
+            
+            if reserved_url:
+                increment = increment + 1
+                
+                # strip previous number
+                vanity_url = ''.join([c for c in vanity_url if c.isalpha()])
+                
+                # add a new number
+                vanity_url = vanity_url + str(increment)
+            
+            
+            
+            provider.vanity_url = vanity_url           
+            # save provider
             provider.put()
             
             # now create an empty user for the provider

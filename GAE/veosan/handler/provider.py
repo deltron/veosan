@@ -9,7 +9,8 @@ import data.db as db
 from data.model import Schedule, Education, Experience, ContinuingEducation, \
     ProfessionalOrganization, ProfessionalCertification
 from forms.provider import ProviderAddressForm, ProviderEducationForm, ProviderContinuingEducationForm, ProviderExperienceForm, ProviderProfileForm, ProviderPhotoForm, \
-    ProviderCertificationForm, ProviderOrganizationForm, ProviderScheduleForm
+    ProviderCertificationForm, ProviderOrganizationForm, ProviderScheduleForm,\
+    ProviderVanityURLForm
 from base import BaseHandler
 from handler.auth import provider_required
 import util
@@ -57,8 +58,10 @@ class ProviderEditAddressHandler(ProviderBaseHandler):
     def get(self, vanity_url=None):
         provider = db.get_provider_from_vanity_url(vanity_url)
         logging.info("provider dump before edit:" + str(vars(provider)))
-        form = ProviderAddressForm().get_form(obj=provider)
-        self.render_address(provider, address_form=form)
+        address_form = ProviderAddressForm().get_form(obj=provider)
+        vanity_url_form = ProviderVanityURLForm().get_form(obj=provider)
+
+        self.render_address(provider, address_form=address_form, vanity_url_form=vanity_url_form)
 
     @provider_required
     def post(self, vanity_url=None):
@@ -67,10 +70,13 @@ class ProviderEditAddressHandler(ProviderBaseHandler):
         if form.validate():
             # Store Provider
             provider = db.get_provider_from_vanity_url(vanity_url)
-            provider_key = db.storeProvider(provider, self.request.POST, form)
-            provider = provider_key.get()
+            
+            form.populate_obj(provider)
+            provider.put()
 
-            self.render_address(provider, address_form=form, success_message=saved_message)
+            vanity_url_form = ProviderVanityURLForm().get_form(obj=provider)
+
+            self.render_address(provider, address_form=form, vanity_url_form=vanity_url_form, success_message=saved_message)
 
             # log the event
             self.log_event(user=provider.user, msg="Edit Address: Success")
@@ -78,10 +84,46 @@ class ProviderEditAddressHandler(ProviderBaseHandler):
         else:
             # show validation error
             provider = db.get_provider_from_vanity_url(vanity_url)
-            self.render_address(provider, address_form=form)
+            vanity_url_form = ProviderVanityURLForm().get_form(obj=provider)
+
+            self.render_address(provider, address_form=form, vanity_url_form=vanity_url_form)
             
             # log the event
             self.log_event(user=provider.user, msg="Edit Address: Validation Error")
+
+
+
+        
+
+
+class ProviderChangeURLHandler(ProviderBaseHandler):
+    @provider_required
+    def post(self, vanity_url=None):
+        form = ProviderVanityURLForm().get_form(self.request.POST)
+        
+        if form.validate():
+            # Store Provider
+            provider = db.get_provider_from_vanity_url(vanity_url)
+            
+            form.populate_obj(provider)
+            
+            provider.put()
+
+            self.redirect('/provider/address/' + provider.vanity_url)
+
+            # log the event
+            self.log_event(user=provider.user, msg="Edit Address: Success")
+
+        else:
+            # show validation error
+            provider = db.get_provider_from_vanity_url(vanity_url)
+            address_form = ProviderAddressForm().get_form(obj=provider)
+
+            self.render_address(provider, address_form=address_form, vanity_url_form=form)
+            
+            # log the event
+            self.log_event(user=provider.user, msg="Edit Address: Validation Error")
+
 
 
 
@@ -138,6 +180,7 @@ class ProviderProfilePhotoUploadHandler(ProviderBaseHandler, blobstore_handlers.
         # log the event
         self.log_event(user=provider.user, msg="Edit Profile: Upload Photo")
 
+#### CV Stuff
 
 class ProviderCVHandler(ProviderBaseHandler):
     forms = { 'education' : ProviderEducationForm,
@@ -442,6 +485,4 @@ class ProviderScheduleHandler(ProviderBaseHandler):
         
         
         
-        
-
 

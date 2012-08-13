@@ -14,7 +14,6 @@ from datetime import date
 
 class ProviderProfileForm(CustomForm):
     def _set_fields(self, form):
-        setattr(form, 'category', SelectField(_(u'Category'), choices=util.get_all_categories_for_profile_editing()))
         setattr(form, 'specialty', MultiCheckboxField(_(u'Specialties'), choices=util.getAllSpecialities()))
         setattr(form, 'bio', TextAreaField(_(u'Biography'), filters=[lambda x: custom_filters.escape_brackets(x)]))
         setattr(form, 'quote', TextAreaField(_(u'Quote'), filters=[lambda x: custom_filters.escape_brackets(x)]))
@@ -105,8 +104,20 @@ class ProviderAddressForm(CustomForm):
         setattr(form, 'address', TextField(_(u'Addresse')))
         setattr(form, 'city', TextField(_(u'City')))
         setattr(form, 'province', SelectField(_(u'Province'), choices=util.get_all_provinces_sorted()))
-        setattr(form, 'postal_code', TextField(_(u'Postal Code'), [validators.Optional(), validators.Regexp(regex="^[a-zA-Z][0-9][a-zA-Z][0-9][a-zA-Z][0-9]$", message=_(u'Please make sure your postal code is in the following format: A1B2C3'))]))
+        setattr(form, 'postal_code', TextField(_(u'Postal Code'), 
+                                               validators=[validators.Optional(), validators.Regexp(regex="^[a-zA-Z][0-9][a-zA-Z][0-9][a-zA-Z][0-9]$", message=_(u'Please make sure your postal code is in the following format: A1B2C3'))],
+                                               filters=[custom_filters.remove_spaces, custom_filters.to_uppercase]))
 
+class ProviderVanityURLForm(CustomForm):
+    def _set_fields(self, form):        
+        setattr(form, 'vanity_url', TextField(_(u'Account name'), validators=[
+                                              validators.Length(min=6, message=_('Your personal link requires at least 6 characters.')),
+                                              custom_validators.UniqueVanityURL(message=_(u'That address is already being used, please choose another one.')),
+                                              custom_validators.ReservedVanityURL(message=_(u'That address is already being used, please choose another one.')),
+                                              validators.Regexp(u'^[a-zA-Z0-9]+$', message=_(u'Your personal link can only contain letters and numbers.')),
+                                              ],
+                                              filters=[custom_filters.to_lowercase]           
+                                        ))
 
 # Schedule
 

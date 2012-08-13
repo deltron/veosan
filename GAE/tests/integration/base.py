@@ -34,7 +34,7 @@ class BaseTest(unittest.TestCase):
     _TEST_PATIENT_EMAIL = 'pat@patient.com'
     _TEST_PATIENT_PASSWORD = '654321'
     
-    _TEST_PROVIDER_VANITY_URL = 'bobafett'
+    _TEST_PROVIDER_VANITY_URL = 'firstlast'
 
     def setUp(self):
         # Wrap the app with WebTest’s TestApp.
@@ -188,7 +188,6 @@ class BaseTest(unittest.TestCase):
 
         signup_form2 = response.forms['provider_signup_form2']
         signup_form2['category'] = 'osteopath'
-        signup_form2['vanity_url'] = vanity_url
         signup_form2['password'] = self._TEST_PROVIDER_PASSWORD
         signup_form2['password_confirm'] = self._TEST_PROVIDER_PASSWORD
 
@@ -201,8 +200,7 @@ class BaseTest(unittest.TestCase):
     def fill_new_provider_address_correctly_action(self):
         # request the address page
         response = self.testapp.get('/provider/address/%s' % self._TEST_PROVIDER_VANITY_URL)
-        
-        address_form = response.forms[0] # address form
+        address_form = response.forms['address_form'] # address form
         
         # fill out the form
         address_form['title'] = u"mr"
@@ -303,9 +301,7 @@ class BaseTest(unittest.TestCase):
         
         # print profile_form.fields.values()
         
-        # fill out the form
-        profile_form['category'] = 'osteopath'
-        
+        # fill out the form        
         profile_form.set('specialty', True, 0) # Sports
         profile_form.set('specialty', True, 2) # Cardio
 
@@ -330,8 +326,6 @@ class BaseTest(unittest.TestCase):
         response.mustcontain('input checked id="specialty-2" name="specialty" type="checkbox" value="cardiology"')  
 
         response.mustcontain('input checked id="practice_sites-0" name="practice_sites" type="checkbox" value="onsite"')        
-
-        response.mustcontain('option selected value="osteopath"')
         
         # check values in database
         provider = db.get_provider_from_email("unit_test@provider.com")

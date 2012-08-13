@@ -7,23 +7,48 @@
 
 {% block content %}
 <!-- Form -->
-<form method="post" action="/provider/address/{{ provider.vanity_url }}" class="form-horizontal">
-	<div class="row">
-		<div class="span4">
+<div class="row">
+	<div class="span6">
+		<form method="post" action="/provider/address/{{ provider.vanity_url }}" class="form-horizontal" id="address_form">
 			<fieldset>
 				{{ macro.make_standard_form(address_form) }}
 			</fieldset>
-		</div>
-	</div>
-	<div class="row">
-		<div class="span12">
 			<div class="form-actions">
 				<button type="submit" class="btn btn-primary">
-						{{ _('Save') }}
+					{{ _('Save') }}
 				</button>
 			</div>
-		</div>
+		</form>
 	</div>
-</form>
+	<div class="span6">
+		<h3>{{ _('Personal Link' )}}</h3>
+
+		<p>
+			{{ _('Your personal link allows people to find and remember you easily.') }}
+			{{ _('You can use the address below to share your profile in emails or on your business card.') }}
+		</p>
+		<code>
+			veosan.com/{{ provider.vanity_url }}
+		</code>
+		<br>
+		<br>
+		<h3>{{ _('Change Your Personal Link') }}</h3>
+		<p>
+			{{ _('You can also change your personal link below.') }}
+		</p>
+		<form method="post" action="/provider/address/change_url/{{ provider.vanity_url }}" class="form-inline" id="vanity_url_form">
+			{{ macro.display_errors_for_field(vanity_url_form.vanity_url) }}
+
+			<div class="input-prepend">
+				<span class="add-on">&nbsp;veosan.com&nbsp;</span><span class="add-on">/</span>{{ vanity_url_form.vanity_url(class="span2", placeholder=_('Personal Link')) }}
+			</div>
+			<button type="submit" class="btn btn-primary">
+				{{ _('Change') }}
+			</button>
+		</form>
+		<span class="label label-warning">{{ _('Warning!') }}</span>
+		<br>{{ _('If you change your personal address the old one will not be valid anymore.') }}
+	</div>
+</div>
 
 {% endblock %} 
