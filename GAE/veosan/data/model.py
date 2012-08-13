@@ -275,6 +275,15 @@ class LogEvent(ndb.Model):
     description = ndb.StringProperty()
     referer = ndb.StringProperty()
 
+class Invite(ndb.Model):
+    created_on = ndb.DateTimeProperty(auto_now_add=True)
+
+    provider = ndb.KeyProperty(kind=Provider)
+
+    first_name = ndb.StringProperty()
+    last_name = ndb.StringProperty()
+    email = ndb.StringProperty()
+    note = ndb.TextProperty()
 
 class Schedule(ndb.Model):
     provider = ndb.KeyProperty(kind=Provider) # name='schedule'
