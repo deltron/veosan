@@ -164,6 +164,50 @@ class SignupTest(BaseTest):
         self.assertEqual(provider.vanity_url, 'firstlastanother')
                 
 
+    def test_signup_vanity_name_accent(self):
+        ''' Basic signup process for a new provider '''
+        response = self.testapp.post('/signup/provider')
+        
+        signup_form = response.forms['provider_signup_form']
+        signup_form['first_name'] = 'Renée'
+        signup_form['last_name'] = 'St-Vil'
+        signup_form['email'] = self._TEST_PROVIDER_EMAIL
+        signup_form['postal_code'] = 'H4Z 2P9'
+        response = signup_form.submit()
+
+        signup_form2 = response.forms['provider_signup_form2']
+        signup_form2['category'] = 'osteopath'
+        signup_form2['password'] = self._TEST_PROVIDER_PASSWORD
+        signup_form2['password_confirm'] = self._TEST_PROVIDER_PASSWORD
+
+        profile_response = signup_form2.submit().follow()
+        profile_response.mustcontain("Bienvenue")
+        
+        provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
+        self.assertEqual(provider.vanity_url, 'reneestvil')
+                
+    def test_signup_vanity_name_every_accent(self):
+        ''' Basic signup process for a new provider '''
+        response = self.testapp.post('/signup/provider')
+        
+        signup_form = response.forms['provider_signup_form']
+        signup_form['first_name'] = 'Renée'
+        signup_form['last_name'] = 'St-Vilàîèöêûç'
+        signup_form['email'] = self._TEST_PROVIDER_EMAIL
+        signup_form['postal_code'] = 'H4Z 2P9'
+        response = signup_form.submit()
+
+        signup_form2 = response.forms['provider_signup_form2']
+        signup_form2['category'] = 'osteopath'
+        signup_form2['password'] = self._TEST_PROVIDER_PASSWORD
+        signup_form2['password_confirm'] = self._TEST_PROVIDER_PASSWORD
+
+        profile_response = signup_form2.submit().follow()
+        profile_response.mustcontain("Bienvenue")
+        
+        provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
+        self.assertEqual(provider.vanity_url, 'reneestvilaieoeuc')
+                
         
 if __name__ == "__main__":
     logging.basicConfig(stream=sys.stderr)

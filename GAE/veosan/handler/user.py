@@ -23,7 +23,7 @@ from google.appengine.ext import ndb
 import webapp2
 import re
 from data import search_index
-
+from unidecode import unidecode
 
 class UserBaseHandler(BaseHandler):   
     ''' User management handler:
@@ -398,6 +398,9 @@ class ProviderSignupHandler2(UserBaseHandler):
             
             # remove any non-alpha
             vanity_url = ''.join([c for c in vanity_url if c.isalpha()])
+            
+            # remove any unicode accents
+            vanity_url = unidecode(vanity_url)
             
             # check if it's taken
             increment = 0
