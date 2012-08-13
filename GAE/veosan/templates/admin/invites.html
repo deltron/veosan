@@ -1,0 +1,43 @@
+{% extends "/layout/admin_nav.html" %}
+
+{% set active_page = "invites" %}
+
+{% block subhead %}Invites{% endblock %}
+{% block lead %}Look who's inviting who{% endblock %}
+
+{% block content %}
+<!-- span -->
+<div class="row">
+	<div class="span12">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Created On</th>
+					<th>From Provider</th>
+					<th>Invite Email</th>
+					<th>Invite First Name</th>
+					<th>Invite Last Name</th>
+					<th>Invite Note</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for i in invites %}
+				<tr>
+					<td>{{ i.created_on }}</td>
+					<td>
+						{% if i.provider %}
+						<a href="/{{ i.provider.get().vanity_url }}">{{ i.provider.get().vanity_url }}</a>
+						{% endif %}
+					</td>
+					<td>{{ i.email }}</td>
+					<td>{{ i.first_name }}</td>
+					<td>{{ i.last_name }}</td>
+					<td>{{ i.note }}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</div>
+
+{% endblock content %} 

@@ -107,6 +107,15 @@ class AdminPatientsHandler(AdminBaseHandler):
         patients = db.fetch_patients()
         self.render_template('admin/patients.html', patients=patients)
 
+class AdminInvitesHandler(AdminBaseHandler):
+    ''' Administer Invitations '''
+ 
+    @admin_required
+    def get(self):
+        invites = db.fetch_invites()
+        self.render_template('admin/invites.html', invites=invites)
+
+
 
 class AdminDataHandler(AdminBaseHandler):
     ''' Administer Providers '''
