@@ -54,7 +54,7 @@ class ProviderTest(BaseTest):
         # now find and delete it
         modal_response = response.click(linkid='tuesday_9_link')
 
-        delete_response = modal_response.click(description=' Delete ')
+        delete_response = modal_response.click(description=' Effacer ')
         
         delete_response.mustcontain(no='9 AM-5 PM')
     
@@ -118,7 +118,7 @@ class ProviderTest(BaseTest):
         
         response.mustcontain('<option selected value="10">10 AM</option>')
         response.mustcontain('<option selected value="14">2 PM</option>')
-        response.mustcontain('<option selected value="tuesday">Tuesday</option>')
+        response.mustcontain('<option selected value="tuesday">Mardi</option>')
 
 
     def test_merge_overlapping_times(self):
@@ -199,7 +199,7 @@ class ProviderTest(BaseTest):
 
         response.mustcontain('<option selected value="20">8 PM</option>')
         response.mustcontain('<option selected value="22">10 PM</option>')
-        response.mustcontain('<option selected value="tuesday">Tuesday</option>')
+        response.mustcontain('<option selected value="tuesday">Mardi</option>')
 
 
 if __name__ == "__main__":
