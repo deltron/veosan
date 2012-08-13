@@ -76,6 +76,7 @@ def filter_and_sort_providers_based_on_schedule(booking, providerQuery):
     for p in providerQuery:
         # list all available timeslots in order of proximity to requested datetime
         sorted_available_timeslots = get_sorted_schedule_timeslots(p, request_timeslot)
+        logging.debug('provider:%s schedules: %s' % (p.vanity_url, sorted_available_timeslots))
         # remove existing bookings
         sorted_available_timeslots_without_conflicts = filter_out_timeslots_with_existing_bookings(sorted_available_timeslots, p, request_timeslot)
         if sorted_available_timeslots_without_conflicts: # not empty
@@ -126,6 +127,7 @@ def get_sorted_schedule_timeslots(provider, request_timeslot):
     
     request_date = request_timeslot.start.date()
     scheduleQuery = Schedule.query(Schedule.provider==provider.key, Schedule.day==request_day_key)
+    logging.debug('schedules count for %s is %s' % (request_day_key, scheduleQuery.count()))
     timeslots = []
     for s in scheduleQuery:
         ts = create_one_hour_timeslots_over_range(request_date, s.start_time, s.end_time)

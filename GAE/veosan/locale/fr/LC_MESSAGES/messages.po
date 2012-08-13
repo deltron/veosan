@@ -171,10 +171,10 @@ msgid "Already a member? Sign in here."
 msgstr "Déjà membre? Connectez-vous ici."
 
 msgid "Almost done!"
-msgstr "Presque fini!"
+msgstr "Presque terminé!"
 
 msgid "You are just one click away from having your own online presence."
-msgstr "Il vous reste juste un clic avant d'avoir votre propre présence en ligne."
+msgstr "Il vous reste seulement un clic avant d'avoir votre propre présence en ligne."
 
 msgid "Your profile will help patients get to know you. The more you share, the more you will be discovered by new patients."
 msgstr "Votre profil aidera les patients à mieux vous connaître. Plus vous partagez, plus vous serez découvert par de nouveaux patients."

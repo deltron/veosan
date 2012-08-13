@@ -284,7 +284,7 @@ class Schedule(ndb.Model):
     
     def _pre_put_hook(self):
         ''' Checks if about-to-be-saved schedule overlaps an existing schedule. if yes, merges them and deletes the old schedule'''
-        logging.info('Schedule overlap check (pre-put)')
+        #logging.info('Schedule overlap check (pre-put)')
         sq = Schedule.query(Schedule.provider == self.provider, Schedule.day == self.day)
         for s in sq:
             if self.overlaps(s):
