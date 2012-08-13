@@ -7,7 +7,17 @@
 <span itemprop="name">{{ macro.display_provider_name(provider) }}</span>
 {% endblock %}
 {% block lead %}
+
 <span itemprop="jobTitle">{{ category_dict[provider.category] }}</span>
+{% if provider.city %}
+	{{ _('in') }} 
+	<span itemprop="workLocation"> 
+		<span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+		    <span itemprop="addressLocality">{{ provider.city }}</span>
+		</span>
+	</span>
+{% endif %}
+
 {% endblock %}
 
 {% block content %}
@@ -101,7 +111,9 @@
 			{% for e in provider.get_experience() %}
 			<li>
 				<h4>{{ e.title }}</h4>
-				<h6>{{ e.company_name }}
+				<h6>
+					
+				<span itemprop="worksFor"> {{ e.company_name }} </span>
 				{{ macro.display_cv_years(e.start_year, e.end_year) }} </h6>
 				{% if e.description %}
 				<p>
@@ -120,7 +132,9 @@
 			{% for e in provider.get_education() %}
 			<li>
 				<h4>{{ e.degree_type|code_to_string }} {{ e.degree_title }}</h4>
-				<h6> {{ e.school_name }}
+				<h6>
+					<span itemprop="alumniOf">{{ e.school_name }}</span>
+
 
 				{{ macro.display_cv_years(e.start_year, e.end_year) }} </h6>
 				{% if e.description %}
@@ -160,11 +174,15 @@
 		<ul class="unstyled">
 			{% for e in provider.get_organization() %}
 			<li>
-				<h4> {% if e.organization == 'other' %}
+				<h4>
+				<span itemprop="memberOf">	
+				{% if e.organization == 'other' %}
 				{{ e.other }}
 				{% else %}
 				{{ association_dict[e.organization] }}
-				{% endif %} </h4>
+				{% endif %} 
+				</span>
+				</h4>
 				<h6>{{ macro.display_cv_years(e.start_year, e.end_year) }}</h6>
 			</li>
 			{% endfor %}

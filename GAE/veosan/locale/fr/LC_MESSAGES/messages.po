@@ -742,7 +742,6 @@ msgid "Write your bio and quote"
 msgstr "Écrivez votre biographie et commentaire"
 
 
-
 #################
 # Address Page
 #################
