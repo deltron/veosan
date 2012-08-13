@@ -65,7 +65,7 @@ Don't generate if not adding, editing, or deleting.
 <div class="modal hide" id="schedule_form_modal" style="display: none;">
 	<div class="modal-header">
 		<a class="close" data-dismiss="modal">×</a>
-		<h3>Add an Available Timeslot</h3>
+		<h3>{{ _('Add an Available Timeslot') }}</h3>
 	</div>
 	{% if edit_key %}
 	{% set post_url = '/provider/schedule/' + provider.vanity_url + '/edit/' + edit_key %}

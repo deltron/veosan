@@ -286,6 +286,8 @@ msgstr "Téléchargez votre photo"
 msgid "Submit"
 msgstr "Soumettre"
 
+msgid "Delete"
+msgstr "Effacer"
 
 #################
 # About page
@@ -804,6 +806,18 @@ msgstr "Non-disponible"
 msgid "Appointment"
 msgstr "Rendez-vous"
 
+msgid "Add an Available Timeslot"
+msgstr "Ajouter un intervalle de temps disponible"
+
+msgid "Day"
+msgstr "Jour"
+
+msgid "Start Time"
+msgstr "Début"
+
+msgid "End Time"
+msgstr "Fin"
+
 #################
 # Bookings List Page
 #################
@@ -1011,6 +1025,34 @@ msgstr "Territoire du Yukon"
 
 msgid "Northwest Territories"
 msgstr "Territoires du Nord-Ouest"
+
+
+#################
+# Days
+#################
+
+msgid "Monday"
+msgstr "Lundi"
+
+msgid "Tuesday"
+msgstr "Mardi"
+
+msgid "Wednesday"
+msgstr "Mercredi"
+
+msgid "Thursday"
+msgstr "Jeudi"
+
+msgid "Friday"
+msgstr "Vendredi"
+
+msgid "Saturday"
+msgstr "Samedi"
+
+msgid "Sunday"
+msgstr "Dimanche"
+
+
 
 #################
 # Schedule Periods
