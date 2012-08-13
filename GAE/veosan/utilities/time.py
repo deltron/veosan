@@ -74,6 +74,10 @@ def get_days_of_the_week():
            ]
 
 
+def tomorrow():
+    d = date.today()
+    oneDay = timedelta(days=1)
+    return d + oneDay
 
 
 ###

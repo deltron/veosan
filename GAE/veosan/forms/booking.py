@@ -17,6 +17,6 @@ class BookingForm(CustomForm):
         setattr(form, 'booking_time', SelectField(_(u'Time'), choices=time.get_time_list(), coerce=int))
 
 
-class email_only_booking_form(Form):
+class EmailOnlyBookingForm(Form):
     email = TextField(_(u'E-mail Address'), [validators.Email(message=_(u'Invalid email address.'))])
 

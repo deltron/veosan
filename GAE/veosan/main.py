@@ -113,6 +113,7 @@ application = ndb.toplevel(webapp2.WSGIApplication([
                                                     
                                        #provider
                                        PathPrefixRoute('/provider', [
+                                            
                                             # display a status message to the provider (new, reset, etc)                                            PathPrefixRoute('/profile', [
                                             PathPrefixRoute('/message', [
                                                 Route('/<msg_key>/<vanity_url>', provider.ProviderMessageHandler),
@@ -156,6 +157,9 @@ application = ndb.toplevel(webapp2.WSGIApplication([
 
                                             # terms display
                                             Route('/terms/<vanity_url>', user.ProviderTermsHandler),
+                                            
+                                            # book now
+                                            Route('/book/<vanity_url>', booking.BookFromPublicProfile),
                                         ]),
                                        
                                        ('/login', user.LoginHandler),

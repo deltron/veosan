@@ -1,0 +1,81 @@
+{% extends "/layout/base.html" %}
+
+{% set active_page = "public_profile" %}
+
+
+{% block subhead %}
+<span itemprop="name">{{ macro.display_provider_name(provider) }}</span>
+{% endblock %}
+{% block lead %}
+<span itemprop="jobTitle">{{ category_dict[provider.category] }}</span>
+{% endblock %}
+
+{% block content %}
+
+
+<div class="row">
+	<!-- left column -->
+	<div class="span2">
+		{% if provider.profile_photo_blob_key == None %}
+		<img src="/assets/img/default-profile.png" width="150" height="150"
+		alt="{{ macro.display_provider_name(provider) }} - {{ category_dict[provider.category] }}"
+		itemprop="image">
+		{% else %}
+		<img src="{{ provider.get_profile_photo_image_url(150) }}" width="150"
+		alt="{{ macro.display_provider_name(provider) }} - {{ category_dict[provider.category] }}"
+		itemprop="image">
+		{% endif %}
+
+		<br>
+		<br>
+
+		{% if provider.specialty|remove_empty_strings_from_list %}
+		<h4>{{ _("Specialties") }}</h4>
+		<ul class="unstyled">
+			{% for s in provider.specialty %}
+			<li>
+				{{ specialty_dict[s] }}
+			</li>
+			{% endfor %}
+		</ul>
+		{% endif %}
+
+
+		<br>
+		<br>
+
+		{% if provider.booking_enabled %}
+
+
+		<br>
+		<br>
+		{% endif %}
+
+		{% if 'admin' in roles %}
+		<a href="/provider/profile/{{ provider.vanity_url }}" class="btn btn-danger"><i>Edit Profile</i></a>
+		{% endif %}
+
+	</div>
+	<div class="span5">
+		
+		
+		<table>
+		{% for (day_key, day_times) in dtm|dictsort %}
+		
+		<tr> 
+			<td>{{ day_key|format_date }}</td>
+			
+			{% for dt in day_times %}
+				<td> <a href="#">{{dt}}</a> </td>
+			{% endfor %}	
+		</tr>
+			
+		{% endfor %}
+		</table>
+	</div>
+
+</div>
+
+
+{% endblock content %}
+

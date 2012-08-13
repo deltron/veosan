@@ -3,15 +3,14 @@
 import logging
 import data.db as db
 from data import db_search
-import mail
-from forms.base import BookingForm, email_only_booking_form
+import mail, util
+from forms.booking import BookingForm, EmailOnlyBookingForm
 from forms.patient import PatientForm
 from forms.user import LoginForm
 from handler.base import BaseHandler
 from handler.auth import patient_required
 from handler.patient import PatientBaseHandler
-from datetime import datetime
-import util
+from datetime import datetime, date, timedelta
 from utilities import time
 
 class BookingBaseHandler(BaseHandler):
@@ -47,14 +46,14 @@ class BookingBaseHandler(BaseHandler):
             self.render_result(booking, booking_responses, index, email_form)
         else:
             logging.warn('No provider found for booking: %s' % booking.key.urlsafe())
-            emailForm = email_only_booking_form()
+            emailForm = EmailOnlyBookingForm()
             self.renderFullyBooked(booking, emailForm) 
     
     def render_result(self, booking, booking_responses, index, email_form=None):
         br = booking_responses[index]
         # create email form if not passed (email_form is passed in when validation fails)
         if not email_form:
-            email_form = email_only_booking_form()
+            email_form = EmailOnlyBookingForm()
         logging.info("Rendering result: active provider is %s at index %s: " % (br.provider.full_name(), index))
         kw = {'patient': None, 'booking': booking, 'booking_responses': booking_responses, 'index': index, 'form': email_form }
         self.render_template('search/result_carousel.html', **kw)     
@@ -97,7 +96,7 @@ class SearchNextHandler(BookingBaseHandler):
             self.render_result(booking, booking_responses, index)
         else:
             logging.warn('No provider found for booking: %s' % booking.key.urlsafe())
-            emailForm = email_only_booking_form()
+            emailForm = EmailOnlyBookingForm()
             self.renderFullyBooked(booking, emailForm)
             
 
@@ -113,7 +112,7 @@ class BookingHandler(BookingBaseHandler):
         booking = db.get_from_urlsafe_key(booking_key)
         self.render_confirmed_booking(booking) 
         
-       
+  
     def post(self):
         '''
             State: 
@@ -122,13 +121,12 @@ class BookingHandler(BookingBaseHandler):
                 
             1. Save selected provider and timeslot to the booking
             2. Add the patient using the User
-        '''
+        '''        
         logging.info('request %s' % self.request)
-        
+
         booking = db.get_from_urlsafe_key(self.request.get('bk'))
-        
         # 1. Save provider and datetime in booking
-        provider = db.get_from_urlsafe_key(self.request.get('provider_key')) 
+        provider = db.get_from_urlsafe_key(self.request.get('provider_key'))
         booking.provider = provider.key
         booking_datetime = datetime.strptime(self.request.get('booking_datetime'), '%Y-%m-%d %H:%M:%S')
         booking.datetime = booking_datetime
@@ -158,7 +156,7 @@ class BookingHandler(BookingBaseHandler):
             
         else:
             # no user is logged in, grab the email address from the booking form
-            email_form = email_only_booking_form(self.request.POST)
+            email_form = EmailOnlyBookingForm(self.request.POST)
 
             if email_form.validate():
                 # store email in booking as requestEmail
@@ -195,16 +193,33 @@ class BookingHandler(BookingBaseHandler):
                     PatientBaseHandler.render_new_patient_form(self, patient_form, booking)             
             else:
                 # email validation failed. Show same results again
-                self.search_and_render_results(booking, email_form)
+                self.search_and_render_results(booking, email_form)   
+    
+
             
-            
+
+class BookFromPublicProfile(BookingBaseHandler):
+    '''
+        Using vanity url, display schedule
+    '''
+    def get(self, vanity_url=None, start_date=None):
+        provider = db.get_provider_from_vanity_url(vanity_url)
+        if (not start_date) or (start_date <= date.today):
+            start_date = time.tomorrow()
+        period = timedelta(days=7)
+        schedules = provider.get_schedules()
+        datetimes_map = util.generate_datetimes_map(schedules, start_date, period)
+        self.render_template('provider/booking_schedule.html', provider, dtm=datetimes_map) 
+        
+             
+                
 class FullyBookedHandler(BookingBaseHandler):
     def get(self):
         logging.warn('FullyBooked GET Handler Not Implemented')
         pass
         
     def post(self):
-        emailForm = email_only_booking_form(self.request.POST)
+        emailForm = EmailOnlyBookingForm(self.request.POST)
         booking = db.get_from_urlsafe_key(self.request.get('bk'))
         if emailForm.validate():
             ''' Stores email for Booking with No Result'''

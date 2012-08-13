@@ -16,6 +16,7 @@ from handler.auth import provider_required
 import util
 from util import saved_message
 from utilities import time
+from forms.booking import EmailOnlyBookingForm
 
 class ProviderBaseHandler(BaseHandler): 
 
@@ -31,7 +32,8 @@ class ProviderBaseHandler(BaseHandler):
         handler.render_template('provider/bookings.html', provider=provider, bookings=bookings, **kw)
 
     def render_public_profile(self, provider, **kw):
-        self.render_template('provider/public_profile.html', provider=provider, **kw)
+        book_now_form = EmailOnlyBookingForm()
+        self.render_template('provider/public_profile.html', book_now_form=book_now_form, provider=provider, **kw)
 
     def render_cv(self, provider, **kw):
         self.render_template('provider/cv.html', provider=provider, **kw)

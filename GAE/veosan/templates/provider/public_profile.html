@@ -70,9 +70,13 @@
 		<br>
 
 		{% if provider.booking_enabled %}
-		<button type="submit" class="btn btn-success btn-large" style="width:100%">
+
+		<a href="/provider/book/{{ provider.vanity_url }}" id="book_button" type="submit" class="btn btn-large btn-success">
 			{{ _('Book Now') }}
-		</button>
+		</a>
+		
+		<br>
+		<br>
 		{% endif %}
 
 		{% if 'admin' in roles %}

@@ -5,7 +5,8 @@ from itertools import chain
 from webapp2_extras.i18n import lazy_gettext as _
 from markdown2 import markdown2
 import logging
-from utilities import time
+from utilities.time import get_days_of_the_week
+from datetime import date, time, datetime, timedelta
 
 DEV_SERVERS = ('localhost:8080', 'veosan-stage.appspot.com')
 PRODUCTION_SERVERS = ('www.veosan.com')
@@ -341,11 +342,45 @@ class ScheduleMap(dict):
 
 def create_schedule_map(schedules):
     sm = ScheduleMap()
-    for (key, label) in time.get_days_of_the_week():
+    for (key, label) in get_days_of_the_week():
         sm[key] = dict()
     for s in schedules:
         sm[s.day][s.start_time] = s
     logging.debug('smm %s' % sm)
     return sm
 
-        
+
+def generate_datetimes_from_schedule(schedule, date):
+    datetimes = []
+    t = schedule.start_time
+    while t < schedule.end_time:
+        dt = datetime.combine(date, time(hour=t))
+        datetimes.append(dt)
+        t = t+1
+    return datetimes
+    
+
+def generate_datetimes_map(schedules, start_date, period):
+    '''
+        Generate a dict of date, hour, datetime
+    '''
+    logging.info('generate datetime map')
+    dtm = dict()
+    sm = create_schedule_map(schedules)
+    end_date = start_date + period
+    d = start_date
+    while d <= end_date:
+        dtm[d] = []
+        # day of week
+        weekday_int = d.weekday()
+        # map the number to the actual day
+        day_key = get_days_of_the_week()[weekday_int][0]
+        # check schedules for that day
+        days_schedules = sm[day_key]
+        for hour_key in days_schedules.keys():
+            s = days_schedules[hour_key]
+            datetimes_list = generate_datetimes_from_schedule(s, d)
+            dtm[d].extend(datetimes_list)
+        d = d + timedelta(days=1)
+    return dtm
+    
