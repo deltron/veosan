@@ -16,6 +16,9 @@
 	<li id="address" {% if  "address" == active_page %} class="active" {% endif %}>
 		<a href="/provider/address/{{ provider.vanity_url }}">{{ _('Address') }}</a>
 	</li>
+	<li id="schedule" {% if "schedule" == active_page %} class="active" {% endif %}>
+		<a href="/provider/schedule/{{ provider.vanity_url }}">{{ _('Schedule') }}</a>
+	</li>
 
 	{% if 'admin' in roles %}
 	<li id="social" {% if "social" == active_page %} class="active" {% endif %} style="font-style:italic">
@@ -23,9 +26,6 @@
 	</li>
 	<li id="bookings" {% if "bookings" == active_page %} class="active" {% endif %} style="font-style:italic">
 		<a href="/provider/bookings/{{ provider.vanity_url }}">{{ _('Bookings') }}</a>
-	</li>
-	<li id="schedule" {% if "schedule" == active_page %} class="active" {% endif %} style="font-style:italic">
-		<a href="/provider/schedule/{{ provider.vanity_url }}">{{ _('Schedule') }}</a>
 	</li>
 	<li id="administration" {% if  "administration" == active_page %} class="active" {% endif %} style="font-style:italic">
 		<a href="/admin/provider/admin/{{ provider.vanity_url }}">{{ _('Administration') }}</a>
