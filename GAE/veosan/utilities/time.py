@@ -143,6 +143,13 @@ def format_30min_period(startTime, startMinutes):
 def format_datetime_noseconds(datetime):
     return format_datetime(datetime, "yyyy-MM-dd H:mm")
 
+def format_datetime_hour_min(datetime):
+    lang = _('en')
+    if (lang == 'fr'):
+        return "%s" % format_datetime(datetime, "H:mm", rebase=False)
+    else:
+        return "%s" % format_datetime(datetime, "H:mm a", rebase=False)
+    return 
 
 def format_datetime_withseconds_convert_east_tz(datetime):
     return format_datetime(datetime, "yyyy-MM-dd H:mm:ss", rebase=True)

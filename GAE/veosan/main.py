@@ -20,6 +20,7 @@ jinja_filters['format_datetime_with_weekday'] = time.format_datetime_with_weekda
 jinja_filters['format_date_weekday_after'] = time.format_date_weekday_after
 jinja_filters['format_datetime_full'] = time.format_datetime_full
 jinja_filters['format_datetime_noseconds'] = time.format_datetime_noseconds
+jinja_filters['format_datetime_hour_min'] = time.format_datetime_hour_min
 jinja_filters['format_datetime_withseconds_convert_east_tz'] = time.format_datetime_withseconds_convert_east_tz
 jinja_filters['format_hour'] = time.format_hour
 jinja_filters['format_30min_period'] = time.format_30min_period

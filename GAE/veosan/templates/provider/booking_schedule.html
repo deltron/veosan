@@ -57,20 +57,29 @@
 
 	</div>
 	<div class="span5">
-		
-		
-		<table>
-		{% for (day_key, day_times) in dtm|dictsort %}
-		
-		<tr> 
-			<td>{{ day_key|format_date }}</td>
+
+		<table class="table table-condensed centered">
 			
-			{% for dt in day_times %}
-				<td> <a href="#">{{dt}}</a> </td>
-			{% endfor %}	
-		</tr>
+			<thead>
+				{% for (day_key, day_times) in dtm|dictsort %}
+				<th style="min-width: 75px; text-align: center"> {{ day_key|format_date }} </th>
+				{% endfor %}
+			</thead>
 			
-		{% endfor %}
+			
+			
+			<tr>
+				{% for (day_key, day_times) in dtm|dictsort %}
+				<td>
+					{% for t in day_times %}
+				  	 <p>
+				  	 	<a href='#'>{{t|format_datetime_hour_min}}</a>
+				  	 </p>
+				  	{% endfor %}
+				</td>
+				{% endfor %}
+			</tr>
+			
 		</table>
 	</div>
 
