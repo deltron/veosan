@@ -2,7 +2,6 @@
 
 {% set active_page = "public_profile" %}
 
-
 {% block subhead %}
 <span itemprop="name">{{ macro.display_provider_name(provider) }}</span>
 {% endblock %}
@@ -10,12 +9,8 @@
 
 <span itemprop="jobTitle">{{ category_dict[provider.category] }}</span>
 {% if provider.city %}
-	{{ _('in') }} 
-	<span itemprop="workLocation"> 
-		<span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
-		    <span itemprop="addressLocality">{{ provider.city }}</span>
-		</span>
-	</span>
+{{ _('in') }}
+<span itemprop="workLocation"> <span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress"> <span itemprop="addressLocality">{{ provider.city }}</span> </span> </span>
 {% endif %}
 
 {% endblock %}
@@ -81,10 +76,8 @@
 
 		{% if provider.booking_enabled %}
 
-		<a href="/provider/book/{{ provider.vanity_url }}" id="book_button" type="submit" class="btn btn-large btn-success">
-			{{ _('Book Now') }}
-		</a>
-		
+		<a href="/provider/book/{{ provider.vanity_url }}" id="book_button" type="submit" class="btn btn-large btn-success"> {{ _('Book Now') }} </a>
+
 		<br>
 		<br>
 		{% endif %}
@@ -115,10 +108,7 @@
 			{% for e in provider.get_experience() %}
 			<li>
 				<h4>{{ e.title }}</h4>
-				<h6>
-					
-				<span itemprop="worksFor"> {{ e.company_name }} </span>
-				{{ macro.display_cv_years(e.start_year, e.end_year) }} </h6>
+				<h6><span itemprop="worksFor"> {{ e.company_name }} </span> {{ macro.display_cv_years(e.start_year, e.end_year) }} </h6>
 				{% if e.description %}
 				<p>
 					{{ e.description|markdown|safe }}
@@ -136,11 +126,7 @@
 			{% for e in provider.get_education() %}
 			<li>
 				<h4>{{ e.degree_type|code_to_string }} {{ e.degree_title }}</h4>
-				<h6>
-					<span itemprop="alumniOf">{{ e.school_name }}</span>
-
-
-				{{ macro.display_cv_years(e.start_year, e.end_year) }} </h6>
+				<h6><span itemprop="alumniOf">{{ e.school_name }}</span> {{ macro.display_cv_years(e.start_year, e.end_year) }} </h6>
 				{% if e.description %}
 				<p>
 					{{ e.description|markdown|safe }}
@@ -173,20 +159,22 @@
 	</div>
 
 	<div class="span5">
+
+		<div class="well well-small" style="width: 80%; text-align: center">
+			<i class="bs-icon icon-bullhorn"> </i>
+			<a href="/signup/provider">Sign up to get your own professional profile today. It's free!</a>
+		</div>
+		<br>
 		{% if provider.get_organization()|remove_empty_strings_from_list %}
 		<h3>{{ _('Organization Memberships') }}</h3>
 		<ul class="unstyled">
 			{% for e in provider.get_organization() %}
 			<li>
-				<h4>
-				<span itemprop="memberOf">	
-				{% if e.organization == 'other' %}
-				{{ e.other }}
-				{% else %}
-				{{ association_dict[e.organization] }}
-				{% endif %} 
-				</span>
-				</h4>
+				<h4><span itemprop="memberOf"> {% if e.organization == 'other' %}
+					{{ e.other }}
+					{% else %}
+					{{ association_dict[e.organization] }}
+					{% endif %} </span></h4>
 				<h6>{{ macro.display_cv_years(e.start_year, e.end_year) }}</h6>
 			</li>
 			{% endfor %}
