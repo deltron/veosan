@@ -43,7 +43,7 @@
 		{% endif %}
 	</div>
 	<div class="span6">
-		<h2><a data-toggle="modal" href="#invite_provider_modal">Invite a health care professional</a></h2>
+		<h2><a data-toggle="modal" href="#invite_provider_modal">Send an invitation</a></h2>
 		<br>
 		<h2>Invite a patient to view your profile</h2>
 		<ul>
@@ -72,7 +72,7 @@
 		<a class="close" data-dismiss="modal">×</a>
 		<h3>Invite a professional</h3>
 	</div>
-	<form method="post" action="" class="form-horizontal" id="invite_provider_form">
+	<form method="post" action="/provider/social/{{ provider.vanity_url }}/invite" class="form-horizontal" id="invite_provider_form">
 		<div class="modal-body">
 			<p>
 				Hi! We hope you like Veosan. We've definitely been working hard to make it better.
@@ -88,7 +88,7 @@
 		</div>
 		<div class="modal-footer">
 			<button type="submit" class="btn btn-primary">
-				{{ _('Send') }}
+				{{ _('Send Invite') }}
 			</button>
 		</div>
 	</form>

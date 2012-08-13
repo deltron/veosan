@@ -7,7 +7,7 @@ from webapp2_extras.i18n import lazy_gettext as _
 # veo
 import data.db as db
 from data.model import Schedule, Education, Experience, ContinuingEducation, \
-    ProfessionalOrganization, ProfessionalCertification
+    ProfessionalOrganization, ProfessionalCertification, Invite
 from forms.provider import ProviderAddressForm, ProviderEducationForm, ProviderContinuingEducationForm, ProviderExperienceForm, ProviderProfileForm, ProviderPhotoForm, \
     ProviderCertificationForm, ProviderOrganizationForm, ProviderScheduleForm, \
     ProviderVanityURLForm, ProviderInviteForm
@@ -354,6 +354,7 @@ class ProviderPublicProfileHandler(ProviderBaseHandler):
 
 
 class WelcomeHandler(ProviderBaseHandler):
+    @provider_required
     def get(self, vanity_url=None, disable=None):
         provider = db.get_provider_from_vanity_url(vanity_url)
 
@@ -366,12 +367,34 @@ class WelcomeHandler(ProviderBaseHandler):
         self.render_template("provider/welcome.html", provider=provider)
 
 class SocialHandler(ProviderBaseHandler):
+    @provider_required
     def get(self, vanity_url=None):
         provider = db.get_provider_from_vanity_url(vanity_url)
         
         provider_invite_form = ProviderInviteForm().get_form()
 
         self.render_template("provider/social.html", provider=provider, provider_invite_form=provider_invite_form)
+
+    @provider_required
+    def post(self, vanity_url=None):
+        provider = db.get_provider_from_vanity_url(vanity_url)
+        
+        form = ProviderInviteForm().get_form(self.request.POST)
+        if form.validate():
+            invite = Invite()
+            invite.provider = provider.key
+            form.populate_obj(invite)
+            invite.put()
+            
+            message = "Invitation sent to %s %s (%s) " % (invite.first_name, invite.last_name, invite.email)
+            
+            # new form for next invite
+            provider_invite_form = ProviderInviteForm().get_form()
+            self.render_template("provider/social.html", success_message=message, provider=provider, provider_invite_form=provider_invite_form)
+        else:
+            self.render_template("provider/social.html", provider=provider, provider_invite_form=form)
+
+
 
 class ProviderSearchHandler(ProviderBaseHandler):
     def post(self, vanity_url=None):

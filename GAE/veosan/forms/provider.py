@@ -125,7 +125,6 @@ class ProviderInviteForm(CustomForm):
         setattr(form, 'last_name', TextField(_(u'Last Name'), [validators.Length(min=2, message=_(u'Last name required.'))]))
         setattr(form, 'email', TextField(_(u'E-mail Address'), validators=[
                                                       validators.Email(message=_(u'Invalid email address.')),
-                                                      custom_validators.UniqueEmail(message=_(u'That address is already being used, please choose another one.')),
                                                      ],
                                                      filters=[custom_filters.to_lowercase]           
                                          ))
