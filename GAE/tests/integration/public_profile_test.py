@@ -2,8 +2,12 @@
 
 from base import BaseTest
 import unittest
+import logging
 from data import db
 import testutil
+from datetime import datetime
+from utilities import time
+from babel.dates import format_date, format_datetime, format_time
 
 class PublicProfileTest(BaseTest):
     
@@ -114,6 +118,8 @@ class PublicProfileTest(BaseTest):
         public_profile = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
         public_profile.mustcontain("Fantastic Fox")
         public_profile.mustcontain("Réservez Maintenant")
+        self.logout_admin()
+        
         schedule_page = public_profile.click(linkid='book_button')
         schedule_page.mustcontain("Choisissez la date et l'heure de votre rendez-vous")
         # find the form for next Monday at 10
@@ -130,7 +136,16 @@ class PublicProfileTest(BaseTest):
         # check emails
         
         # check provider bookings list
+        booking_datetime = datetime.strptime(testutil.next_monday_date_string() + " 10", '%Y-%m-%d %H')
+        french_datetime_string = format_datetime(booking_datetime, "EEEE 'le' d MMMM yyyy", locale='fr_CA') + " à " + format_datetime(booking_datetime, "H:mm", locale='fr_CA')
+        logging.info('French date time of booking: %s' % french_datetime_string)        
+        self.login_as_provider()
+        provider_bookings = self.testapp.get('/provider/bookings/' + self._TEST_PROVIDER_VANITY_URL)
+        provider_bookings.showbrowser()
+        provider_bookings.mustcontain('Pat Patient')
         # check datetime
+        provider_bookings.mustcontain(french_datetime_string)
+        #self.logout_provider()
         
         # check patient's booking list
         # check datetime
