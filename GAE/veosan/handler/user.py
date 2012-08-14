@@ -106,19 +106,23 @@ class ProviderTermsHandler(UserBaseHandler):
 class InviteHandler(UserBaseHandler):
     def get(self, invite_token = None):
         invite = db.get_invite_from_token(invite_token)
-        invite_provider = invite.provider.get()
-        
-        invite.link_clicked = True
-        invite.put()
-        
-        logging.info("(InviteHandler.get) Invite token for %s from %s " % (invite.email, invite_provider.vanity_url))
-
-        provider_signup_form = ProviderSignupForm1().get_form()
-        provider_signup_form['email'].data = invite.email
-        provider_signup_form['first_name'].data = invite.first_name
-        provider_signup_form['last_name'].data = invite.last_name
-
-        self.render_template('user/signup_provider_1.html', provider_signup_form=provider_signup_form)      
+        if invite:
+            invite_provider = invite.provider.get()
+            
+            # update invite status
+            invite.link_clicked = True
+            invite.put()
+            
+            logging.info("(InviteHandler.get) Invite token for %s from %s " % (invite.email, invite_provider.vanity_url))
+    
+            provider_signup_form = ProviderSignupForm1().get_form()
+            provider_signup_form['email'].data = invite.email
+            provider_signup_form['first_name'].data = invite.first_name
+            provider_signup_form['last_name'].data = invite.last_name
+    
+            self.render_template('user/signup_provider_1.html', provider_signup_form=provider_signup_form)
+        else:
+            self.redirect("/login")    
 
 
 class PasswordHandler(UserBaseHandler):
