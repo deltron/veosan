@@ -7,6 +7,7 @@ import util
 from webapp2_extras.i18n import lazy_gettext as _
 
 class PatientForm(Form):
+    email = TextField(_(u'E-mail Address'), [validators.Email(message=_(u'Invalid email address.'))])
     first_name = TextField(_(u'First Name'), [validators.Length(min=1, message=_(u'First name is a required field'))])
     last_name = TextField(_(u'Last Name'), [validators.Length(min=1, message=_(u'Last name is a required field'))])
     telephone = TextField(_(u'Telephone'), [validators.Regexp(regex="^[2-9]\d{2}-\d{3}-\d{4}$", message=_(u'Please make sure phone number is in the following format: 514-555-1212'))])
