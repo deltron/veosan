@@ -64,7 +64,7 @@
 		<table style="width: 100%" class="table table-condensed centered">			
 			<thead>
 				{% for (day_key, day_times) in dtm|dictsort %}
-				<th style="min-width: 75px; text-align: center"> {{ day_key|format_date }} </th>
+				<th style="min-width: 75px; text-align: center"> {{ day_key|format_date_with_weekday|capitalize }} </th>
 				{% endfor %}
 			</thead>
 			
@@ -72,11 +72,11 @@
 				{% for (day_key, day_times) in dtm|dictsort %}
 				<td style="text-align: center">
 					{% for t in day_times %}
-					<form action="/patient/book" method="post">
+					<form action="/patient/book" method="post" id="form-{{day_key~"-"~t.hour}}">
 						<input type="hidden" name="bk" value="{{ booking.key.urlsafe() }}"/>
 					  	<input type="hidden" name="provider_key" value="{{ provider.key.urlsafe() }}"/>
 					  	<input type="hidden" name="booking_datetime" value="{{ t|format_datetime_booking_form }}"/>
-					  	<button style="width=100%" type="submit" class="btn btn-primary">
+					  	<button style="width=100%" type="submit" class="btn btn-primary" id="button-{{day_key~"-"~t.hour}}">
 							{{t|format_datetime_hour_min}}
 						</button>
 				  	 </form>
