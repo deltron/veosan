@@ -8,7 +8,7 @@ class ProviderSocialTest(BaseTest):
     def test_invite_provider(self):
         self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
         
-        response = self.testapp.get('/provider/social/' + self._TEST_PROVIDER_VANITY_URL)
+        response = self.testapp.get('/provider/network/' + self._TEST_PROVIDER_VANITY_URL)
 
         invite_provider_form = response.forms['invite_provider_form']
         invite_provider_form['first_name'] = 'david'
@@ -71,7 +71,7 @@ class ProviderSocialTest(BaseTest):
     def test_invite_token_already_used(self):
         self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
         
-        response = self.testapp.get('/provider/social/' + self._TEST_PROVIDER_VANITY_URL)
+        response = self.testapp.get('/provider/network/' + self._TEST_PROVIDER_VANITY_URL)
 
         invite_provider_form = response.forms['invite_provider_form']
         invite_provider_form['first_name'] = 'david'

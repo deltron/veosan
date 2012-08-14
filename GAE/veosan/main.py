@@ -129,7 +129,7 @@ application = ndb.toplevel(webapp2.WSGIApplication([
                                                                      
                                             Route('/bookings/<vanity_url>', provider.ProviderBookingsHandler),
                                             
-                                            PathPrefixRoute('/social', [
+                                            PathPrefixRoute('/network', [
                                                 Route('/<vanity_url>', provider.SocialHandler),
                                                 Route('/<vanity_url>/invite', provider.SocialHandler),
                                             ]),

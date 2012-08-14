@@ -375,7 +375,7 @@ class SocialHandler(ProviderBaseHandler):
         
         provider_invite_form = ProviderInviteForm().get_form()
 
-        self.render_template("provider/social.html", provider=provider, provider_invite_form=provider_invite_form)
+        self.render_template("provider/network.html", provider=provider, provider_invite_form=provider_invite_form)
 
     @provider_required
     def post(self, vanity_url=None):
@@ -408,9 +408,9 @@ class SocialHandler(ProviderBaseHandler):
             
             # new form for next invite
             provider_invite_form = ProviderInviteForm().get_form()
-            self.render_template("provider/social.html", success_message=message, provider=provider, provider_invite_form=provider_invite_form)
+            self.render_template("provider/network.html", success_message=message, provider=provider, provider_invite_form=provider_invite_form)
         else:
-            self.render_template("provider/social.html", provider=provider, provider_invite_form=form)
+            self.render_template("provider/network.html", provider=provider, provider_invite_form=form)
 
 
 
@@ -444,7 +444,7 @@ class ProviderSearchHandler(ProviderBaseHandler):
             logging.exception('Search failed')
 
 
-        self.render_template("provider/social.html", provider=provider, provider_search_results=provider_search_results)
+        self.render_template("provider/network.html", provider=provider, provider_search_results=provider_search_results)
 
 
 # BOOKING AND SCHEDULE STUFF
