@@ -26,8 +26,8 @@
 				<tr>
 					<td>{{ i.created_on }}</td>
 					<td>
-						{% if i.link_clicked %}
-							<span class="label label-success">Link clinked</span><br>
+						{% if i.link_clicked and not i.profile_created %}
+							<span class="label label-success">Link Clicked</span><br>
 						{% endif %}
 
 						{% if i.profile_created %}

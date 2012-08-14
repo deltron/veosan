@@ -117,6 +117,10 @@ def get_user_from_resetpassword_token(token):
 def get_invite_from_token(token):
     return Invite.query(Invite.token == token).get()
 
+def get_invite_from_email(email):
+    return Invite.query(Invite.email == email).get()
+
+
 def get_provider_from_user(user):
     '''returns the first provider profile liked to user. Returns None if user is not a provider'''
     if user:

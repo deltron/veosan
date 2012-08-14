@@ -461,8 +461,16 @@ class ProviderSignupHandler2(UserBaseHandler):
             
             
             provider.vanity_url = vanity_url           
+            
             # save provider
             provider.put()
+            
+            # check if an invitation was associated to this
+            invite = db.get_invite_from_email(provider.email)
+            if invite:
+                invite.profile_created = True
+                invite.token = None
+                invite.put()
             
             # now create an empty user for the provider
             user = self.create_empty_user_for_provider(provider)
