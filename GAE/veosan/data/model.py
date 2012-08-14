@@ -351,6 +351,7 @@ class ProviderNetworkConnection(ndb.Model):
         source_target_count = ProviderNetworkConnection.query(
                             ProviderNetworkConnection.source_provider == self.source_provider,
                             ProviderNetworkConnection.target_provider == self.target_provider,
+                            ProviderNetworkConnection.confirmed == True,
                             ).count()
         
         if source_target_count > 0:
@@ -360,6 +361,7 @@ class ProviderNetworkConnection(ndb.Model):
         source_target_count = ProviderNetworkConnection.query(
                             ProviderNetworkConnection.target_provider == self.source_provider,
                             ProviderNetworkConnection.source_provider == self.target_provider, 
+                            ProviderNetworkConnection.confirmed == True,
                             ).count()
         
         if source_target_count > 0:
