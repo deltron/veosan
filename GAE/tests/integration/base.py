@@ -380,8 +380,8 @@ class BaseTest(unittest.TestCase):
         # check one schedule was saved in the database
         schedule_count = provider.get_schedules().count()
         self.assertEqual(schedule_count , 1, 'Provider should have a schedule')
-        
-        response.mustcontain('9 AM-12 PM')
+        response.showbrowser()
+        response.mustcontain('9h-12h')
         
         # check if square for day is green
         monday_morning_td = response.html.find('td', attrs={'rowspan': '3'})
