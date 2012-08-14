@@ -129,7 +129,7 @@ class ProviderInviteForm(CustomForm):
                                                      filters=[custom_filters.to_lowercase]           
                                          ))
         setattr(form, 'note', TextAreaField(_(u'Add a note to the invitation (optional)'),
-                                            default = _("I've been using Veosan and thought you might like to try it out. Here's an invitation to create an account.")))
+                                            default = _("I've been using Veosan and thought you might like to try it out. Here's an invitation to create a profile.")))
 
 
 

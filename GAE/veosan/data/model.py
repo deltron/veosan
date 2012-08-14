@@ -68,6 +68,10 @@ class Provider(ndb.Model):
     terms_agreement = ndb.BooleanProperty()
     terms_date = ndb.DateProperty()
     
+    # social network
+    # need to do a trick to refer to the class type inside its own definition
+    provider_network = ndb.KeyProperty(kind="Provider", repeated=True)
+    
     # profile
     category = ndb.StringProperty()
     specialty = ndb.StringProperty(repeated=True)
@@ -105,9 +109,21 @@ class Provider(ndb.Model):
     booking_enabled = ndb.BooleanProperty(default=False)
     address_enabled = ndb.BooleanProperty(default=False)
     display_welcome_page = ndb.BooleanProperty(default=True)
+    connect_enabled = ndb.BooleanProperty(default=False)
 
     # user
     user = ndb.KeyProperty(kind=User)
+    
+    def _pre_put_hook(self):
+        # don't connect with yourself
+        if self.provider_network.count(self.key):
+            self.provider_network.remove(self.key)
+        
+        # remove any dupes from the network graph
+        self.provider_network = list(set(self.provider_network))
+        
+        
+
     
     def get_profile_photo_image_url(self, size=None):
         return get_serving_url(self.profile_photo_blob_key, size)

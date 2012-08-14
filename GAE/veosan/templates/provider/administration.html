@@ -132,6 +132,23 @@
 							</fieldset>
 						</form></td>
 					</tr>
+					<tr>
+						<td width="60%">Show connect={{ provider.connect_enabled }}</td>
+						<td width="40%">
+						<form method="post" action="/admin/provider/feature/connect_enabled/{{ provider.vanity_url }}" class="form-inline">
+							<fieldset>
+								{% if provider.connect_enabled %}
+								<button type="submit" class="btn btn-danger">
+									Disable Connect
+								</button>
+								{% else %}
+								<button type="submit" class="btn btn-success">
+									Enable Connect
+								</button>
+								{% endif %}
+							</fieldset>
+						</form></td>
+					</tr>
 				</tbody>
 			</table>
 		</div>

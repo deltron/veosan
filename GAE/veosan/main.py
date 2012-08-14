@@ -129,7 +129,7 @@ application = ndb.toplevel(webapp2.WSGIApplication([
                                                                      
                                             Route('/bookings/<vanity_url>', provider.ProviderBookingsHandler),
                                             
-                                            PathPrefixRoute('/social', [
+                                            PathPrefixRoute('/network', [
                                                 Route('/<vanity_url>', provider.SocialHandler),
                                                 Route('/<vanity_url>/invite', provider.SocialHandler),
                                             ]),
@@ -154,7 +154,7 @@ application = ndb.toplevel(webapp2.WSGIApplication([
                                                 Route('/<vanity_url>/<operation>/<day>/<start_time>', provider.ProviderScheduleHandler),
                                                 Route('/<vanity_url>/<operation>/<key>', provider.ProviderScheduleHandler),
                                                 
-                                            ]),          
+                                            ]),
                                                                                                                                                                                    
                                             # Address
                                             PathPrefixRoute('/address', [
@@ -228,11 +228,11 @@ application = ndb.toplevel(webapp2.WSGIApplication([
                                        
                                        # if nothing above matches, try to find a provider
                                        # if this doesn't find someone it should throw a 404 (or back to index page?)
+
                                        Route('/<vanity_url>', handler=provider.ProviderPublicProfileHandler),
                                        Route('/<vanity_url>/', handler=provider.ProviderPublicProfileHandler),
-                                       # book now
                                        Route('/<vanity_url>/book', booking.BookFromPublicProfile),
-                                       
+                                       Route('/<vanity_url>/connect', provider.ProviderPublicProfileConnectHandler),
                                       ], debug=True,
                                       config=webapp2_config))
 

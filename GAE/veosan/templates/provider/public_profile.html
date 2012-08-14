@@ -76,11 +76,24 @@
 
 		{% if provider.booking_enabled %}
 
-		<a href="{{ provider.vanity_url }}/book" id="book_button" type="submit" class="btn btn-large btn-success"> {{ _('Book Now') }} </a>
+		<a href="/{{ provider.vanity_url }}/book" id="book_button" type="submit" class="btn btn btn-success"> {{ _('Book Now') }} </a>
 
 		<br>
 		<br>
 		{% endif %}
+
+		{% if provider.connect_enabled %}
+		
+		<a href="/{{ provider.vanity_url }}/connect" id="connect_button" type="submit" class="btn btn btn-success"> {{ _('Connect') }} </a>
+		<br><br>
+		{{ provider.first_name }} is connected to {{ provider.provider_network|length }} health-care professionals.
+		<br>
+		<a data-toggle="modal" href="#network_modal">See all connections</a><a data-toggle="modal" href="#network_modal"><i class="bs-icon icon-share-alt"> </i></a>
+
+		<br>
+		<br>
+		{% endif %}
+
 
 		{% if 'admin' in roles %}
 		<a href="/provider/profile/{{ provider.vanity_url }}" class="btn btn-danger"><i>Edit Profile</i></a>
@@ -261,6 +274,37 @@
 			</div>
 			{% endif %}
 		</div>
+	</div>
+</div>
+{% endif %}
+
+{% if provider.connect_enabled %}
+<div class="modal hide" id="network_modal" style="display: none;">
+	<div class="modal-header">
+		<a class="close" data-dismiss="modal">×</a>
+		<h3>{{provider.first_name}}'s Health Network</h3>
+	</div>
+	<div class="modal-body">
+		This network contains {{ provider.provider_network|length }} health-care professionals.
+		<table class="table-condensed">
+			{% for pkey in provider.provider_network %}
+			{% set p = pkey.get() %}
+			
+			{# create a row every 2 providers #}
+			{% set tr = loop.cycle('<tr>', '') %}
+			{% set close_tr = loop.cycle('', '</tr>') %}
+				
+				{{ tr|safe }}
+				<td width="50"><a href="/{{ p.vanity_url }}"> {% if p.profile_photo_blob_key %} <img src="{{ p.get_profile_photo_image_url(50) }}" width="50"
+				alt="{{ macro.display_provider_name(p) }} - {{ category_dict[p.category] }}"> {% else %} <img src="/assets/img/default-profile.png" width="50" height="50"
+				alt="{{ macro.display_provider_name(p) }} - {{ category_dict[p.category] }}"> {% endif %} </a></td>
+				<td width="150"><a href="/{{ p.vanity_url }}"><h4> {{ p.first_name }}
+				{{ p.last_name }} </h4></a> {{ category_dict[p.category] }} </td>
+
+				{{ close_tr|safe }}
+
+				{% endfor %}
+		</table>
 	</div>
 </div>
 {% endif %}
