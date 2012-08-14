@@ -404,7 +404,7 @@ class SocialHandler(ProviderBaseHandler):
             mail.email_invite(self.jinja2, invite, invite_url)
             
             # all good
-            message = "Invitation sent to %s %s (%s) " % (invite.first_name, invite.last_name, invite.email)
+            message = "Invitation sent to %s %s (%s)" % (invite.first_name, invite.last_name, invite.email)
             
             # new form for next invite
             provider_invite_form = ProviderInviteForm().get_form()
