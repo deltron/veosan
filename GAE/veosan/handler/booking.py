@@ -12,6 +12,7 @@ from handler.auth import patient_required
 from handler.patient import PatientBaseHandler
 from datetime import datetime, date, timedelta
 from utilities import time
+from data.model import Booking
 
 class BookingBaseHandler(BaseHandler):
     '''Common functions for all booking handlers'''
@@ -155,46 +156,49 @@ class BookingHandler(BookingBaseHandler):
                 pass
             
         else:
-            # no user is logged in, grab the email address from the booking form
-            email_form = EmailOnlyBookingForm(self.request.POST)
-
-            if email_form.validate():
-                # store email in booking as requestEmail
-                email = self.request.get('email')
-                
-                booking.request_email = email
-                booking.put()
-                
-                # check if the email address given is an existing user that hasn't logged in
-                # or a completely new user
-                existing_user = db.get_user_from_email(email)
-                if existing_user:
-                    existing_patient = db.get_patient_from_user(existing_user)
-                    if existing_patient:
-                        # email is in datastore, but not logged in
-                        # link booking to patient and then check if same patient logs in (check is in @patient_required)
-                        booking.patient = existing_patient.key
-                        booking.put()
-                        # send to login page with booking.key set
-                        login_form = LoginForm().get_form()
-                        login_form.email.data = email
-                        self.render_template('user/login.html', form=login_form, booking=booking)
+            # check if email was provided
+            if self.request.get('email'):
+                # no user is logged in, grab the email address from the booking form
+                email_form = EmailOnlyBookingForm(self.request.POST)
+                if email_form.validate():
+                    # store email in booking as requestEmail
+                    email = self.request.get('email')
                     
-                    else:
-                        # user exists, not no patient profile attached (might be a provider)
+                    booking.request_email = email
+                    booking.put()
+                    
+                    # check if the email address given is an existing user that hasn't logged in
+                    # or a completely new user
+                    existing_user = db.get_user_from_email(email)
+                    if existing_user:
+                        existing_patient = db.get_patient_from_user(existing_user)
+                        if existing_patient:
+                            # email is in datastore, but not logged in
+                            # link booking to patient and then check if same patient logs in (check is in @patient_required)
+                            booking.patient = existing_patient.key
+                            booking.put()
+                            # send to login page with booking.key set
+                            login_form = LoginForm().get_form()
+                            login_form.email.data = email
+                            self.render_template('user/login.html', form=login_form, booking=booking)
                         
-                        # 1. login, 2. patient profile, 3. confirm
-                        logging.info("(BookingHandler) user exists, not no patient profile attached (might be a provider)")
-                        
-                else:    
-                    # email is not known, create new patient profile
-                    logging.info('Patient does not exist for %s, creating new patient.' % email)
-                    patient_form = PatientForm(self.request.POST)
-                    PatientBaseHandler.render_new_patient_form(self, patient_form, booking)             
-            else:
-                # email validation failed. Show same results again
-                self.search_and_render_results(booking, email_form)   
-    
+                        else:
+                            # user exists, not no patient profile attached (might be a provider)
+                            # 1. login, 2. patient profile, 3. confirm
+                            logging.error("(BookingHandler) user exists, not no patient profile attached (might be a provider)")         
+                    else:    
+                        # email is not known, create new patient profile
+                        logging.info('Patient does not exist for %s, creating new patient.' % email)
+                        patient_form = PatientForm(self.request.POST)
+                        PatientBaseHandler.render_new_patient_form(self, patient_form, booking)             
+                else:
+                    # email validation failed. Show same results again
+                    self.search_and_render_results(booking, email_form)   
+            else:    
+                # no email provided, show new patient form with email field
+                logging.info('Email not provided, creating new patient.')
+                patient_form = PatientForm(self.request.POST)
+                PatientBaseHandler.render_new_patient_form(self, patient_form, booking) 
 
             
 
@@ -203,13 +207,21 @@ class BookFromPublicProfile(BookingBaseHandler):
         Using vanity url, display schedule
     '''
     def get(self, vanity_url=None, start_date=None):
+        # provoder already selection from public profile
         provider = db.get_provider_from_vanity_url(vanity_url)
+        # 
+        booking = Booking()
+        booking.provider = provider.key
+        booking.booking_source = 'profile'
+        booking.put()
+        logging.debug('Created booking from public profile: %s' % booking)
+        
         if (not start_date) or (start_date <= date.today):
             start_date = time.tomorrow()
         period = timedelta(days=7)
         schedules = provider.get_schedules()
         datetimes_map = util.generate_datetimes_map(schedules, start_date, period)
-        self.render_template('provider/booking_schedule.html', provider, dtm=datetimes_map) 
+        self.render_template('provider/booking_schedule.html', booking=booking, provider=provider, dtm=datetimes_map) 
         
              
                 

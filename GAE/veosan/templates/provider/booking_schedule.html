@@ -56,9 +56,9 @@
 		{% endif %}
 
 	</div>
-	<div class="span5">
+	<div class="span10">
 
-		<table class="table table-condensed centered">
+		<table style="width: 100%" class="table table-condensed centered">
 			
 			<thead>
 				{% for (day_key, day_times) in dtm|dictsort %}
@@ -70,11 +70,16 @@
 			
 			<tr>
 				{% for (day_key, day_times) in dtm|dictsort %}
-				<td>
+				<td style="text-align: center">
 					{% for t in day_times %}
-				  	 <p>
-				  	 	<a href='#'>{{t|format_datetime_hour_min}}</a>
-				  	 </p>
+					<form action="/patient/book" method="post">
+						<input type="hidden" name="bk" value="{{ booking.key.urlsafe() }}"/>
+					  	<input type="hidden" name="provider_key" value="{{ provider.key.urlsafe() }}"/>
+					  	<input type="hidden" name="booking_datetime" value="{{ t|format_datetime_booking_form }}"/>
+					  	<button style="width=100%" type="submit" class="btn btn-primary">
+							{{t|format_datetime_hour_min}}
+						</button>
+				  	 </form>
 				  	{% endfor %}
 				</td>
 				{% endfor %}
