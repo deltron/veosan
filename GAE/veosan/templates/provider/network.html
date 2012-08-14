@@ -9,24 +9,47 @@
 
 <div class="row">
 	<div class="span6">
-		{% if provider.get_provider_network() %}
-		{{ _('Your network contains') }} {{ provider.get_provider_network()|length }} {{ _('health-care professionals.') }}
+		{% if provider.get_provider_network_pending_count() > 0 %}
+		Here are your pending invitations. Please confirm you know this person.
 		<table class="table-condensed">
-			{% for p in provider.get_provider_network() %}
-			{# create a row every 2 providers #}
-			{% set tr = loop.cycle('<tr>', '') %}
-			{% set close_tr = loop.cycle('', '</tr>') %}
-				
-				{{ tr|safe }}
+			{% for p in provider.get_provider_network_pending() %}
+
+			<tr>
 				<td width="50"><a href="/{{ p.vanity_url }}"> {% if p.profile_photo_blob_key %} <img src="{{ p.get_profile_photo_image_url(50) }}" width="50"
 				alt="{{ macro.display_provider_name(p) }} - {{ category_dict[p.category] }}"> {% else %} <img src="/assets/img/default-profile.png" width="50" height="50"
 				alt="{{ macro.display_provider_name(p) }} - {{ category_dict[p.category] }}"> {% endif %} </a></td>
 				<td width="150"><a href="/{{ p.vanity_url }}"><h4> {{ p.first_name }}
 				{{ p.last_name }} </h4></a> {{ category_dict[p.category] }} </td>
 
-				{{ close_tr|safe }}
+				<td><a href="/provider/network/{{ provider.vanity_url }}/accept/{{ p.key.urlsafe() }}" class="btn btn-success">Connect</a></td>
+				<td><a href="/provider/network/{{ provider.vanity_url }}/reject/{{ p.key.urlsafe() }}" class="btn">Reject</a></td>
+			</tr>
+			{% endfor %}
+		</table>
+		<hr>
+		{% endif %}
 
-				{% endfor %}
+		{% if provider.get_provider_network_count() > 0 %}
+		{{ _('Your network contains') }} {{ provider.get_provider_network_count() }} {{ _('health-care professionals.') }}
+		<table class="table-condensed">
+			{% for p in provider.get_provider_network() %}
+			{# create a row every 2 providers #}
+			{% set tr = loop.cycle('
+			<tr>
+				', '') %}
+				{% set close_tr = loop.cycle('', '
+			</tr>') %}
+
+			{{ tr|safe }}
+			<td width="50"><a href="/{{ p.vanity_url }}"> {% if p.profile_photo_blob_key %} <img src="{{ p.get_profile_photo_image_url(50) }}" width="50"
+			alt="{{ macro.display_provider_name(p) }} - {{ category_dict[p.category] }}"> {% else %} <img src="/assets/img/default-profile.png" width="50" height="50"
+			alt="{{ macro.display_provider_name(p) }} - {{ category_dict[p.category] }}"> {% endif %} </a></td>
+			<td width="150"><a href="/{{ p.vanity_url }}"><h4> {{ p.first_name }}
+			{{ p.last_name }} </h4></a> {{ category_dict[p.category] }} </td>
+
+			{{ close_tr|safe }}
+
+			{% endfor %}
 		</table>
 		{% else %}
 		{{ _('Your network is empty! You can add people by sending invites.') }}

@@ -210,20 +210,43 @@ class Provider(ndb.Model):
     def is_enabled(self):
         return self.status == 'client_enabled'
     
-    def get_provider_network(self):     
-        sources = ProviderNetworkConnection.query(ProviderNetworkConnection.source_provider == self.key).fetch()
-        targets = ProviderNetworkConnection.query(ProviderNetworkConnection.target_provider == self.key).fetch()
+    def get_provider_network_count(self):     
+        sources = ProviderNetworkConnection.query(ProviderNetworkConnection.source_provider == self.key, ProviderNetworkConnection.confirmed == True).count()
+        targets = ProviderNetworkConnection.query(ProviderNetworkConnection.target_provider == self.key, ProviderNetworkConnection.confirmed == True).count()
         
-        providers = []
+        return sources + targets
+        
+    def get_provider_network(self):     
+        sources = ProviderNetworkConnection.query(ProviderNetworkConnection.source_provider == self.key, ProviderNetworkConnection.confirmed == True).fetch()
+        targets = ProviderNetworkConnection.query(ProviderNetworkConnection.target_provider == self.key, ProviderNetworkConnection.confirmed == True).fetch()
+        
+        provider_keys = []
         
         for connect in sources:
-            providers.append(connect.target_provider.get())
+            provider_keys.append(connect.target_provider)
             
+        for connect in targets:
+            provider_keys.append(connect.source_provider)
+
+        providers = ndb.get_multi(provider_keys)
+
+        return providers
+    
+    
+    def get_provider_network_pending_count(self):     
+        targets = ProviderNetworkConnection.query(ProviderNetworkConnection.target_provider == self.key, ProviderNetworkConnection.confirmed == False).count()
+        
+        return targets
+    
+    
+    def get_provider_network_pending(self):     
+        targets = ProviderNetworkConnection.query(ProviderNetworkConnection.target_provider == self.key, ProviderNetworkConnection.confirmed == False).fetch()
+        
+        providers = []
         for connect in targets:
             providers.append(connect.source_provider.get())
 
         return providers
-    
 
 class Education(ndb.Model):  
     provider = ndb.KeyProperty(kind=Provider)

@@ -6,7 +6,7 @@ from google.appengine.ext import ndb, db as gdb
 import logging
 from datetime import datetime, date, time
 from data.model import Booking, Patient, Provider, User, SiteConfig, LogEvent,\
-    Invite
+    Invite, ProviderNetworkConnection
   
 def get_from_urlsafe_key(urlsafe_key):
     logging.info('(db.get_from_urlsafe_key) Getting from urlsafe key: %s' % urlsafe_key)
@@ -173,4 +173,8 @@ def store(key, form, data):
     form.populate_obj(datastore_object)
     # store
     datastore_object.put()
+    
+
+def get_provider_network_connection(source_key, target_key):
+    return ProviderNetworkConnection.query(ProviderNetworkConnection.source_provider == source_key, ProviderNetworkConnection.target_provider == target_key).get()
     

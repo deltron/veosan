@@ -197,6 +197,10 @@ class ProviderSocialTest(BaseTest):
     def test_invite_to_connect_accepted(self):
         pass
 
+    def test_invite_to_connect_rejected(self):
+        pass
+
+
     def test_display_connections_on_public_profile(self):
         pass
 

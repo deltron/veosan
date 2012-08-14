@@ -131,7 +131,8 @@ application = ndb.toplevel(webapp2.WSGIApplication([
                                             
                                             PathPrefixRoute('/network', [
                                                 Route('/<vanity_url>', provider.ProviderNetworkHandler),
-                                                Route('/<vanity_url>/invite', provider.ProviderNetworkHandler),
+                                                Route('/<vanity_url>/<operation>', provider.ProviderNetworkHandler),
+                                                Route('/<vanity_url>/<operation>/<provider_key>', provider.ProviderNetworkHandler),
                                             ]),
                                                                      
                                             # provider profile

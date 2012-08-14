@@ -372,47 +372,68 @@ class WelcomeHandler(ProviderBaseHandler):
 
 class ProviderNetworkHandler(ProviderBaseHandler):
     @provider_required
-    def get(self, vanity_url=None):
+    def get(self, vanity_url=None, operation=None, provider_key = None):
         provider = db.get_provider_from_vanity_url(vanity_url)
         
+        if operation == 'accept':
+            source_provider_key = ndb.Key(urlsafe=provider_key)
+            target_provider_key = provider.key
+            
+            provider_network_connection = db.get_provider_network_connection(source_provider_key, target_provider_key)
+            provider_network_connection.confirmed = True
+            provider_network_connection.put()
+            
+        if operation == 'false':
+            source_provider_key = ndb.Key(urlsafe=provider_key)
+            target_provider_key = provider.key
+            
+            provider_network_connection = db.get_provider_network_connection(source_provider_key, target_provider_key)
+            provider_network_connection.remove()
+            
+            
         provider_invite_form = ProviderInviteForm().get_form()
-
         self.render_template("provider/network.html", provider=provider, provider_invite_form=provider_invite_form)
 
     @provider_required
-    def post(self, vanity_url=None):
+    def post(self, vanity_url=None, operation=None, provider_key = None):
         provider = db.get_provider_from_vanity_url(vanity_url)
         
-        form = ProviderInviteForm().get_form(self.request.POST)
-        if form.validate():
-            invite = Invite()
-            form.populate_obj(invite)
+        if operation == 'invite' :
+            form = ProviderInviteForm().get_form(self.request.POST)
+            if form.validate():
+                invite = Invite()
+                form.populate_obj(invite)
+                
+                # associate provider to invite
+                invite.provider = provider.key
+                
+                # create a token for this invite that will be used to pre-populate the signup form
+                invite.token = self.create_token(invite.email)
+                
+                # save
+                invite.put()
+                
+                # create an invite url
+                url_obj = urlparse.urlparse(self.request.url)
+                invite_url = urlparse.urlunparse((url_obj.scheme, url_obj.netloc, '/invite/' + invite.token, '', '', ''))
+                logging.info('(ProviderNetworkHandler.post) unique invite URL:' + invite_url)
+    
+                # send the actual email...
+                mail.email_invite(self.jinja2, invite, invite_url)
+                
+                # all good
+                message = "Invitation sent to %s %s (%s)" % (invite.first_name, invite.last_name, invite.email)
+                
+                # new form for next invite
+                provider_invite_form = ProviderInviteForm().get_form()
+                self.render_template("provider/network.html", success_message=message, provider=provider, provider_invite_form=provider_invite_form)
+            else:
+                self.render_template("provider/network.html", provider=provider, provider_invite_form=form)
+        else:
+            # post unknown operation
             
-            # associate provider to invite
-            invite.provider = provider.key
-            
-            # create a token for this invite that will be used to pre-populate the signup form
-            invite.token = self.create_token(invite.email)
-            
-            # save
-            invite.put()
-            
-            # create an invite url
-            url_obj = urlparse.urlparse(self.request.url)
-            invite_url = urlparse.urlunparse((url_obj.scheme, url_obj.netloc, '/invite/' + invite.token, '', '', ''))
-            logging.info('(ProviderNetworkHandler.post) unique invite URL:' + invite_url)
-
-            # send the actual email...
-            mail.email_invite(self.jinja2, invite, invite_url)
-            
-            # all good
-            message = "Invitation sent to %s %s (%s)" % (invite.first_name, invite.last_name, invite.email)
-            
-            # new form for next invite
             provider_invite_form = ProviderInviteForm().get_form()
             self.render_template("provider/network.html", success_message=message, provider=provider, provider_invite_form=provider_invite_form)
-        else:
-            self.render_template("provider/network.html", provider=provider, provider_invite_form=form)
 
 class ProviderConnectHandler(ProviderBaseHandler):
     def get(self, vanity_url=None):
