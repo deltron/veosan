@@ -18,16 +18,18 @@
 							</li>
 							{% endif %}
 
-							<li>
+							<li {% if "profile" == active_page %} class="active" {% endif %}>
 								<a href="/provider/profile/{{ provider.vanity_url }}">{{ _('Profile') }}</a>
 							</li>
-							<li>
+							<li {% if "cv" == active_page %} class="active" {% endif %}>
 								<a href="/provider/cv/{{ provider.vanity_url }}">{{ _('CV') }}</a>
 							</li>
-							<li>
+							<li {% if "address" == active_page %} class="active" {% endif %}>
 								<a href="/provider/address/{{ provider.vanity_url }}">{{ _('Address') }}</a>
 							</li>
-
+							<li {% if "schedule" == active_page %} class="active" {% endif %}>
+								<a href="/provider/schedule/{{ provider.vanity_url }}">{{ _('Schedule') }}</a>
+							</li>
 							{% endif%}
 
 							{% if patient %}
@@ -47,9 +49,6 @@
 							<li class="divider"></li>
 							<li style="font-style:italic">
 								<a href="/provider/bookings/{{ provider.vanity_url }}">{{ _('Bookings') }}</a>
-							</li>
-							<li style="font-style:italic">
-								<a href="/provider/schedule/{{ provider.vanity_url }}">{{ _('Schedule') }}</a>
 							</li>
 
 							<li id="administration" style="font-style:italic">

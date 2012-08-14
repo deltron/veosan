@@ -35,20 +35,6 @@ def email_booking_to_patient(jinja2, booking, activation_url=None):
         logging.error('Email to patient not sent. %s' % e)
 
 
-
-def emailSolicitProvider(jinja2, provider, activation_url):
-    ''' Send solicitation email to provider '''
-    message = mail.EmailMessage()
-    message.sender = 'Veosan <' + VEOSAN_SUPPORT_ADDRESS + '>'
-    message.to = provider.email
-    message.subject = _('Veosan Account Activation')
-    kw = {'provider': provider, 'activation_url': activation_url}
-    message.body = jinja2.render_template('email/provider_solicit.txt', **kw)
-    try:
-        message.send()
-    except Exception as e:
-        logging.error('(emailSolicitProvider) Email to provider %s not sent. %s' % (provider.email, e))
-        
 def email_user_password_reset(jinja2, user, activation_url):
     ''' Send solicitation email to provider '''
     message = mail.EmailMessage()
@@ -61,7 +47,25 @@ def email_user_password_reset(jinja2, user, activation_url):
     except Exception as e:
         logging.error('Email to provider not sent. %s' % e)
         
+
+def email_invite(jinja2, invite, invite_url):
+    ''' Send invitation email '''
+    from_provider = invite.provider.get()
+    
+    message = mail.EmailMessage()
+    message.sender = from_provider.first_name + " " + from_provider.last_name + "<" + VEOSAN_SUPPORT_ADDRESS + ">"
+    message.reply_to = from_provider.email
+    message.to = invite.email
+    message.subject = u'Invitation to join Veosan from %s %s' % (from_provider.first_name, from_provider.last_name)
+    
+    message.body = jinja2.render_template('email/invite.txt', invite=invite, invite_url=invite_url)
+    
+    try:
+        message.send()
+    except Exception as e:
+        logging.error('Email to provider not sent. %s' % e)
         
+
 def emailProviderWelcomeMessage(jinja2, provider):
     pass
 

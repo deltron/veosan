@@ -103,6 +103,22 @@ class ProviderTermsHandler(UserBaseHandler):
             # did not click "I accept"
             self.render_terms(provider, terms_form=terms_form)
 
+class InviteHandler(UserBaseHandler):
+    def get(self, invite_token = None):
+        invite = db.get_invite_from_token(invite_token)
+        invite_provider = invite.provider.get()
+        
+        invite.link_clicked = True
+        invite.put()
+        
+        logging.info("(InviteHandler.get) Invite token for %s from %s " % (invite.email, invite_provider.vanity_url))
+
+        provider_signup_form = ProviderSignupForm1().get_form()
+        provider_signup_form['email'].data = invite.email
+        provider_signup_form['first_name'].data = invite.first_name
+        provider_signup_form['last_name'].data = invite.last_name
+
+        self.render_template('user/signup_provider_1.html', provider_signup_form=provider_signup_form)      
 
 
 class PasswordHandler(UserBaseHandler):
@@ -445,8 +461,16 @@ class ProviderSignupHandler2(UserBaseHandler):
             
             
             provider.vanity_url = vanity_url           
+            
             # save provider
             provider.put()
+            
+            # check if an invitation was associated to this
+            invite = db.get_invite_from_email(provider.email)
+            if invite:
+                invite.profile_created = True
+                invite.token = None
+                invite.put()
             
             # now create an empty user for the provider
             user = self.create_empty_user_for_provider(provider)

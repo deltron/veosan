@@ -175,7 +175,9 @@ application = ndb.toplevel(webapp2.WSGIApplication([
                                        
                                        ('/login', user.LoginHandler),
                                        ('/logout', user.LogoutHandler),
-
+                                       
+                                       # invitations
+                                       Route('/invite/<invite_token>', user.InviteHandler),
 
                                        # user
                                        PathPrefixRoute('/user', [

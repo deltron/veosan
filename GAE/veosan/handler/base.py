@@ -279,14 +279,14 @@ class BaseHandler(webapp2.RequestHandler):
 ### Token stuff
 ### with a dictionary for tokens { 'subject', token } this could be made generic
 
-    def create_token(self, user):
+    def create_token(self, key):
         # create a token for the user
         salt = sha.new(str(random.random())).hexdigest()[:5]
-        token = sha.new(salt + user.get_email()).hexdigest()
+        token = sha.new(salt + key).hexdigest()
         return token
 
     def create_signup_token(self, user):
-        user.signup_token = self.create_token(user)
+        user.signup_token = self.create_token(user.get_email())
         user.confirmed = False
         
         user.put()
@@ -311,7 +311,7 @@ class BaseHandler(webapp2.RequestHandler):
     
     
     def create_resetpassword_token(self, user):
-        user.resetpassword_token = self.create_token(user)        
+        user.resetpassword_token = self.create_token(user.get_email())        
         user.put()
         return user.resetpassword_token
     
@@ -325,3 +325,4 @@ class BaseHandler(webapp2.RequestHandler):
         user.put()
         
         return user
+    
