@@ -123,8 +123,9 @@ class PublicProfileTest(BaseTest):
         # fill patient info
         patient_form = new_patient_page.forms[0]
         patient_form['email'] = self._TEST_PATIENT_EMAIL
-        booking_confirm_page = new_patient_page.fill_new_patient_profile(self, new_patient_page)
+        booking_confirm_page = self.fill_new_patient_profile(new_patient_page)
         # check confirmation
+        
         
         # check emails
         
