@@ -285,10 +285,9 @@
 		<h3>{{provider.first_name}}'s Health Network</h3>
 	</div>
 	<div class="modal-body">
-		This network contains {{ provider.provider_network|length }} health-care professionals.
+		This network contains {{ provider.get_provider_network_count() }} health-care professionals.
 		<table class="table-condensed">
-			{% for pkey in provider.provider_network %}
-			{% set p = pkey.get() %}
+			{% for p in provider.get_provider_network() %}
 			
 			{# create a row every 2 providers #}
 			{% set tr = loop.cycle('<tr>', '') %}
