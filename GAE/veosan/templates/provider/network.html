@@ -3,14 +3,14 @@
 {% set active_page = "network" %}
 
 {% block subhead %}{{ _('Network') }}{% endblock %}
-{% block lead %}Share your skills{% endblock %}
+{% block lead %}{{ _('Share your skills') }}{% endblock %}
 
 {% block content %}
 
 <div class="row">
 	<div class="span6">
 		{% if provider.provider_network %}
-		Your network contains {{ provider.provider_network|length }} health-care professionals.
+		{{ _('Your network contains') }} {{ provider.provider_network|length }} {{ _('health-care professionals.') }}
 		<table class="table-condensed">
 			{% for pkey in provider.provider_network %}
 			{% set p = pkey.get() %}
@@ -31,11 +31,11 @@
 				{% endfor %}
 		</table>
 		{% else %}
-		Your network is empty! You can add people by sending invites.
+		{{ _('Your network is empty! You can add people by sending invites.') }}
 		{% endif %}
 	</div>
 	<div class="span6">
-		<h2>Send an Invitation</h2>
+		<h2>{{ _('Send an Invitation') }}</h2>
 		<p>
 			Hi! We hope you like Veosan. We've definitely been working hard to make it better.
 			Meanwhile, the Veosan family has been growing largely through invitations--sent by users
@@ -55,9 +55,9 @@
 			</div>
 		</form>
 
-		<h2>Web Link</h2>
+		<h2>{{ _('Web Link') }}</h2>
 		<p>
-			Here's a link you can paste in an email or put on your business cards.
+			{{ _("Here's a link you can paste in an email or put on your business cards.") }}
 		</p>
 		<code>
 			veosan.com/{{ provider.vanity_url }}

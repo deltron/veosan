@@ -842,6 +842,40 @@ msgid "No upcoming bookings. Is there any time marked as available in your sched
 msgstr "Vous n’avez aucun rendez-vous prévu. Avez-vous inscrit vos disponibilités dans votre horaire?"
 
 
+
+#################
+# Social page
+#################
+
+msgid "Network"
+msgstr "Réseautage"
+
+msgid "Share your skills"
+msgstr "Partagez vos compétences"
+
+msgid "Send an Invitation"
+msgstr "Envoyer une invitation"
+
+msgid "Web Link"
+msgstr "Hyperlien"
+
+msgid "Here's a link you can paste in an email or put on your business cards."
+msgstr "Voici un lien que vous pouvez copier et coller dans un courriel ou bien imprimer sur vos cartes d'affaires."
+
+msgid "Your network is empty! You can add people by sending invites."
+msgstr "Votre réseau est vide! Vous pouvez ajouter des personnes en envoyant des invitations."
+
+msgid "Add a note to the invitation (optional)"
+msgstr "Ajouter une note à l'invitation (facultatif)"
+
+msgid "Send Invite"
+msgstr "Envoyer"
+
+msgid "Your network contains"
+msgstr "Votre réseau contient"
+
+msgid "health-care professionals."
+msgstr "professionels de la santé."
 #################
 # Login page
 #################
