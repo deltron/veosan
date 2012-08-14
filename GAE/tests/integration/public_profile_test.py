@@ -160,6 +160,7 @@ class PublicProfileTest(BaseTest):
         admin_bookings_page.mustcontain(admin_datetime)
         admin_bookings_page.mustcontain('Fantastic Fox')
         admin_bookings_page.mustcontain('Pat Patient')
+        admin_bookings_page.mustcontain('public profile')
         self.logout_admin()
         # check event logs
 
