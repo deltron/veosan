@@ -130,8 +130,8 @@ application = ndb.toplevel(webapp2.WSGIApplication([
                                             Route('/bookings/<vanity_url>', provider.ProviderBookingsHandler),
                                             
                                             PathPrefixRoute('/network', [
-                                                Route('/<vanity_url>', provider.SocialHandler),
-                                                Route('/<vanity_url>/invite', provider.SocialHandler),
+                                                Route('/<vanity_url>', provider.ProviderNetworkHandler),
+                                                Route('/<vanity_url>/invite', provider.ProviderNetworkHandler),
                                             ]),
                                                                      
                                             # provider profile
@@ -232,7 +232,7 @@ application = ndb.toplevel(webapp2.WSGIApplication([
                                        Route('/<vanity_url>', handler=provider.ProviderPublicProfileHandler),
                                        Route('/<vanity_url>/', handler=provider.ProviderPublicProfileHandler),
                                        Route('/<vanity_url>/book', booking.BookFromPublicProfile),
-                                       Route('/<vanity_url>/connect', provider.ProviderPublicProfileConnectHandler),
+                                       Route('/<vanity_url>/connect', provider.ProviderConnectHandler),
                                       ], debug=True,
                                       config=webapp2_config))
 

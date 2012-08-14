@@ -18,7 +18,7 @@ from booking import BookingBaseHandler
 from forms.user import ProviderTermsForm, PasswordForm, LoginForm, ProviderSignupForm1, ProviderSignupForm2, PatientSignupForm
 import mail
 import util
-from data.model import Provider, Patient
+from data.model import Provider, Patient, ProviderNetworkConnection
 from google.appengine.ext import ndb
 import webapp2
 import re
@@ -477,15 +477,14 @@ class ProviderSignupHandler2(UserBaseHandler):
                 invite.token = None
                 invite.put()
                 
-                invite_provider = invite.provider.get()
-                            
                 # connect this provider to invite_provider
-                invite_provider.provider_network.append(provider.key)
-                invite_provider.put()
-                
-                provider.provider_network.append(invite_provider.key)
-                provider.put()
-
+                provider_network_connection = ProviderNetworkConnection()
+                provider_network_connection.invite = invite.key
+                provider_network_connection.source_provider = invite.provider
+                provider_network_connection.target_provider = provider.key
+                provider_network_connection.confirmed = True
+            
+                provider_network_connection.put()
 
             
             # now create an empty user for the provider

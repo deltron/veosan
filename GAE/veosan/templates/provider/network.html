@@ -9,12 +9,10 @@
 
 <div class="row">
 	<div class="span6">
-		{% if provider.provider_network %}
-		{{ _('Your network contains') }} {{ provider.provider_network|length }} {{ _('health-care professionals.') }}
+		{% if provider.get_provider_network() %}
+		{{ _('Your network contains') }} {{ provider.get_provider_network()|length }} {{ _('health-care professionals.') }}
 		<table class="table-condensed">
-			{% for pkey in provider.provider_network %}
-			{% set p = pkey.get() %}
-			
+			{% for p in provider.get_provider_network() %}
 			{# create a row every 2 providers #}
 			{% set tr = loop.cycle('<tr>', '') %}
 			{% set close_tr = loop.cycle('', '</tr>') %}
