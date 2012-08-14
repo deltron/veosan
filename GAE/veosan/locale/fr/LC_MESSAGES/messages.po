@@ -252,6 +252,10 @@ msgstr "Mot de passe"
 msgid "Password Confirmation"
 msgstr "Confirmer votre mot de passe"
 
+msgid "Please choose your password."
+msgstr "SVP choisir votre mot de passe."
+
+
 #################
 # Form navigation
 #################
