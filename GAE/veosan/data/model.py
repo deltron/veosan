@@ -114,6 +114,17 @@ class Provider(ndb.Model):
     # user
     user = ndb.KeyProperty(kind=User)
     
+    def _pre_put_hook(self):
+        # don't connect with yourself
+        if self.provider_network.count(self.key):
+            self.provider_network.remove(self.key)
+        
+        # remove any dupes from the network graph
+        self.provider_network = list(set(self.provider_network))
+        
+        
+
+    
     def get_profile_photo_image_url(self, size=None):
         return get_serving_url(self.profile_photo_blob_key, size)
 
