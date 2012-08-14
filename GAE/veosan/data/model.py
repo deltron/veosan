@@ -68,6 +68,10 @@ class Provider(ndb.Model):
     terms_agreement = ndb.BooleanProperty()
     terms_date = ndb.DateProperty()
     
+    # social network
+    # need to do a trick to refer to the class type inside its own definition
+    provider_network = ndb.KeyProperty(kind="Provider", repeated=True)
+    
     # profile
     category = ndb.StringProperty()
     specialty = ndb.StringProperty(repeated=True)

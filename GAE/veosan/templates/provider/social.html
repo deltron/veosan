@@ -10,16 +10,39 @@
 <div class="row">
 	<div class="span6">
 		<h2>Your Network</h2>
+		{% if provider.provider_network %}
+		Your network contains {{ provider.provider_network|length }} health-care professionals.
+		<table class="table-condensed">
+			{% for pkey in provider.provider_network %}
+			{% set p = pkey.get() %}
+			
+			{# create a row every 2 providers #}
+			{% set tr = loop.cycle('<tr>', '') %}
+			{% set close_tr = loop.cycle('', '</tr>') %}
+				
+				{{ tr|safe }}
+				<td width="50"><a href="/{{ p.vanity_url }}"> {% if p.profile_photo_blob_key %} <img src="{{ p.get_profile_photo_image_url(50) }}" width="50"
+				alt="{{ macro.display_provider_name(p) }} - {{ category_dict[p.category] }}"> {% else %} <img src="/assets/img/default-profile.png" width="50" height="50"
+				alt="{{ macro.display_provider_name(p) }} - {{ category_dict[p.category] }}"> {% endif %} </a></td>
+				<td width="150"><a href="/{{ p.vanity_url }}"><h4> {{ p.first_name }}
+				{{ p.last_name }} </h4></a> {{ category_dict[p.category] }} </td>
+
+				{{ close_tr|safe }}
+
+				{% endfor %}
+		</table>
+		{% else %}
 		Your network is empty! You can add people by sending invites.
-		
-{# Search disabled
+		{% endif %}
+
+		{# Search disabled
 		<form method="post" action="/provider/search/{{ provider.vanity_url }}" class="form-inline" id="provider_search_form">
 			<input type="text" name="search" id="search" placeholder="search">
 			<button type="submit" class="btn btn-primary">
 				{{ _('Search') }}
 			</button>
 		</form>
-#}
+		#}
 		{% if provider_search_results %}
 		{% for p in provider_search_results %}
 		{% if p.profile_photo_blob_key %}
