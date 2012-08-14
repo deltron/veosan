@@ -77,6 +77,8 @@ class IndexHandler(BookingBaseHandler):
         booking_form = BookingForm().get_form(self.request.POST)
         if booking_form.validate():
             booking = db.storeBooking(self.request.POST, None, None)
+            
+            logging.info('BOOKING %s' % booking)
             logging.debug('(IndexHandler) Created booking: %s' % booking)
             self.search_and_render_results(booking)
         else:

@@ -37,7 +37,12 @@
 						{{ category_dict[b.request_category] }}
 					</td>
 					<td>
-						{{b.datetime|format_datetime_noseconds}}
+						{% if b.datetime %}
+							{{b.datetime|format_datetime_noseconds}}
+						{% else %}
+							<p>non datetime
+							<span style="font-size: smaller">(request: {{b.request_datetime|format_datetime_noseconds}})</span></p>
+						{% endif %}
 					</td>
 
 					<td> 

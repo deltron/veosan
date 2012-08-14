@@ -380,7 +380,6 @@ class BaseTest(unittest.TestCase):
         # check one schedule was saved in the database
         schedule_count = provider.get_schedules().count()
         self.assertEqual(schedule_count , 1, 'Provider should have a schedule')
-        response.showbrowser()
         response.mustcontain('9h-12h')
         
         # check if square for day is green

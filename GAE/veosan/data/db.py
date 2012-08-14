@@ -20,9 +20,9 @@ def storeBooking(r, patient=None, provider=None):
     booking.booking_source = 'search'
     booking.request_category = r['category']
     booking.request_location = r['location']
-    requestDateString = r['booking_date']
-    requestTimeString = r['booking_time']
-    request_datetime = datetime.strptime(requestDateString + " " + requestTimeString, '%Y-%m-%d %H')
+    request_date = r['booking_date']
+    request_time = r['booking_time']
+    request_datetime = datetime.strptime(request_date + " " + request_time, '%Y-%m-%d %H')
     booking.request_datetime = request_datetime
     booking.request_homecare = r.has_key('homecare')
     booking.comments = r.get('comments', '')

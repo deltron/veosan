@@ -126,7 +126,7 @@ class AdminTest(BaseTest):
         ''' The base case, a patient made an appointment and confirmed it '''
         
         self.create_complete_provider_profile()
-        booking_response = self.book_appointment('osteopath', testutil.next_monday_date_string(), 8)
+        booking_response = self.book_appointment('osteopath', testutil.next_monday_date_string(), 9)
         
         # fill out patient profile, receive email and set password
         new_patient_response = self.fill_booking_email_form(booking_response, self._TEST_PATIENT_EMAIL)
@@ -140,7 +140,7 @@ class AdminTest(BaseTest):
         response.mustcontain(self._TEST_PATIENT_EMAIL)
         response.mustcontain(self._TEST_PROVIDER_EMAIL)
         response.mustcontain('Ostéopathe')
-        response.mustcontain('8:00')
+        response.mustcontain('9:00')
         # response.mustcontain(...monday...)
         
         
@@ -158,8 +158,6 @@ class AdminTest(BaseTest):
         response.mustcontain('User dropped out')
         response.mustcontain('No provider')
         response.mustcontain('No provider booked')
-        response.mustcontain('8:00')
-        # response.mustcontain(...monday...)
 
 
     def test_admin_booking_dashboard_patient_profile_abandon(self):
@@ -184,7 +182,7 @@ class AdminTest(BaseTest):
         ''' Visitor chose a provider, filled their email, filled the profile but didn't click the email link '''
         
         self.create_complete_provider_profile()
-        booking_response = self.book_appointment('osteopath', testutil.next_monday_date_string(), 8)
+        booking_response = self.book_appointment('osteopath', testutil.next_monday_date_string(), 9)
         new_patient_response = self.fill_booking_email_form(booking_response, self._TEST_PATIENT_EMAIL)
         booking_confirm_response = self.fill_new_patient_profile(new_patient_response)
 
@@ -193,7 +191,7 @@ class AdminTest(BaseTest):
 
         response = self.testapp.get('/admin/bookings')
         response.mustcontain('Patient not confirmed')
-        response.mustcontain('8:00')
+        response.mustcontain('9:00')
         response.mustcontain(self._TEST_PATIENT_EMAIL)
         response.mustcontain(self._TEST_PROVIDER_EMAIL)
         response.mustcontain('Ostéopathe')
@@ -208,7 +206,6 @@ class AdminTest(BaseTest):
         self.login_as_admin()
         response = self.testapp.get('/admin/bookings')
         # admin booking shows no results
-        #response.showbrowser()
         response.mustcontain('No search results')
 
 

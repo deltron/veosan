@@ -141,20 +141,27 @@ class PublicProfileTest(BaseTest):
         logging.info('French date time of booking: %s' % french_datetime_string)        
         self.login_as_provider()
         provider_bookings = self.testapp.get('/provider/bookings/' + self._TEST_PROVIDER_VANITY_URL)
-        provider_bookings.showbrowser()
+        
         provider_bookings.mustcontain('Pat Patient')
         # check datetime
         provider_bookings.mustcontain(french_datetime_string)
-        #self.logout_provider()
+        self.logout_provider()
         
         # check patient's booking list
+        #self.login_as_patient()
+        
         # check datetime
+        #self.logout_as_patient()
         
         # check admin side bookings
+        admin_datetime = testutil.next_monday_date_string() + " 10:00"
+        self.login_as_admin()
+        
         # check datetime
+        #provider_bookings.showbrowser()
         
         # check event logs
-        
+        self.logout_admin()
         
 
 if __name__ == "__main__":
