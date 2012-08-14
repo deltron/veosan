@@ -181,7 +181,27 @@ class ProviderSocialTest(BaseTest):
         login_welcome_page.mustcontain(self._TEST_PROVIDER_EMAIL)
         login_welcome_page.mustcontain("Bienvenue!")
         login_welcome_page.mustcontain("Comment naviguer sur le site")
-                   
+
+
+    def test_no_connection_to_self(self):
+        pass
+
+    def test_dupe_connections(self):
+        pass
+
+    def test_show_connected_after_connect(self):
+        pass
+    
+    def test_connect_not_logged_in(self):
+        pass
+
+    def test_invite_to_connect_accepted(self):
+        pass
+
+    def test_display_connections_on_public_profile(self):
+        pass
+
+
 if __name__ == "__main__":
     unittest.main()
     
