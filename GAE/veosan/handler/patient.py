@@ -60,9 +60,6 @@ class NewPatientHandler(PatientBaseHandler):
             # create a patient from the form
             patient = db.store_patient(self.request.POST, patient_form)
             
-            # set the patient email from the booking object
-            patient.email = booking.request_email
-            
             # Create an empty user in Auth system
             user = self.create_empty_user_for_patient(patient)
             
