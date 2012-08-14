@@ -13,6 +13,7 @@ from handler.patient import PatientBaseHandler
 from datetime import datetime, date, timedelta
 from utilities import time
 from data.model import Booking
+from webapp2_extras.i18n import to_utc
 
 class BookingBaseHandler(BaseHandler):
     '''Common functions for all booking handlers'''
@@ -129,7 +130,7 @@ class BookingHandler(BookingBaseHandler):
         # 1. Save provider and datetime in booking
         provider = db.get_from_urlsafe_key(self.request.get('provider_key'))
         booking.provider = provider.key
-        booking_datetime = datetime.strptime(self.request.get('booking_datetime'), '%Y-%m-%d %H:%M:%S')
+        booking_datetime = to_utc(datetime.strptime(self.request.get('booking_datetime'), '%Y-%m-%d %H:%M:%S'))
         booking.datetime = booking_datetime
         booking.put()
         
