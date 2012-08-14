@@ -392,14 +392,16 @@ class ProviderNetworkHandler(ProviderBaseHandler):
             
             success_message = "You are now connected to %s %s" % (source_provider.first_name, source_provider.last_name)
             
-        if operation == 'false':
+        if operation == 'reject':
             source_provider_key = ndb.Key(urlsafe=provider_key)
+            source_provider = source_provider_key.get()
             target_provider_key = provider.key
-            
+                        
             provider_network_connection = db.get_provider_network_connection(source_provider_key, target_provider_key)
-            provider_network_connection.remove()
+            provider_network_connection.key.delete()
             
-            
+            success_message = "You have rejected %s %s" % (source_provider.first_name, source_provider.last_name)
+        
         provider_invite_form = ProviderInviteForm().get_form()
         
         self.render_template("provider/network.html", provider=provider, provider_invite_form=provider_invite_form, success_message=success_message, error_message=error_message)
