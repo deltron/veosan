@@ -94,6 +94,13 @@ def format_datetime_with_weekday(datetime):
     else:
         return "%s %s %s" % (format_datetime(datetime, "EEEE MMMM d, yyyy"), _(u"at"), format_datetime(datetime, "H:mm a"))
 
+def format_date_with_weekday(date):
+    lang = _('en')
+    if (lang == 'fr'):
+        return format_date(date, "EEEE 'le' d MMMM yyyy")
+    else:
+        return format_date(date, "EEEE MMMM d, yyyy")
+
 def format_datetime_full(datetime):
     lang = _('en')
     if (lang == 'fr'):

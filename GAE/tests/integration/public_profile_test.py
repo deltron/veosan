@@ -3,6 +3,7 @@
 from base import BaseTest
 import unittest
 from data import db
+import testutil
 
 class PublicProfileTest(BaseTest):
     
@@ -114,12 +115,29 @@ class PublicProfileTest(BaseTest):
         public_profile.mustcontain("Fantastic Fox")
         public_profile.mustcontain("Réservez Maintenant")
         schedule_page = public_profile.click(linkid='book_button')
-        #schedule_page.showbrowser()
         schedule_page.mustcontain("Choisissez la date et l'heure de votre rendez-vous")
-        
-        
-
+        # find the form for next Monday at 10
+        form_id = "form-" + testutil.next_monday_date_string() + "-10"
+        form = schedule_page.forms[form_id]
+        new_patient_page = form.submit()
+        new_patient_page.mustcontain('Nouveau patient')
+        #new_patient_page.showbrowser()
     
+        # fill patient info
+        
+        # check confirmation
+        
+        # check emails
+        
+        # check provider bookings list
+        
+        # check patient's booking list
+        
+        # check admin side bookings
+        
+        # check event logs
+        
+        
 
 if __name__ == "__main__":
     unittest.main()
