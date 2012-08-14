@@ -101,7 +101,23 @@ class PublicProfileTest(BaseTest):
         public_profile.mustcontain(no="Réservez Maintenant")
         
         
-
+    def test_book_from_public_profile(self):
+        # create a new provider, vanity URL is bobafett
+        self.create_complete_provider_profile()
+        # check profile
+        public_profile = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
+        public_profile.mustcontain("Fantastic Fox")
+        # enable the booking
+        self.login_as_admin()
+        enable = self.testapp.post('/admin/provider/feature/booking_enabled/' + self._TEST_PROVIDER_VANITY_URL)
+        public_profile = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
+        public_profile.mustcontain("Fantastic Fox")
+        public_profile.mustcontain("Réservez Maintenant")
+        schedule_page = public_profile.click(linkid='book_button')
+        #schedule_page.showbrowser()
+        schedule_page.mustcontain("Choisissez la date et l'heure de votre rendez-vous")
+        
+        
 
     
 
