@@ -58,15 +58,15 @@
 	</div>
 	<div class="span10">
 
-		<table style="width: 100%" class="table table-condensed centered">
-			
+		<h2>{{ _("Choose your appointment date and time") }}</h2>
+		<br>
+
+		<table style="width: 100%" class="table table-condensed centered">			
 			<thead>
 				{% for (day_key, day_times) in dtm|dictsort %}
 				<th style="min-width: 75px; text-align: center"> {{ day_key|format_date }} </th>
 				{% endfor %}
 			</thead>
-			
-			
 			
 			<tr>
 				{% for (day_key, day_times) in dtm|dictsort %}

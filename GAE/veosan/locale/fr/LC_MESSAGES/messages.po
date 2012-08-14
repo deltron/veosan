@@ -746,6 +746,9 @@ msgstr "Écrivez votre biographie et commentaire"
 msgid "Sign up to get your own professional profile today. It's free!"
 msgstr "Inscrivez-vous pour obtenir votre propre profil professionnel. C'est gratuit!"
 
+msgid "Choose your appointment date and time"
+msgstr "Choisissez la date et l'heure de votre rendez-vous"
+
 
 #################
 # Address Page
