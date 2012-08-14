@@ -279,6 +279,7 @@ class Invite(ndb.Model):
     created_on = ndb.DateTimeProperty(auto_now_add=True)
 
     provider = ndb.KeyProperty(kind=Provider)
+    token = ndb.StringProperty()
 
     first_name = ndb.StringProperty()
     last_name = ndb.StringProperty()

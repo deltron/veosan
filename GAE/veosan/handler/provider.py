@@ -19,6 +19,8 @@ from utilities import time
 from forms.booking import EmailOnlyBookingForm
 from data import search_index
 from google.appengine.api import search
+import urlparse
+import mail
 
 class ProviderBaseHandler(BaseHandler): 
 
@@ -382,12 +384,26 @@ class SocialHandler(ProviderBaseHandler):
         form = ProviderInviteForm().get_form(self.request.POST)
         if form.validate():
             invite = Invite()
-            invite.provider = provider.key
             form.populate_obj(invite)
+            
+            # associate provider to invite
+            invite.provider = provider.key
+            
+            # create a token for this invite that will be used to pre-populate the signup form
+            invite.token = self.create_token(invite.email)
+            
+            # save
             invite.put()
             
+            # create an invite url
+            url_obj = urlparse.urlparse(self.request.url)
+            invite_url = urlparse.urlunparse((url_obj.scheme, url_obj.netloc, '/invite/' + invite.token, '', '', ''))
+            logging.info('(SocialHandler.post) unique invite URL:' + invite_url)
+
             # send the actual email...
+            mail.email_invite(self.jinja2, invite, invite_url)
             
+            # all good
             message = "Invitation sent to %s %s (%s) " % (invite.first_name, invite.last_name, invite.email)
             
             # new form for next invite
