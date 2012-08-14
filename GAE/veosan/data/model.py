@@ -280,6 +280,8 @@ class Invite(ndb.Model):
 
     provider = ndb.KeyProperty(kind=Provider)
     token = ndb.StringProperty()
+    link_clicked = ndb.BooleanProperty(default=False)
+    profile_created = ndb.BooleanProperty(default=False)
 
     first_name = ndb.StringProperty()
     last_name = ndb.StringProperty()

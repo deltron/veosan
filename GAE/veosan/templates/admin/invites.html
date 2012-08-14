@@ -13,6 +13,7 @@
 			<thead>
 				<tr>
 					<th>Created On</th>
+					<th>Status</th>
 					<th>From Provider</th>
 					<th>Invite Email</th>
 					<th>Invite First Name</th>
@@ -24,6 +25,17 @@
 				{% for i in invites %}
 				<tr>
 					<td>{{ i.created_on }}</td>
+					<td>
+						{% if i.link_clicked %}
+							<span class="label label-success">Link clinked</span><br>
+						{% endif %}
+
+						{% if i.profile_created %}
+							<span class="label label-success">Profile Created</span>
+						{% else %}
+							<span class="label label-warning">No Profile</span>
+						{% endif %}
+					</td>
 					<td>
 						{% if i.provider %}
 						<a href="/{{ i.provider.get().vanity_url }}">{{ i.provider.get().vanity_url }}</a>

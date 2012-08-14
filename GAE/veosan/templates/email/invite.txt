@@ -1,0 +1,5 @@
+{{ invite.note|safe }}
+
+Please click on the link below to get started:
+
+{{ invite_url }}
