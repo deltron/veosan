@@ -30,7 +30,7 @@ class ProviderSocialTest(BaseTest):
         self.assertEqual(m.sender, 'first last <support@veosan.com>')
         self.assertEqual(m.reply_to, self._TEST_PROVIDER_EMAIL)
         self.assertIn('Please click on the link below to create your profile', m.body.payload)
-        self.assertIn("I've been using Veosan and thought you might like to try it out. Here's an invitation to create an account.", m.body.payload)
+        self.assertIn("I've been using Veosan and thought you might like to try it out. Here's an invitation to create a profile.", m.body.payload)
 
         invite = db.get_invite_from_email('mctest@veosan.com')
 
@@ -54,7 +54,7 @@ class ProviderSocialTest(BaseTest):
         response2 = signup_form.submit()
         
         signup_form2 = response2.forms['provider_signup_form2']
-        signup_form2['category'] = 'osteopath'
+        signup_form2['category'] = 'dietitian'
         signup_form2['password'] = self._TEST_PROVIDER_PASSWORD
         signup_form2['password_confirm'] = self._TEST_PROVIDER_PASSWORD
         welcome_response = signup_form2.submit().follow()
@@ -67,6 +67,25 @@ class ProviderSocialTest(BaseTest):
         invite = db.get_invite_from_email('mctest@veosan.com')
         self.assertTrue(invite.profile_created)
         
+        provider = db.get_provider_from_email('mctest@veosan.com')
+        
+        # check connection on network page
+        response = self.testapp.get('/provider/network/' + provider.vanity_url)
+        response.mustcontain('Your network contains 1 health-care professionals.')
+        response.mustcontain('first last')
+        response.mustcontain('Ostéopathe')
+        
+        self.logout_provider()
+        
+        # check the originating provider social network
+        self.login_as_provider()
+        provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
+        response = self.testapp.get('/provider/network/' + provider.vanity_url)
+        response.mustcontain('Your network contains 1 health-care professionals.')
+        response.mustcontain('david mctest')
+        response.mustcontain('Diététicien')
+
+
 
     def test_invite_token_already_used(self):
         self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
@@ -93,7 +112,7 @@ class ProviderSocialTest(BaseTest):
         self.assertEqual(m.sender, 'first last <support@veosan.com>')
         self.assertEqual(m.reply_to, self._TEST_PROVIDER_EMAIL)
         self.assertIn('Please click on the link below to create your profile', m.body.payload)
-        self.assertIn("I've been using Veosan and thought you might like to try it out. Here's an invitation to create an account.", m.body.payload)
+        self.assertIn("I've been using Veosan and thought you might like to try it out. Here's an invitation to create a profile.", m.body.payload)
 
         invite = db.get_invite_from_email('mctest@veosan.com')
         invite_token = invite.token
