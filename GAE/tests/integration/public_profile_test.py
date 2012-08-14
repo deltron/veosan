@@ -120,20 +120,22 @@ class PublicProfileTest(BaseTest):
         form_id = "form-" + testutil.next_monday_date_string() + "-10"
         form = schedule_page.forms[form_id]
         new_patient_page = form.submit()
-        new_patient_page.mustcontain('Nouveau patient')
-        #new_patient_page.showbrowser()
-    
         # fill patient info
-        
+        patient_form = new_patient_page.forms[0]
+        patient_form['email'] = self._TEST_PATIENT_EMAIL
+        booking_confirm_page = new_patient_page.fill_new_patient_profile(self, new_patient_page)
         # check confirmation
         
         # check emails
         
         # check provider bookings list
+        # check datetime
         
         # check patient's booking list
+        # check datetime
         
         # check admin side bookings
+        # check datetime
         
         # check event logs
         
