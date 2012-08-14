@@ -17,6 +17,9 @@ msgstr ""
 
 
 
+msgid "en"
+msgstr "fr"
+
 #################
 # Title & brand
 #################
@@ -476,6 +479,9 @@ msgstr "SVP confirmer par téléphone et non par couriel"
 
 msgid "Confirmation"
 msgstr "Confirmation"
+
+msgid "at"
+msgstr "à"
 
 msgid "Needs"
 msgstr "Besoins"
