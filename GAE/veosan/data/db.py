@@ -17,6 +17,7 @@ def get_from_urlsafe_key(urlsafe_key):
 def storeBooking(r, patient=None, provider=None):
     logging.info('Saving Booking from:' + str(r))
     booking = Booking()
+    booking.booking_source = 'search'
     booking.request_category = r['category']
     booking.request_location = r['location']
     requestDateString = r['booking_date']

@@ -118,7 +118,7 @@ class Provider(ndb.Model):
         return "%s %s %s." % (self.title, self.first_name, first_letter_of_last_name)
         
     def full_name(self):
-        return '{0} {1}'.format(self.first_name, self.last_name)
+        return '%s %s %s' % (self.title, self.first_name, self.last_name)
     
 
     def get_html_summary(self):
@@ -355,6 +355,8 @@ class Note(ndb.Model):
     
 class Booking(ndb.Model):
     created_on = ndb.DateTimeProperty(auto_now_add=True)
+    # differentialte public profile bookings from search bookings
+    booking_source = ndb.StringProperty(choices=['search', 'profile'])
     #request
     request_category = ndb.StringProperty()
     request_location = ndb.StringProperty()
