@@ -168,9 +168,6 @@ application = ndb.toplevel(webapp2.WSGIApplication([
 
                                             # terms display
                                             Route('/terms/<vanity_url>', user.ProviderTermsHandler),
-                                            
-                                            # book now
-                                            Route('/book/<vanity_url>', booking.BookFromPublicProfile),
                                         ]),
                                        
                                        ('/login', user.LoginHandler),
@@ -232,6 +229,9 @@ application = ndb.toplevel(webapp2.WSGIApplication([
                                        # if this doesn't find someone it should throw a 404 (or back to index page?)
                                        Route('/<vanity_url>', handler=provider.ProviderPublicProfileHandler),
                                        Route('/<vanity_url>/', handler=provider.ProviderPublicProfileHandler),
+                                       # book now
+                                       Route('/<vanity_url>/book', booking.BookFromPublicProfile),
+                                       
                                       ], debug=True,
                                       config=webapp2_config))
 
