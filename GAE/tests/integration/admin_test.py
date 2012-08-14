@@ -140,7 +140,7 @@ class AdminTest(BaseTest):
         response.mustcontain(self._TEST_PATIENT_EMAIL)
         response.mustcontain(self._TEST_PROVIDER_EMAIL)
         response.mustcontain('Ostéopathe')
-        response.mustcontain('4:00')
+        response.mustcontain('8:00')
         # response.mustcontain(...monday...)
         
         
@@ -158,7 +158,7 @@ class AdminTest(BaseTest):
         response.mustcontain('User dropped out')
         response.mustcontain('No provider')
         response.mustcontain('No provider booked')
-        response.mustcontain('4:00')
+        response.mustcontain('8:00')
         # response.mustcontain(...monday...)
 
 
@@ -174,7 +174,7 @@ class AdminTest(BaseTest):
 
         response = self.testapp.get('/admin/bookings')
         response.mustcontain('Unfilled profile')
-        response.mustcontain('6:00') # this is the wrong time - need to fix time zone stuff
+        response.mustcontain('10:00') # this is the wrong time - need to fix time zone stuff
         response.mustcontain(self._TEST_PATIENT_EMAIL)
         response.mustcontain(self._TEST_PROVIDER_EMAIL)
         response.mustcontain('Ostéopathe')
@@ -193,7 +193,7 @@ class AdminTest(BaseTest):
 
         response = self.testapp.get('/admin/bookings')
         response.mustcontain('Patient not confirmed')
-        response.mustcontain('4:00')
+        response.mustcontain('8:00')
         response.mustcontain(self._TEST_PATIENT_EMAIL)
         response.mustcontain(self._TEST_PROVIDER_EMAIL)
         response.mustcontain('Ostéopathe')
