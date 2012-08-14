@@ -21,6 +21,7 @@ from data import search_index
 from google.appengine.api import search
 import urlparse
 import mail
+from handler import auth
 
 class ProviderBaseHandler(BaseHandler): 
 
@@ -412,7 +413,26 @@ class SocialHandler(ProviderBaseHandler):
         else:
             self.render_template("provider/network.html", provider=provider, provider_invite_form=form)
 
-
+class ProviderPublicProfileConnectHandler(ProviderBaseHandler):
+    def get(self, vanity_url=None):
+        provider_target = db.get_provider_from_vanity_url(vanity_url)
+        
+        user_source = self.get_current_user()
+        if user_source and auth.PROVIDER_ROLE in user_source.roles:
+            provider_source = db.get_provider_from_user(user_source)
+        
+            provider_source.provider_network.append(provider_target.key)
+            provider_source.put()
+            
+            message = "You are now connected!"
+            self.render_public_profile(provider=provider_target, success_message=message)
+        else:
+            # redirect to login page if not logged in
+            # TODO: should know to continue to connect after login and go back to profile page
+            self.redirect("/login")
+        
+        
+    
 
 class ProviderSearchHandler(ProviderBaseHandler):
     def post(self, vanity_url=None):

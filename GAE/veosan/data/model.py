@@ -109,6 +109,7 @@ class Provider(ndb.Model):
     booking_enabled = ndb.BooleanProperty(default=False)
     address_enabled = ndb.BooleanProperty(default=False)
     display_welcome_page = ndb.BooleanProperty(default=True)
+    connect_enabled = ndb.BooleanProperty(default=False)
 
     # user
     user = ndb.KeyProperty(kind=User)

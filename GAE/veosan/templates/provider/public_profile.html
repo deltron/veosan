@@ -76,11 +76,20 @@
 
 		{% if provider.booking_enabled %}
 
-		<a href="{{ provider.vanity_url }}/book" id="book_button" type="submit" class="btn btn-large btn-success"> {{ _('Book Now') }} </a>
+		<a href="/{{ provider.vanity_url }}/book" id="book_button" type="submit" class="btn btn btn-success"> {{ _('Book Now') }} </a>
 
 		<br>
 		<br>
 		{% endif %}
+
+		{% if provider.connect_enabled %}		
+		
+		<a href="/{{ provider.vanity_url }}/connect" id="connect_button" type="submit" class="btn btn btn-success"> {{ _('Connect') }} </a>
+
+		<br>
+		<br>
+		{% endif %}
+
 
 		{% if 'admin' in roles %}
 		<a href="/provider/profile/{{ provider.vanity_url }}" class="btn btn-danger"><i>Edit Profile</i></a>
