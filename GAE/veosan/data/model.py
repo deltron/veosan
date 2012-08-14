@@ -56,6 +56,7 @@ class Patient(ndb.Model):
     
 
 
+
 class Provider(ndb.Model):
     '''
     A provider
@@ -67,11 +68,7 @@ class Provider(ndb.Model):
     # terms
     terms_agreement = ndb.BooleanProperty()
     terms_date = ndb.DateProperty()
-    
-    # social network
-    # need to do a trick to refer to the class type inside its own definition
-    provider_network = ndb.KeyProperty(kind="Provider", repeated=True)
-    
+        
     # profile
     category = ndb.StringProperty()
     specialty = ndb.StringProperty(repeated=True)
@@ -113,16 +110,6 @@ class Provider(ndb.Model):
 
     # user
     user = ndb.KeyProperty(kind=User)
-    
-    def _pre_put_hook(self):
-        # don't connect with yourself
-        if self.provider_network.count(self.key):
-            self.provider_network.remove(self.key)
-        
-        # remove any dupes from the network graph
-        self.provider_network = list(set(self.provider_network))
-        
-        
 
     
     def get_profile_photo_image_url(self, size=None):
@@ -223,6 +210,20 @@ class Provider(ndb.Model):
     def is_enabled(self):
         return self.status == 'client_enabled'
     
+    def get_provider_network(self):     
+        sources = ProviderNetworkConnection.query(ProviderNetworkConnection.source_provider == self.key).fetch()
+        targets = ProviderNetworkConnection.query(ProviderNetworkConnection.target_provider == self.key).fetch()
+        
+        providers = []
+        
+        for connect in sources:
+            providers.append(connect.target_provider.get())
+            
+        for connect in targets:
+            providers.append(connect.source_provider.get())
+
+        return providers
+    
 
 class Education(ndb.Model):  
     provider = ndb.KeyProperty(kind=Provider)
@@ -303,6 +304,53 @@ class Invite(ndb.Model):
     last_name = ndb.StringProperty()
     email = ndb.StringProperty()
     note = ndb.TextProperty()
+
+
+class ProviderNetworkConnection(ndb.Model):
+    created_on = ndb.DateTimeProperty(auto_now_add=True)
+    
+    invite = ndb.KeyProperty(kind=Invite)
+
+    source_provider = ndb.KeyProperty(kind=Provider)
+    target_provider = ndb.KeyProperty(kind=Provider)
+    relationship = ndb.StringProperty()
+    confirmed = ndb.BooleanProperty(default=False)
+
+    
+    def _pre_put_hook(self):
+        # don't connect with yourself
+        if self.source_provider == self.target_provider:
+            raise Exception('Invalid connection to self')
+                
+        # remove any dupes from the network graph
+        
+        # check for duplicate source->target
+        source_target_count = ProviderNetworkConnection.query(
+                            ProviderNetworkConnection.source_provider == self.source_provider,
+                            ProviderNetworkConnection.target_provider == self.target_provider,
+                            ).count()
+        
+        if source_target_count > 0:
+            raise Exception('Duplicate source to target')
+
+        # check for duplicate target->source
+        source_target_count = ProviderNetworkConnection.query(
+                            ProviderNetworkConnection.target_provider == self.source_provider,
+                            ProviderNetworkConnection.source_provider == self.target_provider, 
+                            ).count()
+        
+        if source_target_count > 0:
+            raise Exception('Duplicate target to source')
+
+
+class PatientNetworkConnection(ndb.Model):
+    created_on = ndb.DateTimeProperty(auto_now_add=True)
+
+    source_provider = ndb.KeyProperty(kind=Provider)
+    target_patient = ndb.KeyProperty(kind=Patient)
+    relationship = ndb.StringProperty()
+    status = ndb.StringProperty()
+
 
 class Schedule(ndb.Model):
     provider = ndb.KeyProperty(kind=Provider) # name='schedule'

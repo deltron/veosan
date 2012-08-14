@@ -71,17 +71,16 @@ class ProviderSocialTest(BaseTest):
         
         # check connection on network page
         response = self.testapp.get('/provider/network/' + provider.vanity_url)
-        response.mustcontain('Your network contains 1 health-care professionals.')
+        response.mustcontain('Votre réseau contient 1 professionels de la santé.')
         response.mustcontain('first last')
         response.mustcontain('Ostéopathe')
-        
         self.logout_provider()
         
         # check the originating provider social network
         self.login_as_provider()
         provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
         response = self.testapp.get('/provider/network/' + provider.vanity_url)
-        response.mustcontain('Your network contains 1 health-care professionals.')
+        response.mustcontain('Votre réseau contient 1 professionels de la santé.')
         response.mustcontain('david mctest')
         response.mustcontain('Diététicien')
 
