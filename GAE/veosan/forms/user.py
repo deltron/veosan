@@ -22,7 +22,6 @@ class LoginForm(CustomForm):
         setattr(form, 'password', PasswordField(_(u'Password')))
         setattr(form, 'remember_me', CustomBooleanField(_(u'Remember Me')))
 
-
 class ProviderTermsForm(CustomForm):
     def _set_fields(self, form):        
         setattr(form, 'terms_agreement', CustomBooleanField(_(u'I agree with the Terms of Service'), [validators.Required(message=_(u'You must accept the terms to register'))]))

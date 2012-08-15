@@ -882,6 +882,19 @@ msgstr "Votre réseau contient"
 
 msgid "health-care professionals."
 msgstr "professionels de la santé."
+
+msgid "Connect"
+msgstr "Se connecter"
+
+msgid "Accept"
+msgstr "Accepter"
+
+msgid "is connected to"
+msgstr "est relié à"
+
+msgid "See all connections"
+msgstr "Voir toutes les connections"
+
 #################
 # Login page
 #################

@@ -94,7 +94,7 @@ class ProviderTest(BaseTest):
         
         login_response = self.testapp.get("/login")
 
-        login_form = login_response.forms[0]
+        login_form = login_response.forms['login_form']
         login_form['email'] = self._TEST_PROVIDER_EMAIL
         login_form['password'] = self._TEST_PROVIDER_PASSWORD        
         response = login_form.submit()
@@ -104,7 +104,7 @@ class ProviderTest(BaseTest):
         response.mustcontain("rifier votre email et mot de passe.")
 
         # login again with new credentials
-        resetpassword_form = response.forms[0]
+        resetpassword_form = response.forms['login_form']
         resetpassword_form['email'] = self._TEST_PROVIDER_EMAIL
         resetpassword_form['password'] = '654321'        
         response = resetpassword_form.submit()

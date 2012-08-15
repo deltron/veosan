@@ -374,25 +374,37 @@ class ProviderNetworkHandler(ProviderBaseHandler):
     @provider_required
     def get(self, vanity_url=None, operation=None, provider_key = None):
         provider = db.get_provider_from_vanity_url(vanity_url)
+        error_message = None
+        success_message = None
         
         if operation == 'accept':
             source_provider_key = ndb.Key(urlsafe=provider_key)
+            source_provider = source_provider_key.get()
             target_provider_key = provider.key
             
             provider_network_connection = db.get_provider_network_connection(source_provider_key, target_provider_key)
             provider_network_connection.confirmed = True
-            provider_network_connection.put()
             
-        if operation == 'false':
+            try:
+                provider_network_connection.put()
+            except Exception as e:
+                error_message = 'Error making connection: ' + e
+            
+            success_message = "You are now connected to %s %s" % (source_provider.first_name, source_provider.last_name)
+            
+        if operation == 'reject':
             source_provider_key = ndb.Key(urlsafe=provider_key)
+            source_provider = source_provider_key.get()
             target_provider_key = provider.key
-            
+                        
             provider_network_connection = db.get_provider_network_connection(source_provider_key, target_provider_key)
-            provider_network_connection.remove()
+            provider_network_connection.key.delete()
             
-            
+            success_message = "You have rejected %s %s" % (source_provider.first_name, source_provider.last_name)
+        
         provider_invite_form = ProviderInviteForm().get_form()
-        self.render_template("provider/network.html", provider=provider, provider_invite_form=provider_invite_form)
+        
+        self.render_template("provider/network.html", provider=provider, provider_invite_form=provider_invite_form, success_message=success_message, error_message=error_message)
 
     @provider_required
     def post(self, vanity_url=None, operation=None, provider_key = None):
@@ -450,12 +462,11 @@ class ProviderConnectHandler(ProviderBaseHandler):
             
             provider_network_connection.put()
             
-            message = "You are now connected!"
+            message = "Connection requested"
             self.render_public_profile(provider=provider_target, success_message=message)
         else:
             # redirect to login page if not logged in
-            # TODO: should know to continue to connect after login and go back to profile page
-            self.redirect("/login")
+            self.redirect("/login/connect/" + provider_target.key.urlsafe())
         
         
     
