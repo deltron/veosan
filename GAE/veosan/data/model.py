@@ -139,6 +139,10 @@ class Provider(ndb.Model):
     def get_schedules(self):
         return Schedule.query(Schedule.provider == self.key).order(Schedule.day, Schedule.start_time)
     
+    def get_total_available_hours_per_week(self):
+        sq = self.get_schedules()
+        return reduce(lambda sum, s: sum + (s.end_time - s.start_time), sq, 0)
+    
     def isAvailable(self, day, time):
         count = self.schedule.filter('day = ', day).filter('time = ', time).count()
         logging.info("is available? " + str(day) + " " + str(time) + " count:" + str(count))

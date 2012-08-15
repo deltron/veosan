@@ -21,6 +21,7 @@
 					<th width="10%">Email</th>
 					<th width="10%">Status</th>
 					<th width="10%">Created On</th>
+					<th width="10%">Available Hours</th>
 					<th width="15%">Upcoming bookings</th>
 				</tr>
 			</thead>
@@ -56,8 +57,9 @@
 					<td>
 						{{p.created_on|format_datetime_full}}
 					</td>
-					
-
+					<td>
+						{{p.get_total_available_hours_per_week()}}
+					</td>
 					<td>
 						bookings
 					</td>
