@@ -127,8 +127,10 @@ class PublicProfileTest(BaseTest):
         form = schedule_page.forms[form_id]
         new_patient_page = form.submit()
         # fill patient info
-        patient_form = new_patient_page.forms[0]
-        patient_form['email'] = self._TEST_PATIENT_EMAIL
+        step1_form = new_patient_page.forms[0]
+        step1_form['email'] = self._TEST_PATIENT_EMAIL
+        step1_form['comments'] = 'No comments'
+        new_patient_page = step1_form.submit()
         booking_confirm_page = self.fill_new_patient_profile(new_patient_page)
         # check confirmation
         
