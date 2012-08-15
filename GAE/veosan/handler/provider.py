@@ -1,7 +1,6 @@
 import logging
 from google.appengine.ext import ndb
 from google.appengine.ext import blobstore
-from google.appengine.ext.webapp import blobstore_handlers
 from webapp2_extras.i18n import lazy_gettext as _
 
 # veo
@@ -11,7 +10,6 @@ from forms.provider import ProviderProfileForm, ProviderPhotoForm, ProviderSched
 from base import BaseHandler
 from handler.auth import provider_required
 import util
-from util import saved_message
 from utilities import time
 from forms.booking import EmailOnlyBookingForm
 from data import search_index

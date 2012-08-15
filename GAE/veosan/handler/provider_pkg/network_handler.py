@@ -11,7 +11,7 @@ from handler import auth
 
 class ProviderNetworkHandler(ProviderBaseHandler):
     @provider_required
-    def get(self, vanity_url=None, operation=None, provider_key = None):
+    def get(self, vanity_url=None, operation=None, provider_key=None):
         provider = db.get_provider_from_vanity_url(vanity_url)
         error_message = None
         success_message = None
@@ -46,7 +46,7 @@ class ProviderNetworkHandler(ProviderBaseHandler):
         self.render_template("provider/network.html", provider=provider, provider_invite_form=provider_invite_form, success_message=success_message, error_message=error_message)
 
     @provider_required
-    def post(self, vanity_url=None, operation=None, provider_key = None):
+    def post(self, vanity_url=None, operation=None, provider_key=None):
         provider = db.get_provider_from_vanity_url(vanity_url)
         
         if operation == 'invite' :
@@ -103,8 +103,16 @@ class ProviderConnectHandler(ProviderBaseHandler):
             
             message = "Connection requested"
             self.render_public_profile(provider=provider_target, success_message=message)
+            
+            # now send out an email
+            # the url for accepting for target_provider
+            url_obj = urlparse.urlparse(self.request.url)
+            accept_url = urlparse.urlunparse((url_obj.scheme, url_obj.netloc, '/login/accept/' + provider_source.key.urlsafe(), '', '', ''))
+                
+            mail.email_connect_request(self.jinja2, from_provider=provider_source, target_provider=provider_target, accept_url=accept_url)
+            
         else:
-            # redirect to login page if not logged in
+            # redirect to login page if not logged in, then send back here after creditials are verified
             self.redirect("/login/connect/" + provider_target.key.urlsafe())
         
         
