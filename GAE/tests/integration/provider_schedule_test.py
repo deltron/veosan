@@ -16,22 +16,21 @@ class ProviderTest(BaseTest):
         
     def test_add_time_to_schedule(self):
         self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
-
         response = self.testapp.get('/provider/schedule/' + self._TEST_PROVIDER_VANITY_URL)
-
         # click on a button
         response = self.testapp.get('/provider/schedule/' + self._TEST_PROVIDER_VANITY_URL + '/add/tuesday/9')
-
         schedule_form = response.forms['schedule_form']
         schedule_form['day'] = 'tuesday'
         schedule_form['start_time'] = 9
         schedule_form['end_time'] = 17
-
         response = schedule_form.submit()
-        
         # check on the schedule admin page
         response.mustcontain('9h-17h')
-
+        # check admin providers
+        self.login_as_admin()
+        admin_page = self.testapp.get('/admin/providers')
+        admin_page.mustcontain('8')
+        self.logout_admin()
 
     def test_delete_time_from_schedule(self):
         self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
