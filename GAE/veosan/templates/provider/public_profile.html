@@ -83,9 +83,16 @@
 		{% endif %}
 
 		{% if provider.connect_enabled %}
-		
+
+		{% if False %}
+		You and {{ provider.first_name }} are connected!
+		{% else %}
+		{# Not connected, show button #}
 		<a href="/{{ provider.vanity_url }}/connect" id="connect_button" type="submit" class="btn btn btn-success"> {{ _('Connect') }} </a>
-		<br><br>
+		{% endif %}
+
+		<br>
+		<br>
 		{{ provider.first_name }} {{ _('is connected to') }} {{ provider.get_provider_network_count() }} {{ _('health-care professionals.') }}
 		<br>
 		<a data-toggle="modal" href="#network_modal">{{ _('See all connections') }}</a><a data-toggle="modal" href="#network_modal"><i class="bs-icon icon-share-alt"> </i></a>
@@ -93,7 +100,6 @@
 		<br>
 		<br>
 		{% endif %}
-
 
 		{% if 'admin' in roles %}
 		<a href="/provider/profile/{{ provider.vanity_url }}" class="btn btn-danger"><i>Edit Profile</i></a>
@@ -288,21 +294,24 @@
 		This network contains {{ provider.get_provider_network_count() }} health-care professionals.
 		<table class="table-condensed">
 			{% for p in provider.get_provider_network() %}
-			
+
 			{# create a row every 2 providers #}
-			{% set tr = loop.cycle('<tr>', '') %}
-			{% set close_tr = loop.cycle('', '</tr>') %}
-				
-				{{ tr|safe }}
-				<td width="50"><a href="/{{ p.vanity_url }}"> {% if p.profile_photo_blob_key %} <img src="{{ p.get_profile_photo_image_url(50) }}" width="50"
-				alt="{{ macro.display_provider_name(p) }} - {{ category_dict[p.category] }}"> {% else %} <img src="/assets/img/default-profile.png" width="50" height="50"
-				alt="{{ macro.display_provider_name(p) }} - {{ category_dict[p.category] }}"> {% endif %} </a></td>
-				<td width="150"><a href="/{{ p.vanity_url }}"><h4> {{ p.first_name }}
-				{{ p.last_name }} </h4></a> {{ category_dict[p.category] }} </td>
+			{% set tr = loop.cycle('
+			<tr>
+				', '') %}
+				{% set close_tr = loop.cycle('', '
+			</tr>') %}
 
-				{{ close_tr|safe }}
+			{{ tr|safe }}
+			<td width="50"><a href="/{{ p.vanity_url }}"> {% if p.profile_photo_blob_key %} <img src="{{ p.get_profile_photo_image_url(50) }}" width="50"
+			alt="{{ macro.display_provider_name(p) }} - {{ category_dict[p.category] }}"> {% else %} <img src="/assets/img/default-profile.png" width="50" height="50"
+			alt="{{ macro.display_provider_name(p) }} - {{ category_dict[p.category] }}"> {% endif %} </a></td>
+			<td width="150"><a href="/{{ p.vanity_url }}"><h4> {{ p.first_name }}
+			{{ p.last_name }} </h4></a> {{ category_dict[p.category] }} </td>
 
-				{% endfor %}
+			{{ close_tr|safe }}
+
+			{% endfor %}
 		</table>
 	</div>
 </div>
