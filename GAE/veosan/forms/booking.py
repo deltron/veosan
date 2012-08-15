@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from wtforms import Form, TextField, SelectField, PasswordField, TextAreaField
+from wtforms import Form, TextField, SelectField, PasswordField, TextAreaField, HiddenField
 from wtforms import validators
 from custom_form import CustomBooleanField
 import util
@@ -24,7 +24,7 @@ class EmailOnlyBookingForm(Form):
 class EmailAndAppointmentDetails(CustomForm):
     def _set_fields(self, form):
         setattr(form, 'email',TextField(_(u'E-mail Address'), [validators.Email(message=_(u'Invalid email address.'))]))
-        setattr(form, 'insurance', SelectField(_(u'Insurance'), choices=util.getAllInsurance()))
-        # this should go into the booking object
         setattr(form, 'specialty', SelectField(_(u'Needs'), choices=util.getAllSpecialitiesForPatient()))
         setattr(form, 'comments', TextAreaField(_(u'Comments for your appointment')))
+        setattr(form, 'insurance', SelectField(_(u'Insurance'), choices=util.getAllInsurance()))
+        setattr(form, 'booking_datetime', HiddenField('booking_datetime'))

@@ -4,7 +4,7 @@ import logging
 import data.db as db
 from data import db_search
 import mail, util
-from forms.booking import SearchBookingForm, EmailOnlyBookingForm
+from forms.booking import SearchBookingForm, EmailOnlyBookingForm, EmailAndAppointmentDetails
 from forms.patient import PatientForm
 from forms.user import LoginForm
 from handler.base import BaseHandler
@@ -63,6 +63,60 @@ class BookingBaseHandler(BaseHandler):
 
     def renderFullyBooked(self, booking, emailForm=None, **kw):
         self.render_template('search/no_result.html', booking=booking, form=emailForm, **kw) 
+        
+        
+    def route_patient_to_new_patient_form_or_confirm_booking(self, booking):
+        # is a user logged in? if so we can pull the information from their existing account
+        user = self.get_current_user()
+        if user:
+            # form was only a submit button, we get the email from the user logged in
+            email = user.get_email()
+            # A user is logged in let's see if he is a patient (he might be a provider)
+            patient = db.get_patient_from_user(user)
+            if patient:
+                # Patient is logged in
+                logging.info('Patient %s is already logged in, confirming booking.' % email)
+                booking.patient = patient.key
+                booking.put()
+                # skip activation stuff, send confirm email
+                mail.email_booking_to_patient(self.jinja2, booking)
+                self.render_confirmed_patient(self, patient) 
+            else:
+                logging.error('Currently logged in user is not a patient')
+                # TODO ... If it's logged in and not a patient, it has to be a provider! Can they be both?    
+                pass
+            
+        else:
+            # store email in booking as requestEmail
+            email = self.request.get('email')
+            booking.request_email = email
+            booking.put()
+            
+            # check if the email address given is an existing user that hasn't logged in
+            # or a completely new user
+            existing_user = db.get_user_from_email(email)
+            if existing_user:
+                existing_patient = db.get_patient_from_user(existing_user)
+                if existing_patient:
+                    # email is in datastore, but not logged in
+                    # link booking to patient and then check if same patient logs in (check is in @patient_required)
+                    booking.patient = existing_patient.key
+                    booking.put()
+                    # send to login page with booking.key set
+                    login_form = LoginForm().get_form()
+                    login_form.email.data = email
+                    self.render_template('user/login.html', login_form=login_form, booking=booking)
+                
+                else:
+                    # user exists, not no patient profile attached (might be a provider)
+                    # 1. login, 2. patient profile, 3. confirm
+                    logging.error("(BookingHandler) user exists, not no patient profile attached (might be a provider)")         
+            else:    
+                # email is not known, create new patient profile
+                logging.info('Patient does not exist for %s, creating new patient.' % email)
+                patient_form = PatientForm(self.request.POST)
+                PatientBaseHandler.render_new_patient_form(self, patient_form, booking)             
+
     
     
 class IndexHandler(BookingBaseHandler):
@@ -128,82 +182,21 @@ class BookingHandler(BookingBaseHandler):
             2. Add the patient using the User
         '''        
         logging.info('request %s' % self.request)
-
         booking = db.get_from_urlsafe_key(self.request.get('bk'))
-        # 1. Save provider and datetime in booking
-        provider = db.get_from_urlsafe_key(self.request.get('provider_key'))
-        booking.provider = provider.key
-        booking_datetime = to_utc(datetime.strptime(self.request.get('booking_datetime'), '%Y-%m-%d %H:%M:%S'))
-        booking.datetime = booking_datetime
-        booking.put()
-        
-        # is a user logged in? if so we can pull the information from their existin account
-        user = self.get_current_user()
-        if user:
-            # form was only a submit button, we get the email from the user logged in
-            email = user.get_email()
-            
-            # A user is logged in let's see if he is a patient (he might be a provider)
-            patient = db.get_patient_from_user(user)
-            if patient:
-                # Patient is logged in
-                logging.info('Patient %s is already logged in, confirming booking.' % email)
-                booking.patient = patient.key
-                booking.put()
-                
-                # skip activation stuff, send confirm email
-                mail.email_booking_to_patient(self.jinja2, booking)
-                
-                self.render_confirmed_patient(self, patient) 
-            else:
-                # TODO ... If it's logged in and not a patient, it has to be a provider! Can they be both?    
-                pass
-            
+        email_form = EmailOnlyBookingForm(self.request.POST)
+        if email_form.validate():
+            # 1. Save provider and datetime in booking
+            provider = db.get_from_urlsafe_key(self.request.get('provider_key'))
+            booking.provider = provider.key
+            booking_datetime = to_utc(datetime.strptime(self.request.get('booking_datetime'), '%Y-%m-%d %H:%M:%S'))
+            booking.datetime = booking_datetime
+            booking.put()
+            self.route_patient_to_new_patient_form_or_confirm_booking(booking)
         else:
-            # check if email was provided
-            if self.request.get('email'):
-                # no user is logged in, grab the email address from the booking form
-                email_form = EmailOnlyBookingForm(self.request.POST)
-                if email_form.validate():
-                    # store email in booking as requestEmail
-                    email = self.request.get('email')
-                    
-                    booking.request_email = email
-                    booking.put()
-                    
-                    # check if the email address given is an existing user that hasn't logged in
-                    # or a completely new user
-                    existing_user = db.get_user_from_email(email)
-                    if existing_user:
-                        existing_patient = db.get_patient_from_user(existing_user)
-                        if existing_patient:
-                            # email is in datastore, but not logged in
-                            # link booking to patient and then check if same patient logs in (check is in @patient_required)
-                            booking.patient = existing_patient.key
-                            booking.put()
-                            # send to login page with booking.key set
-                            login_form = LoginForm().get_form()
-                            login_form.email.data = email
-                            self.render_template('user/login.html', login_form=login_form, booking=booking)
-                        
-                        else:
-                            # user exists, not no patient profile attached (might be a provider)
-                            # 1. login, 2. patient profile, 3. confirm
-                            logging.error("(BookingHandler) user exists, not no patient profile attached (might be a provider)")         
-                    else:    
-                        # email is not known, create new patient profile
-                        logging.info('Patient does not exist for %s, creating new patient.' % email)
-                        patient_form = PatientForm(self.request.POST)
-                        PatientBaseHandler.render_new_patient_form(self, patient_form, booking)             
-                else:
-                    # email validation failed. Show same results again
-                    self.search_and_render_results(booking, email_form)   
-            else:    
-                # no email provided, show new patient form with email field
-                logging.info('Email not provided, creating new patient.')
-                patient_form = PatientForm(self.request.POST)
-                PatientBaseHandler.render_new_patient_form(self, patient_form, booking) 
-
+            # email validation failed. Show same results again
+            self.search_and_render_results(booking, email_form) 
+        
+        
 
 WeekNav = namedtuple('WeekNav', 'prev_week this_week next_week')
 
@@ -233,20 +226,29 @@ class BookFromPublicProfile(BookingBaseHandler):
     
     def post(self, vanity_url=None, step=None):
         '''
-            
-        
+            Booking process from public profile
         '''
-        if not bk:
-            booking = Booking()
-            booking.provider = provider.key
-            booking.booking_source = 'profile'
-            booking.put()
-            logging.debug('Created booking from public profile: %s' % booking)
-        else:
-            booking = db.get_from_urlsafe_key(bk)
+        if step == '1':
+            provider = db.get_provider_from_vanity_url(vanity_url)
+            email_details_form = EmailAndAppointmentDetails().get_form(self.request.POST)
+            self.render_template('patient/booking_step1.html', provider=provider, email_details_form=email_details_form)
+            
+        elif step == '2':
+            email_details_form = EmailAndAppointmentDetails().get_form(self.request.POST)
+            provider = db.get_provider_from_vanity_url(vanity_url)
+            if email_details_form.validate():
+                logging.info('TESTSTEST')
+                booking = Booking()
+                booking.provider = provider.key
+                booking.booking_source = 'profile'
+                booking.datetime = to_utc(datetime.strptime(self.request.get('booking_datetime'), '%Y-%m-%d %H:%M:%S'))
+                booking.put()
+                logging.info('Created booking from public profile: %s' % booking)
+                self.route_patient_to_new_patient_form_or_confirm_booking(booking)
+            else:
+                self.render_template('patient/booking_step1.html', provider=provider, email_details_form=email_details_form)
             
             
-        
            
                 
 class FullyBookedHandler(BookingBaseHandler):
