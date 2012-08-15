@@ -11,6 +11,8 @@ from util import dump
 import util
 from utilities import time
 from handler import booking, provider, patient, provider_admin, admin, static, contact, language, user
+from handler.provider_pkg import network_handler, address_handler, cv_handler,\
+    profile_handler
 from data.model import User
 from google.appengine.ext import ndb
 
@@ -130,22 +132,22 @@ application = ndb.toplevel(webapp2.WSGIApplication([
                                             Route('/bookings/<vanity_url>', provider.ProviderBookingsHandler),
                                             
                                             PathPrefixRoute('/network', [
-                                                Route('/<vanity_url>', provider.ProviderNetworkHandler),
-                                                Route('/<vanity_url>/<operation>', provider.ProviderNetworkHandler),
-                                                Route('/<vanity_url>/<operation>/<provider_key>', provider.ProviderNetworkHandler),
+                                                Route('/<vanity_url>', network_handler.ProviderNetworkHandler),
+                                                Route('/<vanity_url>/<operation>', network_handler.ProviderNetworkHandler),
+                                                Route('/<vanity_url>/<operation>/<provider_key>', network_handler.ProviderNetworkHandler),
                                             ]),
                                                                      
                                             # provider profile
                                             PathPrefixRoute('/profile', [
-                                                Route('/<vanity_url>', provider.ProviderEditProfileHandler),
-                                                Route('/photo/<vanity_url>', provider.ProviderProfilePhotoUploadHandler),
+                                                Route('/<vanity_url>', profile_handler.ProviderEditProfileHandler),
+                                                Route('/photo/<vanity_url>', profile_handler.ProviderProfilePhotoUploadHandler),
                                             ]),
                      
                                             # CV sections (Education, Work Experience)
                                             PathPrefixRoute('/cv', [
-                                                Route('/<vanity_url>', provider.ProviderCVHandler),
-                                                Route('/<section>/<vanity_url>/<operation>', provider.ProviderCVHandler),
-                                                Route('/<section>/<vanity_url>/<operation>/<key>', provider.ProviderCVHandler),
+                                                Route('/<vanity_url>', cv_handler.ProviderCVHandler),
+                                                Route('/<section>/<vanity_url>/<operation>', cv_handler.ProviderCVHandler),
+                                                Route('/<section>/<vanity_url>/<operation>/<key>', cv_handler.ProviderCVHandler),
                                             ]),
                                             
                                             # Schedule
@@ -159,11 +161,11 @@ application = ndb.toplevel(webapp2.WSGIApplication([
                                                                                                                                                                                    
                                             # Address
                                             PathPrefixRoute('/address', [
-                                                Route('/<vanity_url>', provider.ProviderEditAddressHandler),
-                                                Route('/change_url/<vanity_url>', provider.ProviderChangeURLHandler),
+                                                Route('/<vanity_url>', address_handler.ProviderEditAddressHandler),
+                                                Route('/change_url/<vanity_url>', address_handler.ProviderChangeURLHandler),
                                             ]),
 
-                                            # Address
+                                            # Search
                                             PathPrefixRoute('/search', [
                                                 Route('/<vanity_url>', provider.ProviderSearchHandler),
                                             ]),
@@ -236,7 +238,7 @@ application = ndb.toplevel(webapp2.WSGIApplication([
                                        Route('/<vanity_url>/book', booking.BookFromPublicProfile),
                                        Route('/<vanity_url>/book/<step>', booking.BookFromPublicProfile),
                                        Route('/<vanity_url>/book/date/<start_date>', booking.BookFromPublicProfile),
-                                       Route('/<vanity_url>/connect', provider.ProviderConnectHandler),
+                                       Route('/<vanity_url>/connect', network_handler.ProviderConnectHandler),
                                       ], debug=True,
                                       config=webapp2_config))
 

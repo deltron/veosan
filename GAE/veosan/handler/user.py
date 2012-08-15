@@ -13,7 +13,6 @@ from base import BaseHandler
 import data.db as db
 import auth
 from patient import PatientBaseHandler
-from provider import ProviderBaseHandler
 from booking import BookingBaseHandler
 from forms.user import ProviderTermsForm, PasswordForm, LoginForm, ProviderSignupForm1, ProviderSignupForm2, PatientSignupForm
 import mail
@@ -164,13 +163,7 @@ class PasswordHandler(UserBaseHandler):
                 # delete the signup token
                 self.delete_signup_token(user)
             
-                if provider:
-                    # show welcome page
-                    self.redirect('/provider/message/new/' + provider.vanity_url)
-                    
-                    self.log_event(user, "New account created for user")
-                                   
-                elif patient:
+                if patient:
                     welcome_message = _("Welcome to Veosan! Profile confirmation successful.")
                     BookingBaseHandler.render_confirmed_patient(self, patient, success_message=welcome_message)
 
@@ -249,28 +242,8 @@ class ActivationHandler(UserBaseHandler):
     def get(self, signup_token=None):
         if signup_token:
             user = self.validate_signup_token(signup_token)
-            if user:
-            
-                if auth.PROVIDER_ROLE in user.roles:
-                    logging.info('(ActivationHandler) activating provider: %s' % user.get_email())
-
-                    provider = db.get_provider_from_user(user)
-                
-                    if provider:
-                        # mark terms as not agreed
-                        provider.terms_agreement = False
-                        provider.terms_date = None
-
-                        # show terms page
-                        terms_form = ProviderTermsForm().get_form(obj=provider)
-                        self.render_terms(provider, terms_form=terms_form, signup_token=signup_token)
-                        
-                    else:
-                        # no provider found for user & token combination, send them to the login page
-                        logging.info('(ActivationHandler) no provider found for user & token combination')
-                        self.redirect("/login")
-                        
-                elif auth.PATIENT_ROLE in user.roles:
+            if user:                        
+                if auth.PATIENT_ROLE in user.roles:
                     logging.info('(ActivationHandler) activating patient: %s' % user.get_email())
 
                     patient = db.get_patient_from_user(user)
@@ -341,6 +314,10 @@ class LoginHandler(UserBaseHandler):
                             connected_provider_key = ndb.Key(urlsafe=key)
                             connected_provider = connected_provider_key.get()
                             target_url = '/' + connected_provider.vanity_url + '/connect'
+                            self.redirect(target_url)
+
+                        elif next_action == 'accept':
+                            target_url = '/provider/network/' + provider.vanity_url + '/accept/' + key
                             self.redirect(target_url)
 
                         elif provider.display_welcome_page:     

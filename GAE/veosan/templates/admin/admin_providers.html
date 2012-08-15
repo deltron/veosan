@@ -18,6 +18,7 @@
 					<th width="5%">Photo</th>
 					<th width="10%">Name</th>
 					<th width="10%">Profile views</th>
+					<th width="10%">Connections</th>
 					<th width="10%">Email</th>
 					<th width="10%">Status</th>
 					<th width="10%">Created On</th>
@@ -44,6 +45,11 @@
 					</td>
 					<td>
 						<a href='/{{ p.vanity_url }}'>{{p.profile_views}}</a>
+					</td>
+					<td>
+						Network: <a href='/provider/network/{{ p.vanity_url }}'>{{p.get_provider_network_count()}}</a>
+						<br>
+						Pending: <a href='/provider/network/{{ p.vanity_url }}'>{{p.get_provider_network_pending_count()}}</a>
 					</td>
 					<td>
 						{{p.email}}
