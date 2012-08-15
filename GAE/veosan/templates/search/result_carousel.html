@@ -61,6 +61,8 @@
 						
 						{% if not user %}
 						<input id='email' name='email' type="text" class="" placeholder="{{_('Email Address')}}">
+						{% else %}
+						<input id='email' name='email' type="hidden" class="" value="{{ user.get_email() }}">
 						{% endif %}
 						
 						<button id="book_button" type="submit" class="btn btn-primary">

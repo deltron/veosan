@@ -182,14 +182,19 @@ class BookingHandler(BookingBaseHandler):
             2. Add the patient using the User
         '''        
         logging.info('request %s' % self.request)
-
         booking = db.get_from_urlsafe_key(self.request.get('bk'))
-        # 1. Save provider and datetime in booking
-        provider = db.get_from_urlsafe_key(self.request.get('provider_key'))
-        booking.provider = provider.key
-        booking_datetime = to_utc(datetime.strptime(self.request.get('booking_datetime'), '%Y-%m-%d %H:%M:%S'))
-        booking.datetime = booking_datetime
-        booking.put()
+        email_form = EmailOnlyBookingForm(self.request.POST)
+        if email_form.validate():
+            # 1. Save provider and datetime in booking
+            provider = db.get_from_urlsafe_key(self.request.get('provider_key'))
+            booking.provider = provider.key
+            booking_datetime = to_utc(datetime.strptime(self.request.get('booking_datetime'), '%Y-%m-%d %H:%M:%S'))
+            booking.datetime = booking_datetime
+            booking.put()
+            self.route_patient_to_new_patient_form_or_confirm_booking(booking)
+        else:
+            # email validation failed. Show same results again
+            self.search_and_render_results(booking, email_form) 
         
         
 
