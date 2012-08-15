@@ -4,7 +4,11 @@
 {% block lead %} {{ _('Enjoy the benefits of being a member today!') }} {% endblock %}
 
 {% block content %}
-<form method="post" action="/login" class="form-horizontal">
+{% if next_action and key %}
+<form method="post" action="/login/{{ next_action }}/{{ key }}" class="form-horizontal" id="login_form">
+{% else %}
+<form method="post" action="/login" class="form-horizontal" id="login_form">
+{% endif %}
 	<div class="row">
 		<fieldset>
 			<div class="span6">
@@ -13,7 +17,8 @@
 				<input type="hidden" name="booking_key" value="{{booking.key.urlsafe()}}" />
 				{% endif %}
 				<!-- form -->
-				{{ macro.makeStandardForm(inputClass='span3') }}
+
+				{{ macro.make_standard_form(form_name=login_form, inputClass='span3') }}
 			</div>
 
 			<div class="span6">

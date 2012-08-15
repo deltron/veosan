@@ -462,12 +462,11 @@ class ProviderConnectHandler(ProviderBaseHandler):
             
             provider_network_connection.put()
             
-            message = "You are now connected!"
+            message = "Connection requested"
             self.render_public_profile(provider=provider_target, success_message=message)
         else:
             # redirect to login page if not logged in
-            # TODO: should know to continue to connect after login and go back to profile page
-            self.redirect("/login")
+            self.redirect("/login/connect/" + provider_target.key.urlsafe())
         
         
     
