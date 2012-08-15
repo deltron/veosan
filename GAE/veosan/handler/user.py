@@ -61,12 +61,14 @@ class UserBaseHandler(BaseHandler):
             else:
                 logging.error('(UserBaseHandler.render_password_selection) no user given, cannot render password selection')
         
-    def render_login(self, **kw):
-        self.render_template('user/login.html', form=LoginForm().get_form(), **kw)
+    def render_login(self, next_action=None, key=None, **kw):
+        login_form = LoginForm().get_form()
+        
+        self.render_template('user/login.html', login_form=login_form, next_action=next_action, key=key, **kw)
 
 
 class ProviderTermsHandler(UserBaseHandler):
-    def get(self, vanity_url = None):
+    def get(self, vanity_url=None):
         # get provider from vanity url
         provider = db.get_provider_from_vanity_url(vanity_url)
         
@@ -82,7 +84,7 @@ class ProviderTermsHandler(UserBaseHandler):
         terms_form = ProviderTermsForm().get_form(obj=provider)
         self.render_terms(provider, terms_form=terms_form)
     
-    def post(self, vanity_url = None):
+    def post(self, vanity_url=None):
         provider = db.get_provider_from_vanity_url(vanity_url)
         terms_form = ProviderTermsForm().get_form(self.request.POST)
         if terms_form.validate():
@@ -104,7 +106,7 @@ class ProviderTermsHandler(UserBaseHandler):
             self.render_terms(provider, terms_form=terms_form)
 
 class InviteHandler(UserBaseHandler):
-    def get(self, invite_token = None):
+    def get(self, invite_token=None):
         invite = db.get_invite_from_token(invite_token)
         if invite:
             invite_provider = invite.provider.get()
@@ -126,12 +128,12 @@ class InviteHandler(UserBaseHandler):
 
 
 class PasswordHandler(UserBaseHandler):
-    def get(self, signup_token = None):
+    def get(self, signup_token=None):
         user = db.get_user_from_signup_token(signup_token)
         
         self.render_password_selection(user=user, signup_token=signup_token)
         
-    def post(self, signup_token = None):
+    def post(self, signup_token=None):
         password_form = PasswordForm().get_form(self.request.POST)
         
         user = db.get_user_from_signup_token(signup_token)
@@ -188,7 +190,7 @@ class PasswordHandler(UserBaseHandler):
 
                 
                 if auth.PATIENT_ROLE in user.roles:
-                    PatientBaseHandler.render_bookings(self, patient, success_message= _("Welcome back! Password has been reset.")) 
+                    PatientBaseHandler.render_bookings(self, patient, success_message=_("Welcome back! Password has been reset.")) 
 
         # password form was not validate, re-render and try again!
         else:
@@ -298,12 +300,13 @@ class LoginHandler(UserBaseHandler):
         GET shows login page
         POST checks username, password, logs in user and redirect to start page
     '''
-    def get(self):
+    def get(self, next_action=None, key=None):
         ''' Show login page '''
-        self.render_login()
+        
+        self.render_login(next_action=next_action, key=key)
         
 
-    def post(self):
+    def post(self, next_action=None, key=None):
         ''' checks username, password, logs in user and redirect to start page '''
         
         login_form = LoginForm().get_form(self.request.POST)
@@ -332,7 +335,15 @@ class LoginHandler(UserBaseHandler):
                         logging.info('(LoginHandler.post) User %s logged in as provider, redirecting to profile page', user.get_email())
 
 
-                        if provider.display_welcome_page:     
+                        # check the action, if it's from a connection do that first
+                        # and then redirect back to profile page with a message
+                        if next_action == 'connect':
+                            connected_provider_key = ndb.Key(urlsafe=key)
+                            connected_provider = connected_provider_key.get()
+                            target_url = '/' + connected_provider.vanity_url + '/connect'
+                            self.redirect(target_url)
+
+                        elif provider.display_welcome_page:     
                             self.redirect('/provider/welcome/' + provider.vanity_url)
                         else:
                             self.redirect('/provider/profile/%s' % provider.vanity_url)
@@ -349,15 +360,15 @@ class LoginHandler(UserBaseHandler):
                     else:
                         logging.error('(LoginHandler.post) User %s logged in without roles', user.get_email())
                         error_message = 'Your account is not activated. Please check your email for an activation message or <a href="/contact">contact us</a> if you require assistance.'
-                        self.render_template('user/login.html', form=login_form, error_message=error_message)
+                        self.render_template('user/login.html', login_form=login_form, error_message=error_message)
                 
             except (InvalidAuthIdError, InvalidPasswordError), e:
                 # throws InvalidAuthIdError if user is not found, throws InvalidPasswordError if provided password doesn't match with specified user
                 error_message = _(u'Login failed. Try again.')
-                self.render_template('user/login.html', form=login_form, error_message=error_message)
+                self.render_template('user/login.html', login_form=login_form, error_message=error_message)
         else:
             # form validation error
-            self.render_template('user/login.html', form=login_form)
+            self.render_template('user/login.html', login_form=login_form)
 
 
 
@@ -378,8 +389,15 @@ class LogoutHandler(UserBaseHandler):
 
 
 
+
+
+
+############################
+# Signup
+############################
+
 class ProviderSignupHandler1(UserBaseHandler):
-    def get(self, lang_key = None):
+    def get(self, lang_key=None):
         if lang_key and lang_key in util.LANGUAGES:
             self.set_language(lang_key)
             self.redirect('/signup/provider')            
@@ -388,7 +406,7 @@ class ProviderSignupHandler1(UserBaseHandler):
         
         self.render_template('user/signup_provider_1.html', provider_signup_form=provider_signup_form)      
 
-    def post(self, lang_key = None):
+    def post(self, lang_key=None):
         provider_signup_form = ProviderSignupForm1().get_form(self.request.POST)
 
         if provider_signup_form.validate():
@@ -401,7 +419,7 @@ class ProviderSignupHandler1(UserBaseHandler):
             self.render_template('user/signup_provider_1.html', provider_signup_form=provider_signup_form)
 
 class ProviderSignupHandler2(UserBaseHandler):
-    def post(self, lang_key = None):
+    def post(self, lang_key=None):
         provider_signup_form2 = ProviderSignupForm2().get_form(self.request.POST)
         
         if provider_signup_form2.validate():            
@@ -513,7 +531,7 @@ class ProviderSignupHandler2(UserBaseHandler):
             
 
 class PatientSignupHandler(UserBaseHandler):
-    def get(self, lang_key = None):
+    def get(self, lang_key=None):
         if lang_key and lang_key in util.LANGUAGES:
             self.set_language(lang_key)
             self.redirect('/signup/patient')            
@@ -522,7 +540,7 @@ class PatientSignupHandler(UserBaseHandler):
         
         self.render_template('/user/signup_patient.html', patient_signup_form=patient_signup_form)      
 
-    def post(self, lang_key = None):
+    def post(self, lang_key=None):
         patient_signup_form = PatientSignupForm().get_form(self.request.POST)
         
         if patient_signup_form.validate():
