@@ -22,7 +22,12 @@ Twitter Bootstrap horizontal form layout.
 
 {% macro make_standard_form(form_name, inputClass='input-xlarge') -%}
 {% for field in form_name %}
-{% if field.type != "FileField" %}
+{% if field.type == "HiddenField" %}
+	{# don't show any decorations for hidden fields #}
+	{{ field }}
+
+
+{% elif field.type != "FileField" %}
 <div class="control-group {% if field.errors %} error {% endif %}">
 	{% if field.type == "CustomBooleanField" %}
 	{# don't show the label on the left side for boolean #}
