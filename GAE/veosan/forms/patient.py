@@ -15,10 +15,11 @@ class PatientForm(Form):
     city = TextField(_(u'City'), [validators.Length(min=3, message='Address requis.')])
     postal_code = TextField(_(u'Postal Code'), [validators.Length(min=6, message='Address requis.')])
     
-    insurance = SelectField(_(u'Insurance'), choices=util.getAllInsurance())
+    # moved to booking
+    #insurance = SelectField(_(u'Insurance'), choices=util.getAllInsurance())
     # this should go into the booking object
-    specialty = SelectField(_(u'Needs'), choices=util.getAllSpecialitiesForPatient())
-    comments = TextAreaField(_(u'Comments for your appointment'))
+    #specialty = SelectField(_(u'Needs'), choices=util.getAllSpecialitiesForPatient())
+    #comments = TextAreaField(_(u'Comments for your appointment'))
     # terms agreement (required)
     terms_agreement = CustomBooleanField(_(u'I agree with the Terms of Service'), [validators.Required(message=_(u'You must accept the terms to book an appointment'))])
 

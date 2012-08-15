@@ -86,6 +86,19 @@
 			</tr>
 			
 		</table>
+		
+		<table style="width: 100%">
+			<tr>
+			<td>
+			{% if week_nav.prev_week %}
+			<a class="btn btn-success" href="/{{ provider.vanity_url }}/book/{{week_nav.prev_week}}/{{booking.key.urlsafe()}}" > {{ _("Previous Week") }}</a>
+			{% endif %}
+			</td>
+			<td align="right">
+			<a class="btn btn-success" href="/{{ provider.vanity_url }}/book/{{week_nav.next_week}}/{{booking.key.urlsafe()}}" > {{ _("Next Week") }}</a>
+			</td>	
+		</tr>
+		</table>
 	</div>
 
 </div>

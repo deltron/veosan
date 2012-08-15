@@ -4,7 +4,7 @@ import logging
 import data.db as db
 from data import db_search
 import mail, util
-from forms.booking import BookingForm, EmailOnlyBookingForm
+from forms.booking import SearchBookingForm, EmailOnlyBookingForm
 from forms.patient import PatientForm
 from forms.user import LoginForm
 from handler.base import BaseHandler
@@ -14,6 +14,7 @@ from datetime import datetime, date, timedelta
 from utilities import time
 from data.model import Booking
 from webapp2_extras.i18n import to_utc
+from collections import namedtuple
 
 class BookingBaseHandler(BaseHandler):
     '''Common functions for all booking handlers'''
@@ -67,14 +68,14 @@ class BookingBaseHandler(BaseHandler):
 class IndexHandler(BookingBaseHandler):
     def get(self):
         # for showing booking block
-        booking_form = BookingForm().get_form(self.request.GET)
+        booking_form = SearchBookingForm().get_form(self.request.GET)
         self.render_template('index.html', form=booking_form)
         
     def post(self):        
         ''' Renders 2nd page: Result + Confirm button
         TODO: Replace with passing booking properties and provider key, saving only after the patient logging ??? 
         '''
-        booking_form = BookingForm().get_form(self.request.POST)
+        booking_form = SearchBookingForm().get_form(self.request.POST)
         if booking_form.validate():
             booking = db.storeBooking(self.request.POST, None, None)
             
@@ -203,28 +204,42 @@ class BookingHandler(BookingBaseHandler):
                 patient_form = PatientForm(self.request.POST)
                 PatientBaseHandler.render_new_patient_form(self, patient_form, booking) 
 
-            
+
+WeekNav = namedtuple('WeekNav', 'prev_week this_week next_week')
 
 class BookFromPublicProfile(BookingBaseHandler):
+    
     '''
         Using vanity url, display schedule
     '''
-    def get(self, vanity_url=None, start_date=None):
+    def get(self, vanity_url=None, start_date=None, bk=None):
         # provoder already selection from public profile
-        provider = db.get_provider_from_vanity_url(vanity_url)
-        # 
-        booking = Booking()
-        booking.provider = provider.key
-        booking.booking_source = 'profile'
-        booking.put()
-        logging.debug('Created booking from public profile: %s' % booking)
-        
-        if (not start_date) or (start_date <= date.today):
-            start_date = time.tomorrow()
         period = timedelta(days=7)
+        provider = db.get_provider_from_vanity_url(vanity_url)
+        if not bk:
+            booking = Booking()
+            booking.provider = provider.key
+            booking.booking_source = 'profile'
+            booking.put()
+            logging.debug('Created booking from public profile: %s' % booking)
+        else:
+            booking = db.get_from_urlsafe_key(bk)
+        
+        if start_date:
+            start_date = datetime.strptime(start_date, "%Y-%m-%d").date()
+            week_nav = WeekNav(start_date - period, start_date, start_date + period)
+            if (start_date <= time.tomorrow()):
+                start_date = time.tomorrow()
+                week_nav = WeekNav(None, start_date, start_date + period)
+            
+        else:
+            start_date = time.tomorrow()
+            week_nav = WeekNav(None, start_date, start_date + period)
+        
         schedules = provider.get_schedules()
         datetimes_map = util.generate_datetimes_map(schedules, start_date, period)
-        self.render_template('provider/booking_schedule.html', booking=booking, provider=provider, dtm=datetimes_map) 
+        
+        self.render_template('provider/booking_schedule.html', booking=booking, provider=provider, dtm=datetimes_map, week_nav=week_nav) 
         
              
                 
