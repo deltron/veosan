@@ -249,27 +249,7 @@ class ActivationHandler(UserBaseHandler):
     def get(self, signup_token=None):
         if signup_token:
             user = self.validate_signup_token(signup_token)
-            if user:
-            
-                if auth.PROVIDER_ROLE in user.roles:
-                    logging.info('(ActivationHandler) activating provider: %s' % user.get_email())
-
-                    provider = db.get_provider_from_user(user)
-                
-                    if provider:
-                        # mark terms as not agreed
-                        provider.terms_agreement = False
-                        provider.terms_date = None
-
-                        # show terms page
-                        terms_form = ProviderTermsForm().get_form(obj=provider)
-                        self.render_terms(provider, terms_form=terms_form, signup_token=signup_token)
-                        
-                    else:
-                        # no provider found for user & token combination, send them to the login page
-                        logging.info('(ActivationHandler) no provider found for user & token combination')
-                        self.redirect("/login")
-                        
+            if user:                        
                 elif auth.PATIENT_ROLE in user.roles:
                     logging.info('(ActivationHandler) activating patient: %s' % user.get_email())
 
@@ -342,6 +322,10 @@ class LoginHandler(UserBaseHandler):
                             connected_provider = connected_provider_key.get()
                             target_url = '/' + connected_provider.vanity_url + '/connect'
                             self.redirect(target_url)
+
+                        if next_action == 'accept':
+                            self.redirect('/')
+
 
                         elif provider.display_welcome_page:     
                             self.redirect('/provider/welcome/' + provider.vanity_url)
