@@ -163,13 +163,7 @@ class PasswordHandler(UserBaseHandler):
                 # delete the signup token
                 self.delete_signup_token(user)
             
-                if provider:
-                    # show welcome page
-                    self.redirect('/provider/message/new/' + provider.vanity_url)
-                    
-                    self.log_event(user, "New account created for user")
-                                   
-                elif patient:
+                if patient:
                     welcome_message = _("Welcome to Veosan! Profile confirmation successful.")
                     BookingBaseHandler.render_confirmed_patient(self, patient, success_message=welcome_message)
 
