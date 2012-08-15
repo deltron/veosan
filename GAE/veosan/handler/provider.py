@@ -1,12 +1,11 @@
 import logging
 from google.appengine.ext import ndb
 from google.appengine.ext import blobstore
-from webapp2_extras.i18n import lazy_gettext as _
 
 # veo
 import data.db as db
 from data.model import Schedule
-from forms.provider import ProviderProfileForm, ProviderPhotoForm, ProviderScheduleForm
+from forms.provider import ProviderPhotoForm, ProviderScheduleForm
 from base import BaseHandler
 from handler.auth import provider_required
 import util
@@ -38,19 +37,6 @@ class ProviderBaseHandler(BaseHandler):
     def render_address(self, provider, **kw):
         self.render_template('provider/address.html', provider=provider, **kw)
 
-
-class ProviderMessageHandler(ProviderBaseHandler):
-    @provider_required
-    def get(self, vanity_url=None, msg_key=None):
-        provider = db.get_provider_from_vanity_url(vanity_url)
-        
-        messages = { 'new' : _("Welcome to Veosan! Please get started by completing your profile."),
-                     'reset' : _("Welcome back! Password has been reset."),
-                    }
-        
-        profile_form = ProviderProfileForm().get_form(obj=provider)
-        self.render_profile(provider, profile_form=profile_form, success_message=messages[msg_key])
-        
 
 
 
@@ -90,20 +76,6 @@ class ProviderPublicProfileHandler(ProviderBaseHandler):
             
 
 
-class WelcomeHandler(ProviderBaseHandler):
-    @provider_required
-    def get(self, vanity_url=None, disable=None):
-        provider = db.get_provider_from_vanity_url(vanity_url)
-
-        if disable == 'disable':
-            provider.display_welcome_page = False
-            provider.put()
-            self.redirect('/provider/profile/' + provider.vanity_url)
-            return # don't render template after redirect
-
-        self.render_template("provider/welcome.html", provider=provider)
-
-    
 
 class ProviderSearchHandler(ProviderBaseHandler):
     def post(self, vanity_url=None):

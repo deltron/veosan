@@ -12,7 +12,7 @@ import util
 from utilities import time
 from handler import booking, provider, patient, provider_admin, admin, static, contact, language, user
 from handler.provider_pkg import network_handler, address_handler, cv_handler,\
-    profile_handler
+    profile_handler, welcome_handler
 from data.model import User
 from google.appengine.ext import ndb
 
@@ -121,12 +121,12 @@ application = ndb.toplevel(webapp2.WSGIApplication([
                                             
                                             # display a status message to the provider (new, reset, etc)                                            PathPrefixRoute('/profile', [
                                             PathPrefixRoute('/message', [
-                                                Route('/<msg_key>/<vanity_url>', provider.ProviderMessageHandler),
+                                                Route('/<msg_key>/<vanity_url>', welcome_handler.ProviderMessageHandler),
                                             ]),
 
                                             PathPrefixRoute('/welcome', [
-                                                Route('/<vanity_url>', provider.WelcomeHandler),
-                                                Route('/<vanity_url>/<disable>', provider.WelcomeHandler),
+                                                Route('/<vanity_url>', welcome_handler.WelcomeHandler),
+                                                Route('/<vanity_url>/<disable>', welcome_handler.WelcomeHandler),
                                             ]),
                                                                      
                                             Route('/bookings/<vanity_url>', provider.ProviderBookingsHandler),
