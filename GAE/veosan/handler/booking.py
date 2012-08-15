@@ -209,13 +209,33 @@ WeekNav = namedtuple('WeekNav', 'prev_week this_week next_week')
 
 class BookFromPublicProfile(BookingBaseHandler):
     
-    '''
-        Using vanity url, display schedule
-    '''
     def get(self, vanity_url=None, start_date=None, bk=None):
+        '''
+            Display Booking Schedule
+        '''
         # provoder already selection from public profile
         period = timedelta(days=7)
         provider = db.get_provider_from_vanity_url(vanity_url)
+        if start_date:
+            start_date = datetime.strptime(start_date, "%Y-%m-%d").date()
+            week_nav = WeekNav(start_date - period, start_date, start_date + period)
+            if (start_date <= time.tomorrow()):
+                start_date = time.tomorrow()
+                week_nav = WeekNav(None, start_date, start_date + period)  
+        else:
+            start_date = time.tomorrow()
+            week_nav = WeekNav(None, start_date, start_date + period)
+        
+        schedules = provider.get_schedules()
+        datetimes_map = util.generate_datetimes_map(schedules, start_date, period)
+        self.render_template('provider/booking_schedule.html', provider=provider, dtm=datetimes_map, week_nav=week_nav) 
+        
+    
+    def post(self, vanity_url=None, step=None):
+        '''
+            
+        
+        '''
         if not bk:
             booking = Booking()
             booking.provider = provider.key
@@ -224,24 +244,10 @@ class BookFromPublicProfile(BookingBaseHandler):
             logging.debug('Created booking from public profile: %s' % booking)
         else:
             booking = db.get_from_urlsafe_key(bk)
-        
-        if start_date:
-            start_date = datetime.strptime(start_date, "%Y-%m-%d").date()
-            week_nav = WeekNav(start_date - period, start_date, start_date + period)
-            if (start_date <= time.tomorrow()):
-                start_date = time.tomorrow()
-                week_nav = WeekNav(None, start_date, start_date + period)
             
-        else:
-            start_date = time.tomorrow()
-            week_nav = WeekNav(None, start_date, start_date + period)
+            
         
-        schedules = provider.get_schedules()
-        datetimes_map = util.generate_datetimes_map(schedules, start_date, period)
-        
-        self.render_template('provider/booking_schedule.html', booking=booking, provider=provider, dtm=datetimes_map, week_nav=week_nav) 
-        
-             
+           
                 
 class FullyBookedHandler(BookingBaseHandler):
     def get(self):

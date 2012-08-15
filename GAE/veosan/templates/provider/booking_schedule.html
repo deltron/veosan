@@ -72,9 +72,7 @@
 				{% for (day_key, day_times) in dtm|dictsort %}
 				<td style="text-align: center">
 					{% for t in day_times %}
-					<form action="/patient/book" method="post" id="form-{{day_key~"-"~t.hour}}">
-						<input type="hidden" name="bk" value="{{ booking.key.urlsafe() }}"/>
-					  	<input type="hidden" name="provider_key" value="{{ provider.key.urlsafe() }}"/>
+					<form action="/{{provider.vanity_url}}/book/1" method="post" id="form-{{day_key~"-"~t.hour}}">
 					  	<input type="hidden" name="booking_datetime" value="{{ t|format_datetime_booking_form }}"/>
 					  	<button style="width=100%" type="submit" class="btn btn-primary" id="button-{{day_key~"-"~t.hour}}">
 							{{t|format_datetime_hour_min}}
@@ -91,11 +89,11 @@
 			<tr>
 			<td>
 			{% if week_nav.prev_week %}
-			<a class="btn btn-success" href="/{{ provider.vanity_url }}/book/{{week_nav.prev_week}}/{{booking.key.urlsafe()}}" > {{ _("Previous Week") }}</a>
+			<a class="btn btn-success" href="/{{ provider.vanity_url }}/book/date/{{week_nav.prev_week}}" > {{ _("Previous Week") }}</a>
 			{% endif %}
 			</td>
 			<td align="right">
-			<a class="btn btn-success" href="/{{ provider.vanity_url }}/book/{{week_nav.next_week}}/{{booking.key.urlsafe()}}" > {{ _("Next Week") }}</a>
+			<a class="btn btn-success" href="/{{ provider.vanity_url }}/book/date/{{week_nav.next_week}}" > {{ _("Next Week") }}</a>
 			</td>	
 		</tr>
 		</table>
