@@ -53,12 +53,30 @@ def email_invite(jinja2, invite, invite_url):
     from_provider = invite.provider.get()
     
     message = mail.EmailMessage()
-    message.sender = from_provider.first_name + " " + from_provider.last_name + " <" + VEOSAN_SUPPORT_ADDRESS + ">"
+    message.sender = from_provider.first_name + " " + from_provider.last_name + " via Veosan <" + VEOSAN_SUPPORT_ADDRESS + ">"
     message.reply_to = from_provider.email
     message.to = invite.email
     message.subject = u'Invitation to join Veosan from %s %s' % (from_provider.first_name, from_provider.last_name)
     
     message.body = jinja2.render_template('email/invite.txt', invite=invite, invite_url=invite_url)
+    
+    try:
+        message.send()
+    except Exception as e:
+        logging.error('Email to provider not sent. %s' % e)
+
+
+def email_connect_request(jinja2, invite, invite_url):
+    ''' Send invitation email '''
+    from_provider = invite.provider.get()
+    
+    message = mail.EmailMessage()
+    message.sender = from_provider.first_name + " " + from_provider.last_name + " via Veosan <" + VEOSAN_SUPPORT_ADDRESS + ">"
+    message.reply_to = from_provider.email
+    message.to = invite.email
+    message.subject = u'Join my network on Veosan!' % (from_provider.first_name, from_provider.last_name)
+    
+    message.body = jinja2.render_template('email/connect_request.txt', invite=invite, invite_url=invite_url)
     
     try:
         message.send()

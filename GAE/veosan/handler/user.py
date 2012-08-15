@@ -13,7 +13,6 @@ from base import BaseHandler
 import data.db as db
 import auth
 from patient import PatientBaseHandler
-from provider import ProviderBaseHandler
 from booking import BookingBaseHandler
 from forms.user import ProviderTermsForm, PasswordForm, LoginForm, ProviderSignupForm1, ProviderSignupForm2, PatientSignupForm
 import mail
@@ -250,7 +249,7 @@ class ActivationHandler(UserBaseHandler):
         if signup_token:
             user = self.validate_signup_token(signup_token)
             if user:                        
-                elif auth.PATIENT_ROLE in user.roles:
+                if auth.PATIENT_ROLE in user.roles:
                     logging.info('(ActivationHandler) activating patient: %s' % user.get_email())
 
                     patient = db.get_patient_from_user(user)
@@ -323,9 +322,9 @@ class LoginHandler(UserBaseHandler):
                             target_url = '/' + connected_provider.vanity_url + '/connect'
                             self.redirect(target_url)
 
-                        if next_action == 'accept':
-                            self.redirect('/')
-
+                        elif next_action == 'accept':
+                            target_url = '/provider/network/' + provider.vanity_url + '/accept/' + key
+                            self.redirect(target_url)
 
                         elif provider.display_welcome_page:     
                             self.redirect('/provider/welcome/' + provider.vanity_url)

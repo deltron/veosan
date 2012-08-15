@@ -1,0 +1,6 @@
+{{ provider.first_name }},
+
+{{ name }} wants to connect with you on Veosan.
+
+Please click the following link to accept :
+{{ accept_url }}

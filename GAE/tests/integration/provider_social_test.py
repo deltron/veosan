@@ -182,15 +182,6 @@ class ProviderSocialTest(BaseTest):
         login_welcome_page.mustcontain("Comment naviguer sur le site")
 
 
-    def test_no_connection_to_self(self):
-        pass
-
-    def test_dupe_connections(self):
-        pass
-
-    def test_show_connected_after_connect(self):
-        pass
-    
     def test_connect_not_logged_in(self):
         # create a provider
         self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
@@ -311,6 +302,8 @@ class ProviderSocialTest(BaseTest):
         network_page.mustcontain('Votre réseau contient 1 professionels de la santé.')
         network_page.mustcontain("first last")
         network_page.mustcontain("Ostéopathe")
+        
+        
     def test_invite_to_connect_from_profile_accepted(self):
         # create a provider
         self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
@@ -502,6 +495,17 @@ class ProviderSocialTest(BaseTest):
         
         network_page.mustcontain('Votre réseau est vide!')
 
+
+
+    def test_no_connection_to_self(self):
+        pass
+
+    def test_dupe_connections(self):
+        pass
+
+    def test_show_connected_after_connect(self):
+        pass
+    
     def test_display_connections_on_public_profile(self):
         pass
 
