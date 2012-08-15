@@ -238,7 +238,7 @@ application = ndb.toplevel(webapp2.WSGIApplication([
                                        Route('/<vanity_url>/book', booking.BookFromPublicProfile),
                                        Route('/<vanity_url>/book/<step>', booking.BookFromPublicProfile),
                                        Route('/<vanity_url>/book/date/<start_date>', booking.BookFromPublicProfile),
-                                       Route('/<vanity_url>/connect', provider_pkg.network_handler.ProviderConnectHandler),
+                                       Route('/<vanity_url>/connect', network_handler.ProviderConnectHandler),
                                       ], debug=True,
                                       config=webapp2_config))
 
