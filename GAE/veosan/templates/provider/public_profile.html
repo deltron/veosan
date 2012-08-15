@@ -86,9 +86,9 @@
 		
 		<a href="/{{ provider.vanity_url }}/connect" id="connect_button" type="submit" class="btn btn btn-success"> {{ _('Connect') }} </a>
 		<br><br>
-		{{ provider.first_name }} is connected to {{ provider.get_provider_network_count() }} health-care professionals.
+		{{ provider.first_name }} {{ _('is connected to') }} {{ provider.get_provider_network_count() }} {{ _('health-care professionals.') }}
 		<br>
-		<a data-toggle="modal" href="#network_modal">See all connections</a><a data-toggle="modal" href="#network_modal"><i class="bs-icon icon-share-alt"> </i></a>
+		<a data-toggle="modal" href="#network_modal">{{ _('See all connections') }}</a><a data-toggle="modal" href="#network_modal"><i class="bs-icon icon-share-alt"> </i></a>
 
 		<br>
 		<br>
