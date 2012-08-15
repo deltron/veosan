@@ -1,0 +1,45 @@
+{% extends "/layout/base.html" %}
+
+{% block subhead %} {{ _('New Patient') }} {% endblock %}
+{% block lead %}{{ _('Please complete your profile.') }}{% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="span12">
+		<form class="form-horizontal" action="/{{provider.vanity_url}}/book/2" method="post">
+			<fieldset>
+				<div class="row">
+					<div class="span6">
+						{{ macro.make_standard_form(email_details_form) }}
+					</div>
+					<div class="span6">
+						<div class="well">
+							<h2>{{ _('Your Appointment') }}</h2>
+							<br>
+							<i class="bs-icon icon-user"></i> 
+							{{provider.full_name()}}
+							
+							 ({{ provider.category|code_to_string }})<br>
+							
+							<i class="bs-icon icon-time"></i> {{ email_details_form.booking_datetime.data }}<br>
+							
+							
+						</div>
+					</div>
+				</div>
+				
+				{# repeat previously visible info in hidden format for the form #}
+				<!-- <input id="booking_date" name="booking_date" type="hidden" value="">
+				<input id="booking_time" name="booking_time" type="hidden" value="">
+				-->
+				
+			</fieldset>
+			<div class="form-actions">
+				<button type="submit" class="btn btn-primary">
+					{{ _('Confirm') }}
+				</button>
+			</div>
+		</form>
+	</div>
+</div>
+{% endblock content %}
