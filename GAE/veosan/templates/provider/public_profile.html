@@ -241,7 +241,61 @@
 			<a href="/signup/provider">{{ _("Sign up to get your own professional profile today. It's free!") }}</a>
 		</div>
 		<br>
+		{% if provider.booking_enabled %}
+		<div style="width: 80% text-align:center;">
 
+		<h3>Schedule</h3>
+		Here are some times when {{ provider.first_name }} is free.
+		<br><a href="/{{ provider.vanity_url }}/book">Click here to see the full list.</a>
+		<br><br>
+			<a href="#" style="width=150px; margin 5px auto">
+				Tuesday 10:00am
+			</a>
+			<br>
+			<a href="#" style="width=150px; margin 5px auto">
+				Tuesday 2:00pn
+			</a>
+			<br>
+			<a href="#" style="width=150px; margin 5px auto">
+				Thursday 5:00pm
+			</a>
+			<br>
+			<a href="/{{ provider.vanity_url }}/book" style="width=150px; margin 5px auto" class="btn btn-primary">
+				View Full Schedule
+			</a>
+		</div>
+		<br><br>
+		{% endif %}
+		
+		
+		{% if provider.connect_enabled %}
+		This network contains {{ provider.get_provider_network_count() }} health-care professionals.
+		<table class="table-condensed">
+			{% for p in provider.get_provider_network() %}
+
+			{# create a row every 2 providers #}
+			{% set tr = loop.cycle('
+			<tr>
+				', '') %}
+				{% set close_tr = loop.cycle('', '
+			</tr>') %}
+
+			{{ tr|safe }}
+			<td width="50"><a href="/{{ p.vanity_url }}"> {% if p.profile_photo_blob_key %} <img src="{{ p.get_profile_photo_image_url(50) }}" width="50"
+			alt="{{ macro.display_provider_name(p) }} - {{ category_dict[p.category] }}"> {% else %} <img src="/assets/img/default-profile.png" width="50" height="50"
+			alt="{{ macro.display_provider_name(p) }} - {{ category_dict[p.category] }}"> {% endif %} </a></td>
+			<td width="150"><a href="/{{ p.vanity_url }}"><h4> {{ p.first_name }}
+			{{ p.last_name }} </h4></a> {{ category_dict[p.category] }} </td>
+
+			{{ close_tr|safe }}
+
+			{% endfor %}
+		</table>
+					<a href="#" style="width=150px; margin 5px auto" class="btn btn-primary">
+				View Full Network
+			</a>
+
+		{% endif %}
 	</div>
 
 </div>
