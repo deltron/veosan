@@ -13,7 +13,7 @@
 <span itemprop="workLocation"> 
 	<span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress"> 
 {% if provider.city %}
-		<span itemprop="addressLocality">{{ provider.city }}</span>{% endif %}{% if provider.city and provider.province %},
+		<span itemprop="addressLocality">{{ provider.city }}</span>{% endif %}{% if provider.city and provider.province and provider.province != 'nothing' %},
 {% endif %}
 {% if provider.province %}
 		<span itemprop="addressRegion">{{ provider.province|code_to_string }}</span> 
@@ -63,10 +63,21 @@
 		{% endif %}
 
 		{% if provider.address_enabled %}
-		<h5>Contact</h5>
-		{{ provider.address }}
-		<br>
-		{{ provider.city }}, {{ provider.province|code_to_string }}
+
+<span itemprop="workLocation"> 
+	<span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress"> 
+{% if provider.address %}
+	<span itemprop="streetAddress">{{ provider.address }}</span>
+	<br>
+{% endif %}
+{% if provider.city %}
+		<span itemprop="addressLocality">{{ provider.city }}</span>{% endif %}{% if provider.city and provider.province and provider.province != 'nothing' %},
+{% endif %}
+{% if provider.province and provider.province != 'nothing' %}
+		<span itemprop="addressRegion">{{ provider.province|code_to_string }}</span> 
+{% endif %}
+	</span> 
+</span>
 		<br>
 		<a data-toggle="modal" href="#contact_modal" onclick="loadScript()"><i class="bs-icon icon-globe"></i></a> <a data-toggle="modal" href="#contact_modal" onclick="loadScript()">Map</a>
 		<br>
@@ -264,16 +275,23 @@
 						<div class="row-fluid">
 							<div class="span6">
 								<h5>Address</h5>
-								{{ provider.address }}
-								<br>
-								{{ provider.city }}
-								<br>
-								{{ provider.postal_code }}
+{% if provider.address %}
+	{{ provider.address }}
+	<br>
+{% endif %}
+{% if provider.city %}
+		{{ provider.city }}{% endif %}{% if provider.city and provider.province and provider.province != 'nothing' %},
+{% endif %}
+{% if provider.province and provider.province != 'nothing' %}
+		{{ provider.province|code_to_string }}
+{% endif %}
 								<br>
 							</div>
 							<div class="span6">
+								{% if provider.phone %}
 								<h5>Telephone</h5>
 								{{ provider.phone }}
+								{% endif %}
 
 								<h5>Email</h5>
 								{{ provider.email }}
