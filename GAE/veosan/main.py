@@ -172,6 +172,10 @@ application = ndb.toplevel(webapp2.WSGIApplication([
 
                                             # terms display
                                             Route('/terms/<vanity_url>', user.ProviderTermsHandler),
+                                            
+                                            # upgrade account
+                                            Route('/upgrade/<vanity_url>', welcome_handler.ProviderUpgradeHandler),
+
                                         ]),
                                        
                                        Route('/login', user.LoginHandler),

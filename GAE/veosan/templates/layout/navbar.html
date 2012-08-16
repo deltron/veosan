@@ -47,8 +47,11 @@
 							{% if provider and 'admin' in roles %}
 							{# Show provider administration menu items #}
 							<li class="divider"></li>
-							<li style="font-style:italic">
+							<li {% if "bookings" == active_page %} class="active" {% endif %} style="font-style:italic">
 								<a href="/provider/bookings/{{ provider.vanity_url }}">{{ _('Bookings') }}</a>
+							</li>
+							<li {% if "network" == active_page %} class="active" {% endif %} style="font-style:italic">
+								<a href="/provider/network/{{ provider.vanity_url }}">{{ _('Network') }}</a>
 							</li>
 
 							<li id="administration" style="font-style:italic">

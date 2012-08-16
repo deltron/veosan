@@ -1,0 +1,76 @@
+{% extends "/layout/provider_nav.html" %}
+
+{% set active_page = "upgrade" %}
+
+{% block subhead %}{{ _('Upgrade') }}{% endblock %}
+{% block lead %}{{ _('Access new features by upgrading your account.') }}{% endblock %}
+
+{% block content %}
+<style>
+	.table tbody tr:hover td, .table tbody tr:hover th {
+		background-color: transparent;
+	}
+</style>
+
+<div class="row">
+	<div class="span12">
+		<table class="table table-bordered" style="width: 80%; margin: 0px auto">
+			<tr>
+				<td width="25%"><h3>Profile</h3><span style="font-size: smaller">Free</span></td>
+				<td width="25%"><h3>Presence</h3><span style="font-size: smaller">9.99</span></td>
+				<td width="25%"><h3>Network</h3><span style="font-size: smaller">beta</span></td>
+				<td width="25%"><h3>Clinic</h3><span style="font-size: smaller">beta</span></td>
+			</tr>
+			<tr>
+				<td colspan="4">
+				<ul class="unstyled">
+					<li>
+						Complete online profile and contact information, optimized for search engine and social networks.
+					</li>
+					<li>
+						Connect with your colleagues and network professionally.
+					</li>
+				</ul></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td colspan="3">
+				<ul class="unstyled">
+					<li>
+						<h4>Agenda</h4>Make it easy for patients to book an appointment and for you to keep track of your schedule.
+					</li>
+					<li>
+						<h4>Profile Stats</h4>See how many people are searching for your expertise.
+					</li>
+				</ul></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				<td colspan="2"><h4>More Patients</h4>Make it easy for patients to book an appointment and for you to keep track of your schedule.</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td colspan="2">
+				<ul class="unstyled">
+					<li>
+						<h4>Bla</h4>Group multiple professional under a single touch point [?]
+					</li>
+					<li>
+						<h4>Bla</h4>Make it easy for patients to book an appointment and for you to keep track of your schedule.
+					</li>
+				</ul></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><a href="#" class="btn btn-success">Get Started!</a></td>
+				<td><a href="#" class="btn btn-inverse">Request Invitation</a></td>
+				<td><a href="#" class="btn btn-inverse">Request Invitation</a></td>
+			</tr>
+
+		</table>
+	</div>
+</div>
+{% endblock %}
