@@ -84,8 +84,32 @@ class AuthenticationTest(BaseTest):
         # message about failed login
         login_failed_response.mustcontain("rifier votre email et mot de passe.")
         
-           
+    def test_provider_login_after_admin(self):
+        ''' login with provider credentials '''
+        # Create provider and logout
+        self.create_complete_provider_profile()
+        self.logout_provider()
         
+        self.login_as_admin()
+        # Now login again
+        response = self.testapp.get('/login')
+        # verify we get the login page
+        response.mustcontain(u"Logged in as admin already.")
+        response.mustcontain(no="password")
+        response.mustcontain(no="submit")
+
+    def test_admin_login_after_provider(self):
+        ''' login with provider credentials '''
+        # Create provider and logout
+        self.create_complete_provider_profile()
+        
+        self.login_as_admin()
+        response = self.testapp.get('/admin').follow()
+        
+        # check for evidence provider is logged out
+        response.mustcontain('Mon Compte')
+
+
 if __name__ == "__main__":
     unittest.main()
             

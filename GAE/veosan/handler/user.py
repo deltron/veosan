@@ -7,6 +7,7 @@ from webapp2_extras import security
 from webapp2_extras.auth import InvalidAuthIdError, InvalidPasswordError
 from webapp2 import BaseRoute
 from webapp2_extras.routes import PathPrefixRoute
+from google.appengine.api import users
 
 # veo
 from base import BaseHandler
@@ -276,7 +277,12 @@ class LoginHandler(UserBaseHandler):
     def get(self, next_action=None, key=None):
         ''' Show login page '''
         
-        self.render_login(next_action=next_action, key=key)
+        # check if an admin is logged in, if so don't proceed
+        google_user = users.get_current_user()
+        if google_user and users.is_current_user_admin():
+            self.render_login(error_message='Logged in as admin already.')
+        else:
+            self.render_login(next_action=next_action, key=key)
         
 
     def post(self, next_action=None, key=None):

@@ -39,7 +39,8 @@ class BaseHandler(webapp2.RequestHandler):
         # hack for providers 
         # (allows provider pages to be accessed without a user logged in but knowing the provider key)
         kw['provider'] = provider
-        
+        kw['provider_from_user'] = provider
+
         # somebody is logged in
         if user:
             logging.info('(BaseHandler.render_template) User logged in: %s with roles %s' % (user.get_email(), user.roles))
@@ -52,16 +53,16 @@ class BaseHandler(webapp2.RequestHandler):
             if handler.auth.PROVIDER_ROLE in roles:
                 provider_from_user = data.db.get_provider_from_user(user)
                 logging.info('(BaseHandler.render_template) Provider logged in: ' + user.get_email())
+                
+                # overwrite for menu from logged in user
+                kw['provider_from_user'] = provider_from_user
+
 
                 # verify user->provider matches request->provider passed as paramater (ie. from request key)
                 if provider: 
                     if not provider_from_user == provider:
-                        logging.error("(BaseHandler.render_template) Logged in user does not match provider_key. We have a problem.") 
-                else:
-                    # if no provider from request key, set it from the user
-                    # useful for making the drop-down menu keys when not requesting specific provider pages
-                    kw['provider'] = provider_from_user
-
+                        logging.error("(BaseHandler.render_template) Logged in user does not match provider_key. We have a problem.")
+                        
           
             if handler.auth.PATIENT_ROLE in roles:
                 patient = data.db.get_patient_from_user(user)

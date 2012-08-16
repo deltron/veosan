@@ -4,6 +4,10 @@
 {% block lead %} {{ _('Enjoy the benefits of being a member today!') }} {% endblock %}
 
 {% block content %}
+
+{% if 'admin' in roles %}
+
+{% else %}
 {% if next_action and key %}
 <form method="post" action="/login/{{ next_action }}/{{ key }}" class="form-horizontal" id="login_form">
 {% else %}
@@ -65,4 +69,5 @@
 	</div>
 </div>
 
+{% endif %} {# not an admin #}
 {% endblock content %}

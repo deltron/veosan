@@ -34,6 +34,16 @@ class AdminIndexHandler(AdminBaseHandler):
 
     @admin_required
     def get(self):
+        # kick out any logged in users
+        user = self.get_current_user()
+        if user:
+            logging.info("(LogoutHandler.get) Logging out user %s because admin logged in" % user.get_email())
+            
+            # log the event
+            self.log_event(user, "Logged out by admin")
+
+        self.auth.unset_session()
+        
         self.redirect('/admin/providers')
 
 

@@ -49,6 +49,48 @@ class PublicProfileTest(BaseTest):
         
         #self.assert_msg_in_log("Public profile: public view", admin=True)
 
+
+    def test_visit_public_profile_from_another_loggedin_provider(self):
+        # create a new provider, vanity URL is bobafett
+        self.create_complete_provider_profile()
+    
+        public_profile = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
+        
+        # by default address is hidden and no booking
+        public_profile.mustcontain("Fantastic Fox")
+
+
+        # and another
+        response = self.testapp.post('/signup/provider')
+        
+        signup_form = response.forms['provider_signup_form']
+        signup_form['first_name'] = 'david'
+        signup_form['last_name'] = 'mctester'
+        signup_form['email'] = 'mctest@veosan.com'
+        signup_form['postal_code'] = 'h4c1n1'
+        response = signup_form.submit()
+
+        signup_form2 = response.forms['provider_signup_form2']
+        signup_form2['category'] = 'dentist'
+        signup_form2['password'] = self._TEST_PROVIDER_PASSWORD
+        signup_form2['password_confirm'] = self._TEST_PROVIDER_PASSWORD
+
+        profile_response = signup_form2.submit().follow()
+        
+        # should be on the welcome page
+        profile_response.mustcontain("Bienvenue!")
+        profile_response.mustcontain("Comment naviguer sur le site")
+
+        # revist first guy's public page
+        public_profile = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
+
+        # check the menu items
+        public_profile.mustcontain('mctest@veosan.com')
+        public_profile.mustcontain('/provider/profile/davidmctester')
+        public_profile.mustcontain('/provider/address/davidmctester')
+        public_profile.mustcontain('/provider/welcome/davidmctester')
+
+
     def test_disable_enable_show_address(self):
         # create a new provider, vanity URL is bobafett
         self.create_complete_provider_profile()

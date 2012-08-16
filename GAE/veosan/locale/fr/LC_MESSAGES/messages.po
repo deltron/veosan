@@ -759,6 +759,9 @@ msgstr "Inscrivez-vous pour obtenir votre propre profil professionnel. C'est gra
 msgid "Choose your appointment date and time"
 msgstr "Choisissez la date et l'heure de votre rendez-vous"
 
+msgid "Fill in your schedule"
+msgstr "Entrez votre horaire"
+
 
 #################
 # Address Page

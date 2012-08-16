@@ -236,6 +236,11 @@ class Provider(ndb.Model):
 
         return providers
     
+    def is_connected_to(self, provider):
+        if provider.key == self.key:
+            return False
+        else:
+            return provider in self.get_provider_network()
     
     def get_provider_network_pending_count(self):     
         targets = ProviderNetworkConnection.query(ProviderNetworkConnection.target_provider == self.key, ProviderNetworkConnection.confirmed == False).count()
