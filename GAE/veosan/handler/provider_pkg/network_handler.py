@@ -99,7 +99,7 @@ class ProviderConnectHandler(ProviderBaseHandler):
             if provider_source in provider_target.get_provider_network_pending():
                 message = "Connection pending"
                 self.render_public_profile(provider=provider_target, success_message=message)
-            if provider_source in provider_target.get_provider_network():
+            elif provider_source in provider_target.get_provider_network():
                 message = "Already connected!"
                 self.render_public_profile(provider=provider_target, success_message=message)
             else:
