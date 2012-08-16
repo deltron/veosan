@@ -234,10 +234,6 @@ class ProviderSocialTest(BaseTest):
         login_profile_page.mustcontain("Connection requested")
         login_profile_page.mustcontain('first last')
 
-        
-        
-        
-        
         # logout and log back in as first guy
         self.logout_provider()
         
@@ -302,6 +298,26 @@ class ProviderSocialTest(BaseTest):
         network_page.mustcontain('Votre réseau contient 1 professionels de la santé.')
         network_page.mustcontain("first last")
         network_page.mustcontain("Ostéopathe")
+        
+        # turn on connect buttons & public profile
+        provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
+        provider.connect_enabled = True
+        provider.put()        
+        
+        provider = db.get_provider_from_email('mctest@veosan.com')
+        provider.connect_enabled = True
+        provider.put()        
+        
+        # check it shows up on public profile
+        profile_page = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
+        profile_page.mustcontain("david mctester")
+        profile_page.mustcontain("Dentiste")
+        profile_page.mustcontain("first est relié à 1 professionels de la santé.")
+        
+        profile_page = self.testapp.get('/davidmctester')
+        profile_page.mustcontain("first last")
+        profile_page.mustcontain("Ostéopathe")
+        profile_page.mustcontain("david est relié à 1 professionels de la santé.")
         
         
     def test_invite_to_connect_from_profile_accepted(self):
@@ -678,7 +694,7 @@ class ProviderSocialTest(BaseTest):
         # create a provider
         self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
         self.logout_provider()
-        
+
         # and another
         response = self.testapp.post('/signup/provider')
         
@@ -805,7 +821,19 @@ class ProviderSocialTest(BaseTest):
         pass
 
     def test_no_message_no_button_on_self_profile(self):
-        pass
+        self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
+
+        # turn on connect buttons
+        provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
+        provider.connect_enabled = True
+        provider.put()
+        
+        response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
+        response.mustcontain(no="Connect")
+        response.mustcontain("first est relié à 0 professionels de la santé.")
+        response.mustcontain("Voir toutes les connections")
+
+       
 
     def test_no_connection_to_self(self):
         # actually force it through with the URL
