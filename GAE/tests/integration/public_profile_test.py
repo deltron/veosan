@@ -176,13 +176,7 @@ class PublicProfileTest(BaseTest):
         booking_confirm_page = self.fill_new_patient_profile(new_patient_page)
         # check confirmation
         booking_confirm_page.mustcontain('Thank you Pat')
-        # check that confirmation emails was sent to patient
-        messages = self.mail_stub.get_sent_messages(to=self._TEST_PATIENT_EMAIL)
-        self.assertEqual(1, len(messages))
-        self.assertEqual(self._TEST_PATIENT_EMAIL, messages[0].to)
-        # no email sent to provider
-        messages = self.mail_stub.get_sent_messages(to=self._TEST_PROVIDER_EMAIL)
-        self.assertEqual(0, len(messages))
+
         
         # check provider bookings list
         booking_datetime = datetime.strptime(testutil.next_monday_date_string() + " 10", '%Y-%m-%d %H')
@@ -209,13 +203,35 @@ class PublicProfileTest(BaseTest):
         admin_bookings_page.mustcontain(admin_datetime)
         admin_bookings_page.mustcontain('Fantastic Fox')
         admin_bookings_page.mustcontain('Pat Patient')
+        admin_bookings_page.mustcontain('Patient not confirmed')
+        admin_bookings_page.showbrowser()
         admin_bookings_page.mustcontain('public profile')
         self.logout_admin()
         
         # check event logs
         
         
-        # patient activates account
+        # no email sent to provider (patient is not confirmed)
+        messages = self.mail_stub.get_sent_messages(to=self._TEST_PROVIDER_EMAIL)
+        self.assertEqual(0, len(messages))
+        # check that confirmation emails was sent to patient
+        messages = self.mail_stub.get_sent_messages(to=self._TEST_PATIENT_EMAIL)
+        self.assertEqual(1, len(messages))
+        m = messages[0]
+        self.assertEqual(self._TEST_PATIENT_EMAIL, m.to)
+        
+        # activate account
+        messages = self.mail_stub.get_sent_messages(to=self._TEST_PATIENT_EMAIL)
+        
+        self.assertEquals(m.subject, 'veosan reservation - Ostéopathe')
+        #self.assertEqual(m.sender, 'first last <support@veosan.com>')
+        #self.assertEqual(m.reply_to, self._TEST_PROVIDER_EMAIL)
+        #self.assertIn('Please click on the link below to create your profile', m.body.payload)
+        #self.assertIn("I've been using Veosan and thought you might like to try it out. Here's an invitation to create a profile.", m.body.payload)
+        user = db.get_user_from_email(self._TEST_PATIENT_EMAIL)
+        self.assertTrue('/user/activation/%s' % user.signup_token in m.body.payload)
+        # click the link
+ 
         
         # Check email to provider
         
