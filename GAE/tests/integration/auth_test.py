@@ -97,7 +97,19 @@ class AuthenticationTest(BaseTest):
         response.mustcontain(u"Logged in as admin already.")
         response.mustcontain(no="password")
         response.mustcontain(no="submit")
+
+    def test_admin_login_after_provider(self):
+        ''' login with provider credentials '''
+        # Create provider and logout
+        self.create_complete_provider_profile()
         
+        self.login_as_admin()
+        response = self.testapp.get('/admin').follow()
+        
+        # check for evidence provider is logged out
+        response.mustcontain('Mon Compte')
+
+
 if __name__ == "__main__":
     unittest.main()
             
