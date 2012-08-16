@@ -26,11 +26,10 @@ class ProviderNetworkHandler(ProviderBaseHandler):
             
             try:
                 provider_network_connection.put()
+                success_message = "You are now connected to %s %s" % (source_provider.first_name, source_provider.last_name)
             except Exception as e:
-                error_message = 'Error making connection: ' + e
-            
-            success_message = "You are now connected to %s %s" % (source_provider.first_name, source_provider.last_name)
-            
+                error_message = 'Error making connection: ' + e.message
+                
         if operation == 'reject':
             source_provider_key = ndb.Key(urlsafe=provider_key)
             source_provider = source_provider_key.get()
@@ -109,19 +108,25 @@ class ProviderConnectHandler(ProviderBaseHandler):
                 provider_network_connection.source_provider = provider_source.key
                 provider_network_connection.target_provider = provider_target.key
                 provider_network_connection.confirmed = False
-                
-                provider_network_connection.put()
-                
-                message = "Connection requested"
-                self.render_public_profile(provider=provider_target, success_message=message)
-                
-                # now send out an email
-                # the url for accepting for target_provider
-                url_obj = urlparse.urlparse(self.request.url)
-                accept_url = urlparse.urlunparse((url_obj.scheme, url_obj.netloc, '/login/accept/' + provider_source.key.urlsafe(), '', '', ''))
+
+                try:
+                    provider_network_connection.put()
+
+                    message = "Connection requested"
+                    self.render_public_profile(provider=provider_target, success_message=message)
                     
-                mail.email_connect_request(self.jinja2, from_provider=provider_source, target_provider=provider_target, accept_url=accept_url)
-                
+                    # now send out an email
+                    # the url for accepting for target_provider
+                    url_obj = urlparse.urlparse(self.request.url)
+                    accept_url = urlparse.urlunparse((url_obj.scheme, url_obj.netloc, '/login/accept/' + provider_source.key.urlsafe(), '', '', ''))
+                        
+                    mail.email_connect_request(self.jinja2, from_provider=provider_source, target_provider=provider_target, accept_url=accept_url)
+                    
+                except Exception as e:
+                    error_message = 'Error making connection: ' + e.message
+                    self.render_public_profile(provider=provider_target, error_message=error_message)
+
+                    
         else:
             # redirect to login page if not logged in, then send back here after creditials are verified
             self.redirect("/login/connect/" + provider_target.key.urlsafe())

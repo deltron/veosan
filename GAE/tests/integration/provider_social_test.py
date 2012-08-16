@@ -867,14 +867,6 @@ class ProviderSocialTest(BaseTest):
         login_profile_page.mustcontain("Already connected")
         login_profile_page.mustcontain('first last')
         
-        
-        
-                    
-    def test_connected_message_on_public_profile(self):
-        # check if connected message "You and XYZ are connected"
-        # check if name in modal list and connection count is good
-        pass
-
 
     def test_no_message_no_button_on_self_profile(self):
         self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
@@ -889,15 +881,129 @@ class ProviderSocialTest(BaseTest):
         response.mustcontain("first est relié à 0 professionels de la santé.")
         response.mustcontain("Voir toutes les connections")
 
-       
-
     def test_no_connection_to_self(self):
-        # actually force it through with the URL
-        pass
+        self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
+
+        # force connect with URL
+        response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL + '/connect')
+        response.mustcontain("Error making connection: Invalid connection to self")
+        
+        # check database
+        provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
+        self.assertEquals(0, provider.get_provider_network_count())
+        self.assertEquals(0, provider.get_provider_network_pending_count())
+
+
 
     def test_dupe_connections(self):
         # actually force it through with the URL
-        pass
+        self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
+        self.logout_provider()
+
+        # and another
+        response = self.testapp.post('/signup/provider')
+        
+        signup_form = response.forms['provider_signup_form']
+        signup_form['first_name'] = 'david'
+        signup_form['last_name'] = 'mctester'
+        signup_form['email'] = 'mctest@veosan.com'
+        signup_form['postal_code'] = 'h4c1n1'
+        response = signup_form.submit()
+
+        signup_form2 = response.forms['provider_signup_form2']
+        signup_form2['category'] = 'dentist'
+        signup_form2['password'] = self._TEST_PROVIDER_PASSWORD
+        signup_form2['password_confirm'] = self._TEST_PROVIDER_PASSWORD
+
+        profile_response = signup_form2.submit().follow()
+        
+        # should be on the welcome page
+        profile_response.mustcontain("Bienvenue!")
+        profile_response.mustcontain("Comment naviguer sur le site")
+
+        # now go to the first guy's profile
+        response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
+        
+        # click connect
+        response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL + "/connect")
+
+        # logout and log back in as first guy
+        self.logout_provider()
+        
+        login_page = self.testapp.get('/login')
+        
+        login_page.mustcontain(u"Connexion")
+        # fill out details
+        login_form = login_page.forms[0]
+        login_form['email'] = self._TEST_PROVIDER_EMAIL
+        login_form['password'] = self._TEST_PROVIDER_PASSWORD
+        login_redirect_response = login_form.submit()
+        # response after login is a redirect, so follow
+        login_welcome_page = login_redirect_response.follow()
+        # email in the header
+        login_welcome_page.mustcontain(self._TEST_PROVIDER_EMAIL)
+        login_welcome_page.mustcontain("Bienvenue!")
+        login_welcome_page.mustcontain("Comment naviguer sur le site")        
+        
+        # network page
+        network_page = self.testapp.get('/provider/network/' + self._TEST_PROVIDER_VANITY_URL)
+        
+        network_page.mustcontain("Here are your pending invitations. Please confirm you know this person.")
+        network_page.mustcontain("david mctester")
+        network_page.mustcontain("Dentiste")
+        network_page.mustcontain("Connect")
+        network_page.mustcontain("Reject")
+        
+        # accept the connection
+        source_provider = db.get_provider_from_email('mctest@veosan.com')
+        
+        accept_link = '/provider/network/' + self._TEST_PROVIDER_VANITY_URL + '/accept/' + source_provider.key.urlsafe()
+        network_page = self.testapp.get(accept_link)
+        
+        network_page.mustcontain("You are now connected to %s %s" % ('david', 'mctester'))
+        network_page.mustcontain('Votre réseau contient 1 professionels de la santé.')
+        network_page.mustcontain("david mctester")
+        network_page.mustcontain("Dentiste")
+        network_page.mustcontain(no="Connect")
+        network_page.mustcontain(no="Reject")
+        network_page.mustcontain(no="Here are your pending invitations. Please confirm you know this person.")
+
+        # now check it shows up on the other side
+        self.logout_provider()
+        
+        login_page = self.testapp.get('/login')
+        
+        login_page.mustcontain(u"Connexion")
+        # fill out details
+        login_form = login_page.forms[0]
+        login_form['email'] = 'mctest@veosan.com'
+        login_form['password'] = self._TEST_PROVIDER_PASSWORD
+        login_redirect_response = login_form.submit()
+        # response after login is a redirect, so follow
+        login_welcome_page = login_redirect_response.follow()
+        # email in the header
+        login_welcome_page.mustcontain('mctest@veosan.com')
+        login_welcome_page.mustcontain("Bienvenue!")
+        login_welcome_page.mustcontain("Comment naviguer sur le site")        
+        
+        network_page = self.testapp.get('/provider/network/' + 'davidmctester')
+        
+        network_page.mustcontain('Votre réseau contient 1 professionels de la santé.')
+        network_page.mustcontain("first last")
+        network_page.mustcontain("Ostéopathe")
+                
+        
+        # force connect with URL
+        response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
+        response.mustcontain(no='/' + self._TEST_PROVIDER_VANITY_URL + '/connect')
+
+        response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL + '/connect')
+        response.mustcontain("Already connected!")
+        
+        # check database
+        provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
+        self.assertEquals(1, provider.get_provider_network_count())
+        self.assertEquals(0, provider.get_provider_network_pending_count())
 
 
 if __name__ == "__main__":
