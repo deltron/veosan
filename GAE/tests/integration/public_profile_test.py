@@ -134,10 +134,13 @@ class PublicProfileTest(BaseTest):
         booking_confirm_page = self.fill_new_patient_profile(new_patient_page)
         # check confirmation
         booking_confirm_page.mustcontain('Thank you Pat')
-        # check emails
+        # check that confirmation emails was sent to patient
         messages = self.mail_stub.get_sent_messages(to=self._TEST_PATIENT_EMAIL)
         self.assertEqual(1, len(messages))
         self.assertEqual(self._TEST_PATIENT_EMAIL, messages[0].to)
+        # no email sent to provider
+        messages = self.mail_stub.get_sent_messages(to=self._TEST_PROVIDER_EMAIL)
+        self.assertEqual(0, len(messages))
         
         # check provider bookings list
         booking_datetime = datetime.strptime(testutil.next_monday_date_string() + " 10", '%Y-%m-%d %H')
@@ -168,6 +171,15 @@ class PublicProfileTest(BaseTest):
         self.logout_admin()
         
         # check event logs
+        
+        
+        # patient activates account
+        
+        # Check email to provider
+        
+        # check status change in all lists (provider, patient and admin dashboards)
+        
+        
 
 if __name__ == "__main__":
     unittest.main()
