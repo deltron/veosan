@@ -8,9 +8,18 @@
 {% block lead %}
 
 <span itemprop="jobTitle">{{ category_dict[provider.category] }}</span>
-{% if provider.city %}
+{% if provider.city or provider.province %}
 {{ _('in') }}
-<span itemprop="workLocation"> <span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress"> <span itemprop="addressLocality">{{ provider.city }}</span> </span> </span>
+<span itemprop="workLocation"> 
+	<span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress"> 
+{% if provider.city %}
+		<span itemprop="addressLocality">{{ provider.city }}</span>{% endif %}{% if provider.city and provider.province %},
+{% endif %}
+{% if provider.province %}
+		<span itemprop="addressRegion">{{ provider.province|code_to_string }}</span> 
+{% endif %}
+	</span> 
+</span>
 {% endif %}
 
 {% endblock %}
@@ -45,22 +54,44 @@
 		itemprop="image">
 		{% endif %}
 
-		<br>
-		<br>
+		{% if provider.booking_enabled %}
+		<hr style="width:150px; margin-bottom: 10px; border-bottom: 1px solid #e5e5e5;">
+		<a href="/{{ provider.vanity_url }}/book" id="book_button" type="submit" class="btn btn btn-success" style="width:130px"> {{ _('Book Now') }} </a>
 
-		{% if provider.specialty|remove_empty_strings_from_list %}
-		<h4>{{ _("Specialties") }}</h4>
-		<ul class="unstyled">
-			{% for s in provider.specialty %}
-			<li>
-				{{ specialty_dict[s] }}
-			</li>
-			{% endfor %}
-		</ul>
+		<br>
+		<br>
 		{% endif %}
 
 		{% if provider.address_enabled %}
-		<h4><a data-toggle="modal" href="#contact_modal" onclick="loadScript()">Address</a><a data-toggle="modal" href="#contact_modal" onclick="loadScript()"><i class="bs-icon icon-share-alt"> </i></a></h4>
+		<h5>Contact</h5>
+		{{ provider.address }}
+		<br>
+		{{ provider.city }}, {{ provider.province|code_to_string }}
+		<br>
+		<a data-toggle="modal" href="#contact_modal" onclick="loadScript()"><i class="bs-icon icon-globe"></i></a> <a data-toggle="modal" href="#contact_modal" onclick="loadScript()">Map</a>
+		<br>
+		{% endif %}
+
+
+		{% if provider.connect_enabled %}
+		<hr style="width:150px; margin-bottom: 10px; border-bottom: 1px solid #e5e5e5;">
+		{% if provider_from_user and provider_from_user == provider %}
+		{# self, don't show button #}
+		{% elif provider_from_user and provider_from_user.is_connected_to(provider) %}
+		<div class="alert alert-success">
+			You and {{ provider.first_name }} are connected!
+		</div>
+		{% else %}
+		<a href="/{{ provider.vanity_url }}/connect" id="connect_button" type="submit" class="btn btn btn-success" style="width:130px"> {{ _('Connect') }} </a>
+		<br>
+		<br>
+		{% endif %}
+
+		{{ provider.first_name }} {{ _('is connected to') }} {{ provider.get_provider_network_count() }} {{ _('health-care professionals.') }}
+		<br>
+		<a data-toggle="modal" href="#network_modal">{{ _('See all connections') }}</a><a data-toggle="modal" href="#network_modal"><i class="bs-icon icon-share-alt"> </i></a>
+
+		<br>
 		<br>
 		{% endif %}
 
@@ -74,42 +105,13 @@
 		<br>
 		<br>
 
-		{% if provider.booking_enabled %}
-
-		<a href="/{{ provider.vanity_url }}/book" id="book_button" type="submit" class="btn btn btn-success"> {{ _('Book Now') }} </a>
-
-		<br>
-		<br>
-		{% endif %}
-
-		{% if provider.connect_enabled %}
-
-		{% if provider_from_user and provider_from_user == provider %}
-		{# self, don't show button #}
-		{% elif provider_from_user and provider_from_user.is_connected_to(provider) %}
-		<div class="alert alert-success">
-			You and {{ provider.first_name }} are connected!
-		</div>
-		{% else %}
-		<a href="/{{ provider.vanity_url }}/connect" id="connect_button" type="submit" class="btn btn btn-success"> {{ _('Connect') }} </a>
-		<br>
-		<br>
-		{% endif %}
-
-		{{ provider.first_name }} {{ _('is connected to') }} {{ provider.get_provider_network_count() }} {{ _('health-care professionals.') }}
-		<br>
-		<a data-toggle="modal" href="#network_modal">{{ _('See all connections') }}</a><a data-toggle="modal" href="#network_modal"><i class="bs-icon icon-share-alt"> </i></a>
-
-		<br>
-		<br>
-		{% endif %}
 
 		{% if 'admin' in roles %}
 		<a href="/provider/profile/{{ provider.vanity_url }}" class="btn btn-danger"><i>Edit Profile</i></a>
 		{% endif %}
 
 	</div>
-	<div class="span5">
+	<div class="span6">
 		{% if provider.bio %}
 		<p>
 			<span itemprop="description"> {{ provider.bio }} </span>
@@ -121,6 +123,15 @@
 		<p style="font-style: italic; font-family:serif; font-size:x-large">
 			“ {{ provider.quote }} ”
 		</p>
+		<br>
+		{% endif %}
+
+		{% if provider.specialty|remove_empty_strings_from_list %}
+		<h3>{{ _("Specialties") }}</h3>
+		{% for s in provider.specialty %}
+		<span class="label">{{ specialty_dict[s] }}</span>
+		{% endfor %}
+		<br>
 		<br>
 		{% endif %}
 
@@ -142,6 +153,22 @@
 		</ul>
 		{% endif %}
 
+		{% if provider.get_organization()|remove_empty_strings_from_list %}
+		<h3>{{ _('Organization Memberships') }}</h3>
+		<ul class="unstyled">
+			{% for e in provider.get_organization() %}
+			<li>
+				<h4><span itemprop="memberOf"> {% if e.organization == 'other' %}
+					{{ e.other }}
+					{% else %}
+					{{ association_dict[e.organization] }}
+					{% endif %} </span></h4>
+				<h6>{{ macro.display_cv_years(e.start_year, e.end_year) }}</h6>
+			</li>
+			{% endfor %}
+		</ul>
+		{% endif %}
+
 		{% if provider.get_education()|remove_empty_strings_from_list %}
 		<h3>{{ _('Education') }}</h3>
 		<ul class="unstyled">
@@ -155,6 +182,22 @@
 				</p>
 				{% endif %}
 
+			</li>
+			{% endfor %}
+		</ul>
+		{% endif %}
+
+		{% if provider.get_certification()|remove_empty_strings_from_list %}
+		<h3>{{ _('Certifications') }}</h3>
+		<ul class="unstyled">
+			{% for e in provider.get_certification() %}
+			<li>
+				<h4> {% if e.certification == 'other' %}
+				{{ e.other }}
+				{% else %}
+				{{ certification_dict[e.certification] }}
+				{% endif %} </h4>
+				<h6>{{ e.year }} </h6>
 			</li>
 			{% endfor %}
 		</ul>
@@ -180,44 +223,13 @@
 		{% endif %}
 	</div>
 
-	<div class="span5">
+	<div class="span4">
 
 		<div class="well well-small" style="width: 80%; text-align: center">
 			<i class="bs-icon icon-bullhorn"> </i>
 			<a href="/signup/provider">{{ _("Sign up to get your own professional profile today. It's free!") }}</a>
 		</div>
 		<br>
-		{% if provider.get_organization()|remove_empty_strings_from_list %}
-		<h3>{{ _('Organization Memberships') }}</h3>
-		<ul class="unstyled">
-			{% for e in provider.get_organization() %}
-			<li>
-				<h4><span itemprop="memberOf"> {% if e.organization == 'other' %}
-					{{ e.other }}
-					{% else %}
-					{{ association_dict[e.organization] }}
-					{% endif %} </span></h4>
-				<h6>{{ macro.display_cv_years(e.start_year, e.end_year) }}</h6>
-			</li>
-			{% endfor %}
-		</ul>
-		{% endif %}
-
-		{% if provider.get_certification()|remove_empty_strings_from_list %}
-		<h3>{{ _('Certifications') }}</h3>
-		<ul class="unstyled">
-			{% for e in provider.get_certification() %}
-			<li>
-				<h4> {% if e.certification == 'other' %}
-				{{ e.other }}
-				{% else %}
-				{{ certification_dict[e.certification] }}
-				{% endif %} </h4>
-				<h6>{{ e.year }} </h6>
-			</li>
-			{% endfor %}
-		</ul>
-		{% endif %}
 
 	</div>
 
