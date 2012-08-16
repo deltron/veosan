@@ -589,23 +589,26 @@ class ProviderSocialTest(BaseTest):
         network_page.mustcontain("first last")
         network_page.mustcontain("Ostéopathe")
         
-
-
-    def test_no_connection_to_self(self):
-        pass
-
-    def test_dupe_connections(self):
-        pass
-
-    def test_show_connected_after_connect(self):
-        pass
     
-    def test_display_connections_on_public_profile(self):
-        pass
-
     def test_connect_logout_connect_again_from_profile(self):
         # this would create a duplicate connection, should give a message
         # "You are already connected"
+        pass
+
+    def test_connected_message_on_public_profile(self):
+        # check if connected message "You and XYZ are connected"
+        # check if name in modal list and connection count is good
+        pass
+
+    def test_no_message_no_button_on_self_profile(self):
+        pass
+
+    def test_no_connection_to_self(self):
+        # actually force it through with the URL
+        pass
+
+    def test_dupe_connections(self):
+        # actually force it through with the URL
         pass
 
 
