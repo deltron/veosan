@@ -83,16 +83,18 @@
 		{% endif %}
 
 		{% if provider.connect_enabled %}
-
-		{% if False %}
-		You and {{ provider.first_name }} are connected!
-		{% else %}
+		
+		{% if provider_from_user and provider_from_user.is_connected_to(provider) %}
+		<div class="alert alert-success">
+			You and {{ provider.first_name }} are connected!
+		</div>
+		{% elif provider_from_user != provider %}
 		{# Not connected, show button #}
 		<a href="/{{ provider.vanity_url }}/connect" id="connect_button" type="submit" class="btn btn btn-success"> {{ _('Connect') }} </a>
+		<br>
+		<br>
 		{% endif %}
 
-		<br>
-		<br>
 		{{ provider.first_name }} {{ _('is connected to') }} {{ provider.get_provider_network_count() }} {{ _('health-care professionals.') }}
 		<br>
 		<a data-toggle="modal" href="#network_modal">{{ _('See all connections') }}</a><a data-toggle="modal" href="#network_modal"><i class="bs-icon icon-share-alt"> </i></a>
