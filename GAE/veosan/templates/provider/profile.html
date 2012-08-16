@@ -66,6 +66,15 @@
 					</li>
 					{% endif %}
 
+					{% if not provider.get_total_available_hours_per_week() > 0 %}
+					<li>
+						{{ _('Fill in your schedule') }}
+					</li>
+					{% else %}
+					<li>
+						<del>{{ _('Fill in your schedule') }}</del><i class="bs-icon icon-ok"> </i>
+					</li>
+					{% endif %}
 				</ol>
 			</div>
 			<br>
