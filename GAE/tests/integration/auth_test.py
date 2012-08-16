@@ -108,6 +108,15 @@ class AuthenticationTest(BaseTest):
         
         # check for evidence provider is logged out
         response.mustcontain('Mon Compte')
+        
+        # try to navigate a provider
+        response.mustcontain('firstlast')
+        
+        # check menu headers
+        response = self.testapp.get('/provider/profile/firstlast')
+        response.mustcontain('/provider/address/firstlast')
+        response.mustcontain('/provider/cv/firstlast')
+        response.mustcontain('/provider/schedule/firstlast')
 
 
 if __name__ == "__main__":

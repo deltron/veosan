@@ -210,9 +210,6 @@ class AdminTest(BaseTest):
         response.mustcontain('No search results')
 
 
-    def login_as_admin_then_provider(self):
-        pass
-
 if __name__ == "__main__":
     unittest.main()
     

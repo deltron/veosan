@@ -79,6 +79,10 @@ class BaseHandler(webapp2.RequestHandler):
             # check google account for admin, add to roles
             if users.is_current_user_admin():
                 roles.append(handler.auth.ADMIN_ROLE)
+                
+                # add fake login for current user
+                kw['provider_from_user'] = kw['provider']
+
         
         # set the roles
         kw['roles'] = roles
