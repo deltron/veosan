@@ -106,7 +106,7 @@ class PublicProfileTest(BaseTest):
         public_profile.mustcontain(no="Réservez Maintenant")
         
         
-    def test_book_from_public_profile(self):
+    def test_book_from_public_profile_new_patient(self):
         # create a new provider, vanity URL is bobafett
         self.create_complete_provider_profile()
         # check profile
@@ -133,9 +133,11 @@ class PublicProfileTest(BaseTest):
         new_patient_page = step1_form.submit()
         booking_confirm_page = self.fill_new_patient_profile(new_patient_page)
         # check confirmation
-        
-        
+        booking_confirm_page.mustcontain('Thank you Pat')
         # check emails
+        messages = self.mail_stub.get_sent_messages(to=self._TEST_PATIENT_EMAIL)
+        self.assertEqual(1, len(messages))
+        self.assertEqual(self._TEST_PATIENT_EMAIL, messages[0].to)
         
         # check provider bookings list
         booking_datetime = datetime.strptime(testutil.next_monday_date_string() + " 10", '%Y-%m-%d %H')
@@ -164,6 +166,7 @@ class PublicProfileTest(BaseTest):
         admin_bookings_page.mustcontain('Pat Patient')
         admin_bookings_page.mustcontain('public profile')
         self.logout_admin()
+        
         # check event logs
 
 if __name__ == "__main__":
