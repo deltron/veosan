@@ -39,7 +39,7 @@ class BaseHandler(webapp2.RequestHandler):
         # hack for providers 
         # (allows provider pages to be accessed without a user logged in but knowing the provider key)
         kw['provider'] = provider
-        kw['provider_from_user'] = provider
+        kw['provider_from_user'] = None
 
         # somebody is logged in
         if user:

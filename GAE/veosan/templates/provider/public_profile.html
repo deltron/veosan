@@ -83,13 +83,14 @@
 		{% endif %}
 
 		{% if provider.connect_enabled %}
-		
-		{% if provider_from_user and provider_from_user.is_connected_to(provider) %}
+
+		{% if provider_from_user and provider_from_user == provider %}
+		{# self, don't show button #}
+		{% elif provider_from_user and provider_from_user.is_connected_to(provider) %}
 		<div class="alert alert-success">
 			You and {{ provider.first_name }} are connected!
 		</div>
-		{% elif provider_from_user != provider %}
-		{# Not connected, show button #}
+		{% else %}
 		<a href="/{{ provider.vanity_url }}/connect" id="connect_button" type="submit" class="btn btn btn-success"> {{ _('Connect') }} </a>
 		<br>
 		<br>
