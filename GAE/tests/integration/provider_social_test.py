@@ -603,6 +603,11 @@ class ProviderSocialTest(BaseTest):
     def test_display_connections_on_public_profile(self):
         pass
 
+    def test_connect_logout_connect_again_from_profile(self):
+        # this would create a duplicate connection, should give a message
+        # "You are already connected"
+        pass
+
 
 if __name__ == "__main__":
     unittest.main()
