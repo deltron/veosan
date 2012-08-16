@@ -94,23 +94,31 @@ class ProviderConnectHandler(ProviderBaseHandler):
         if user_source and auth.PROVIDER_ROLE in user_source.roles:
             provider_source = db.get_provider_from_user(user_source)
             
-            provider_network_connection = ProviderNetworkConnection()
-            provider_network_connection.source_provider = provider_source.key
-            provider_network_connection.target_provider = provider_target.key
-            provider_network_connection.confirmed = False
+            # check if there is already a pending request
             
-            provider_network_connection.put()
+            if provider_source in provider_target.get_provider_network_pending():
+                message = "Connection pending"
+                self.render_public_profile(provider=provider_target, success_message=message)
+            else:
+                # no pending request, let's make one
             
-            message = "Connection requested"
-            self.render_public_profile(provider=provider_target, success_message=message)
-            
-            # now send out an email
-            # the url for accepting for target_provider
-            url_obj = urlparse.urlparse(self.request.url)
-            accept_url = urlparse.urlunparse((url_obj.scheme, url_obj.netloc, '/login/accept/' + provider_source.key.urlsafe(), '', '', ''))
+                provider_network_connection = ProviderNetworkConnection()
+                provider_network_connection.source_provider = provider_source.key
+                provider_network_connection.target_provider = provider_target.key
+                provider_network_connection.confirmed = False
                 
-            mail.email_connect_request(self.jinja2, from_provider=provider_source, target_provider=provider_target, accept_url=accept_url)
-            
+                provider_network_connection.put()
+                
+                message = "Connection requested"
+                self.render_public_profile(provider=provider_target, success_message=message)
+                
+                # now send out an email
+                # the url for accepting for target_provider
+                url_obj = urlparse.urlparse(self.request.url)
+                accept_url = urlparse.urlunparse((url_obj.scheme, url_obj.netloc, '/login/accept/' + provider_source.key.urlsafe(), '', '', ''))
+                    
+                mail.email_connect_request(self.jinja2, from_provider=provider_source, target_provider=provider_target, accept_url=accept_url)
+                
         else:
             # redirect to login page if not logged in, then send back here after creditials are verified
             self.redirect("/login/connect/" + provider_target.key.urlsafe())
