@@ -1268,6 +1268,12 @@ msgstr "Merci d'avoir créé un compte, s'il vous plaît activer votre profil en
 msgid "Veosan Account Activation"
 msgstr "Activation de votre compte Veosan"
 
+# Activation Email
+
+msgid "Veosan Appointment"
+msgstr "Rendez-vous Veosan"
+
+
 ####################
 # WTForms
 ####################

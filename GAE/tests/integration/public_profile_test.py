@@ -223,7 +223,7 @@ class PublicProfileTest(BaseTest):
         # activate account
         messages = self.mail_stub.get_sent_messages(to=self._TEST_PATIENT_EMAIL)
         
-        self.assertEquals(m.subject, 'veosan reservation - Ostéopathe')
+        self.assertEquals(m.subject, 'Rendez-vous Veosan - Ostéopathe')
         #self.assertEqual(m.sender, 'first last <support@veosan.com>')
         #self.assertEqual(m.reply_to, self._TEST_PROVIDER_EMAIL)
         #self.assertIn('Please click on the link below to create your profile', m.body.payload)
@@ -231,9 +231,11 @@ class PublicProfileTest(BaseTest):
         user = db.get_user_from_email(self._TEST_PATIENT_EMAIL)
         self.assertTrue('/user/activation/%s' % user.signup_token in m.body.payload)
         # click the link
- 
-        
-        # Check email to provider
+        confirmation_page = self.testapp.get('/user/activation/%s' % user.signup_token)
+        confirmation_page.mustcontain('Votre rendez-vous est confirmé')
+        confirmation_page.mustcontain(french_datetime_string)
+        confirmation_page.mustcontain("Fantastic Fox")
+        # Check email to provider    
         
         # check status change in all lists (provider, patient and admin dashboards)
         
