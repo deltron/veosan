@@ -146,6 +146,10 @@ class Provider(ndb.Model):
         datetime_24h_ago = datetime.now() - timedelta(hours=24)
         return self.created_on > datetime_24h_ago
     
+    ###
+    ### Schedules and bookings
+    ###
+    
     def get_schedules(self):
         return Schedule.query(Schedule.provider == self.key).order(Schedule.day, Schedule.start_time)
     
@@ -158,11 +162,11 @@ class Provider(ndb.Model):
         logging.info("is available? " + str(day) + " " + str(time) + " count:" + str(count))
         return count > 0
     
-    def get_future_bookings(self):
+    def get_future_confirmed_bookings(self):
         yesterday_at_midnight = datetime.combine(date.today(), time())
-        future_bookings = Booking.query(Booking.provider == self.key).order(Booking.datetime).fetch(50)
-        #, Booking.request_datetime > yesterday_at_midnight
-        return future_bookings
+        future_confirmed_bookings = Booking.query(Booking.provider == self.key, Booking.datetime==yesterday_at_midnight, Booking.confirmed==True).order(Booking.datetime).fetch()
+        return future_confirmed_bookings
+    
     
     def get_notes(self):
         ''' Get Notes in reverse chronological order'''
