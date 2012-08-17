@@ -54,7 +54,12 @@ class UserBaseHandler(BaseHandler):
             elif auth.PATIENT_ROLE in user.roles:
                 patient = db.get_patient_from_user(user)
                 if patient:
-                    self.render_template('user/password.html', patient=patient, form=password_form, **kw)
+                    confirmed_bookings = PatientBaseHandler.confirm_all_unconfirmed_bookings(patient)
+                    # render page
+                    self.render_template('user/password.html', patient=patient, confirmed_bookings=confirmed_bookings, form=password_form, **kw)
+                    # email providers
+                    for booking in confirmed_bookings:
+                        mail.email_booking_to_provider(self, booking)
                 else:
                     logging.error('(UserBaseHandler.render_password_selection) no patient found for user %s ' + user.get_email())
 

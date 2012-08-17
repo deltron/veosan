@@ -52,7 +52,10 @@ class Patient(ndb.Model):
     postal_code = ndb.StringProperty()
 
     # insurance
-    # age    
+    # age
+    
+    def full_name(self):
+        return '%s %s' % (self.first_name, self.last_name)
 
     def get_bookings(self):
         return Booking.query(Booking.patient == self.key).fetch()
@@ -60,6 +63,8 @@ class Patient(ndb.Model):
     def get_future_bookings(self):
         return Booking.query(Booking.patient == self.key, Booking.datetime >= datetime.now()).fetch()
     
+    def get_future_unconfirmed_bookings(self):
+        return Booking.query(Booking.patient == self.key, Booking.datetime >= datetime.now(), Booking.confirmed==False).fetch()
 
 
 class Provider(ndb.Model):
@@ -479,8 +484,8 @@ class Booking(ndb.Model):
     patient = ndb.KeyProperty(kind=Patient)
     # link to provider
     provider = ndb.KeyProperty(kind=Provider)
-    
-    confirmed = ndb.BooleanProperty()
+    # booking confirmed by patient
+    confirmed = ndb.BooleanProperty(default=False)
     
     status = ndb.StringProperty()
     

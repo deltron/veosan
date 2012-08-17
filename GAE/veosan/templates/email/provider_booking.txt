@@ -1,0 +1,13 @@
+Hi {{ provider.full_name() }},
+
+You have a new appointment for {{ provider.category }}. Here are the details:
+
+Patient: {{ patient.full_name() }}
+date and time: {{ booking.datetime|format_datetime_full }}. 
+
+Please add it to your calendar. You can consult all your appointments here:
+{{provider_bookings_url}}
+
+Thank you,
+
+The Veosan Team
