@@ -947,6 +947,16 @@ msgstr "Votre mot de passe doit contenir au moins 6 caractères."
 msgid "Passwords do not match."
 msgstr "Les mots de passe ne correspondent pas."
 
+msgid "Appointment Confirmation"
+msgstr "Confirmation de rendez-vous"
+
+msgid "The following appointment is confirmed"
+msgstr "Votre rendez-vous est confirmé"
+
+msgid "Select a password to manage your appointments"
+msgstr "Choisissez un mot de passe pour gérer vos rendez-vous"
+
+
 #################
 # Booking results
 #################
