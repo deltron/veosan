@@ -237,6 +237,7 @@ class PublicProfileTest(BaseTest):
         confirmation_page.mustcontain("Fantastic Fox")
         # Check email to provider    
         
+        
         # check status change in all lists (provider, patient and admin dashboards)
         
         

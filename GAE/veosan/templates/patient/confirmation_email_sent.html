@@ -5,15 +5,24 @@
 
 {% block content %}
 <div class="row">
+	
 	<div class="span12">
-		<h1><img src="/assets/img/green-check.png" width="80" height="80"> Thank you {{patient.first_name}}!</h1>
+		
+		<img src="/assets/img/green-check.png" width="80" height="80"> <h1>Thank you {{patient.first_name}}!</h1>
+		<h2>Please confirm your appointment by <strong>checking your email</strong> and clicking on the confirmation link.</h2>
 		<br>
-		<p>An email was sent with your appointment details and a confirmation code.</p>
-		<p>Please check your inbox and click on the link to finish the process.</p>
-				
-		<p><i class="icon-envelope"></i> You will receive an email shortly confirming your reservation.</p>
-		<p><i class="icon-user"></i> <a href="/contact">Contact us</a> for any questions relating to your appointment</p>
-		<br>
+		
+		<div class="row">
+			<div class="span6 well">
+				{{ macro.appointment_summary(booking) }}
+			</div>
+			
+			<div class="span4">
+				<p><i class="icon-envelope"></i> An email was sent with your appointment details and a confirmation code. Please check your inbox and click on the link to finish the process.</p>
+				<p><i class="icon-user"></i> <a href="/contact">Contact us</a> for any questions relating to your appointment</p>
+			</div>		
+		</div>
+
 	</div>
 </div>
 {% endblock %} 

@@ -104,11 +104,19 @@ class BookingBaseHandler(BaseHandler):
                     # link booking to patient and then check if same patient logs in (check is in @patient_required)
                     booking.patient = existing_patient.key
                     booking.put()
-                    # send to login page with booking.key set
-                    login_form = LoginForm().get_form()
-                    login_form.email.data = email
-                    self.render_template('user/login.html', login_form=login_form, booking=booking)
-                
+                    
+                    # check if user is activated and has a password
+                    if existing_user.is_activated_and_has_password():
+                        # send to login page with booking.key set
+                        login_form = LoginForm().get_form()
+                        login_form.email.data = email
+                        self.render_template('user/login.html', login_form=login_form, booking=booking)
+                    else:
+                        # user exists but was never activated
+                        # email is not known, create new patient profile
+                        logging.info('Patient exists but was not activated for %s, Skipping new patient form, but sending email to confirm.' % email)
+                        PatientBaseHandler.link_patient_and_send_confirmation_email(self, booking, existing_patient)
+                        
                 else:
                     # user exists, not no patient profile attached (might be a provider)
                     # 1. login, 2. patient profile, 3. confirm
@@ -162,6 +170,7 @@ class SearchNextHandler(BookingBaseHandler):
             
 
 class BookingHandler(BookingBaseHandler):
+    
     @patient_required
     def get(self):
         '''

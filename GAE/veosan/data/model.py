@@ -30,6 +30,9 @@ class User(Webapp2AuthUser):
         
     def get_email(self):
         return self.auth_ids[0]
+    
+    def is_activated_and_has_password(self):
+        return (self.password != None) & (self.signup_token == None)
 
 
 class Patient(ndb.Model):

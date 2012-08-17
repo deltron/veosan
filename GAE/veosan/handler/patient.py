@@ -29,6 +29,23 @@ class PatientBaseHandler(BaseHandler):
     def render_confirmation_email_sent(handler, booking):
         kw = {'patient': booking.patient.get(), 'booking': booking, 'provider': booking.provider.get()}
         handler.render_template('patient/confirmation_email_sent.html', **kw)
+        
+    @staticmethod
+    def link_patient_and_send_confirmation_email(handler, booking, patient):
+        # store booking
+        user = patient.user.get()
+        booking.patient = patient.key
+        booking.confirmed = user.confirmed = False
+        booking.put()
+        # create a signup token for new user
+        token = handler.create_signup_token(user)
+        # activation url
+        url_obj = urlparse.urlparse(handler.request.url)
+        activation_url = urlparse.urlunparse((url_obj.scheme, url_obj.netloc, '/user/activation/' + token, '', '', ''))
+        logging.info('(NewPatientHandler.post) generated activation url for user %s : %s ' %  (patient.email, activation_url))
+        mail.email_booking_to_patient(handler.jinja2, booking, activation_url)
+        PatientBaseHandler.render_confirmation_email_sent(handler, booking)
+        
 
 class ListPatientBookings(PatientBaseHandler):
     def get(self):
@@ -59,32 +76,16 @@ class NewPatientHandler(PatientBaseHandler):
         if patient_form.validate():
             # create a patient from the form
             patient = db.store_patient(self.request.POST, patient_form)
-            
             # Create an empty user in Auth system
             user = self.create_empty_user_for_patient(patient)
-            
-            # create a signup token for new user
-            token = self.create_signup_token(user)
-
-            # activation url
-            url_obj = urlparse.urlparse(self.request.url)
-            activation_url = urlparse.urlunparse((url_obj.scheme, url_obj.netloc, '/user/activation/' + token, '', '', ''))
-            logging.info('(NewPatientHandler.post) generated activation url for user %s : %s ' %  (patient.email, activation_url))
 
             if user:
-                # store booking
-                booking.patient = patient.key
-                booking.confirmed = user.confirmed = False
-                booking.put()
-                
-                # booking succesful, send profile confirmation email
-                mail.email_booking_to_patient(self.jinja2, booking, activation_url)
-                
-                self.render_confirmation_email_sent(self, booking)
+                logging.info('New or non-activated user, sending confirmation email')
+                PatientBaseHandler.link_patient_and_send_confirmation_email(self, booking, patient)
             else:
                 logging.error('User not created.')
                 # TODO add custom validation to tell user that email is already in use.
-                self.render_new_patient_form(patient_form, booking, error_message='Email already in use. Try to login instead.')
+                PatientBaseHandler.render_new_patient_form(patient_form, booking, error_message='Email already in use. Try to login instead.')
 
         else:   
             # validation failed        
