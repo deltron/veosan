@@ -3,7 +3,7 @@ Hi {{ patient.first_name }} {{ patient.last_name }},
 You are booked for {{ provider.category }} with {{ provider.full_name() }} on {{ b.request_datetime|format_datetime_full }}. 
 
 {% if activation_url %}
-One last thing, since you are new around here please click on the link below to confirm your address:
+Please confirm your appointment by clicking on the following link:
 
 {{activation_url}}
 
