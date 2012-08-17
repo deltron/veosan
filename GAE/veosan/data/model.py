@@ -122,8 +122,8 @@ class Provider(ndb.Model):
     user = ndb.KeyProperty(kind=User)
 
     
-    def get_profile_photo_image_url(self, size=None):
-        return get_serving_url(self.profile_photo_blob_key, size)
+    def get_profile_photo_image_url(self, size=None, secure_url=True):
+        return get_serving_url(self.profile_photo_blob_key, size=size, secure_url=secure_url)
 
     def obfuscated_name(self):
         if self.last_name:
