@@ -273,6 +273,7 @@ def create_untranslated_code_tuple_list():
     code_tuples_list.append(get_all_degrees())
     code_tuples_list.append(get_all_continuing_education_types())
     code_tuples_list.append(get_all_titles())
+    code_tuples_list.append(get_all_provinces())
 
     # more...
     
