@@ -33,6 +33,7 @@ class BaseTest(unittest.TestCase):
 
     _TEST_PATIENT_EMAIL = 'pat@patient.com'
     _TEST_PATIENT_PASSWORD = '654321'
+    _TEST_PATIENT_TELEPHONE = '514-123-1234'
     
     _TEST_PROVIDER_VANITY_URL = 'firstlast'
 

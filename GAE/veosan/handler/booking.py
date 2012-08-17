@@ -79,7 +79,7 @@ class BookingBaseHandler(BaseHandler):
                 booking.patient = patient.key
                 booking.put()
                 # skip activation stuff, send confirm email
-                mail.email_booking_to_patient(self.jinja2, booking)
+                mail.email_booking_to_patient(self, booking)
                 self.render_confirmed_patient(self, patient) 
             else:
                 logging.error('Currently logged in user is not a patient')

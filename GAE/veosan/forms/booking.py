@@ -24,6 +24,7 @@ class EmailOnlyBookingForm(Form):
 class EmailAndAppointmentDetails(CustomForm):
     def _set_fields(self, form):
         setattr(form, 'email',TextField(_(u'E-mail Address'), [validators.Email(message=_(u'Invalid email address.'))]))
+        setattr(form, 'telephone', TextField(_(u'Telephone'), [validators.Regexp(regex="^[2-9]\d{2}-\d{3}-\d{4}$", message=_(u'Please make sure phone number is in the following format: 514-555-1212'))]))
         setattr(form, 'specialty', SelectField(_(u'Needs'), choices=util.getAllSpecialitiesForPatient()))
         setattr(form, 'comments', TextAreaField(_(u'Comments for your appointment')))
         setattr(form, 'insurance', SelectField(_(u'Insurance'), choices=util.getAllInsurance()))

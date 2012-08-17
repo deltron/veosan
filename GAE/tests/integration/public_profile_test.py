@@ -171,23 +171,17 @@ class PublicProfileTest(BaseTest):
         # fill patient info
         step1_form = new_patient_page.forms[0]
         step1_form['email'] = self._TEST_PATIENT_EMAIL
+        step1_form['telephone'] = self._TEST_PATIENT_TELEPHONE
         step1_form['comments'] = 'No comments'
         new_patient_page = step1_form.submit()
-        booking_confirm_page = self.fill_new_patient_profile(new_patient_page)
-        # check confirmation
-        booking_confirm_page.mustcontain('Thank you Pat')
+        email_sent_page = self.fill_new_patient_profile(new_patient_page)
+        # check email sent page
+        email_sent_page.mustcontain('Thank you Pat')
 
-        
-        # check provider bookings list
-        booking_datetime = datetime.strptime(testutil.next_monday_date_string() + " 10", '%Y-%m-%d %H')
-        french_datetime_string = format_datetime(booking_datetime, "EEEE 'le' d MMMM yyyy", locale='fr_CA') + " à " + format_datetime(booking_datetime, "H:mm", locale='fr_CA')
-        logging.info('French date time of booking: %s' % french_datetime_string)        
+        # check provider bookings list, should be empty as booking is not confirmed  
         self.login_as_provider()
         provider_bookings = self.testapp.get('/provider/bookings/' + self._TEST_PROVIDER_VANITY_URL)
-        
-        provider_bookings.mustcontain('Pat Patient')
-        # check datetime
-        provider_bookings.mustcontain(french_datetime_string)
+        provider_bookings.mustcontain('Vous n’avez aucun rendez-vous prévu')
         self.logout_provider()
         
         # check patient's booking list
@@ -203,13 +197,17 @@ class PublicProfileTest(BaseTest):
         admin_bookings_page.mustcontain(admin_datetime)
         admin_bookings_page.mustcontain('Fantastic Fox')
         admin_bookings_page.mustcontain('Pat Patient')
+        admin_bookings_page.mustcontain(self._TEST_PATIENT_TELEPHONE)
+        admin_bookings_page.mustcontain(self._TEST_PATIENT_EMAIL)
         admin_bookings_page.mustcontain('Patient not confirmed')
         admin_bookings_page.showbrowser()
         admin_bookings_page.mustcontain('public profile')
         self.logout_admin()
         
         # check event logs
-        
+        booking_datetime = datetime.strptime(testutil.next_monday_date_string() + " 10", '%Y-%m-%d %H')
+        french_datetime_string = format_datetime(booking_datetime, "EEEE 'le' d MMMM yyyy", locale='fr_CA') + " à " + format_datetime(booking_datetime, "H:mm", locale='fr_CA')
+        logging.info('French date time of booking: %s' % french_datetime_string) 
         
         # no email sent to provider (patient is not confirmed)
         messages = self.mail_stub.get_sent_messages(to=self._TEST_PROVIDER_EMAIL)
@@ -229,6 +227,7 @@ class PublicProfileTest(BaseTest):
         #self.assertIn('Please click on the link below to create your profile', m.body.payload)
         #self.assertIn("I've been using Veosan and thought you might like to try it out. Here's an invitation to create a profile.", m.body.payload)
         user = db.get_user_from_email(self._TEST_PATIENT_EMAIL)
+        logging.info(m.body.payload)
         self.assertTrue('/user/activation/%s' % user.signup_token in m.body.payload)
         # click the link
         confirmation_page = self.testapp.get('/user/activation/%s' % user.signup_token)
@@ -236,10 +235,24 @@ class PublicProfileTest(BaseTest):
         confirmation_page.mustcontain(french_datetime_string)
         confirmation_page.mustcontain("Fantastic Fox")
         # Check email to provider    
-        
+        messages = self.mail_stub.get_sent_messages(to=self._TEST_PROVIDER_EMAIL)
+        self.assertEqual(1, len(messages))
+        provider_mail = messages[0]
+        self.assertEquals(provider_mail.subject, 'Veosan - Nouveau rendez-vous avec Pat Patient')
+        #self.assertEqual(m.sender, 'first last <support@veosan.com>')
+        #self.assertEqual(m.reply_to, self._TEST_PROVIDER_EMAIL)
+        #self.assertIn('Please click on the link below to create your profile', m.body.payload)
+        #self.assertIn("I've been using Veosan and thought you might like to try it out. Here's an invitation to create a profile.", m.body.payload)
+
         
         # check status change in all lists (provider, patient and admin dashboards)
-        
+       
+        self.login_as_provider()
+        provider_bookings = self.testapp.get('/provider/bookings/' + self._TEST_PROVIDER_VANITY_URL)
+        provider_bookings.mustcontain('Pat Patient')
+        # check datetime
+        provider_bookings.mustcontain(french_datetime_string)
+        self.logout_provider()
         
 
 if __name__ == "__main__":

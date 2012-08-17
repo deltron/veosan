@@ -43,7 +43,7 @@ class PatientBaseHandler(BaseHandler):
         url_obj = urlparse.urlparse(handler.request.url)
         activation_url = urlparse.urlunparse((url_obj.scheme, url_obj.netloc, '/user/activation/' + token, '', '', ''))
         logging.info('(NewPatientHandler.post) generated activation url for user %s : %s ' %  (patient.email, activation_url))
-        mail.email_booking_to_patient(handler.jinja2, booking, activation_url)
+        mail.email_booking_to_patient(handler, booking, activation_url)
         PatientBaseHandler.render_confirmation_email_sent(handler, booking)
         
         
