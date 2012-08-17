@@ -96,8 +96,10 @@ class BookingBaseHandler(BaseHandler):
             # or a completely new user
             existing_user = db.get_user_from_email(email)
             if existing_user:
+                logging.info('Email is existing user %s' % email)
                 existing_patient = db.get_patient_from_user(existing_user)
                 if existing_patient:
+                    logging.info('Email is existing patient %s' % email)
                     # email is in datastore, but not logged in
                     # link booking to patient and then check if same patient logs in (check is in @patient_required)
                     booking.patient = existing_patient.key
@@ -237,7 +239,6 @@ class BookFromPublicProfile(BookingBaseHandler):
             email_details_form = EmailAndAppointmentDetails().get_form(self.request.POST)
             provider = db.get_provider_from_vanity_url(vanity_url)
             if email_details_form.validate():
-                logging.info('TESTSTEST')
                 booking = Booking()
                 booking.provider = provider.key
                 booking.booking_source = 'profile'
@@ -248,8 +249,7 @@ class BookFromPublicProfile(BookingBaseHandler):
             else:
                 self.render_template('patient/booking_step1.html', provider=provider, email_details_form=email_details_form)
             
-            
-           
+                   
                 
 class FullyBookedHandler(BookingBaseHandler):
     def get(self):

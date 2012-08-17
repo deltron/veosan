@@ -54,7 +54,9 @@ class Patient(ndb.Model):
     def get_bookings(self):
         return Booking.query(Booking.patient == self.key).fetch()
     
-
+    def get_future_bookings(self):
+        return Booking.query(Booking.patient == self.key, Booking.datetime >= datetime.now()).fetch()
+    
 
 
 class Provider(ndb.Model):
