@@ -765,6 +765,14 @@ msgstr "Choisissez la date et l'heure de votre rendez-vous"
 msgid "Fill in your schedule"
 msgstr "Entrez votre horaire"
 
+msgid "has an empty profile!"
+msgstr "a un profil vide!"
+
+msgid "View Full Network"
+msgstr "Voir réseau complet"
+
+msgid "This network contains"
+msgstr "Ce réseau contient"
 
 #################
 # Address Page

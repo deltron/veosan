@@ -115,8 +115,10 @@
 			        or provider.get_certification()|remove_empty_strings_from_list
 			        or provider.get_continuing_education()|remove_empty_strings_from_list
 		%}
-		<h3>{{ provider.first_name }} has an empty profile!</h3>
+		<h3>{{ provider.first_name }} {{ _('has an empty profile!') }}</h3>
+		{# 
 		<a href="#">Click here to let them know you visted their profile and would like more information!</a>
+		#}
 		{% endif %}
 		
 		{% if provider.bio %}
@@ -259,7 +261,7 @@
 		{% endif %}
 
 		{% if provider.connect_enabled and provider.get_provider_network_count() > 0 %}
-		This network contains {{ provider.get_provider_network_count() }} health-care professionals.
+		{{ _('This network contains') }} {{ provider.get_provider_network_count() }} {{ _('health-care professionals.') }}
 		<table class="table-condensed">
 			{% for p in provider.get_provider_network() %}
 			
@@ -278,7 +280,7 @@
 
 			{% endfor %}
 		</table>
-		<a data-toggle="modal" href="#network_modal" style="width=150px; margin 5px auto" class="btn btn-primary"> View Full Network </a>
+		<a data-toggle="modal" href="#network_modal" style="width=150px; margin 5px auto" class="btn btn-primary">{{ _('View Full Network') }}</a>
 
 		{% endif %}
 	</div>
