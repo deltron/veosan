@@ -75,7 +75,7 @@ class UserBaseHandler(BaseHandler):
                 provider_network_connection = ndb.Key(urlsafe = key).get()
                 
                 # get the target provider (ie. the guy clicking the email)
-                target_provider = provider_network_connection.target_provider
+                target_provider = provider_network_connection.target_provider.get()
                 login_form = LoginForm().get_form(obj=target_provider)
         
         self.render_template('user/login.html', login_form=login_form, next_action=next_action, key=key, **kw)

@@ -20,17 +20,25 @@ class ProviderNetworkHandler(ProviderBaseHandler):
             provider_network_connection = ndb.Key(urlsafe=provider_key).get()
             source_provider_key = provider_network_connection.source_provider
             source_provider = source_provider_key.get()
-            target_provider_key = provider.key
             
-            provider_network_connection = db.get_provider_network_connection(source_provider_key, target_provider_key)
-            if provider_network_connection:
-                provider_network_connection.confirmed = True
-            
-            try:
-                provider_network_connection.put()
-                success_message = "You are now connected to %s %s" % (source_provider.first_name, source_provider.last_name)
-            except Exception as e:
-                error_message = 'Error making connection: ' + e.message
+            if provider_network_connection.confirmed:
+
+                # already connected
+                success_message = "You are already connected to %s %s" % (source_provider.first_name, source_provider.last_name)
+            else:
+                target_provider_key = provider.key
+                
+                provider_network_connection = db.get_provider_network_connection(source_provider_key, target_provider_key)
+                if provider_network_connection:
+                    provider_network_connection.confirmed = True
+                
+                    try:
+                        provider_network_connection.put()
+                        success_message = "You are now connected to %s %s" % (source_provider.first_name, source_provider.last_name)
+                    except Exception as e:
+                        error_message = 'Error making connection: ' + e.message
+                else:
+                    error_message = 'No connection found'
                 
         if operation == 'reject':
             provider_network_connection = ndb.Key(urlsafe=provider_key).get()
