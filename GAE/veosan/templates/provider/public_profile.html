@@ -73,7 +73,7 @@
 		{% if provider_from_user and provider_from_user == provider %}
 		{# self, don't show button #}
 		{% elif provider_from_user and provider_from_user.is_connected_to(provider) %}
-		<div class="alert alert-success">
+		<div style="width:100px;" class="alert alert-success">
 			You and {{ provider.first_name }} are connected!
 		</div>
 		{% else %}
@@ -235,7 +235,7 @@
 		<div class="well well-small" style="width: 80%; text-align: center">
 			<h3>{{ _('Are you a health-care professional?') }}</h3>
 			<i class="bs-icon icon-bullhorn"> </i>
-			<a href="/signup/provider">{{ _("Sign up to get your own professional profile today. It's free!") }}</a>
+			<a href="/signup/provider">{{ _("Sign up to get your own professional profile. It's free!") }}</a>
 		</div>
 		<br>
 		{% if provider.booking_enabled %}
@@ -262,8 +262,9 @@
 		This network contains {{ provider.get_provider_network_count() }} health-care professionals.
 		<table class="table-condensed">
 			{% for p in provider.get_provider_network() %}
-
-			{# create a row every 2 providers #}
+			
+			{% if loop.index < 3 %}
+			{# only display first 3 results #}
 			<tr>
 		
 			<td width="50"><a href="/{{ p.vanity_url }}"> {% if p.profile_photo_blob_key %} <img src="{{ p.get_profile_photo_image_url(50) }}" width="50"
@@ -273,10 +274,11 @@
 			{{ p.last_name }} </h4></a> {{ category_dict[p.category] }} </td>
 
 			</tr>
+			{% endif %}
 
 			{% endfor %}
 		</table>
-		<a href="#" style="width=150px; margin 5px auto" class="btn btn-primary"> View Full Network </a>
+		<a data-toggle="modal" href="#network_modal" style="width=150px; margin 5px auto" class="btn btn-primary"> View Full Network </a>
 
 		{% endif %}
 	</div>
