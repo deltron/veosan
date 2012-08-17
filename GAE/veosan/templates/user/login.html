@@ -6,7 +6,7 @@
 {% block content %}
 
 {% if 'admin' in roles %}
-
+	<h4>You are currently logged in as an Admin. Please logout before login in as a user.</h4>
 {% else %}
 {% if next_action and key %}
 <form method="post" action="/login/{{ next_action }}/{{ key }}" class="form-horizontal" id="login_form">
