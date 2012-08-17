@@ -22,19 +22,34 @@ handlers:
 - url: /favicon\.ico
   static_files: favicon.ico
   upload: favicon\.ico
+  secure: optional
 
 - url: /assets
   static_dir: assets
+  secure: optional
   
 - url: /admin/.*
   script: main.application
   login: admin
+  secure: always
 
 - url: /sales/.*
   script: main.application
   login: admin
 
+- url: /login
+  script: main.application
+  secure: always
+
+- url: /login/.*
+  script: main.application
+  secure: always
+
+- url: /provider/.*
+  script: main.application
+  secure: always
+
 - url: /.*
   script: main.application
-
+  
 
