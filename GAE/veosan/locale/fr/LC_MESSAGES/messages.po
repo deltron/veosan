@@ -753,7 +753,7 @@ msgstr "Complétez votre adresse"
 msgid "Write your bio and quote"
 msgstr "Écrivez votre biographie et commentaire"
 
-msgid "Sign up to get your own professional profile today. It's free!"
+msgid "Sign up to get your own professional profile. It's free!"
 msgstr "Inscrivez-vous pour obtenir votre propre profil professionnel. C'est gratuit!"
 
 msgid "Are you a health-care professional?"
