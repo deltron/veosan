@@ -106,6 +106,19 @@
 
 	</div>
 	<div class="span6">
+		{# totally empty profile, fill this space with something #}
+		{% if not provider.bio or provider.quote 
+					or provider.specialty|remove_empty_strings_from_list 
+			        or provider.get_experience()|remove_empty_strings_from_list 
+			        or provider.get_organization()|remove_empty_strings_from_list
+			        or provider.get_education()|remove_empty_strings_from_list
+			        or provider.get_certification()|remove_empty_strings_from_list
+			        or provider.get_continuing_education()|remove_empty_strings_from_list
+		%}
+		<h3>{{ provider.first_name }} has an empty profile!</h3>
+		<a href="#">Click here to let them know you visted their profile and would like more information!</a>
+		{% endif %}
+		
 		{% if provider.bio %}
 		<p>
 			<span itemprop="description"> {{ provider.bio }} </span>
