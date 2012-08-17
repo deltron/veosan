@@ -627,9 +627,12 @@ class ProviderSocialTest(BaseTest):
         # accept the connection by clicking link in email
         login_page = self.testapp.get('/login/accept/%s' % lnk)
         login_page.mustcontain(u"Connexion")
+        
+        # email should be pre-populated
+        login_page.mustcontain(self._TEST_PROVIDER_EMAIL)
+
         # fill out details
         login_form = login_page.forms[0]
-        login_form['email'] = self._TEST_PROVIDER_EMAIL
         login_form['password'] = self._TEST_PROVIDER_PASSWORD
         login_redirect_response = login_form.submit()
 
@@ -898,7 +901,7 @@ class ProviderSocialTest(BaseTest):
 
         # force connect with URL
         response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL + '/connect')
-        response.mustcontain("Error making connection: Invalid connection to self")
+        response.mustcontain("You can't connect to yourself!")
         
         # check database
         provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
