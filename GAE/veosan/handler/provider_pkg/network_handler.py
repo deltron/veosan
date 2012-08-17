@@ -28,17 +28,21 @@ class ProviderNetworkHandler(ProviderBaseHandler):
             else:
                 target_provider_key = provider.key
                 
-                provider_network_connection = db.get_provider_network_connection(source_provider_key, target_provider_key)
-                if provider_network_connection:
-                    provider_network_connection.confirmed = True
+                if source_provider_key == target_provider_key:
+                    success_message = "You can't connect to yourself!"
                 
-                    try:
-                        provider_network_connection.put()
-                        success_message = "You are now connected to %s %s" % (source_provider.first_name, source_provider.last_name)
-                    except Exception as e:
-                        error_message = 'Error making connection: ' + e.message
                 else:
-                    error_message = 'No connection found'
+                    provider_network_connection = db.get_provider_network_connection(source_provider_key, target_provider_key)
+                    if provider_network_connection:
+                        provider_network_connection.confirmed = True
+                    
+                        try:
+                            provider_network_connection.put()
+                            success_message = "You are now connected to %s %s" % (source_provider.first_name, source_provider.last_name)
+                        except Exception as e:
+                            error_message = 'Error making connection: ' + e.message
+                    else:
+                        error_message = 'No connection found'
                 
         if operation == 'reject':
             provider_network_connection = ndb.Key(urlsafe=provider_key).get()
@@ -107,14 +111,17 @@ class ProviderConnectHandler(ProviderBaseHandler):
             # check if there is already a pending request
             
             if provider_source in provider_target.get_provider_network_pending():
-                message = "Connection pending"
+                message = "Connection pending..."
                 self.render_public_profile(provider=provider_target, success_message=message)
             elif provider_source in provider_target.get_provider_network():
                 message = "Already connected!"
                 self.render_public_profile(provider=provider_target, success_message=message)
+            elif provider_source == provider_target:
+                message = "You can't connect to yourself!"
+                self.render_public_profile(provider=provider_target, success_message=message)
             else:
                 # no pending request, let's make one
-            
+        
                 provider_network_connection = ProviderNetworkConnection()
                 provider_network_connection.source_provider = provider_source.key
                 provider_network_connection.target_provider = provider_target.key
