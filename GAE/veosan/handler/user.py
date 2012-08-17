@@ -66,10 +66,12 @@ class UserBaseHandler(BaseHandler):
         
         if next_action == 'accept':
             if key:
-                target_provider = ndb.Key(urlsafe = key).get()
-                if target_provider:
-                    login_form = LoginForm().get_form(obj=target_provider)
-            
+                # get the source provider
+                provider_network_connection = ndb.Key(urlsafe = key).get()
+                
+                # get the target provider (ie. the guy clicking the email)
+                target_provider = provider_network_connection.target_provider
+                login_form = LoginForm().get_form(obj=target_provider)
         
         self.render_template('user/login.html', login_form=login_form, next_action=next_action, key=key, **kw)
 

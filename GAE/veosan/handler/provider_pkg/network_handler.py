@@ -17,12 +17,14 @@ class ProviderNetworkHandler(ProviderBaseHandler):
         success_message = None
         
         if operation == 'accept':
-            source_provider_key = ndb.Key(urlsafe=provider_key)
+            provider_network_connection = ndb.Key(urlsafe=provider_key).get()
+            source_provider_key = provider_network_connection.source_provider
             source_provider = source_provider_key.get()
             target_provider_key = provider.key
             
             provider_network_connection = db.get_provider_network_connection(source_provider_key, target_provider_key)
-            provider_network_connection.confirmed = True
+            if provider_network_connection:
+                provider_network_connection.confirmed = True
             
             try:
                 provider_network_connection.put()
@@ -31,7 +33,8 @@ class ProviderNetworkHandler(ProviderBaseHandler):
                 error_message = 'Error making connection: ' + e.message
                 
         if operation == 'reject':
-            source_provider_key = ndb.Key(urlsafe=provider_key)
+            provider_network_connection = ndb.Key(urlsafe=provider_key).get()
+            source_provider_key = provider_network_connection.source_provider
             source_provider = source_provider_key.get()
             target_provider_key = provider.key
                         
@@ -118,7 +121,7 @@ class ProviderConnectHandler(ProviderBaseHandler):
                     # now send out an email
                     # the url for accepting for target_provider
                     url_obj = urlparse.urlparse(self.request.url)
-                    accept_url = urlparse.urlunparse((url_obj.scheme, url_obj.netloc, '/login/accept/' + provider_source.key.urlsafe(), '', '', ''))
+                    accept_url = urlparse.urlunparse((url_obj.scheme, url_obj.netloc, '/login/accept/' + provider_network_connection.key.urlsafe(), '', '', ''))
                         
                     mail.email_connect_request(self.jinja2, from_provider=provider_source, target_provider=provider_target, accept_url=accept_url)
                     

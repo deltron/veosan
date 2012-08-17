@@ -262,6 +262,15 @@ class Provider(ndb.Model):
 
         return providers
 
+    
+    def get_provider_network_pending_connections_source(self):     
+        return ProviderNetworkConnection.query(ProviderNetworkConnection.source_provider == self.key, ProviderNetworkConnection.confirmed == False).fetch()
+
+    
+    def get_provider_network_pending_connections(self):     
+        return ProviderNetworkConnection.query(ProviderNetworkConnection.target_provider == self.key, ProviderNetworkConnection.confirmed == False).fetch()
+        
+
 class Education(ndb.Model):  
     provider = ndb.KeyProperty(kind=Provider)
  
