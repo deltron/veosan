@@ -35,7 +35,7 @@ class UserBaseHandler(BaseHandler):
     def render_terms(self, provider, terms_form, **kw):
         self.render_template('provider/provider_terms.html', provider=provider, terms_form=terms_form, **kw)
 
-    def render_password_selection(self, user=None, password_form=None, **kw):
+    def render_booking_confirmed_and_password_selection(self, user=None, password_form=None, **kw):
         if not password_form:
             password_form = PasswordForm().get_form()
             
@@ -43,7 +43,7 @@ class UserBaseHandler(BaseHandler):
             user = self.get_current_user()
             
         if user:
-            # check if provider or patient            
+            # check if provider or patient          
             if auth.PROVIDER_ROLE in user.roles:
                 provider = db.get_provider_from_user(user)
                 if provider:
@@ -131,7 +131,7 @@ class PasswordHandler(UserBaseHandler):
     def get(self, signup_token=None):
         user = db.get_user_from_signup_token(signup_token)
         
-        self.render_password_selection(user=user, signup_token=signup_token)
+        self.render_booking_confirmed_and_password_selection(user=user, signup_token=signup_token)
         
     def post(self, signup_token=None):
         password_form = PasswordForm().get_form(self.request.POST)
@@ -188,7 +188,7 @@ class PasswordHandler(UserBaseHandler):
 
         # password form was not validate, re-render and try again!
         else:
-            self.render_password_selection(user, password_form=password_form, signup_token=signup_token)
+            self.render_booking_confirmed_and_password_selection(user, password_form=password_form, signup_token=signup_token)
 
         
 
@@ -201,7 +201,7 @@ class ResetPasswordHandler(UserBaseHandler):
             user = self.validate_resetpassword_token(resetpassword_token)
             if user:            
                 # got a good user for that password reset token, show the password form
-                self.render_password_selection(user=user, signup_token=resetpassword_token)
+                self.render_booking_confirmed_and_password_selection(user=user, signup_token=resetpassword_token)
             else:
                 # no user found for password reset key, send them to the login page
                 error_message = "Sorry, we can't find anyone for that password reset link. Links are expired after 24 hours, please try again."
@@ -250,8 +250,10 @@ class ActivationHandler(UserBaseHandler):
                     patient = db.get_patient_from_user(user)
                     
                     if patient:
+                        # the patient's email is confirmed, any unconfirmed bookings are confirmed
+                        
                         # make the patient choose a password
-                        self.render_password_selection(user=user, signup_token=signup_token)
+                        self.render_booking_confirmed_and_password_selection(user=user, signup_token=signup_token)
                     else:
                         # no patient found for user & token combination, send them to the login page
                         logging.info('(ActivationHandler) no patient found for user & token combination')
@@ -349,6 +351,11 @@ class LoginHandler(UserBaseHandler):
                 # throws InvalidAuthIdError if user is not found, throws InvalidPasswordError if provided password doesn't match with specified user
                 error_message = _(u'Login failed. Try again.')
                 self.render_template('user/login.html', login_form=login_form, error_message=error_message)
+            except AttributeError, ae:
+                logging.warn('User has not password, authentication fails %s' % ae)
+                #error_message = _(u'Your account is not yet activated')
+                #self.render_template('user/resend.html', error_message=error_message)
+                
         else:
             # form validation error
             self.render_template('user/login.html', login_form=login_form)
