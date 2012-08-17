@@ -8,7 +8,7 @@
 {% block content %}
 <div class="row">
 		{% if bookings|length > 0 %}
-		<div class="span6">
+		<div class="span8">
 
 			<table class="table">
 			<thead>
@@ -39,17 +39,13 @@
 
 			
 		{% else %}
-		<div class="span6">
+		<div class="span8">
 			<div class="alert alert-error">
   				{{ _('No upcoming bookings. Is there any time marked as available in your schedule?') }}
 			</div>
 		</div>
 		{% endif %}
 		
-		<!-- Bio Preview -->
-		<div class="span6">
-				{{ macro.make_provider_bio(provider) }}
-		</div>
 </div> <!-- row -->
 {% endblock content %} 
 

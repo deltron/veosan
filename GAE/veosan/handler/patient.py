@@ -46,6 +46,18 @@ class PatientBaseHandler(BaseHandler):
         mail.email_booking_to_patient(handler.jinja2, booking, activation_url)
         PatientBaseHandler.render_confirmation_email_sent(handler, booking)
         
+        
+    @staticmethod
+    def confirm_all_unconfirmed_bookings(patient):
+        ubs = patient.get_future_unconfirmed_bookings()
+        for booking in ubs:
+            booking.confirmed = True
+            booking.put()
+            logging.info('booking confirmed %s' % booking)
+        # simple name change for clarity
+        confirmed_bookings = ubs
+        return confirmed_bookings
+        
 
 class ListPatientBookings(PatientBaseHandler):
     def get(self):
