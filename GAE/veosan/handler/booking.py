@@ -223,9 +223,14 @@ class BookFromPublicProfile(BookingBaseHandler):
         if start_date:
             start_date = datetime.strptime(start_date, "%Y-%m-%d").date()
             week_nav = WeekNav(start_date - period, start_date, start_date + period)
-            if (start_date <= time.tomorrow()):
+            if (start_date <= time.tomorrow()): # start_date too early
                 start_date = time.tomorrow()
-                week_nav = WeekNav(None, start_date, start_date + period)  
+                week_nav = WeekNav(None, start_date, start_date + period)
+            max_date = date.today() + timedelta(days=45)
+            logging.info('max date %s' % max_date)
+            if (start_date >= max_date):
+                start_date = max_date
+                week_nav = WeekNav(start_date - period, start_date, None)
         else:
             start_date = time.tomorrow()
             week_nav = WeekNav(None, start_date, start_date + period)
