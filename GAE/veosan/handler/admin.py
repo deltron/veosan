@@ -2,16 +2,14 @@
     admin handlers
 '''
 
-import logging, urlparse
+import logging
 
 # veo
-from forms.admin import NewProviderForm
 from base import BaseHandler
-import data.db as db, mail
+import data.db as db
 import util
 from handler.auth import admin_required
 from google.appengine.ext import ndb
-from handler.provider_admin import ProviderAdminBaseHandler
 
 
 
@@ -107,7 +105,7 @@ class AdminProvidersHandler(AdminBaseHandler):
  
     @admin_required
     def get(self):
-        self.render_providers(form=NewProviderForm())
+        self.render_providers()
         
 class AdminPatientsHandler(AdminBaseHandler):
     ''' Administer Patients '''

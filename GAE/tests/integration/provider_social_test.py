@@ -57,6 +57,8 @@ class ProviderSocialTest(BaseTest):
         signup_form2['category'] = 'dietitian'
         signup_form2['password'] = self._TEST_PROVIDER_PASSWORD
         signup_form2['password_confirm'] = self._TEST_PROVIDER_PASSWORD
+        signup_form2['terms_agreement'] = 'True'
+
         welcome_response = signup_form2.submit().follow()
 
         # should be on the welcome page
@@ -138,6 +140,8 @@ class ProviderSocialTest(BaseTest):
         signup_form2['category'] = 'osteopath'
         signup_form2['password'] = self._TEST_PROVIDER_PASSWORD
         signup_form2['password_confirm'] = self._TEST_PROVIDER_PASSWORD
+        signup_form2['terms_agreement'] = 'True'
+
         welcome_response = signup_form2.submit().follow()
 
         # should be on the welcome page
@@ -201,6 +205,7 @@ class ProviderSocialTest(BaseTest):
         signup_form2['category'] = 'dentist'
         signup_form2['password'] = self._TEST_PROVIDER_PASSWORD
         signup_form2['password_confirm'] = self._TEST_PROVIDER_PASSWORD
+        signup_form2['terms_agreement'] = 'True'
 
         profile_response = signup_form2.submit().follow()
         
@@ -344,6 +349,7 @@ class ProviderSocialTest(BaseTest):
         signup_form2['category'] = 'dentist'
         signup_form2['password'] = self._TEST_PROVIDER_PASSWORD
         signup_form2['password_confirm'] = self._TEST_PROVIDER_PASSWORD
+        signup_form2['terms_agreement'] = 'True'
 
         profile_response = signup_form2.submit().follow()
         
@@ -470,6 +476,7 @@ class ProviderSocialTest(BaseTest):
         signup_form2['category'] = 'dentist'
         signup_form2['password'] = self._TEST_PROVIDER_PASSWORD
         signup_form2['password_confirm'] = self._TEST_PROVIDER_PASSWORD
+        signup_form2['terms_agreement'] = 'True'
 
         profile_response = signup_form2.submit().follow()
         
@@ -591,6 +598,7 @@ class ProviderSocialTest(BaseTest):
         signup_form2['category'] = 'dentist'
         signup_form2['password'] = self._TEST_PROVIDER_PASSWORD
         signup_form2['password_confirm'] = self._TEST_PROVIDER_PASSWORD
+        signup_form2['terms_agreement'] = 'True'
 
         profile_response = signup_form2.submit().follow()
         
@@ -692,6 +700,7 @@ class ProviderSocialTest(BaseTest):
         signup_form2['category'] = 'dentist'
         signup_form2['password'] = self._TEST_PROVIDER_PASSWORD
         signup_form2['password_confirm'] = self._TEST_PROVIDER_PASSWORD
+        signup_form2['terms_agreement'] = 'True'
 
         profile_response = signup_form2.submit().follow()
         
@@ -778,6 +787,7 @@ class ProviderSocialTest(BaseTest):
         signup_form2['category'] = 'dentist'
         signup_form2['password'] = self._TEST_PROVIDER_PASSWORD
         signup_form2['password_confirm'] = self._TEST_PROVIDER_PASSWORD
+        signup_form2['terms_agreement'] = 'True'
 
         profile_response = signup_form2.submit().follow()
         
@@ -929,6 +939,7 @@ class ProviderSocialTest(BaseTest):
         signup_form2['category'] = 'dentist'
         signup_form2['password'] = self._TEST_PROVIDER_PASSWORD
         signup_form2['password_confirm'] = self._TEST_PROVIDER_PASSWORD
+        signup_form2['terms_agreement'] = 'True'
 
         profile_response = signup_form2.submit().follow()
         
@@ -1041,6 +1052,7 @@ class ProviderSocialTest(BaseTest):
         signup_form2['category'] = 'dentist'
         signup_form2['password'] = self._TEST_PROVIDER_PASSWORD
         signup_form2['password_confirm'] = self._TEST_PROVIDER_PASSWORD
+        signup_form2['terms_agreement'] = 'True'
 
         profile_response = signup_form2.submit().follow()
         

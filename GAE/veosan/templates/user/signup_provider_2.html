@@ -48,6 +48,13 @@
 						</div>
 					</div>
 
+					<div class="control-group {% if provider_signup_form2.terms_agreement.errors %} error {% endif %}">
+						<div class="controls">
+							{{ macro.display_errors_for_field(provider_signup_form2.terms_agreement) }}
+							{{ provider_signup_form2.terms_agreement(class=inputClass) }}
+						</div>
+					</div>
+
 					<div class="control-group">
 						<div class="controls">
 							<button type="submit" class="btn btn-primary btn-large" style="margin-top: 18px">

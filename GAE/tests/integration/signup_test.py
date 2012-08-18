@@ -50,6 +50,7 @@ class SignupTest(BaseTest):
         signup_form2['category'] = 'osteopath'
         signup_form2['password'] = self._TEST_PROVIDER_PASSWORD
         signup_form2['password_confirm'] = self._TEST_PROVIDER_PASSWORD
+        signup_form2['terms_agreement'] = 'True'
 
         profile_response = signup_form2.submit().follow()
         profile_response.mustcontain("Bienvenue")
@@ -72,6 +73,7 @@ class SignupTest(BaseTest):
         signup_form2['category'] = 'osteopath'
         signup_form2['password'] = self._TEST_PROVIDER_PASSWORD
         signup_form2['password_confirm'] = self._TEST_PROVIDER_PASSWORD
+        signup_form2['terms_agreement'] = 'True'
 
         profile_response = signup_form2.submit().follow()
         profile_response.mustcontain("Bienvenue")
@@ -92,6 +94,7 @@ class SignupTest(BaseTest):
         signup_form2['category'] = 'osteopath'
         signup_form2['password'] = self._TEST_PROVIDER_PASSWORD
         signup_form2['password_confirm'] = self._TEST_PROVIDER_PASSWORD
+        signup_form2['terms_agreement'] = 'True'
 
         profile_response = signup_form2.submit().follow()
         profile_response.mustcontain("Bienvenue")
@@ -111,6 +114,7 @@ class SignupTest(BaseTest):
         signup_form2['category'] = 'osteopath'
         signup_form2['password'] = self._TEST_PROVIDER_PASSWORD
         signup_form2['password_confirm'] = self._TEST_PROVIDER_PASSWORD
+        signup_form2['terms_agreement'] = 'True'
 
         profile_response = signup_form2.submit().follow()
         profile_response.mustcontain("Bienvenue")
@@ -156,6 +160,7 @@ class SignupTest(BaseTest):
         signup_form2['category'] = 'osteopath'
         signup_form2['password'] = self._TEST_PROVIDER_PASSWORD
         signup_form2['password_confirm'] = self._TEST_PROVIDER_PASSWORD
+        signup_form2['terms_agreement'] = 'True'
 
         profile_response = signup_form2.submit().follow()
         profile_response.mustcontain("Bienvenue")
@@ -179,6 +184,7 @@ class SignupTest(BaseTest):
         signup_form2['category'] = 'osteopath'
         signup_form2['password'] = self._TEST_PROVIDER_PASSWORD
         signup_form2['password_confirm'] = self._TEST_PROVIDER_PASSWORD
+        signup_form2['terms_agreement'] = 'True'
 
         profile_response = signup_form2.submit().follow()
         profile_response.mustcontain("Bienvenue")
@@ -201,6 +207,7 @@ class SignupTest(BaseTest):
         signup_form2['category'] = 'osteopath'
         signup_form2['password'] = self._TEST_PROVIDER_PASSWORD
         signup_form2['password_confirm'] = self._TEST_PROVIDER_PASSWORD
+        signup_form2['terms_agreement'] = 'True'
 
         profile_response = signup_form2.submit().follow()
         profile_response.mustcontain("Bienvenue")
@@ -224,6 +231,7 @@ class SignupTest(BaseTest):
         signup_form2['category'] = 'osteopath'
         signup_form2['password'] = self._TEST_PROVIDER_PASSWORD
         signup_form2['password_confirm'] = self._TEST_PROVIDER_PASSWORD
+        signup_form2['terms_agreement'] = 'True'
 
         profile_response = signup_form2.submit().follow()
         profile_response.mustcontain("Bienvenue")

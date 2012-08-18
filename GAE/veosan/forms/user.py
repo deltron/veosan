@@ -70,6 +70,7 @@ class ProviderSignupForm2(CustomForm):
                                 validators.Length(min=6, message=_(u'Password must be at least 6 characters.')),
                                 validators.EqualTo('password_confirm', _(u"Passwords do not match."))]))
         setattr(form, 'password_confirm', PasswordField(_(u'Password Confirmation')))
+        setattr(form, 'terms_agreement', CustomBooleanField(_(u'I agree with the Terms of Service'), default=True, validators=[validators.Required(message=_(u'You must accept the terms to continue.'))]))
 
 
 class PatientSignupForm(CustomForm):
