@@ -94,7 +94,6 @@ class BookingTest(BaseTest):
         
         # go to bookings page
         provider_response = self.testapp.get('/provider/bookings/%s' % self._TEST_PROVIDER_VANITY_URL)
-                
         # We should already be on the bookings page after the login
         provider_response.mustcontain('Pat Patient')
 
@@ -136,11 +135,11 @@ class BookingTest(BaseTest):
         # We already have an appointment at 8AM, let's now book 10AM
         result_response = self.book_appointment('osteopath', next_monday_string, '10')
         # no email on form (can we assert this?)
-        booking_confirm_page = self.fill_booking_email_form(result_response)
+        booking_confirm_page = self.fill_booking_email_form(result_response, self._TEST_PATIENT_EMAIL)
         # patient email in navbar
         booking_confirm_page.mustcontain(self._TEST_PATIENT_EMAIL)
         # Title check
-        booking_confirm_page.mustcontain('Thank you Pat!')
+        booking_confirm_page.mustcontain('Thank you Pat')
      
              
     def test_booking_new_patient_terms_not_agreed(self):

@@ -200,7 +200,6 @@ class PublicProfileTest(BaseTest):
         admin_bookings_page.mustcontain(self._TEST_PATIENT_TELEPHONE)
         admin_bookings_page.mustcontain(self._TEST_PATIENT_EMAIL)
         admin_bookings_page.mustcontain('Patient not confirmed')
-        admin_bookings_page.showbrowser()
         admin_bookings_page.mustcontain('public profile')
         self.logout_admin()
         

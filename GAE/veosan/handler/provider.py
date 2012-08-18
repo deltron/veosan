@@ -24,7 +24,7 @@ class ProviderBaseHandler(BaseHandler):
     @staticmethod
     def render_bookings(handler, provider, **kw):
         bookings = provider.get_future_confirmed_bookings()
-        logging.info('Bookings:' + str(bookings))
+        logging.info('Future Confirmed Bookings:' + str(bookings))
         handler.render_template('provider/bookings.html', provider=provider, bookings=bookings, **kw)
 
     def render_public_profile(self, provider, **kw):

@@ -67,7 +67,6 @@ class ProviderTest(BaseTest):
         response2 = education_form2.submit()
 
         # error should appear asking to write in other
-        #response2.showbrowser()
         response2.mustcontain("SVP entrez le nom de")
 
         education_form3 = response2.forms['organization_form']

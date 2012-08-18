@@ -1,6 +1,6 @@
 Hi {{ patient.first_name }} {{ patient.last_name }},
 
-You are booked for {{ provider.category }} with {{ provider.full_name() }} on {{ b.request_datetime|format_datetime_full }}. 
+You are booked for {{ provider.category }} with {{ provider.full_name() }} on {{ booking.datetime|format_datetime_full }}. 
 
 {% if activation_url %}
 Please confirm your appointment by clicking on the following link:

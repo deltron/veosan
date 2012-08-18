@@ -476,7 +476,7 @@ class BaseTest(unittest.TestCase):
         patient = Patient.query(Patient.email == self._TEST_PATIENT_EMAIL).get()
         booking = Booking.query(Booking.patient == patient.key).get()
         
-        self.assertEqual(m.subject, 'veosan reservation - %s' % 'Ostéopathe')
+        self.assertEqual(m.subject, 'Rendez-vous Veosan - %s' % 'Ostéopathe')
         
         # assert that activation link is in the email body
         user = User.query(User.key == patient.user).get()
@@ -484,10 +484,11 @@ class BaseTest(unittest.TestCase):
  
         # click link in email
         activation_response = self.testapp.get('/user/activation/%s' % str(user.signup_token))
-     
-      
+        
         # choose a password
-        activation_response.mustcontain('Choisissez votre mot de passe')
+        activation_response.mustcontain('Votre rendez-vous est confirmé')
+        activation_response.mustcontain("Fantastic F.")
+        booking = Booking.query(Booking.patient == patient.key).get()
         activation_response_form = activation_response.forms[0]
         activation_response_form['password'] = self._TEST_PATIENT_PASSWORD
         activation_response_form['password_confirm'] = self._TEST_PATIENT_PASSWORD

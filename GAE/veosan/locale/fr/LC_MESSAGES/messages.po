@@ -1276,6 +1276,11 @@ msgstr "Activation de votre compte Veosan"
 msgid "Veosan Appointment"
 msgstr "Rendez-vous Veosan"
 
+# Provider Email
+
+msgid "New Appointment with"
+msgstr "Nouveau rendez-vous avec"
+
 
 ####################
 # WTForms
