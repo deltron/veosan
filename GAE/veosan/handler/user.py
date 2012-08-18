@@ -293,12 +293,22 @@ class LoginHandler(UserBaseHandler):
     def get(self, next_action=None, key=None):
         ''' Show login page '''
         
-        # check if an admin is logged in, if so don't proceed
-        google_user = users.get_current_user()
-        if google_user and users.is_current_user_admin():
-            self.render_login(error_message='Logged in as admin already.')
+        user = self.get_current_user()
+        if user and next_action:
+            provider = db.get_provider_from_user(user)
+            # already logged in, don't login again
+            if next_action == 'accept':
+                # do it
+                target_url = '/provider/network/' + provider.vanity_url + '/accept/' + key
+                self.redirect(target_url)
+        
         else:
-            self.render_login(next_action=next_action, key=key)
+        # check if an admin is logged in, if so don't proceed
+            google_user = users.get_current_user()
+            if google_user and users.is_current_user_admin():
+                self.render_login(error_message='Logged in as admin already.')
+            else:
+                self.render_login(next_action=next_action, key=key)
         
 
     def post(self, next_action=None, key=None):
