@@ -525,3 +525,6 @@ class BaseTest(unittest.TestCase):
         tp.terms_agreement = True
         tp.put() 
         
+        new_user.language = 'fr'
+        new_user.put()
+        
