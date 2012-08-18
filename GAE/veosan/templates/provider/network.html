@@ -12,8 +12,9 @@
 		{% if provider.get_provider_network_pending_count() > 0 %}
 		Here are your pending invitations. Please confirm you know this person.
 		<table class="table-condensed">
-			{% for p in provider.get_provider_network_pending() %}
-
+			{% for connection_entity in provider.get_provider_network_pending_connections() %}
+			{% set p = connection_entity.source_provider.get() %}
+			
 			<tr>
 				<td width="50"><a href="/{{ p.vanity_url }}"> {% if p.profile_photo_blob_key %} <img src="{{ p.get_profile_photo_image_url(50) }}" width="50"
 				alt="{{ macro.display_provider_name(p) }} - {{ category_dict[p.category] }}"> {% else %} <img src="/assets/img/default-profile.png" width="50" height="50"
@@ -21,8 +22,8 @@
 				<td width="150"><a href="/{{ p.vanity_url }}"><h4> {{ p.first_name }}
 				{{ p.last_name }} </h4></a> {{ category_dict[p.category] }} </td>
 
-				<td><a href="/provider/network/{{ provider.vanity_url }}/accept/{{ p.key.urlsafe() }}" class="btn btn-success">Connect</a></td>
-				<td><a href="/provider/network/{{ provider.vanity_url }}/reject/{{ p.key.urlsafe() }}" class="btn">Reject</a></td>
+				<td><a href="/provider/network/{{ provider.vanity_url }}/accept/{{ connection_entity.key.urlsafe() }}" class="btn btn-success">Connect</a></td>
+				<td><a href="/provider/network/{{ provider.vanity_url }}/reject/{{ connection_entity.key.urlsafe() }}" class="btn">Reject</a></td>
 			</tr>
 			{% endfor %}
 		</table>

@@ -122,8 +122,8 @@ class Provider(ndb.Model):
     user = ndb.KeyProperty(kind=User)
 
     
-    def get_profile_photo_image_url(self, size=None):
-        return get_serving_url(self.profile_photo_blob_key, size)
+    def get_profile_photo_image_url(self, size=None, secure_url=True):
+        return get_serving_url(self.profile_photo_blob_key, size=size, secure_url=secure_url)
 
     def obfuscated_name(self):
         if self.last_name:
@@ -270,6 +270,15 @@ class Provider(ndb.Model):
             providers.append(connect.source_provider.get())
 
         return providers
+
+    
+    def get_provider_network_pending_connections_source(self):     
+        return ProviderNetworkConnection.query(ProviderNetworkConnection.source_provider == self.key, ProviderNetworkConnection.confirmed == False).fetch()
+
+    
+    def get_provider_network_pending_connections(self):     
+        return ProviderNetworkConnection.query(ProviderNetworkConnection.target_provider == self.key, ProviderNetworkConnection.confirmed == False).fetch()
+        
 
 class Education(ndb.Model):  
     provider = ndb.KeyProperty(kind=Provider)

@@ -10,16 +10,9 @@
 <span itemprop="jobTitle">{{ category_dict[provider.category] }}</span>
 {% if provider.city or provider.province %}
 {{ _('in') }}
-<span itemprop="workLocation"> 
-	<span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress"> 
-{% if provider.city %}
-		<span itemprop="addressLocality">{{ provider.city }}</span>{% endif %}{% if provider.city and provider.province and provider.province != 'nothing' %},
-{% endif %}
-{% if provider.province %}
-		<span itemprop="addressRegion">{{ provider.province|code_to_string }}</span> 
-{% endif %}
-	</span> 
-</span>
+<span itemprop="workLocation"> <span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress"> {% if provider.city %} <span itemprop="addressLocality">{{ provider.city }}</span>{% endif %}{% if provider.city and provider.province and provider.province != 'nothing' %},
+		{% endif %}
+		{% if provider.province %} <span itemprop="addressRegion">{{ provider.province|code_to_string }}</span> {% endif %} </span> </span>
 {% endif %}
 
 {% endblock %}
@@ -64,32 +57,23 @@
 
 		{% if provider.address_enabled %}
 
-<span itemprop="workLocation"> 
-	<span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress"> 
-{% if provider.address %}
-	<span itemprop="streetAddress">{{ provider.address }}</span>
-	<br>
-{% endif %}
-{% if provider.city %}
-		<span itemprop="addressLocality">{{ provider.city }}</span>{% endif %}{% if provider.city and provider.province and provider.province != 'nothing' %},
-{% endif %}
-{% if provider.province and provider.province != 'nothing' %}
-		<span itemprop="addressRegion">{{ provider.province|code_to_string }}</span> 
-{% endif %}
-	</span> 
-</span>
+		<span itemprop="workLocation"> <span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress"> {% if provider.address %} <span itemprop="streetAddress">{{ provider.address }}</span>
+				<br>
+				{% endif %}
+				{% if provider.city %} <span itemprop="addressLocality">{{ provider.city }}</span>{% endif %}{% if provider.city and provider.province and provider.province != 'nothing' %},
+				{% endif %}
+				{% if provider.province and provider.province != 'nothing' %} <span itemprop="addressRegion">{{ provider.province|code_to_string }}</span> {% endif %} </span> </span>
 		<br>
-		<a data-toggle="modal" href="#contact_modal" onclick="loadScript()"><i class="bs-icon icon-globe"></i></a> <a data-toggle="modal" href="#contact_modal" onclick="loadScript()">Map</a>
+		<a data-toggle="modal" href="#contact_modal" onclick="loadScript()"><i class="bs-icon icon-globe"></i></a><a data-toggle="modal" href="#contact_modal" onclick="loadScript()">Map</a>
 		<br>
 		{% endif %}
-
 
 		{% if provider.connect_enabled %}
 		<hr style="width:150px; margin-bottom: 10px; border-bottom: 1px solid #e5e5e5;">
 		{% if provider_from_user and provider_from_user == provider %}
 		{# self, don't show button #}
 		{% elif provider_from_user and provider_from_user.is_connected_to(provider) %}
-		<div class="alert alert-success">
+		<div style="width:100px;" class="alert alert-success">
 			You and {{ provider.first_name }} are connected!
 		</div>
 		{% else %}
@@ -116,13 +100,27 @@
 		<br>
 		<br>
 
-
 		{% if 'admin' in roles %}
 		<a href="/provider/profile/{{ provider.vanity_url }}" class="btn btn-danger"><i>Edit Profile</i></a>
 		{% endif %}
 
 	</div>
 	<div class="span6">
+		{# totally empty profile, fill this space with something #}
+		{% if not provider.bio or provider.quote 
+					or provider.specialty|remove_empty_strings_from_list 
+			        or provider.get_experience()|remove_empty_strings_from_list 
+			        or provider.get_organization()|remove_empty_strings_from_list
+			        or provider.get_education()|remove_empty_strings_from_list
+			        or provider.get_certification()|remove_empty_strings_from_list
+			        or provider.get_continuing_education()|remove_empty_strings_from_list
+		%}
+		<h3>{{ provider.first_name }} {{ _('has an empty profile!') }}</h3>
+		{# 
+		<a href="#">Click here to let them know you visted their profile and would like more information!</a>
+		#}
+		{% endif %}
+		
 		{% if provider.bio %}
 		<p>
 			<span itemprop="description"> {{ provider.bio }} </span>
@@ -239,62 +237,50 @@
 		<div class="well well-small" style="width: 80%; text-align: center">
 			<h3>{{ _('Are you a health-care professional?') }}</h3>
 			<i class="bs-icon icon-bullhorn"> </i>
-			<a href="/signup/provider">{{ _("Sign up to get your own professional profile today. It's free!") }}</a>
+			<a href="/signup/provider">{{ _("Sign up to get your own professional profile. It's free!") }}</a>
 		</div>
 		<br>
 		{% if provider.booking_enabled %}
 		<div style="width: 80% text-align:center;">
 
-		<h3>Schedule</h3>
-		Here are some times when {{ provider.first_name }} is free.
-		<br><a href="/{{ provider.vanity_url }}/book">Click here to see the full list.</a>
-		<br><br>
-			<a href="#" style="width=150px; margin 5px auto">
-				Tuesday 10:00am
-			</a>
+			<h3>Schedule</h3>
+			Here are some times when {{ provider.first_name }} is free.
 			<br>
-			<a href="#" style="width=150px; margin 5px auto">
-				Tuesday 2:00pn
-			</a>
+			<a href="/{{ provider.vanity_url }}/book">Click here to see the full list.</a>
 			<br>
-			<a href="#" style="width=150px; margin 5px auto">
-				Thursday 5:00pm
-			</a>
 			<br>
-			<a href="/{{ provider.vanity_url }}/book" style="width=150px; margin 5px auto" class="btn btn-primary">
-				View Full Schedule
-			</a>
+			<ul class="unstyled">
+				<li><a href="#" style="width=150px; margin 5px auto"> Tuesday 10:00am </a></li>
+				<li><a href="#" style="width=150px; margin 5px auto"> Tuesday 2:00pn </a></li>
+				<li><a href="#" style="width=150px; margin 5px auto"> Thursday 5:00pm </a></li>
+			</ul>
+				<a href="/{{ provider.vanity_url }}/book" style="width=150px; margin 5px auto" class="btn btn-primary"> View Full Schedule </a>
 		</div>
-		<br><br>
+		<br>
+		<br>
 		{% endif %}
-		
-		
-		{% if provider.connect_enabled %}
-		This network contains {{ provider.get_provider_network_count() }} health-care professionals.
+
+		{% if provider.connect_enabled and provider.get_provider_network_count() > 0 %}
+		{{ _('This network contains') }} {{ provider.get_provider_network_count() }} {{ _('health-care professionals.') }}
 		<table class="table-condensed">
 			{% for p in provider.get_provider_network() %}
-
-			{# create a row every 2 providers #}
-			{% set tr = loop.cycle('
+			
+			{% if loop.index < 3 %}
+			{# only display first 3 results #}
 			<tr>
-				', '') %}
-				{% set close_tr = loop.cycle('', '
-			</tr>') %}
-
-			{{ tr|safe }}
+		
 			<td width="50"><a href="/{{ p.vanity_url }}"> {% if p.profile_photo_blob_key %} <img src="{{ p.get_profile_photo_image_url(50) }}" width="50"
 			alt="{{ macro.display_provider_name(p) }} - {{ category_dict[p.category] }}"> {% else %} <img src="/assets/img/default-profile.png" width="50" height="50"
 			alt="{{ macro.display_provider_name(p) }} - {{ category_dict[p.category] }}"> {% endif %} </a></td>
 			<td width="150"><a href="/{{ p.vanity_url }}"><h4> {{ p.first_name }}
 			{{ p.last_name }} </h4></a> {{ category_dict[p.category] }} </td>
 
-			{{ close_tr|safe }}
+			</tr>
+			{% endif %}
 
 			{% endfor %}
 		</table>
-					<a href="#" style="width=150px; margin 5px auto" class="btn btn-primary">
-				View Full Network
-			</a>
+		<a data-toggle="modal" href="#network_modal" style="width=150px; margin 5px auto" class="btn btn-primary">{{ _('View Full Network') }}</a>
 
 		{% endif %}
 	</div>
@@ -330,16 +316,16 @@
 						<div class="row-fluid">
 							<div class="span6">
 								<h5>Address</h5>
-{% if provider.address %}
-	{{ provider.address }}
-	<br>
-{% endif %}
-{% if provider.city %}
-		{{ provider.city }}{% endif %}{% if provider.city and provider.province and provider.province != 'nothing' %},
-{% endif %}
-{% if provider.province and provider.province != 'nothing' %}
-		{{ provider.province|code_to_string }}
-{% endif %}
+								{% if provider.address %}
+								{{ provider.address }}
+								<br>
+								{% endif %}
+								{% if provider.city %}
+								{{ provider.city }}{% endif %}{% if provider.city and provider.province and provider.province != 'nothing' %},
+								{% endif %}
+								{% if provider.province and provider.province != 'nothing' %}
+								{{ provider.province|code_to_string }}
+								{% endif %}
 								<br>
 							</div>
 							<div class="span6">

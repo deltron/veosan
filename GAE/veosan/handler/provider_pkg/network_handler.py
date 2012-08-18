@@ -17,21 +17,36 @@ class ProviderNetworkHandler(ProviderBaseHandler):
         success_message = None
         
         if operation == 'accept':
-            source_provider_key = ndb.Key(urlsafe=provider_key)
+            provider_network_connection = ndb.Key(urlsafe=provider_key).get()
+            source_provider_key = provider_network_connection.source_provider
             source_provider = source_provider_key.get()
-            target_provider_key = provider.key
             
-            provider_network_connection = db.get_provider_network_connection(source_provider_key, target_provider_key)
-            provider_network_connection.confirmed = True
-            
-            try:
-                provider_network_connection.put()
-                success_message = "You are now connected to %s %s" % (source_provider.first_name, source_provider.last_name)
-            except Exception as e:
-                error_message = 'Error making connection: ' + e.message
+            if provider_network_connection.confirmed:
+
+                # already connected
+                success_message = "You are already connected to %s %s" % (source_provider.first_name, source_provider.last_name)
+            else:
+                target_provider_key = provider.key
+                
+                if source_provider_key == target_provider_key:
+                    success_message = "You can't connect to yourself!"
+                
+                else:
+                    provider_network_connection = db.get_provider_network_connection(source_provider_key, target_provider_key)
+                    if provider_network_connection:
+                        provider_network_connection.confirmed = True
+                    
+                        try:
+                            provider_network_connection.put()
+                            success_message = "You are now connected to %s %s" % (source_provider.first_name, source_provider.last_name)
+                        except Exception as e:
+                            error_message = 'Error making connection: ' + e.message
+                    else:
+                        error_message = 'No connection found'
                 
         if operation == 'reject':
-            source_provider_key = ndb.Key(urlsafe=provider_key)
+            provider_network_connection = ndb.Key(urlsafe=provider_key).get()
+            source_provider_key = provider_network_connection.source_provider
             source_provider = source_provider_key.get()
             target_provider_key = provider.key
                         
@@ -96,14 +111,17 @@ class ProviderConnectHandler(ProviderBaseHandler):
             # check if there is already a pending request
             
             if provider_source in provider_target.get_provider_network_pending():
-                message = "Connection pending"
+                message = "Connection pending..."
                 self.render_public_profile(provider=provider_target, success_message=message)
             elif provider_source in provider_target.get_provider_network():
                 message = "Already connected!"
                 self.render_public_profile(provider=provider_target, success_message=message)
+            elif provider_source == provider_target:
+                message = "You can't connect to yourself!"
+                self.render_public_profile(provider=provider_target, success_message=message)
             else:
                 # no pending request, let's make one
-            
+        
                 provider_network_connection = ProviderNetworkConnection()
                 provider_network_connection.source_provider = provider_source.key
                 provider_network_connection.target_provider = provider_target.key
@@ -118,7 +136,7 @@ class ProviderConnectHandler(ProviderBaseHandler):
                     # now send out an email
                     # the url for accepting for target_provider
                     url_obj = urlparse.urlparse(self.request.url)
-                    accept_url = urlparse.urlunparse((url_obj.scheme, url_obj.netloc, '/login/accept/' + provider_source.key.urlsafe(), '', '', ''))
+                    accept_url = urlparse.urlunparse((url_obj.scheme, url_obj.netloc, '/login/accept/' + provider_network_connection.key.urlsafe(), '', '', ''))
                         
                     mail.email_connect_request(self.jinja2, from_provider=provider_source, target_provider=provider_target, accept_url=accept_url)
                     
