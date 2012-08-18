@@ -34,6 +34,9 @@ class ProviderSignupHandler1(UserBaseHandler):
             # populate second form from first one
             provider_signup_form2 = ProviderSignupForm2().get_form(self.request.POST)
             
+            # check the agreement by default
+            provider_signup_form2['terms_agreement'].data = True
+            
             # on to the next step
             self.render_template('user/signup_provider_2.html', provider_signup_form2=provider_signup_form2)
         else:
