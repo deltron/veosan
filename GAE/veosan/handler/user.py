@@ -325,6 +325,9 @@ class LoginHandler(UserBaseHandler):
             try:
                 user = self.login_user(email, password, remember_me)
                 
+                # set the language from user profile
+                self.set_language(user.language)
+
                 # login was succesful, User is in the session
                 booking_key = self.request.POST.get('booking_key')
                 

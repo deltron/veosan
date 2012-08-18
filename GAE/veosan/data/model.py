@@ -27,7 +27,9 @@ class User(Webapp2AuthUser):
     resetpassword_token = ndb.StringProperty()
        
     confirmed = ndb.BooleanProperty()
-        
+
+    language = ndb.StringProperty(default='en')
+
     def get_email(self):
         return self.auth_ids[0]
     
