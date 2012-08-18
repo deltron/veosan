@@ -17,13 +17,12 @@
 							<h2>{{ _('Your Appointment') }}</h2>
 							<br>
 							<i class="bs-icon icon-user"></i> 
-							{{provider.full_name()}}
-							
-							 ({{ provider.category|code_to_string }})<br>
-							
+							{{ provider.first_name }} {{ provider.last_name }}
+							<br>
+							<i class="bs-icon icon-briefcase"></i> 
+							{{ provider.category|code_to_string }}
+							<br>
 							<i class="bs-icon icon-time"></i> {{ email_details_form.booking_datetime.data }}<br>
-							
-							
 						</div>
 					</div>
 				</div>
