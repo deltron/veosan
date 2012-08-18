@@ -124,7 +124,7 @@ class BookingBaseHandler(BaseHandler):
             else:    
                 # email is not known, create new patient profile
                 logging.info('Patient does not exist for %s, creating new patient.' % email)
-                patient_form = PatientForm(self.request.POST)
+                patient_form = PatientForm().get_form(self.request.POST)
                 PatientBaseHandler.render_new_patient_form(self, patient_form, booking)             
 
     

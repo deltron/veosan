@@ -80,7 +80,7 @@ class NewPatientHandler(PatientBaseHandler):
     '''
     def post(self):
         # create patient form for validation
-        patient_form = PatientForm(self.request.POST)
+        patient_form = PatientForm().get_form(self.request.POST)
         # fetch booking from bk
         booking = db.get_from_urlsafe_key(self.request.get('bk'))
         
