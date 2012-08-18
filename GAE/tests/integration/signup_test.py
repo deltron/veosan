@@ -8,31 +8,6 @@ import util, testutil
 from data import db
 
 class SignupTest(BaseTest):
-    def test_teaser(self):
-        ''' Test signup as anonymous patient '''
-        
-        util.BOOKING_ENABLED = False
-        
-        response = self.testapp.get("/signup/patient")
-        
-        signup_form = response.forms[0] # signup form
-        signup_form['first_name'] = 'patrick'
-        signup_form['last_name'] = 'patient'
-        signup_form['email'] = 'test_signup@tester.com'
-        signup_form['postal_code'] = 'H1H2C2'
-        
-        response = signup_form.submit()
-        
-        response.mustcontain("Merci pour votre intérêt. Nous serons en contact bientôt!")
-        
-        # now check if it's in the database
-        self.login_as_admin()
-        response = self.testapp.get("/admin/patients")
-
-        response.mustcontain("patrick")
-        response.mustcontain("patient")
-        response.mustcontain("test_signup@tester.com")
-        response.mustcontain("H1H2C2")
 
     
     def test_signup(self):
