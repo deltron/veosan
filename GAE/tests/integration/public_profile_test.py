@@ -180,6 +180,9 @@ class PublicProfileTest(BaseTest):
         email_sent_page.mustcontain('Thank you Pat')
 
         # check provider bookings list, should be empty as booking is not confirmed  
+        # switch to french
+        repsonse = self.testapp.get('/lang/fr')
+
         self.login_as_provider()
         provider_bookings = self.testapp.get('/provider/bookings/' + self._TEST_PROVIDER_VANITY_URL)
         provider_bookings.mustcontain('Vous n’avez aucun rendez-vous prévu')
