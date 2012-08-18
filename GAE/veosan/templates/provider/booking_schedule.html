@@ -11,6 +11,11 @@
 {% endblock %}
 
 {% block content %}
+<style>
+	.table tbody tr:hover td, .table tbody tr:hover th {
+		background-color: transparent;
+	}
+</style>
 
 
 <div class="row">
@@ -25,21 +30,6 @@
 		alt="{{ macro.display_provider_name(provider) }} - {{ category_dict[provider.category] }}"
 		itemprop="image">
 		{% endif %}
-
-		<br>
-		<br>
-
-		{% if provider.specialty|remove_empty_strings_from_list %}
-		<h4>{{ _("Specialties") }}</h4>
-		<ul class="unstyled">
-			{% for s in provider.specialty %}
-			<li>
-				{{ specialty_dict[s] }}
-			</li>
-			{% endfor %}
-		</ul>
-		{% endif %}
-
 
 		<br>
 		<br>
@@ -74,7 +64,7 @@
 					{% for t in day_times %}
 					<form action="/{{provider.vanity_url}}/book/1" method="post" id="form-{{day_key~"-"~t.hour}}">
 					  	<input type="hidden" name="booking_datetime" value="{{ t|format_datetime_booking_form }}"/>
-					  	<button style="width=100%" type="submit" class="btn btn-primary" id="button-{{day_key~"-"~t.hour}}">
+					  	<button style="width=100%" type="submit" class="btn btn-primary btn-small" id="button-{{day_key~"-"~t.hour}}">
 							{{t|format_datetime_hour_min}}
 						</button>
 				  	 </form>
