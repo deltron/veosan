@@ -164,7 +164,7 @@ class Provider(ndb.Model):
     
     def get_future_confirmed_bookings(self):
         yesterday_at_midnight = datetime.combine(date.today(), time())
-        future_confirmed_bookings = Booking.query(Booking.provider == self.key, Booking.datetime==yesterday_at_midnight, Booking.confirmed==True).order(Booking.datetime).fetch()
+        future_confirmed_bookings = Booking.query(Booking.provider == self.key, Booking.datetime >= yesterday_at_midnight, Booking.confirmed==True).order(Booking.datetime).fetch()
         return future_confirmed_bookings
     
     
