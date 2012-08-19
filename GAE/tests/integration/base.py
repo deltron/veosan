@@ -112,14 +112,14 @@ class BaseTest(unittest.TestCase):
         
         login_page.mustcontain(u"Connexion")
         login_form = login_page.forms[0]
-        login_form['email'] = self._TEST_PROVIDER_EMAIL
-        login_form['password'] = self._TEST_PROVIDER_PASSWORD
+        login_form['email'] = email
+        login_form['password'] = password
         login_redirect = login_form.submit()
         response = login_redirect.follow()
         
         # default page for provider after login is welcome
         response.mustcontain("Profil")
-        response.mustcontain(self._TEST_PROVIDER_EMAIL)
+        response.mustcontain(email)
         response.mustcontain("Bienvenue!")
         response.mustcontain("Comment naviguer sur le site")        
 
