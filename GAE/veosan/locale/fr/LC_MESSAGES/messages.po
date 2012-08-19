@@ -445,7 +445,7 @@ msgid "New Patient"
 msgstr "Nouveau patient"
 
 msgid "Please complete your profile"
-msgstr "SVP complétez votre profil."
+msgstr "SVP complétez votre profil"
 
 msgid "First Name"
 msgstr "Prénom"
@@ -773,6 +773,20 @@ msgstr "Voir réseau complet"
 
 msgid "This network contains"
 msgstr "Ce réseau contient"
+
+
+#################
+# Booking from Public Profile
+#################
+
+msgid "New Appointment"
+msgstr "Nouveau rendez-vous"
+
+msgid "Please complete the following booking details"
+msgstr "Veuillez compléter les détails suivant pour votre rendez-vous"
+
+msgid "Your Appointment"
+msgstr "Votre rendez-vous"
 
 #################
 # Address Page
