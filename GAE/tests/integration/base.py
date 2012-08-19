@@ -462,12 +462,10 @@ class BaseTest(unittest.TestCase):
         patient_form['address'] = '123 High Street'
         patient_form['city'] = 'Montreal'
         patient_form['postal_code'] = 'H2H 2Y2'
-        
         booking_confirm_response = patient_form.submit()
-        
         # check confirm page
-        booking_confirm_response.mustcontain("An email was sent with your appointment details and a confirmation code.")
-        booking_confirm_response.mustcontain("Please check your inbox and click on the link to finish the process.")
+        booking_confirm_response.mustcontain("C'est presque complété!")
+        booking_confirm_response.mustcontain(self._TEST_PATIENT_EMAIL)
         return booking_confirm_response
     
     def check_activation_email_patient(self):
@@ -528,3 +526,36 @@ class BaseTest(unittest.TestCase):
         new_user.language = 'fr'
         new_user.put()
         
+        
+    def book_from_public_profile(self, date_string, time_string):
+        # create a new provider, vanity URL is bobafett
+        self.create_complete_provider_profile()
+        # check profile
+        public_profile = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
+        public_profile.mustcontain("Fantastic Fox")
+        # enable the booking
+        self.login_as_admin()
+        enable = self.testapp.post('/admin/provider/feature/booking_enabled/' + self._TEST_PROVIDER_VANITY_URL)
+        public_profile = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
+        public_profile.mustcontain("Fantastic Fox")
+        public_profile.mustcontain("Réservez Maintenant")
+        self.logout_admin()
+        
+        schedule_page = public_profile.click(linkid='book_button')
+        schedule_page.mustcontain("Choisissez la date et l'heure de votre rendez-vous")
+        # find the form for next Monday at 10
+        form_id = "form-" + date_string + '-' + time_string
+        form = schedule_page.forms[form_id]
+        new_patient_page = form.submit()
+        # fill patient info
+        step1_form = new_patient_page.forms[0]
+        step1_form['email'] = self._TEST_PATIENT_EMAIL
+        step1_form['telephone'] = self._TEST_PATIENT_TELEPHONE
+        step1_form['comments'] = 'No comments'
+        new_patient_page = step1_form.submit()
+        email_sent_page = self.fill_new_patient_profile(new_patient_page)
+        # check email sent page
+        email_sent_page.mustcontain('Merci Pat')
+        email_sent_page.mustcontain('Un couriel vous a été envoyé')
+        email_sent_page.mustcontain(self._TEST_PATIENT_EMAIL)
+        email_sent_page.mustcontain('Contactez-nous')

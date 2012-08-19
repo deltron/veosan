@@ -150,34 +150,9 @@ class PublicProfileTest(BaseTest):
         
         
     def test_book_from_public_profile_new_patient(self):
-        # create a new provider, vanity URL is bobafett
-        self.create_complete_provider_profile()
-        # check profile
-        public_profile = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
-        public_profile.mustcontain("Fantastic Fox")
-        # enable the booking
-        self.login_as_admin()
-        enable = self.testapp.post('/admin/provider/feature/booking_enabled/' + self._TEST_PROVIDER_VANITY_URL)
-        public_profile = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
-        public_profile.mustcontain("Fantastic Fox")
-        public_profile.mustcontain("Réservez Maintenant")
-        self.logout_admin()
-        
-        schedule_page = public_profile.click(linkid='book_button')
-        schedule_page.mustcontain("Choisissez la date et l'heure de votre rendez-vous")
-        # find the form for next Monday at 10
-        form_id = "form-" + testutil.next_monday_date_string() + "-10"
-        form = schedule_page.forms[form_id]
-        new_patient_page = form.submit()
-        # fill patient info
-        step1_form = new_patient_page.forms[0]
-        step1_form['email'] = self._TEST_PATIENT_EMAIL
-        step1_form['telephone'] = self._TEST_PATIENT_TELEPHONE
-        step1_form['comments'] = 'No comments'
-        new_patient_page = step1_form.submit()
-        email_sent_page = self.fill_new_patient_profile(new_patient_page)
-        # check email sent page
-        email_sent_page.mustcontain('Thank you Pat')
+        date_string = testutil.next_monday_date_string()
+        time_string = '10'
+        self.book_from_public_profile(date_string, time_string)
 
         # check provider bookings list, should be empty as booking is not confirmed  
         # switch to french
@@ -208,10 +183,11 @@ class PublicProfileTest(BaseTest):
         self.logout_admin()
         
         # check event logs
+        
+        
         booking_datetime = datetime.strptime(testutil.next_monday_date_string() + " 10", '%Y-%m-%d %H')
         french_datetime_string = format_datetime(booking_datetime, "EEEE 'le' d MMMM yyyy", locale='fr_CA') + " à " + format_datetime(booking_datetime, "H:mm", locale='fr_CA')
         logging.info('French date time of booking: %s' % french_datetime_string) 
-        
         # no email sent to provider (patient is not confirmed)
         messages = self.mail_stub.get_sent_messages(to=self._TEST_PROVIDER_EMAIL)
         self.assertEqual(0, len(messages))
