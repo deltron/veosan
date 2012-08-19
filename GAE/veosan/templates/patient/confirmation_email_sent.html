@@ -10,11 +10,11 @@
 		
 		<div class="row">
 			<div class="span8">
-				<h1><img src="/assets/img/green-check.png" width="80" height="80"> Thank you {{patient.first_name}}</h1>
+				<h1><img src="/assets/img/green-check.png" width="80" height="80"> {{ _('Thank you') }} {{patient.first_name}}</h1>
 				<br>
-				<h2>Almost done! An email was sent to <strong>{{patient.email}}</strong></h2>
+				<h2>{{ _('Almost done! An email was sent to') }} <strong>{{patient.email}}</strong></h2>
 				<br>
-				<h3>Please confirm your appointment by <strong>checking your email</strong> and clicking on the confirmation link.</h3>		
+				<h3>{{ _('Please confirm your appointment by') }} <strong> {{ _('checking your email') }} </strong> {{ _('and clicking on the confirmation link.') }} </h3>		
 			</div>
 		</div>
 		<br>
@@ -30,8 +30,7 @@
 		
 		<div class="row">
 			<div class="span6">
-				<p><i class="icon-envelope"></i> An email was sent with your appointment details and a confirmation code. Please check your inbox and click on the link to finish the process.</p>
-				<p><i class="icon-user"></i> <a href="/contact">Contact us</a> for any questions relating to your appointment</p>
+				<p><i class="icon-user"></i> <a href="/contact"> {{ _('Contact us') }} </a> {{ _('for any questions relating to your appointment') }}</p>
 			</div>		
 		</div>
 

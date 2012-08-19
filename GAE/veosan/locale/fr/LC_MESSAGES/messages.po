@@ -501,6 +501,33 @@ msgstr "Le numéro de téléphone doit être dans le format suivant: 514-555-121
 msgid "Comments for your appointment"
 msgstr "Commentaires en vue de votre rendez-vous"
 
+
+#################
+# Confirmation Email Sent
+#################
+
+msgid "Thank you"
+msgstr "Merci"
+
+msgid "Almost done! An email was sent to"
+msgstr "C'est presque complété! Un couriel vous a été envoyé à"
+
+msgid "Please confirm your appointment by"
+msgstr "Veuillez confirmer votre rendez-vous en"
+
+msgid "checking your email"
+msgstr "prennant vos couriels"
+
+msgid "and clicking on the confirmation link."
+msgstr "et en cliquant sur le lien de confirmation."
+
+msgid "for any questions relating to your appointment"
+msgstr "pour toute question relié à votre rendez-vous"
+
+msgid "Contact us"
+msgstr "Contactez-nous"
+
+
 #################
 # Welcome Page
 #################
