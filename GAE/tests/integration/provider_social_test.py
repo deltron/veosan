@@ -223,21 +223,9 @@ class ProviderSocialTest(BaseTest):
         # logout and log back in as first guy
         self.logout_provider()
         
-        login_page = self.testapp.get('/login')
-        
-        login_page.mustcontain(u"Connexion")
-        # fill out details
-        login_form = login_page.forms[0]
-        login_form['email'] = self._TEST_PROVIDER_EMAIL
-        login_form['password'] = self._TEST_PROVIDER_PASSWORD
-        login_redirect_response = login_form.submit()
-        # response after login is a redirect, so follow
-        login_welcome_page = login_redirect_response.follow()
-        # email in the header
-        login_welcome_page.mustcontain(self._TEST_PROVIDER_EMAIL)
-        login_welcome_page.mustcontain("Bienvenue!")
-        login_welcome_page.mustcontain("Comment naviguer sur le site")        
-        
+        self.login_as_provider(email=self._TEST_PROVIDER_EMAIL, password=self._TEST_PROVIDER_PASSWORD)
+
+
         # network page
         network_page = self.testapp.get('/provider/network/' + self._TEST_PROVIDER_VANITY_URL)
         
@@ -265,21 +253,7 @@ class ProviderSocialTest(BaseTest):
 
         # now check it shows up on the other side
         self.logout_provider()
-        
-        login_page = self.testapp.get('/login')
-        
-        login_page.mustcontain(u"Connexion")
-        # fill out details
-        login_form = login_page.forms[0]
-        login_form['email'] = 'mctest@veosan.com'
-        login_form['password'] = self._TEST_PROVIDER_PASSWORD
-        login_redirect_response = login_form.submit()
-        # response after login is a redirect, so follow
-        login_welcome_page = login_redirect_response.follow()
-        # email in the header
-        login_welcome_page.mustcontain('mctest@veosan.com')
-        login_welcome_page.mustcontain("Bienvenue!")
-        login_welcome_page.mustcontain("Comment naviguer sur le site")        
+        self.login_as_provider(email='mctest@veosan.com', password=self._TEST_PROVIDER_PASSWORD)
         
         network_page = self.testapp.get('/provider/network/' + 'davidmctester')
         
@@ -327,22 +301,8 @@ class ProviderSocialTest(BaseTest):
 
         # logout and log back in as first guy
         self.logout_provider()
-        
-        login_page = self.testapp.get('/login')
-        
-        login_page.mustcontain(u"Connexion")
-        # fill out details
-        login_form = login_page.forms[0]
-        login_form['email'] = self._TEST_PROVIDER_EMAIL
-        login_form['password'] = self._TEST_PROVIDER_PASSWORD
-        login_redirect_response = login_form.submit()
-        # response after login is a redirect, so follow
-        login_welcome_page = login_redirect_response.follow()
-        # email in the header
-        login_welcome_page.mustcontain(self._TEST_PROVIDER_EMAIL)
-        login_welcome_page.mustcontain("Bienvenue!")
-        login_welcome_page.mustcontain("Comment naviguer sur le site")        
-        
+        self.login_as_provider(email=self._TEST_PROVIDER_EMAIL, password=self._TEST_PROVIDER_PASSWORD)
+
         # network page
         network_page = self.testapp.get('/provider/network/' + self._TEST_PROVIDER_VANITY_URL)
         
@@ -370,22 +330,9 @@ class ProviderSocialTest(BaseTest):
 
         # now check it shows up on the other side
         self.logout_provider()
-        
-        login_page = self.testapp.get('/login')
-        
-        login_page.mustcontain(u"Connexion")
-        # fill out details
-        login_form = login_page.forms[0]
-        login_form['email'] = 'mctest@veosan.com'
-        login_form['password'] = self._TEST_PROVIDER_PASSWORD
-        login_redirect_response = login_form.submit()
-        # response after login is a redirect, so follow
-        login_welcome_page = login_redirect_response.follow()
-        # email in the header
-        login_welcome_page.mustcontain('mctest@veosan.com')
-        login_welcome_page.mustcontain("Bienvenue!")
-        login_welcome_page.mustcontain("Comment naviguer sur le site")        
-        
+        self.login_as_provider(email='mctest@veosan.com', password=self._TEST_PROVIDER_PASSWORD)
+
+
         network_page = self.testapp.get('/provider/network/' + 'davidmctester')
         
         network_page.mustcontain('Votre réseau contient 1 professionels de la santé.')
@@ -435,22 +382,9 @@ class ProviderSocialTest(BaseTest):
 
         # logout and log back in as first guy
         self.logout_provider()
+        self.login_as_provider(email=self._TEST_PROVIDER_EMAIL, password=self._TEST_PROVIDER_PASSWORD)
         
-        login_page = self.testapp.get('/login')
-        
-        login_page.mustcontain(u"Connexion")
-        # fill out details
-        login_form = login_page.forms[0]
-        login_form['email'] = self._TEST_PROVIDER_EMAIL
-        login_form['password'] = self._TEST_PROVIDER_PASSWORD
-        login_redirect_response = login_form.submit()
-        # response after login is a redirect, so follow
-        login_welcome_page = login_redirect_response.follow()
-        # email in the header
-        login_welcome_page.mustcontain(self._TEST_PROVIDER_EMAIL)
-        login_welcome_page.mustcontain("Bienvenue!")
-        login_welcome_page.mustcontain("Comment naviguer sur le site")        
-        
+
         # network page
         network_page = self.testapp.get('/provider/network/' + self._TEST_PROVIDER_VANITY_URL)
         
@@ -477,22 +411,9 @@ class ProviderSocialTest(BaseTest):
 
         # now check it's not on the other side
         self.logout_provider()
+        self.login_as_provider(email='mctest@veosan.com', password=self._TEST_PROVIDER_PASSWORD)
         
-        login_page = self.testapp.get('/login')
-        
-        login_page.mustcontain(u"Connexion")
-        # fill out details
-        login_form = login_page.forms[0]
-        login_form['email'] = 'mctest@veosan.com'
-        login_form['password'] = self._TEST_PROVIDER_PASSWORD
-        login_redirect_response = login_form.submit()
-        # response after login is a redirect, so follow
-        login_welcome_page = login_redirect_response.follow()
-        # email in the header
-        login_welcome_page.mustcontain('mctest@veosan.com')
-        login_welcome_page.mustcontain("Bienvenue!")
-        login_welcome_page.mustcontain("Comment naviguer sur le site")        
-        
+
         network_page = self.testapp.get('/provider/network/' + 'davidmctester')
         
         network_page.mustcontain('Votre réseau est vide!')
@@ -582,21 +503,7 @@ class ProviderSocialTest(BaseTest):
 
         # now check it shows up on the other side
         self.logout_provider()
-        
-        login_page = self.testapp.get('/login')
-        
-        login_page.mustcontain(u"Connexion")
-        # fill out details
-        login_form = login_page.forms[0]
-        login_form['email'] = 'mctest@veosan.com'
-        login_form['password'] = self._TEST_PROVIDER_PASSWORD
-        login_redirect_response = login_form.submit()
-        # response after login is a redirect, so follow
-        login_welcome_page = login_redirect_response.follow()
-        # email in the header
-        login_welcome_page.mustcontain('mctest@veosan.com')
-        login_welcome_page.mustcontain("Bienvenue!")
-        login_welcome_page.mustcontain("Comment naviguer sur le site")        
+        self.login_as_provider(email='mctest@veosan.com', password=self._TEST_PROVIDER_PASSWORD)
         
         network_page = self.testapp.get('/provider/network/' + 'davidmctester')
         
@@ -646,22 +553,9 @@ class ProviderSocialTest(BaseTest):
 
         # logout and log back in as first guy
         self.logout_provider()
+        self.login_as_provider(email=self._TEST_PROVIDER_EMAIL, password=self._TEST_PROVIDER_PASSWORD)
         
-        login_page = self.testapp.get('/login')
-        
-        login_page.mustcontain(u"Connexion")
-        # fill out details
-        login_form = login_page.forms[0]
-        login_form['email'] = self._TEST_PROVIDER_EMAIL
-        login_form['password'] = self._TEST_PROVIDER_PASSWORD
-        login_redirect_response = login_form.submit()
-        # response after login is a redirect, so follow
-        login_welcome_page = login_redirect_response.follow()
-        # email in the header
-        login_welcome_page.mustcontain(self._TEST_PROVIDER_EMAIL)
-        login_welcome_page.mustcontain("Bienvenue!")
-        login_welcome_page.mustcontain("Comment naviguer sur le site")        
-        
+
         # network page
         network_page = self.testapp.get('/provider/network/' + self._TEST_PROVIDER_VANITY_URL)
         
@@ -691,21 +585,8 @@ class ProviderSocialTest(BaseTest):
         # logout and log back in as first guy
         self.logout_provider()
         
-        login_page = self.testapp.get('/login')
-        
-        login_page.mustcontain(u"Connexion")
-        # fill out details
-        login_form = login_page.forms[0]
-        login_form['email'] = self._TEST_PROVIDER_EMAIL
-        login_form['password'] = self._TEST_PROVIDER_PASSWORD
-        login_redirect_response = login_form.submit()
-        # response after login is a redirect, so follow
-        login_welcome_page = login_redirect_response.follow()
-        # email in the header
-        login_welcome_page.mustcontain(self._TEST_PROVIDER_EMAIL)
-        login_welcome_page.mustcontain("Bienvenue!")
-        login_welcome_page.mustcontain("Comment naviguer sur le site")        
-        
+        self.login_as_provider(email=self._TEST_PROVIDER_EMAIL, password=self._TEST_PROVIDER_PASSWORD)
+
         # network page
         network_page = self.testapp.get('/provider/network/' + self._TEST_PROVIDER_VANITY_URL)
         
@@ -732,22 +613,8 @@ class ProviderSocialTest(BaseTest):
 
         # now check it shows up on the other side
         self.logout_provider()
-        
-        login_page = self.testapp.get('/login')
-        
-        login_page.mustcontain(u"Connexion")
-        # fill out details
-        login_form = login_page.forms[0]
-        login_form['email'] = 'mctest@veosan.com'
-        login_form['password'] = self._TEST_PROVIDER_PASSWORD
-        login_redirect_response = login_form.submit()
-        # response after login is a redirect, so follow
-        login_welcome_page = login_redirect_response.follow()
-        # email in the header
-        login_welcome_page.mustcontain('mctest@veosan.com')
-        login_welcome_page.mustcontain("Bienvenue!")
-        login_welcome_page.mustcontain("Comment naviguer sur le site")        
-        
+        self.login_as_provider(email='mctest@veosan.com', password=self._TEST_PROVIDER_PASSWORD)
+
         network_page = self.testapp.get('/provider/network/' + 'davidmctester')
         
         network_page.mustcontain('Votre réseau contient 1 professionels de la santé.')
@@ -823,22 +690,8 @@ class ProviderSocialTest(BaseTest):
 
         # logout and log back in as first guy
         self.logout_provider()
-        
-        login_page = self.testapp.get('/login')
-        
-        login_page.mustcontain(u"Connexion")
-        # fill out details
-        login_form = login_page.forms[0]
-        login_form['email'] = self._TEST_PROVIDER_EMAIL
-        login_form['password'] = self._TEST_PROVIDER_PASSWORD
-        login_redirect_response = login_form.submit()
-        # response after login is a redirect, so follow
-        login_welcome_page = login_redirect_response.follow()
-        # email in the header
-        login_welcome_page.mustcontain(self._TEST_PROVIDER_EMAIL)
-        login_welcome_page.mustcontain("Bienvenue!")
-        login_welcome_page.mustcontain("Comment naviguer sur le site")        
-        
+        self.login_as_provider(email=self._TEST_PROVIDER_EMAIL, password=self._TEST_PROVIDER_PASSWORD)
+
         # network page
         network_page = self.testapp.get('/provider/network/' + self._TEST_PROVIDER_VANITY_URL)
         
@@ -865,21 +718,7 @@ class ProviderSocialTest(BaseTest):
 
         # now check it shows up on the other side
         self.logout_provider()
-        
-        login_page = self.testapp.get('/login')
-        
-        login_page.mustcontain(u"Connexion")
-        # fill out details
-        login_form = login_page.forms[0]
-        login_form['email'] = 'mctest@veosan.com'
-        login_form['password'] = self._TEST_PROVIDER_PASSWORD
-        login_redirect_response = login_form.submit()
-        # response after login is a redirect, so follow
-        login_welcome_page = login_redirect_response.follow()
-        # email in the header
-        login_welcome_page.mustcontain('mctest@veosan.com')
-        login_welcome_page.mustcontain("Bienvenue!")
-        login_welcome_page.mustcontain("Comment naviguer sur le site")        
+        self.login_as_provider(email='mctest@veosan.com', password=self._TEST_PROVIDER_PASSWORD)
         
         network_page = self.testapp.get('/provider/network/' + 'davidmctester')
         
@@ -917,21 +756,7 @@ class ProviderSocialTest(BaseTest):
 
         # logout and log back in as first guy
         self.logout_provider()
-        
-        login_page = self.testapp.get('/login')
-        
-        login_page.mustcontain(u"Connexion")
-        # fill out details
-        login_form = login_page.forms[0]
-        login_form['email'] = self._TEST_PROVIDER_EMAIL
-        login_form['password'] = self._TEST_PROVIDER_PASSWORD
-        login_redirect_response = login_form.submit()
-        # response after login is a redirect, so follow
-        login_welcome_page = login_redirect_response.follow()
-        # email in the header
-        login_welcome_page.mustcontain(self._TEST_PROVIDER_EMAIL)
-        login_welcome_page.mustcontain("Bienvenue!")
-        login_welcome_page.mustcontain("Comment naviguer sur le site")        
+        self.login_as_provider(email=self._TEST_PROVIDER_EMAIL, password=self._TEST_PROVIDER_PASSWORD)
         
         #check messages
         messages = self.mail_stub.get_sent_messages(to=self._TEST_PROVIDER_EMAIL)

@@ -106,19 +106,23 @@ class BaseTest(unittest.TestCase):
         os.environ['USER_IS_ADMIN'] = '1' if is_admin else '0'
         
         
-    def login_as_provider(self):
+    def login_as_provider(self, email=_TEST_PROVIDER_EMAIL, password=_TEST_PROVIDER_PASSWORD):
         ''' login as a provider, assumes already initialized and accepted terms '''
-        response = self.testapp.get('/login')
+        login_page = self.testapp.get('/login')
         
-        login_form = response.forms[0]
+        login_page.mustcontain(u"Connexion")
+        login_form = login_page.forms[0]
         login_form['email'] = self._TEST_PROVIDER_EMAIL
         login_form['password'] = self._TEST_PROVIDER_PASSWORD
         login_redirect = login_form.submit()
         response = login_redirect.follow()
         
-        # default page for provider after login is bookings
+        # default page for provider after login is welcome
         response.mustcontain("Profil")
-        
+        response.mustcontain(self._TEST_PROVIDER_EMAIL)
+        response.mustcontain("Bienvenue!")
+        response.mustcontain("Comment naviguer sur le site")        
+
         # check the event log
         #self.assert_msg_in_log("Provider Logged In")
 
