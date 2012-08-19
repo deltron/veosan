@@ -40,17 +40,8 @@
 		</ul>
 		{% endif %}
 
-
 		<br>
 		<br>
-
-		{% if provider.booking_enabled %}
-
-
-		<br>
-		<br>
-		{% endif %}
-
 		{% if 'admin' in roles %}
 		<a href="/provider/profile/{{ provider.vanity_url }}" class="btn btn-danger"><i>Edit Profile</i></a>
 		{% endif %}
@@ -64,7 +55,10 @@
 		<table style="width: 100%" class="table table-condensed centered">			
 			<thead>
 				{% for (day_key, day_times) in dtm|dictsort %}
-				<th style="min-width: 75px; text-align: center"> {{ day_key|format_date_with_weekday|capitalize }} </th>
+				<th style="min-width: 75px; text-align: center"> 
+						{{ day_key|format_weekday|capitalize }} <br>
+						{{ day_key|format_date_medium }}
+				</th>
 				{% endfor %}
 			</thead>
 			

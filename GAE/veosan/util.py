@@ -370,7 +370,7 @@ def generate_datetimes_map(schedules, start_date, period):
     sm = create_schedule_map(schedules)
     end_date = start_date + period
     d = start_date
-    while d <= end_date:
+    while d < end_date:
         dtm[d] = []
         # day of week
         weekday_int = d.weekday()

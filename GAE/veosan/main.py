@@ -18,6 +18,8 @@ from google.appengine.ext import ndb
 
 
 jinja_filters = {}
+jinja_filters['format_weekday'] = time.format_weekday
+jinja_filters['format_date_medium'] = time.format_date_medium
 jinja_filters['format_datetime_with_weekday'] = time.format_datetime_with_weekday
 jinja_filters['format_date_with_weekday'] = time.format_date_with_weekday
 jinja_filters['format_date_weekday_after'] = time.format_date_weekday_after

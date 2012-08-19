@@ -156,6 +156,12 @@ def format_datetime_noseconds(datetime):
 def format_datetime_booking_form(datetime):
     return format_datetime(datetime, "yyyy-MM-dd H:mm:ss", rebase=False)
 
+def format_weekday(date):
+    return format_date(date, 'EEEE')
+
+def format_date_medium(date):
+    return format_date(date, format="medium")
+
 def format_datetime_hour_min(datetime):
     lang = _('en')
     if (lang == 'fr'):
