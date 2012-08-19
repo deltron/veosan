@@ -206,8 +206,10 @@ class PublicProfileTest(BaseTest):
         #self.assertIn('Please click on the link below to create your profile', m.body.payload)
         #self.assertIn("I've been using Veosan and thought you might like to try it out. Here's an invitation to create a profile.", m.body.payload)
         user = db.get_user_from_email(self._TEST_PATIENT_EMAIL)
-        logging.info(m.body.payload)
+        # check email content
         self.assertTrue('/user/activation/%s' % user.signup_token in m.body.payload)
+        self.assertTrue('Bonjour' in m.body.payload)
+        self.assertTrue('Merci' in m.body.payload)
         # click the link
         confirmation_page = self.testapp.get('/user/activation/%s' % user.signup_token)
         confirmation_page.mustcontain('Votre rendez-vous est confirmé')

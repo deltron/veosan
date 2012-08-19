@@ -1,7 +1,7 @@
-{{ _('Hi!') }}
+{{ _('Hi') }}!
 
 {{ _('Thanks for creating an account, please activate your profile by clicking on the link below:') }}
 
 {{ activation_url }}
 
-The Veosan Team
+{{_('The Veosan Team')}}

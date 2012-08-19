@@ -1311,8 +1311,8 @@ msgstr "Université de Québec à Trois-Rivières"
 # Welcome email
 ####################
 
-msgid "Hi!"
-msgstr "Bonjour!"
+msgid "Hi"
+msgstr "Bonjour"
 
 msgid "Thanks for creating an account, please activate your profile by clicking on the link below:"
 msgstr "Merci d'avoir créé un compte, s'il vous plaît activer votre profil en cliquant sur le lien ci-dessous:"
@@ -1329,6 +1329,18 @@ msgstr "Rendez-vous Veosan"
 
 msgid "New Appointment with"
 msgstr "Nouveau rendez-vous avec"
+
+msgid "You are booked for"
+msgstr "Votre rendez-vous de"
+
+msgid "with"
+msgstr "avec"
+
+msgid "Please confirm your appointment by clicking on the following link"
+msgstr "Veuillez confirmer votre rendez-vous en cliquant sur le lien suivant"
+
+msgid "The Veosan Team"
+msgstr "L'équipe Veosan"
 
 
 ####################

@@ -1,14 +1,14 @@
-Hi {{ patient.first_name }} {{ patient.last_name }},
+{{_('Hi')}} {{ patient.first_name }} {{ patient.last_name }},
 
-You are booked for {{ provider.category }} with {{ provider.full_name() }} on {{ booking.datetime|format_datetime_full }}. 
+{{_('You are booked for')}} {{ provider.category }} {{_('with')}} {{ provider.full_name() }} {{_('on')}} {{ booking.datetime|format_datetime_full }}. 
 
 {% if activation_url %}
-Please confirm your appointment by clicking on the following link:
+{{_('Please confirm your appointment by clicking on the following link')}}:
 
 {{activation_url}}
 
 {% endif %}
 
-Thank you,
+{{_('Thank you')}},
 
-The Veosan Team
+{{_('The Veosan Team')}}
