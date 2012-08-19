@@ -35,7 +35,8 @@ class ProviderNetworkHandler(ProviderBaseHandler):
                     provider_network_connection = db.get_provider_network_connection(source_provider_key, target_provider_key)
                     if provider_network_connection:
                         provider_network_connection.confirmed = True
-                    
+                        provider_network_connection.rejected = False
+                        
                         try:
                             provider_network_connection.put()
                             success_message = "You are now connected to %s %s" % (source_provider.first_name, source_provider.last_name)
@@ -49,13 +50,13 @@ class ProviderNetworkHandler(ProviderBaseHandler):
             source_provider_key = provider_network_connection.source_provider
             source_provider = source_provider_key.get()
             target_provider_key = provider.key
-                        
+            
+            # keep the connection around just mark it as rejected
             provider_network_connection = db.get_provider_network_connection(source_provider_key, target_provider_key)
             provider_network_connection.rejected = True
             provider_network_connection.rejection_count += 1
-            
-            #provider_network_connection.key.delete()
-            
+            provider_network_connection.put()
+                        
             success_message = "You have rejected %s %s" % (source_provider.first_name, source_provider.last_name)
         
         provider_invite_form = ProviderInviteForm().get_form()

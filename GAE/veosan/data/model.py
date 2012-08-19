@@ -233,6 +233,10 @@ class Provider(ndb.Model):
     def is_enabled(self):
         return self.status == 'client_enabled'
     
+    
+    ###
+    # SOCIAL
+    #
     def get_provider_network_count(self):     
         sources = ProviderNetworkConnection.query(ProviderNetworkConnection.source_provider == self.key, ProviderNetworkConnection.confirmed == True).count()
         targets = ProviderNetworkConnection.query(ProviderNetworkConnection.target_provider == self.key, ProviderNetworkConnection.confirmed == True).count()
@@ -262,13 +266,13 @@ class Provider(ndb.Model):
             return provider in self.get_provider_network()
     
     def get_provider_network_pending_count(self):     
-        targets = ProviderNetworkConnection.query(ProviderNetworkConnection.target_provider == self.key, ProviderNetworkConnection.confirmed == False).count()
+        targets = ProviderNetworkConnection.query(ProviderNetworkConnection.target_provider == self.key, ProviderNetworkConnection.confirmed == False, ProviderNetworkConnection.rejected == False).count()
         
         return targets
     
     
     def get_provider_network_pending(self):     
-        targets = ProviderNetworkConnection.query(ProviderNetworkConnection.target_provider == self.key, ProviderNetworkConnection.confirmed == False).fetch()
+        targets = ProviderNetworkConnection.query(ProviderNetworkConnection.target_provider == self.key, ProviderNetworkConnection.confirmed == False, ProviderNetworkConnection.rejected == False).fetch()
         
         providers = []
         for connect in targets:
@@ -278,11 +282,11 @@ class Provider(ndb.Model):
 
     
     def get_provider_network_pending_connections_source(self):     
-        return ProviderNetworkConnection.query(ProviderNetworkConnection.source_provider == self.key, ProviderNetworkConnection.confirmed == False).fetch()
+        return ProviderNetworkConnection.query(ProviderNetworkConnection.source_provider == self.key, ProviderNetworkConnection.confirmed == False, ProviderNetworkConnection.rejected == False).fetch()
 
     
     def get_provider_network_pending_connections(self):     
-        return ProviderNetworkConnection.query(ProviderNetworkConnection.target_provider == self.key, ProviderNetworkConnection.confirmed == False).fetch()
+        return ProviderNetworkConnection.query(ProviderNetworkConnection.target_provider == self.key, ProviderNetworkConnection.confirmed == False, ProviderNetworkConnection.rejected == False).fetch()
         
 
 

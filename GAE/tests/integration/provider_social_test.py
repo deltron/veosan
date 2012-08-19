@@ -526,6 +526,7 @@ class ProviderSocialTest(BaseTest):
         
         network_page.mustcontain("You have rejected %s %s" % ('david', 'mctester'))
         network_page.mustcontain('Votre réseau est vide!')
+        
         network_page.mustcontain(no="Dentiste")
         network_page.mustcontain(no="Connect")
         network_page.mustcontain(no="Reject")
@@ -1113,7 +1114,10 @@ class ProviderSocialTest(BaseTest):
         accept_page.mustcontain("Dentiste")
         accept_page.mustcontain("You are now connected to david mctester")
 
-    def test_invite_reject_invite_again(self):
+    def test_invite_reject_invite_again_accept(self):
+        pass
+
+    def test_invite_reject_invite_again_reject_again(self):
         pass
 
 
