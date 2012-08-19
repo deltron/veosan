@@ -7,7 +7,7 @@ from data import db
 class ProviderTest(BaseTest):
     
     def test_add_education_to_profile(self):
-        self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
+        self.self_signup_provider()
         
         # fill profile section
         self.fill_new_provider_profile_correctly_action()
@@ -132,7 +132,7 @@ class ProviderTest(BaseTest):
 
 
     def test_delete_education_from_profile(self):
-        self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
+        self.self_signup_provider()
 
         # fill profile section
         self.fill_new_provider_profile_correctly_action()
@@ -182,7 +182,7 @@ class ProviderTest(BaseTest):
 
 
     def test_add_experience_to_profile(self):
-        self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
+        self.self_signup_provider()
         
         # fill profile section
         self.fill_new_provider_profile_correctly_action()
@@ -217,7 +217,7 @@ class ProviderTest(BaseTest):
 
 
     def test_delete_experience_from_profile(self):
-        self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
+        self.self_signup_provider()
 
         # fill profile section
         self.fill_new_provider_profile_correctly_action()
@@ -274,7 +274,7 @@ class ProviderTest(BaseTest):
         self.assert_msg_in_log("Edit CV: delete experience success", admin=False)
 
     def test_uncheck_specialties(self):
-        self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
+        self.self_signup_provider()
 
         # fill profile section
         self.fill_new_provider_profile_correctly_action()
@@ -307,7 +307,7 @@ class ProviderTest(BaseTest):
 
 
     def test_add_experience_to_profile_with_markdown(self):
-        self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
+        self.self_signup_provider()
 
 
         # fill profile section
@@ -344,7 +344,7 @@ class ProviderTest(BaseTest):
 
 
     def test_change_save_button_less_than_3_cv_items(self):
-        self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
+        self.self_signup_provider()
         # fill profile section
         self.fill_new_provider_profile_correctly_action()
 

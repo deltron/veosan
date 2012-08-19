@@ -10,7 +10,7 @@ from data import db
 class SecurityTest(BaseTest):
     def test_cross_access_vanity_url(self): 
         # create first provider
-        self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
+        self.self_signup_provider()
         self.fill_new_provider_profile_correctly_action(as_admin = False)
         self.logout_provider()
         
@@ -40,7 +40,7 @@ class SecurityTest(BaseTest):
             
     def test_brackets_in_bio(self): 
         # create first provider
-        self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
+        self.self_signup_provider()
         self.fill_new_provider_profile_correctly_action(as_admin = False)
         
         response = self.testapp.get('/provider/cv/' + self._TEST_PROVIDER_VANITY_URL)

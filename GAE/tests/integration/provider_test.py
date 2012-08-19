@@ -7,7 +7,7 @@ from data.model import User
 
 class ProviderTest(BaseTest):
     def test_provider_schedule_set_one_timeslot_action_as_provider(self):
-        self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
+        self.self_signup_provider()
         
         # fill all sections
         self.fill_new_provider_address_correctly_action()
@@ -164,7 +164,7 @@ class ProviderTest(BaseTest):
         reset_response.mustcontain("Links are expired after 24 hours, please try again")
 
     def test_disabled_welcome_page(self):
-        self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
+        self.self_signup_provider()
         
         self.login_as_provider()
         

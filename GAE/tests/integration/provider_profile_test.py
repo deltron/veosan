@@ -6,7 +6,7 @@ from data import db
 
 class ProviderTest(BaseTest):
     def test_step_through_profile_completion(self):
-        self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
+        self.self_signup_provider()
 
         # step 1 - bio and quote
         response = self.testapp.get('/provider/profile/' + self._TEST_PROVIDER_VANITY_URL)
@@ -78,7 +78,7 @@ class ProviderTest(BaseTest):
 
 
     def test_change_save_button_less_than_3_cv_items(self):
-        self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
+        self.self_signup_provider()
         
         # fill profile section
         self.fill_new_provider_profile_correctly_action()

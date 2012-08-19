@@ -170,7 +170,7 @@ class BaseTest(unittest.TestCase):
             
             There is one timeslot available (Monday at 9am)
         '''
-        self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
+        self.self_signup_provider()
         
         # fill all sections
         self.fill_new_provider_address_correctly_action()
@@ -179,23 +179,22 @@ class BaseTest(unittest.TestCase):
 
         # logout
         self.logout_provider()
-
-     
-    def self_signup_provider(self, provider_email=_TEST_PROVIDER_EMAIL, vanity_url=_TEST_PROVIDER_VANITY_URL):
+        
+    def self_signup_provider(self, email=_TEST_PROVIDER_EMAIL, first_name='first', last_name='last', category='osteopath'):
         # switch to french
         response = self.testapp.get('/lang/fr')
         
         response = self.testapp.post('/signup/provider')
         
         signup_form = response.forms['provider_signup_form']
-        signup_form['first_name'] = 'first'
-        signup_form['last_name'] = 'last'
-        signup_form['email'] = provider_email
+        signup_form['first_name'] = first_name
+        signup_form['last_name'] = last_name
+        signup_form['email'] = email
         signup_form['postal_code'] = 'h1h1h1'
         response = signup_form.submit()
 
         signup_form2 = response.forms['provider_signup_form2']
-        signup_form2['category'] = 'osteopath'
+        signup_form2['category'] = category
         signup_form2['password'] = self._TEST_PROVIDER_PASSWORD
         signup_form2['password_confirm'] = self._TEST_PROVIDER_PASSWORD
         signup_form2['terms_agreement'] = 'True'

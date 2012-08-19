@@ -6,7 +6,7 @@ from data import db
 
 class ProviderSocialTest(BaseTest):
     def test_invite_provider(self):
-        self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
+        self.self_signup_provider()
         
         response = self.testapp.get('/provider/network/' + self._TEST_PROVIDER_VANITY_URL)
 
@@ -89,7 +89,7 @@ class ProviderSocialTest(BaseTest):
 
 
     def test_invite_token_already_used(self):
-        self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
+        self.self_signup_provider()
         
         response = self.testapp.get('/provider/network/' + self._TEST_PROVIDER_VANITY_URL)
 
@@ -188,30 +188,11 @@ class ProviderSocialTest(BaseTest):
 
     def test_connect_not_logged_in(self):
         # create a provider
-        self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
+        self.self_signup_provider()
         self.logout_provider()
         
         # and another
-        response = self.testapp.post('/signup/provider')
-        
-        signup_form = response.forms['provider_signup_form']
-        signup_form['first_name'] = 'david'
-        signup_form['last_name'] = 'mctester'
-        signup_form['email'] = 'mctest@veosan.com'
-        signup_form['postal_code'] = 'h4c1n1'
-        response = signup_form.submit()
-
-        signup_form2 = response.forms['provider_signup_form2']
-        signup_form2['category'] = 'dentist'
-        signup_form2['password'] = self._TEST_PROVIDER_PASSWORD
-        signup_form2['password_confirm'] = self._TEST_PROVIDER_PASSWORD
-        signup_form2['terms_agreement'] = 'True'
-
-        profile_response = signup_form2.submit().follow()
-        
-        # should be on the welcome page
-        profile_response.mustcontain("Bienvenue!")
-        profile_response.mustcontain("Comment naviguer sur le site")
+        self.self_signup_provider(email='mctest@veosan.com', first_name='david', last_name='mctester', category='dentist')
 
         # now log out
         self.logout_provider()
@@ -332,7 +313,7 @@ class ProviderSocialTest(BaseTest):
         
     def test_invite_to_connect_from_profile_accepted(self):
         # create a provider
-        self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
+        self.self_signup_provider()
         self.logout_provider()
         
         # and another
@@ -459,7 +440,7 @@ class ProviderSocialTest(BaseTest):
     
     def test_invite_to_connect_rejected(self):
         # create a provider
-        self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
+        self.self_signup_provider()
         self.logout_provider()
         
         # and another
@@ -582,7 +563,7 @@ class ProviderSocialTest(BaseTest):
 
     def test_invite_to_connect_accept_from_email(self):
         # create a provider
-        self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
+        self.self_signup_provider()
         self.logout_provider()
         
         # and another
@@ -684,7 +665,7 @@ class ProviderSocialTest(BaseTest):
     def test_connect_while_pending(self):
         # this would create a duplicate connection, should give a message
         
-        self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
+        self.self_signup_provider()
         self.logout_provider()
         
         # and another
@@ -771,7 +752,7 @@ class ProviderSocialTest(BaseTest):
         # this would create a duplicate connection, should give a message
         # "You are already connected" after login
         # create a provider
-        self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
+        self.self_signup_provider()
         self.logout_provider()
 
         # and another
@@ -895,7 +876,7 @@ class ProviderSocialTest(BaseTest):
         
 
     def test_no_message_no_button_on_self_profile(self):
-        self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
+        self.self_signup_provider()
 
         # turn on connect buttons
         provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
@@ -908,7 +889,7 @@ class ProviderSocialTest(BaseTest):
         response.mustcontain("Voir toutes les connections")
 
     def test_no_connection_to_self(self):
-        self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
+        self.self_signup_provider()
 
         # force connect with URL
         response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL + '/connect')
@@ -923,7 +904,7 @@ class ProviderSocialTest(BaseTest):
 
     def test_dupe_connections(self):
         # actually force it through with the URL
-        self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
+        self.self_signup_provider()
         self.logout_provider()
 
         # and another
@@ -1036,7 +1017,7 @@ class ProviderSocialTest(BaseTest):
 
     def test_click_accept_from_email_already_logged_in(self):
         # actually force it through with the URL
-        self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
+        self.self_signup_provider()
         self.logout_provider()
 
         # and another

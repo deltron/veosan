@@ -7,7 +7,7 @@ from data import db
 class ProviderTest(BaseTest):
     
     def test_no_form_on_schedule_page(self):
-        self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
+        self.self_signup_provider()
 
         response = self.testapp.get('/provider/schedule/' + self._TEST_PROVIDER_VANITY_URL)
         
@@ -15,7 +15,7 @@ class ProviderTest(BaseTest):
         
         
     def test_add_time_to_schedule(self):
-        self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
+        self.self_signup_provider()
         response = self.testapp.get('/provider/schedule/' + self._TEST_PROVIDER_VANITY_URL)
         # click on a button
         response = self.testapp.get('/provider/schedule/' + self._TEST_PROVIDER_VANITY_URL + '/add/tuesday/9')
@@ -33,7 +33,7 @@ class ProviderTest(BaseTest):
         self.logout_admin()
 
     def test_delete_time_from_schedule(self):
-        self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
+        self.self_signup_provider()
 
         response = self.testapp.get('/provider/schedule/' + self._TEST_PROVIDER_VANITY_URL)
 
@@ -58,7 +58,7 @@ class ProviderTest(BaseTest):
         delete_response.mustcontain(no='9h-17h')
     
     def test_change_time_in_schedule(self):
-        self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
+        self.self_signup_provider()
 
         response = self.testapp.get('/provider/schedule/' + self._TEST_PROVIDER_VANITY_URL)
 
@@ -90,7 +90,7 @@ class ProviderTest(BaseTest):
     
     
     def test_end_time_before_start_time(self):
-        self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
+        self.self_signup_provider()
 
         response = self.testapp.get('/provider/schedule/' + self._TEST_PROVIDER_VANITY_URL)
 
@@ -108,7 +108,7 @@ class ProviderTest(BaseTest):
 
     def test_click_plus_on_tuesday_10am(self):
         # verify modal is populated with correct info
-        self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
+        self.self_signup_provider()
 
         response = self.testapp.get('/provider/schedule/' + self._TEST_PROVIDER_VANITY_URL)
 
@@ -121,7 +121,7 @@ class ProviderTest(BaseTest):
 
 
     def test_merge_overlapping_times(self):
-        self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
+        self.self_signup_provider()
 
         response = self.testapp.get('/provider/schedule/' + self._TEST_PROVIDER_VANITY_URL)
 
@@ -153,7 +153,7 @@ class ProviderTest(BaseTest):
 
 
     def test_merge_adjacent_times(self):
-        self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
+        self.self_signup_provider()
 
         response = self.testapp.get('/provider/schedule/' + self._TEST_PROVIDER_VANITY_URL)
 
@@ -186,7 +186,7 @@ class ProviderTest(BaseTest):
         
     def test_end_time_in_range(self):
         # for example when you click on 8pm +4 hours, end_time should max out at 10pm
-        self.self_signup_provider(self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_VANITY_URL)
+        self.self_signup_provider()
 
         response = self.testapp.get('/provider/schedule/' + self._TEST_PROVIDER_VANITY_URL)
 
