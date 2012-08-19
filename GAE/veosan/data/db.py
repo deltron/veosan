@@ -5,8 +5,8 @@
 from google.appengine.ext import ndb, db as gdb
 import logging
 from datetime import datetime, date, time
-from data.model import Booking, Patient, Provider, User, SiteConfig, LogEvent,\
-    Invite, ProviderNetworkConnection
+from data.model import Booking, Patient, Provider, User, SiteConfig, LogEvent
+from data.model_pkg.network_model import Invite, ProviderNetworkConnection
   
 def get_from_urlsafe_key(urlsafe_key):
     logging.info('(db.get_from_urlsafe_key) Getting from urlsafe key: %s' % urlsafe_key)

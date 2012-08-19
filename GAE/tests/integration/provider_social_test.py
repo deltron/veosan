@@ -1113,6 +1113,10 @@ class ProviderSocialTest(BaseTest):
         accept_page.mustcontain("Dentiste")
         accept_page.mustcontain("You are now connected to david mctester")
 
+    def test_invite_reject_invite_again(self):
+        pass
+
+
 if __name__ == "__main__":
     unittest.main()
     

@@ -3,11 +3,11 @@ from handler.provider import ProviderBaseHandler
 from data import db
 from google.appengine.ext import ndb
 from forms.provider import ProviderInviteForm
-from data.model import Invite, ProviderNetworkConnection
 import urlparse
 import logging
 import mail
 from handler import auth
+from data.model_pkg.network_model import ProviderNetworkConnection, Invite
 
 class ProviderNetworkHandler(ProviderBaseHandler):
     @provider_required
@@ -51,7 +51,10 @@ class ProviderNetworkHandler(ProviderBaseHandler):
             target_provider_key = provider.key
                         
             provider_network_connection = db.get_provider_network_connection(source_provider_key, target_provider_key)
-            provider_network_connection.key.delete()
+            provider_network_connection.rejected = True
+            provider_network_connection.rejection_count += 1
+            
+            #provider_network_connection.key.delete()
             
             success_message = "You have rejected %s %s" % (source_provider.first_name, source_provider.last_name)
         
