@@ -3,13 +3,13 @@ from handler.provider import ProviderBaseHandler
 from forms.provider import ProviderEducationForm, ProviderExperienceForm,\
     ProviderContinuingEducationForm, ProviderOrganizationForm,\
     ProviderCertificationForm
-from data.model import Education, Experience, ContinuingEducation,\
-    ProfessionalOrganization, ProfessionalCertification
 from handler.auth import provider_required
 from data import db
 from google.appengine.ext import ndb
 import logging
 from util import saved_message
+from data.model_pkg.cv_model import Education, Experience, ContinuingEducation,\
+    ProfessionalOrganization, ProfessionalCertification
 
 class ProviderCVHandler(ProviderBaseHandler):
     forms = { 'education' : ProviderEducationForm,
