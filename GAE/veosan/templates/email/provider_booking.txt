@@ -1,13 +1,13 @@
-Hi {{ provider.full_name() }},
+{{_('Hi')}} {{ provider.full_name() }},
 
-You have a new appointment for {{ provider.category }}. Here are the details:
+{{ _('You have a new appointment for')}} {{ provider.category }}. {{ _('Here are the details') }}:
 
 Patient: {{ patient.full_name() }}
-date and time: {{ booking.datetime|format_datetime_full }}. 
+{{_('date and time') }}: {{ booking.datetime|format_datetime_full }}. 
 
-Please add it to your calendar. You can consult all your appointments here:
+{{ _('Consult and manage all your appointments here') }}:
 {{provider_bookings_url}}
 
-Thank you,
+{{ _('Thank you') }},
 
-The Veosan Team
+{{ _('The Veosan Team') }}

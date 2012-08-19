@@ -1343,6 +1343,20 @@ msgid "The Veosan Team"
 msgstr "L'équipe Veosan"
 
 
+msgid "You have a new appointment for"
+msgstr "Vous avez un nouveau rendez-vous de"
+
+msgid "Here are the details"
+msgstr "Voici les détails"
+
+msgid "date and time"
+msgstr "date et heure"
+
+msgid "Consult and manage all your appointments here"
+msgstr "Consultez vos rendez-vous ici"
+
+
+
 ####################
 # WTForms
 ####################
