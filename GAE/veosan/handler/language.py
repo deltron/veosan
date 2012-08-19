@@ -11,6 +11,12 @@ class LanguageHandler(BaseHandler):
         '''
         self.set_language(lang)
         
+        # save language into user
+        user = self.get_current_user()
+        if user:
+            user.language = lang
+            user.put()
+        
         # redirect to referrer or /
         referer = self.request.headers.get('Referer')
         logging.info('(LanguageHandler.get) Changing language to %s: referer is %s' % (lang, referer))

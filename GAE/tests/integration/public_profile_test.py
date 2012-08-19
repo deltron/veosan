@@ -74,6 +74,7 @@ class PublicProfileTest(BaseTest):
         signup_form2['category'] = 'dentist'
         signup_form2['password'] = self._TEST_PROVIDER_PASSWORD
         signup_form2['password_confirm'] = self._TEST_PROVIDER_PASSWORD
+        signup_form2['terms_agreement'] = 'True'
 
         profile_response = signup_form2.submit().follow()
         
@@ -179,6 +180,9 @@ class PublicProfileTest(BaseTest):
         email_sent_page.mustcontain('Thank you Pat')
 
         # check provider bookings list, should be empty as booking is not confirmed  
+        # switch to french
+        repsonse = self.testapp.get('/lang/fr')
+
         self.login_as_provider()
         provider_bookings = self.testapp.get('/provider/bookings/' + self._TEST_PROVIDER_VANITY_URL)
         provider_bookings.mustcontain('Vous n’avez aucun rendez-vous prévu')

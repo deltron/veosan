@@ -72,6 +72,7 @@ class AuthenticationTest(BaseTest):
         # Try to login and book another appintment as Pat the patient
         self.login_as_patient()
         # login as patient
+        
         response = self.testapp.get('/login')
         response.mustcontain("Connexion")
         login_form = response.forms[0]

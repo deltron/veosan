@@ -15,6 +15,7 @@ from handler.provider_pkg import network_handler, address_handler, cv_handler,\
     profile_handler, welcome_handler
 from data.model import User
 from google.appengine.ext import ndb
+from handler.user_pkg import signup_handler
 
 
 jinja_filters = {}
@@ -111,11 +112,11 @@ application = ndb.toplevel(webapp2.WSGIApplication([
                                   
                                        #signups
                                        PathPrefixRoute('/signup', [
-                                            Route('/patient', user.PatientSignupHandler),
-                                            Route('/provider', user.ProviderSignupHandler1),
-                                            Route('/provider2', user.ProviderSignupHandler2),
-                                            Route('/patient/<lang_key>', user.PatientSignupHandler),
-                                            Route('/provider/<lang_key>', user.ProviderSignupHandler1),
+                                            Route('/patient', signup_handler.PatientSignupHandler),
+                                            Route('/provider', signup_handler.ProviderSignupHandler1),
+                                            Route('/provider2', signup_handler.ProviderSignupHandler2),
+                                            Route('/patient/<lang_key>', signup_handler.PatientSignupHandler),
+                                            Route('/provider/<lang_key>', signup_handler.ProviderSignupHandler1),
                                        ]),
                                                     
                                        #provider

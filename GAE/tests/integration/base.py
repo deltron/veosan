@@ -132,6 +132,9 @@ class BaseTest(unittest.TestCase):
         
     
     def login_as_patient(self):
+        # switch to french
+        repsonse = self.testapp.get('/lang/fr')
+        
         response = self.testapp.get('/login')
         response.mustcontain(u"Connexion")
 
@@ -179,6 +182,9 @@ class BaseTest(unittest.TestCase):
 
      
     def self_signup_provider(self, provider_email=_TEST_PROVIDER_EMAIL, vanity_url=_TEST_PROVIDER_VANITY_URL):
+        # switch to french
+        response = self.testapp.get('/lang/fr')
+        
         response = self.testapp.post('/signup/provider')
         
         signup_form = response.forms['provider_signup_form']
@@ -192,12 +198,14 @@ class BaseTest(unittest.TestCase):
         signup_form2['category'] = 'osteopath'
         signup_form2['password'] = self._TEST_PROVIDER_PASSWORD
         signup_form2['password_confirm'] = self._TEST_PROVIDER_PASSWORD
+        signup_form2['terms_agreement'] = 'True'
 
         profile_response = signup_form2.submit().follow()
         
         # should be on the welcome page
         profile_response.mustcontain("Bienvenue!")
         profile_response.mustcontain("Comment naviguer sur le site")
+        
         
     def fill_new_provider_address_correctly_action(self):
         # request the address page
@@ -516,4 +524,7 @@ class BaseTest(unittest.TestCase):
         tp.telephone = '514-123-1234'
         tp.terms_agreement = True
         tp.put() 
+        
+        new_user.language = 'fr'
+        new_user.put()
         

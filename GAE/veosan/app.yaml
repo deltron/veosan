@@ -49,6 +49,10 @@ handlers:
   script: main.application
   secure: always
 
+- url: /signup/.*
+  script: main.application
+  secure: always
+
 - url: /.*
   script: main.application
   
