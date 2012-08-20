@@ -192,39 +192,7 @@ class SignupTest(BaseTest):
         self.assertEqual(provider.vanity_url, 'reneestvilaieoeuc')
 
 
-    def test_signup_back_button(self):
-        ''' Basic signup process for a new provider '''
-        response = self.testapp.post('/signup/provider')
-        
-        signup_form = response.forms['provider_signup_form']
-        signup_form['first_name'] = 'first'
-        signup_form['last_name'] = 'last'
-        signup_form['email'] = self._TEST_PROVIDER_EMAIL
-        signup_form['postal_code'] = 'h1h1h1'
-        response = signup_form.submit()
 
-        signup_form2 = response.forms['provider_signup_form2']
-        signup_form2['category'] = 'osteopath'
-        signup_form2['password'] = self._TEST_PROVIDER_PASSWORD
-        signup_form2['password_confirm'] = self._TEST_PROVIDER_PASSWORD
-        signup_form2['terms_agreement'] = 'True'
-
-        profile_response = signup_form2.submit().follow()
-        profile_response.mustcontain("Bienvenue")
-
-        # now do it again (simulates hitting reload or back button)
-        response = self.testapp.post('/signup/provider2')
-        signup_form2 = response.forms['provider_signup_form2']
-        signup_form2['category'] = 'osteopath'
-        signup_form2['password'] = self._TEST_PROVIDER_PASSWORD
-        signup_form2['password_confirm'] = self._TEST_PROVIDER_PASSWORD
-        signup_form2['first_name'] = 'first'
-        signup_form2['last_name'] = 'last'
-        signup_form2['email'] = self._TEST_PROVIDER_EMAIL
-        signup_form2['postal_code'] = 'h1h1h1'
-        
-        profile_response = signup_form2.submit()
-        profile_response.mustcontain("Bienvenue")
         
 if __name__ == "__main__":
     logging.basicConfig(stream=sys.stderr)
