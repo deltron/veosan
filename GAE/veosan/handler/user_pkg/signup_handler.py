@@ -2,7 +2,7 @@
 from handler.user import UserBaseHandler
 from forms.user import ProviderSignupForm1, ProviderSignupForm2, PatientSignupForm
 import util
-from data.model import Provider
+from data.model import Provider, Patient
 from unidecode import unidecode
 from data import db, search_index
 import webapp2
@@ -45,6 +45,20 @@ class ProviderSignupHandler1(UserBaseHandler):
 class ProviderSignupHandler2(UserBaseHandler):
     def post(self, lang_key=None):
         provider_signup_form2 = ProviderSignupForm2().get_form(self.request.POST)
+        
+        
+        # check for double submit
+        # if the first submit worked, a user should have been created and logged in
+        user = self.get_current_user()
+        if user:
+            provider = db.get_provider_from_user(user)
+            if provider:
+                email = provider_signup_form2['email'].data
+                if email == provider.email == user.get_email():
+                    # someone is already logged in with the address being submitted
+                    # probably a double submit...
+                    self.redirect('/provider/welcome/' + provider.vanity_url)
+                    return
         
         if provider_signup_form2.validate():            
             # init the provider

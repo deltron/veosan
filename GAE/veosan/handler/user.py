@@ -72,7 +72,7 @@ class UserBaseHandler(BaseHandler):
         
         self.render_template('user/login.html', login_form=login_form, next_action=next_action, key=key, **kw)
 
-
+'''
 class ProviderTermsHandler(UserBaseHandler):
     def get(self, vanity_url=None):
         # get provider from vanity url
@@ -110,7 +110,8 @@ class ProviderTermsHandler(UserBaseHandler):
         else:
             # did not click "I accept"
             self.render_terms(provider, terms_form=terms_form)
-
+'''
+        
 class InviteHandler(UserBaseHandler):
     def get(self, invite_token=None):
         invite = db.get_invite_from_token(invite_token)
