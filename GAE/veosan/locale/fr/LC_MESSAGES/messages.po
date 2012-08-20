@@ -810,6 +810,8 @@ msgstr "êtes connectés!"
 msgid "Health Network"
 msgstr "Réseau Santé"
 
+msgid "%(name)s's Health Network"
+msgstr "Le réseau santé à %(name)s"
 
 #################
 # Booking from Public Profile
