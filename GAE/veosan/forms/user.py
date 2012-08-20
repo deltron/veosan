@@ -64,7 +64,9 @@ class ProviderSignupForm2(CustomForm):
                                                                 validators.Regexp(regex="^[a-zA-Z][0-9][a-zA-Z][0-9][a-zA-Z][0-9]$", message=_(u'Please make sure your postal code is in the following format: A1B2C3'))
                                                                 ],
                                                                 filters=[custom_filters.remove_spaces, custom_filters.to_uppercase]))
-        setattr(form, 'category', SelectField(_(u'Category'), choices=util.get_all_categories_for_profile_editing()))
+        setattr(form, 'category', SelectField(_(u'Category'), choices=util.get_all_categories_for_profile_editing(),
+                                              validators=[custom_validators.DisallowNoChoiceInSelect(message=_('Please choose an option from the list. If none of the options seems to fit, please choose "Other"'))]
+                                              ))
 
         setattr(form, 'password', PasswordField(_(u'Password'), [
                                 validators.Length(min=6, message=_(u'Password must be at least 6 characters.')),
