@@ -156,6 +156,7 @@ class BookingTest(BaseTest):
         
         new_patient_response.mustcontain('Nouveau patient')
         patient_form = new_patient_response.forms[0]
+        patient_form['terms_agreement'] = False
         booking_confirm_page = patient_form.submit()
         
         booking_confirm_page.mustcontain(u"Le prénom est un champs obligatoire")

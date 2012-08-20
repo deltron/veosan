@@ -555,6 +555,9 @@ class BaseTest(unittest.TestCase):
         step1_form['email'] = self._TEST_PATIENT_EMAIL
         step1_form['telephone'] = self._TEST_PATIENT_TELEPHONE
         step1_form['comments'] = 'No comments'
+        step1_form['specialty'] = 'sports'
+        step1_form['insurance'] = 'private'
+
         new_patient_page = step1_form.submit()
         email_sent_page = self.fill_new_patient_profile(new_patient_page)
         # check email sent page
