@@ -74,7 +74,7 @@
 		{# self, don't show button #}
 		{% elif provider_from_user and provider_from_user.is_connected_to(provider) %}
 		<div style="width:100px;" class="alert alert-success">
-			You and {{ provider.first_name }} are connected!
+			{{ _('You and') }} {{ provider.first_name }} {{ _('are connected!') }}
 		</div>
 		{% else %}
 		<a href="/{{ provider.vanity_url }}/connect" id="connect_button" type="submit" class="btn btn btn-success" style="width:130px"> {{ _('Connect') }} </a>
@@ -362,10 +362,10 @@
 <div class="modal hide" id="network_modal" style="display: none;">
 	<div class="modal-header">
 		<a class="close" data-dismiss="modal">×</a>
-		<h3>{{provider.first_name}}'s Health Network</h3>
+		<h3>{{ _('Health Network') }}</h3>
 	</div>
 	<div class="modal-body">
-		This network contains {{ provider.get_provider_network_count() }} health-care professionals.
+		{{ _('This network contains') }} {{ provider.get_provider_network_count() }} {{ _('health-care professionals.') }}
 		<table class="table-condensed">
 			{% for p in provider.get_provider_network() %}
 

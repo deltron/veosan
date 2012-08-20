@@ -801,6 +801,15 @@ msgstr "Voir réseau complet"
 msgid "This network contains"
 msgstr "Ce réseau contient"
 
+msgid "You and"
+msgstr "Vous et"
+
+msgid "are connected!"
+msgstr "êtes connectés!"
+
+msgid "Health Network"
+msgstr "Réseau Santé"
+
 
 #################
 # Booking from Public Profile
