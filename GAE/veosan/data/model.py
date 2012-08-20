@@ -280,7 +280,15 @@ class Provider(ndb.Model):
 
         return providers
 
-    
+    def get_provider_network_rejected(self):     
+        targets = ProviderNetworkConnection.query(ProviderNetworkConnection.target_provider == self.key, ProviderNetworkConnection.confirmed == False, ProviderNetworkConnection.rejected == True).fetch()
+        
+        providers = []
+        for connect in targets:
+            providers.append(connect.source_provider.get())
+
+        return providers
+
     def get_provider_network_pending_connections_source(self):     
         return ProviderNetworkConnection.query(ProviderNetworkConnection.source_provider == self.key, ProviderNetworkConnection.confirmed == False, ProviderNetworkConnection.rejected == False).fetch()
 

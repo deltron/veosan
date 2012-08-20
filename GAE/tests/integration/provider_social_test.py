@@ -788,10 +788,331 @@ class ProviderSocialTest(BaseTest):
         accept_page.mustcontain("You are now connected to david mctester")
 
     def test_invite_reject_invite_again_accept(self):
-        pass
+        # create a provider
+        self.self_signup_provider()
+        self.logout_provider()
+        
+        # and another
+        self.self_signup_provider(email='mctest@veosan.com', first_name='david', last_name='mctester', category='dentist')
 
+        # now go to the first guy's profile
+        response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
+        
+        # click connect
+        response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL + "/connect")
+        response.mustcontain('Connection requested')
+        
+        # logout and log back in as first guy
+        self.logout_provider()
+        self.login_as_provider(email=self._TEST_PROVIDER_EMAIL, password=self._TEST_PROVIDER_PASSWORD)
+        
+
+        # network page
+        network_page = self.testapp.get('/provider/network/' + self._TEST_PROVIDER_VANITY_URL)
+        
+        network_page.mustcontain("Here are your pending invitations. Please confirm you know this person.")
+        network_page.mustcontain("david mctester")
+        network_page.mustcontain("Dentiste")
+        network_page.mustcontain("Connect")
+        network_page.mustcontain("Reject")
+        
+        # reject the connection
+        source_provider = db.get_provider_from_email('mctest@veosan.com')
+        lnk = source_provider.get_provider_network_pending_connections_source()[0].key.urlsafe()
+
+        reject_link = '/provider/network/' + self._TEST_PROVIDER_VANITY_URL + '/reject/' + lnk
+        network_page = self.testapp.get(reject_link)
+        
+        network_page.mustcontain("You have rejected %s %s" % ('david', 'mctester'))
+        network_page.mustcontain('Votre réseau est vide!')
+        
+        network_page.mustcontain(no="Dentiste")
+        network_page.mustcontain(no="Connect")
+        network_page.mustcontain(no="Reject")
+        network_page.mustcontain(no="Here are your pending invitations. Please confirm you know this person.")
+
+        # now check it's not on the other side
+        self.logout_provider()
+        self.login_as_provider(email='mctest@veosan.com', password=self._TEST_PROVIDER_PASSWORD)
+        
+
+        network_page = self.testapp.get('/provider/network/' + 'davidmctester')
+        
+        network_page.mustcontain('Votre réseau est vide!')
+
+        self.logout_provider()
+
+        # turn on connect buttons & public profile
+        provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
+        provider.connect_enabled = True
+        provider.put()        
+        
+        provider = db.get_provider_from_email('mctest@veosan.com')
+        provider.connect_enabled = True
+        provider.put()        
+        
+        # check it doest not shows up on public profile
+        profile_page = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
+        
+        profile_page.mustcontain('/' + self._TEST_PROVIDER_VANITY_URL + "/connect")
+        profile_page.mustcontain(no="david mctester")
+        profile_page.mustcontain(no="Dentiste")
+        profile_page.mustcontain("first est relié à 0 professionels de la santé.")
+        
+        profile_page = self.testapp.get('/davidmctester')
+        profile_page.mustcontain('/davidmctester/connect')
+        profile_page.mustcontain(no="first last")
+        profile_page.mustcontain(no="Ostéopathe")
+        profile_page.mustcontain("david est relié à 0 professionels de la santé.")
+        
+        
+        # now invite again
+        self.logout_provider()   
+        
+        self.login_as_provider(email='mctest@veosan.com', password=self._TEST_PROVIDER_PASSWORD)
+        
+        
+        # now go to the first guy's profile
+        response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
+        
+        # click connect
+        response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL + "/connect")
+
+        # logout and log back in as first guy
+        self.logout_provider()
+        self.login_as_provider(email=self._TEST_PROVIDER_EMAIL, password=self._TEST_PROVIDER_PASSWORD)
+        
+        # network page
+        network_page = self.testapp.get('/provider/network/' + self._TEST_PROVIDER_VANITY_URL)
+        
+        network_page.mustcontain("Here are your pending invitations. Please confirm you know this person.")
+        network_page.mustcontain("david mctester")
+        network_page.mustcontain("Dentiste")
+        network_page.mustcontain("Connect")
+        network_page.mustcontain("Reject")
+                
+        # accept the connection
+        source_provider = db.get_provider_from_email('mctest@veosan.com')
+        
+        lnk = source_provider.get_provider_network_pending_connections_source()[0].key.urlsafe()
+
+        accept_link = '/provider/network/' + self._TEST_PROVIDER_VANITY_URL + '/accept/' + lnk
+        network_page = self.testapp.get(accept_link)
+        
+        network_page.mustcontain("You are now connected to %s %s" % ('david', 'mctester'))
+        network_page.mustcontain('Votre réseau contient 1 professionels de la santé.')
+        network_page.mustcontain("david mctester")
+        network_page.mustcontain("Dentiste")
+        network_page.mustcontain(no="Connect")
+        network_page.mustcontain(no="Reject")
+        network_page.mustcontain(no="Here are your pending invitations. Please confirm you know this person.")
+
+        # now check it shows up on the other side
+        self.logout_provider()
+        self.login_as_provider(email='mctest@veosan.com', password=self._TEST_PROVIDER_PASSWORD)
+
+
+        network_page = self.testapp.get('/provider/network/' + 'davidmctester')
+        
+        network_page.mustcontain('Votre réseau contient 1 professionels de la santé.')
+        network_page.mustcontain("first last")
+        network_page.mustcontain("Ostéopathe")
+
+        # turn on connect buttons & public profile
+        provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
+        provider.connect_enabled = True
+        provider.put()        
+        
+        provider = db.get_provider_from_email('mctest@veosan.com')
+        provider.connect_enabled = True
+        provider.put()        
+        
+        # check it shows up on public profile
+        profile_page = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
+        
+        profile_page.mustcontain(no='/' + self._TEST_PROVIDER_VANITY_URL + "/connect")
+        profile_page.mustcontain("david mctester")
+        profile_page.mustcontain("Dentiste")
+        profile_page.mustcontain("first est relié à 1 professionels de la santé.")
+        
+        profile_page = self.testapp.get('/davidmctester')
+        profile_page.mustcontain(no='/davidmctester/connect')
+        profile_page.mustcontain("first last")
+        profile_page.mustcontain("Ostéopathe")
+        profile_page.mustcontain("david est relié à 1 professionels de la santé.")
+        
+        self.login_as_provider()
+        profile_page = self.testapp.get('/davidmctester')
+        profile_page.mustcontain("You and david are connected!")
+        
+        #check rejection count
+        provider_source = db.get_provider_from_email('mctest@veosan.com')
+        provider_target = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
+
+        provider_network_connection = db.get_provider_network_connection(provider_source.key, provider_target.key)
+        self.assertEqual(provider_network_connection.rejection_count, 1)
+    
+    
     def test_invite_reject_invite_again_reject_again(self):
-        pass
+        # create a provider
+        self.self_signup_provider()
+        self.logout_provider()
+        
+        # and another
+        self.self_signup_provider(email='mctest@veosan.com', first_name='david', last_name='mctester', category='dentist')
+
+        # now go to the first guy's profile
+        response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
+        
+        # click connect
+        response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL + "/connect")
+        response.mustcontain('Connection requested')
+        
+        # logout and log back in as first guy
+        self.logout_provider()
+        self.login_as_provider(email=self._TEST_PROVIDER_EMAIL, password=self._TEST_PROVIDER_PASSWORD)
+        
+
+        # network page
+        network_page = self.testapp.get('/provider/network/' + self._TEST_PROVIDER_VANITY_URL)
+        
+        network_page.mustcontain("Here are your pending invitations. Please confirm you know this person.")
+        network_page.mustcontain("david mctester")
+        network_page.mustcontain("Dentiste")
+        network_page.mustcontain("Connect")
+        network_page.mustcontain("Reject")
+        
+        # reject the connection
+        source_provider = db.get_provider_from_email('mctest@veosan.com')
+        lnk = source_provider.get_provider_network_pending_connections_source()[0].key.urlsafe()
+
+        reject_link = '/provider/network/' + self._TEST_PROVIDER_VANITY_URL + '/reject/' + lnk
+        network_page = self.testapp.get(reject_link)
+        
+        network_page.mustcontain("You have rejected %s %s" % ('david', 'mctester'))
+        network_page.mustcontain('Votre réseau est vide!')
+        
+        network_page.mustcontain(no="Dentiste")
+        network_page.mustcontain(no="Connect")
+        network_page.mustcontain(no="Reject")
+        network_page.mustcontain(no="Here are your pending invitations. Please confirm you know this person.")
+
+        # now check it's not on the other side
+        self.logout_provider()
+        self.login_as_provider(email='mctest@veosan.com', password=self._TEST_PROVIDER_PASSWORD)
+        
+
+        network_page = self.testapp.get('/provider/network/' + 'davidmctester')
+        
+        network_page.mustcontain('Votre réseau est vide!')
+
+        self.logout_provider()
+
+        # turn on connect buttons & public profile
+        provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
+        provider.connect_enabled = True
+        provider.put()        
+        
+        provider = db.get_provider_from_email('mctest@veosan.com')
+        provider.connect_enabled = True
+        provider.put()        
+        
+        # check it doest not shows up on public profile
+        profile_page = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
+        
+        profile_page.mustcontain('/' + self._TEST_PROVIDER_VANITY_URL + "/connect")
+        profile_page.mustcontain(no="david mctester")
+        profile_page.mustcontain(no="Dentiste")
+        profile_page.mustcontain("first est relié à 0 professionels de la santé.")
+        
+        profile_page = self.testapp.get('/davidmctester')
+        profile_page.mustcontain('/davidmctester/connect')
+        profile_page.mustcontain(no="first last")
+        profile_page.mustcontain(no="Ostéopathe")
+        profile_page.mustcontain("david est relié à 0 professionels de la santé.")
+        
+        
+        # now invite again
+        self.logout_provider()   
+        
+        self.login_as_provider(email='mctest@veosan.com', password=self._TEST_PROVIDER_PASSWORD)
+        
+        
+        # now go to the first guy's profile
+        response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
+        
+        # click connect
+        response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL + "/connect")
+
+        # logout and log back in as first guy
+        self.logout_provider()
+        self.login_as_provider(email=self._TEST_PROVIDER_EMAIL, password=self._TEST_PROVIDER_PASSWORD)
+        
+        # network page
+        network_page = self.testapp.get('/provider/network/' + self._TEST_PROVIDER_VANITY_URL)
+        
+        network_page.mustcontain("Here are your pending invitations. Please confirm you know this person.")
+        network_page.mustcontain("david mctester")
+        network_page.mustcontain("Dentiste")
+        network_page.mustcontain("Connect")
+        network_page.mustcontain("Reject")
+        
+        # reject the connection
+        source_provider = db.get_provider_from_email('mctest@veosan.com')
+        lnk = source_provider.get_provider_network_pending_connections_source()[0].key.urlsafe()
+
+        reject_link = '/provider/network/' + self._TEST_PROVIDER_VANITY_URL + '/reject/' + lnk
+        network_page = self.testapp.get(reject_link)
+        
+        network_page.mustcontain("You have rejected %s %s" % ('david', 'mctester'))
+        network_page.mustcontain('Votre réseau est vide!')
+        
+        network_page.mustcontain(no="Dentiste")
+        network_page.mustcontain(no="Connect")
+        network_page.mustcontain(no="Reject")
+        network_page.mustcontain(no="Here are your pending invitations. Please confirm you know this person.")
+
+        # now check it's not on the other side
+        self.logout_provider()
+        self.login_as_provider(email='mctest@veosan.com', password=self._TEST_PROVIDER_PASSWORD)
+        
+
+        network_page = self.testapp.get('/provider/network/' + 'davidmctester')
+        
+        network_page.mustcontain('Votre réseau est vide!')
+
+        self.logout_provider()
+
+        # turn on connect buttons & public profile
+        provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
+        provider.connect_enabled = True
+        provider.put()        
+        
+        provider = db.get_provider_from_email('mctest@veosan.com')
+        provider.connect_enabled = True
+        provider.put()        
+        
+        # check it doest not shows up on public profile
+        profile_page = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
+        
+        profile_page.mustcontain('/' + self._TEST_PROVIDER_VANITY_URL + "/connect")
+        profile_page.mustcontain(no="david mctester")
+        profile_page.mustcontain(no="Dentiste")
+        profile_page.mustcontain("first est relié à 0 professionels de la santé.")
+        
+        profile_page = self.testapp.get('/davidmctester')
+        profile_page.mustcontain('/davidmctester/connect')
+        profile_page.mustcontain(no="first last")
+        profile_page.mustcontain(no="Ostéopathe")
+        profile_page.mustcontain("david est relié à 0 professionels de la santé.")
+
+        #check rejection count
+        provider_source = db.get_provider_from_email('mctest@veosan.com')
+        provider_target = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
+
+        provider_network_connection = db.get_provider_network_connection(provider_source.key, provider_target.key)
+        self.assertEqual(provider_network_connection.rejection_count, 2)
+    
 
 
 if __name__ == "__main__":

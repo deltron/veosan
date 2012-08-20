@@ -124,11 +124,19 @@ class ProviderConnectHandler(ProviderBaseHandler):
                 message = "You can't connect to yourself!"
                 self.render_public_profile(provider=provider_target, success_message=message)
             else:
-                # no pending request, let's make one
-        
-                provider_network_connection = ProviderNetworkConnection()
-                provider_network_connection.source_provider = provider_source.key
-                provider_network_connection.target_provider = provider_target.key
+                provider_network_connection = None
+                
+                if provider_source in provider_target.get_provider_network_rejected():
+                    # this connection was rejected before.
+                    provider_network_connection = db.get_provider_network_connection(provider_source.key, provider_target.key)
+                    # what the hell...let them try again!
+                    provider_network_connection.rejected = False
+                else:
+                    # no pending request, let's make one        
+                    provider_network_connection = ProviderNetworkConnection()
+                    provider_network_connection.source_provider = provider_source.key
+                    provider_network_connection.target_provider = provider_target.key
+                    
                 provider_network_connection.confirmed = False
 
                 try:
