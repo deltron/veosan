@@ -95,7 +95,7 @@ class ProviderNetworkHandler(ProviderBaseHandler):
                 mail.email_invite(self.jinja2, invite, invite_url)
                 
                 # all good
-                msg = "Invitation sent to"
+                msg = _("Invitation sent to")
                 message = msg + " %s %s" % (invite.first_name, invite.last_name)
                 
                 # new form for next invite
