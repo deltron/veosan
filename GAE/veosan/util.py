@@ -114,13 +114,12 @@ def getAllSpecialities():
         ]
     
 def getAllSpecialitiesForPatient():
-    z = getAllSpecialities()
-    z.extend([ 
-            ("other", _(u"Other")),
+    specialty_list = massage_list(getAllSpecialities())
+    specialty_list.extend([ 
             ("dontknow", _(u"Not sure or don't know")),
             ("noanswer", _(u"Prefer not to answer"))
         ])
-    return z
+    return specialty_list
 
 def get_all_titles():
     return [
@@ -211,12 +210,16 @@ def get_all_spoken_languages():
 
 
 def getAllInsurance():
-    return [("private", _(u"Private insurance (ex: employer)")),
+    insurance = [("private", _(u"Private insurance (ex: employer)")),
             ("public", _(u"Public insurance (ex: CSST, SAAQ)")),
-            ("other", _(u"Other coverage")),
+        ]
+    insurance = massage_list(insurance)
+    insurance.extend([ 
             ("dontknow", _(u"Not sure or don't know")),
             ("noanswer", _(u"Prefer not to answer"))
-        ]
+        ])
+    return insurance
+
     
 def getAllConfirmation():
     return [("email", _(u"Email")),

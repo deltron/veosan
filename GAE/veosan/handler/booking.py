@@ -125,6 +125,8 @@ class BookingBaseHandler(BaseHandler):
                 # email is not known, create new patient profile
                 logging.info('Patient does not exist for %s, creating new patient.' % email)
                 patient_form = PatientForm().get_form(self.request.POST)
+                patient_form['terms_agreement'].data = True
+
                 PatientBaseHandler.render_new_patient_form(self, patient_form, booking)             
 
     
@@ -251,6 +253,7 @@ class BookFromPublicProfile(BookingBaseHandler):
             
         elif step == '2':
             email_details_form = EmailAndAppointmentDetails().get_form(self.request.POST)
+            
             provider = db.get_provider_from_vanity_url(vanity_url)
             if email_details_form.validate():
                 booking = Booking()
