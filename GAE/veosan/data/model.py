@@ -280,10 +280,16 @@ class Provider(ndb.Model):
 
         return providers
 
-    def get_provider_network_rejected_count(self):     
+    def get_provider_network_rejecter_count(self):     
         targets = ProviderNetworkConnection.query(ProviderNetworkConnection.target_provider == self.key, ProviderNetworkConnection.confirmed == False, ProviderNetworkConnection.rejected == True).count()
         
         return targets
+
+    def get_provider_network_rejectee_count(self):     
+        sources = ProviderNetworkConnection.query(ProviderNetworkConnection.source_provider == self.key, ProviderNetworkConnection.confirmed == False, ProviderNetworkConnection.rejected == True).count()
+        
+        return sources
+
 
     def get_provider_network_rejected(self):     
         targets = ProviderNetworkConnection.query(ProviderNetworkConnection.target_provider == self.key, ProviderNetworkConnection.confirmed == False, ProviderNetworkConnection.rejected == True).fetch()

@@ -51,8 +51,9 @@
 						<br>
 						Pending: <a href='/provider/network/{{ p.vanity_url }}'>{{p.get_provider_network_pending_count()}}</a>
 						<br>
-						Rejected: <a href='/provider/network/{{ p.vanity_url }}'>{{p.get_provider_network_rejected_count()}}</a>     
-
+						Rejecter: <a href='/provider/network/{{ p.vanity_url }}'>{{p.get_provider_network_rejecter_count()}}</a>     
+						<br>
+						Rejectee: <a href='/provider/network/{{ p.vanity_url }}'>{{p.get_provider_network_rejectee_count()}}</a>     
 					</td>
 					<td>
 						{{p.email}}
