@@ -959,6 +959,24 @@ msgstr "est relié à"
 msgid "See all connections"
 msgstr "Voir toutes les connections"
 
+msgid "You are already connected to"
+msgstr "Vous êtes déjà connecté à"
+
+msgid "You can't connect to yourself!"
+msgstr "Vous ne pouvez pas vous connecter à vous-même!"
+
+msgid "No connection found"
+msgstr "Aucune connexion trouvée"
+
+msgid "You are now connected to"
+msgstr "Vous êtes maintenant connecté à"
+
+msgid "You have rejected"
+msgstr "Vous avez rejeté"
+
+msgid "Invitation sent to"
+msgstr "Invitation envoyée à"
+
 #################
 # Login page
 #################

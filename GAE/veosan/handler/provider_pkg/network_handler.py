@@ -8,6 +8,7 @@ import logging
 import mail
 from handler import auth
 from data.model_pkg.network_model import ProviderNetworkConnection, Invite
+from webapp2_extras.i18n import lazy_gettext as _
 
 class ProviderNetworkHandler(ProviderBaseHandler):
     @provider_required
@@ -24,12 +25,13 @@ class ProviderNetworkHandler(ProviderBaseHandler):
             if provider_network_connection.confirmed:
 
                 # already connected
-                success_message = "You are already connected to %s %s" % (source_provider.first_name, source_provider.last_name)
+                msg = _('You are already connected to')
+                success_message = msg + " %s %s" % (source_provider.first_name, source_provider.last_name)
             else:
                 target_provider_key = provider.key
                 
                 if source_provider_key == target_provider_key:
-                    success_message = "You can't connect to yourself!"
+                    success_message = _("You can't connect to yourself!")
                 
                 else:
                     provider_network_connection = db.get_provider_network_connection(source_provider_key, target_provider_key)
@@ -39,11 +41,12 @@ class ProviderNetworkHandler(ProviderBaseHandler):
                         
                         try:
                             provider_network_connection.put()
-                            success_message = "You are now connected to %s %s" % (source_provider.first_name, source_provider.last_name)
+                            msg = _('You are now connected to')
+                            success_message = msg + " %s %s" % (source_provider.first_name, source_provider.last_name)
                         except Exception as e:
                             error_message = 'Error making connection: ' + e.message
                     else:
-                        error_message = 'No connection found'
+                        error_message = _('No connection found')
                 
         if operation == 'reject':
             provider_network_connection = ndb.Key(urlsafe=provider_key).get()
@@ -56,8 +59,9 @@ class ProviderNetworkHandler(ProviderBaseHandler):
             provider_network_connection.rejected = True
             provider_network_connection.rejection_count += 1
             provider_network_connection.put()
-                        
-            success_message = "You have rejected %s %s" % (source_provider.first_name, source_provider.last_name)
+            
+            msg = _("You have rejected")
+            success_message = msg + " %s %s" % (source_provider.first_name, source_provider.last_name)
         
         provider_invite_form = ProviderInviteForm().get_form()
         
@@ -91,7 +95,8 @@ class ProviderNetworkHandler(ProviderBaseHandler):
                 mail.email_invite(self.jinja2, invite, invite_url)
                 
                 # all good
-                message = "Invitation sent to %s %s (%s)" % (invite.first_name, invite.last_name, invite.email)
+                msg = "Invitation sent to"
+                message = msg + " %s %s" % (invite.first_name, invite.last_name)
                 
                 # new form for next invite
                 provider_invite_form = ProviderInviteForm().get_form()

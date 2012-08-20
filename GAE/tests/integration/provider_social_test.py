@@ -18,7 +18,7 @@ class ProviderSocialTest(BaseTest):
         # default no note
         
         response = invite_provider_form.submit()
-        response.mustcontain("Invitation sent to %s %s (%s)" % ('david', 'mctest', 'mctest@veosan.com'))
+        response.mustcontain("Invitation sent to david mctest")
 
 
 
@@ -101,7 +101,7 @@ class ProviderSocialTest(BaseTest):
         # default no note
         
         response = invite_provider_form.submit()
-        response.mustcontain("Invitation sent to %s %s (%s)" % ('david', 'mctest', 'mctest@veosan.com'))
+        response.mustcontain("Invitation sent to david mctest")
 
 
 
@@ -243,7 +243,7 @@ class ProviderSocialTest(BaseTest):
         accept_link = '/provider/network/' + self._TEST_PROVIDER_VANITY_URL + '/accept/' + lnk
         network_page = self.testapp.get(accept_link)
         
-        network_page.mustcontain("You are now connected to %s %s" % ('david', 'mctester'))
+        network_page.mustcontain('Vous êtes maintenant connecté à david mctester')
         network_page.mustcontain('Votre réseau contient 1 professionels de la santé.')
         network_page.mustcontain("david mctester")
         network_page.mustcontain("Dentiste")
@@ -320,7 +320,7 @@ class ProviderSocialTest(BaseTest):
         accept_link = '/provider/network/' + self._TEST_PROVIDER_VANITY_URL + '/accept/' + lnk
         network_page = self.testapp.get(accept_link)
         
-        network_page.mustcontain("You are now connected to %s %s" % ('david', 'mctester'))
+        network_page.mustcontain("Vous êtes maintenant connecté à david mctester")
         network_page.mustcontain('Votre réseau contient 1 professionels de la santé.')
         network_page.mustcontain("david mctester")
         network_page.mustcontain("Dentiste")
@@ -364,7 +364,7 @@ class ProviderSocialTest(BaseTest):
         
         self.login_as_provider()
         profile_page = self.testapp.get('/davidmctester')
-        profile_page.mustcontain("You and david are connected!")
+        profile_page.mustcontain("Vous et david êtes connectés!")
     
     def test_invite_to_connect_rejected(self):
         # create a provider
@@ -401,7 +401,7 @@ class ProviderSocialTest(BaseTest):
         reject_link = '/provider/network/' + self._TEST_PROVIDER_VANITY_URL + '/reject/' + lnk
         network_page = self.testapp.get(reject_link)
         
-        network_page.mustcontain("You have rejected %s %s" % ('david', 'mctester'))
+        network_page.mustcontain("Vous avez rejeté david mctester")
         network_page.mustcontain('Votre réseau est vide!')
         
         network_page.mustcontain(no="Dentiste")
@@ -493,7 +493,7 @@ class ProviderSocialTest(BaseTest):
         # response after login is a redirect, so follow
         network_page = login_redirect_response.follow()
         
-        network_page.mustcontain("You are now connected to %s %s" % ('david', 'mctester'))
+        network_page.mustcontain("Vous êtes maintenant connecté à david mctester")
         network_page.mustcontain('Votre réseau contient 1 professionels de la santé.')
         network_page.mustcontain("david mctester")
         network_page.mustcontain("Dentiste")
@@ -603,7 +603,7 @@ class ProviderSocialTest(BaseTest):
         accept_link = '/provider/network/' + self._TEST_PROVIDER_VANITY_URL + '/accept/' + lnk
         network_page = self.testapp.get(accept_link)
         
-        network_page.mustcontain("You are now connected to %s %s" % ('david', 'mctester'))
+        network_page.mustcontain("Vous êtes maintenant connecté à david mctester")
         network_page.mustcontain('Votre réseau contient 1 professionels de la santé.')
         network_page.mustcontain("david mctester")
         network_page.mustcontain("Dentiste")
@@ -708,7 +708,7 @@ class ProviderSocialTest(BaseTest):
         accept_link = '/provider/network/' + self._TEST_PROVIDER_VANITY_URL + '/accept/' + lnk
         network_page = self.testapp.get(accept_link)
         
-        network_page.mustcontain("You are now connected to %s %s" % ('david', 'mctester'))
+        network_page.mustcontain('Vous êtes maintenant connecté à david mctester')
         network_page.mustcontain('Votre réseau contient 1 professionels de la santé.')
         network_page.mustcontain("david mctester")
         network_page.mustcontain("Dentiste")
@@ -785,7 +785,7 @@ class ProviderSocialTest(BaseTest):
         accept_page.mustcontain('Votre réseau contient 1 professionels de la santé.')
         accept_page.mustcontain("david mctester")
         accept_page.mustcontain("Dentiste")
-        accept_page.mustcontain("You are now connected to david mctester")
+        accept_page.mustcontain("Vous êtes maintenant connecté à david mctester")
 
     def test_invite_reject_invite_again_accept(self):
         # create a provider
@@ -823,7 +823,7 @@ class ProviderSocialTest(BaseTest):
         reject_link = '/provider/network/' + self._TEST_PROVIDER_VANITY_URL + '/reject/' + lnk
         network_page = self.testapp.get(reject_link)
         
-        network_page.mustcontain("You have rejected %s %s" % ('david', 'mctester'))
+        network_page.mustcontain("Vous avez rejeté david mctester")
         network_page.mustcontain('Votre réseau est vide!')
         
         network_page.mustcontain(no="Dentiste")
@@ -899,7 +899,7 @@ class ProviderSocialTest(BaseTest):
         accept_link = '/provider/network/' + self._TEST_PROVIDER_VANITY_URL + '/accept/' + lnk
         network_page = self.testapp.get(accept_link)
         
-        network_page.mustcontain("You are now connected to %s %s" % ('david', 'mctester'))
+        network_page.mustcontain('Vous êtes maintenant connecté à david mctester')
         network_page.mustcontain('Votre réseau contient 1 professionels de la santé.')
         network_page.mustcontain("david mctester")
         network_page.mustcontain("Dentiste")
@@ -943,7 +943,7 @@ class ProviderSocialTest(BaseTest):
         
         self.login_as_provider()
         profile_page = self.testapp.get('/davidmctester')
-        profile_page.mustcontain("You and david are connected!")
+        profile_page.mustcontain('Vous et david êtes connectés!')
         
         #check rejection count
         provider_source = db.get_provider_from_email('mctest@veosan.com')
@@ -989,7 +989,7 @@ class ProviderSocialTest(BaseTest):
         reject_link = '/provider/network/' + self._TEST_PROVIDER_VANITY_URL + '/reject/' + lnk
         network_page = self.testapp.get(reject_link)
         
-        network_page.mustcontain("You have rejected %s %s" % ('david', 'mctester'))
+        network_page.mustcontain('Vous avez rejeté david mctester')
         network_page.mustcontain('Votre réseau est vide!')
         
         network_page.mustcontain(no="Dentiste")
@@ -1064,7 +1064,7 @@ class ProviderSocialTest(BaseTest):
         reject_link = '/provider/network/' + self._TEST_PROVIDER_VANITY_URL + '/reject/' + lnk
         network_page = self.testapp.get(reject_link)
         
-        network_page.mustcontain("You have rejected %s %s" % ('david', 'mctester'))
+        network_page.mustcontain('Vous avez rejeté david mctester')
         network_page.mustcontain('Votre réseau est vide!')
         
         network_page.mustcontain(no="Dentiste")
