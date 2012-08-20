@@ -23,7 +23,7 @@ def email_booking_to_patient(handler, booking, activation_url):
         logging.warn('Email is not valid: {0}. Trying anyway...' %  to_address)
     # create message
     message = mail.EmailMessage()
-    message.sender = VEOSAN_SUPPORT_ADDRESS
+    message.sender = "Veosan" + ' <' + VEOSAN_SUPPORT_ADDRESS + '>'
     message.to = to_address
     category_label = dict(util.get_all_categories())[provider.category]
     message.subject = '%s - %s' % (_(u'Veosan Appointment'), _(category_label).capitalize())
@@ -46,7 +46,7 @@ def email_booking_to_provider(handler, booking):
     to_address = provider.email
     # create message
     message = mail.EmailMessage()
-    message.sender = VEOSAN_SUPPORT_ADDRESS
+    message.sender = "Veosan" + ' <' + VEOSAN_SUPPORT_ADDRESS + '>'
     message.to = to_address
     message.subject = '%s - %s %s' % ('Veosan', _('New Appointment with'), patient.full_name())
     # booking admin url
