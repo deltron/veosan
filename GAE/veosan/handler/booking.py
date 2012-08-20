@@ -213,8 +213,7 @@ class BookingHandler(BookingBaseHandler):
 
 WeekNav = namedtuple('WeekNav', 'prev_week this_week next_week')
 
-class BookFromPublicProfile(BookingBaseHandler):
-    
+class BookFromPublicProfileDisplaySchedule(BookingBaseHandler):
     def get(self, vanity_url=None, start_date=None, bk=None):
         '''
             Display Booking Schedule
@@ -242,6 +241,8 @@ class BookFromPublicProfile(BookingBaseHandler):
         self.render_template('provider/booking_schedule.html', provider=provider, dtm=datetimes_map, week_nav=week_nav) 
         
     
+
+class BookFromPublicProfileRegistration(BookingBaseHandler):
     def post(self, vanity_url=None, step=None):
         '''
             Booking process from public profile
@@ -266,7 +267,6 @@ class BookFromPublicProfile(BookingBaseHandler):
             else:
                 self.render_template('patient/booking_step1.html', provider=provider, email_details_form=email_details_form)
             
-                   
                 
 class FullyBookedHandler(BookingBaseHandler):
     def get(self):

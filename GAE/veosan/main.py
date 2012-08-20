@@ -239,12 +239,19 @@ application = ndb.toplevel(webapp2.WSGIApplication([
                                        
                                        # if nothing above matches, try to find a provider
                                        # if this doesn't find someone it should throw a 404 (or back to index page?)
-
+                                       
+                                       # Public profile
                                        Route('/<vanity_url>', handler=provider.ProviderPublicProfileHandler),
                                        Route('/<vanity_url>/', handler=provider.ProviderPublicProfileHandler),
-                                       Route('/<vanity_url>/book', booking.BookFromPublicProfile),
-                                       Route('/<vanity_url>/book/<step>', booking.BookFromPublicProfile),
-                                       Route('/<vanity_url>/book/date/<start_date>', booking.BookFromPublicProfile),
+                                       
+                                       # Display schedule
+                                       Route('/<vanity_url>/book', booking.BookFromPublicProfileDisplaySchedule),
+                                       Route('/<vanity_url>/book/date/<start_date>', booking.BookFromPublicProfileDisplaySchedule),
+                                       
+                                       # Actual booking & registration
+                                       Route('/<vanity_url>/book/step/<step>', booking.BookFromPublicProfileRegistration),
+                                       
+                                       # Social network
                                        Route('/<vanity_url>/connect', network_handler.ProviderConnectHandler),
                                       ], debug=True,
                                       config=webapp2_config))
