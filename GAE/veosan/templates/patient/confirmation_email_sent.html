@@ -5,35 +5,34 @@
 
 {% block content %}
 <div class="row">
-	
-	<div class="span12">
-		
-		<div class="row">
-			<div class="span8">
-				<h1><img src="/assets/img/green-check.png" width="80" height="80"> {{ _('Thank you') }} {{patient.first_name}}</h1>
-				<br>
-				<h2>{{ _('Almost done! An email was sent to') }} <strong>{{patient.email}}</strong></h2>
-				<br>
-				<h3>{{ _('Please confirm your appointment by') }} <strong> {{ _('checking your email') }} </strong> {{ _('and clicking on the confirmation link.') }} </h3>		
-			</div>
-		</div>
-		<br>
-		
-		<div class="row">
-			<div class="span6 well">
-				{{ macro.appointment_summary(booking) }}
-			</div>						
-		</div>
-		
-		<br>
-		<br>
-		
-		<div class="row">
-			<div class="span6">
-				<p><i class="icon-user"></i> <a href="/contact"> {{ _('Contact us') }} </a> {{ _('for any questions relating to your appointment') }}</p>
-			</div>		
-		</div>
 
+	<div class="span6">
+		<h1><img src="/assets/img/green-check.png" width="80" height="80"> {{ _('Thank you') }} {{patient.first_name}}</h1>
+		<br>
+		<h2>{{ _('Almost done! An email was sent to') }} <strong>{{patient.email}}</strong></h2>
+		<br>
+		<h3>{{ _('Please confirm your appointment by') }} <strong> {{ _('checking your email') }} </strong> {{ _('and clicking on the confirmation link.') }} </h3>
+	</div>
+
+	<div class="span6 well">
+		<h2>{{ _('Your Appointment') }}</h2>
+		<br>
+		<i class="bs-icon icon-user"></i>
+		{{ provider.first_name }} {{ provider.last_name }}
+		<br>
+		<i class="bs-icon icon-briefcase"></i>
+		{{ provider.category|code_to_string }}
+		<br>
+		<i class="bs-icon icon-time"></i> {{ booking.datetime }}
+		<br>
+	</div>
+
+</div>
+<div class="row">
+	<div class="span6">
+		<p>
+			<i class="icon-user"></i><a href="/contact"> {{ _('Contact us') }} </a> {{ _('for any questions relating to your appointment') }}
+		</p>
 	</div>
 </div>
 {% endblock %} 
