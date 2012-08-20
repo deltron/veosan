@@ -18,7 +18,7 @@ class ProviderSocialTest(BaseTest):
         # default no note
         
         response = invite_provider_form.submit()
-        response.mustcontain("Invitation sent to david mctest")
+        response.mustcontain("Invitation envoyée à david mctest")
 
 
 
@@ -101,7 +101,7 @@ class ProviderSocialTest(BaseTest):
         # default no note
         
         response = invite_provider_form.submit()
-        response.mustcontain("Invitation sent to david mctest")
+        response.mustcontain("Invitation envoyée à david mctest")
 
 
 
@@ -364,7 +364,7 @@ class ProviderSocialTest(BaseTest):
         
         self.login_as_provider()
         profile_page = self.testapp.get('/davidmctester')
-        profile_page.mustcontain("Vous et david êtes connectés!")
+        profile_page.mustcontain("Vous êtes connecté avec david!")
     
     def test_invite_to_connect_rejected(self):
         # create a provider
@@ -943,7 +943,7 @@ class ProviderSocialTest(BaseTest):
         
         self.login_as_provider()
         profile_page = self.testapp.get('/davidmctester')
-        profile_page.mustcontain('Vous et david êtes connectés!')
+        profile_page.mustcontain('Vous êtes connecté avec david!')
         
         #check rejection count
         provider_source = db.get_provider_from_email('mctest@veosan.com')

@@ -810,8 +810,8 @@ msgstr "êtes connectés!"
 msgid "Health Network"
 msgstr "Réseau Santé"
 
-msgid "You and %(name) are connected!"
-msgstr "Vous êtes connecté avec %(name)!"
+msgid "You and %(name)s are connected!"
+msgstr "Vous êtes connecté avec %(name)s!"
 
 msgid "%(name)s's Health Network"
 msgstr "Le réseau santé à %(name)s"
