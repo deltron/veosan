@@ -33,4 +33,5 @@ class EmailAndAppointmentDetails(CustomForm):
                                                    choices=util.getAllInsurance(),
                                                    validators=[custom_validators.DisallowNoChoiceInSelect(message=_('Please choose an option from the list. If none of the options seems to fit, please choose "Other"'))]
                                                    ))
-        setattr(form, 'booking_datetime', HiddenField('booking_datetime'))
+        setattr(form, 'booking_date', HiddenField('booking_date'))
+        setattr(form, 'booking_time', HiddenField('booking_time'))

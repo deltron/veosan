@@ -60,12 +60,12 @@
 				{% for (day_key, day_times) in dtm|dictsort %}
 				<td style="text-align: center">
 					{% for t in day_times %}
-					<form action="/{{provider.vanity_url}}/book/step/1" method="post" id="form-{{day_key~"-"~t.hour}}">
-					  	<input type="hidden" name="booking_datetime" value="{{ t|format_datetime_booking_form }}"/>
-					  	<button style="width=100%" type="submit" class="btn btn-primary btn-small" id="button-{{day_key~"-"~t.hour}}">
-							{{t|format_datetime_hour_min}}
-						</button>
-				  	 </form>
+					<a href="/{{provider.vanity_url}}/book/{{day_key}}/{{t.hour}}" style="width=100%" type="submit" class="btn btn-primary btn-small" id="button-{{day_key~"-"~t.hour}}">
+						{{t|format_datetime_hour_min}}
+					</a>
+					<br>
+					<br>
+				  	 
 				  	{% endfor %}
 				</td>
 				{% endfor %}

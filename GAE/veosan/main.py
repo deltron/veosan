@@ -249,8 +249,9 @@ application = ndb.toplevel(webapp2.WSGIApplication([
                                        Route('/<vanity_url>/book/date/<start_date>', booking.BookFromPublicProfileDisplaySchedule),
                                        
                                        # Actual booking & registration
-                                       Route('/<vanity_url>/book/step/<step>', booking.BookFromPublicProfileRegistration),
-                                       
+                                       Route('/<vanity_url>/book/<book_date:\d{4}-\d{2}-\d{2}>/<book_time:\d{2}>', booking.BookFromPublicProfileRegistration),
+                                       Route('/<vanity_url>/book/register', booking.BookFromPublicProfileRegistration),
+
                                        # Social network
                                        Route('/<vanity_url>/connect', network_handler.ProviderConnectHandler),
                                       ], debug=True,

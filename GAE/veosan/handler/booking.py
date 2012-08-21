@@ -243,30 +243,38 @@ class BookFromPublicProfileDisplaySchedule(BookingBaseHandler):
     
 
 class BookFromPublicProfileRegistration(BookingBaseHandler):
-    def post(self, vanity_url=None, step=None):
+    def get(self, vanity_url=None, book_date=None, book_time=None):
+        provider = db.get_provider_from_vanity_url(vanity_url)
+        
+        email_details_form = EmailAndAppointmentDetails().get_form()
+        email_details_form['booking_date'].data = book_date
+        email_details_form['booking_time'].data = book_time
+        
+        self.render_template('patient/booking_step1.html', provider=provider, email_details_form=email_details_form)
+        
+    
+    def post(self, vanity_url=None):
         '''
             Booking process from public profile
         '''
-        if step == '1':
-            provider = db.get_provider_from_vanity_url(vanity_url)
-            email_details_form = EmailAndAppointmentDetails().get_form(self.request.POST)
+        email_details_form = EmailAndAppointmentDetails().get_form(self.request.POST)
+        
+        provider = db.get_provider_from_vanity_url(vanity_url)
+        if email_details_form.validate():
+            booking = Booking()
+            booking.provider = provider.key
+            booking.booking_source = 'profile'
+            
+            booking_date = self.request.get('booking_date')
+            booking_time = self.request.get('booking_time')
+            
+            booking.datetime = to_utc(datetime.strptime(booking_date + " " + booking_time, '%Y-%m-%d %H'))
+            booking.put()
+            logging.info('Created booking from public profile: %s' % booking)
+            self.route_patient_to_new_patient_form_or_confirm_booking(booking)
+        else:
             self.render_template('patient/booking_step1.html', provider=provider, email_details_form=email_details_form)
-            
-        elif step == '2':
-            email_details_form = EmailAndAppointmentDetails().get_form(self.request.POST)
-            
-            provider = db.get_provider_from_vanity_url(vanity_url)
-            if email_details_form.validate():
-                booking = Booking()
-                booking.provider = provider.key
-                booking.booking_source = 'profile'
-                booking.datetime = to_utc(datetime.strptime(self.request.get('booking_datetime'), '%Y-%m-%d %H:%M:%S'))
-                booking.put()
-                logging.info('Created booking from public profile: %s' % booking)
-                self.route_patient_to_new_patient_form_or_confirm_booking(booking)
-            else:
-                self.render_template('patient/booking_step1.html', provider=provider, email_details_form=email_details_form)
-            
+        
                 
 class FullyBookedHandler(BookingBaseHandler):
     def get(self):

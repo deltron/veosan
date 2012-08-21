@@ -547,9 +547,9 @@ class BaseTest(unittest.TestCase):
         schedule_page = public_profile.click(linkid='book_button')
         schedule_page.mustcontain("Choisissez la date et l'heure de votre rendez-vous")
         # find the form for next Monday at 10
-        form_id = "form-" + date_string + '-' + time_string
-        form = schedule_page.forms[form_id]
-        new_patient_page = form.submit()
+        form_id = "button-" + date_string + '-' + time_string
+        new_patient_page = schedule_page.click(linkid=form_id)
+        
         # fill patient info
         step1_form = new_patient_page.forms[0]
         step1_form['email'] = self._TEST_PATIENT_EMAIL
