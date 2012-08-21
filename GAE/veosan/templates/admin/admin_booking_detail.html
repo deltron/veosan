@@ -18,11 +18,13 @@
 			{% if not patient.user.get().confirmed %}
 				<span class="badge badge-warning">Patient not confirmed</span>
 			{% endif %}
+			<br>
 		
 			{{patient.address}} <br>
 			{{patient.city}} <br>
 			{{patient.postal_code}} <br>
-			
+			<br>
+			insurance: {{patient.insurance}} <br>
 				
 		{% elif b.request_email %}
 			<h1>{{b.request_email}} </h1>
@@ -35,11 +37,11 @@
 
 		<br>
 		
-		<h6>Date and Time</h6>
+		<h6>Booking</h6>
 			booking: {{b.datetime|format_datetime_noseconds}} <br>
 			request: {{b.request_datetime|format_datetime_noseconds}} <br>
 			created: {{ b.created_on|format_datetime_noseconds }} <br>
-
+			comments: {{b.comments}} <br>
 		<br>
 		
 		<h6>Provider</h6>
@@ -48,30 +50,6 @@
 			<h4> {{ provider.full_name() }} </h4>
 			{{ b.request_category|code_to_string }}
 		{% endif %}
-						
-		<!--	
-		{% if b.provider %}
-		{% set provider = b.provider.get() %} 
-			<a href="{{provider.get_edit_link()}}">{{ provider.first_name }} {{ provider.last_name}} ({{provider.email}})</a> 
-		{% else %}
-			<span class="badge badge-important">x</span> 
-			No provider booked
-		{% endif %} 
-					
-					
-					
-		{% if b.search_results %}
-			{% for provider_key in b.search_results %} 
-				{% set provider = provider_key.get() %} 
-				{{loop.index}}. <a href="{{provider.get_edit_link()}}">{{ provider.first_name }} {{ provider.last_name}} ({{provider.email}})</a> 
-				<br>
-			{% endfor %}
-		{% else %}
-			<span class="badge badge-important">x</span> 
-			No search results
-		{% endif %} 
-		
-		-->
 		
 		<br>
 		<br>

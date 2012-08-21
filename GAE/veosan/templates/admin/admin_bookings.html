@@ -25,7 +25,7 @@
 				{% for b in bookings %}
 				<tr>
 					<td>
-						<a href="/admin/booking/show/{{ b.key.urlsafe() }}">{{ b.key.id() }}</a>
+						<a id="show-{{loop.index}}" href="/admin/booking/show/{{ b.key.urlsafe() }}">{{ b.key.id() }}</a>
 					</td>
 					<td>
 						{{ b.status }}
