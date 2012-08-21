@@ -59,6 +59,7 @@ class Patient(ndb.Model):
     province = ndb.StringProperty()
 
     # insurance
+    insurance = ndb.StringProperty()
     
     
     
