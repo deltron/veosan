@@ -107,13 +107,13 @@
 	</div>
 	<div class="span6">
 		{# totally empty profile, fill this space with something #}
-		{% if not provider.bio or provider.quote 
+		{% if not (provider.bio or provider.quote 
 					or provider.specialty|remove_empty_strings_from_list 
 			        or provider.get_experience()|remove_empty_strings_from_list 
 			        or provider.get_organization()|remove_empty_strings_from_list
 			        or provider.get_education()|remove_empty_strings_from_list
 			        or provider.get_certification()|remove_empty_strings_from_list
-			        or provider.get_continuing_education()|remove_empty_strings_from_list
+			        or provider.get_continuing_education()|remove_empty_strings_from_list)
 		%}
 		<h3>{{ provider.first_name }} {{ _('has an empty profile!') }}</h3>
 		{# 
