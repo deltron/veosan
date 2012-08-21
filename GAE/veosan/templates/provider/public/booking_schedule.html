@@ -58,15 +58,17 @@
 			
 			<tr>
 				{% for (day_key, day_times) in dtm|dictsort %}
-				<td style="text-align: center">
+				<td style="text-align: center; padding-top: 4px; padding-bottom: 4px;">
+					
+					<table class="table centered">
 					{% for t in day_times %}
-					<a href="/{{provider.vanity_url}}/book/{{day_key}}/{{t.hour}}" style="width=100%" type="submit" class="btn btn-primary btn-small" id="button-{{day_key~"-"~t.hour}}">
+					<tr><td style="text-align: center; border: none;">
+					<a href="/{{provider.vanity_url}}/book/{{day_key}}/{{t.hour}}" style="font-size:small; width=100%" type="submit" class="btn btn-primary btn-mini" id="button-{{day_key~"-"~t.hour}}">
 						{{t|format_datetime_hour_min}}
 					</a>
-					<br>
-					<br>
-				  	 
+					</td></tr>
 				  	{% endfor %}
+				  	</table>
 				</td>
 				{% endfor %}
 			</tr>
