@@ -1,6 +1,6 @@
 {{ target_provider.first_name }},
 
-{{ from_provider.first_name }} {{ from_provider.last_name }} wants to connect with you on Veosan.
+{{ from_provider.first_name }} {{ from_provider.last_name }} {{ _('wants to connect with you on Veosan.') }}
 
-Please click the following link to accept :
+{{ _('Please click the following link to accept:') }}
 {{ accept_url }}

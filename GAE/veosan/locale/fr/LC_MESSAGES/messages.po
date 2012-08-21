@@ -992,10 +992,16 @@ msgid "The Veosan family has been growing largely through invitations sent by us
 msgstr "La famille Veosan grandit surtout grâce aux professionnels qui utilisent le site afin de partager leurs compétences avec leur entourage. Il suffit de remplir le formulaire ci-dessous pour envoyer une invitation à vos amis et collègues."
 
 msgid "Please click on the link below to create your profile:"
-msgstr "SVP suivez le lien ci dessous pour pour créer votre profil:"
+msgstr "SVP suivez le lien ci-dessous pour créer votre profil:"
 
 msgid "Invite a Health Care Professional"
 msgstr "Invitez un professionel de la santé"
+
+msgid "Please click the following link to accept:"
+msgstr "SVP suivez le lien ci-dessous pour accepter:"
+
+msgid "wants to connect with you on Veosan."
+msgstr "veut se connecter avec vous sur Veosan."
 
 
 #################
