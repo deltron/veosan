@@ -161,7 +161,6 @@ class BookingTest(BaseTest):
         
         booking_confirm_page.mustcontain(u"Le prénom est un champs obligatoire")
         booking_confirm_page.mustcontain(u"Le nom de famille est un champs obligatoire")
-        booking_confirm_page.mustcontain(u"Le numéro de téléphone doit être dans le format suivant: 514-555-1212")
         booking_confirm_page.mustcontain(u"You must accept the terms to book an appointment")
 
 if __name__ == "__main__":
