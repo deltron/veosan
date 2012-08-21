@@ -51,13 +51,16 @@ class Patient(ndb.Model):
     email = ndb.StringProperty()
     telephone = ndb.StringProperty()
     terms_agreement = ndb.BooleanProperty()
+    
     # Address for homecare
     address = ndb.StringProperty()
     city = ndb.StringProperty()
     postal_code = ndb.StringProperty()
+    province = ndb.StringProperty()
 
     # insurance
-    # age
+    
+    
     
     def full_name(self):
         return '%s %s' % (self.first_name, self.last_name)
