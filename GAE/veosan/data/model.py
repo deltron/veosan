@@ -57,9 +57,6 @@ class Patient(ndb.Model):
     city = ndb.StringProperty()
     postal_code = ndb.StringProperty()
     province = ndb.StringProperty()
-
-    # insurance
-    insurance = ndb.StringProperty()
     
     
     
@@ -409,6 +406,7 @@ class Booking(ndb.Model):
     datetime = ndb.DateTimeProperty()
     comments = ndb.TextProperty()
     specialty = ndb.StringProperty()
+    insurance = ndb.StringProperty()
     # link to patient
     patient = ndb.KeyProperty(kind=Patient)
     # link to provider

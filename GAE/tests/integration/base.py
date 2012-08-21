@@ -582,6 +582,6 @@ class BaseTest(unittest.TestCase):
         admin_bookings_details = admin_bookings_page.click(linkid="show-1")
         admin_bookings_details.mustcontain('I would like to receive care related to boat accident')
         admin_bookings_details.mustcontain('sports')
-        admin_bookings_details.mustcontain('Assurance privée')
+        admin_bookings_details.mustcontain('private')
                                            
         self.logout_admin()

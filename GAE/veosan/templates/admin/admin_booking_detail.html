@@ -24,7 +24,7 @@
 			{{patient.city}} <br>
 			{{patient.postal_code}} <br>
 			<br>
-			insurance: {{patient.insurance}} <br>
+			
 				
 		{% elif b.request_email %}
 			<h1>{{b.request_email}} </h1>
@@ -39,7 +39,8 @@
 		
 		<h6>Booking</h6>
 			booking: {{b.datetime|format_datetime_noseconds}} <br>
-			comments: {{b.specialty}} <br>
+			specialty: {{b.specialty}} <br>
+			insurance: {{b.insurance}} <br>
 			comments: {{b.comments}} <br>
 			<br>
 			request: {{b.request_datetime|format_datetime_noseconds}} <br>
