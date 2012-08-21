@@ -275,8 +275,9 @@ class BookFromPublicProfileRegistration(BookingBaseHandler):
             
             booking_date = self.request.get('booking_date')
             booking_time = self.request.get('booking_time')
-            
             booking.datetime = to_utc(datetime.strptime(booking_date + " " + booking_time, '%Y-%m-%d %H'))
+            booking.comments = self.request.get('comments')
+            booking.specialty = self.request.get('specialty')
             booking.put()
             logging.info('Created booking from public profile: %s' % booking)
             self.route_patient_to_new_patient_form_or_confirm_booking(booking)

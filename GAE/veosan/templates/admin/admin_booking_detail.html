@@ -13,11 +13,11 @@
 		{% if b.patient %} 
 			{% set patient = b.patient.get() %}
 			<a href="#">
-				 <h4>{{patient.first_name}} {{patient.last_name}} ({{patient.email}})</h4>
+				 <h4>{{patient.first_name}} {{patient.last_name}}</h4>
+				 ({{patient.email}})
+				 <br>
 			</a>
-			{% if not patient.user.get().confirmed %}
-				<span class="badge badge-warning">Patient not confirmed</span>
-			{% endif %}
+			
 			<br>
 		
 			{{patient.address}} <br>
@@ -39,9 +39,11 @@
 		
 		<h6>Booking</h6>
 			booking: {{b.datetime|format_datetime_noseconds}} <br>
+			comments: {{b.specialty}} <br>
+			comments: {{b.comments}} <br>
+			<br>
 			request: {{b.request_datetime|format_datetime_noseconds}} <br>
 			created: {{ b.created_on|format_datetime_noseconds }} <br>
-			comments: {{b.comments}} <br>
 		<br>
 		
 		<h6>Provider</h6>
@@ -58,6 +60,11 @@
 	</div>
 	
 	<div class="span6">
+		<div>
+		{% if not patient.user.get().confirmed %}
+			<span class="badge badge-warning">Patient not confirmed</span>
+		{% endif %}
+		</div>
 		<div class="well">
 			<h6>Operations</h6>
 			{% if b.status != 'canceled' %}

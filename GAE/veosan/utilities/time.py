@@ -151,7 +151,10 @@ def format_30min_period(startTime, startMinutes):
     return u'START - END [placeholder]'
 
 def format_datetime_noseconds(datetime):
-    return format_datetime(datetime, "yyyy-MM-dd H:mm")
+    if datetime:
+        return format_datetime(datetime, "yyyy-MM-dd H:mm")
+    else:
+        ""
 
 def format_datetime_booking_form(datetime):
     return format_datetime(datetime, "yyyy-MM-dd H:mm:ss", rebase=False)

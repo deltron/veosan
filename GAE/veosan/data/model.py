@@ -408,6 +408,7 @@ class Booking(ndb.Model):
     # actual appointment
     datetime = ndb.DateTimeProperty()
     comments = ndb.TextProperty()
+    specialty = ndb.StringProperty()
     # link to patient
     patient = ndb.KeyProperty(kind=Patient)
     # link to provider
