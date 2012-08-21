@@ -250,7 +250,7 @@ class BookFromPublicProfileRegistration(BookingBaseHandler):
         email_details_form['booking_date'].data = book_date
         email_details_form['booking_time'].data = book_time
         
-        self.render_template('patient/booking_step1.html', provider=provider, email_details_form=email_details_form)
+        self.render_template('patient/booking_details.html', provider=provider, email_details_form=email_details_form)
         
     
     def post(self, vanity_url=None):
@@ -273,7 +273,7 @@ class BookFromPublicProfileRegistration(BookingBaseHandler):
             logging.info('Created booking from public profile: %s' % booking)
             self.route_patient_to_new_patient_form_or_confirm_booking(booking)
         else:
-            self.render_template('patient/booking_step1.html', provider=provider, email_details_form=email_details_form)
+            self.render_template('patient/booking_details.html', provider=provider, email_details_form=email_details_form)
         
                 
 class FullyBookedHandler(BookingBaseHandler):

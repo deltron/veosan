@@ -173,3 +173,42 @@ Macro to display year in CV
 				
 {%- endmacro %}
 
+
+{% macro booking_summary(provider=None, booking_date=None, booking_time=None) -%}
+
+		<div class="row-fluid">
+			<div class="span2">
+				{% if provider.profile_photo_blob_key == None %}
+				<img src="/assets/img/default-profile.png" width="75" height="75"
+				alt="{{ display_provider_name(provider) }} - {{ category_dict[provider.category] }}"
+				itemprop="image">
+				{% else %}
+				<img src="{{ provider.get_profile_photo_image_url(75) }}" width="75"
+				alt="{{ display_provider_name(provider) }} - {{ category_dict[provider.category] }}"
+				itemprop="image">
+				{% endif %}
+			</div>
+			<div class="span8">
+				<i class="bs-icon icon-user"></i>
+				{{ provider.first_name }} {{ provider.last_name }}
+				<br>
+				<i class="bs-icon icon-briefcase"></i>
+				{{ provider.category|code_to_string }}
+				<br>
+				<i class="bs-icon icon-calendar"></i>
+				{{ booking_date }}
+				<br>
+				<i class="bs-icon icon-time"></i>
+				{{ booking_time }}
+				<br>
+				
+				<i class="bs-icon icon-globe"></i>
+				{% if provider.address %} {{ provider.address }} <br>{% endif %}
+				&nbsp;&nbsp;&nbsp;&nbsp;{% if provider.city %} {{ provider.city }}{% endif %}{% if provider.city and provider.province and provider.province != 'nothing' %},{% endif %}
+				{% if provider.province and provider.province != 'nothing' %}{{ provider.province|code_to_string }} {% endif %}
+				<br>
+			</div>
+		</div>
+	</div>
+
+{%- endmacro %}
