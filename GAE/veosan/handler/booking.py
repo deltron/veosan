@@ -214,13 +214,8 @@ class BookingHandler(BookingBaseHandler):
 WeekNav = namedtuple('WeekNav', 'prev_week this_week next_week')
 
 class BookFromPublicProfileDisplaySchedule(BookingBaseHandler):
-    def get(self, vanity_url=None, start_date=None, bk=None):
-        '''
-            Display Booking Schedule
-        '''
-        # provoder already selection from public profile
-        period = timedelta(days=7)
-        provider = db.get_provider_from_vanity_url(vanity_url)
+    
+    def calculate_start_date_and_week_navigation(self, start_date, period):
         if start_date:
             start_date = datetime.strptime(start_date, "%Y-%m-%d").date()
             week_nav = WeekNav(start_date - period, start_date, start_date + period)
@@ -235,7 +230,18 @@ class BookFromPublicProfileDisplaySchedule(BookingBaseHandler):
         else:
             start_date = time.tomorrow()
             week_nav = WeekNav(None, start_date, start_date + period)
-        
+        # return 2 values: stat_date and week_nav
+        return start_date, week_nav
+            
+    
+    def get(self, vanity_url=None, start_date=None, bk=None):
+        '''
+            Display Booking Schedule
+        '''
+        # provoder already selection from public profile
+        period = timedelta(days=7)
+        provider = db.get_provider_from_vanity_url(vanity_url)
+        start_date, week_nav = self.calculate_start_date_and_week_navigation(start_date, period)
         schedules = provider.get_schedules()
         datetimes_map = util.generate_datetimes_map(schedules, start_date, period)
         self.render_template('provider/public/booking_schedule.html', provider=provider, dtm=datetimes_map, week_nav=week_nav) 
