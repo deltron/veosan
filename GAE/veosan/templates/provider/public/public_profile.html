@@ -249,12 +249,17 @@
 			<a href="/{{ provider.vanity_url }}/book">Click here to see the full list.</a>
 			<br>
 			<br>
-			<ul class="unstyled">
-				<li><a href="#" style="width=150px; margin 5px auto"> Tuesday 10:00am </a></li>
-				<li><a href="#" style="width=150px; margin 5px auto"> Tuesday 2:00pn </a></li>
-				<li><a href="#" style="width=150px; margin 5px auto"> Thursday 5:00pm </a></li>
-			</ul>
-				<a href="/{{ provider.vanity_url }}/book" style="width=150px; margin 5px auto" class="btn btn-primary"> View Full Schedule </a>
+				{% for (day_key, day_times, t) in date_time_list %}
+					<a href="/{{provider.vanity_url}}/book/{{day_key}}/{{t.hour}}" style="width=100%" type="submit" class="btn btn-primary btn-small" id="button-{{day_key~"-"~t.hour}}">
+						{{ day_key|format_weekday|capitalize }}
+						{{ day_key|format_date_medium }}
+
+						{{t|format_datetime_hour_min}}
+					</a>
+					<br>
+					<br>
+				{% endfor %}
+			<a href="/{{ provider.vanity_url }}/book" style="width=150px; margin 5px auto" class="btn btn-primary"> View Full Schedule </a>
 		</div>
 		<br>
 		<br>

@@ -1,6 +1,7 @@
 import logging
 from google.appengine.ext import ndb
 from google.appengine.ext import blobstore
+from datetime import datetime, date, timedelta
 
 # veo
 import data.db as db
@@ -52,8 +53,30 @@ class ProviderPublicProfileHandler(ProviderBaseHandler):
         if provider:
             logging.info('(ProviderPublicProfileHandler.get) Found provider %s, rendering profile' % provider.email)
             
+            # add some dates & times to display part of schedule on page
+            start_date = time.tomorrow()
+            period = timedelta(days=14)
+            schedules = provider.get_schedules()
+            datetimes_map = util.generate_datetimes_map(schedules, start_date, period)
+            dtm = datetimes_map
+            
+            date_time_list = []
+            
+            # flatten the map and give first 5 results
+            # TODO: sort
+            count = 0
+            for (day_key, day_times) in dtm.items():
+                if count >= 5:
+                    break
+
+                for t in day_times:
+                    date_time_list.append((day_key, day_times, t))
+                    count += 1
+                    if count >= 5:
+                        break
+                    
             # found a provider, render profile
-            self.render_public_profile(provider)
+            self.render_public_profile(provider=provider, date_time_list=date_time_list)
             
             # increment view count, store async
             # we don't really care if it doesn't work
@@ -86,7 +109,7 @@ class ProviderSearchHandler(ProviderBaseHandler):
         logging.info("Search text: %s " % search_text)
 
         options = search.QueryOptions(
-                                      limit=20,  # the number of results to return
+                                      limit=20, # the number of results to return
                                       #returned_fields=['first_name', 'last_name', 'city'],
                                       #snippeted_fields=['bio'],
                                       )
