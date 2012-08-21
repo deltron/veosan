@@ -57,7 +57,7 @@ class ProviderPublicProfileHandler(ProviderBaseHandler):
             start_date = time.tomorrow()
             period = timedelta(days=14)
             schedules = provider.get_schedules()
-            datetimes_map = util.generate_datetimes_map(schedules, start_date, period)
+            datetimes_map = util.generate_complete_datetimes_dict(schedules, start_date, period)
             dtm = datetimes_map
             
             date_time_list = []

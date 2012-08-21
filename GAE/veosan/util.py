@@ -7,6 +7,7 @@ from markdown2 import markdown2
 import logging
 from utilities.time import get_days_of_the_week
 from datetime import date, time, datetime, timedelta
+from webapp2_extras.i18n import to_local_timezone
 
 DEV_SERVERS = ('localhost:8080', 'veosan-stage.appspot.com')
 PRODUCTION_SERVERS = ('www.veosan.com')
@@ -364,11 +365,10 @@ def generate_datetimes_from_schedule(schedule, date):
     return datetimes
     
 
-def generate_datetimes_map(schedules, start_date, period):
+def generate_complete_datetimes_dict(schedules, start_date, period):
     '''
-        Generate a dict of date, hour, datetime
+        Generate a dict of all dates in the period to list of hours available
     '''
-    logging.info('generate datetime map')
     dtm = dict()
     sm = create_schedule_map(schedules)
     end_date = start_date + period
@@ -388,3 +388,21 @@ def generate_datetimes_map(schedules, start_date, period):
         d = d + timedelta(days=1)
     return dtm
     
+    
+def remove_confirmed_bookings_from_schedule(schedule_dict, bookings):
+    '''
+        Remove all bookings from schedule dict
+    '''
+    for b in bookings:
+        # convert booking datetime to local timezone
+        local_datetime = to_local_timezone(b.datetime)
+        date = local_datetime.date()
+        day_datetimes = schedule_dict[date]
+        tz = local_datetime.tzinfo
+        logging.info('tzinfo: %s' % tz)
+        day_datetimes = map(lambda t: t.replace(tzinfo=tz), day_datetimes)
+        if local_datetime in day_datetimes:
+            day_datetimes.remove(local_datetime)
+            schedule_dict[date] = day_datetimes
+            logging.info('removed %s from %s' % (local_datetime, schedule_dict[date]))
+    return schedule_dict
