@@ -169,18 +169,7 @@ class PublicProfileTest(BaseTest):
         # check datetime
         #self.logout_as_patient()
         
-        # check admin side bookings
-        self.login_as_admin()
-        admin_bookings_page = self.testapp.get('/admin/bookings')
-        admin_datetime = testutil.next_monday_date_string() + " 10:00"
-        admin_bookings_page.mustcontain(admin_datetime)
-        admin_bookings_page.mustcontain('Fantastic Fox')
-        admin_bookings_page.mustcontain('Pat Patient')
-        admin_bookings_page.mustcontain(self._TEST_PATIENT_TELEPHONE)
-        admin_bookings_page.mustcontain(self._TEST_PATIENT_EMAIL)
-        admin_bookings_page.mustcontain('Patient not confirmed')
-        admin_bookings_page.mustcontain('public profile')
-        self.logout_admin()
+
         
         # check event logs
         

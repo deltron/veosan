@@ -6,6 +6,7 @@ import unittest, webtest
 from StringIO import StringIO
 
 
+
 # veo
 import main
 import data.db as db
@@ -13,7 +14,7 @@ from handler import auth
 from data.model import Patient
 from datetime import datetime
 from data.model import User, Booking
-import util
+import util, testutil
 from google.appengine.datastore import datastore_stub_util
 
 class BaseTest(unittest.TestCase):
@@ -565,3 +566,20 @@ class BaseTest(unittest.TestCase):
         email_sent_page.mustcontain('Un couriel vous a été envoyé')
         email_sent_page.mustcontain(self._TEST_PATIENT_EMAIL)
         email_sent_page.mustcontain('Contactez-nous')
+        
+        # check admin console, booking should be in the list
+        self.login_as_admin()
+        admin_bookings_page = self.testapp.get('/admin/bookings')
+        admin_datetime = testutil.next_monday_date_string() + " 10:00"
+        admin_bookings_page.mustcontain(admin_datetime)
+        admin_bookings_page.mustcontain('Fantastic Fox')
+        admin_bookings_page.mustcontain('Pat Patient')
+        admin_bookings_page.mustcontain(self._TEST_PATIENT_TELEPHONE)
+        admin_bookings_page.mustcontain(self._TEST_PATIENT_EMAIL)
+        admin_bookings_page.mustcontain('Patient not confirmed')
+        admin_bookings_page.mustcontain('public profile')
+        
+        admin_bookings_details = admin_bookings_page.click(linkid="show-1")
+        admin_bookings_details.mustcontain('Assurance privée')
+                                           
+        self.logout_admin()
