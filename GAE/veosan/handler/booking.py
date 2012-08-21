@@ -238,7 +238,7 @@ class BookFromPublicProfileDisplaySchedule(BookingBaseHandler):
         
         schedules = provider.get_schedules()
         datetimes_map = util.generate_datetimes_map(schedules, start_date, period)
-        self.render_template('provider/booking_schedule.html', provider=provider, dtm=datetimes_map, week_nav=week_nav) 
+        self.render_template('provider/public/booking_schedule.html', provider=provider, dtm=datetimes_map, week_nav=week_nav) 
         
     
 

@@ -29,7 +29,7 @@ class ProviderBaseHandler(BaseHandler):
 
     def render_public_profile(self, provider, **kw):
         book_now_form = EmailOnlyBookingForm()
-        self.render_template('provider/public_profile.html', book_now_form=book_now_form, provider=provider, **kw)
+        self.render_template('provider/public/public_profile.html', book_now_form=book_now_form, provider=provider, **kw)
 
     def render_cv(self, provider, **kw):
         self.render_template('provider/cv.html', provider=provider, **kw)
