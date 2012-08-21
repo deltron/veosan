@@ -555,7 +555,7 @@ class BaseTest(unittest.TestCase):
         step1_form = new_patient_page.forms[0]
         step1_form['email'] = self._TEST_PATIENT_EMAIL
         step1_form['telephone'] = self._TEST_PATIENT_TELEPHONE
-        step1_form['comments'] = 'No comments'
+        step1_form['comments'] = 'I would like to receive sports related care'
         step1_form['specialty'] = 'sports'
         step1_form['insurance'] = 'private'
 
@@ -581,5 +581,7 @@ class BaseTest(unittest.TestCase):
         
         admin_bookings_details = admin_bookings_page.click(linkid="show-1")
         admin_bookings_details.mustcontain('Assurance privée')
+        admin_bookings_details.mustcontain('I would like to receive sports related care')
+        admin_bookings_details.mustcontain('sports')
                                            
         self.logout_admin()
