@@ -994,6 +994,9 @@ msgstr "La famille Veosan grandit surtout grâce aux professionnels qui utilisen
 msgid "Please click on the link below to create your profile:"
 msgstr "SVP suivez le lien ci dessous pour pour créer votre profil:"
 
+msgid "Invite a Health Care Professional"
+msgstr "Invitez un professionel de la santé"
+
 
 #################
 # Login page
