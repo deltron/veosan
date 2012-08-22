@@ -11,6 +11,7 @@ from data import db
 from data.model import SiteConfig, LogEvent, User, SiteLog
 from google.appengine.ext.ndb.key import Key
 from google.appengine.ext import ndb
+import re
 
 class BaseHandler(webapp2.RequestHandler):
     '''
@@ -133,7 +134,17 @@ class BaseHandler(webapp2.RequestHandler):
             kw['facebook_like_enabled'] = site_config.facebook_like_enabled
         
         # render
-        self.response.write(self.jinja2.render_template(filename, **kw))
+                
+        # check if we have internet exploder
+        browser = self.request.headers.get('User-Agent')
+        is_msie = re.match(".*MSIE.*", browser);
+        logging.info("Browser: %s" % browser)
+
+        if is_msie:
+            self.response.write(self.jinja2.render_template('internet_explorer.html', **kw))
+        
+        else:
+            self.response.write(self.jinja2.render_template(filename, **kw))
         
         # log request in database
         log_entry = SiteLog()
@@ -163,7 +174,7 @@ class BaseHandler(webapp2.RequestHandler):
             lang = util.DEFAULT_LANG
             
         self.install_translations(lang)
-        
+
         # save session (from auth)
         try:
             super(BaseHandler, self).dispatch()
