@@ -193,8 +193,10 @@
 {# FOR PRODUCTION #}
 {# -------------------------------------- #}
 
-<div class="pull-right" style="background: #cccccc; padding: 8px 30px 8px 15px; position: absolute; top: 120px; right:0;  z-index: 1">
-	<a href="/lang/en">(x) Switch to English</a>
+<div id="switch_to_english" class="pull-right" style="white-space: nowrap; background: #cccccc; position: absolute; top: 120px; right:0; width:0; z-index: 1">
+	<div  style="padding: 8px 30px 8px 15px;">
+		<a href="/lang/en"> (x) Switch to English </a>
+	</div>
 </div>
 
 <div class="row">
@@ -204,28 +206,30 @@
 	<div class="span8">
 		<table width="100%">
 			<tr>
-				<td valign="top" width="48%" style="background: #dddddd; padding: 15px"><h1>Pour les professionnels</h1><br></td>
-				{# spacer #} <td rowspan="5" width="4%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-				<td valign="top" width="48%"><h1>Pour les patients</h1></td>
+				<td valign="top" width="49%" style="background: #dddddd; padding: 15px;" valign="top"><h1 style="border-bottom: solid 1px #999999">Pour les professionnels</h1>
+				<br>
+				</td>
+				{# spacer #} <td rowspan="5" width="2%">&nbsp;&nbsp;&nbsp;</td>
+				<td valign="top" width="49%" style="padding:15px" valign="top"><h1 style="border-bottom: solid 1px #999999">Pour les patients</h1></td>
 			</tr>
 			<tr>
-				<td style="background: #dddddd; padding: 15px"><h2>Marketing</h2><h3>Your profile allows patients to find and learn more about you.</h3></td>
-				<td><h2>Convenient Care</h2><h3>Find the best medical professional for your needs.</h3></td>
+				<td style="background: #dddddd; padding: 15px" valign="top"><h2>Marketing</h2><h3>Your profile allows patients to find and learn more about you.</h3></td>
+				<td style="padding:15px" valign="top"><h2>Convenient Care</h2><h3>Find the best medical professional for your needs.</h3></td>
 			</tr>
 			<tr>
-				<td style="background: #dddddd; padding: 15px"><h2>Scheduling</h3><h3>Spend less time on the phone with patients and more time caring for them.</h3></td>
-				<td><h2>Head 2</h2><h3>Point 2</h3></td>
+				<td style="background: #dddddd; padding: 15px" valign="top"><h2>Scheduling</h2><h3>Spend less time on the phone with patients and more time caring for them.</h3></td>
+				<td style="padding:15px" valign="top"><h2>Head 2</h2><h3>Point 2</h3></td>
 			</tr>
 			<tr>
 				<td style="background: #dddddd; padding: 15px"><h2>Professional Networking</h2><h3>Show your credentials to patients and extend your professional network. </h3></td>
-				<td><h2>Improve Communication</h2><h3>Point 3</h3></td>
+				<td style="padding:15px" valign="top"><h2>Improve Communication</h2><h3>Point 3</h3></td>
 			</tr>
 			<tr>
-				<td style="background: #dddddd; padding: 15px; text-align: center">
-					<a href="/signup/provider/fr" class="btn btn-large btn-success" style="height:50px; width:120px;">
-					<br>
-					Get Started! </a></td>
-				<td style="text-align: center"><a href="/signup/provider/fr" class="btn btn-large btn-primary" style="height:50px; width:120px;">
+				<td style="background: #dddddd; padding: 15px; text-align: center" valign="top"><a href="/signup/provider/fr" class="btn btn-large btn-success" style="height:50px; width:120px;"> I'm a professional
+				<br>
+				<br>
+				Get Started! </a></td>
+				<td style="text-align: center; padding:15px" valign="top"><a href="/signup/provider/fr" class="btn btn-large btn-primary" style="height:50px; width:120px;">
 				<br>
 				Get Started! </a></td>
 			</tr>
@@ -239,10 +243,27 @@
 {% block extra_javascript %}
 <script>
 	$(function() {
+		setTimeout( function() {
+			$('#switch_to_english').animate({
+					width : '-=160',
+				}, 1000, function() {
+				// Animation complete.
+				});
+
+		}, 15000 );
+
+		
 		$('#carouselProfile').carousel({
 			interval : 15000
 		});
-	}); 
+
+		$('#switch_to_english').animate({
+				width : '+=160',
+			}, 1000, function() {
+			// Animation complete.
+		});
+	});
+
 </script>
 
 {% endblock extra_javascript %}
