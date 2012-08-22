@@ -138,7 +138,7 @@ msgid "Be Productive"
 msgstr "Soyez productif"
 
 msgid "Before this, you didn't exist! Get a professional profile that sets you apart."
-msgstr "améliorez votre visibilité! Obtenez un profil professionnel qui vous démarquera."
+msgstr "Améliorez votre visibilité! Obtenez un profil professionnel qui vous démarquera."
 
 msgid "Share your page with friends and connect with patients and prospective employers."
 msgstr "Partagez votre page avec votre réseau et rejoignez des patients et employeurs potentiels."
