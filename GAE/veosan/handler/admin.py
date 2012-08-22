@@ -11,7 +11,7 @@ import util
 from handler.auth import admin_required
 from google.appengine.ext import ndb
 import datetime
-from data.model import SiteLog, Provider
+from data.model import SiteLog, Provider, SiteCounter
 
 
 
@@ -176,6 +176,9 @@ class AdminDashboardHandler(AdminBaseHandler):
     @admin_required
     def get(self):
         stats_map = {}
+
+        # get hits to any page
+        stats_map['page_hit_count'] = SiteLog.query(SiteLog.page == '/', SiteLog.admin_email == None).count()
       
         # get hits to home page
         stats_map['homepage_hit_count'] = SiteLog.query(SiteLog.page == '/', SiteLog.admin_email == None).count()
@@ -185,6 +188,9 @@ class AdminDashboardHandler(AdminBaseHandler):
 
         # get total # of providers
         stats_map['provider_total_count'] = Provider.query().count()
+
+        # get hits from Internet Explorer
+        stats_map['internet_explorer_count'] = db.get_site_counter().internet_explorer_hits
 
         
         self.render_template('admin/dashboard.html', stats_map=stats_map)

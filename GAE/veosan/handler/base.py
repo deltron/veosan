@@ -11,6 +11,7 @@ from data import db
 from data.model import SiteConfig, LogEvent, User, SiteLog
 from google.appengine.ext.ndb.key import Key
 from google.appengine.ext import ndb
+import re
 
 class BaseHandler(webapp2.RequestHandler):
     '''
@@ -133,7 +134,30 @@ class BaseHandler(webapp2.RequestHandler):
             kw['facebook_like_enabled'] = site_config.facebook_like_enabled
         
         # render
-        self.response.write(self.jinja2.render_template(filename, **kw))
+                
+        # check if we have internet exploder
+        browser = self.request.headers.get('User-Agent')
+        is_msie = re.search("MSIE ([0-9]{1,}[\.0-9]{0,})", browser);
+        logging.info("Browser User-Agent: %s" % browser)
+
+        if is_msie:
+            msie_str = is_msie.group()
+            version_str = re.search("([0-9]{1,}[\.0-9]{0,})", msie_str)
+
+            if version_str:
+                version = float(version_str.group())
+                if version < 9:
+                    self.response.write(self.jinja2.render_template('internet_explorer.html', **kw))
+                    site_counter = db.get_site_counter()
+                    site_counter.internet_explorer_hits += 1
+                    site_counter.put_async()
+                else:
+                    self.response.write(self.jinja2.render_template(filename, **kw))
+            else:
+                logging.error("Unable to parse version string for Internet Explorer: %s" % is_msie.group())
+
+        else:
+            self.response.write(self.jinja2.render_template(filename, **kw))
         
         # log request in database
         log_entry = SiteLog()
@@ -163,7 +187,7 @@ class BaseHandler(webapp2.RequestHandler):
             lang = util.DEFAULT_LANG
             
         self.install_translations(lang)
-        
+
         # save session (from auth)
         try:
             super(BaseHandler, self).dispatch()
