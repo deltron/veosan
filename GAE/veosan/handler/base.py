@@ -140,9 +140,12 @@ class BaseHandler(webapp2.RequestHandler):
         is_msie = re.match(".*MSIE.*", browser);
         logging.info("Browser: %s" % browser)
 
-        if is_msie:
+        if is_msie:            
             self.response.write(self.jinja2.render_template('internet_explorer.html', **kw))
-        
+            site_counter = db.get_site_counter()
+            site_counter.internet_explorer_hits += 1
+            site_counter.put_async()
+
         else:
             self.response.write(self.jinja2.render_template(filename, **kw))
         

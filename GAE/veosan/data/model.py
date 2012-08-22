@@ -29,6 +29,9 @@ class SiteLog(ndb.Model):
     user_email = ndb.StringProperty()
     admin_email = ndb.StringProperty()
 
+class SiteCounter(ndb.Model):
+    internet_explorer_hits = ndb.IntegerProperty(default=0)
+
 class User(Webapp2AuthUser):
     '''
         Extending the Webapp2 Auth User to add roles

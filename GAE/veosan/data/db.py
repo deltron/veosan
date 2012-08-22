@@ -5,7 +5,8 @@
 from google.appengine.ext import ndb, db as gdb
 import logging
 from datetime import datetime, date, time
-from data.model import Booking, Patient, Provider, User, SiteConfig, LogEvent
+from data.model import Booking, Patient, Provider, User, SiteConfig, LogEvent,\
+    SiteCounter
 from data.model_pkg.network_model import Invite, ProviderNetworkConnection
   
 def get_from_urlsafe_key(urlsafe_key):
@@ -164,6 +165,15 @@ def get_events_all():
 
 def get_site_config():
     return SiteConfig.query().get()
+
+def get_site_counter():
+    site_counter = SiteCounter.query().get()
+    if site_counter == None:
+        site_counter = SiteCounter()
+        site_counter.put()
+    
+    return site_counter
+        
 
 def store(key, form, data):
     # data is a MultiDict object from the request

@@ -3,12 +3,15 @@
 {% set active_page = "dashboard" %}
 
 {% block subhead %} Dashboard {% endblock %}
-{% block lead %} Metrics {% endblock %}
+{% block lead %} Lies, damned lies, and statistics {% endblock %}
 
 {% block content %}
-
+<div class="row">
+	<div class="span12">
 <table class="table table-bordered">
 	<h3>Campaign: Increase signups from home page</h3>
+	<p>Goal: Get to 40% of providers who get to the signup to create a profile</p>
+	<p>Start Date: August 23, 2012</p>
 	<thead>
 		<th>Metric</th>
 		<th>Count</th>
@@ -22,22 +25,33 @@
 	<tr>
 		<td>Provider Signup Hits</td>
 		<td>{{ stats_map['provider_signup_hit_count'] }}</td>
-		<td>
-			{% if stats_map['homepage_hit_count'] > 0 %}
-			{{ "%.0f%%"|format( 100 * (stats_map['provider_signup_hit_count'] / stats_map['homepage_hit_count'])) }} of visits to home page
-			{% endif %}
-		</td>
+		<td> {% if stats_map['homepage_hit_count'] > 0 %}
+		{{ "%.0f%%"|format( 100 * (stats_map['provider_signup_hit_count'] / stats_map['homepage_hit_count'])) }} of visits to home page
+		{% endif %} </td>
 	</tr>
 	<tr>
 		<td>Provider Signup Completion</td>
 		<td>{{ stats_map['provider_total_count'] }}</td>
-		<td>
-			{% if stats_map['homepage_hit_count'] > 0 and stats_map['provider_signup_hit_count'] > 0 %}
-			{{ "%.0f%%"|format( 100 * (stats_map['provider_total_count'] / stats_map['homepage_hit_count'])) }} of visits to home page<br>
-			{{ "%.0f%%"|format( 100 * (stats_map['provider_total_count'] / stats_map['provider_signup_hit_count'])) }} of visits to signup page
-			{% endif %}
-		</td>
+		<td> {% if stats_map['homepage_hit_count'] > 0 and stats_map['provider_signup_hit_count'] > 0 %}
+		{{ "%.0f%%"|format( 100 * (stats_map['provider_total_count'] / stats_map['homepage_hit_count'])) }} of visits to home page
+		<br>
+		{{ "%.0f%%"|format( 100 * (stats_map['provider_total_count'] / stats_map['provider_signup_hit_count'])) }} of visits to signup page
+		{% endif %} </td>
 	</tr>
 </table>
+
+<h3>Counters</h3>
+<table class="table table-bordered" style="width:25%" >
+	<thead>
+		<th>Counter</th>
+		<th>Count</th>
+	</thead>
+	<tr>
+		<td>Internet Explorer Refusals</td>
+		<td>{{ stats_map['internet_explorer_count'] }}</td>
+	</tr>
+</table>
+</div>
+</div>
 
 {% endblock content %}
