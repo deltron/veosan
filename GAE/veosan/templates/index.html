@@ -195,7 +195,11 @@
 
 <div id="switch_to_english" class="pull-right" style="white-space: nowrap; background: #cccccc; position: absolute; top: 120px; right:0; width:0; z-index: 1">
 	<div  style="padding: 8px 30px 8px 15px;">
+		{% if lang == 'fr' %}
 		<a href="/lang/en"> (x) Switch to English </a>
+		{% elif lang == 'en' %}
+		<a href="/lang/fr"> (x) Changer en Français </a>
+		{% endif %}
 	</div>
 </div>
 
