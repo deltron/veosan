@@ -95,12 +95,15 @@
 			{% endif %}
 			
 				{% block subnav %}{% endblock %}
+				
+				{% if subhead or lead %}
 				<header class="page-header">
 					<h2>{% block subhead %}{% endblock %}</h2>
 					<p class="lead">
 						{% block lead %}{% endblock %}
 					</p>
 				</header>
+				{% endif %}
 
 				{% if error_message %}
 				<!-- Error Message -->

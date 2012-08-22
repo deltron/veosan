@@ -193,44 +193,43 @@
 {# FOR PRODUCTION #}
 {# -------------------------------------- #}
 
+<div class="pull-right" style="background: #cccccc; padding: 8px 30px 8px 15px; position: absolute; top: 120px; right:0;  z-index: 1">
+	<a href="/lang/en">(x) Switch to English</a>
+</div>
+
 <div class="row">
-	<div class="span6">
-		<h1>The better way to care</h1>
-		<br>
-		<h2>Veosan is all about bringing health care professionals and patients together.</h2>
-		<br>
-		<h3>Please choose your group to continue.</h3>
-		<br>
-		<a href="/signup/provider/en" class="btn btn-large btn-primary" style="height:70px; width:180px"> 
-			I'm a Health Care Professional
-		<br>
-		<br>
-		<i class="bs-icon icon-briefcase"> </i> </a>
-		&nbsp;
-		<a href="/signup/patient/en" class="btn btn-large btn-primary" style="height:70px; width:180px"> 
-			I'm a Patient Seeking Better Health Care
-		<br>
-		<br>
-		<i class="bs-icon icon-user"> </i> </a>
+	<div class="span4">
+		<img src="/assets/img/home.jpeg">
 	</div>
-	<div class="span6">
-		<h1>La santé à votre portée</h1>
-		<br>
-		<h2>Veosan vise à rapprocher les professionnels de la santé et les patients.</h2>
-		<br>
-		<h3>Veuillez choisir votre groupe ci-dessous.</h3>
-		<br>
-		<a href="/signup/provider/fr" class="btn btn-large btn-primary" style="height:70px; width:180px"> 
-			Je suis un professionnel de la santé
-		<br>
-		<br>
-		<i class="bs-icon icon-briefcase"> </i> </a>
-		&nbsp;
-		<a href="/signup/patient/fr" class="btn btn-large btn-primary" style="height:70px; width:180px"> 
-			Je suis un patient qui cherche des soins
-		<br>
-		<br>
-		<i class="bs-icon icon-user"> </i> </a>
+	<div class="span8">
+		<table width="100%">
+			<tr>
+				<td valign="top" width="48%" style="background: #dddddd; padding: 15px"><h1>Pour les professionnels</h1><br></td>
+				{# spacer #} <td rowspan="5" width="4%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+				<td valign="top" width="48%"><h1>Pour les patients</h1></td>
+			</tr>
+			<tr>
+				<td style="background: #dddddd; padding: 15px"><h2>Marketing</h2><h3>Your profile allows patients to find and learn more about you.</h3></td>
+				<td><h2>Convenient Care</h2><h3>Find the best medical professional for your needs.</h3></td>
+			</tr>
+			<tr>
+				<td style="background: #dddddd; padding: 15px"><h2>Scheduling</h3><h3>Spend less time on the phone with patients and more time caring for them.</h3></td>
+				<td><h2>Head 2</h2><h3>Point 2</h3></td>
+			</tr>
+			<tr>
+				<td style="background: #dddddd; padding: 15px"><h2>Professional Networking</h2><h3>Show your credentials to patients and extend your professional network. </h3></td>
+				<td><h2>Improve Communication</h2><h3>Point 3</h3></td>
+			</tr>
+			<tr>
+				<td style="background: #dddddd; padding: 15px; text-align: center">
+					<a href="/signup/provider/fr" class="btn btn-large btn-success" style="height:50px; width:120px;">
+					<br>
+					Get Started! </a></td>
+				<td style="text-align: center"><a href="/signup/provider/fr" class="btn btn-large btn-primary" style="height:50px; width:120px;">
+				<br>
+				Get Started! </a></td>
+			</tr>
+		</table>
 	</div>
 </div>
 {% endif %}
