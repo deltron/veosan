@@ -74,7 +74,7 @@ h2 {
 
 
 .blue {
-	background-color: #50A8DC;
+	background-color: #88CAF1;
 }
 
 .blue a {
@@ -93,9 +93,32 @@ h2 {
 	color: #333;
 }
 
-
 .marketing td {
 	padding: 12px;
+}
+
+.quote {
+	line-height: 1.3;
+	font-size: 22px;
+	color: #333;
+	font-family: 'Source+Sans+Pro', sans-serif;
+	font-style:italic;
+}
+
+.quote2:first-letter{
+	text-transform: uppercase;
+}
+.quote2 {
+    color: #424242;
+    font-family: "Adobe Caslon Pro", "Hoefler Text", Georgia, Garamond, Times, serif;
+	letter-spacing:0.1em;
+	text-align:center;
+	margin: 40px auto;
+	text-transform: lowercase;
+	line-height: 145%;
+	font-size: 14pt;
+	font-variant: small-caps;
+	padding:15px;
 }
 
 
