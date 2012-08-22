@@ -932,7 +932,7 @@ msgid "Share your skills"
 msgstr "Partagez vos compétences"
 
 msgid "Send an Invitation"
-msgstr "Envoyer une invitation"
+msgstr "Envoyez une invitation"
 
 msgid "Web Link"
 msgstr "Hyperlien"
@@ -989,7 +989,19 @@ msgid "I've been using Veosan and thought you might like to try it out. Here's a
 msgstr "J'utilise Veosan et j'ai pensé que vous aimeriez l'essayer. Voici une invitation pour créer un profil."
 
 msgid "The Veosan family has been growing largely through invitations sent by users who want to share their skills with the people they care about. Just fill in the form below and to send an invitation to your friends and colleagues."
-msgstr "La famille Veosan grandie surtout à travers les utilisateurs qui veulent partager leurs compétences avec leur entourage. Il suffit de remplir le formulaire ci-dessous pour envoyer une invitation à vos amis et collègues."
+msgstr "La famille Veosan grandit surtout grâce aux professionnels qui utilisent le site afin de partager leurs compétences avec leur entourage. Il suffit de remplir le formulaire ci-dessous pour envoyer une invitation à vos amis et collègues."
+
+msgid "Please click on the link below to create your profile:"
+msgstr "SVP suivez le lien ci-dessous pour créer votre profil:"
+
+msgid "Invite a Health Care Professional"
+msgstr "Invitez un professionel de la santé"
+
+msgid "Please click the following link to accept:"
+msgstr "SVP suivez le lien ci-dessous pour accepter:"
+
+msgid "wants to connect with you on Veosan."
+msgstr "veut se connecter avec vous sur Veosan."
 
 
 #################

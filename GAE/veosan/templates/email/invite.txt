@@ -1,5 +1,5 @@
 {{ invite.note|safe }}
 
-Please click on the link below to create your profile:
+{{ _('Please click on the link below to create your profile:') }}
 
 {{ invite_url }}
