@@ -25,75 +25,57 @@
 	</div>
 </div>
 
-<div class="row">
-	<div class="span5">
-		<row>
-			<img src="/assets/img/home.jpeg">
-			<br>
-		</row>
-		<row>
-			<div class="quote2">
-				"Veosan offers <strong>online presence</strong> for health-care professionals 
-				with actionable profiles that allow you to focus on your practice."
-			</div>
-		</row>
+<div id="patient" class="pull-right" style="border-bottom-left-radius: 5px; border-top-left-radius: 5px; white-space: nowrap; background: #cccccc; position: absolute; top: 200px; right:0; width:0; z-index: 1">
+	<button type="button" class="close pull-left" onClick="$(this).parent().hide();" style="padding-top: 6px; padding-left:10px; padding-right: 10px">
+		x
+	</button>
+	<div  style="padding-top: 8px; margin-left:20px; padding-bottom: 8px; padding-right: 10px">
+		<a href="/lang/en">Are you a patient?</a>
+		<br>
+		<br>
+		<br>
 	</div>
-	<div class="span7">
-		<table class="marketing" width="90%">
-			<tr valign="bottom">
-				<td class="blue" width="49%" style="border-top-left-radius: 5px; border-top-right-radius: 5px;" >
-					<h1 style="border-bottom: solid 1px #999999">{{ _('For Health-care Professionals')}}</h1>
-				</td>
-				{# spacer #} <td rowspan="5" width="2%">&nbsp;&nbsp;&nbsp;</td>
-				<!-- <td valign="top" width="49%" style="padding:15px" valign="top">
-					<h1 style="border-bottom: solid 1px #999999">Pour les patients</h1></td>
-				-->
-			</tr>
-			
-			<tr>
-				<td class="blue" valign="top">
-					<h2>Marketing</h2><h3>Your profile allows patients to find and learn more about you.</h3>
-				</td>
-				<!-- <td valign="top">
-					<h2>Convenient Care</h2><h3>Find the best medical professional for your needs.</h3>
-				</td>
-				-->
-			</tr>
-			<tr>
-				<td class="blue" valign="top">
-					<h2>Scheduling</h2><h3>Spend less time on the phone with patients and more time caring for them.</h3></td>
-				<!-- <td style="padding:15px" valign="top"><h2>Head 2</h2>
-					<h3>Point 2</h3></td>
-				-->
-			</tr>
-			<tr>
-				<td class="blue" style="border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;">
-					<h2>Professional Networking</h2>
-					<h3>Show your credentials to patients and extend your professional network. </h3>
-					<br>
-					<a href=""> Learn more...</a>
-					
-				</td>
-				<!-- <td style="padding:15px" valign="top"><h2>Improve Communication</h2><h3>Point 3</h3></td> -->
-			</tr>
-			<tr>
-				<td style="text-align: center" valign="top">
-					<br>
-					<h3 style="font-weight: bold; font-style: italic">Are you a health-care professional?</h3>
-					<br>
-					<a href="/signup/provider/fr" class="btn btn-large btn-success"> 
-						<div style="margin-top: 5px; margin-bottom: 5px"></div> 
-						<span style="font-weight: 	bold;">Click here to create <br>
-						your free profile</span>
-					</a>
-				</td>
-				<!-- <td style="text-align: center;" valign="top">
-						<a href="/signup/provider/fr" class="btn btn-large btn-primary" style="height:50px; width:120px;">
-				<br>
-				Get Started! </a></td>
-				-->
-			</tr>
-		</table>
+</div>
+
+
+<div class="row">
+	<div class="span4">
+		<div style="position: relative">
+			<img src="/assets/img/home.jpeg" width="400">
+			<div style="position: absolute; bottom: 0px; background-color: rgba(64,64,64,0.7); padding:15px">
+				<h2 style="color: white; font-size: large;">
+				<span style="font-family: serif; font-size:xx-large font-style: italic;">“</span>				
+				Veosan offers me an <strong>online presence</strong> to demonstrate my skills and allows my patients to interact with me directly.
+				<span style="font-family: serif; font-size:xx-large font-style: italic;">”</span>
+				</h2>
+			</div>
+		</div>
+	</div>
+	<div class="span8">
+		<div style="margin-bottom: 16px" >
+			<h1>{{ _('For Health Care Professionals')}}</h1>
+		</div>
+
+		<div style="margin-bottom: 10px" >
+			<h2>Marketing</h2><h3>Your profile allows patients to find and learn more about you.</h3>
+		</div>
+		<div style="margin-bottom: 10px" >
+			<h2>Scheduling</h2><h3>Spend less time on the phone with patients and more time caring for them.</h3>
+		</div>
+		<div style="margin-bottom: 10px" >
+			<h2>Professional Networking</h2><h3>Show your credentials to patients and extend your professional network. </h3>
+		</div>
+		<div>
+			<a href="#">Learn more...</a>
+		</div>
+
+		<h3>Are you a health-care professional?</h3>
+
+		
+		<a href="/signup/provider/fr" class="btn btn-large btn-success">Click here to create
+			<br>
+			your free profile </a>
+
 	</div>
 </div>
 
@@ -110,6 +92,16 @@
 			});
 
 		}, 15000);
+
+		setTimeout(function() {
+			$('#patient').animate({
+				width : '+=160',
+			}, 1000, function() {
+				// Animation complete.
+			});
+
+		}, 2000);
+
 
 		$('#switch_to_english').animate({
 			width : '+=160',
