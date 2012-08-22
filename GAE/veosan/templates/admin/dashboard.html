@@ -1,0 +1,35 @@
+{% extends "/layout/admin_nav.html" %}
+
+{% set active_page = "dashboard" %}
+
+{% block subhead %} Dashboard {% endblock %}
+{% block lead %} Metrics {% endblock %}
+
+{% block content %}
+
+<table class="table table-bordered">
+	<h3>Campaign: Increase signups from home page</h3>
+	<thead>
+		<th>Metric</th>
+		<th>Count</th>
+		<th>Conversion Rates</th>
+	</thead>
+	<tr>
+		<td>Home Page Hits</td>
+		<td>{{ stats_map['homepage_hit_count'] }}</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>Provider Signup Hits</td>
+		<td>{{ stats_map['provider_signup_hit_count'] }}</td>
+		<td>{{ "%.0f%%"|format( 100 * (stats_map['provider_signup_hit_count'] / stats_map['homepage_hit_count'])) }} of visits to home page</td>
+	</tr>
+	<tr>
+		<td>Provider Signup Completion</td>
+		<td>{{ stats_map['provider_total_count'] }}</td>
+		<td>{{ "%.0f%%"|format( 100 * (stats_map['provider_total_count'] / stats_map['homepage_hit_count'])) }} of visits to home page<br>
+			{{ "%.0f%%"|format( 100 * (stats_map['provider_total_count'] / stats_map['provider_signup_hit_count'])) }} of visits to signup page</td>
+	</tr>
+</table>
+
+{% endblock content %}

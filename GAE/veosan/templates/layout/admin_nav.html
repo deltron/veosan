@@ -2,6 +2,9 @@
 
 {% block subnav %}
 <ul class="nav nav-tabs">
+	<li id="dashboard" {% if  "dashboard" == active_page %} class="active" {% endif %}>
+		<a href="/admin/dashboard">{{ _('Dashboard') }}</a>
+	</li>
 	<li id="providers" {% if  "providers" == active_page %} class="active" {% endif %}>
 		<a href="/admin/providers">{{ _('Providers') }}</a>
 	</li>

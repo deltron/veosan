@@ -10,6 +10,8 @@ import data.db as db
 import util
 from handler.auth import admin_required
 from google.appengine.ext import ndb
+import datetime
+from data.model import SiteLog, Provider
 
 
 
@@ -170,3 +172,21 @@ class AdminDeleteDataHandler(AdminBaseHandler):
 
 
         
+class AdminDashboardHandler(AdminBaseHandler):
+    @admin_required
+    def get(self):
+        stats_map = {}
+      
+        # get hits to home page
+        stats_map['homepage_hit_count'] = SiteLog.query(SiteLog.page == '/', SiteLog.admin_email == None).count()
+
+        # get hits to provider signup page
+        stats_map['provider_signup_hit_count'] = SiteLog.query(SiteLog.page == '/signup/provider', SiteLog.admin_email == None).count()
+
+        # get total # of providers
+        stats_map['provider_total_count'] = Provider.query().count()
+
+        
+        self.render_template('admin/dashboard.html', stats_map=stats_map)
+
+

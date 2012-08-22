@@ -19,6 +19,15 @@ class SiteConfig(ndb.Model):
     facebook_like_enabled = ndb.BooleanProperty(default=False)
     signup_enabled = ndb.BooleanProperty(default=False)
 
+class SiteLog(ndb.Model):
+    page = ndb.StringProperty()
+    access_time = ndb.DateTimeProperty(auto_now_add=True)
+    ip = ndb.StringProperty()
+    referer = ndb.StringProperty()
+    language = ndb.StringProperty()
+    user = ndb.KeyProperty(kind='User')
+    user_email = ndb.StringProperty()
+    admin_email = ndb.StringProperty()
 
 class User(Webapp2AuthUser):
     '''

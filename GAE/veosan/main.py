@@ -209,6 +209,7 @@ application = ndb.toplevel(webapp2.WSGIApplication([
                                            Route('/providers', admin.AdminProvidersHandler),
                                            Route('/patients', admin.AdminPatientsHandler),
                                            Route('/invites', admin.AdminInvitesHandler),
+                                           Route('/dashboard', admin.AdminDashboardHandler),
                                            Route('/data', admin.AdminDataHandler),
                                            Route('/data/stage', admin.AdminStageDataHandler),
                                            Route('/data/delete', admin.AdminDeleteDataHandler),

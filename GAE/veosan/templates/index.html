@@ -1,5 +1,7 @@
 {% extends "/layout/base.html" %}
 
+{% set active_page = 'index' %}
+
 {% block subhead %}{% endblock %}
 
 {% block lead %}
@@ -199,9 +201,9 @@
 	</button>
 	<div  style="padding-top: 8px; margin-left:20px; padding-bottom: 8px; padding-right: 10px">
 		{% if lang == 'fr' %}
-		<a href="/lang/en">Switch to English </a>
+		<a href="/lang/en">Switch to English</a>
 		{% elif lang == 'en' %}
-		<a href="/lang/fr">Changer en Français </a>
+		<a href="/lang/fr">Changer en Français</a>
 		{% endif %}
 	</div>
 </div>

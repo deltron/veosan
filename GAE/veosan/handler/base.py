@@ -8,7 +8,7 @@ import data
 import handler.auth
 import util
 from data import db
-from data.model import SiteConfig, LogEvent, User
+from data.model import SiteConfig, LogEvent, User, SiteLog
 from google.appengine.ext.ndb.key import Key
 from google.appengine.ext import ndb
 
@@ -131,10 +131,25 @@ class BaseHandler(webapp2.RequestHandler):
             kw['booking_enabled'] = site_config.booking_enabled
             kw['google_analytics_enabled'] = site_config.google_analytics_enabled
             kw['facebook_like_enabled'] = site_config.facebook_like_enabled
-
         
         # render
         self.response.write(self.jinja2.render_template(filename, **kw))
+        
+        # log request in database
+        log_entry = SiteLog()
+        log_entry.language = self.get_language()
+        log_entry.page = self.request.path
+        log_entry.ip = self.request.remote_addr
+        log_entry.referer= self.request.referer
+
+        if user:
+            log_entry.user_email = user.get_email()
+            log_entry.user = user.key
+
+        if google_user:
+            log_entry.admin_email = google_user.email()
+
+        log_entry.put_async()
           
     def dispatch(self):
         ''' 

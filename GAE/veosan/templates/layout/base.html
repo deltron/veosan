@@ -96,7 +96,7 @@
 			
 				{% block subnav %}{% endblock %}
 				
-				{% if subhead or lead %}
+				{% if not active_page == 'index' %}
 				<header class="page-header">
 					<h2>{% block subhead %}{% endblock %}</h2>
 					<p class="lead">
