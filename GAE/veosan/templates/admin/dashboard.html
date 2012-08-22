@@ -41,14 +41,23 @@
 </table>
 
 <h3>Counters</h3>
-<table class="table table-bordered" style="width:25%" >
+<table class="table table-bordered" style="width:50%" >
 	<thead>
 		<th>Counter</th>
 		<th>Count</th>
+		<th>Percentage</th>
 	</thead>
+	<tr>
+		<td>Total Page Hits</td>
+		<td>{{ stats_map['page_hit_count'] }}</td>
+		<td></td>
+	</tr>
 	<tr>
 		<td>Internet Explorer Refusals</td>
 		<td>{{ stats_map['internet_explorer_count'] }}</td>
+		<td> {% if stats_map['homepage_hit_count'] > 0 %}
+		{{ "%.0f%%"|format( 100 * (stats_map['internet_explorer_count'] / stats_map['page_hit_count'])) }} of visits to home page
+		{% endif %} </td>
 	</tr>
 </table>
 </div>
