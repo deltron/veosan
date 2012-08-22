@@ -29,8 +29,8 @@ class ProviderSocialTest(BaseTest):
         self.assertEqual(m.subject, 'Invitation to join Veosan from %s %s' % ('first', 'last'))
         self.assertEqual(m.sender, 'first last <support@veosan.com>')
         self.assertEqual(m.reply_to, self._TEST_PROVIDER_EMAIL)
-        self.assertIn('Please click on the link below to create your profile', m.body.payload)
-        self.assertIn("I've been using Veosan and thought you might like to try it out. Here's an invitation to create a profile.", m.body.payload)
+        self.assertIn('SVP suivez le lien ci-dessous pour créer votre profil:', m.body.payload)
+        self.assertIn("J'utilise Veosan et j'ai pensé que vous aimeriez l'essayer. Voici une invitation pour créer un profil.", m.body.payload)
 
         invite = db.get_invite_from_email('mctest@veosan.com')
 
@@ -112,8 +112,8 @@ class ProviderSocialTest(BaseTest):
         self.assertEqual(m.subject, 'Invitation to join Veosan from %s %s' % ('first', 'last'))
         self.assertEqual(m.sender, 'first last <support@veosan.com>')
         self.assertEqual(m.reply_to, self._TEST_PROVIDER_EMAIL)
-        self.assertIn('Please click on the link below to create your profile', m.body.payload)
-        self.assertIn("I've been using Veosan and thought you might like to try it out. Here's an invitation to create a profile.", m.body.payload)
+        self.assertIn('SVP suivez le lien ci-dessous pour créer votre profil:', m.body.payload)
+        self.assertIn("J'utilise Veosan et j'ai pensé que vous aimeriez l'essayer. Voici une invitation pour créer un profil.", m.body.payload)
 
         invite = db.get_invite_from_email('mctest@veosan.com')
         invite_token = invite.token
@@ -471,8 +471,8 @@ class ProviderSocialTest(BaseTest):
         
         source_provider = db.get_provider_from_email('mctest@veosan.com')
         
-        self.assertIn("%s %s wants to connect with you on Veosan." % (source_provider.first_name, source_provider.last_name), m.body.payload)
-        self.assertIn("Please click the following link to accept :", m.body.payload)
+        self.assertIn("%s %s veut se connecter avec vous sur Veosan." % (source_provider.first_name, source_provider.last_name), m.body.payload)
+        self.assertIn("SVP suivez le lien ci-dessous pour accepter:", m.body.payload)
         
         lnk = source_provider.get_provider_network_pending_connections_source()[0].key.urlsafe()
 
@@ -542,8 +542,8 @@ class ProviderSocialTest(BaseTest):
         
         source_provider = db.get_provider_from_email('mctest@veosan.com')
         
-        self.assertIn("%s %s wants to connect with you on Veosan." % (source_provider.first_name, source_provider.last_name), m.body.payload)
-        self.assertIn("Please click the following link to accept :", m.body.payload)
+        self.assertIn("%s %s veut se connecter avec vous sur Veosan." % (source_provider.first_name, source_provider.last_name), m.body.payload)
+        self.assertIn("SVP suivez le lien ci-dessous pour accepter:", m.body.payload)
         
         lnk = source_provider.get_provider_network_pending_connections_source()[0].key.urlsafe()
 
@@ -769,8 +769,8 @@ class ProviderSocialTest(BaseTest):
         
         source_provider = db.get_provider_from_email('mctest@veosan.com')
         
-        self.assertIn("%s %s wants to connect with you on Veosan." % (source_provider.first_name, source_provider.last_name), m.body.payload)
-        self.assertIn("Please click the following link to accept :", m.body.payload)
+        self.assertIn("%s %s veut se connecter avec vous sur Veosan." % (source_provider.first_name, source_provider.last_name), m.body.payload)
+        self.assertIn("SVP suivez le lien ci-dessous pour accepter:", m.body.payload)
         
         lnk = source_provider.get_provider_network_pending_connections_source()[0].key.urlsafe()
 
