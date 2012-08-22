@@ -193,12 +193,15 @@
 {# FOR PRODUCTION #}
 {# -------------------------------------- #}
 
-<div id="switch_to_english" class="pull-right" style="white-space: nowrap; background: #cccccc; position: absolute; top: 120px; right:0; width:0; z-index: 1">
-	<div  style="padding: 8px 30px 8px 15px;">
+<div id="switch_to_english" class="pull-right" style="border-bottom-left-radius: 5px; border-top-left-radius: 5px; white-space: nowrap; background: #cccccc; position: absolute; top: 120px; right:0; width:0; z-index: 1">
+	<button type="button" class="close pull-left" onClick="$(this).parent().hide();" style="padding-top: 6px; padding-left:10px; padding-right: 10px">
+		x
+	</button>
+	<div  style="padding-top: 8px; margin-left:20px; padding-bottom: 8px; padding-right: 10px">
 		{% if lang == 'fr' %}
-		<a href="/lang/en"> (x) Switch to English </a>
+		<a href="/lang/en">Switch to English </a>
 		{% elif lang == 'en' %}
-		<a href="/lang/fr"> (x) Changer en Français </a>
+		<a href="/lang/fr">Changer en Français </a>
 		{% endif %}
 	</div>
 </div>
@@ -210,7 +213,7 @@
 	<div class="span8">
 		<table width="100%">
 			<tr>
-				<td valign="top" width="49%" style="background: #dddddd; padding: 15px;" valign="top"><h1 style="border-bottom: solid 1px #999999">Pour les professionnels</h1>
+				<td valign="top" width="49%" style="border-top-left-radius: 5px; border-top-right-radius: 5px; background: #dddddd; padding: 15px;" valign="top"><h1 style="border-bottom: solid 1px #999999">Pour les professionnels</h1>
 				<br>
 				</td>
 				{# spacer #} <td rowspan="5" width="2%">&nbsp;&nbsp;&nbsp;</td>
@@ -229,10 +232,10 @@
 				<td style="padding:15px" valign="top"><h2>Improve Communication</h2><h3>Point 3</h3></td>
 			</tr>
 			<tr>
-				<td style="background: #dddddd; padding: 15px; text-align: center" valign="top"><a href="/signup/provider/fr" class="btn btn-large btn-success" style="height:50px; width:120px;"> I'm a professional
-				<br>
-				<br>
-				Get Started! </a></td>
+				<td style="background: #dddddd; padding: 15px; text-align: center" valign="top"><a href="/signup/provider/fr" class="btn btn-large btn-success"> I'm a professional
+				<div style="margin-top: 5px; margin-bottom: 5px">
+					<i class="bs-icon icon-briefcase"> </i>
+				</div> Get Started! </a></td>
 				<td style="text-align: center; padding:15px" valign="top"><a href="/signup/provider/fr" class="btn btn-large btn-primary" style="height:50px; width:120px;">
 				<br>
 				Get Started! </a></td>
@@ -247,23 +250,22 @@
 {% block extra_javascript %}
 <script>
 	$(function() {
-		setTimeout( function() {
+		setTimeout(function() {
 			$('#switch_to_english').animate({
-					width : '-=160',
-				}, 1000, function() {
+				width : '-=160',
+			}, 1000, function() {
 				// Animation complete.
-				});
+			});
 
-		}, 15000 );
+		}, 15000);
 
-		
 		$('#carouselProfile').carousel({
 			interval : 15000
 		});
 
 		$('#switch_to_english').animate({
-				width : '+=160',
-			}, 1000, function() {
+			width : '+=160',
+		}, 1000, function() {
 			// Animation complete.
 		});
 	});
