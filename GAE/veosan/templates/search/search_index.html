@@ -1,0 +1,203 @@
+{% extends "/layout/base.html" %}
+
+{% set active_page = 'index' %}
+
+{% block subhead %}{% endblock %}
+
+{% block lead %}
+{% if booking_enabled %}
+{{ _("Get started by making a reservation today!") }}
+{% endif %}
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+	<div class="span6">
+		<div class="well">
+			<form class="form-inline" action="/search" method="post">
+				<fieldset>
+					<div class="control-group">
+						{{ form.category.label(class="control-label",style="font-size:large; font-weight:bold") }}
+						<div class="controls">
+							{{ form.category }}
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="dateSelect" style="font-size:large; font-weight:bold"> {{ _('When') }}</label>
+						<div class="controls">
+							{{ form.booking_date }}
+							{{ form.booking_time }}
+						</div>
+					</div>
+					<div class="control-group">
+						{{ form.location.label(class="control-label", style="font-size:large; font-weight:bold") }}
+						<div class="controls">
+							{{ form.location }}
+							{{ form.homecare(class="checkbox") }}
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="controls">
+							<button type="submit" class="btn btn-primary btn-large">
+								{{ _('Book Now') }}
+							</button>
+						</div>
+					</div>
+				</fieldset>
+			</form>
+		</div>
+	</div>
+	<div class="span6">
+		<div id="carouselProfile" class="carousel slide">
+			<!-- Carousel items -->
+			<div class="carousel-inner">
+				{# TODO: replace with calls to make_provider_bio #}
+
+				<div class="item active" style="width:100%">
+					<div style="margin: 0px auto; width:75%;">
+						<div class="row-fluid">
+							<div class="span4">
+								<img src="/assets/img/profile-thumb1.jpeg">
+							</div>
+							<div class="span8">
+								<h3>JULIE S.</h3>
+								<h6>B.Sc., M.Cl.Sc., FCAMT</h6>
+								<br>
+								<br>
+								<h5>Specialities</h5>
+								<ul class="unstyled">
+									<li>
+										Manual therapy
+									</li>
+									<li>
+										Rehabilitation
+									</li>
+									<li>
+										Chronic Pain
+									</li>
+									<li>
+										Spinal Conditions
+									</li>
+									<li>
+										Athletic Injuries
+									</li>
+								</ul>
+							</div>
+						</div>
+						<br>
+						<br>
+						<div class="row-fluid">
+							<blockquote>
+								<p>
+									“I like to show patients a different perspective. Physiotherapy is all about communication.”
+								</p>
+							</blockquote>
+						</div>
+					</div>
+				</div>
+				<div class="item " style="width:100%">
+					<div style="margin: 0px auto; width:75%;">
+						<div class="row-fluid">
+							<div class="span4">
+								<img src="/assets/img/profile-thumb2.jpeg">
+							</div>
+							<div class="span8">
+								<h3>CARLA T.</h3>
+								<h6>B.Sc., M.Cl.Sc., FCAMT</h6>
+								<br>
+								<br>
+								<h5>Specialities</h5>
+								<ul class="unstyled">
+									<li>
+										Manual therapy
+									</li>
+									<li>
+										Rehabilitation
+									</li>
+									<li>
+										Chronic Pain
+									</li>
+									<li>
+										Spinal Conditions
+									</li>
+									<li>
+										Athletic Injuries
+									</li>
+								</ul>
+							</div>
+						</div>
+						<br>
+						<br>
+						<div class="row-fluid">
+							<blockquote>
+								<p>
+									“I like to show patients a different perspective. Physiotherapy is all about communication.”
+								</p>
+							</blockquote>
+						</div>
+					</div>
+				</div>
+				<div class="item " style="width:100%">
+					<div style="margin: 0px auto; width:75%;">
+						<div class="row-fluid">
+							<div class="span4">
+								<img src="/assets/img/profile-thumb3.jpeg">
+							</div>
+							<div class="span8">
+								<h3>PATRICK I.</h3>
+								<h6>B.Sc., M.Cl.Sc., FCAMT</h6>
+								<br>
+								<br>
+								<h5>Specialities</h5>
+								<ul class="unstyled">
+									<li>
+										Manual therapy
+									</li>
+									<li>
+										Rehabilitation
+									</li>
+									<li>
+										Chronic Pain
+									</li>
+									<li>
+										Spinal Conditions
+									</li>
+									<li>
+										Athletic Injuries
+									</li>
+								</ul>
+							</div>
+						</div>
+						<br>
+						<br>
+						<div class="row-fluid">
+							<blockquote>
+								<p>
+									“I like to show patients a different perspective. Physiotherapy is all about communication.”
+								</p>
+							</blockquote>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- Carousel nav -->
+			<a class="carousel-control left" href="#carouselProfile" data-slide="prev">&lsaquo;</a>
+			<a class="carousel-control right" href="#carouselProfile" data-slide="next">&rsaquo;</a>
+		</div>
+	</div>
+</div>
+
+{% endblock content %}
+
+
+{% block extra_javascript %}
+<script>
+	$(function() {
+		$('#carouselProfile').carousel({
+			interval : 15000
+		});
+	});
+</script>
+{% endblock extra_javascript %}
+

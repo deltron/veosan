@@ -95,6 +95,7 @@ application = ndb.toplevel(webapp2.WSGIApplication([
                                        ('/next', booking.SearchNextHandler),
                                        ('/full', booking.FullyBookedHandler),
                                        ('/contact', contact.ContactHandler),
+                                       ('/search', booking.SearchIndexHandler),
 
 
                                        # Static Pages

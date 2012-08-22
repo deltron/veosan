@@ -106,10 +106,14 @@ class AuthenticationTest(BaseTest):
         
         self.login_as_admin()
         response = self.testapp.get('/admin').follow()
+
+        response.mustcontain('Dashboard')
         
         # check for evidence provider is logged out
         response.mustcontain('Mon Compte')
         
+        response = self.testapp.get('/admin/providers')
+
         # try to navigate a provider
         response.mustcontain('firstlast')
         

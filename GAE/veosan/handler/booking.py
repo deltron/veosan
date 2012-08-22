@@ -133,24 +133,8 @@ class BookingBaseHandler(BaseHandler):
     
 class IndexHandler(BookingBaseHandler):
     def get(self):
-        # for showing booking block
-        booking_form = SearchBookingForm().get_form(self.request.GET)
-        self.render_template('index.html', form=booking_form)
+        self.render_template('index.html')
         
-    def post(self):        
-        ''' Renders 2nd page: Result + Confirm button
-        TODO: Replace with passing booking properties and provider key, saving only after the patient logging ??? 
-        '''
-        booking_form = SearchBookingForm().get_form(self.request.POST)
-        if booking_form.validate():
-            booking = db.storeBooking(self.request.POST, None, None)
-            
-            logging.info('BOOKING %s' % booking)
-            logging.debug('(IndexHandler) Created booking: %s' % booking)
-            self.search_and_render_results(booking)
-        else:
-            logging.warn('Validation error in booking form %s' % booking_form.errors)
-            self.render_template('index.html', form=booking_form, error_message=booking_form.errors)
 
                 
 class SearchNextHandler(BookingBaseHandler):
@@ -301,4 +285,27 @@ class FullyBookedHandler(BookingBaseHandler):
             self.renderFullyBooked(booking)
         else:
             self.renderFullyBooked(booking, emailForm)
+
+
+class SearchIndexHandler(BookingBaseHandler):
+    def get(self):
+        # for showing booking block
+        booking_form = SearchBookingForm().get_form(self.request.GET)
+        self.render_template('search/search_index.html', form=booking_form)
+
+    def post(self):        
+        ''' Renders 2nd page: Result + Confirm button
+        TODO: Replace with passing booking properties and provider key, saving only after the patient logging ??? 
+        '''
+        booking_form = SearchBookingForm().get_form(self.request.POST)
+        if booking_form.validate():
+            booking = db.storeBooking(self.request.POST, None, None)
+            
+            logging.info('BOOKING %s' % booking)
+            logging.debug('(IndexHandler) Created booking: %s' % booking)
+            self.search_and_render_results(booking)
+        else:
+            logging.warn('Validation error in booking form %s' % booking_form.errors)
+            self.render_template('search/search_index.html', form=booking_form, error_message=booking_form.errors)
+
 

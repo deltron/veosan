@@ -422,7 +422,7 @@ class BaseTest(unittest.TestCase):
         '''
             Go to index, fill the form and return the response
         '''
-        result_response = self.testapp.post('/')
+        result_response = self.testapp.post('/search')
         booking_form = result_response.forms[0] # booking form  
         # check that date requested is in date select list
         booking_date_select = booking_form.fields['booking_date'][0]
