@@ -44,7 +44,7 @@ class AdminIndexHandler(AdminBaseHandler):
 
         self.auth.unset_session()
         
-        self.redirect('/admin/providers')
+        self.redirect('/admin/dashboard')
 
 
 class AdminSiteConfigHandler(AdminBaseHandler):
