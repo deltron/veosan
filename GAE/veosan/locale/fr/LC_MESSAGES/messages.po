@@ -1077,6 +1077,25 @@ msgstr "Détails de votre rendez-vous"
 msgid "Hi! Unfortunately there are no professionals available that fit your needs and schedule right now."
 msgstr "Malheureusement, il n'y a pas de professionnels disponibles qui répondent à vos besoins et votre horaire pour le moment."
 
+#################
+# Unsupported Browser
+#################
+
+msgid "Unsupported Browser"
+msgstr "Navigateur non-supporté"
+
+msgid "It looks like you're using Internet Explorer!"
+msgstr "Il semble que vous utilisez Internet Explorer!"
+
+msgid "We recommend using"
+msgstr "Nous vous recommandons d'utiliser"
+
+msgid "or"
+msgstr "ou"
+
+msgid "Hi there! unfortunately due to compatibility issues we don't support Internet Explorer. We made this decision so we can focus all our energy on giving the best possible experience to users with modern browsers such as Chrome, Safari, and Firefox as well as our mobile users on iPhones, iPads and Android-enabled devices."
+msgstr "Bonjour! Malheureusement, en raison de problèmes de compatibilité notre site ne supporte pas Internet Explorer. Nous avons pris cette décision afin que nous puissions concentrer toute notre énergie pour fournir la meilleure expérience possible aux utilisateurs de navigateurs modernes tels que Chrome, Safari et Firefox ainsi que nos utilisateurs mobiles sur les iPhones, iPads et appareils Android."
+
 
 ####################################################################
 # Lists of things
