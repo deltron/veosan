@@ -135,6 +135,13 @@ class IndexHandler(BookingBaseHandler):
     def get(self):
         self.render_template('index.html')
         
+    def get_en(self):
+        self.set_language('en')
+        self.render_template('index.html')
+
+    def get_fr(self):
+        self.set_language('fr')
+        self.render_template('index.html')
 
                 
 class SearchNextHandler(BookingBaseHandler):

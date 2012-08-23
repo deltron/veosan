@@ -223,19 +223,17 @@ class BaseHandler(webapp2.RequestHandler):
         return auth_conf
     
     def get_language(self):
-        session = self.session_store.get_session()
-        if session.has_key('lang'):
-            logging.info('(BaseHandler.get_language) get language from session = %s' % session['lang'])
-            return session['lang']
+        if self.session.has_key('lang'):
+            logging.info('(BaseHandler.get_language) get language from session = %s' % self.session['lang'])
+            return self.session['lang']
         else:
             logging.info('(BaseHandler.get_language) no language in session, return default = %s' % util.DEFAULT_LANG)
             return util.DEFAULT_LANG
         
     def set_language(self, lang):
         logging.info('(BaseHandler.set_language) set session[lang] = %s' % lang)
-        session = self.session_store.get_session()
-        session['lang'] = lang
-        
+        self.session['lang'] = lang
+        self.install_translations(lang)
         
     def install_translations(self, lang):
         logging.info('(BaseHandler.install_translations) installing translations %s' % lang)
