@@ -12,7 +12,7 @@
 
 {% block content %}
 
-<div id="switch_to_english" class="pull-right" style="border-bottom-left-radius: 5px; border-top-left-radius: 5px; white-space: nowrap; background: #cccccc; position: absolute; top: 120px; right:0; width:0; z-index: 1">
+<div id="switch_to_english" class="pull-right" style="border-bottom-left-radius: 5px; border-top-left-radius: 5px; white-space: nowrap; background: #cccccc; position: absolute; top: 70px; right:0; width:0; z-index: 1">
 	<button type="button" class="close pull-left" onClick="$(this).parent().hide();" style="padding-top: 6px; padding-left:10px; padding-right: 10px">
 		x
 	</button>
@@ -25,7 +25,7 @@
 	</div>
 </div>
 
-<div id="patient" class="pull-right" style="border-bottom-left-radius: 5px; border-top-left-radius: 5px; white-space: nowrap; background: #cccccc; position: absolute; top: 200px; right:0; width:0; z-index: 1">
+<div id="patient" class="pull-right" style="border-bottom-left-radius: 5px; border-top-left-radius: 5px; white-space: nowrap; background: #cccccc; position: absolute; top: 350px; right:0; width:0; z-index: 1">
 	<button type="button" class="close pull-left" onClick="$(this).parent().hide();" style="padding-top: 6px; padding-left:10px; padding-right: 10px">
 		x
 	</button>
@@ -51,7 +51,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="span8">
+	<div class="span6" style="padding-left: 20px">
 		<div style="margin-bottom: 16px" >
 			<h1>{{ _('For Health Care Professionals')}}</h1>
 		</div>
@@ -65,17 +65,19 @@
 		<div style="margin-bottom: 10px" >
 			<h2>Professional Networking</h2><h3>Show your credentials to patients and extend your professional network. </h3>
 		</div>
-		<div>
+		
+		<!-- <div>
 			<a href="#">Learn more...</a>
 		</div>
 
 		<h3>Are you a health-care professional?</h3>
 
-		
-		<a href="/signup/provider/fr" class="btn btn-large btn-success">Click here to create
+	-->
+	 	<div style="text-align: center">
+		<a href="/signup/provider/fr" class="btn btn-large btn-success" style="padding: 12px 24px; font-size:20px" >Click to create
 			<br>
 			your free profile </a>
-
+		</div>
 	</div>
 </div>
 
