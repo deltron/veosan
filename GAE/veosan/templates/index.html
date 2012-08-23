@@ -12,46 +12,40 @@
 
 {% block content %}
 
-<div id="switch_to_english" class="pull-right" style="border-bottom-left-radius: 5px; border-top-left-radius: 5px; white-space: nowrap; background: #cccccc; position: absolute; top: 70px; right:0; width:0; z-index: 1">
+<div id="switch_to_english" class="pull-right" style="border-bottom-left-radius: 5px; border-top-left-radius: 5px; white-space: nowrap; background: #436EEE; position: absolute; top: 70px; right:0; width:0; z-index: 1; box-shadow: 2px 2px 6px #000;">
 	<button type="button" class="close pull-left" onClick="$(this).parent().hide();" style="padding-top: 6px; padding-left:10px; padding-right: 10px">
 		x
 	</button>
 	<div  style="padding-top: 8px; margin-left:20px; padding-bottom: 8px; padding-right: 10px">
 		{% if lang == 'fr' %}
-		<a href="/lang/en">Switch to English</a>
+		<a href="/lang/en" style="color: white">Switch to English</a>
 		{% elif lang == 'en' %}
-		<a href="/lang/fr">Changer en Français</a>
+		<a href="/lang/fr" style="color: white">Changer en Français</a>
 		{% endif %}
 	</div>
 </div>
 
-<div id="patient" class="pull-right" style="border-bottom-left-radius: 5px; border-top-left-radius: 5px; white-space: nowrap; background: #cccccc; position: absolute; top: 350px; right:0; width:0; z-index: 1">
+<div id="patient" class="pull-right" style="border-bottom-left-radius: 5px; border-top-left-radius: 5px; white-space: nowrap; background: #436EEE; position: absolute; top: 350px; right:0; width:0; z-index: 1; box-shadow: 2px 2px 6px #000;">
 	<button type="button" class="close pull-left" onClick="$(this).parent().hide();" style="padding-top: 6px; padding-left:10px; padding-right: 10px">
 		x
 	</button>
-	<div  style="padding-top: 8px; margin-left:20px; padding-bottom: 8px; padding-right: 10px">
-		<a href="/lang/en">Are you a patient?</a>
+	<div style="padding-top: 8px; margin-left:20px; padding-bottom: 8px; padding-right: 10px">
+		<h4><a href="/signup/patient" style="color: white;">Are you a patient?</a></h4>
 		<br>
-		<br>
-		<br>
+		<p style="color: #eeeeee; font-size: small;">Veosan is currently <br>opening patient<br> accounts on a<br> limited basis!</p>
 	</div>
 </div>
-
 
 <div class="row">
 	<div class="span4">
 		<div style="position: relative">
-			<img src="/assets/img/home.jpeg" width="400">
-			<div style="position: absolute; bottom: 0px; background-color: rgba(64,64,64,0.7); padding:15px">
-				<h2 style="color: white; font-size: large;">
-				<span style="font-family: serif; font-size:xx-large font-style: italic;">“</span>				
-				Veosan offers me an <strong>online presence</strong> to demonstrate my skills and allows my patients to interact with me directly.
-				<span style="font-family: serif; font-size:xx-large font-style: italic;">”</span>
-				</h2>
+			<img src="/assets/img/home.jpeg" width="400" height="453">
+			<div style="position: absolute; bottom: 0px; background-color: rgba(64,64,64,0.7); padding:15px;">
+				<h2 style="color: white; font-size: 140%;"><span style="font-family: serif; font-size:120%; font-style: italic;">“</span> Veosan gives me a place to show my skills and helps patients find me. <span style="font-family: serif; font-size: 140%; font-style: italic;"> ”</span></h2>
 			</div>
 		</div>
 	</div>
-	<div class="span6" style="padding-left: 20px">
+	<div class="span6" style="padding-left: 20px; position: relative; height:453px">
 		<div style="margin-bottom: 16px" >
 			<h1>{{ _('For Health Care Professionals')}}</h1>
 		</div>
@@ -65,18 +59,13 @@
 		<div style="margin-bottom: 10px" >
 			<h2>Professional Networking</h2><h3>Show your credentials to patients and extend your professional network. </h3>
 		</div>
-		
-		<!-- <div>
-			<a href="#">Learn more...</a>
-		</div>
 
-		<h3>Are you a health-care professional?</h3>
-
-	-->
-	 	<div style="text-align: center">
-		<a href="/signup/provider/fr" class="btn btn-large btn-success" style="padding: 12px 24px; font-size:20px" >Click to create
-			<br>
-			your free profile </a>
+		<div style="position: absolute; bottom: 15px; width: 100%">
+			<div style="margin: 0 auto; text-align: center">
+				<a href="/signup/provider/fr" class="btn btn-large btn-success" style="padding: 12px 24px; font-size:20px" > Click Here to Create
+				<br>
+				Your Free Profile </a>
+			</div>
 		</div>
 	</div>
 </div>
@@ -103,7 +92,6 @@
 			});
 
 		}, 2000);
-
 
 		$('#switch_to_english').animate({
 			width : '+=160',
