@@ -12,21 +12,24 @@
 
 {% block content %}
 
+{% if not session['hide-lang'] %}
 <div id="switch_to_english" class="pull-right" style="border-bottom-left-radius: 5px; border-top-left-radius: 5px; white-space: nowrap; background-color: rgba(101,186,237,1.0); position: absolute; top: 70px; right:0; width:0; z-index: 1; box-shadow: 2px 2px 6px #000;">
-	<button type="button" class="close pull-left" onClick="$(this).parent().hide();" style="padding-top: 6px; padding-left:10px; padding-right: 10px">
+	<button type="button" class="close pull-left" onClick="$.get('/hideside/lang'); $(this).parent().hide();" style="padding-top: 6px; padding-left:10px; padding-right: 10px">
 		x
 	</button>
 	<div  style="padding-top: 8px; margin-left:20px; padding-bottom: 8px; padding-right: 10px">
 		{% if lang == 'fr' %}
-		<a href="/lang/en" style="color: whiteSmoke; font-family: 'Karla',sans-serif;">Switch to English</a>
+		<a href="/lang/en/hide_side" style="color: whiteSmoke; font-family: 'Karla',sans-serif;">Switch to English</a>
 		{% elif lang == 'en' %}
-		<a href="/lang/fr" style="color: whiteSmoke; font-family: 'Karla',sans-serif;">Changer en Français</a>
+		<a href="/lang/fr/hide_side" style="color: whiteSmoke; font-family: 'Karla',sans-serif;">Changer en Français</a>
 		{% endif %}
 	</div>
 </div>
+{% endif %}
 
+{% if not session['hide-patient'] %}
 <div id="patient" class="pull-right" style="border-bottom-left-radius: 5px; border-top-left-radius: 5px; white-space: nowrap; background-color: rgba(101,186,237,1.0); position: absolute; top: 140px; right:0; width:0; z-index: 1; box-shadow: 2px 2px 6px #000;">
-	<button type="button" class="close pull-left" onClick="$(this).parent().hide();" style="padding-top: 6px; padding-left:10px; padding-right: 10px">
+	<button type="button" class="close pull-left" onClick="$.get('/hideside/patient'); $(this).parent().hide(); " style="padding-top: 6px; padding-left:10px; padding-right: 10px">
 		x
 	</button>
 	<div style="padding-top: 8px; margin-left:20px; padding-bottom: 8px; padding-right: 10px">
@@ -34,6 +37,7 @@
 		<span style="text-align: center"><h4><a href="/signup/patient" style="color: whiteSmoke; font-family: 'Karla',sans-serif;">Click Here!</a></h4></span>
 	</div>
 </div>
+{% endif %}
 
 <div class="row">
 	<div class="span4">

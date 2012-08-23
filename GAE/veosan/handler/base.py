@@ -108,8 +108,11 @@ class BaseHandler(webapp2.RequestHandler):
         kw['language_labels'] = util.LANGUAGE_LABELS
         
         
+        # make all session variables available to templates
+        kw['session'] = self.session
+        
         # ---------------
-        # Set this to true to show booking block on Index
+        # Site config
         # ---------------
         
         site_config = db.get_site_config()
@@ -206,6 +209,11 @@ class BaseHandler(webapp2.RequestHandler):
     @webapp2.cached_property
     def session_store(self):
         return sessions.get_store(request=self.request)
+
+    @webapp2.cached_property
+    def session(self):
+        # Returns a session using the default cookie key.
+        return self.session_store.get_session()
 
     @webapp2.cached_property
     def auth_config(self):

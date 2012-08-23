@@ -81,21 +81,21 @@ application = ndb.toplevel(webapp2.WSGIApplication([
                                        ]),
                                        
                                        # GAE Warmup Requests
-                                       ('/_ah/warmup', static.WarmupHandler),
+                                       Route('/_ah/warmup', static.WarmupHandler),
                                        
                                        # robots.txt and sitemap.xml for search engines
-                                       ('/robots.txt', static.RobotsHandler),
-                                       ('/sitemap.xml', static.SitemapHandler),
+                                       Route('/robots.txt', static.RobotsHandler),
+                                       Route('/sitemap.xml', static.SitemapHandler),
                                        
                                        # General pages
-                                       ('/', booking.IndexHandler),
-                                       
-                                       
+                                       Route('/', booking.IndexHandler),
+                                       Route('/hideside/<what>', booking.HideSideHandler),
+                                          
                                        # booking stuff
-                                       ('/next', booking.SearchNextHandler),
-                                       ('/full', booking.FullyBookedHandler),
-                                       ('/contact', contact.ContactHandler),
-                                       ('/search', booking.SearchIndexHandler),
+                                       Route('/next', booking.SearchNextHandler),
+                                       Route('/full', booking.FullyBookedHandler),
+                                       Route('/contact', contact.ContactHandler),
+                                       Route('/search', booking.SearchIndexHandler),
 
 
                                        # Static Pages
@@ -238,6 +238,7 @@ application = ndb.toplevel(webapp2.WSGIApplication([
                                        
                                        # language
                                        Route('/lang/<lang>', language.LanguageHandler),
+                                       Route('/lang/<lang>/<hide_side>', language.LanguageHandler),
                                        
                                        # if nothing above matches, try to find a provider
                                        # if this doesn't find someone it should throw a 404 (or back to index page?)

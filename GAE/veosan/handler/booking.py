@@ -309,3 +309,14 @@ class SearchIndexHandler(BookingBaseHandler):
             self.render_template('search/search_index.html', form=booking_form, error_message=booking_form.errors)
 
 
+class HideSideHandler(BookingBaseHandler):
+    def get(self, what = None):
+        if what == 'lang':
+            self.session['hide-lang'] = True
+            logging.info("Hide lang sidebar")
+
+        if what == 'patient':
+            self.session['hide-patient'] = True
+            logging.info("Hide patient sidebar")
+
+        self.render_template("empty.html")

@@ -5,7 +5,7 @@ class LanguageHandler(BaseHandler):
     '''
         Handler to change language
     '''
-    def get(self, lang):
+    def get(self, lang = 'fr', hide_side = None):
         '''
             Changes language and redirect to current page
         '''
@@ -16,6 +16,10 @@ class LanguageHandler(BaseHandler):
         if user:
             user.language = lang
             user.put()
+        
+        # hide sidebar
+        if hide_side == 'hide_side':
+            self.session['hide-lang'] = True
         
         # redirect to referrer or /
         referer = self.request.headers.get('Referer')
