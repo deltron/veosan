@@ -111,7 +111,9 @@ def getAllSpecialities():
             ("pneumology", _(u"Pneumology")),
             ("orthopedic", _(u"Orthopedic")),
             ("neurology", _(u"Neurology")),
-            ("pediatric", _(u"Pediatric"))
+            ("pediatric", _(u"Pediatric")),
+            ("vestibular_rehabilitation", _(u"Vestibular Rehabilitation")),
+            ("womens_health", _(u"Women's Health"))
         ]
     
 def getAllSpecialitiesForPatient():

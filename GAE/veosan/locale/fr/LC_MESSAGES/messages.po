@@ -1386,6 +1386,11 @@ msgstr "Pédiatrie"
 msgid "Geriatric"
 msgstr "Gériatrie"
 
+msgid "Vestibular Rehabilitation"
+msgstr "Réhabilitation Vestibulaire"
+
+msgid "Women's Health"
+msgstr "Santé féminine"
 
 
 #################
