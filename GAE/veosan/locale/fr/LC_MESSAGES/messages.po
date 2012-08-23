@@ -424,6 +424,39 @@ msgstr "Nous croyons que l'utilisation de technologies de pointe est la clé pou
 msgid "Receive care at home"
 msgstr "Recevoir des soins à domicile"
 
+msgid "For Health Care Professionals"
+msgstr "Pour les professionnels de la santé"
+
+msgid "Click Here to Create Your Free Profile"
+msgstr "Cliquez ici pour créer votre profil gratuit"
+
+msgid "Veosan gives me a place to show my skills and helps patients find me."
+msgstr "Veosan me donne un endroit pour démontrer mes compétences et aide les patients à me trouver."
+
+msgid "Are you a patient?"
+msgstr "Pour les patients:"
+
+msgid "Click Here!"
+msgstr "cliquez ici"
+
+msgid "Marketing"
+msgstr "Marketing"
+
+msgid "Scheduling"
+msgstr "Gestion d'horaire"
+
+msgid "Professional Networking"
+msgstr "Réseautage professionnel"
+
+msgid "Your profile allows patients to find and learn more about you."
+msgstr "Votre profil permet aux patients de vous trouver et de prendre connaissance de vos compétences."
+
+msgid "Spend less time on the phone with patients and more time caring for them."
+msgstr "Passez moins de temps au téléphone et plus de temps à prendre soin de vos patients."
+
+msgid "Show your credentials to patients and extend your professional network."
+msgstr "Démontrez vos compétences aux patients potentiels et agrandissez votre réseau professionnel."
+
 #################
 # Results page
 #################

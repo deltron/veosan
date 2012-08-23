@@ -33,8 +33,8 @@
 		x
 	</button>
 	<div style="padding-top: 8px; margin-left:20px; padding-bottom: 8px; padding-right: 10px">
-		<h4><a href="/signup/patient" style="color: whiteSmoke; font-family: 'Karla',sans-serif;">Are you a patient?</a></h4>
-		<span style="text-align: center"><h4><a href="/signup/patient" style="color: whiteSmoke; font-family: 'Karla',sans-serif;">Click Here!</a></h4></span>
+		<h4><a href="/signup/patient" style="color: whiteSmoke; font-family: 'Karla',sans-serif;">{{ _('Are you a patient?') }}</a></h4>
+		<span style="text-align: center"><h4><a href="/signup/patient" style="color: whiteSmoke; font-family: 'Karla',sans-serif;">{{ _('Click Here!') }}</a></h4></span>
 	</div>
 </div>
 {% endif %}
@@ -44,8 +44,11 @@
 		<div style="position: relative">
 			<img src="/assets/img/home.jpeg" width="400" height="453">
 			<div style="position: absolute; bottom: 0px; background-color: rgba(64,64,64,0.7); padding:15px;">
-				<h2 style="color: white; font-size: 140%;"><span style="font-family: serif; font-size:120%; font-style: italic;">“</span> Veosan gives me a place to show my skills and helps patients find me. <span style="font-family: serif; font-size: 140%; font-style: italic;"> ”</span>
-					<br><span class="pull-right">-- Steve C.</a></span>
+				<h2 style="color: white; font-size: 140%;">
+					“
+					{{ _('Veosan gives me a place to show my skills and helps patients find me.') }} 
+					” 
+					{# <br><span class="pull-right">-- Steve C.</a></span> #}
 				</h2>
 			</div>
 		</div>
@@ -56,20 +59,19 @@
 		</div>
 
 		<div style="margin-bottom: 10px" >
-			<h2>Marketing</h2><h3>Your profile allows patients to find and learn more about you.</h3>
+			<h2>{{ _('Marketing') }}</h2><h3>{{ _('Your profile allows patients to find and learn more about you.') }}</h3>
 		</div>
 		<div style="margin-bottom: 10px" >
-			<h2>Scheduling</h2><h3>Spend less time on the phone with patients and more time caring for them.</h3>
+			<h2>{{ _('Scheduling') }}</h2><h3>{{ _('Spend less time on the phone with patients and more time caring for them.') }}</h3>
 		</div>
 		<div style="margin-bottom: 10px" >
-			<h2>Professional Networking</h2><h3>Show your credentials to patients and extend your professional network. </h3>
+			<h2>{{ _('Professional Networking') }}</h2><h3>{{ _('Show your credentials to patients and extend your professional network.') }}</h3>
 		</div>
 
 		<div style="position: absolute; bottom: 5px; width: 100%">
 			<div style="margin: 0 auto; text-align: center">
-				<a href="/signup/provider/fr" class="btn btn-large btn-success" style="padding: 12px 24px; font-size:20px" > Click Here to Create
-				<br>
-				Your Free Profile </a>
+				<a href="/signup/provider/fr" class="btn btn-large btn-success" style="padding: 12px 24px; font-size:20px" > 
+					{{ _('Click Here to Create Your Free Profile') }} </a>
 			</div>
 		</div>
 	</div>
