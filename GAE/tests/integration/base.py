@@ -189,7 +189,7 @@ class BaseTest(unittest.TestCase):
         # switch to french
         response = self.testapp.get('/lang/fr')
         
-        response = self.testapp.post('/signup/provider')
+        response = self.testapp.get('/signup/provider')
         
         signup_form = response.forms['provider_signup_form']
         signup_form['first_name'] = first_name
@@ -209,7 +209,7 @@ class BaseTest(unittest.TestCase):
         # should be on the welcome page
         profile_response.mustcontain("Bienvenue!")
         profile_response.mustcontain("Comment naviguer sur le site")
-        
+                
         
     def fill_new_provider_address_correctly_action(self):
         # request the address page

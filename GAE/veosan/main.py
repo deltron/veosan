@@ -88,7 +88,7 @@ application = ndb.toplevel(webapp2.WSGIApplication([
                                        Route('/sitemap.xml', static.SitemapHandler),
                                        
                                        # General pages
-                                       Route('/', booking.IndexHandler),
+                                       ('/', booking.IndexHandler),
                                        Route('/hideside/<what>', booking.HideSideHandler),
                                           
                                        # booking stuff

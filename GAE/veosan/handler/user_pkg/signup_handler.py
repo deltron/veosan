@@ -66,10 +66,10 @@ class ProviderSignupHandler2(UserBaseHandler):
             provider_signup_form2.populate_obj(provider)
             
             # pre-populate vanity_url with first name + last name + number if collision
-            first_name_first_letter = provider.first_name
+            first_name = provider.first_name
             last_name = provider.last_name
             
-            vanity_url = first_name_first_letter + last_name
+            vanity_url = first_name + last_name
             vanity_url = vanity_url.lower()
             
             # remove any non-alpha
@@ -81,7 +81,7 @@ class ProviderSignupHandler2(UserBaseHandler):
             # check if it's taken
             increment = 0
             while db.get_provider_from_vanity_url(vanity_url) is not None:
-                increment = increment + 1
+                increment += 1
                 
                 # strip previous number
                 vanity_url = ''.join([c for c in vanity_url if c.isalpha()])
@@ -110,7 +110,7 @@ class ProviderSignupHandler2(UserBaseHandler):
                     reserved_url = True
             
             if reserved_url:
-                increment = increment + 1
+                increment += 1
                 
                 # strip previous number
                 vanity_url = ''.join([c for c in vanity_url if c.isalpha()])
