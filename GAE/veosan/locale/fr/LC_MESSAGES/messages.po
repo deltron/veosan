@@ -427,8 +427,8 @@ msgstr "Recevoir des soins à domicile"
 msgid "For Health Care Professionals"
 msgstr "Pour les professionnels de la santé"
 
-msgid "Click Here to Create Your Free Profile"
-msgstr "Cliquez ici pour créer votre profil gratuit"
+msgid "Click Here to Become a Member, it's Free"
+msgstr "Cliquez ici pour créer devenir membre, c'est gratuit"
 
 msgid "Veosan gives me a place to show my skills and helps patients find me."
 msgstr "Veosan me donne un endroit pour démontrer mes compétences et aide les patients à me trouver."
@@ -448,8 +448,8 @@ msgstr "Gestion d'horaire"
 msgid "Professional Networking"
 msgstr "Réseautage professionnel"
 
-msgid "Your profile allows patients to find and learn more about you."
-msgstr "Votre profil permet aux patients de vous trouver et de prendre connaissance de vos compétences."
+msgid "Veosan allows patients to find and learn more about you."
+msgstr "Veosan permet aux patients de vous trouver et de prendre connaissance de vos compétences."
 
 msgid "Spend less time on the phone with patients and more time caring for them."
 msgstr "Passez moins de temps au téléphone et plus de temps à prendre soin de vos patients."
