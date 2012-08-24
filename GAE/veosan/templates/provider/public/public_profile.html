@@ -219,9 +219,15 @@
 			{% for e in provider.get_continuing_education() %}
 			<li>
 				<h4>{{ e.title }}</h4>
-				<h6>{{ e.type|code_to_string }}, {% if e.hours  %}
-				{{ e.hours  }} {{ _('Hours') }}
-				{% endif %} ({{ e.year }}/{{ e.month }})</h6>
+				<h6>{{ e.type|code_to_string }}{% if e.hours %}, {{ e.hours }} {{ _('Hours') }}
+				{% endif %}
+				
+				{% if e.year and e.month %}
+				({{ e.year }}/{{ e.month }})
+				{% elif e.year %}
+				({{ e.year }})
+				{% endif %}
+				</h6>
 				{% if e.description %}
 				<p>
 					{{ e.description|markdown|safe }}

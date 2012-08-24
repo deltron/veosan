@@ -81,11 +81,14 @@ set up CV Sections
 			{% for e in provider.get_continuing_education() %}
 			<li>
 				<h4>{{ e.title }} <a href="/provider/cv/continuing_education/{{ provider.vanity_url }}/edit/{{ e.key.urlsafe() }}" rel="tooltip" title="{{ _('Edit') }}" data-placement="right"><i class="bs-icon icon-edit"> </i></a></h4>
-				<h6>{{ e.type|code_to_string }},
-				{% if e.hours  %}
-				{{ e.hours  }} {{ _('Hours') }}
+				<h6>{{ e.type|code_to_string }}{% if e.hours  %}, {{ e.hours  }} {{ _('Hours') }}
 				{% endif %}
-				({{ e.year }}/{{ e.month }})</h6>
+				{% if e.year and e.month %}
+				({{ e.year }}/{{ e.month }})
+				{% elif e.year %}
+				({{ e.year }})
+				{% endif %}
+				</h6>
 				{% if e.description %}
 				<p>
 					{{ e.description|markdown|safe }}

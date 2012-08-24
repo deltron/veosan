@@ -52,7 +52,7 @@ class ProviderContinuingEducationForm(CustomForm):
     def _set_fields(self, form):        
         setattr(form, 'type', SelectField(_(u'Type'), choices=util.get_all_continuing_education_types()))    
         setattr(form, 'title', TextField(_(u'Continuing Education Title')))
-        setattr(form, 'year', IntegerField(_(u'Year'), [validators.NumberRange(min=1940, max=2100, message=_(u'Please enter a valid year.'))]))
+        setattr(form, 'year', IntegerField(_(u'Year'), [validators.NumberRange(min=1940, max=2100, message=_(u'Please enter a valid year.')), validators.Optional()]))
         setattr(form, 'month', IntegerField(_(u'Month'), [validators.NumberRange(min=1, max=12, message=_(u'Please enter a valid month.')), validators.Optional()]))
         setattr(form, 'hours', FloatField(_(u'Hours'), [validators.NumberRange(min=0, max=1000, message=_(u'Please enter a valid number of hours.')), validators.Optional()]))
         setattr(form, 'description', TextAreaField(_(u'Description'), filters=[custom_filters.escape_brackets]))
