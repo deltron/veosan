@@ -179,12 +179,13 @@ class Provider(ndb.Model):
     def is_available(self, book_date, book_time):
         # what day is the book_date?
         book_weekday_index = datetime.strptime(book_date, '%Y-%m-%d').weekday()
-        book_weekday_key = utilities.time.get_day_of_the_week_from_python_weekday(book_weekday_index)
+        (book_weekday_key, book_weekday_label) = utilities.time.get_day_of_the_week_from_python_weekday(book_weekday_index)
+        book_time_int = int(book_time)
 
         schedules = self.get_schedules()
         for schedule in schedules:
             if book_weekday_key == schedule.day:
-                if book_time >= schedule.start_time and book_time <= schedule.end_time:
+                if book_time_int >= schedule.start_time and book_time_int <= schedule.end_time:
                     return True
             
 

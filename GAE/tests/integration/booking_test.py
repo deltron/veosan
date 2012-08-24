@@ -165,6 +165,33 @@ class BookingTest(BaseTest):
         booking_confirm_page.mustcontain(u"You must accept the terms to book an appointment")
 
 
+    def test_booking_inside_available_schedule(self):
+        ''' if someone forces the URL to book something outside available schedule '''
+        self.create_complete_provider_profile()
+        self.logout_provider()
+        
+        self.login_as_admin()
+        
+        # enable booking
+        response = self.testapp.get('/admin/provider/feature/booking_enabled/' + self._TEST_PROVIDER_VANITY_URL)
+        response.mustcontain("Show booking=True")
+
+        # Monday 9-12 should be available, let's visit public profile and check
+        response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
+        response.mustcontain("Lundi 27 août 2012 9:00")
+        
+        # try to book monday at 17h (which is not available)
+        next_monday = testutil.next_weekday_date_string(0)
+        
+        response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL + '/book/' + next_monday + '/' + '10')
+       
+        # should fail and redirect to booking page with list of available times
+        response.mustcontain(no="Choisissez la date et l'heure de votre rendez-vous")
+        response.mustcontain(no="button-2012-08-27-9")
+
+
+
+
     def test_booking_outside_available_schedule(self):
         ''' if someone forces the URL to book something outside available schedule '''
         self.create_complete_provider_profile()
