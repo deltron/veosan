@@ -56,4 +56,30 @@ class DomainDispatcher(BaseHandler):
         else:
             self.redirect('http://www.veosan.com/')
 
+    
+class IndexHandler(BaseHandler):
+    def get(self):
+        self.render_template('index.html')
+        
+    def get_en(self):
+        self.set_language('en')
+        self.render_template('index.html')
+
+    def get_fr(self):
+        self.set_language('fr')
+        self.render_template('index.html')
+
+
+
+class HideSideHandler(BaseHandler):
+    def get(self, what = None):
+        if what == 'lang':
+            self.session['hide-lang'] = True
+            logging.info("Hide lang sidebar")
+
+        if what == 'patient':
+            self.session['hide-patient'] = True
+            logging.info("Hide patient sidebar")
+
+        self.render_template("empty.html")
 
