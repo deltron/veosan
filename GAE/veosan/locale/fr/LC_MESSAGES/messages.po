@@ -1183,7 +1183,7 @@ msgstr "Médecin"
 msgid "Dentist"
 msgstr "Dentiste"
 
-msgid "Denturologist"
+msgid "Denturist"
 msgstr "Denturologiste"
 
 msgid "Dietitian"
