@@ -218,8 +218,8 @@ class BookingTest(BaseTest):
         response.mustcontain("Choisissez la date et l'heure de votre rendez-vous")
         response.mustcontain("button-2012-08-27-9")
 
-
-
+    def test_booking_inside_available_schedule_but_booked_by_someone_else(self):
+        self.fail("I'm here // DL")
         
 
 if __name__ == "__main__":
