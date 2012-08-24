@@ -722,6 +722,9 @@ msgstr "SVP entrez le nom du certificat"
 msgid "Certification Title"
 msgstr "Titre du certificat"
 
+msgid "Edit"
+msgstr "Modifier"
+
 #################
 # Profile Page
 #################

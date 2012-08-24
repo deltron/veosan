@@ -38,7 +38,7 @@ set up CV Sections
 		<ul class="unstyled">
 			{% for e in provider.get_education() %}
 			<li>
-				<h4>{{ e.degree_type|code_to_string }} {{ e.degree_title }} <a href="/provider/cv/education/{{ provider.vanity_url }}/edit/{{ e.key.urlsafe() }}"><i class="bs-icon icon-edit"> </i></a></h4>
+				<h4>{{ e.degree_type|code_to_string }} {{ e.degree_title }} <a href="/provider/cv/education/{{ provider.vanity_url }}/edit/{{ e.key.urlsafe() }}" rel="tooltip" title="{{ _('Edit') }}" data-placement="right"><i class="bs-icon icon-edit"> </i></a></h4>
 				<h6>
 				{{ e.school_name }}
 				
@@ -60,7 +60,7 @@ set up CV Sections
 			{% for e in provider.get_experience() %}
 			<li>
 
-				<h4>{{ e.title }} <a href="/provider/cv/experience/{{ provider.vanity_url }}/edit/{{ e.key.urlsafe() }}"><i class="bs-icon icon-edit"> </i></a></h4>
+				<h4>{{ e.title }} <a href="/provider/cv/experience/{{ provider.vanity_url }}/edit/{{ e.key.urlsafe() }}" rel="tooltip" title="{{ _('Edit') }}" data-placement="right"><i class="bs-icon icon-edit"> </i></a></h4>
 				<h6>{{ e.company_name }}				
 					{{ macro.display_cv_years(e.start_year, e.end_year) }} </h6>
 				{% if e.description %}
@@ -80,7 +80,7 @@ set up CV Sections
 		<ul class="unstyled">
 			{% for e in provider.get_continuing_education() %}
 			<li>
-				<h4>{{ e.title }} <a href="/provider/cv/continuing_education/{{ provider.vanity_url }}/edit/{{ e.key.urlsafe() }}"><i class="bs-icon icon-edit"> </i></a></h4>
+				<h4>{{ e.title }} <a href="/provider/cv/continuing_education/{{ provider.vanity_url }}/edit/{{ e.key.urlsafe() }}" rel="tooltip" title="{{ _('Edit') }}" data-placement="right"><i class="bs-icon icon-edit"> </i></a></h4>
 				<h6>{{ e.type|code_to_string }},
 				{% if e.hours  %}
 				{{ e.hours  }} {{ _('Hours') }}
@@ -108,7 +108,7 @@ set up CV Sections
 						{{ association_dict[e.organization] }}
 					{% endif %}
 					
-					<a href="/provider/cv/organization/{{ provider.vanity_url }}/edit/{{ e.key.urlsafe() }}"><i class="bs-icon icon-edit"> </i></a>
+					<a href="/provider/cv/organization/{{ provider.vanity_url }}/edit/{{ e.key.urlsafe() }}" rel="tooltip" title="{{ _('Edit') }}" data-placement="right"><i class="bs-icon icon-edit"> </i></a>
 				</h4>
 				<h6>{{ macro.display_cv_years(e.start_year, e.end_year) }} </h6>
 			</li>
@@ -129,7 +129,7 @@ set up CV Sections
 						{{ certification_dict[e.certification] }}
 					{% endif %}
 
-					<a href="/provider/cv/certification/{{ provider.vanity_url }}/edit/{{ e.key.urlsafe() }}"><i class="bs-icon icon-edit"> </i></a>
+					<a href="/provider/cv/certification/{{ provider.vanity_url }}/edit/{{ e.key.urlsafe() }}" rel="tooltip" title="{{ _('Edit') }}" data-placement="right"><i class="bs-icon icon-edit"> </i></a>
 				</h4>
 				<h6>{{ e.year }} </h6>
 			</li>
@@ -189,5 +189,11 @@ set up CV Sections
 </script>
 {% endif %}
 {% endfor %}
+
+<script type="text/javascript">
+  $(document).ready(function () {
+    $("[rel=tooltip]").tooltip();
+  });
+</script>
 
 {% endblock %}
