@@ -11,7 +11,8 @@ import util
 from handler.auth import admin_required
 from google.appengine.ext import ndb
 import datetime
-from data.model import SiteLog, Provider, SiteCounter
+from data.model import SiteLog, SiteCounter
+from data.model_pkg.provider_model import Provider
 
 
 

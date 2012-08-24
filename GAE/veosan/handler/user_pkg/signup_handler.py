@@ -2,7 +2,7 @@
 from handler.user import UserBaseHandler
 from forms.user import ProviderSignupForm1, ProviderSignupForm2, PatientSignupForm
 import util
-from data.model import Provider, Patient
+from data.model import Patient
 from unidecode import unidecode
 from data import db, search_index
 import webapp2
@@ -12,6 +12,7 @@ from webapp2_extras import security
 import logging
 import re
 from data.model_pkg.network_model import ProviderNetworkConnection
+from data.model_pkg.provider_model import Provider
 
 ############################
 # Signup

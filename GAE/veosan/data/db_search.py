@@ -1,7 +1,8 @@
 import logging
-from data.model import Provider, Schedule, Booking
+from data.model import Schedule, Booking
 from datetime import datetime, time
 from utilities.time import create_one_hour_timeslots_over_range, create_one_hour_timeslot, timeslot_distance, get_days_of_the_week
+from data.model_pkg.provider_model import Provider
 
 
 class BookingResponse():
