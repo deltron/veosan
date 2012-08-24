@@ -8,6 +8,7 @@ import util
 from data.model_pkg.cv_model import Education, Experience, ContinuingEducation,\
     ProfessionalOrganization, ProfessionalCertification
 from data.model_pkg.network_model import ProviderNetworkConnection
+import utilities
 
 '''
     stored data 
@@ -175,10 +176,18 @@ class Provider(ndb.Model):
         sq = self.get_schedules()
         return reduce(lambda sum, s: sum + (s.end_time - s.start_time), sq, 0)
     
-    def isAvailable(self, day, time):
-        count = self.schedule.filter('day = ', day).filter('time = ', time).count()
-        logging.info("is available? " + str(day) + " " + str(time) + " count:" + str(count))
-        return count > 0
+    def is_available(self, book_date, book_time):
+        # what day is the book_date?
+        book_weekday_index = datetime.strptime(book_date, '%Y-%m-%d').weekday()
+        book_weekday_key = utilities.time.get_day_of_the_week_from_python_weekday(book_weekday_index)
+
+        schedules = self.get_schedules()
+        for schedule in schedules:
+            if book_weekday_key == schedule.day:
+                if book_time >= schedule.start_time and book_time <= schedule.end_time:
+                    return True
+            
+
     
     def get_future_confirmed_bookings(self):
         yesterday_at_midnight = datetime.combine(date.today(), time())

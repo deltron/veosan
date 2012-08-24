@@ -73,6 +73,8 @@ def get_days_of_the_week():
              ('sunday', _('Sunday')),
            ]
 
+def get_day_of_the_week_from_python_weekday(weekday_index):
+    return get_days_of_the_week()[weekday_index]
 
 def tomorrow():
     d = date.today()

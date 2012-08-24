@@ -6,6 +6,7 @@ import unittest
 import testutil, util
 from data import db
 from data.model import Patient, Booking, User
+import logging
 
 
 class BookingTest(BaseTest):
@@ -103,7 +104,7 @@ class BookingTest(BaseTest):
         self.logout_patient()
         # Try making another booking as Pat the patient
         today = datetime.today()
-        next_monday = today + timedelta(days=-today.weekday(), weeks=1)
+        next_monday = today + timedelta(days= -today.weekday(), weeks=1)
         next_monday_string = datetime.strftime(next_monday, "%Y-%m-%d")
         # We already have an appointment at 8AM, let's now book 10AM
         result_response = self.book_appointment('osteopath', next_monday_string, '10')
@@ -130,7 +131,7 @@ class BookingTest(BaseTest):
         self.login_as_patient()
         # book appointment
         today = datetime.today()
-        next_monday = today + timedelta(days=-today.weekday(), weeks=1)
+        next_monday = today + timedelta(days= -today.weekday(), weeks=1)
         next_monday_string = datetime.strftime(next_monday, "%Y-%m-%d")
         # We already have an appointment at 8AM, let's now book 10AM
         result_response = self.book_appointment('osteopath', next_monday_string, '10')
@@ -177,11 +178,17 @@ class BookingTest(BaseTest):
 
         # Monday 9-12 should be available, let's visit public profile and check
         response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
+        response.mustcontain("Lundi 27 août 2012 9:00")
         
+        # try to book monday at 17h (which is not available)
+        next_monday = testutil.next_weekday_date_string(0)
         
-        #response.showbrowser()
-        
-        #self.fail()
+        response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL + '/book/' + next_monday + '/' + '17')
+       
+        # should fail and redirect to booking page with list of available times
+        response = response.follow()
+        response.mustcontain("Choisissez la date et l'heure de votre rendez-vous")
+        response.mustcontain("button-2012-08-27-9")
 
 
 
