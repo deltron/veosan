@@ -176,10 +176,18 @@ class Booking(ndb.Model):
     comments = ndb.TextProperty()
     specialty = ndb.StringProperty()
     insurance = ndb.StringProperty()
+    
+    
+    
     # link to patient
-    patient = ndb.KeyProperty(kind=Patient)
+    patient = ndb.KeyProperty(kind='Patient')
+    
     # link to provider
     provider = ndb.KeyProperty(kind='Provider')
+    
+    # link to schedule object this booking is "inside"
+    schedule = ndb.KeyProperty(kind='Schedule')
+    
     # booking confirmed by patient
     confirmed = ndb.BooleanProperty(default=False)
     
