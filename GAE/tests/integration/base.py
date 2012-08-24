@@ -4,8 +4,7 @@ from google.appengine.ext import testbed
 import os, logging
 import unittest, webtest
 from StringIO import StringIO
-
-
+from babel.dates import format_datetime
 
 # veo
 import main
@@ -530,8 +529,8 @@ class BaseTest(unittest.TestCase):
         new_user.language = 'fr'
         new_user.put()
         
-        
-    def book_from_public_profile(self, date_string, time_string):
+   
+    def create_provider_and_enable_booking(self):
         # create a new provider, vanity URL is bobafett
         self.create_complete_provider_profile()
         # check profile
@@ -545,6 +544,9 @@ class BaseTest(unittest.TestCase):
         public_profile.mustcontain("Réservez Maintenant")
         self.logout_admin()
         
+        
+    def book_from_public_profile(self, date_string, time_string, returning_patient=False):
+        public_profile = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
         schedule_page = public_profile.click(linkid='book_button')
         schedule_page.mustcontain("Choisissez la date et l'heure de votre rendez-vous")
         # find the form for next Monday at 10
@@ -559,8 +561,11 @@ class BaseTest(unittest.TestCase):
         step1_form['specialty'] = 'sports'
         step1_form['insurance'] = 'private'
 
-        new_patient_page = step1_form.submit()
-        email_sent_page = self.fill_new_patient_profile(new_patient_page)
+        if returning_patient:
+            email_sent_page = step1_form.submit()
+        else:
+            new_patient_page = step1_form.submit()
+            email_sent_page = self.fill_new_patient_profile(new_patient_page)
         # check email sent page
         email_sent_page.mustcontain('Merci Pat')
         email_sent_page.mustcontain('Un couriel vous a été envoyé')
@@ -570,7 +575,7 @@ class BaseTest(unittest.TestCase):
         # check admin console, booking should be in the list
         self.login_as_admin()
         admin_bookings_page = self.testapp.get('/admin/bookings')
-        admin_datetime = testutil.next_monday_date_string() + " 10:00"
+        admin_datetime = testutil.next_monday_date_string() + " " + time_string + ":00"
         admin_bookings_page.mustcontain(admin_datetime)
         admin_bookings_page.mustcontain('Fantastic Fox')
         admin_bookings_page.mustcontain('Pat Patient')
@@ -582,6 +587,50 @@ class BaseTest(unittest.TestCase):
         admin_bookings_details = admin_bookings_page.click(linkid="show-1")
         admin_bookings_details.mustcontain('I would like to receive care related to boat accident')
         admin_bookings_details.mustcontain('sports')
-        admin_bookings_details.mustcontain('private')
-                                           
+        admin_bookings_details.mustcontain('private')                              
         self.logout_admin()
+
+
+    def patient_confirms_latest_booking(self, date_string, time_string):
+
+        # check email to patient
+        booking_datetime = datetime.strptime(testutil.next_monday_date_string() + " " + time_string, '%Y-%m-%d %H')
+        french_datetime_string = format_datetime(booking_datetime, "EEEE 'le' d MMMM yyyy", locale='fr_CA') + " à " + format_datetime(booking_datetime, "H:mm", locale='fr_CA')
+        logging.info('French date time of booking: %s' % french_datetime_string) 
+        # check that confirmation emails was sent to patient
+        messages = self.mail_stub.get_sent_messages(to=self._TEST_PATIENT_EMAIL)
+        patient_email_count = len(messages)
+        # get last email sent
+        m = messages[patient_email_count-1]
+        self.assertEqual(self._TEST_PATIENT_EMAIL, m.to)
+        
+        # activate account
+        messages = self.mail_stub.get_sent_messages(to=self._TEST_PATIENT_EMAIL)
+        
+        self.assertEquals(m.subject, 'Rendez-vous Veosan - Ostéopathe')
+        user = db.get_user_from_email(self._TEST_PATIENT_EMAIL)
+        # check email content
+        self.assertTrue('/user/activation/%s' % user.signup_token in m.body.payload)
+        self.assertIn('Bonjour', m.body.payload)
+        self.assertIn('Merci', m.body.payload)
+        # click the link
+        confirmation_page = self.testapp.get('/user/activation/%s' % user.signup_token)
+        confirmation_page.mustcontain('Votre rendez-vous est confirmé')
+        confirmation_page.mustcontain(french_datetime_string)
+        confirmation_page.mustcontain("Fantastic Fox")
+        # Check email to provider    
+        messages = self.mail_stub.get_sent_messages(to=self._TEST_PROVIDER_EMAIL)
+        provider_mail_count = len(messages)
+        # get last email sent
+        provider_mail = messages[provider_mail_count-1]
+        self.assertEquals(provider_mail.subject, 'Veosan - Nouveau rendez-vous avec Pat Patient')
+        self.assertIn('Vous avez un nouveau rendez-vous', provider_mail.body.payload)
+        self.assertIn("Consultez vos rendez-vous ici", provider_mail.body.payload)
+
+        # check status change in all lists (provider, patient and admin dashboards)
+        self.login_as_provider()
+        provider_bookings = self.testapp.get('/provider/bookings/' + self._TEST_PROVIDER_VANITY_URL)
+        provider_bookings.mustcontain('Pat Patient')
+        # check datetime
+        provider_bookings.mustcontain(french_datetime_string)
+        self.logout_provider()
