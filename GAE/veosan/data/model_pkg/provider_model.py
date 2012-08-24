@@ -7,6 +7,7 @@ from data.model_pkg.cv_model import Education, Experience, ContinuingEducation,\
 from data.model_pkg.network_model import ProviderNetworkConnection
 from data.model import Schedule, Booking, Note
 import utilities
+from webapp2_extras.i18n import to_utc
 
 
 class Provider(ndb.Model):
@@ -87,11 +88,35 @@ class Provider(ndb.Model):
     def recently_created(self):
         datetime_24h_ago = datetime.now() - timedelta(hours=24)
         return self.created_on > datetime_24h_ago
+
+
+    def get_notes(self):
+        ''' Get Notes in reverse chronological order'''
+        return Note.query(Note.provider == self.key).order(-Note.created_on)
     
-    ###
-    ### Schedules and bookings
-    ###
+    def is_address_complete(self):
+        if (not self.phone or (self.phone and len(self.phone) < 10)):
+            return False
+        if (not self.address or (self.address and len(self.address) < 3)):
+            return False
+        if (not self.city or (self.city and len(self.city) < 3)):
+            return False
+        if (not self.postal_code or (self.postal_code and len(self.postal_code) < 6)):
+            return False
+        if (not self.province or (self.province and len(self.province) < 2)):
+            return False
+        if (not self.first_name or (self.first_name and len(self.first_name) < 2)):
+            return False
+        if (not self.last_name or (self.last_name and len(self.last_name) < 2)):
+            return False
+        return True
+
+    def is_enabled(self):
+        return self.status == 'client_enabled'
     
+    ###################################################################
+    # Schedules and bookings
+    #    
     def get_schedules(self):
         return Schedule.query(Schedule.provider == self.key).order(Schedule.day, Schedule.start_time)
     
@@ -100,18 +125,31 @@ class Provider(ndb.Model):
         return reduce(lambda sum, s: sum + (s.end_time - s.start_time), sq, 0)
     
     def is_available(self, book_date, book_time):
-        # what day is the book_date?
+        return self.is_booking_inside_schedule(book_date, book_time) and self.is_timeslot_free(book_date, book_time)
+    
+    def is_booking_inside_schedule(self, book_date, book_time):
+        schedules = self.get_schedules()
+        for schedule in schedules:
+            if self.is_book_date_and_time_inside_schedule(schedule, book_date, book_time):
+                return True
+        
+    def is_timeslot_free(self, book_date, book_time):
+        booking_datetime = to_utc(datetime.strptime(book_date + " " + book_time, '%Y-%m-%d %H'))
+        
+        for booking in self.get_future_confirmed_bookings():
+            if booking.datetime == booking_datetime:
+                return False
+                
+        return True
+        
+    def is_book_date_and_time_inside_schedule(self, schedule, book_date, book_time):
         book_weekday_index = datetime.strptime(book_date, '%Y-%m-%d').weekday()
         (book_weekday_key, book_weekday_label) = utilities.time.get_day_of_the_week_from_python_weekday(book_weekday_index)
         book_time_int = int(book_time)
 
-        schedules = self.get_schedules()
-        for schedule in schedules:
-            if book_weekday_key == schedule.day:
-                if book_time_int >= schedule.start_time and book_time_int <= schedule.end_time:
-                    return True
-            
-
+        if book_weekday_key == schedule.day:
+            if book_time_int >= schedule.start_time and book_time_int <= schedule.end_time:
+                return True
     
     def get_future_confirmed_bookings(self):
         yesterday_at_midnight = datetime.combine(date.today(), time())
@@ -119,10 +157,11 @@ class Provider(ndb.Model):
         return future_confirmed_bookings
     
     
-    def get_notes(self):
-        ''' Get Notes in reverse chronological order'''
-        return Note.query(Note.provider == self.key).order(-Note.created_on)
+
     
+    ###################################################################
+    # CV
+    #    
     def order_cv_results(self, all):
         # has a last_year attribute
         completed = filter(lambda e: e.end_year != None, all)
@@ -159,28 +198,9 @@ class Provider(ndb.Model):
                    ProfessionalCertification.query(ProfessionalCertification.provider == self.key).count(),
                 ])
 
-    def is_address_complete(self):
-        if (not self.phone or (self.phone and len(self.phone) < 10)):
-            return False
-        if (not self.address or (self.address and len(self.address) < 3)):
-            return False
-        if (not self.city or (self.city and len(self.city) < 3)):
-            return False
-        if (not self.postal_code or (self.postal_code and len(self.postal_code) < 6)):
-            return False
-        if (not self.province or (self.province and len(self.province) < 2)):
-            return False
-        if (not self.first_name or (self.first_name and len(self.first_name) < 2)):
-            return False
-        if (not self.last_name or (self.last_name and len(self.last_name) < 2)):
-            return False
-        return True
 
-    def is_enabled(self):
-        return self.status == 'client_enabled'
     
-    
-    ###
+    ###################################################################
     # SOCIAL
     #
     def get_provider_network_count(self):     
