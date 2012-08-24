@@ -251,6 +251,7 @@ class BookFromPublicProfileRegistration(BookingBaseHandler):
         
         provider = db.get_provider_from_vanity_url(vanity_url)
         if email_details_form.validate():
+            
             booking = Booking()
             booking.provider = provider.key
             booking.booking_source = 'profile'
@@ -261,6 +262,10 @@ class BookFromPublicProfileRegistration(BookingBaseHandler):
             booking.comments = self.request.get('comments')
             booking.specialty = self.request.get('specialty')
             booking.insurance = self.request.get('insurance')
+
+            schedule = db.get_schedule_for_date_time(provider, booking_date, booking_time)
+            booking.schedule = schedule.key         
+            
             booking.put()
             logging.info('Created booking from public profile: %s' % booking)
             self.route_patient_to_new_patient_form_or_confirm_booking(booking)
