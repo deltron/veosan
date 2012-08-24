@@ -19,11 +19,11 @@
 	<li id="schedule" {% if "schedule" == active_page %} class="active" {% endif %}>
 		<a href="/provider/schedule/{{ provider_from_user.vanity_url }}">{{ _('Schedule') }}</a>
 	</li>
-
-	{% if 'admin' in roles %}
-	<li id="network" {% if "network" == active_page %} class="active" {% endif %} style="font-style:italic">
+	<li id="network" {% if "network" == active_page %} class="active" {% endif %}>
 		<a href="/provider/network/{{ provider_from_user.vanity_url }}">{{ _('Network') }}</a>
 	</li>
+
+	{% if 'admin' in roles %}
 	<li id="upgrade" {% if "upgrade" == active_page %} class="active" {% endif %} style="font-style:italic">
 		<a href="/provider/upgrade/{{ provider_from_user.vanity_url }}">{{ _('Upgrade') }}</a>
 	</li>
