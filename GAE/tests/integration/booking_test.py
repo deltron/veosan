@@ -188,8 +188,9 @@ class BookingTest(BaseTest):
         # should fail and redirect to booking page with list of available times
         response.mustcontain(no="Choisissez la date et l'heure de votre rendez-vous")
         response.mustcontain(no="button-2012-08-27-9")
-
-
+        response.mustcontain("Nouveau rendez-vous")
+        response.mustcontain("Votre rendez-vous")
+        response.mustcontain("2012-08-27")
 
 
     def test_booking_outside_available_schedule(self):
