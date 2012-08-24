@@ -539,7 +539,7 @@ class BaseTest(unittest.TestCase):
         public_profile.mustcontain("Fantastic Fox")
         # enable the booking
         self.login_as_admin()
-        enable = self.testapp.post('/admin/provider/feature/booking_enabled/' + self._TEST_PROVIDER_VANITY_URL)
+        enable = self.testapp.get('/admin/provider/feature/booking_enabled/' + self._TEST_PROVIDER_VANITY_URL)
         public_profile = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
         public_profile.mustcontain("Fantastic Fox")
         public_profile.mustcontain("Réservez Maintenant")

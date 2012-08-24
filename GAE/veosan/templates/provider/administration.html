@@ -60,13 +60,6 @@
 			</form>
 		</div>
 
-		<h3>Solicit</h3>
-		<p>
-			Make sure profile is completed before sending the invitation for the provider to agree to the terms and take over his profile.
-		</p>
-		<a href="/admin/provider/solicit/{{ provider.vanity_url }}" class="btn btn-primary"> Solicit Provider </a>
-		<span>&lt;{{ provider.email }}&gt;</span>
-
 		<br>
 		<br>
 		<h3>Link custom domain</h3>
@@ -101,53 +94,44 @@
 					<tr>
 						<td width="60%">Show address={{ provider.address_enabled }}</td>
 						<td width="40%">
-						<form method="post" action="/admin/provider/feature/address_enabled/{{ provider.vanity_url }}" class="form-inline">
-							<fieldset>
-								{% if provider.address_enabled %}
-								<button type="submit" class="btn btn-danger">
-									Disable Address Link
-								</button>
-								{% else %}
-								<button type="submit" class="btn btn-success">
-									Enable Address Link
-								</button>
-								{% endif %}
-							</fieldset>
-						</form></td>
+							{% if provider.address_enabled %}
+							<a href="/admin/provider/feature/address_enabled/{{ provider.vanity_url }}" class="btn btn-danger">
+								Disable Address Link
+							</a>
+							{% else %}
+							<a href="/admin/provider/feature/address_enabled/{{ provider.vanity_url }}" class="btn btn-success">
+								Enable Address Link
+							</a>
+							{% endif %}
+						</td>
 					</tr>
 					<tr>
 						<td width="60%">Show booking={{ provider.booking_enabled }}</td>
 						<td width="40%">
-						<form method="post" action="/admin/provider/feature/booking_enabled/{{ provider.vanity_url }}" class="form-inline">
-							<fieldset>
-								{% if provider.booking_enabled %}
-								<button type="submit" class="btn btn-danger">
-									Disable Booking
-								</button>
-								{% else %}
-								<button type="submit" class="btn btn-success">
-									Enable Booking
-								</button>
-								{% endif %}
-							</fieldset>
-						</form></td>
+							{% if provider.booking_enabled %}
+							<a href="/admin/provider/feature/booking_enabled/{{ provider.vanity_url }}" class="btn btn-danger">
+								Disable Booking
+							</a>
+							{% else %}
+							<a href="/admin/provider/feature/booking_enabled/{{ provider.vanity_url }}" class="btn btn-success">
+								Enable Booking
+							</a>
+							{% endif %}
+						</td>
 					</tr>
 					<tr>
 						<td width="60%">Show connect={{ provider.connect_enabled }}</td>
 						<td width="40%">
-						<form method="post" action="/admin/provider/feature/connect_enabled/{{ provider.vanity_url }}" class="form-inline">
-							<fieldset>
-								{% if provider.connect_enabled %}
-								<button type="submit" class="btn btn-danger">
-									Disable Connect
-								</button>
-								{% else %}
-								<button type="submit" class="btn btn-success">
-									Enable Connect
-								</button>
-								{% endif %}
-							</fieldset>
-						</form></td>
+							{% if provider.connect_enabled %}
+							<a href="/admin/provider/feature/connect_enabled/{{ provider.vanity_url }}" class="btn btn-danger">
+								Disable Connect
+							</a>
+							{% else %}
+							<a href="/admin/provider/feature/connect_enabled/{{ provider.vanity_url }}" class="btn btn-success">
+								Enable Connect
+							</a>
+							{% endif %}
+						</td>
 					</tr>
 				</tbody>
 			</table>

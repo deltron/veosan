@@ -106,7 +106,7 @@ class PublicProfileTest(BaseTest):
         
         # enable the address
         self.login_as_admin()
-        enable = self.testapp.post('/admin/provider/feature/address_enabled/' + self._TEST_PROVIDER_VANITY_URL)
+        enable = self.testapp.get('/admin/provider/feature/address_enabled/' + self._TEST_PROVIDER_VANITY_URL)
         
         public_profile = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
         public_profile.mustcontain("Fantastic Fox")
@@ -114,7 +114,7 @@ class PublicProfileTest(BaseTest):
         
         
         # hit it again to disable the address
-        disable = self.testapp.post('/admin/provider/feature/address_enabled/' + self._TEST_PROVIDER_VANITY_URL)
+        disable = self.testapp.get('/admin/provider/feature/address_enabled/' + self._TEST_PROVIDER_VANITY_URL)
 
         public_profile = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
         public_profile.mustcontain("Fantastic Fox")
@@ -134,7 +134,7 @@ class PublicProfileTest(BaseTest):
 
         
         # enable the booking
-        enable = self.testapp.post('/admin/provider/feature/booking_enabled/' + self._TEST_PROVIDER_VANITY_URL)
+        enable = self.testapp.get('/admin/provider/feature/booking_enabled/' + self._TEST_PROVIDER_VANITY_URL)
         
         public_profile = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
         public_profile.mustcontain("Fantastic Fox")
@@ -142,7 +142,7 @@ class PublicProfileTest(BaseTest):
         
         
         # hit it again to disable the booking
-        disable = self.testapp.post('/admin/provider/feature/booking_enabled/' + self._TEST_PROVIDER_VANITY_URL)
+        disable = self.testapp.get('/admin/provider/feature/booking_enabled/' + self._TEST_PROVIDER_VANITY_URL)
 
         public_profile = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
         public_profile.mustcontain("Fantastic Fox")

@@ -163,6 +163,30 @@ class BookingTest(BaseTest):
         booking_confirm_page.mustcontain(u"Le nom de famille est un champs obligatoire")
         booking_confirm_page.mustcontain(u"You must accept the terms to book an appointment")
 
+
+    def test_booking_outside_available_schedule(self):
+        ''' if someone forces the URL to book something outside available schedule '''
+        self.create_complete_provider_profile()
+        self.logout_provider()
+        
+        self.login_as_admin()
+        
+        # enable booking
+        response = self.testapp.get('/admin/provider/feature/booking_enabled/' + self._TEST_PROVIDER_VANITY_URL)
+        response.mustcontain("Show booking=True")
+
+        # Monday 9-12 should be available, let's visit public profile and check
+        response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
+        
+        
+        #response.showbrowser()
+        
+        #self.fail()
+
+
+
+        
+
 if __name__ == "__main__":
     unittest.main()
     

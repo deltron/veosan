@@ -44,7 +44,7 @@ class ProviderStatusHandler(ProviderAdminBaseHandler):
 
 
 class ProviderFeaturesHandler(ProviderAdminBaseHandler):
-    def post(self, feature_switch=None, vanity_url=None):
+    def get(self, feature_switch=None, vanity_url=None):
         
         # validate features that can be switched
         if feature_switch in ['booking_enabled', 'address_enabled', 'connect_enabled']:

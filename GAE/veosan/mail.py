@@ -62,7 +62,7 @@ def email_booking_to_provider(handler, booking):
         
 
 def email_user_password_reset(jinja2, user, activation_url):
-    ''' Send solicitation email to provider '''
+    ''' Send password reset email to provider '''
     message = mail.EmailMessage()
     message.sender = VEOSAN_SUPPORT_ADDRESS
     message.to = user.get_email()
