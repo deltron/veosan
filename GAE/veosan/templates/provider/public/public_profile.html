@@ -4,6 +4,7 @@
 
 {% block subhead %}
 <span itemprop="name">{{ macro.display_provider_name(provider) }}</span>
+
 {% endblock %}
 {% block lead %}
 
@@ -45,6 +46,12 @@
 		<img src="{{ provider.get_profile_photo_image_url(150) }}" width="150"
 		alt="{{ macro.display_provider_name(provider) }} - {{ category_dict[provider.category] }}"
 		itemprop="image">
+		{% endif %}
+
+		{% if 'provider' in roles and provider_from_user == provider %}
+		<a href="/provider/profile/{{ provider.vanity_url }}" class="btn btn-primary" style="width:150px;">Edit Your Profile</a>
+		<br>
+		<br>
 		{% endif %}
 
 		{% if provider.booking_enabled %}
@@ -97,15 +104,9 @@
 		<div class="g-plusone" data-size="small" data-href="http://www.veosan.com/{{ provider.vanity_url }}"></div>
 
 		{% endif %}
-		<br>
-		<br>
-
-		{% if 'admin' in roles %}
-		<a href="/provider/profile/{{ provider.vanity_url }}" class="btn btn-danger"><i>Edit Profile</i></a>
-		{% endif %}
-
 	</div>
-	<div class="span6">
+	<div class="span6">		
+		
 		{# totally empty profile, fill this space with something #}
 		{% if not (provider.bio or provider.quote 
 					or provider.specialty|remove_empty_strings_from_list 
@@ -241,7 +242,7 @@
 		</div>
 		<br>
 		{% endif %}
-		
+
 		{% if provider.booking_enabled %}
 		<div style="width: 80% text-align:center;">
 
