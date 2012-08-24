@@ -231,12 +231,16 @@ class BookFromPublicProfileDisplaySchedule(BookingBaseHandler):
 class BookFromPublicProfileRegistration(BookingBaseHandler):
     def get(self, vanity_url=None, book_date=None, book_time=None):
         provider = db.get_provider_from_vanity_url(vanity_url)
-        
-        email_details_form = EmailAndAppointmentDetails().get_form()
-        email_details_form['booking_date'].data = book_date
-        email_details_form['booking_time'].data = book_time
-        
-        self.render_template('patient/booking_details.html', provider=provider, email_details_form=email_details_form)
+
+        if not provider.is_available(book_date, book_time):
+            logging.info("Trying to book a time not available in the schedule...")
+            self.redirect("/" + vanity_url + "/book")
+        else:    
+            email_details_form = EmailAndAppointmentDetails().get_form()
+            email_details_form['booking_date'].data = book_date
+            email_details_form['booking_time'].data = book_time
+            
+            self.render_template('patient/booking_details.html', provider=provider, email_details_form=email_details_form)
         
     
     def post(self, vanity_url=None):
