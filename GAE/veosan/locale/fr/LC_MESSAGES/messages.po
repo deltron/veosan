@@ -428,7 +428,7 @@ msgid "For Health Care Professionals"
 msgstr "Pour les professionnels de la santé"
 
 msgid "Click Here to Become a Member, it's Free"
-msgstr "Cliquez ici pour créer devenir membre, c'est gratuit"
+msgstr "Cliquez ici pour devenir membre, c'est gratuit"
 
 msgid "Veosan gives me a place to show my skills and helps patients find me."
 msgstr "Veosan me donne un endroit pour démontrer mes compétences et aide les patients à me trouver."
