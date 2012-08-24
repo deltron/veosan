@@ -8,6 +8,7 @@ from datetime import datetime, date, time
 from data.model import Booking, Patient, User, SiteConfig, LogEvent, SiteCounter
 from data.model_pkg.network_model import Invite, ProviderNetworkConnection
 from data.model_pkg.provider_model import Provider
+import utilities
   
 def get_from_urlsafe_key(urlsafe_key):
     logging.info('(db.get_from_urlsafe_key) Getting from urlsafe key: %s' % urlsafe_key)
@@ -187,4 +188,16 @@ def store(key, form, data):
 
 def get_provider_network_connection(source_key, target_key):
     return ProviderNetworkConnection.query(ProviderNetworkConnection.source_provider == source_key, ProviderNetworkConnection.target_provider == target_key).get()
+    
+def get_schedule_for_date_time(provider, book_date, book_time):
+    book_weekday_index = datetime.strptime(book_date, '%Y-%m-%d').weekday()
+    (book_weekday_key, book_weekday_label) = utilities.time.get_day_of_the_week_from_python_weekday(book_weekday_index)
+    book_time_int = int(book_time)
+    
+    schedules = provider.get_schedules()
+    for schedule in schedules:
+        if book_weekday_key == schedule.day:
+            if book_time_int >= schedule.start_time and book_time_int <= schedule.end_time:
+                return schedule
+
     
