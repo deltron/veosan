@@ -69,7 +69,7 @@ class BaseTest(unittest.TestCase):
         self.handler.close()
 
 
-    def assert_msg_in_log(self, msg, admin = False):
+    def assert_msg_in_log(self, msg, admin=False):
         events = db.get_events_all()
         log_present = False
         try:
@@ -79,7 +79,7 @@ class BaseTest(unittest.TestCase):
             # if there is only one, check it
             log_present = msg in events.description and events.admin == admin
         
-        self.assertTrue(log_present, "Event log message missing: %s, admin=%s" % (msg,admin))
+        self.assertTrue(log_present, "Event log message missing: %s, admin=%s" % (msg, admin))
 
 
     
@@ -455,12 +455,12 @@ class BaseTest(unittest.TestCase):
         return new_patient_response
         
     
-    def fill_new_patient_profile(self, response):
+    def fill_new_patient_profile(self, response, patient_email, patient_telephone):
         response.mustcontain('Nouveau patient')
         patient_form = response.forms[0]
         patient_form['first_name'] = 'Pat'
         patient_form['last_name'] = 'Patient'
-        patient_form['telephone'] = '514-123-1234'
+        patient_form['telephone'] = patient_telephone
         patient_form['terms_agreement'] = '1'
         patient_form['address'] = '123 High Street'
         patient_form['city'] = 'Montreal'
@@ -468,7 +468,7 @@ class BaseTest(unittest.TestCase):
         booking_confirm_response = patient_form.submit()
         # check confirm page
         booking_confirm_response.mustcontain("C'est presque complété!")
-        booking_confirm_response.mustcontain(self._TEST_PATIENT_EMAIL)
+        booking_confirm_response.mustcontain(patient_email)
         return booking_confirm_response
     
     def check_activation_email_patient(self):
@@ -545,18 +545,18 @@ class BaseTest(unittest.TestCase):
         self.logout_admin()
         
         
-    def book_from_public_profile(self, date_string, time_string, returning_patient=False):
+    def book_from_public_profile(self, date_string, time_string, returning_patient=False, patient_email=_TEST_PATIENT_EMAIL, patient_telephone=_TEST_PATIENT_TELEPHONE):
         public_profile = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
         schedule_page = public_profile.click(linkid='book_button')
         schedule_page.mustcontain("Choisissez la date et l'heure de votre rendez-vous")
         # find the form for next Monday at 10
-        form_id = "button-" + date_string + '-' + time_string
+        form_id = "button-" + date_string + '-' + str(time_string)
         new_patient_page = schedule_page.click(linkid=form_id)
         
         # fill patient info
         step1_form = new_patient_page.forms[0]
-        step1_form['email'] = self._TEST_PATIENT_EMAIL
-        step1_form['telephone'] = self._TEST_PATIENT_TELEPHONE
+        step1_form['email'] = patient_email
+        step1_form['telephone'] = patient_telephone
         step1_form['comments'] = 'I would like to receive care related to boat accident'
         step1_form['specialty'] = 'sports'
         step1_form['insurance'] = 'private'
@@ -565,22 +565,22 @@ class BaseTest(unittest.TestCase):
             email_sent_page = step1_form.submit()
         else:
             new_patient_page = step1_form.submit()
-            email_sent_page = self.fill_new_patient_profile(new_patient_page)
+            email_sent_page = self.fill_new_patient_profile(new_patient_page, patient_email, patient_telephone)
         # check email sent page
         email_sent_page.mustcontain('Merci Pat')
         email_sent_page.mustcontain('Un couriel vous a été envoyé')
-        email_sent_page.mustcontain(self._TEST_PATIENT_EMAIL)
+        email_sent_page.mustcontain(patient_email)
         email_sent_page.mustcontain('Contactez-nous')
         
         # check admin console, booking should be in the list
         self.login_as_admin()
         admin_bookings_page = self.testapp.get('/admin/bookings')
-        admin_datetime = testutil.next_monday_date_string() + " " + time_string + ":00"
+        admin_datetime = testutil.next_monday_date_string() + " " + str(time_string) + ":00"
         admin_bookings_page.mustcontain(admin_datetime)
         admin_bookings_page.mustcontain('Fantastic Fox')
         admin_bookings_page.mustcontain('Pat Patient')
-        admin_bookings_page.mustcontain(self._TEST_PATIENT_TELEPHONE)
-        admin_bookings_page.mustcontain(self._TEST_PATIENT_EMAIL)
+        admin_bookings_page.mustcontain(patient_telephone)
+        admin_bookings_page.mustcontain(patient_email)
         admin_bookings_page.mustcontain('Patient not confirmed')
         admin_bookings_page.mustcontain('public profile')
         
@@ -594,14 +594,14 @@ class BaseTest(unittest.TestCase):
     def patient_confirms_latest_booking(self, date_string, time_string):
 
         # check email to patient
-        booking_datetime = datetime.strptime(testutil.next_monday_date_string() + " " + time_string, '%Y-%m-%d %H')
+        booking_datetime = datetime.strptime(testutil.next_monday_date_string() + " " + str(time_string), '%Y-%m-%d %H')
         french_datetime_string = format_datetime(booking_datetime, "EEEE 'le' d MMMM yyyy", locale='fr_CA') + " à " + format_datetime(booking_datetime, "H:mm", locale='fr_CA')
         logging.info('French date time of booking: %s' % french_datetime_string) 
         # check that confirmation emails was sent to patient
         messages = self.mail_stub.get_sent_messages(to=self._TEST_PATIENT_EMAIL)
         patient_email_count = len(messages)
         # get last email sent
-        m = messages[patient_email_count-1]
+        m = messages[patient_email_count - 1]
         self.assertEqual(self._TEST_PATIENT_EMAIL, m.to)
         
         # activate account
@@ -622,7 +622,7 @@ class BaseTest(unittest.TestCase):
         messages = self.mail_stub.get_sent_messages(to=self._TEST_PROVIDER_EMAIL)
         provider_mail_count = len(messages)
         # get last email sent
-        provider_mail = messages[provider_mail_count-1]
+        provider_mail = messages[provider_mail_count - 1]
         self.assertEquals(provider_mail.subject, 'Veosan - Nouveau rendez-vous avec Pat Patient')
         self.assertIn('Vous avez un nouveau rendez-vous', provider_mail.body.payload)
         self.assertIn("Consultez vos rendez-vous ici", provider_mail.body.payload)
