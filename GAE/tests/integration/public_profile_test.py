@@ -192,10 +192,13 @@ class PublicProfileTest(BaseTest):
         self.book_from_public_profile(date_string, time_string, returning_patient=True)
         self.patient_confirms_latest_booking(date_string, time_string)
         
-        self.login_as_provider()
-        provider_bookings = self.testapp.get('/provider/bookings/' + self._TEST_PROVIDER_VANITY_URL)
-        provider_bookings.showbrowser()
-        
+
+    # Test: double booking: 2 patients with same providers at same time
+    
+    # Test: double booking: one patient with 2 providers at same time
+
+    # Test: Schedule Display
+
 
 if __name__ == "__main__":
     unittest.main()
