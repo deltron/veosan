@@ -202,10 +202,12 @@ Macro to display year in CV
 				{{ booking_time }}
 				<br>
 				
+				{% if provider.is_address_complete() %}
 				<i class="bs-icon icon-globe"></i>
 				{% if provider.address %} {{ provider.address }} <br>{% endif %}
 				&nbsp;&nbsp;&nbsp;&nbsp;{% if provider.city %} {{ provider.city }}{% endif %}{% if provider.city and provider.province and provider.province != 'nothing' %},{% endif %}
 				{% if provider.province and provider.province != 'nothing' %}{{ provider.province|code_to_string }} {% endif %}
+				{% endif %}
 				<br>
 			</div>
 		</div>
