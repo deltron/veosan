@@ -295,9 +295,7 @@ class BookingTest(BaseTest):
         response.mustcontain("Choisissez la date et l'heure de votre rendez-vous")
         response.mustcontain("button-2012-08-27-9")        
         
-   
-   
-    # Test: double booking: 2 patients with same providers at same time
+
     
     # Test: double booking: one patient with 2 providers at same time
 

@@ -455,7 +455,7 @@ class BaseTest(unittest.TestCase):
         return new_patient_response
         
     
-    def fill_new_patient_profile(self, response, patient_email, patient_telephone):
+    def fill_new_patient_profile(self, response, patient_email=_TEST_PATIENT_EMAIL, patient_telephone=_TEST_PATIENT_TELEPHONE):
         response.mustcontain('Nouveau patient')
         patient_form = response.forms[0]
         patient_form['first_name'] = 'Pat'

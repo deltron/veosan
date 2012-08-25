@@ -149,55 +149,7 @@ class PublicProfileTest(BaseTest):
         public_profile.mustcontain(no="Réservez Maintenant")
         
         
-    def test_book_from_public_profile_new_patient(self):
-        self.create_provider_and_enable_booking()
-        # Book from public profile
-        date_string = testutil.next_monday_date_string()
-        time_string = '10'
-        self.book_from_public_profile(date_string, time_string)
-        
-        # provider should not see the booking yet, check provider bookings list, should be empty as booking is not confirmed
-        self.login_as_provider()
-        provider_bookings = self.testapp.get('/provider/bookings/' + self._TEST_PROVIDER_VANITY_URL)
-        provider_bookings.mustcontain('Vous n’avez aucun rendez-vous prévu')
-        # no email sent to provider (patient is not confirmed)
-        messages = self.mail_stub.get_sent_messages(to=self._TEST_PROVIDER_EMAIL)
-        self.assertEqual(0, len(messages))
-        self.logout_provider()
-        
-        # patient confirms
-        self.patient_confirms_latest_booking(date_string, time_string)
 
-    def test_public_profile_book_no_password_returning_patient(self):
-        self.create_provider_and_enable_booking()
-        # book once from public profile
-        date_string = testutil.next_monday_date_string()
-        time_string = '10'
-        self.book_from_public_profile(date_string, time_string)
-        
-        # provider should not see the booking yet, check provider bookings list, should be empty as booking is not confirmed
-        self.login_as_provider()
-        provider_bookings = self.testapp.get('/provider/bookings/' + self._TEST_PROVIDER_VANITY_URL)
-        provider_bookings.mustcontain('Vous n’avez aucun rendez-vous prévu')
-        # no email sent to provider (patient is not confirmed)
-        messages = self.mail_stub.get_sent_messages(to=self._TEST_PROVIDER_EMAIL)
-        self.assertEqual(0, len(messages))
-        self.logout_provider()
-        
-        self.patient_confirms_latest_booking(date_string, time_string)
-        
-        # book second time from public profile
-        date_string = testutil.next_monday_date_string()
-        time_string = '11'
-        self.book_from_public_profile(date_string, time_string, returning_patient=True)
-        self.patient_confirms_latest_booking(date_string, time_string)
-        
-
-    # Test: double booking: 2 patients with same providers at same time
-    
-    # Test: double booking: one patient with 2 providers at same time
-
-    # Test: Schedule Display
 
 
 if __name__ == "__main__":
