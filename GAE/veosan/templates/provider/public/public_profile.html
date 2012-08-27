@@ -54,7 +54,7 @@
 		<br>
 		{% endif %}
 
-		{% if provider.booking_enabled %}
+		{% if provider.booking_enabled and provider.get_total_available_hours_per_week() > 0 %}
 		<hr style="width:150px; margin-bottom: 10px; border-bottom: 1px solid #e5e5e5;">
 		<a href="/{{ provider.vanity_url }}/book" id="book_button" type="submit" class="btn btn btn-success" style="width:130px"> {{ _('Book Now') }} </a>
 
@@ -249,7 +249,7 @@
 		<br>
 		{% endif %}
 
-		{% if provider.booking_enabled %}
+		{% if provider.booking_enabled and provider.get_total_available_hours_per_week() > 0 %}
 		<div style="width: 80% text-align:center;">
 
 			<h3>Schedule</h3>
