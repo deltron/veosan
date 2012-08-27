@@ -375,9 +375,9 @@ class BaseTest(unittest.TestCase):
         
         # Check that schedule is empty
 
-        # Add an available schedule Monday morning 9-12   
-        response = self.testapp.get('/provider/schedule/%s/add/monday/%s' % (provider.vanity_url, start_time))
-    
+        # Add an available schedule Monday morning 9-12
+        response = self.testapp.get('/provider/schedule/%s/add/%s/%s' % (provider.vanity_url, day, start_time))
+        
         schedule_form = response.forms['schedule_form']
         
         # check the form selects are filled with values
@@ -391,7 +391,7 @@ class BaseTest(unittest.TestCase):
         
         # check one schedule was saved in the database
         schedule_count = provider.get_schedules().count()
-        self.assertEqual(schedule_count , 1, 'Provider should have a schedule')
+        self.assertGreater(schedule_count , 0, 'Provider should have at least one schedule')
         response.mustcontain('%sh-%sh' % (start_time, end_time))
         
         # check if square for day is green
