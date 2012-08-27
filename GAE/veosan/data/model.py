@@ -18,7 +18,7 @@ class SiteLog(ndb.Model):
     page = ndb.StringProperty()
     access_time = ndb.DateTimeProperty(auto_now_add=True)
     ip = ndb.StringProperty()
-    referer = ndb.StringProperty()
+    referer = ndb.TextProperty()
     language = ndb.StringProperty()
     user = ndb.KeyProperty(kind='User')
     user_email = ndb.StringProperty()

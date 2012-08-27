@@ -163,7 +163,7 @@ class BaseHandler(webapp2.RequestHandler):
             else:
                 self.response.write(self.jinja2.render_template(filename, **kw))
         else:
-            logging.error("Unable to parse user agent")
+            logging.error("Unable to parse empty user agent")
             self.response.write(self.jinja2.render_template(filename, **kw))
         
         # log request in database
@@ -171,7 +171,7 @@ class BaseHandler(webapp2.RequestHandler):
         log_entry.language = self.get_language()
         log_entry.page = self.request.path
         log_entry.ip = self.request.remote_addr
-        log_entry.referer= self.request.referer
+        log_entry.referer = self.request.referer
 
         if user:
             log_entry.user_email = user.get_email()
@@ -179,8 +179,9 @@ class BaseHandler(webapp2.RequestHandler):
 
         if google_user:
             log_entry.admin_email = google_user.email()
-
+        
         log_entry.put_async()
+        
           
     def dispatch(self):
         ''' 
