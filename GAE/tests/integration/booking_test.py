@@ -299,8 +299,17 @@ class BookingTest(BaseTest):
     
     # Test: double booking: one patient with 2 providers at same time
 
-    # Test: Schedule Display
-    
+    def test_schedule_display(self):
+        ''' Test that schedule is properly displayed '''
+        self.create_complete_provider_profile()
+        # add schedules
+        
+        
+        self.logout_provider()
+        
+        
+        
+        
          
 if __name__ == "__main__":
     unittest.main()
