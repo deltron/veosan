@@ -397,14 +397,15 @@ def remove_confirmed_bookings_from_schedule(schedule_dict, bookings):
     '''
     for b in bookings:
         # convert booking datetime to local timezone
-        local_datetime = to_local_timezone(b.datetime)
-        date = local_datetime.date()
-        day_datetimes = schedule_dict[date]
-        tz = local_datetime.tzinfo
-        logging.info('tzinfo: %s' % tz)
-        day_datetimes = map(lambda t: t.replace(tzinfo=tz), day_datetimes)
-        if local_datetime in day_datetimes:
-            day_datetimes.remove(local_datetime)
-            schedule_dict[date] = day_datetimes
-            logging.info('removed %s from %s' % (local_datetime, schedule_dict[date]))
+        booking_datetime = to_local_timezone(b.datetime)
+        booking_date = booking_datetime.date()
+        if schedule_dict.has_key(booking_date):
+            day_datetimes = schedule_dict[booking_date]
+            tz = booking_datetime.tzinfo
+            logging.info('tzinfo: %s' % tz)
+            day_datetimes = map(lambda t: t.replace(tzinfo=tz), day_datetimes)
+            if booking_datetime in day_datetimes:
+                day_datetimes.remove(booking_datetime)
+                schedule_dict[booking_date] = day_datetimes
+                logging.info('removed %s from %s' % (booking_datetime, schedule_dict[booking_date]))
     return schedule_dict

@@ -341,6 +341,17 @@ class BookingTest(BaseTest):
         schedule_page.mustcontain('button-%s-%s' % (wed_date_string, start_time))
         
          
+    def test_navigate_schedule(self):
+        # create and confirm booking
+        self.test_book_from_public_profile_new_patient()
+        
+        # check that all schedule time buttons are there.
+        schedule_page = self.testapp.get('/%s/book' % self._TEST_PROVIDER_VANITY_URL)
+        next_week_page = schedule_page.click(linkid='next_week_button')
+        next_week_page.showbrowser()
+        
+        
+         
 if __name__ == "__main__":
     unittest.main()
     
