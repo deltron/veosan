@@ -225,7 +225,8 @@ class BookingTest(BaseTest):
 
         # Monday 9-12 should be available, let's visit public profile and check
         response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
-        response.mustcontain("Lundi 27 août 2012 9:00")
+        response.mustcontain("Lundi")
+        response.mustcontain("9:00")
         
         # try to book monday at 10h (which is available)
         next_monday = testutil.next_weekday_date_string(0)
@@ -234,10 +235,10 @@ class BookingTest(BaseTest):
        
         # should not fail, should be registration page
         response.mustcontain(no="Choisissez la date et l'heure de votre rendez-vous")
-        response.mustcontain(no="button-2012-08-27-9")
+        response.mustcontain(no="button"+next_monday)
         response.mustcontain("Nouveau rendez-vous")
         response.mustcontain("Votre rendez-vous")
-        response.mustcontain("2012-08-27")
+        response.mustcontain(next_monday)
 
 
     def test_booking_outside_available_schedule(self):
@@ -253,7 +254,8 @@ class BookingTest(BaseTest):
 
         # Monday 9-12 should be available, let's visit public profile and check
         response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
-        response.mustcontain("Lundi 27 août 2012 9:00")
+        response.mustcontain("Lundi")
+        response.mustcontain("9:00")
         
         # try to book monday at 17h (which is not available)
         next_monday = testutil.next_weekday_date_string(0)
@@ -263,7 +265,7 @@ class BookingTest(BaseTest):
         # should fail and redirect to booking page with list of available times
         response = response.follow()
         response.mustcontain("Choisissez la date et l'heure de votre rendez-vous")
-        response.mustcontain("button-2012-08-27-9")
+        response.mustcontain("button-"+next_monday+"-9")
 
     def test_booking_inside_available_schedule_but_booked_by_someone_else(self):
         ''' if someone forces the URL to book something outside available schedule '''
@@ -293,7 +295,7 @@ class BookingTest(BaseTest):
         # should fail and redirect to booking page with list of available times
         response = response.follow()
         response.mustcontain("Choisissez la date et l'heure de votre rendez-vous")
-        response.mustcontain("button-2012-08-27-9")        
+        response.mustcontain("button-"+next_monday)        
         
 
     
