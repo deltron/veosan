@@ -365,7 +365,7 @@ class BaseTest(unittest.TestCase):
         #self.assert_msg_in_log("Edit Profile: Success", admin=as_admin)
 
 
-    def provider_schedule_set_one_timeslot_action(self):
+    def provider_schedule_set_one_timeslot_action(self, day='monday', start_time=9, end_time=12):
 
         # get the provider key
         provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
@@ -375,29 +375,29 @@ class BaseTest(unittest.TestCase):
         
         # Check that schedule is empty
 
-        # Add an available schedule Monday morning 9-12   
-        response = self.testapp.get('/provider/schedule/%s/add/monday/9' % provider.vanity_url)
-    
+        # Add an available schedule Monday morning 9-12
+        response = self.testapp.get('/provider/schedule/%s/add/%s/%s' % (provider.vanity_url, day, start_time))
+        
         schedule_form = response.forms['schedule_form']
         
         # check the form selects are filled with values
         
-        schedule_form['day'] = 'monday'
-        schedule_form['start_time'] = 9
-        schedule_form['end_time'] = 12
+        schedule_form['day'] = day
+        schedule_form['start_time'] = start_time
+        schedule_form['end_time'] = end_time
         response = schedule_form.submit()
         
         provider = db.get_provider_from_email("unit_test@provider.com")
         
         # check one schedule was saved in the database
         schedule_count = provider.get_schedules().count()
-        self.assertEqual(schedule_count , 1, 'Provider should have a schedule')
-        response.mustcontain('9h-12h')
+        self.assertGreater(schedule_count , 0, 'Provider should have at least one schedule')
+        response.mustcontain('%sh-%sh' % (start_time, end_time))
         
         # check if square for day is green
-        monday_morning_td = response.html.find('td', attrs={'rowspan': '3'})
-        logging.info('TSET: %s ' % monday_morning_td.__class__)
-        self.assertIsNotNone(monday_morning_td, 'schedule td with rowspan 3 does not exist')
+        row_span_string = str(end_time - start_time)
+        monday_morning_td = response.html.find('td', attrs={'rowspan': row_span_string})
+        self.assertIsNotNone(monday_morning_td, 'schedule td with rowspan %s does not exist' % row_span_string)
 
         monday_morning_a = monday_morning_td.find('a')
         self.assertIsNotNone(monday_morning_a, 'schedule button does not exist')

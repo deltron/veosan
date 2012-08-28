@@ -299,8 +299,29 @@ class BookingTest(BaseTest):
     
     # Test: double booking: one patient with 2 providers at same time
 
-    # Test: Schedule Display
-    
+    def test_schedule_display(self):
+        ''' Test that schedule is properly displayed '''
+        # create provider and add schedules
+        self.create_complete_provider_profile()
+        self.login_as_provider()
+        start_time=9
+        self.provider_schedule_set_one_timeslot_action(day='monday', start_time=start_time, end_time=12)
+        self.provider_schedule_set_one_timeslot_action(day='wednesday', start_time=start_time, end_time=12)
+        self.logout_provider()
+        
+        # enable booking
+        self.login_as_admin()
+        response = self.testapp.get('/admin/provider/feature/booking_enabled/' + self._TEST_PROVIDER_VANITY_URL)
+        response.mustcontain("Show booking=True")
+        self.logout_admin()
+        
+        # check that all schedule time buttons are there.
+        schedule_page = self.testapp.get('/%s/book' % self._TEST_PROVIDER_VANITY_URL)
+        monday_date_string = testutil.next_weekday_date_string(0)
+        schedule_page.mustcontain('button-%s-%s' % (monday_date_string, start_time))
+        wed_date_string = testutil.next_weekday_date_string(2)
+        schedule_page.mustcontain('button-%s-%s' % (wed_date_string, start_time))
+        
          
 if __name__ == "__main__":
     unittest.main()
