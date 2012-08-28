@@ -13,6 +13,8 @@ class SiteConfig(ndb.Model):
     google_analytics_enabled = ndb.BooleanProperty(default=False)
     facebook_like_enabled = ndb.BooleanProperty(default=False)
     signup_enabled = ndb.BooleanProperty(default=False)
+    error_email_enabled = ndb.BooleanProperty(default=False)
+
 
 class SiteLog(ndb.Model):
     page = ndb.StringProperty()

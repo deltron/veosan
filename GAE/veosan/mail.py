@@ -3,9 +3,29 @@ import logging, urlparse
 from google.appengine.api import mail
 from webapp2_extras.i18n import gettext as _
 import util
+import traceback
 
 VEOSAN_SUPPORT_ADDRESS = 'support@veosan.com'
 
+def email_exception_report(request, exception):
+    message = mail.EmailMessage()
+    message.sender = "Veosan Support" + ' <' + VEOSAN_SUPPORT_ADDRESS + '>'
+    message.to = "Veosan Support" + ' <' + VEOSAN_SUPPORT_ADDRESS + '>'
+    message.subject = "Exception Report: " + str(exception)
+    
+    message.body = "T R A C E B A C K\n"
+    message.body += "=================\n\n"
+    message.body += traceback.format_exc(exception)
+    message.body += "\n\n\n\n"
+    message.body += "R E Q U E S T D U M P\n"
+    message.body += "=====================\n\n"
+    message.body += str(request)
+    
+    try:
+        logging.info('Sending traceback to support')
+        message.send()
+    except Exception as e:
+        logging.error('Email not sent. %s' % e)
 
 def render_booking_email_body(jinja2, template_filename, booking, activation_url=None, **kw):
     kw = {'booking': booking, 'provider': booking.provider.get(), 'patient': booking.patient.get(), 'activation_url': activation_url}

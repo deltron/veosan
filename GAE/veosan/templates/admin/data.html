@@ -133,4 +133,30 @@
 	</div>
 </div>
 
+
+<div class="row">
+	<div class="span6">
+		<h3>Enable/disable Email Error Reporting</h3>
+
+		<div class="well">
+			<p>
+				Current status is error_email_enabled={{ site_config.error_email_enabled }}
+			</p>
+			<form method="post" action="/admin/site_config/error_email_enabled" class="form-inline">
+				<fieldset>
+					{% if site_config.error_email_enabled %}
+					<button type="submit" class="btn btn-success">
+						Disable Email Error Reporting
+					</button>
+					{% elif not site_config.error_email_enabled or site_config.error_email_enabled == None %}
+					<button type="submit" class="btn btn-danger">
+						Enable Email Error Reporting
+					</button>
+					{% endif %}
+				</fieldset>
+			</form>
+		</div>
+	</div>
+</div>
+
 {% endblock content %}

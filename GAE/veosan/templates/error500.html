@@ -1,0 +1,20 @@
+{% extends "/layout/base.html" %}
+
+{% block subhead %}{{ _('Error') }}{% endblock %}
+{% block lead %}{{ _('We apologize, but an error occured and your request could not be completed.') }}{% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="span12">
+		<p>
+			{{ _("The error has been logged and we will look into it right away.") }}
+		</p>
+		<p>
+			{{ _("If you have any additional information regarding what might have caused this error, <a href='/contact'>please contact us</a>.") }}
+		</p>
+		<p>
+			<a href="/">{{ _("Please click here to return to the home page.") }}</a>
+		</p>
+	</div>
+</div>
+{% endblock content %} 

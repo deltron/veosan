@@ -1,5 +1,5 @@
 import logging, sha, random
-from google.appengine.api import users
+from google.appengine.api import users, datastore_errors
 import webapp2
 from webapp2_extras import auth, i18n, jinja2, sessions
 
@@ -12,6 +12,7 @@ from data.model import SiteConfig, LogEvent, User, SiteLog
 from google.appengine.ext.ndb.key import Key
 from google.appengine.ext import ndb
 import re
+import mail
 
 class BaseHandler(webapp2.RequestHandler):
     '''
@@ -27,6 +28,22 @@ class BaseHandler(webapp2.RequestHandler):
         '''
         j = jinja2.get_jinja2(app=self.app)
         return j
+    
+    
+    def handle_exception(self, exception, debug_mode):
+        logging.error(exception)
+        
+        site_config = db.get_site_config()
+        
+        kw = {}
+        kw['site_config'] = site_config
+
+        if site_config.error_email_enabled:
+            mail.email_exception_report(self.request, exception)
+            self.response.write(self.jinja2.render_template('error500.html', **kw))
+        else:
+            super(BaseHandler, self).handle_exception(exception, debug_mode)
+
 
     def render_template(self, filename, provider=None, **kw):
         '''
