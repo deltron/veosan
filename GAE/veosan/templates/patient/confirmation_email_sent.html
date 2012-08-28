@@ -1,7 +1,7 @@
 {% extends "/layout/base.html" %}
 
-{% block subhead %} {{ _('Confirmation Email Sent') }} {% endblock %}
-{% block lead %}{% endblock %}
+{% block subhead %} {{ _('Thank You!') }}{% endblock %}
+{% block lead %} {{ _('Confirmation Email Sent') }} {% endblock %}
 
 {% block content %}
 <div class="row">
@@ -22,14 +22,7 @@
 		<div class="well">
 			<h2>{{ _('Your Appointment') }}</h2>
 			<br>
-			<i class="bs-icon icon-user"></i>
-			{{ provider.first_name }} {{ provider.last_name }}
-			<br>
-			<i class="bs-icon icon-briefcase"></i>
-			{{ provider.category|code_to_string }}
-			<br>
-			<i class="bs-icon icon-time"></i> {{ booking.datetime }}
-			<br>
+			{{ macro.booking_summary(provider=provider, booking=booking) }}
 		</div>
 	</div>
 

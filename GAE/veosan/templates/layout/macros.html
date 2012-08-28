@@ -197,10 +197,10 @@ Macro to display year in CV
 				<br>
 				<i class="bs-icon icon-calendar"></i>
 				{% if booking_date %}
-					{{ booking_date }}
+					{{ booking_date|string_to_datetime|format_date }}
 				{% endif %}
 				{% if booking %}
-					{# booking.datetime|format_date #}
+					{{ booking.datetime|format_date }}
 				{% endif %}
 				<br>
 				<i class="bs-icon icon-time"></i>

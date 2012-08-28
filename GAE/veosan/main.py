@@ -20,6 +20,7 @@ from handler.user_pkg import signup_handler
 
 
 jinja_filters = {}
+jinja_filters['string_to_datetime'] = time.string_to_datetime
 jinja_filters['format_weekday'] = time.format_weekday
 jinja_filters['format_date_medium'] = time.format_date_medium
 jinja_filters['format_datetime_with_weekday'] = time.format_datetime_with_weekday

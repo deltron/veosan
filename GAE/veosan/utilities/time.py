@@ -179,3 +179,7 @@ def format_datetime_withseconds_convert_east_tz(datetime):
     return format_datetime(datetime, "yyyy-MM-dd H:mm:ss", rebase=True)
 
 
+def string_to_datetime(string_date):
+    return datetime.strptime(string_date, "%Y-%m-%d")
+
+
