@@ -4,10 +4,17 @@
 
 
 {% block subhead %}
-<span itemprop="name">{{ macro.display_provider_name(provider) }}</span>
+{{ macro.display_provider_name(provider) }}
 {% endblock %}
+
 {% block lead %}
-<span itemprop="jobTitle">{{ category_dict[provider.category] }}</span>
+{{ category_dict[provider.category] }}
+{% if provider.city or provider.province %}
+{{ _('in') }}
+{% if provider.city %} {{ provider.city }}{% endif %}{% if provider.city and provider.province and provider.province != 'nothing' %},
+		{% endif %}
+		{% if provider.province %} {{ provider.province|code_to_string }}{% endif %}
+{% endif %}
 {% endblock %}
 
 {% block content %}
@@ -30,16 +37,6 @@
 		alt="{{ macro.display_provider_name(provider) }} - {{ category_dict[provider.category] }}"
 		itemprop="image">
 		{% endif %}
-
-		<br>
-		<br>
-
-		<br>
-		<br>
-		{% if 'admin' in roles %}
-		<a href="/provider/profile/{{ provider.vanity_url }}" class="btn btn-danger"><i>Edit Profile</i></a>
-		{% endif %}
-
 	</div>
 	<div class="span10">
 

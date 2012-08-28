@@ -241,7 +241,7 @@
 
 	<div class="span4">
 		{% if not 'provider' in roles %}
-		<div class="well well-small" style="width: 80%; text-align: center">
+		<div class="well well-small pull-right" style="width: 80%; text-align: center">
 			<h3>{{ _('Are you a health-care professional?') }}</h3>
 			<i class="bs-icon icon-bullhorn"> </i>
 			<a href="/signup/provider">{{ _("Sign up to get your own professional profile. It's free!") }}</a>
@@ -250,25 +250,28 @@
 		{% endif %}
 
 		{% if provider.booking_enabled and provider.get_total_available_hours_per_week() > 0 %}
-		<div style="width: 80% text-align:center;">
-
+		<div class="well well-small pull-right" style="width: 80%;">
 			<h3>Schedule</h3>
 			Here are some times when {{ provider.first_name }} is free.
 			<br>
 			<a href="/{{ provider.vanity_url }}/book">Click here to see the full list.</a>
 			<br>
 			<br>
+			<ul class="unstyled">
 				{% for (day_key, day_times, t) in date_time_list %}
-					<a href="/{{provider.vanity_url}}/book/{{day_key}}/{{t.hour}}" style="width=100%" type="submit" class="btn btn-primary btn-small" id="button-{{day_key~"-"~t.hour}}">
+				<li>
+					<i class="bs-icon icon-time"> </i>
+					<a href="/{{provider.vanity_url}}/book/{{day_key}}/{{t.hour}}" style="width=100%" id="button-{{day_key~"-"~t.hour}}">
 						{{ day_key|format_weekday|capitalize }}
 						{{ day_key|format_date_medium }}
 
 						{{t|format_datetime_hour_min}}
 					</a>
-					<br>
-					<br>
+				</li>
 				{% endfor %}
-			<a href="/{{ provider.vanity_url }}/book" style="width=150px; margin 5px auto" class="btn btn-primary"> View Full Schedule </a>
+			</ul>
+			<br>
+			<a href="/{{ provider.vanity_url }}/book" style="width:80%; margin 5px auto" class="btn btn-primary"> View Full Schedule </a>
 		</div>
 		<br>
 		<br>
@@ -276,26 +279,28 @@
 
 		{% if provider.connect_enabled and provider.get_provider_network_count() > 0 %}
 		{{ _('This network contains') }} {{ provider.get_provider_network_count() }} {{ _('health-care professionals.') }}
-		<table class="table-condensed">
-			{% for p in provider.get_provider_network() %}
+		<div class="well well-small pull-right" style="width: 80%;">
+	
+			<table class="table-condensed">
+				{% for p in provider.get_provider_network() %}
+				
+				{% if loop.index < 3 %}
+				{# only display first 3 results #}
+				<tr>
 			
-			{% if loop.index < 3 %}
-			{# only display first 3 results #}
-			<tr>
-		
-			<td width="50"><a href="/{{ p.vanity_url }}"> {% if p.profile_photo_blob_key %} <img src="{{ p.get_profile_photo_image_url(50) }}" width="50"
-			alt="{{ macro.display_provider_name(p) }} - {{ category_dict[p.category] }}"> {% else %} <img src="/assets/img/default-profile.png" width="50" height="50"
-			alt="{{ macro.display_provider_name(p) }} - {{ category_dict[p.category] }}"> {% endif %} </a></td>
-			<td width="150"><a href="/{{ p.vanity_url }}"><h4> {{ p.first_name }}
-			{{ p.last_name }} </h4></a> {{ category_dict[p.category] }} </td>
-
-			</tr>
-			{% endif %}
-
-			{% endfor %}
-		</table>
+				<td width="50"><a href="/{{ p.vanity_url }}"> {% if p.profile_photo_blob_key %} <img src="{{ p.get_profile_photo_image_url(50) }}" width="50"
+				alt="{{ macro.display_provider_name(p) }} - {{ category_dict[p.category] }}"> {% else %} <img src="/assets/img/default-profile.png" width="50" height="50"
+				alt="{{ macro.display_provider_name(p) }} - {{ category_dict[p.category] }}"> {% endif %} </a></td>
+				<td width="150"><a href="/{{ p.vanity_url }}"><h4> {{ p.first_name }}
+				{{ p.last_name }} </h4></a> {{ category_dict[p.category] }} </td>
+	
+				</tr>
+				{% endif %}
+	
+				{% endfor %}
+			</table>
 		<a data-toggle="modal" href="#network_modal" style="width=150px; margin 5px auto" class="btn btn-primary">{{ _('View Full Network') }}</a>
-
+		</div>
 		{% endif %}
 	</div>
 

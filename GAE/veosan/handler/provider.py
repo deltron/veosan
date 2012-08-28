@@ -2,6 +2,7 @@ import logging
 from google.appengine.ext import ndb
 from google.appengine.ext import blobstore
 from datetime import datetime, date, timedelta
+from operator import itemgetter, attrgetter
 
 # veo
 import data.db as db
@@ -74,7 +75,9 @@ class ProviderPublicProfileHandler(ProviderBaseHandler):
                     count += 1
                     if count >= 5:
                         break
-                    
+            
+            date_time_list = sorted(date_time_list, key=itemgetter(0, 2))
+            
             # found a provider, render profile
             self.render_public_profile(provider=provider, date_time_list=date_time_list)
             
