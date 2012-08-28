@@ -7,6 +7,21 @@ import traceback
 
 VEOSAN_SUPPORT_ADDRESS = 'support@veosan.com'
 
+def email_error_log_report(error_logs):
+    message = mail.EmailMessage()
+    message.sender = "Veosan Support" + ' <' + VEOSAN_SUPPORT_ADDRESS + '>'
+    message.to = "Veosan Support" + ' <' + VEOSAN_SUPPORT_ADDRESS + '>'
+    message.subject = "Error Log Report"
+    
+    message.body = error_logs
+    
+    try:
+        logging.info('Sending error_log to support')
+        message.send()
+    except Exception as e:
+        logging.error('Email not sent. %s' % e)
+
+
 def email_exception_report(request, exception):
     message = mail.EmailMessage()
     message.sender = "Veosan Support" + ' <' + VEOSAN_SUPPORT_ADDRESS + '>'

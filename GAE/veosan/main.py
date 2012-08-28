@@ -10,7 +10,8 @@ from webapp2_extras.routes import PathPrefixRoute, DomainRoute
 from util import dump
 import util
 from utilities import time
-from handler import booking, provider, patient, provider_admin, admin, static, contact, language, user
+from handler import booking, provider, patient, provider_admin, admin, static, contact, language, user,\
+    tasks
 from handler.provider_pkg import network_handler, address_handler, cv_handler,\
     profile_handler, welcome_handler
 from data.model import User
@@ -205,6 +206,10 @@ application = ndb.toplevel(webapp2.WSGIApplication([
                                        
                                        # admin
                                        Route('/admin', admin.AdminIndexHandler),
+
+                                       PathPrefixRoute('/tasks', [
+                                           Route('/mail_errors', tasks.MailErrorHandler),
+                                       ]),
 
                                        PathPrefixRoute('/admin', [
                                            Route('/bookings', admin.AdminBookingsHandler),
