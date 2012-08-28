@@ -38,6 +38,16 @@
       <changefreq>daily</changefreq>
       <priority>0.5</priority>
    </url>
+   <url>
+      <loc>http://www.veosan.com/en</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.5</priority>
+   </url>
+   <url>
+      <loc>http://www.veosan.com/fr</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.5</priority>
+   </url>
 
    <url>
       <loc>http://www.veosan.com/contact</loc>
