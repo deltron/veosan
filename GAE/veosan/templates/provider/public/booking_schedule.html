@@ -76,12 +76,12 @@
 			<tr>
 			<td>
 			{% if week_nav.prev_week %}
-			<a class="btn btn-success" href="/{{ provider.vanity_url }}/book/date/{{week_nav.prev_week}}" > {{ _("Previous Week") }}</a>
+			<a class="btn btn-success" id="prev_week_button" href="/{{ provider.vanity_url }}/book/date/{{week_nav.prev_week}}" > {{ _("Previous Week") }}</a>
 			{% endif %}
 			</td>
 			{% if week_nav.next_week %}
 			<td align="right">
-			<a class="btn btn-success" href="/{{ provider.vanity_url }}/book/date/{{week_nav.next_week}}" > {{ _("Next Week") }}</a>
+			<a class="btn btn-success" id="next_week_button" href="/{{ provider.vanity_url }}/book/date/{{week_nav.next_week}}" > {{ _("Next Week") }}</a>
 			</td>	
 			{% endif %}
 		</tr>
