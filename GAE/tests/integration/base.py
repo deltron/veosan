@@ -567,7 +567,7 @@ class BaseTest(unittest.TestCase):
             new_patient_page = step1_form.submit()
             email_sent_page = self.fill_new_patient_profile(new_patient_page, patient_email, patient_telephone)
         # check email sent page
-        email_sent_page.mustcontain('Merci!')
+        email_sent_page.mustcontain("C'est presque complété!")
         email_sent_page.mustcontain('Un couriel vous a été envoyé')
         email_sent_page.mustcontain(patient_email)
         email_sent_page.mustcontain('Contactez-nous')
