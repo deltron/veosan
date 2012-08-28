@@ -233,7 +233,7 @@ class BookFromPublicProfileRegistration(BookingBaseHandler):
         provider = db.get_provider_from_vanity_url(vanity_url)
 
         if not provider.is_available(book_date, book_time):
-            logging.info("Trying to book a time not available in the schedule...")
+            logging.warn("Trying to book a time not available in the schedule...")
             self.redirect("/" + vanity_url + "/book")
         else:    
             email_details_form = EmailAndAppointmentDetails().get_form()

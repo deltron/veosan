@@ -104,6 +104,10 @@ def get_provider_from_email(email):
     logging.debug('Provider for email %s is %s' % (email, provider))
     return provider   
 
+    
+def get_patient_from_email(email):
+    return Patient.query(Patient.email == email).get()
+
 def get_all_vanity_urls():
     return Provider.query().fetch(projection=['vanity_url'])
 
@@ -200,4 +204,5 @@ def get_schedule_for_date_time(provider, book_date, book_time):
             if book_time_int >= schedule.start_time and book_time_int <= schedule.end_time:
                 return schedule
 
-    
+
+

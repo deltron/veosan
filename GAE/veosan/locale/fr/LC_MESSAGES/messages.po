@@ -173,8 +173,11 @@ msgstr "Nos professionnels sont évalués afin d’assurer qu’ils répondent a
 msgid "Already a member? Sign in here."
 msgstr "Déjà membre? Connectez-vous ici."
 
+msgid "Thank You!"
+msgstr "Merci!"
+
 msgid "Almost done!"
-msgstr "Presque terminé!"
+msgstr "C'est presque complété!"
 
 msgid "You are just one click away from having your own online presence."
 msgstr "Il vous reste seulement un clic avant d'avoir votre propre présence en ligne."
@@ -542,8 +545,8 @@ msgstr "Commentaires en vue de votre rendez-vous"
 msgid "Thank you"
 msgstr "Merci"
 
-msgid "Almost done! An email was sent to"
-msgstr "C'est presque complété! Un couriel vous a été envoyé à"
+msgid "An email was sent to"
+msgstr "Un couriel vous a été envoyé à"
 
 msgid "Please confirm your appointment by"
 msgstr "Veuillez confirmer votre rendez-vous en"

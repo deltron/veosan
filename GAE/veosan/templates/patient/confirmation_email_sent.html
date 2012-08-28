@@ -1,30 +1,36 @@
 {% extends "/layout/base.html" %}
 
-{% block subhead %} {{ _('Thank You!') }}{% endblock %}
-{% block lead %} {{ _('Confirmation Email Sent') }} {% endblock %}
+{% block subhead %} {{ _('Almost done!') }} {% endblock %}
+{% block lead %} {{ _('An email was sent to') }} <span style="color: blue; text-decoration:underline">{{patient.email}}</u> {% endblock %}
 
-{% block content %}
-<div class="row">
+	{% block content %}
+	<div class="row">
 
-	<div class="span6">
-		<h1><img src="/assets/img/incoming-email.png" width="125" height="80"> {{ _('Thank you') }} {{patient.first_name}}</h1>
-		<br>
-		<h2>{{ _('Almost done! An email was sent to') }} <strong>{{patient.email}}</strong></h2>
-		<br>
-		<h3>{{ _('Please confirm your appointment by') }} <strong> {{ _('checking your email') }} </strong> {{ _('and clicking on the confirmation link.') }} </h3>
-		<br>
-		<p>
-			<i class="icon-user"></i><a href="/contact"> {{ _('Contact us') }} </a> {{ _('for any questions relating to your appointment') }}
-		</p>
-	</div>
+		<div class="span6">
+			<div class="row-fluid">
+				<div class="span3">
+					<img src="/assets/img/incoming-email.png" width="125" height="80" class="pull-left">
+				</div>
+				<div class="span9">
+					<h3>
+						{{ _('Please confirm your appointment by') }} <strong> {{ _('checking your email') }} </strong>
+						{{ _('and clicking on the confirmation link.') }}
+					</h3>
+					<br>
+					<p>
+						<i class="icon-user"></i><a href="/contact"> {{ _('Contact us') }} </a> {{ _('for any questions relating to your appointment') }}
+					</p>
 
-	<div class="span6">
-		<div class="well">
-			<h2>{{ _('Your Appointment') }}</h2>
-			<br>
-			{{ macro.booking_summary(provider=provider, booking=booking) }}
+				</div>
+			</div>
 		</div>
-	</div>
 
-</div>
-{% endblock %} 
+		<div class="span6">
+			<div class="well">
+				<h2>{{ _('Your Appointment') }}</h2>
+				<br>
+				{{ macro.booking_summary(provider=provider, booking=booking) }}
+			</div>
+		</div>
+
+	</div> {% endblock %} 

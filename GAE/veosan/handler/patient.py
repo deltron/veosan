@@ -86,20 +86,26 @@ class NewPatientHandler(PatientBaseHandler):
         
         # validate form
         if patient_form.validate():
-            # create a patient from the form
-            patient = db.store_patient(self.request.POST, patient_form)
-            # Create an empty user in Auth system
-            user = self.create_empty_user_for_patient(patient)
-
-            if user:
-                logging.info('New or non-activated user, sending confirmation email')
-                PatientBaseHandler.link_patient_and_send_confirmation_email(self, booking, patient)
+            # check if a patient already exists (double submit)
+            patient = db.get_patient_from_email(patient_form['email'].data)
+            if not patient:
+                # create a patient from the form
+                patient = db.store_patient(self.request.POST, patient_form)
+                # Create an empty user in Auth system
+                user = self.create_empty_user_for_patient(patient)
+    
+                if user:
+                    logging.info('New or non-activated user, sending confirmation email')
+                    PatientBaseHandler.link_patient_and_send_confirmation_email(self, booking, patient)
+                else:
+                    logging.error('User not created.')
+                    # TODO add custom validation to tell user that email is already in use.
+                    PatientBaseHandler.render_new_patient_form(patient_form, booking, error_message='Email already in use. Try to login instead.')
             else:
-                logging.error('User not created.')
-                # TODO add custom validation to tell user that email is already in use.
-                PatientBaseHandler.render_new_patient_form(patient_form, booking, error_message='Email already in use. Try to login instead.')
-
-        else:   
+                # probably a double submit, just show the confirmation again
+                PatientBaseHandler.render_confirmation_email_sent(handler=self, booking=booking)
+                
+        else:
             # validation failed        
             logging.error('New patient form validation failed')
             self.render_new_patient_form(self, patient_form, booking)
