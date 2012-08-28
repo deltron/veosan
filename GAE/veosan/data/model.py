@@ -196,7 +196,7 @@ class Booking(ndb.Model):
     confirmed = ndb.BooleanProperty(default=False)
     
     status = ndb.StringProperty()
-    
+
     def get_html_summary(self):
         s = u''
         fields_dict = vars(self).iteritems()

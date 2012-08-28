@@ -174,7 +174,7 @@ Macro to display year in CV
 {%- endmacro %}
 
 
-{% macro booking_summary(provider=None, booking_date=None, booking_time=None) -%}
+{% macro booking_summary(provider=None, booking=None, booking_date=None, booking_time=None) -%}
 
 		<div class="row-fluid">
 			<div class="span2">
@@ -196,10 +196,20 @@ Macro to display year in CV
 				{{ provider.category|code_to_string }}
 				<br>
 				<i class="bs-icon icon-calendar"></i>
-				{{ booking_date }}
+				{% if booking_date %}
+					{{ booking_date }}
+				{% endif %}
+				{% if booking %}
+					{# booking.datetime|format_date #}
+				{% endif %}
 				<br>
 				<i class="bs-icon icon-time"></i>
-				{{ booking_time|format_hour }}
+				{% if booking_time %}
+					{{ booking_time|format_hour }}
+				{% endif %}
+				{% if booking %}
+					{{ booking.datetime.hour|format_hour }}
+				{% endif %}
 				<br>
 				
 				{% if provider.is_address_complete() %}
@@ -211,6 +221,5 @@ Macro to display year in CV
 				<br>
 			</div>
 		</div>
-	</div>
 
 {%- endmacro %}
