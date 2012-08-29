@@ -148,30 +148,7 @@ Macro to display year in CV
 
 
 
-{% macro appointment_summary(booking) -%}
 
-	{% set provider = booking.provider.get() %}
-	<i class="bs-icon icon-user"></i> 
-	{% if booking.booking_source == 'profile' %}
-		{{provider.full_name()}}
-	{% else %}
-		{{provider.obfuscated_name()}}
-	{% endif %}
-	 ({{ provider.category|code_to_string }})<br>
-	
-	<i class="bs-icon icon-time"></i> {{ booking.datetime|format_datetime_with_weekday }}<br>
-	
-	{% if not booking.request_homecare %}
-		{% if booking.booking_source == 'profile' %}
-			<i class="bs-icon icon-home"></i> {{ provider.address }}, {{ provider.city }} <br>
-		{% else %}
-			<i class="bs-icon icon-home"></i> {{ booking.request_location|code_to_string }}<br>
-		{% endif %}
-	{%else %}
-	<i class="bs-icon icon-briefcase"></i> {{ _('at your home or workplace')|capitalize }} {{_('in')}} {{ booking.request_location|code_to_string }}<br>
-	{% endif %}
-				
-{%- endmacro %}
 
 
 {% macro booking_summary(provider=None, booking=None, booking_date=None, booking_time=None) -%}

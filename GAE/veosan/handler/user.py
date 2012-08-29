@@ -48,7 +48,7 @@ class UserBaseHandler(BaseHandler):
                 if patient:
                     confirmed_bookings = PatientBaseHandler.confirm_all_unconfirmed_bookings(patient)
                     # render page
-                    self.render_template('user/password.html', patient=patient, confirmed_bookings=confirmed_bookings, form=password_form, **kw)
+                    self.render_template('patient/email_confirmation_link_clicked.html', patient=patient, confirmed_bookings=confirmed_bookings, form=password_form, **kw)
                     # email providers
                     for booking in confirmed_bookings:
                         mail.email_booking_to_provider(self, booking)
