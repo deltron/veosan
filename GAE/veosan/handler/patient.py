@@ -5,6 +5,7 @@ import data.db as db
 import mail
 from forms.patient import PatientForm
 from handler.base import BaseHandler
+from operator import attrgetter
 
 class PatientBaseHandler(BaseHandler):
     '''Common functions for all patient handlers'''
@@ -23,6 +24,10 @@ class PatientBaseHandler(BaseHandler):
     @staticmethod
     def render_bookings(handler, patient, **kw):
         bookings = db.get_bookings_for_patient(patient)
+        
+        bookings = sorted(bookings, key=attrgetter('datetime'), reverse=True)
+
+        
         handler.render_template('patient/booking_list.html', bookings=bookings, **kw)
     
     @staticmethod

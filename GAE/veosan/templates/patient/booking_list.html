@@ -7,8 +7,9 @@
 <div class="row">
 	<div class="span6">
 		{% for booking in bookings %}
+			<div {% if loop.index > 1 %} style="border-top: 1px solid #e5e5e5; padding-top:15px" {% endif %}>
 			{{ macro.booking_summary(provider=booking.provider.get(), booking=booking) }}
-			<hr>		
+			</div>
 		{% endfor %}
 	</div>
 </div>
