@@ -38,7 +38,7 @@ class BookingTestCase(BaseTestCase):
         booking_responses = db_search.provider_search(booking_request)
         logging.info('Booking Respones:')
         for br in booking_responses:
-            logging.info('providers %s on %s at %s' % (br.provider.full_name(), br.timeslot.start.date(), br.timeslot.start.time()))
+            logging.info('providers %s on %s at %s' % (br.provider.email, br.timeslot.start.date(), br.timeslot.start.time()))
         # 2 responses
         self.assertEqual(2, len(booking_responses))
         # first provider is perfet match
@@ -58,7 +58,7 @@ class BookingTestCase(BaseTestCase):
         booking_responses = db_search.provider_search(booking_request)
         logging.info('Booking Respones:')
         for br in booking_responses:
-            logging.info('providers %s on %s at %s' % (br.provider.full_name(), br.timeslot.start.date(), br.timeslot.start.time()))
+            logging.info('providers %s on %s at %s' % (br.provider.email, br.timeslot.start.date(), br.timeslot.start.time()))
         for br in booking_responses:
             self.assertFalse(br.is_perfect_match(booking_request))
         # assert top provider is p2

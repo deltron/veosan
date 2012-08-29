@@ -73,13 +73,6 @@ class Provider(ndb.Model):
             first_letter_of_last_name = self.last_name[0]
         return "%s %s %s." % (self.title, self.first_name, first_letter_of_last_name)
         
-    def full_name(self):
-        if self.title:
-            return '%s %s %s' % (self.title, self.first_name, self.last_name)
-        else:
-            return '%s %s' % (self.first_name, self.last_name)
-        
-
     def get_html_summary(self):
         s = u''
         fields_dict = vars(self).iteritems()

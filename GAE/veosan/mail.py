@@ -91,7 +91,7 @@ def email_booking_to_provider(handler, booking):
     message = mail.EmailMessage()
     message.sender = "Veosan" + ' <' + VEOSAN_SUPPORT_ADDRESS + '>'
     message.to = to_address
-    message.subject = '%s - %s %s' % ('Veosan', _('New Appointment with'), patient.full_name())
+    message.subject = '%s - %s %s %s' % ('Veosan', _('New Appointment with'), patient.first_name, patient.last_name)
     # booking admin url
     url_obj = urlparse.urlparse(handler.request.url)
     provider_bookings_url = urlparse.urlunparse((url_obj.scheme, url_obj.netloc, '/provider/bookings/' + provider.vanity_url, '', '', ''))

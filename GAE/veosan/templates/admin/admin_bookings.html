@@ -23,6 +23,8 @@
 			</thead>
 			<tbody>
 				{% for b in bookings %}
+				{% set provider = b.provider.get() %} 
+
 				<tr>
 					<td>
 						<a id="show-{{loop.index}}" href="/admin/booking/show/{{ b.key.urlsafe() }}">{{ b.key.id() }}</a>
@@ -34,7 +36,7 @@
 						{{ b.created_on|format_datetime_noseconds }}
 					</td>
 					<td>
-						{{ category_dict[b.request_category] }}
+						{{ category_dict[provider.category] }}
 					</td>
 					<td>
 						{% if b.datetime %}
@@ -49,10 +51,10 @@
 						{% if b.patient %} 
 						{% set patient = b.patient.get() %}
 						<a href="#">
-							 {{patient.first_name}} {{patient.last_name}} <br>
+							 {{patient.first_name}} {{patient.last_name}} </a><br>
 							 {{patient.email}}<br>
 							 {{patient.telephone}}
-						</a>
+						
 							{% if not patient.user.get().confirmed %}
 							<br>
 							<span class="badge badge-warning">Patient not confirmed</span>
@@ -71,8 +73,10 @@
 					
 					<td> 
 						{% if b.provider %}
-						{% set provider = b.provider.get() %} 
-							<a href="/provider/bookings/{{ provider.vanity_url }}">{{ provider.first_name }} {{ provider.last_name}} ({{provider.email}})</a> 
+							<a href="/provider/bookings/{{ provider.vanity_url }}">{{ provider.first_name }} {{ provider.last_name}}</a>
+							<br>
+							{{ provider.email }}<br>
+							{{ provider.phone }}
 						{% else %}
 							<span class="badge badge-important">x</span> 
 							No provider booked
