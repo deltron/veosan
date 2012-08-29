@@ -351,6 +351,35 @@ class BookingTest(BaseTest):
         next_week_page.showbrowser()
         
         
+    def test_booking_removed_from_public_profile_availability(self):
+        ''' if someone forces the URL to book something outside available schedule '''        
+        self.create_complete_provider_profile()
+        self.logout_provider()
+        
+        self.login_as_admin()
+        
+        # enable booking
+        response = self.testapp.get('/admin/provider/feature/booking_enabled/' + self._TEST_PROVIDER_VANITY_URL)
+        response.mustcontain("Show booking=True")
+
+        self.logout_admin()
+        
+        # check it appears as available on public profile and booking page
+        
+        response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
+        
+        # book an appointment for next monday at 10am
+        next_monday = testutil.next_weekday_date_string(0)
+        self.book_from_public_profile(next_monday, 10, False, 
+                                      self._TEST_PATIENT_EMAIL, self._TEST_PATIENT_TELEPHONE)
+        
+        self.patient_confirms_latest_booking(next_monday, 10)
+        
+        self.logout_patient()
+        
+        # check schedule on public profile
+        
+
          
 if __name__ == "__main__":
     unittest.main()
