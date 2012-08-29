@@ -17,6 +17,7 @@ from data.model import User, Booking
 import util, testutil
 from google.appengine.datastore import datastore_stub_util
 from webapp2_extras import i18n
+import utilities
 
 class BaseTest(unittest.TestCase):
     util.BOOKING_ENABLED = True
@@ -600,8 +601,10 @@ class BaseTest(unittest.TestCase):
         french_datetime_string = format_datetime(booking_datetime, "EEEE 'le' d MMMM yyyy", locale='fr_CA') + " à " + format_datetime(booking_datetime, "H:mm", locale='fr_CA')
         
         booking_datetime = datetime.strptime(testutil.next_monday_date_string(), '%Y-%m-%d')
-        
         booking_datetime_string = format_date(booking_datetime, format="d MMM yyyy", locale='fr_CA')
+        
+        # assume it's in french...
+        booking_time_string = time_string + "h"
 
         logging.info('French date time of booking: %s' % french_datetime_string) 
         # check that confirmation emails was sent to patient
@@ -625,7 +628,7 @@ class BaseTest(unittest.TestCase):
         # click the link
         confirmation_page = self.testapp.get('/user/activation/%s' % user.signup_token)
         confirmation_page.mustcontain('Votre rendez-vous est confirmé')
-        confirmation_page.mustcontain("14h")
+        confirmation_page.mustcontain(booking_time_string)
         confirmation_page.mustcontain(booking_datetime_string)
         confirmation_page.mustcontain("Fantastic Fox")
         # Check email to provider    
