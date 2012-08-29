@@ -113,7 +113,7 @@ def format_datetime_full(datetime):
     else:
         return "%s %s %s" % (format_datetime(datetime, "EEEE d MMMM yyyy"), _(u"at"), format_datetime(datetime, "H:mm a"))
         
-
+# delete this? not locale or time-zone aware
 def format_hour(hour):
     lang = _('en')
     if hour:
