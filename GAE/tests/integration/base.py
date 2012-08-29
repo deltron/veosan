@@ -625,7 +625,6 @@ class BaseTest(unittest.TestCase):
         provider_mail = messages[provider_mail_count - 1]
         self.assertEquals(provider_mail.subject, 'Veosan - Nouveau rendez-vous avec Pat Patient')
         self.assertIn('Vous avez un nouveau rendez-vous', provider_mail.body.payload)
-        self.assertIn("Consultez vos rendez-vous ici", provider_mail.body.payload)
 
         # check status change in all lists (provider, patient and admin dashboards)
         self.login_as_provider()
