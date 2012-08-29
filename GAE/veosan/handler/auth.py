@@ -39,12 +39,18 @@ def provider_required(handler_method):
         # admin
         if users.is_current_user_admin():
             handler_method(self, vanity_url, *args, **kwargs)
+            
         # provider logged in with key matching request key
         elif check_provider_key(self, vanity_url):
             handler_method(self, vanity_url, *args, **kwargs)
-        else:
-            self.redirect('/login', abort=True)
             
+        else:
+            # has a vanity url but not logged in, redirect to provider's public profile
+            if vanity_url:
+                self.redirect('/' + vanity_url)
+            else:
+                self.redirect('/login')
+                
     # decorator returns check_login function    
     return check_provider_login
 
