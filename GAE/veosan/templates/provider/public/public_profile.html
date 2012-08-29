@@ -278,8 +278,8 @@
 		{% endif %}
 
 		{% if provider.connect_enabled and provider.get_provider_network_count() > 0 %}
-		{{ _('This network contains') }} {{ provider.get_provider_network_count() }} {{ _('health-care professionals.') }}
 		<div class="well well-small pull-right" style="width: 80%;">
+		{{ _('This network contains') }} {{ provider.get_provider_network_count() }} {{ _('health-care professionals.') }}
 	
 			<table class="table-condensed">
 				{% for p in provider.get_provider_network() %}
