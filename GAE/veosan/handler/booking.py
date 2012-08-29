@@ -15,28 +15,19 @@ from utilities import time
 from data.model import Booking
 from webapp2_extras.i18n import to_utc
 from collections import namedtuple
+from webapp2_extras.i18n import gettext as _
+import handler as handler_pkg
 
 class BookingBaseHandler(BaseHandler):
     '''Common functions for all booking handlers'''
     
     @staticmethod
     def render_confirmed_patient(handler, patient, **kw):
-        # find the patient's bookings
-        # ASSUMPTION:
-        # ==========
-        # if the patient is being confirmed, they only have one appointment
-        # so we take the first one from the restult list and display it
-        booking = db.get_bookings_for_patient(patient)[0]
-        
-        extra = {'patient': patient, 'booking': booking, 'provider': booking.provider.get()}
-        kw.update(extra)
-        handler.render_template('patient/confirm_appointment.html', **kw)
-        
-    def render_confirmed_booking(self, booking, **kw):        
-        extra = {'patient': booking.patient.get(), 'booking': booking, 'provider': booking.provider.get()}
-        kw.update(extra)
-        self.render_template('patient/confirm_appointment.html', **kw)
+        kw_new = { 'success_message' : _('You new appointment is confirmed!') }
+        kw.update(kw_new)
 
+        handler_pkg.patient.PatientBaseHandler.render_bookings(handler, patient, **kw)
+ 
     def search_and_render_results(self, booking, email_form=None):
         logging.info("Searching for providers for booking %s" % booking)
         booking_responses = db_search.provider_search(booking)
@@ -160,7 +151,10 @@ class BookingHandler(BookingBaseHandler):
         booking_key = self.request.get('bk')
         logging.info('(BookingHandler.get) Showing Booking confirmation for %s' % booking_key)
         booking = db.get_from_urlsafe_key(booking_key)
-        self.render_confirmed_booking(booking) 
+        patient = booking.patient.get()
+        kw = { 'success_message' : _('You new appointment is confirmed!') }
+
+        handler_pkg.patient.PatientBaseHandler.render_bookings(self, patient, **kw)
         
   
     def post(self):

@@ -138,7 +138,7 @@ class BookingTest(BaseTest):
         # patient email in navbar
         booking_confirm_page.mustcontain(self._TEST_PATIENT_EMAIL)
         # Title check
-        booking_confirm_page.mustcontain('Thank you Pat!')
+        booking_confirm_page.mustcontain('You new appointment is confirmed!')
         
     def test_booking_with_loggedin_patient(self):
         self.test_booking_new_patient()
@@ -156,7 +156,7 @@ class BookingTest(BaseTest):
         # patient email in navbar
         booking_confirm_page.mustcontain(self._TEST_PATIENT_EMAIL)
         # Title check
-        booking_confirm_page.mustcontain('Thank you Pat')
+        booking_confirm_page.mustcontain('You new appointment is confirmed!')
      
              
     def test_booking_new_patient_terms_not_agreed(self):
