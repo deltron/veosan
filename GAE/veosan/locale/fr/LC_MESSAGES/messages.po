@@ -173,8 +173,11 @@ msgstr "Nos professionnels sont évalués afin d’assurer qu’ils répondent a
 msgid "Already a member? Sign in here."
 msgstr "Déjà membre? Connectez-vous ici."
 
+msgid "Thank You!"
+msgstr "Merci!"
+
 msgid "Almost done!"
-msgstr "Presque terminé!"
+msgstr "C'est presque complété!"
 
 msgid "You are just one click away from having your own online presence."
 msgstr "Il vous reste seulement un clic avant d'avoir votre propre présence en ligne."
@@ -542,8 +545,8 @@ msgstr "Commentaires en vue de votre rendez-vous"
 msgid "Thank you"
 msgstr "Merci"
 
-msgid "Almost done! An email was sent to"
-msgstr "C'est presque complété! Un couriel vous a été envoyé à"
+msgid "An email was sent to"
+msgstr "Un couriel vous a été envoyé à"
 
 msgid "Please confirm your appointment by"
 msgstr "Veuillez confirmer votre rendez-vous en"
@@ -1444,11 +1447,14 @@ msgstr "Rendez-vous Veosan"
 msgid "New Appointment with"
 msgstr "Nouveau rendez-vous avec"
 
-msgid "You are booked for"
-msgstr "Votre rendez-vous de"
+msgid "You have an appointment scheduled with"
+msgstr "Vous avez un rendez-vous prévu avec"
 
 msgid "with"
 msgstr "avec"
+
+msgid "on"
+msgstr ""
 
 msgid "Please confirm your appointment by clicking on the following link"
 msgstr "Veuillez confirmer votre rendez-vous en cliquant sur le lien suivant"
@@ -1456,15 +1462,14 @@ msgstr "Veuillez confirmer votre rendez-vous en cliquant sur le lien suivant"
 msgid "The Veosan Team"
 msgstr "L'équipe Veosan"
 
-
-msgid "You have a new appointment for"
-msgstr "Vous avez un nouveau rendez-vous de"
+msgid "You have a new appointment!"
+msgstr "Vous avez un nouveau rendez-vous!"
 
 msgid "Here are the details"
 msgstr "Voici les détails"
 
-msgid "date and time"
-msgstr "date et heure"
+msgid "Date and time"
+msgstr "Date et heure"
 
 msgid "Consult and manage all your appointments here"
 msgstr "Consultez vos rendez-vous ici"

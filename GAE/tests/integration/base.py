@@ -5,6 +5,7 @@ import os, logging
 import unittest, webtest
 from StringIO import StringIO
 from babel.dates import format_datetime
+from babel.dates import format_date
 
 # veo
 import main
@@ -15,6 +16,8 @@ from datetime import datetime
 from data.model import User, Booking
 import util, testutil
 from google.appengine.datastore import datastore_stub_util
+from webapp2_extras import i18n
+import utilities
 
 class BaseTest(unittest.TestCase):
     util.BOOKING_ENABLED = True
@@ -496,7 +499,7 @@ class BaseTest(unittest.TestCase):
         
         # choose a password
         activation_response.mustcontain('Votre rendez-vous est confirmé')
-        activation_response.mustcontain("Fantastic F.")
+        activation_response.mustcontain("Fantastic Fox")
         booking = Booking.query(Booking.patient == patient.key).get()
         activation_response_form = activation_response.forms[0]
         activation_response_form['password'] = self._TEST_PATIENT_PASSWORD
@@ -506,7 +509,7 @@ class BaseTest(unittest.TestCase):
         # patient email in navbar
         booking_confirm_page.mustcontain(self._TEST_PATIENT_EMAIL)
         # Title check
-        booking_confirm_page.mustcontain('Thank you %s!' % patient.first_name)
+        booking_confirm_page.mustcontain('You new appointment is confirmed!')
     
         
     
@@ -567,7 +570,7 @@ class BaseTest(unittest.TestCase):
             new_patient_page = step1_form.submit()
             email_sent_page = self.fill_new_patient_profile(new_patient_page, patient_email, patient_telephone)
         # check email sent page
-        email_sent_page.mustcontain('Merci Pat')
+        email_sent_page.mustcontain("C'est presque complété!")
         email_sent_page.mustcontain('Un couriel vous a été envoyé')
         email_sent_page.mustcontain(patient_email)
         email_sent_page.mustcontain('Contactez-nous')
@@ -596,6 +599,13 @@ class BaseTest(unittest.TestCase):
         # check email to patient
         booking_datetime = datetime.strptime(testutil.next_monday_date_string() + " " + str(time_string), '%Y-%m-%d %H')
         french_datetime_string = format_datetime(booking_datetime, "EEEE 'le' d MMMM yyyy", locale='fr_CA') + " à " + format_datetime(booking_datetime, "H:mm", locale='fr_CA')
+        
+        booking_datetime = datetime.strptime(testutil.next_monday_date_string(), '%Y-%m-%d')
+        booking_datetime_string = format_date(booking_datetime, format="d MMM yyyy", locale='fr_CA')
+        
+        # assume it's in french...
+        booking_time_string = time_string + "h"
+
         logging.info('French date time of booking: %s' % french_datetime_string) 
         # check that confirmation emails was sent to patient
         messages = self.mail_stub.get_sent_messages(to=self._TEST_PATIENT_EMAIL)
@@ -613,10 +623,13 @@ class BaseTest(unittest.TestCase):
         self.assertTrue('/user/activation/%s' % user.signup_token in m.body.payload)
         self.assertIn('Bonjour', m.body.payload)
         self.assertIn('Merci', m.body.payload)
+        self.assertIn(french_datetime_string, m.body.payload)
+
         # click the link
         confirmation_page = self.testapp.get('/user/activation/%s' % user.signup_token)
         confirmation_page.mustcontain('Votre rendez-vous est confirmé')
-        confirmation_page.mustcontain(french_datetime_string)
+        confirmation_page.mustcontain(booking_time_string)
+        confirmation_page.mustcontain(booking_datetime_string)
         confirmation_page.mustcontain("Fantastic Fox")
         # Check email to provider    
         messages = self.mail_stub.get_sent_messages(to=self._TEST_PROVIDER_EMAIL)
@@ -625,7 +638,6 @@ class BaseTest(unittest.TestCase):
         provider_mail = messages[provider_mail_count - 1]
         self.assertEquals(provider_mail.subject, 'Veosan - Nouveau rendez-vous avec Pat Patient')
         self.assertIn('Vous avez un nouveau rendez-vous', provider_mail.body.payload)
-        self.assertIn("Consultez vos rendez-vous ici", provider_mail.body.payload)
 
         # check status change in all lists (provider, patient and admin dashboards)
         self.login_as_provider()

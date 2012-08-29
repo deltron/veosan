@@ -31,7 +31,7 @@
 								<a href="/provider/schedule/{{ provider_from_user.vanity_url }}">{{ _('Schedule') }}</a>
 							</li>
 							<li {% if "network" == active_page %} class="active" {% endif %}>
-								<a href="/provider/network/{{ provider.vanity_url }}">{{ _('Network') }}</a>
+								<a href="/provider/network/{{ provider_from_user.vanity_url }}">{{ _('Network') }}</a>
 							</li>
 							{% endif%}
 

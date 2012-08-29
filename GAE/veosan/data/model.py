@@ -69,11 +69,6 @@ class Patient(ndb.Model):
     postal_code = ndb.StringProperty()
     province = ndb.StringProperty()
     
-    
-    
-    def full_name(self):
-        return '%s %s' % (self.first_name, self.last_name)
-
     def get_bookings(self):
         return Booking.query(Booking.patient == self.key).fetch()
     

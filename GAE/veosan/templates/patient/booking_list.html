@@ -5,44 +5,12 @@
 
 {% block content %}
 <div class="row">
-	<div class="span12">
-		<table class="table">
-			<thead>
-				<tr>
-					<th width="20%">Date and time</th>
-					<th width="20%">Category</th>
-					<th width="20%">Provider</th>
-					<th width="40%">Notes</th>
-				</tr>
-			</thead>
-			<tbody>
-				{% for b in bookings %}
-				{% set provider = b.provider.get() %}
-				<tr>
-					<td> {{ b.request_datetime|format_datetime_full }} </td>
-					<td> {{ category_dict[provider.category] }} </td>
-					<td>
-						<address>
-							<strong>
-								{{ provider.first_name }}
-								{{ provider.last_name }}
-							</strong>
-							<br>
-							{{ provider.address }}
-							<br>
-							{{ provider.city }}
-							<br>
-							{{ provider.postal_code }}
-							<br>
-							<abbr title="Phone">P:</abbr>
-							{{ provider.phone }}
-						</address>
-					</td>
-					<td> {{ b.notes }}</td>
-				</tr>
-				{% endfor %}
-			</tbody>
-		</table>
+	<div class="span6">
+		{% for booking in bookings %}
+			<div style="{% if loop.index > 1 %} border-top: 1px solid #e5e5e5; padding-top:15px; {% endif %} padding-bottom:15px">
+			{{ macro.booking_summary(provider=booking.provider.get(), booking=booking) }}
+			</div>
+		{% endfor %}
 	</div>
 </div>
 {% endblock content %}

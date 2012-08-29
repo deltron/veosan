@@ -113,7 +113,7 @@ def format_datetime_full(datetime):
     else:
         return "%s %s %s" % (format_datetime(datetime, "EEEE d MMMM yyyy"), _(u"at"), format_datetime(datetime, "H:mm a"))
         
-
+# delete this? not locale or time-zone aware
 def format_hour(hour):
     lang = _('en')
     if hour:
@@ -177,5 +177,9 @@ def format_datetime_hour_min(datetime):
 
 def format_datetime_withseconds_convert_east_tz(datetime):
     return format_datetime(datetime, "yyyy-MM-dd H:mm:ss", rebase=True)
+
+
+def string_to_datetime(string_date):
+    return datetime.strptime(string_date, "%Y-%m-%d")
 
 

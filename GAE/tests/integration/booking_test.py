@@ -98,6 +98,22 @@ class BookingTest(BaseTest):
         # We should already be on the bookings page after the login
         provider_response.mustcontain('Pat Patient')
 
+    def test_booking_new_patient_reload_sent_page(self):
+        ''' Create a booking in the available timeslot '''
+        
+        # setup a provider
+        self.create_complete_provider_profile()
+        self.logout_provider()
+        # at this point there is one fully completed profile with a single timeslot available (Monday 8-13)
+        # go back to the main page and try to book monday 8am
+        booking_response = self.book_appointment('osteopath', testutil.next_weekday_date_string(testutil.MONDAY), 8)
+
+        # fill out patient profile, receive email and set password
+        new_patient_response = self.fill_booking_email_form(booking_response, self._TEST_PATIENT_EMAIL)
+        booking_confirm_response = self.fill_new_patient_profile(new_patient_response)
+
+        booking_confirm_response = self.fill_new_patient_profile(new_patient_response)
+
          
     def test_booking_existing_patient(self):
         self.test_booking_new_patient()
@@ -122,7 +138,7 @@ class BookingTest(BaseTest):
         # patient email in navbar
         booking_confirm_page.mustcontain(self._TEST_PATIENT_EMAIL)
         # Title check
-        booking_confirm_page.mustcontain('Thank you Pat!')
+        booking_confirm_page.mustcontain('You new appointment is confirmed!')
         
     def test_booking_with_loggedin_patient(self):
         self.test_booking_new_patient()
@@ -140,7 +156,7 @@ class BookingTest(BaseTest):
         # patient email in navbar
         booking_confirm_page.mustcontain(self._TEST_PATIENT_EMAIL)
         # Title check
-        booking_confirm_page.mustcontain('Thank you Pat')
+        booking_confirm_page.mustcontain('You new appointment is confirmed!')
      
              
     def test_booking_new_patient_terms_not_agreed(self):

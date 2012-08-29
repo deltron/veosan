@@ -1,12 +1,9 @@
-{{_('Hi')}} {{ provider.full_name() }},
+{{_('Hi')}} {{ provider.first_name }} {{ provider.last_name }},
 
-{{ _('You have a new appointment for')}} {{ provider.category }}. {{ _('Here are the details') }}:
+{{ _('You have a new appointment!')}} {{ _('Here are the details') }}:
 
-Patient: {{ patient.full_name() }}
-{{_('date and time') }}: {{ booking.datetime|format_datetime_full }}. 
-
-{{ _('Consult and manage all your appointments here') }}:
-{{provider_bookings_url}}
+Patient: {{ patient.first_name }} {{ patient.last_name }}
+{{_('Date and time') }}: {{ booking.datetime|format_datetime_full }}. 
 
 {{ _('Thank you') }},
 

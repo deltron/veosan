@@ -21,9 +21,11 @@ class SecurityTest(BaseTest):
         response = self.testapp.get('/provider/profile/%s' % self._TEST_PROVIDER_VANITY_URL)
         cross_post_response = response.follow()
         
-        # cross post, you should be redirected to the login page
-        cross_post_response.mustcontain("Connexion à Veosan")
-    
+        # cross post, you will be redirected to public profile of person you are trying to access
+        cross_post_response.mustcontain("schema.org/Person")
+        cross_post_response.mustcontain("first")
+        cross_post_response.mustcontain("last")
+
     
     def test_form_filters_email_address(self): 
         # create first provider
@@ -68,3 +70,15 @@ class SecurityTest(BaseTest):
         response = self.testapp.get('/', headers=headers)
         
         response.mustcontain("Pour les professionnels de la santé")
+        
+        
+        
+    def test_access_provider_pages_not_logged_in(self): 
+        self.self_signup_provider()
+        self.fill_new_provider_profile_correctly_action(as_admin = False)
+        self.logout_provider()
+        
+        response = self.testapp.get('/provider/profile/' + self._TEST_PROVIDER_VANITY_URL).follow()
+        
+        # check this is the public profile
+        response.mustcontain("schema.org/Person")

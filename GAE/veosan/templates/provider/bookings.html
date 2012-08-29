@@ -7,10 +7,10 @@
 
 {% block content %}
 <div class="row">
-		{% if bookings|length > 0 %}
-		<div class="span8">
+	{% if bookings|length > 0 %}
+	<div class="span8">
 
-			<table class="table">
+		<table class="table">
 			<thead>
 				<tr>
 					<!-- <th>Key</th> -->
@@ -21,39 +21,36 @@
 			</thead>
 			<tbody>
 				{% for b in bookings %}
-					{% if b.patient %}
-						{% set patient = b.patient.get() %}
-					<tr>
-						<!-- Date (Booking) -->
-						<td> {{b.datetime|format_datetime_full}} </td>
-						<!-- Patient -->
-						<td><a href="#" class="" rel="popover" title="{{patient.first_name}} {{patient.last_name}}" data-content="{{patient.phone}} <br> {{patient.email}} <br>">{{patient.first_name}} {{patient.last_name}}</a></td>
-					</tr>
-					{% else %}
-						<!-- booking with a linked patient -->
-					{% endif%}
+				{% if b.patient %}
+				{% set patient = b.patient.get() %}
+				<tr>
+					<!-- Date (Booking) -->
+					<td> {{b.datetime|format_datetime_full}} </td>
+					<!-- Patient -->
+					<td>
+					{{patient.first_name}} {{patient.last_name}} </a>
+					<br>
+					{{patient.email}}
+					<br>
+					{{patient.telephone}}
+					</td>
+				</tr>
+				{% else %}
+				<!-- booking with a linked patient -->
+				{% endif%}
 				{% endfor %}
 			</tbody>
-			</table>
-		</div>	
+		</table>
+	</div>
 
-			
-		{% else %}
-		<div class="span8">
-			<div class="alert alert-error">
-  				{{ _('No upcoming bookings. Is there any time marked as available in your schedule?') }}
-			</div>
+	{% else %}
+	<div class="span8">
+		<div class="alert alert-error">
+			{{ _('No upcoming bookings. Is there any time marked as available in your schedule?') }}
 		</div>
-		{% endif %}
-		
-</div> <!-- row -->
-{% endblock content %} 
+	</div>
+	{% endif %}
 
-{% block extra_javascript %}
-	<script>
-		$(function() {
-			$('a[rel=tooltip]').tooltip();
-			$('a[rel=popover]').popover();
-		});
-	</script>
-{% endblock extra_javascript %}
+</div>
+<!-- row -->
+{% endblock content %}
