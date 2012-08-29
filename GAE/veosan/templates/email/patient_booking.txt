@@ -1,6 +1,6 @@
 {{_('Hi')}} {{ patient.first_name }} {{ patient.last_name }},
 
-{{_('You are booked for')}} {{ provider.category }} {{_('with')}} {{ provider.full_name() }} {{_('on')}} {{ booking.datetime|format_datetime_full }}. 
+{{_('You have an appointment scheduled with')}} {{ provider.first_name }} {{ provider.last_name }} ({{ category_dict[provider.category]|lower }}) {% if lang == 'en' %}{{_('on')}} {% endif %}{{ booking.datetime|format_datetime_full }}. 
 
 {% if activation_url %}
 {{_('Please confirm your appointment by clicking on the following link')}}:

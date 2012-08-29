@@ -1447,11 +1447,14 @@ msgstr "Rendez-vous Veosan"
 msgid "New Appointment with"
 msgstr "Nouveau rendez-vous avec"
 
-msgid "You are booked for"
-msgstr "Votre rendez-vous de"
+msgid "You have an appointment scheduled with"
+msgstr "Vous avez un rendez-vous prévu avec"
 
 msgid "with"
 msgstr "avec"
+
+msgid "on"
+msgstr ""
 
 msgid "Please confirm your appointment by clicking on the following link"
 msgstr "Veuillez confirmer votre rendez-vous en cliquant sur le lien suivant"
@@ -1459,15 +1462,14 @@ msgstr "Veuillez confirmer votre rendez-vous en cliquant sur le lien suivant"
 msgid "The Veosan Team"
 msgstr "L'équipe Veosan"
 
-
-msgid "You have a new appointment for"
-msgstr "Vous avez un nouveau rendez-vous de"
+msgid "You have a new appointment!"
+msgstr "Vous avez un nouveau rendez-vous!"
 
 msgid "Here are the details"
 msgstr "Voici les détails"
 
-msgid "date and time"
-msgstr "date et heure"
+msgid "Date and time"
+msgstr "Date et heure"
 
 msgid "Consult and manage all your appointments here"
 msgstr "Consultez vos rendez-vous ici"

@@ -43,7 +43,15 @@ def email_exception_report(request, exception):
         logging.error('Email not sent. %s' % e)
 
 def render_booking_email_body(jinja2, template_filename, booking, activation_url=None, **kw):
+
+    
     kw = {'booking': booking, 'provider': booking.provider.get(), 'patient': booking.patient.get(), 'activation_url': activation_url}
+    kw['category_dict'] = dict(util.get_all_categories())
+    kw['specialty_dict'] = dict(util.getAllSpecialities())
+    kw['certification_dict'] = dict(util.getAllCertifications())
+    kw['association_dict'] = dict(util.getAllAssociations())
+
+    
     return jinja2.render_template(template_filename, **kw)
     
 
