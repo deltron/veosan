@@ -3,7 +3,7 @@
 {% set active_page = "administration" %}
 
 {% block subhead %}
-{{ provider.full_name() }}
+{{ provider.first_name }} {{ provider.last_name }}
 <!-- TODO: Make this a block, reuse on provider list -->
 {% if provider.recently_created() %} <span class="label label-success">new</span>{% endif %}
 {% if not provider.terms_agreement %} <span class="label label-important">missing terms</span>{% endif %}

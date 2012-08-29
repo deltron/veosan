@@ -23,8 +23,11 @@
 			</thead>
 			<tbody>
 				{% for b in bookings %}
+				{% if b.provider %}
 				{% set provider = b.provider.get() %} 
-
+				{% endif %}
+				
+				
 				<tr>
 					<td>
 						<a id="show-{{loop.index}}" href="/admin/booking/show/{{ b.key.urlsafe() }}">{{ b.key.id() }}</a>
@@ -36,7 +39,9 @@
 						{{ b.created_on|format_datetime_noseconds }}
 					</td>
 					<td>
+						{% if b.provider %}
 						{{ category_dict[provider.category] }}
+						{% endif %}
 					</td>
 					<td>
 						{% if b.datetime %}

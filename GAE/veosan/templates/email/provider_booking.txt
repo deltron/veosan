@@ -2,7 +2,7 @@
 
 {{ _('You have a new appointment!')}} {{ _('Here are the details') }}:
 
-Patient: {{ patient.full_name() }}
+Patient: {{ patient.first_name }} {{ patient.last_name }}
 {{_('Date and time') }}: {{ booking.datetime|format_datetime_full }}. 
 
 {{ _('Thank you') }},

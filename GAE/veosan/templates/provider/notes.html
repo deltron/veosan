@@ -3,7 +3,8 @@
 {% set active_page = "notes" %}
 
 {% block subhead %}
-	{{ provider.full_name() }}
+	{{ provider.first_name }}
+	{{ provider.last_name }}
 	<!-- TODO: Make this a block, reuse on provider list -->
 	{% if provider.recently_created() %} <span class="label label-success">new</span>{% endif %}
 	{% if not provider.terms_agreement %} <span class="label label-important">missing terms</span>{% endif %}
@@ -16,7 +17,7 @@
 <div class="row">
 
 	<div class="span12">
-		<p style="font-style:italic">Add a note about {{provider.full_name()}}</p>
+		<p style="font-style:italic">Add a note about {{ provider.first_name }} {{ provider.last_name }}</p>
 		<form class="form-inline" action="/admin/provider/notes/{{ provider.vanity_url }}" method="post">
 			<fieldset>
 				<table class="table">

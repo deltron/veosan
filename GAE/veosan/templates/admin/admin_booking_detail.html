@@ -50,7 +50,7 @@
 		<h6>Provider</h6>
 		{% if b.provider %} 
 			{% set provider = b.provider.get() %}
-			<h4> {{ provider.full_name() }} </h4>
+			<h4> {{ provider.first_name }} {{ provider.last_name }}</h4>
 			{{ b.request_category|code_to_string }}
 		{% endif %}
 		
