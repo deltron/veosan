@@ -9,6 +9,7 @@ from collections import namedtuple
 from functools import partial
 from webapp2_extras.i18n import format_date, format_datetime
 from webapp2_extras.i18n import lazy_gettext as _
+from webapp2_extras.i18n import to_utc
 
 ###
 ### TimeSlots and DatetimeSlot
@@ -180,6 +181,8 @@ def format_datetime_withseconds_convert_east_tz(datetime):
 
 
 def string_to_datetime(string_date):
-    return datetime.strptime(string_date, "%Y-%m-%d")
+    return to_utc(datetime.strptime(string_date, "%Y-%m-%d"))
 
+def string_to_time(string_time):
+    return to_utc(datetime.strptime(str(string_time), "%H"))
 

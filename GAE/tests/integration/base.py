@@ -4,7 +4,7 @@ from google.appengine.ext import testbed
 import os, logging
 import unittest, webtest
 from StringIO import StringIO
-from babel.dates import format_datetime
+from babel.dates import format_datetime, format_time
 from babel.dates import format_date
 
 # veo
@@ -603,9 +603,9 @@ class BaseTest(unittest.TestCase):
         booking_datetime = datetime.strptime(testutil.next_monday_date_string(), '%Y-%m-%d')
         booking_datetime_string = format_date(booking_datetime, format="d MMM yyyy", locale='fr_CA')
         
-        # assume it's in french...
-        booking_time_string = time_string + "h"
-
+        booking_time = datetime.strptime(str(time_string), '%H')
+        booking_time_string = format_time(booking_time, format="short", locale='fr')
+        
         logging.info('French date time of booking: %s' % french_datetime_string) 
         # check that confirmation emails was sent to patient
         messages = self.mail_stub.get_sent_messages(to=self._TEST_PATIENT_EMAIL)
@@ -613,6 +613,8 @@ class BaseTest(unittest.TestCase):
         # get last email sent
         m = messages[patient_email_count - 1]
         self.assertEqual(self._TEST_PATIENT_EMAIL, m.to)
+        
+        
         
         # activate account
         messages = self.mail_stub.get_sent_messages(to=self._TEST_PATIENT_EMAIL)

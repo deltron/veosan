@@ -174,7 +174,7 @@ Macro to display year in CV
 				<br>
 				<i class="bs-icon icon-calendar"></i>
 				{% if booking_date %}
-					{{ booking_date|string_to_datetime|format_date }}
+					{{ booking_date|string_to_datetime|format_date(format="medium", rebase=True) }}
 				{% endif %}
 				{% if booking %}
 					{{ booking.datetime|format_date }}
@@ -182,10 +182,10 @@ Macro to display year in CV
 				<br>
 				<i class="bs-icon icon-time"></i>
 				{% if booking_time %}
-					{{ booking_time|format_hour }}
+					{{ booking_time|string_to_time|format_time(format="short", rebase=True) }}
 				{% endif %}
 				{% if booking %}
-					{{ booking.datetime.hour|format_hour }}
+					{{ booking.datetime|format_time(format="short", rebase=True) }}
 				{% endif %}
 				<br>
 				
