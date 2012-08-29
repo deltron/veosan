@@ -57,8 +57,12 @@ class ProviderPublicProfileHandler(ProviderBaseHandler):
             # add some dates & times to display part of schedule on page
             start_date = time.tomorrow()
             period = timedelta(days=14)
+            
             schedules = provider.get_schedules()
-            datetimes_map = util.generate_complete_datetimes_dict(schedules, start_date, period)
+            schedule_datetimes_dict = util.generate_complete_datetimes_dict(schedules, start_date, period)
+            confirmed_bookings = provider.get_future_confirmed_bookings()
+            datetimes_map = util.remove_confirmed_bookings_from_schedule(schedule_datetimes_dict, confirmed_bookings)
+            
             dtm = datetimes_map
             
             date_time_list = []
