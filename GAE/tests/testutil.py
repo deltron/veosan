@@ -1,5 +1,6 @@
 
 from datetime import datetime, timedelta
+from babel.dates import format_date
 
 
 MONDAY = 0
@@ -19,6 +20,14 @@ def next_monday_date_string():
 	# TODO make this generic for any day of the week
 	next_monday = today + timedelta(days=-today.weekday(), weeks=1)
 	next_monday_string = datetime.strftime(next_monday, "%Y-%m-%d")
+	return next_monday_string
+
+def next_monday_date_string_alt():
+	today = datetime.today()
+	# monday is 0
+	# TODO make this generic for any day of the week
+	next_monday = today + timedelta(days=-today.weekday(), weeks=1)
+	next_monday_string = format_date(next_monday, format="short", locale='fr')	
 	return next_monday_string
 
 
