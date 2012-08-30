@@ -4,7 +4,7 @@
 from datetime import time, date, datetime, timedelta
 from collections import namedtuple
 from functools import partial
-from webapp2_extras.i18n import format_date, format_datetime
+from webapp2_extras.i18n import format_date, format_datetime, format_time
 from webapp2_extras.i18n import lazy_gettext as _
 from webapp2_extras.i18n import to_utc
 
@@ -50,7 +50,9 @@ def getDatesList():
 def get_time_list():
     time_list = []
     for t in range(7, 23):
-        time_list.append((t, format_hour(t)))
+        time_obj = string_to_time(str(t))
+        time_list.append((t, format_time(time_obj, format="short", rebase=True)))
+        #time_list.append((t, format_hour(t)))
     
     return time_list
 

@@ -40,7 +40,11 @@
 					<strong>{{day_label}}</strong>
 					<br>
 					<br>
-					<small>{{s.start_time|format_hour}}-{{s.end_time|format_hour}}</small>
+					<small>
+						{{ s.start_time|string_to_time|format_time(format="short", rebase=True) }}-{{ s.end_time|string_to_time|format_time(format="short", rebase=True) }}
+						{# 
+						{{s.start_time|format_hour}}-{{s.end_time|format_hour}}</small>
+						#}
 				</div> </a> 
 				{% elif schedules.within_span(day_key, hour_key) %} 
 				{% else %} <td style="text-align: center;"><a class="btn btn-small" href="/provider/schedule/{{ provider.vanity_url }}/add/{{day_key}}/{{hour_key}}"> <i class="bs-icon icon-plus"> </i></a></td>
