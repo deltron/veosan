@@ -1488,3 +1488,45 @@ msgstr "Ceci n'est pas un chiffre valide."
 msgid "This field is required."
 msgstr "Ce champs est requis."
 
+
+
+
+
+
+####################
+# Learn More
+####################
+
+
+msgid "Help"
+msgstr "Aidez vos"
+
+msgid "patients"
+msgstr "patients"
+
+msgid "find you"
+msgstr "à vous trouver"
+
+msgid "Improve your online presence with a profile focused on health care."
+msgstr "Améliorez votre présence en ligne avec un profil complètement dédié au monde de la santé"
+
+
+
+
+msgid "It's who you are"
+msgstr "C'est qui je suis"
+
+msgid "Share your specialties, your education and your professional affiliations. Stand out by showcasing your continuing education."
+msgstr "Partagez vos spécialités, votre éducation et vos affiliations professionnelles. Démarquez-vous avec votre formation continue."
+
+msgid "Online Booking *"
+msgstr "Calendrier en ligne"
+
+msgid "Display your availabilities and let patients do the booking online. Reduce the amount of time spent on the phone. Online scheduling is the answer and it has many other benefits.  Reduce cancellations and missed appointments with automatic reminders."
+msgstr "Placez vos disponibilités en ligne et laissez vos patients schéduler leur rendez-vous."
+
+msgid "Professional Network"
+msgstr "Réseau Professionnel"
+
+msgid "Do your patients need other specialists and you don’t know where to refer him? Refer him to a specialist in our database and establish a connection that can be mutually beneficial."
+msgstr "Est-ce que vos patients nécéssite des soins complémentaires. Utilisez notre réseau pour établir une connection qui sera bénéfique pour vos patients et vous."
