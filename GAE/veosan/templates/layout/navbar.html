@@ -4,17 +4,19 @@
 			<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </a>
 			<a class="brand" href="/">{{ _('veosan') }}</a>
 			<div class="nav-collapse">
-				<ul class="nav">
+				<ul class="nav pull-right">
 					{% if 'admin' in roles %}
 					<li>
 						<a href="/learnmore">{{ _('Learn More') }}</a>
 					</li>
+					<li class="divider-vertical">
+					</li>
 					<li>
-						<a href="http://blog.veosan.com">{{ _('Blog') }}</a>
+						<a href="/blog">{{ _('Blog') }}</a>
+					</li>
+					<li class="divider-vertical">
 					</li>
 					{% endif %}
-				</ul>
-				<ul class="nav pull-right">
 
 					{% if user %}
 					<!-- User menu -->
@@ -70,6 +72,9 @@
 							{% endif%}
 						</ul>
 					</li>
+					<li class="divider-vertical">
+					</li>
+
 					{% else %}
 					{# No user logged in #}
 
@@ -85,10 +90,14 @@
 							</li>
 						</ul>
 					</li>
+					<li class="divider-vertical">
+					</li>
 					{% endif %}
 
 					<li>
 						<a href="{{login_url}}">{{ _('My Account') }}</a>
+					</li>
+					<li class="divider-vertical">
 					</li>
 					{% endif%}
 

@@ -83,3 +83,11 @@ class HideSideHandler(BaseHandler):
 
         self.render_template("empty.html")
 
+
+class BlogHandler(BaseHandler):
+    def get(self, what = None):
+        site_counter = db.get_site_counter()
+        site_counter.blog_clicks += 1
+        site_counter.put_async()
+        self.redirect("http://blog.veosan.com")
+
