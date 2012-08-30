@@ -1,9 +1,6 @@
 #!/usr/local/bin/python
 # -*- coding: utf-8 -*-
 
-import calendar
-from datetime import date, timedelta
-import logging
 from datetime import time, date, datetime, timedelta
 from collections import namedtuple
 from functools import partial
@@ -90,23 +87,6 @@ def tomorrow():
 def format_date_weekday_after(date):
     return format_date(date, u"d MMMM yyyy (EEEE)")
 
-def format_datetime_with_weekday(datetime):
-    if datetime:
-        lang = _('en')
-        if (lang == 'fr'):
-            return "%s %s %s" % (format_datetime(datetime, "EEEE 'le' d MMMM yyyy"), _(u"at"), format_datetime(datetime, "H:mm"))
-        else:
-            return "%s %s %s" % (format_datetime(datetime, "EEEE MMMM d, yyyy"), _(u"at"), format_datetime(datetime, "H:mm a"))
-    else:
-        return ""
-
-def format_date_with_weekday(date):
-    lang = _('en')
-    if (lang == 'fr'):
-        return format_date(date, "EEEE 'le' d MMMM yyyy")
-    else:
-        return format_date(date, "EEEE MMMM d, yyyy")
-
 def format_datetime_full(datetime):
     lang = _('en')
     if (lang == 'fr'):
@@ -133,40 +113,21 @@ def format_hour(hour):
             return u'%s %s' % (hour_en, AMPM)
     else:
         return ""
-
-def formatTimeToOneHourPeriod(startTime):
-    lang = _('en')
-    endTime = startTime + 1
-    if (lang == 'fr'):
-        return unicode(startTime) + u'h - ' + unicode(endTime) + u'h'
-    else:
-        startAMPM = u'AM'
-        if (startTime > 12):
-            startTime = startTime - 12
-            startAMPM = u'PM'
-        endAMPM = u'AM'
-        if (endTime > 12):
-            endTime = endTime - 12
-            endAMPM = u'PM'
-        return unicode(startTime) + u' ' + startAMPM + u' - ' + unicode(endTime) + u' ' + endAMPM
     
-def format_30min_period(startTime, startMinutes):
-    return u'START - END [placeholder]'
-
 def format_datetime_noseconds(datetime):
     if datetime:
         return format_datetime(datetime, "yyyy-MM-dd H:mm")
     else:
         ""
-
+        
 def format_datetime_booking_form(datetime):
     return format_datetime(datetime, "yyyy-MM-dd H:mm:ss", rebase=False)
 
 def format_weekday(date):
     return format_date(date, 'EEEE')
 
-def format_date_medium(date):
-    return format_date(date, format="medium")
+#def format_date_medium(date):
+#    return format_date(date, format="medium")
 
 def format_datetime_hour_min(datetime):
     lang = _('en')
