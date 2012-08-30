@@ -63,11 +63,11 @@
 			<a href="/{{ provider.vanity_url }}/book" id="book_button" type="submit" class="btn btn btn-success" style="width:80%; margin: 0px auto">{{ _('Book Now') }}</a>
 		</div>
 		<br>
-		<br>
 		{% endif %}
 
 		{% if provider.address_enabled %}
-
+		<div style="width:100%; padding-top:10px; margin: 0px auto; border-top: 1px solid #e5e5e5;">
+		<h3>Address</h3>
 		<span itemprop="workLocation"> <span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress"> {% if provider.address %} <span itemprop="streetAddress">{{ provider.address }}</span>
 				<br>
 				{% endif %}
@@ -76,6 +76,7 @@
 				{% if provider.province and provider.province != 'nothing' %} <span itemprop="addressRegion">{{ provider.province|code_to_string }}</span> {% endif %} </span> </span>
 		<br>
 		<a data-toggle="modal" href="#contact_modal" onclick="loadScript()"><i class="bs-icon icon-globe"></i></a><a data-toggle="modal" href="#contact_modal" onclick="loadScript()">Map</a>
+		</div>
 		<br>
 		{% endif %}
 
@@ -88,7 +89,6 @@
 			{{ _('You and %(name)s are connected!', name=provider.first_name) }} 
 		{% else %}
 		<a href="/{{ provider.vanity_url }}/connect" id="connect_button" type="submit" class="btn btn btn-success" style="width:80%; margin: 0px auto"> {{ _('Connect') }} </a>
-		</div>
 
 		<br>
 		<br>
@@ -100,14 +100,18 @@
 
 		<br>
 		<br>
+		</div>
 		{% endif %}
 
 		{% if facebook_like_enabled %}
-		<div class="fb-like" data-href="http://www.veosan.com/{{ provider.vanity_url }}" data-send="true" data-layout="button_count" data-width="150" data-show-faces="false"></div>
+		<div style="width:100%; padding-top:10px; margin: 0px auto; border-top: 1px solid #e5e5e5; text-align:center">
 
+		<div class="fb-like" data-href="http://www.veosan.com/{{ provider.vanity_url }}" data-send="true" data-layout="button_count" data-width="150" data-show-faces="false"></div>
+		<br>
 		<!-- Place this tag where you want the +1 button to render. -->
 		<div class="g-plusone" data-size="small" data-href="http://www.veosan.com/{{ provider.vanity_url }}"></div>
 
+		</div>
 		{% endif %}
 	</div>
 	<div class="span6">		
@@ -246,7 +250,7 @@
 
 	<div class="span4">
 		{% if not 'provider' in roles %}
-		<div class="well well-small pull-right" style="width: 80%; text-align: center">
+		<div class="well well-small pull-right" style="width: 80%;">
 			<h3>{{ _('Are you a health-care professional?') }}</h3>
 			<i class="bs-icon icon-bullhorn"> </i>
 			<a href="/signup/provider">{{ _("Sign up to get your own professional profile. It's free!") }}</a>
@@ -275,7 +279,6 @@
 				</li>
 				{% endfor %}
 			</ul>
-			<br>
 			<a href="/{{ provider.vanity_url }}/book" style="width:80%; margin 5px auto" class="btn btn-primary"> View Full Schedule </a>
 		</div>
 		<br>
@@ -284,6 +287,7 @@
 
 		{% if provider.connect_enabled and provider.get_provider_network_count() > 0 %}
 		<div class="well well-small pull-right" style="width: 80%;">
+		<h3>Professional Network</h3>
 		{{ _('This network contains') }} {{ provider.get_provider_network_count() }} {{ _('health-care professionals.') }}
 	
 			<table class="table-condensed">
@@ -372,9 +376,7 @@
 			</div>
 			{% if provider.booking_enabled %}
 			<div class="modal-footer">
-				<button type="submit" class="btn btn-primary">
-					{{ _('Book Now') }}
-				</button>
+				<a href="/{{ provider.vanity_url }}/book"  class="btn btn-primary"> View Full Schedule </a>
 			</div>
 			{% endif %}
 		</div>
