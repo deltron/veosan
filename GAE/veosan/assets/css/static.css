@@ -40,14 +40,14 @@ body.promo-page{background:#ffffff;overflow-x:hidden;}
 .tour-features h2,.tour-features p{margin-left:165px;}
 .tour-features .pic{float:left;position:relative;border:1px solid #b9b9b9;border-radius:10px;-moz-border-radius:10px;-webkit-border-radius:10px;width:140px;height:140px;}.tour-features .pic:before{content:"";position:absolute;top:0;bottom:0;left:0;right:0;box-shadow:inset 0px 0px 5px rgba(0, 0, 0, 0.2);-moz-box-shadow:inset 0px 0px 5px rgba(0, 0, 0, 0.2);-ms-box-shadow:inset 0px 0px 5px rgba(0, 0, 0, 0.2);-o-box-shadow:inset 0px 0px 5px rgba(0, 0, 0, 0.2);-webkit-box-shadow:inset 0px 0px 5px rgba(0, 0, 0, 0.2);border-radius:10px;-moz-border-radius:10px;-webkit-border-radius:10px;}
 .tour-features .pic img{width:100%;border-radius:10px;-moz-border-radius:10px;-webkit-border-radius:10px;}
-.tour-features h2{line-height:1.4em;font-size:17px;}
+.tour-features h2{line-height:1.4em;font-size:24px;}
 .medium-window .tour-features,.small-window .tour-features,.extra-small-window .tour-features{max-width:650px;margin:0px auto;padding:60px 30px 30px 30px;}.medium-window .tour-features li,.small-window .tour-features li,.extra-small-window .tour-features li{padding:15px 30px;width:100%;clear:both;}.medium-window .tour-features li .pic,.small-window .tour-features li .pic,.extra-small-window .tour-features li .pic{margin:0px 0px 30px 0px;}
 @media all and (max-width:470px){.extra-small-window .tour-features{padding:30px 10px 10px 10px;}}.extra-small-window .tour-features li h2,.extra-small-window .tour-features li p{margin-left:130px;}
 .extra-small-window .tour-features li .pic{width:110px;height:110px;}
 #tourIntro{padding-bottom:0px;overflow-x:hidden;}#tourIntro .width-wrapper{position:relative;}
 #tourIntro h1{text-align:left;width:36%;padding-top:10px;font-size:51px;line-height:1.15em;letter-spacing:-1px;margin-bottom:30px;font-weight:bold;}
 #tourIntro h1 .linebreak{display:inline-block;}
-#tourIntro h2{font-size:20px;margin-bottom:10px;line-height:1.3em;font-weight:bold;}
+#tourIntro h2{font-size:24px;margin-bottom:10px;line-height:1.3em;font-weight:bold;}
 #tourIntro .height-wrapper{height:500px;}
 #tourIntro #tourExampleBoard{position:absolute;top:0px;left:35%;height:610px;}
 #tourIntro #tourExampleBoardWide{display:none;}
