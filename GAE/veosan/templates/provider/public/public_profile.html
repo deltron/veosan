@@ -38,6 +38,7 @@
 <div class="row">
 	<!-- left column -->
 	<div class="span2">
+		<div style="width:90%; margin: 0px auto; text-align: center;">
 		{% if provider.profile_photo_blob_key == None %}
 		<img src="/assets/img/default-profile.png" width="150" height="150"
 		alt="{{ macro.display_provider_name(provider) }} - {{ category_dict[provider.category] }}"
@@ -47,18 +48,20 @@
 		alt="{{ macro.display_provider_name(provider) }} - {{ category_dict[provider.category] }}"
 		itemprop="image">
 		{% endif %}
+		</div>
+		<br>
 
 		{% if 'provider' in roles and provider_from_user == provider %}
-		<br>
-		<br>
-		<a href="/provider/profile/{{ provider.vanity_url }}" class="btn btn-primary" style="width:130px;">Edit Your Profile</a>
+		<div style="width:100%; padding-top:10px; margin: 0px auto; border-top: 1px solid #e5e5e5;">
+		<a href="/provider/profile/{{ provider.vanity_url }}" class="btn btn-primary" style="width:80%; margin: 0px auto">Edit Your Profile</a>
+		</div>
 		<br>
 		{% endif %}
 
 		{% if provider.booking_enabled and provider.get_total_available_hours_per_week() > 0 %}
-		<hr style="width:150px; margin-bottom: 10px; border-bottom: 1px solid #e5e5e5;">
-		<a href="/{{ provider.vanity_url }}/book" id="book_button" type="submit" class="btn btn btn-success" style="width:130px"> {{ _('Book Now') }} </a>
-
+		<div style="width:100%; padding-top:10px; margin: 0px auto; border-top: 1px solid #e5e5e5; text-align:center">
+			<a href="/{{ provider.vanity_url }}/book" id="book_button" type="submit" class="btn btn btn-success" style="width:80%; margin: 0px auto">{{ _('Book Now') }}</a>
+		</div>
 		<br>
 		<br>
 		{% endif %}
@@ -77,15 +80,16 @@
 		{% endif %}
 
 		{% if provider.connect_enabled %}
-		<hr style="width:150px; margin-bottom: 10px; border-bottom: 1px solid #e5e5e5;">
+		<div style="width:100%; padding-top:10px; margin: 0px auto; border-top: 1px solid #e5e5e5; text-align:center">
+
 		{% if provider_from_user and provider_from_user == provider %}
 		{# self, don't show button #}
 		{% elif provider_from_user and provider_from_user.is_connected_to(provider) %}
-		<div style="width:100px;" class="alert alert-success">
 			{{ _('You and %(name)s are connected!', name=provider.first_name) }} 
-		</div>
 		{% else %}
-		<a href="/{{ provider.vanity_url }}/connect" id="connect_button" type="submit" class="btn btn btn-success" style="width:130px"> {{ _('Connect') }} </a>
+		<a href="/{{ provider.vanity_url }}/connect" id="connect_button" type="submit" class="btn btn btn-success" style="width:80%; margin: 0px auto"> {{ _('Connect') }} </a>
+		</div>
+
 		<br>
 		<br>
 		{% endif %}
@@ -266,7 +270,7 @@
 						{{ day_key|format_weekday|capitalize }}
 						{{ day_key|format_date(format="medium") }}
 
-						{{t|format_datetime_hour_min}}
+						{{t|format_time(format="short", rebase=False)}}
 					</a>
 				</li>
 				{% endfor %}
