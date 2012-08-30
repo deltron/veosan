@@ -52,7 +52,6 @@ def get_time_list():
     for t in range(7, 23):
         time_obj = string_to_time(str(t))
         time_list.append((t, format_time(time_obj, format="short", rebase=True)))
-        #time_list.append((t, format_hour(t)))
     
     return time_list
 
@@ -96,26 +95,6 @@ def format_datetime_full(datetime):
     else:
         return "%s %s %s" % (format_datetime(datetime, "EEEE d MMMM yyyy"), _(u"at"), format_datetime(datetime, "H:mm a"))
         
-# delete this? not locale or time-zone aware
-def format_hour(hour):
-    lang = _('en')
-    if hour:
-        # take a number in 24-hour format and return 13h or 1 PM
-        if (lang == 'fr'):
-            return u'%sh' % hour
-        else :
-            AMPM = u'AM'
-            hour_en = hour
-            if (int(hour) == 12):
-                hour_en = hour
-                AMPM = u'PM'
-            elif (int(hour) > 12):
-                hour_en = int(hour) - 12
-                AMPM = u'PM'
-            return u'%s %s' % (hour_en, AMPM)
-    else:
-        return ""
-    
 def format_datetime_noseconds(datetime):
     if datetime:
         return format_datetime(datetime, "yyyy-MM-dd H:mm")

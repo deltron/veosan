@@ -25,7 +25,7 @@ class ProviderTest(BaseTest):
         schedule_form['end_time'] = 17
         response = schedule_form.submit()
         # check on the schedule admin page
-        response.mustcontain('9h-17h')
+        response.mustcontain('09:00-17:00')
         # check admin providers
         self.login_as_admin()
         admin_page = self.testapp.get('/admin/providers')
@@ -48,14 +48,14 @@ class ProviderTest(BaseTest):
         response = schedule_form.submit()
         
         # check on the schedule admin page
-        response.mustcontain('9h-17h')
+        response.mustcontain('09:00-17:00')
 
         # now find and delete it
         modal_response = response.click(linkid='tuesday_9_link')
 
         delete_response = modal_response.click(description=' Effacer ')
         
-        delete_response.mustcontain(no='9h-17h')
+        delete_response.mustcontain(no='09:00-17:00')
     
     def test_change_time_in_schedule(self):
         self.self_signup_provider()
@@ -73,7 +73,7 @@ class ProviderTest(BaseTest):
         response = schedule_form.submit()
         
         # check on the schedule page
-        response.mustcontain('9h-17h')
+        response.mustcontain('09:00-17:00')
 
         # now find and change it
         modal_response = response.click(linkid='tuesday_9_link')
@@ -85,7 +85,7 @@ class ProviderTest(BaseTest):
         response = schedule_form.submit()
         
         # check on the schedule page
-        response.mustcontain('9h-13h')
+        response.mustcontain('09:00-13:00')
 
     
     
@@ -115,8 +115,8 @@ class ProviderTest(BaseTest):
         # click on a button
         response = self.testapp.get('/provider/schedule/' + self._TEST_PROVIDER_VANITY_URL + '/add/tuesday/10')
         
-        response.mustcontain('<option selected value="10">10h</option>')
-        response.mustcontain('<option selected value="14">14h</option>')
+        response.mustcontain('<option selected value="10">10:00</option>')
+        response.mustcontain('<option selected value="14">14:00</option>')
         response.mustcontain('<option selected value="tuesday">Mardi</option>')
 
 
@@ -136,7 +136,7 @@ class ProviderTest(BaseTest):
         response = schedule_form.submit()
         
         # check on the schedule page
-        response.mustcontain('9h-12h')
+        response.mustcontain('09:00-12:00')
         
         
         response = self.testapp.get('/provider/schedule/' + self._TEST_PROVIDER_VANITY_URL + '/add/tuesday/11')
@@ -149,7 +149,7 @@ class ProviderTest(BaseTest):
         response = schedule_form.submit()
         
         # check on the schedule page
-        response.mustcontain('9h-15h')
+        response.mustcontain('09:00-15:00')
 
 
     def test_merge_adjacent_times(self):
@@ -168,7 +168,7 @@ class ProviderTest(BaseTest):
         response = schedule_form.submit()
         
         # check on the schedule page
-        response.mustcontain('9h-12h')
+        response.mustcontain('09:00-12:00')
         
         
         # click on a button
@@ -179,7 +179,7 @@ class ProviderTest(BaseTest):
         schedule_form['start_time'] = 12
         response = schedule_form.submit()
         # check on the schedule page
-        response.mustcontain('9h-13h')
+        response.mustcontain('09:00-13:00')
 
 
 
@@ -193,8 +193,8 @@ class ProviderTest(BaseTest):
         # click on a button
         response = self.testapp.get('/provider/schedule/' + self._TEST_PROVIDER_VANITY_URL + '/add/tuesday/20')
         
-        response.mustcontain('<option selected value="20">20h</option>')
-        response.mustcontain('<option selected value="22">22h</option>')
+        response.mustcontain('<option selected value="20">20:00</option>')
+        response.mustcontain('<option selected value="22">22:00</option>')
         response.mustcontain('<option selected value="tuesday">Mardi</option>')
 
 

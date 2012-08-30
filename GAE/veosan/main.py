@@ -29,7 +29,6 @@ jinja_filters['format_datetime_noseconds'] = time.format_datetime_noseconds
 jinja_filters['format_datetime_hour_min'] = time.format_datetime_hour_min
 jinja_filters['format_datetime_booking_form'] = time.format_datetime_booking_form
 jinja_filters['format_datetime_withseconds_convert_east_tz'] = time.format_datetime_withseconds_convert_east_tz
-jinja_filters['format_hour'] = time.format_hour
 jinja_filters['code_to_string'] = util.code_to_string
 jinja_filters['dump'] = dump
 jinja_filters['remove_empty_strings_from_list'] = util.remove_empty_strings_from_list
