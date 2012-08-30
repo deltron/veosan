@@ -55,13 +55,6 @@ def get_time_list():
     
     return time_list
 
-def getScheduleTimeslots():
-    # returns a list of list(name, start time, end time)
-    return ((_(u"Morning"), '8', '12'),
-             (_(u"Afternoon"), '12', '18'),
-             (_(u"Evening"), '18', '21')
-            )
-
 def get_days_of_the_week():
     return [ ('monday', _('Monday')),
              ('tuesday', _('Tuesday')),
