@@ -100,20 +100,8 @@ def format_datetime_booking_form(datetime):
 def format_weekday(date):
     return format_date(date, 'EEEE')
 
-#def format_date_medium(date):
-#    return format_date(date, format="medium")
-
-def format_datetime_hour_min(datetime):
-    lang = _('en')
-    if (lang == 'fr'):
-        return "%s" % format_datetime(datetime, "H:mm", rebase=False)
-    else:
-        return "%s" % format_datetime(datetime, "H:mm a", rebase=False)
-    return 
-
 def format_datetime_withseconds_convert_east_tz(datetime):
     return format_datetime(datetime, "yyyy-MM-dd H:mm:ss", rebase=True)
-
 
 def string_to_datetime(string_date):
     return to_utc(datetime.strptime(string_date, "%Y-%m-%d"))

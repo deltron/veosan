@@ -38,13 +38,13 @@
 		<br>
 		
 		<h6>Booking</h6>
-			booking: {{b.datetime|format_datetime_noseconds}} <br>
+			booking: {{b.datetime|format_datetime(format="short")}} <br>
 			specialty: {{b.specialty}} <br>
 			insurance: {{b.insurance}} <br>
 			comments: {{b.comments}} <br>
 			<br>
-			request: {{b.request_datetime|format_datetime_noseconds}} <br>
-			created: {{ b.created_on|format_datetime_noseconds }} <br>
+			request: {{b.request_datetime|format_datetime(format="short")}} <br>
+			created: {{ b.created_on|format_datetime(format="short") }} <br>
 		<br>
 		
 		<h6>Provider</h6>

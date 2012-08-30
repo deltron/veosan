@@ -26,7 +26,6 @@ jinja_filters['format_weekday'] = time.format_weekday
 jinja_filters['format_date_weekday_after'] = time.format_date_weekday_after
 jinja_filters['format_datetime_full'] = time.format_datetime_full
 jinja_filters['format_datetime_noseconds'] = time.format_datetime_noseconds
-jinja_filters['format_datetime_hour_min'] = time.format_datetime_hour_min
 jinja_filters['format_datetime_booking_form'] = time.format_datetime_booking_form
 jinja_filters['format_datetime_withseconds_convert_east_tz'] = time.format_datetime_withseconds_convert_east_tz
 jinja_filters['code_to_string'] = util.code_to_string

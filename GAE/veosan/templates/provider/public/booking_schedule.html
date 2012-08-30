@@ -61,7 +61,7 @@
 					{% for t in day_times %}
 					<tr><td style="text-align: center; border: none;">
 					<a href="/{{provider.vanity_url}}/book/{{day_key}}/{{t.hour}}" style="font-size:small; width=100%" type="submit" class="btn btn-primary btn-mini" id="button-{{day_key~"-"~t.hour}}">
-						{{t|format_datetime_hour_min}}
+						{{t|format_time(format="short", rebase=False)}}
 					</a>
 					</td></tr>
 				  	{% endfor %}

@@ -36,7 +36,7 @@
 						{{ b.status }}
 					</td>
 					<td>
-						{{ b.created_on|format_datetime_noseconds }}
+						{{ b.created_on|format_datetime(format="short") }}
 					</td>
 					<td>
 						{% if b.provider %}
@@ -45,10 +45,10 @@
 					</td>
 					<td>
 						{% if b.datetime %}
-							{{b.datetime|format_datetime_noseconds}}
+							{{b.datetime|format_datetime(format="short")}}
 						{% else %}
 							<p>non datetime
-							<span style="font-size: smaller">(request: {{b.request_datetime|format_datetime_noseconds}})</span></p>
+							<span style="font-size: smaller">(request: {{b.request_datetime|format_datetime(format="short")}})</span></p>
 						{% endif %}
 					</td>
 
