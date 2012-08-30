@@ -3,11 +3,8 @@
 from base import BaseTest
 from datetime import datetime, timedelta
 import unittest
-import testutil, util
-from data import db
-from data.model import Patient, Booking, User
-import logging
-
+from babel.dates import format_datetime, format_date, format_time
+import testutil
 
 class BookingTest(BaseTest):
     
@@ -378,13 +375,13 @@ class BookingTest(BaseTest):
         self.logout_patient()
         
         # check schedule on public profile
-        booking_datetime = datetime.strptime(testutil.next_monday_date_string() + " " + str(time_string), '%Y-%m-%d %H')
+        booking_datetime = datetime.strptime(testutil.next_monday_date_string() + " " + str(10), '%Y-%m-%d %H')
         french_datetime_string = format_datetime(booking_datetime, "EEEE 'le' d MMMM yyyy", locale='fr_CA') + " à " + format_datetime(booking_datetime, "H:mm", locale='fr_CA')
         
         booking_datetime = datetime.strptime(testutil.next_monday_date_string(), '%Y-%m-%d')
         booking_datetime_string = format_date(booking_datetime, format="d MMM yyyy", locale='fr_CA')
         
-        booking_time = datetime.strptime(str(time_string), '%H')
+        booking_time = datetime.strptime(str(10), '%H')
         booking_time_string = format_time(booking_time, format="short", locale='fr')
 
          
