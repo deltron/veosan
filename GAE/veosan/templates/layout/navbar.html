@@ -4,7 +4,18 @@
 			<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </a>
 			<a class="brand" href="/">{{ _('veosan') }}</a>
 			<div class="nav-collapse">
+				<ul class="nav">
+					{% if 'admin' in roles %}
+					<li>
+						<a href="/learnmore">{{ _('Learn More') }}</a>
+					</li>
+					<li>
+						<a href="http://blog.veosan.com">{{ _('Blog') }}</a>
+					</li>
+					{% endif %}
+				</ul>
 				<ul class="nav pull-right">
+
 					{% if user %}
 					<!-- User menu -->
 
@@ -75,20 +86,18 @@
 						</ul>
 					</li>
 					{% endif %}
-					
+
 					<li>
 						<a href="{{login_url}}">{{ _('My Account') }}</a>
 					</li>
 					{% endif%}
-					
-					
+
 					<!-- language -->
 					{% for l in other_languages %}
 					<li>
 						<a href="/lang/{{l}}">{{ language_labels[l] }}</a>
 					</li>
 					{% endfor %}
-
 
 					{% if 'admin' in roles %}
 					{# Possible to have no user logged in but still have an admin logged in #}
