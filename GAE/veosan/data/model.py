@@ -29,6 +29,7 @@ class SiteLog(ndb.Model):
 class SiteCounter(ndb.Model):
     internet_explorer_hits = ndb.IntegerProperty(default=0)
     log_email_last_offset = ndb.StringProperty()
+    blog_clicks = ndb.IntegerProperty(default=0)
 
 
 class User(Webapp2AuthUser):

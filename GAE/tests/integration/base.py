@@ -395,7 +395,7 @@ class BaseTest(unittest.TestCase):
         # check one schedule was saved in the database
         schedule_count = provider.get_schedules().count()
         self.assertGreater(schedule_count , 0, 'Provider should have at least one schedule')
-        response.mustcontain('%sh-%sh' % (start_time, end_time))
+        response.mustcontain('%s:00-%s:00' % (start_time, end_time))
         
         # check if square for day is green
         row_span_string = str(end_time - start_time)
@@ -578,7 +578,7 @@ class BaseTest(unittest.TestCase):
         # check admin console, booking should be in the list
         self.login_as_admin()
         admin_bookings_page = self.testapp.get('/admin/bookings')
-        admin_datetime = testutil.next_monday_date_string() + " " + str(time_string) + ":00"
+        admin_datetime = testutil.next_monday_date_string_alt() + " " + str(time_string) + ":00"
         admin_bookings_page.mustcontain(admin_datetime)
         admin_bookings_page.mustcontain('Fantastic Fox')
         admin_bookings_page.mustcontain('Pat Patient')

@@ -23,17 +23,11 @@ jinja_filters = {}
 jinja_filters['string_to_datetime'] = time.string_to_datetime
 jinja_filters['string_to_time'] = time.string_to_time
 jinja_filters['format_weekday'] = time.format_weekday
-jinja_filters['format_date_medium'] = time.format_date_medium
-jinja_filters['format_datetime_with_weekday'] = time.format_datetime_with_weekday
-jinja_filters['format_date_with_weekday'] = time.format_date_with_weekday
 jinja_filters['format_date_weekday_after'] = time.format_date_weekday_after
 jinja_filters['format_datetime_full'] = time.format_datetime_full
 jinja_filters['format_datetime_noseconds'] = time.format_datetime_noseconds
-jinja_filters['format_datetime_hour_min'] = time.format_datetime_hour_min
 jinja_filters['format_datetime_booking_form'] = time.format_datetime_booking_form
 jinja_filters['format_datetime_withseconds_convert_east_tz'] = time.format_datetime_withseconds_convert_east_tz
-jinja_filters['format_hour'] = time.format_hour
-jinja_filters['format_30min_period'] = time.format_30min_period
 jinja_filters['code_to_string'] = util.code_to_string
 jinja_filters['dump'] = dump
 jinja_filters['remove_empty_strings_from_list'] = util.remove_empty_strings_from_list
@@ -109,7 +103,8 @@ application = ndb.toplevel(webapp2.WSGIApplication([
                                        Route('/terms', handler=static.StaticHandler, name='terms'),
                                        Route('/privacy', handler=static.StaticHandler, name='privacy'),
                                        Route('/learnmore', handler=static.StaticHandler, name='learn_more_profile'),
-                                       
+                                       Route('/blog', handler=static.BlogHandler),
+
                                        # Patient
                                        PathPrefixRoute('/patient', [
                                             Route('/bookings', patient.ListPatientBookings),

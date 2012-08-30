@@ -5,6 +5,20 @@
 			<a class="brand" href="/">{{ _('veosan') }}</a>
 			<div class="nav-collapse">
 				<ul class="nav pull-right">
+					{% if 'admin' in roles %}
+					<li>
+						<a href="/learnmore">{{ _('Learn More') }}</a>
+					</li>
+					<li class="divider-vertical">
+					</li>
+					{% endif %}
+
+					<li>
+						<a href="/blog">{{ _('Blog') }}</a>
+					</li>
+					<li class="divider-vertical">
+					</li>
+
 					{% if user %}
 					<!-- User menu -->
 
@@ -59,6 +73,9 @@
 							{% endif%}
 						</ul>
 					</li>
+					<li class="divider-vertical">
+					</li>
+
 					{% else %}
 					{# No user logged in #}
 
@@ -74,21 +91,23 @@
 							</li>
 						</ul>
 					</li>
+					<li class="divider-vertical">
+					</li>
 					{% endif %}
-					
+
 					<li>
 						<a href="{{login_url}}">{{ _('My Account') }}</a>
 					</li>
+					<li class="divider-vertical">
+					</li>
 					{% endif%}
-					
-					
+
 					<!-- language -->
 					{% for l in other_languages %}
 					<li>
 						<a href="/lang/{{l}}">{{ language_labels[l] }}</a>
 					</li>
 					{% endfor %}
-
 
 					{% if 'admin' in roles %}
 					{# Possible to have no user logged in but still have an admin logged in #}

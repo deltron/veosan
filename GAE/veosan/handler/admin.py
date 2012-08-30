@@ -193,6 +193,8 @@ class AdminDashboardHandler(AdminBaseHandler):
         # get hits from Internet Explorer
         stats_map['internet_explorer_count'] = db.get_site_counter().internet_explorer_hits
 
+        # number of times exiting site to blog
+        stats_map['blog_clicks'] = db.get_site_counter().blog_clicks
         
         self.render_template('admin/dashboard.html', stats_map=stats_map)
 

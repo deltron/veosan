@@ -261,6 +261,9 @@ msgstr "Confirmer votre mot de passe"
 msgid "Please choose your password."
 msgstr "SVP choisir votre mot de passe."
 
+msgid "Blog"
+msgstr "Blogue"
+
 
 #################
 # Form navigation
