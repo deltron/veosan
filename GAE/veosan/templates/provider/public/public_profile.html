@@ -264,7 +264,7 @@
 					<i class="bs-icon icon-time"> </i>
 					<a href="/{{provider.vanity_url}}/book/{{day_key}}/{{t.hour}}" style="width=100%" id="button-{{day_key~"-"~t.hour}}">
 						{{ day_key|format_weekday|capitalize }}
-						{{ day_key|format_date_medium }}
+						{{ day_key|format_date(format="medium") }}
 
 						{{t|format_datetime_hour_min}}
 					</a>

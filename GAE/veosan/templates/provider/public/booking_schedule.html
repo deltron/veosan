@@ -48,7 +48,7 @@
 				{% for (day_key, day_times) in dtm|dictsort %}
 				<th style="min-width: 75px; text-align: center"> 
 						{{ day_key|format_weekday|capitalize }} <br>
-						{{ day_key|format_date_medium }}
+						{{ day_key|format_date(format="medium") }}
 				</th>
 				{% endfor %}
 			</thead>
