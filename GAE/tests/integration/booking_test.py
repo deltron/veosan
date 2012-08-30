@@ -378,7 +378,14 @@ class BookingTest(BaseTest):
         self.logout_patient()
         
         # check schedule on public profile
+        booking_datetime = datetime.strptime(testutil.next_monday_date_string() + " " + str(time_string), '%Y-%m-%d %H')
+        french_datetime_string = format_datetime(booking_datetime, "EEEE 'le' d MMMM yyyy", locale='fr_CA') + " à " + format_datetime(booking_datetime, "H:mm", locale='fr_CA')
         
+        booking_datetime = datetime.strptime(testutil.next_monday_date_string(), '%Y-%m-%d')
+        booking_datetime_string = format_date(booking_datetime, format="d MMM yyyy", locale='fr_CA')
+        
+        booking_time = datetime.strptime(str(time_string), '%H')
+        booking_time_string = format_time(booking_time, format="short", locale='fr')
 
          
 if __name__ == "__main__":
