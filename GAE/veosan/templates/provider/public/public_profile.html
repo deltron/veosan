@@ -139,7 +139,7 @@
 		{% endif %}
 
 		{% if provider.quote %}
-		<p style="font-style: italic; font-family:serif; font-size:x-large">
+		<p style="font-style: italic; font-family:serif; font-size:x-large; line-height: 110%">
 			“ {{ provider.quote }} ”
 		</p>
 		<br>
@@ -273,7 +273,7 @@
 					<a href="/{{provider.vanity_url}}/book/{{day_key}}/{{t.hour}}" style="width=100%" id="button-{{day_key~"-"~t.hour}}">
 						{{ day_key|format_weekday|capitalize }}
 						{{ day_key|format_date(format="medium") }}
-
+						{{ _('at') }}
 						{{t|format_time(format="short", rebase=False)}}
 					</a>
 				</li>
