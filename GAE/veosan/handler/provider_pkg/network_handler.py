@@ -76,31 +76,39 @@ class ProviderNetworkHandler(ProviderBaseHandler):
             if form.validate():
                 invite = Invite()
                 form.populate_obj(invite)
+
+                # check if the target email is an existing user
+                target_provider = db.get_provider_from_email(invite.email)
+                if target_provider: 
+                    # already a member, just make a connection request
+                    self.redirect('/%s/connect' % target_provider.vanity_url)
                 
-                # associate provider to invite
-                invite.provider = provider.key
-                
-                # create a token for this invite that will be used to pre-populate the signup form
-                invite.token = self.create_token(invite.email)
-                
-                # save
-                invite.put()
-                
-                # create an invite url
-                url_obj = urlparse.urlparse(self.request.url)
-                invite_url = urlparse.urlunparse((url_obj.scheme, url_obj.netloc, '/invite/' + invite.token, '', '', ''))
-                logging.info('(ProviderNetworkHandler.post) unique invite URL:' + invite_url)
-    
-                # send the actual email...
-                mail.email_invite(self.jinja2, invite, invite_url)
-                
-                # all good
-                msg = _("Invitation sent to")
-                message = msg + " %s %s" % (invite.first_name, invite.last_name)
-                
-                # new form for next invite
-                provider_invite_form = ProviderInviteForm().get_form()
-                self.render_template("provider/network.html", success_message=message, provider=provider, provider_invite_form=provider_invite_form)
+                else:
+                    # new person
+                    # associate provider to invite
+                    invite.provider = provider.key
+                    
+                    # create a token for this invite that will be used to pre-populate the signup form
+                    invite.token = self.create_token(invite.email)
+                    
+                    # save
+                    invite.put()
+                    
+                    # create an invite url
+                    url_obj = urlparse.urlparse(self.request.url)
+                    invite_url = urlparse.urlunparse((url_obj.scheme, url_obj.netloc, '/invite/' + invite.token, '', '', ''))
+                    logging.info('(ProviderNetworkHandler.post) unique invite URL:' + invite_url)
+        
+                    # send the actual email...
+                    mail.email_invite(self.jinja2, invite, invite_url)
+                    
+                    # all good
+                    msg = _("Invitation sent to")
+                    message = msg + " %s %s" % (invite.first_name, invite.last_name)
+                    
+                    # new form for next invite
+                    provider_invite_form = ProviderInviteForm().get_form()
+                    self.render_template("provider/network.html", success_message=message, provider=provider, provider_invite_form=provider_invite_form)
             else:
                 self.render_template("provider/network.html", provider=provider, provider_invite_form=form)
         else:
