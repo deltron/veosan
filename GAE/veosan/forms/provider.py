@@ -91,8 +91,8 @@ class ProviderSpecialtyForm(CustomForm):
                                                     validators=[custom_validators.DisallowNoChoiceInSelect(message=_('Please choose an option from the list. If none of the options seems to fit, please choose "Other" and write in the field below.'))]
                                             ))
         setattr(form, 'other', TextField(_(u'Other'), 
-                                         description=_(u'Please enter the certificate name here if not in the list'),
-                                         validators=[custom_validators.RequiredIfOther('specialty', message=_('Please enter a certificate name'))]
+                                         description=_(u'Please enter the specialty name here if not in the list'),
+                                         validators=[custom_validators.RequiredIfOther('specialty', message=_('Please enter a specialty name'))]
                                     ))
 
 

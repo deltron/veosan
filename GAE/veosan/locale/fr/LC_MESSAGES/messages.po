@@ -650,6 +650,12 @@ msgstr "Ajouter un groupe professionnel"
 msgid "Add Certification"
 msgstr "Ajouter une certification"
 
+msgid "Add Specialty"
+msgstr "Ajouter une spécialité"
+
+msgid "Specialty"
+msgstr "Spécialité"
+
 msgid "Present"
 msgstr "Présent"
 
@@ -719,11 +725,17 @@ msgstr "SVP choisir une option. Si aucun choix ne s'applique, veuillez sélectio
 msgid "Please choose an option from the list. If none of the options seems to fit, please choose \"Other\""
 msgstr "SVP choisir une option. Si aucun choix ne s'applique, veuillez sélectionner «Autre»"
 
+msgid "Please enter the specialty name here if not in the list"
+msgstr "SVP entrez le nom de votre spécialité ici s'il n'apparaît pas dans la liste"
+
 msgid "Please enter an organization name"
 msgstr "SVP entrez le nom de l'organisation"
 
 msgid "Please enter a certificate name"
 msgstr "SVP entrez le nom du certificat"
+
+msgid "Please enter a specialty name"
+msgstr "SVP entrez le nom de vortre spécialité"
 
 msgid "Certification Title"
 msgstr "Titre du certificat"
