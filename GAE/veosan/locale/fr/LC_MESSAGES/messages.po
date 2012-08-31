@@ -994,7 +994,7 @@ msgstr "Envoyer"
 msgid "Your network contains"
 msgstr "Votre réseau contient"
 
-msgid "health-care professionals."
+msgid "health care professionals."
 msgstr "professionels de la santé."
 
 msgid "Connect"
