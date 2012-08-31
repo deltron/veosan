@@ -395,7 +395,7 @@ class BaseTest(unittest.TestCase):
         # check one schedule was saved in the database
         schedule_count = provider.get_schedules().count()
         self.assertGreater(schedule_count , 0, 'Provider should have at least one schedule')
-        response.mustcontain('%s:00-%s:00' % (start_time, end_time))
+        self.assertIn('%s:00<br>\n\t\t\t\t\t\t-<br>\n\t\t\t\t\t\t%s:00' % (start_time, end_time), str(response))
         
         # check if square for day is green
         row_span_string = str(end_time - start_time)
