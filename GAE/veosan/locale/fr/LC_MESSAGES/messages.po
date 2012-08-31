@@ -1525,20 +1525,28 @@ msgstr "Améliorez votre présence en ligne avec un profil complètement dédié
 
 
 
-msgid "It's who you are"
-msgstr "C'est qui je suis"
+msgid "It's Who You Are!"
+msgstr "C'est qui je suis!"
 
-msgid "Share your specialties, your education and your professional affiliations. Stand out by showcasing your continuing education."
-msgstr "Partagez vos spécialités, votre formation et vos affiliations professionnelles. Démarquez-vous avec votre formation continue."
+msgid "Share your specialties, your education and your professional affiliations. Stand out by showcasing your continuing education. Let patients get comfortable with you before they show up."
+msgstr "Partagez vos spécialités, votre formation et vos affiliations professionnelles. Démarquez-vous avec votre formation continue. Laissez les patients vous rencontrer avant leur premier rendez-vous."
 
-msgid "Online Booking *"
-msgstr "Calendrier en ligne"
+msgid "Yes. It's Free!"
+msgstr "Oui. C'est gratuit!"
 
-msgid "Display your availabilities and let patients do the booking online. Reduce the amount of time spent on the phone. Online scheduling is the answer and it has many other benefits.  Reduce cancellations and missed appointments with automatic reminders."
-msgstr "Placez vos disponibilités en ligne et laissez vos patients schéduler leur rendez-vous."
+msgid "There is no reason anybody should pay a monthly invoice for a simple website. Our profile is more efficient and completely free and will stay that way."
+msgstr "Il n'est pas être nécéssaire de payer des factures mensuelles pour un cimple site web. Notre profile est plus efficace et complètement grauit."
 
 msgid "Professional Network"
 msgstr "Réseau Professionnel"
+
+msgid "Establish credibility and refer your patients your trusted colleagues. Establish a connection that benefits everyone."
+msgstr "Établissez votre réputation et référez vos patients à vos collègues de confiance. Établissez des contacts qui seront bénéfique pour tous."
+
+
+
+msgid "Display your availabilities and let patients do the booking online. Reduce the amount of time spent on the phone. Online scheduling is the answer and it has many other benefits.  Reduce cancellations and missed appointments with automatic reminders."
+msgstr "Placez vos disponibilités en ligne et laissez vos patients schéduler leur rendez-vous."
 
 msgid "Do your patients need other specialists and you don’t know where to refer him? Refer him to a specialist in our database and establish a connection that can be mutually beneficial."
 msgstr "Est-ce que vos patients nécéssite des soins complémentaires. Utilisez notre réseau pour établir une connection qui sera bénéfique pour vos patients et vous."
