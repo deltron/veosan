@@ -1529,7 +1529,7 @@ msgid "It's who you are"
 msgstr "C'est qui je suis"
 
 msgid "Share your specialties, your education and your professional affiliations. Stand out by showcasing your continuing education."
-msgstr "Partagez vos spécialités, votre éducation et vos affiliations professionnelles. Démarquez-vous avec votre formation continue."
+msgstr "Partagez vos spécialités, votre formation et vos affiliations professionnelles. Démarquez-vous avec votre formation continue."
 
 msgid "Online Booking *"
 msgstr "Calendrier en ligne"

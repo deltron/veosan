@@ -6,7 +6,7 @@
 /* promo wrapper */
 body.promo-page{background:#ffffff;overflow-x:hidden;}
 .promo-wrapper{font-family:"facitweb",Helvetica,sans-serif;font-weight:300;color:#81919b;}.promo-wrapper a{color:#569cc4;text-decoration:none;}.promo-wrapper a:hover{color:#00c6d4;}
-.promo-wrapper p{font-family:Helvetica,sans-serif;font-weight:300;line-height:1.65em;font-size:13px;}
+.promo-wrapper p{font-family:Helvetica,sans-serif;font-weight:300;line-height:1.65em;font-size:13px;color:#677882;}
 .promo-wrapper h1,.promo-wrapper h2,.promo-wrapper h3{color:#26729e;}
 .promo-wrapper h1{font-size:45px;line-height:1.2em;}
 .promo-wrapper .intro{text-align:center;font-size:19px;}
@@ -53,7 +53,7 @@ body.promo-page{background:#ffffff;overflow-x:hidden;}
 #tourIntro #tourExampleBoard{position:absolute;top:0px;left:35%;height:610px;}
 #tourIntro #tourExampleBoardWide{display:none;}
 #tourIntro p.intro{width:30%;text-align:left;}
-#tourIntro .tour-details{background:#f1f6f9;padding:150px 0px 60px 0px;}
+#tourIntro .tour-details{background:#f1f6f9	;padding:150px 0px 60px 0px;}
 #tourIntro .tour-details li{margin-top:30px;width:25%;}
 #tourIntro .tour-details li .pic{display:none;}
 #tourIntro .tour-details li.first{float:left;position:relative;}
