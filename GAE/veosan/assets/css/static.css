@@ -48,6 +48,7 @@ body.promo-page{background:#ffffff;overflow-x:hidden;}
 #tourIntro h1{text-align:left;width:36%;padding-top:10px;font-size:51px;line-height:1.15em;letter-spacing:-1px;margin-bottom:30px;font-weight:bold;}
 #tourIntro h1 .linebreak{display:inline-block;}
 #tourIntro h2{font-size:24px;margin-bottom:10px;line-height:1.3em;font-weight:bold;}
+#tourIntro ul{list-style:none}
 #tourIntro .height-wrapper{height:500px;}
 #tourIntro #tourExampleBoard{position:absolute;top:0px;left:35%;height:610px;}
 #tourIntro #tourExampleBoardWide{display:none;}
