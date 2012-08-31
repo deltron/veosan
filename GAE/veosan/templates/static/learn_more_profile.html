@@ -11,14 +11,15 @@
 {% block content %}
 <div class="row">
 	<div class="span12 promo-wrapper">
+
 		<section id="tourIntro" class="tour-section">
 			<div class="width-wrapper">
 				<div class="height-wrapper">
-					<h1>Help<br>
-						patients<br> 
-						find you</h1>
+					<h1>{{_('Help')}}<br>
+						{{_('patients')}}<br> 
+						{{_('find you')}}</h1>
 					<p class="intro">
-						Improve your online presence with a profile focused on health care.
+						{{_('Improve your online presence with a profile focused on health care.')}}
 					</p>
 				</div>
 				<img src="/assets/img/tour-main-profile.png" alt="Example Veosan Profile and Membership" id="tourExampleBoard">
@@ -27,22 +28,31 @@
 			<div class="tour-details clearfix">
 				<ul class="width-wrapper">
 					<li class="first">
-						<h2>It's who you are</h2>
+						<!--
+						<div id="tourIntroExampleCards">
+							<img class="card1" src="https://d2k1ftgv7pobq7.cloudfront.net/images/landing/tour/4c143fb6aa7908d0761dd44b34d1cb50/example-card1.png" alt="Trello exanple card 1"><img class="card2" src="https://d2k1ftgv7pobq7.cloudfront.net/images/landing/tour/66407a83e01428b3700024d786437121/example-card2.png" alt="Trello exanple card 2"><img class="card3" src="https://d2k1ftgv7pobq7.cloudfront.net/images/landing/tour/cb1fa54f296500d3cd3cc673758e8001/example-card3.png" alt="Trello exanple card 3"><img class="card4" src="https://d2k1ftgv7pobq7.cloudfront.net/images/landing/tour/b4379730fe54a13d7ee1aed972c0f3e9/example-card4.png" alt="Trello exanple card 4">
+						</div>
+						
+						<img class="pic" src="https://d2k1ftgv7pobq7.cloudfront.net/images/landing/tour/56a90ee6536eef163642b471b88808d4/example-cards.png" alt="Trello example cards">
+						-->
+						<h2>{{_("It's who you are")}}</h2>
 						<p>
-							Share your specialties, your education and your professional affiliations. Stand out by showcasing your continuing education.
+							{{_('Share your specialties, your education and your professional affiliations. Stand out by showcasing your continuing education.')}}
 						</p>
 					</li>
 					<li class="second">
-						<h2>Online Booking *</h2>
+						<!--<img class="pic" src="https://d2k1ftgv7pobq7.cloudfront.net/images/landing/tour/ced9204d1b2147d08fd9387621657204/mini-board.png" alt="mini Trello board">-->
+						<h2>{{_('Online Booking *')}}</h2>
 						<p>
-							Display your availabilities and let patients do the booking online. Reduce the amount of time spent on the phone. Online scheduling is the answer and it has many other benefits.  Reduce cancellations and missed appointments with automatic reminders.
+							{{_('Display your availabilities and let patients do the booking online. Reduce the amount of time spent on the phone. Online scheduling is the answer and it has many other benefits.  Reduce cancellations and missed appointments with automatic reminders.')}}
 						</p>
 					</li>
 					
 					<li class="third">
-						<h2>Professional Network</h2>
+						<!--<img class="pic" src="https://d2k1ftgv7pobq7.cloudfront.net/images/landing/tour/ced9204d1b2147d08fd9387621657204/mini-board.png" alt="mini Trello board">-->
+						<h2>{{_('Professional Network')}}</h2>
 						<p>
-							Do your patients need other specialists and you don’t know where to refer him? Refer him to a specialist in our database and establish a connection that can be mutually beneficial. 
+							{{_("Do your patients need other specialists and you don’t know where to refer him? Refer him to a specialist in our database and establish a connection that can be mutually beneficial.")}}
 						</p>
 					</li>
 				</ul>
@@ -77,7 +87,7 @@
 					<li>
 						<div class="pic"><img src="/assets/img/tour-reputation.jpeg" alt="Your CV">
 						</div>
-						<h2>Establish and Maintain Your Reputation</h2>
+						<h2>Safeguard your reputation</h2>
 						<p>
 							
 						</p>
@@ -86,7 +96,7 @@
 					<li>
 						<div class="pic"><img src="/assets/img/tour-network.jpeg" alt="Your Professional Network">
 						</div>
-						<h2>Expand Your Referral Network</h2>
+						<h2>Reinforce your professional network</h2>
 						<p>
 							Share your credentials with potential patients and extend your professional network. Meet different professionals.  Does your patient need a specialist and you don’t know where to refer him? Refer him to a specialist in our database and establish a connection that can be mutually beneficial. 
 						</p>
