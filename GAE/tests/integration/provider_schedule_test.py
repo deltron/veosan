@@ -23,7 +23,7 @@ class ProviderTest(BaseTest):
         schedule_form['day'] = 'tuesday'
         schedule_form['start_time'] = 9
         schedule_form['end_time'] = 17
-        response = schedule_form.submit()
+        response = schedule_form.submit().follow()
         # check on the schedule admin page
         self.assertIn('%s:00<br>\n\t\t\t\t\t\t-<br>\n\t\t\t\t\t\t%s:00' % ("09", "17"), str(response))
         # check admin providers
@@ -45,7 +45,7 @@ class ProviderTest(BaseTest):
         schedule_form['start_time'] = 9
         schedule_form['end_time'] = 17
 
-        response = schedule_form.submit()
+        response = schedule_form.submit().follow()
         
         # check on the schedule admin page
         self.assertIn('%s:00<br>\n\t\t\t\t\t\t-<br>\n\t\t\t\t\t\t%s:00' % ("09", "17"), str(response))
@@ -70,7 +70,7 @@ class ProviderTest(BaseTest):
         schedule_form['start_time'] = 9
         schedule_form['end_time'] = 17
 
-        response = schedule_form.submit()
+        response = schedule_form.submit().follow()
         
         # check on the schedule page
         self.assertIn('%s:00<br>\n\t\t\t\t\t\t-<br>\n\t\t\t\t\t\t%s:00' % ("09", "17"), str(response))
@@ -82,7 +82,7 @@ class ProviderTest(BaseTest):
         schedule_form['start_time'] = 9
         schedule_form['end_time'] = 13
         
-        response = schedule_form.submit()
+        response = schedule_form.submit().follow()
         
         # check on the schedule page
         self.assertIn('%s:00<br>\n\t\t\t\t\t\t-<br>\n\t\t\t\t\t\t%s:00' % ("09", "13"), str(response))
@@ -133,7 +133,7 @@ class ProviderTest(BaseTest):
         schedule_form['start_time'] = 9
         schedule_form['end_time'] = 12
 
-        response = schedule_form.submit()
+        response = schedule_form.submit().follow()
         
         # check on the schedule page
         self.assertIn('%s:00<br>\n\t\t\t\t\t\t-<br>\n\t\t\t\t\t\t%s:00' % ("09", "12"), str(response))
@@ -146,7 +146,7 @@ class ProviderTest(BaseTest):
         schedule_form['start_time'] = 11
         schedule_form['end_time'] = 15
 
-        response = schedule_form.submit()
+        response = schedule_form.submit().follow()
         
         # check on the schedule page
         self.assertIn('%s:00<br>\n\t\t\t\t\t\t-<br>\n\t\t\t\t\t\t%s:00' % ("09", "15"), str(response))
@@ -165,7 +165,7 @@ class ProviderTest(BaseTest):
         schedule_form['start_time'] = 9
         schedule_form['end_time'] = 12
 
-        response = schedule_form.submit()
+        response = schedule_form.submit().follow()
         
         # check on the schedule page
         self.assertIn('%s:00<br>\n\t\t\t\t\t\t-<br>\n\t\t\t\t\t\t%s:00' % ("09", "12"), str(response))
@@ -177,7 +177,7 @@ class ProviderTest(BaseTest):
         schedule_form = response.forms['schedule_form']
         schedule_form['day'] = 'tuesday'
         schedule_form['start_time'] = 12
-        response = schedule_form.submit()
+        response = schedule_form.submit().follow()
         # check on the schedule page
         self.assertIn('%s:00<br>\n\t\t\t\t\t\t-<br>\n\t\t\t\t\t\t%s:00' % ("09", "13"), str(response))
 

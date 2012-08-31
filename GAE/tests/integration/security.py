@@ -55,7 +55,7 @@ class SecurityTest(BaseTest):
         experience_form['title'] = 'Manual Physiotherapy'
         experience_form['description'] = "<not allowed in here!"
 
-        response2 = experience_form.submit()
+        response2 = experience_form.submit().follow()
         
         response2.mustcontain('&lt;not allowed in here!')
         response2.mustcontain(no='<not allowed in here!')

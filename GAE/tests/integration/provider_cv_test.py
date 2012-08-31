@@ -23,7 +23,7 @@ class ProviderTest(BaseTest):
         education_form['degree_title'] = 'Clinical Physiotherapy'
         education_form['description'] = 'Graduated with honors'
 
-        response = education_form.submit()
+        response = education_form.submit().follow()
         
         # check on the profile admin page
         response.mustcontain('1998','2002')
@@ -71,7 +71,7 @@ class ProviderTest(BaseTest):
 
         education_form3 = response2.forms['organization_form']
         education_form3['other'] = 'Curtain University'
-        response3 = education_form3.submit()
+        response3 = education_form3.submit().follow()
         
         response3.mustcontain('Curtain University')
         
@@ -97,7 +97,7 @@ class ProviderTest(BaseTest):
         education_form['degree_title'] = 'Clinical Physiotherapy'
         education_form['description'] = 'Graduated with honors'
 
-        response = education_form.submit()
+        response = education_form.submit().follow()
                 
         # all good
         response.mustcontain('1998','2002')
@@ -123,9 +123,9 @@ class ProviderTest(BaseTest):
         # now change it to valid again
         edit_form_corrected = error_response.forms['education_form']
         edit_form_corrected['start_year'] = 1979
-        saved_response = edit_form_corrected.submit()
+        saved_response = edit_form_corrected.submit().follow()
         saved_response.mustcontain('1979')
-        saved_response.mustcontain('Vos modifications ont été enregistrées.')
+
         
         # check the event log
         self.assert_msg_in_log("Edit CV: add education success", admin=False)
@@ -148,7 +148,7 @@ class ProviderTest(BaseTest):
         education_form['degree_title'] = 'Clinical Physiotherapy'
         education_form['description'] = 'Graduated with honors'
 
-        response = education_form.submit()
+        response = education_form.submit().follow()
         
         response.mustcontain('1998','2002')
         response.mustcontain('Université McGill')
@@ -197,7 +197,7 @@ class ProviderTest(BaseTest):
         experience_form['title'] = 'Manual Physiotherapy'
         experience_form['description'] = 'Worked with my hands'
 
-        response = experience_form.submit()
+        response = experience_form.submit().follow()
         
         # check on the profile admin page
         response.mustcontain('2003','2006')
@@ -232,7 +232,7 @@ class ProviderTest(BaseTest):
         experience_form['title'] = 'Manual Physiotherapy'
         experience_form['description'] = 'Worked with my hands'
 
-        response = experience_form.submit()
+        response = experience_form.submit().follow()
         
         # check on the profile admin page
         response.mustcontain('2003','2006')
@@ -273,39 +273,6 @@ class ProviderTest(BaseTest):
 
         self.assert_msg_in_log("Edit CV: delete experience success", admin=False)
 
-    def test_uncheck_specialties(self):
-        self.self_signup_provider()
-
-        # fill profile section
-        self.fill_new_provider_profile_correctly_action()
-
-        response = self.testapp.get('/provider/profile/' + self._TEST_PROVIDER_VANITY_URL)
-
-        profile_form = response.forms[0] # address form
-        profile_form.set('specialty', False, 0) # Sports
-        profile_form.set('specialty', False, 2) # Cardio
-
-        response = profile_form.submit()
-        
-        response = self.testapp.get('/provider/profile/' + self._TEST_PROVIDER_VANITY_URL)
-        
-        # verify unchecked
-        response.mustcontain('input id="specialty-0" name="specialty" type="checkbox" value="sports"')        
-        response.mustcontain('input id="specialty-2" name="specialty" type="checkbox" value="cardiology"')  
-
-        # navigate away
-        self.testapp.get('/provider/cv/' + self._TEST_PROVIDER_VANITY_URL)
-
-        # navigate back
-        response = self.testapp.get('/provider/profile/' + self._TEST_PROVIDER_VANITY_URL)
-        response.mustcontain('input id="specialty-0" name="specialty" type="checkbox" value="sports"')        
-        response.mustcontain('input id="specialty-2" name="specialty" type="checkbox" value="cardiology"')  
-        response.mustcontain(no='input checked id="specialty-0" name="specialty" type="checkbox" value="sports"')        
-        response.mustcontain(no='input checked id="specialty-2" name="specialty" type="checkbox" value="cardiology"')  
-        
-        self.assert_msg_in_log("Edit Profile: Success", admin=False)
-
-
     def test_add_experience_to_profile_with_markdown(self):
         self.self_signup_provider()
 
@@ -323,7 +290,7 @@ class ProviderTest(BaseTest):
         experience_form['title'] = 'Manual Physiotherapy'
         experience_form['description'] = 'Par1\n\nPar2* Worked with my hands\n * Item two'
 
-        response = experience_form.submit()
+        response = experience_form.submit().follow()
         
         # check on the profile admin page
         response.mustcontain('2003','2006')
