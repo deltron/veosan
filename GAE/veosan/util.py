@@ -104,7 +104,7 @@ def add_other_at_end(l):
 
 
 # key, value
-def getAllSpecialities():
+def get_all_specialties():
     return [("sports", _(u"Sports")),
             ("geriatric", _(u"Geriatric")),
             ("cardiology", _(u"Cardiology")),
@@ -115,9 +115,13 @@ def getAllSpecialities():
             ("vestibular_rehabilitation", _(u"Vestibular Rehabilitation")),
             ("womens_health", _(u"Women's Health"))
         ]
-    
+
+def get_all_specialties_for_form():
+    return massage_list(get_all_specialties())
+
+
 def getAllSpecialitiesForPatient():
-    specialty_list = massage_list(getAllSpecialities())
+    specialty_list = massage_list(get_all_specialties())
     specialty_list.extend([ 
             ("dontknow", _(u"Not sure or don't know")),
             ("noanswer", _(u"Prefer not to answer"))

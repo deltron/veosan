@@ -11,7 +11,7 @@ set up CV Sections
 #}
 
 {% set sections = ('education', 'experience', 'continuing_education',
-'organization', 'certification' ) %}
+'organization', 'certification', 'specialties' ) %}
 
 {% set section_label = {
 'education' : _('Education'),
@@ -19,6 +19,7 @@ set up CV Sections
 'continuing_education' : _('Continuing Education'),
 'organization' : _('Organization Memberships'),
 'certification' : _('Certification'),
+'specialties' : _('Specialties'),
 } %}
 
 {% set section_form = {
@@ -27,6 +28,7 @@ set up CV Sections
 'continuing_education' : continuing_education_form,
 'organization' : organization_form,
 'certification' : certification_form,
+'specialties' : specialties_form,
 } %}
 
 {% block content %}
@@ -73,7 +75,24 @@ set up CV Sections
 			{% endfor %}
 		</ul>
 		<a data-toggle="modal" href="#experience_modal" class="btn btn-primary">{{ _('Add Experience') }}</a>
+		<br>
+		<br>
+		<h3>{{ _('Specialties') }}</h3>
+		<ul class="unstyled">
+			{% for e in provider.get_specialty() %}
+			<li>
+				<h4>
+					{% if e.specialty == 'other' %}
+						{{ e.other }}
+					{% else %}
+						{{ specialty_dict[e.specialty] }}
+					{% endif %}
 
+					<a href="/provider/cv/specialties/{{ provider.vanity_url }}/edit/{{ e.key.urlsafe() }}" rel="tooltip" title="{{ _('Edit') }}" data-placement="right"><i class="bs-icon icon-edit"> </i></a></h4>
+			</li>
+			{% endfor %}
+		</ul>
+		<a data-toggle="modal" href="#specialties_modal" class="btn btn-primary">{{ _('Add Specialty') }}</a>
 	</div>
 	<div class="span6">
 		<h3>{{ _('Continuing Education') }}</h3>
