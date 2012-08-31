@@ -444,7 +444,7 @@ class ProviderSocialTest(BaseTest):
         profile_page.mustcontain("david est relié à 0 professionels de la santé.")
         
 
-    def test_invite_to_connect_accept_from_email(self):
+    def test_invite_to_connect_accept_from_email_not_logged_in(self):
         # create a provider
         self.self_signup_provider()
         self.logout_provider()
@@ -1114,6 +1114,75 @@ class ProviderSocialTest(BaseTest):
         self.assertEqual(provider_network_connection.rejection_count, 2)
     
 
+
+    def test_accept_invite_from_email_already_logged_in_as_inviter(self):
+        # create a provider
+        self.self_signup_provider()
+        self.logout_provider()
+        
+        # and another
+        self.self_signup_provider(email='mctest@veosan.com', first_name='david', last_name='mctester', category='dentist')
+
+        # now go to the first guy's profile
+        response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
+        
+        # click connect
+        response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL + "/connect")
+        response.mustcontain('Connection requested')
+                
+        # now check email and click accept (while logged in as 2nd guy)
+        messages = self.mail_stub.get_sent_messages(to=self._TEST_PROVIDER_EMAIL)
+        self.assertEqual(1, len(messages))
+        m = messages[0]
+        
+        self.assertEqual(m.subject, 'Join my network on Veosan!')
+        self.assertEqual(m.sender, 'david mctester <support@veosan.com>')
+        self.assertEqual(m.reply_to, 'mctest@veosan.com')
+        
+        source_provider = db.get_provider_from_email('mctest@veosan.com')
+        
+        self.assertIn("%s %s veut se connecter avec vous sur Veosan." % (source_provider.first_name, source_provider.last_name), m.body.payload)
+        self.assertIn("SVP suivez le lien ci-dessous pour accepter:", m.body.payload)
+        
+        lnk = source_provider.get_provider_network_pending_connections_source()[0].key.urlsafe()
+
+        self.assertIn("/login/accept/%s" % lnk, m.body.payload)
+
+        # accept the connection by clicking link in email
+        login_page = self.testapp.get('/login/accept/%s' % lnk)
+
+        # this should log out the 2nd provider and prompt the first one to login
+        login_page.mustcontain(u"Connexion")
+        
+        # email should be pre-populated
+        login_page.mustcontain(self._TEST_PROVIDER_EMAIL)
+
+        # fill out details
+        login_form = login_page.forms[0]
+        login_form['password'] = self._TEST_PROVIDER_PASSWORD
+        login_redirect_response = login_form.submit()
+
+        # response after login is a redirect, so follow
+        network_page = login_redirect_response.follow()
+        
+        network_page.mustcontain("Vous êtes maintenant connecté à david mctester")
+        network_page.mustcontain('Votre réseau contient 1 professionels de la santé.')
+        network_page.mustcontain("david mctester")
+        network_page.mustcontain("Dentiste")
+        network_page.mustcontain(no="Connect")
+        network_page.mustcontain(no="Reject")
+        network_page.mustcontain(no="Here are your pending invitations. Please confirm you know this person.")
+
+        # now check it shows up on the other side
+        self.logout_provider()
+        self.login_as_provider(email='mctest@veosan.com', password=self._TEST_PROVIDER_PASSWORD)
+        
+        network_page = self.testapp.get('/provider/network/' + 'davidmctester')
+        
+        network_page.mustcontain('Votre réseau contient 1 professionels de la santé.')
+        network_page.mustcontain("first last")
+        network_page.mustcontain("Ostéopathe")
+                
 
 if __name__ == "__main__":
     unittest.main()

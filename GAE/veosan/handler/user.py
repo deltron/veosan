@@ -287,20 +287,30 @@ class LoginHandler(UserBaseHandler):
         ''' Show login page '''
         
         user = self.get_current_user()
-        if user and next_action:
-            provider = db.get_provider_from_user(user)
+        if user and next_action and key:
+            # if already logged in
+            provider_from_user = db.get_provider_from_user(user)
+            
+            # check if logged in provider is the provider from
             # already logged in, don't login again
             if next_action == 'accept':
-                # do it
-                target_url = '/provider/network/' + provider.vanity_url + '/accept/' + key
-                self.redirect(target_url)
-        
+                provider_network_connection = ndb.Key(urlsafe=key).get()
+                target_provider_key = provider_network_connection.target_provider
+
+                if provider_from_user.key == target_provider_key:
+                    # the target provider is logged in, accept the connection bypassing login
+                    target_url = '/provider/network/' + provider_from_user.vanity_url + '/accept/' + key
+                    self.redirect(target_url)
+                else:
+                    self.render_login(next_action=next_action, key=key)
+                
         else:
-        # check if an admin is logged in, if so don't proceed
+            # check if an admin is logged in, if so don't proceed
             google_user = users.get_current_user()
             if google_user and users.is_current_user_admin():
                 self.render_login(error_message='Logged in as admin already.')
             else:
+                # no admin, not next_action, show the plain ol' login screen
                 self.render_login(next_action=next_action, key=key)
         
 
