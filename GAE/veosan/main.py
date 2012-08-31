@@ -102,7 +102,7 @@ application = ndb.toplevel(webapp2.WSGIApplication([
                                        Route('/careers', handler=static.StaticHandler, name='careers'),
                                        Route('/terms', handler=static.StaticHandler, name='terms'),
                                        Route('/privacy', handler=static.StaticHandler, name='privacy'),
-                                       Route('/learnmore', handler=static.StaticHandler, name='learn_more_profile'),
+                                       Route('/tour', handler=static.StaticHandler, name='tour'),
                                        Route('/blog', handler=static.BlogHandler),
 
                                        # Patient
