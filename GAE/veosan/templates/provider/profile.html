@@ -10,6 +10,18 @@
 <form method="post" action="/provider/profile/{{ provider.vanity_url }}" class="form-horizontal" id="profile_form">
 	<div class="row">
 		<div class="span6">
+			<div align="center">
+				<a data-toggle="modal" href="#upload_photo_modal"> {% if not provider.profile_photo_blob_key %} <img src="/assets/img/default-profile.png" width="100" height="100"></a>
+				{% else %}
+				<img src="{{ provider.get_profile_photo_image_url(200) }}" width="200"></a>
+				{% endif %}
+
+				<br>
+				<br>
+				<a class="btn btn-primary" data-toggle="modal" href="#upload_photo_modal">{{ _('Upload Your Profile Photo') }}</a>
+			</div>
+			<br>
+			<br>
 			<fieldset>
 				{{ macro.make_standard_form(profile_form) }}
 			</fieldset>
@@ -80,35 +92,6 @@
 			<br>
 			<br>
 			<br>
-
-			<div align="center">
-				<a data-toggle="modal" href="#upload_photo_modal"> {% if not provider.profile_photo_blob_key %} <img src="/assets/img/default-profile.png" width="100" height="100"></a>
-				{% else %}
-				<img src="{{ provider.get_profile_photo_image_url(200) }}" width="200"></a>
-				{% endif %}
-
-				<br>
-				<br>
-				<a class="btn btn-primary" data-toggle="modal" href="#upload_photo_modal">{{ _('Upload Your Profile Photo') }}</a>
-			</div>
-
-			{#
-			<br>
-			<br>
-			<br>
-			<div class="well" style="width: 50%; margin: 0px auto;">
-				<h4> {{ _('Pssst. Hey...we want to know what you think about this page!') }} </h4>
-				<br>
-				<p>
-					{{ _("Let us know if you think something is missing or can be improved. Or if you're feeling nice, tell us you think it looks good! We love to hear feedback from our users.") }}
-				</p>
-				<p>
-					<i class="bs-icon icon-bullhorn"> </i>
-
-					{{ _("You can <a href='/contact'> get in touch with us here</a>.") }}
-				</p>
-			</div>
-			#}
 		</div>
 	</div>
 	<div class="row">
