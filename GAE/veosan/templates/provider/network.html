@@ -31,7 +31,7 @@
 		{% endif %}
 
 		{% if provider.get_provider_network_count() > 0 %}
-		{{ _('Your network contains') }} {{ provider.get_provider_network_count() }} {{ _('health-care professionals.') }}
+		{{ _('Your network contains') }} {{ provider.get_provider_network_count() }} {{ _('health care professionals.') }}
 		<table class="table-condensed">
 			{% for p in provider.get_provider_network() %}
 			{# create a row every 2 providers #}

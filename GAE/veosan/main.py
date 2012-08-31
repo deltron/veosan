@@ -13,7 +13,7 @@ from utilities import time
 from handler import booking, provider, patient, provider_admin, admin, static, contact, language, user,\
     tasks
 from handler.provider_pkg import network_handler, address_handler, cv_handler,\
-    profile_handler, welcome_handler
+    profile_handler, welcome_handler, schedule_handler
 from data.model import User
 from google.appengine.ext import ndb
 from handler.user_pkg import signup_handler
@@ -102,7 +102,7 @@ application = ndb.toplevel(webapp2.WSGIApplication([
                                        Route('/careers', handler=static.StaticHandler, name='careers'),
                                        Route('/terms', handler=static.StaticHandler, name='terms'),
                                        Route('/privacy', handler=static.StaticHandler, name='privacy'),
-                                       Route('/learnmore', handler=static.StaticHandler, name='learn_more_profile'),
+                                       Route('/tour', handler=static.StaticHandler, name='tour'),
                                        Route('/blog', handler=static.BlogHandler),
 
                                        # Patient
@@ -157,10 +157,10 @@ application = ndb.toplevel(webapp2.WSGIApplication([
                                             
                                             # Schedule
                                             PathPrefixRoute('/schedule', [
-                                                Route('/<vanity_url>', provider.ProviderScheduleHandler),
-                                                Route('/<vanity_url>/<operation>', provider.ProviderScheduleHandler),
-                                                Route('/<vanity_url>/<operation>/<day>/<start_time>', provider.ProviderScheduleHandler),
-                                                Route('/<vanity_url>/<operation>/<key>', provider.ProviderScheduleHandler),
+                                                Route('/<vanity_url>', schedule_handler.ProviderScheduleHandler),
+                                                Route('/<vanity_url>/<operation>', schedule_handler.ProviderScheduleHandler),
+                                                Route('/<vanity_url>/<operation>/<day>/<start_time>', schedule_handler.ProviderScheduleHandler),
+                                                Route('/<vanity_url>/<operation>/<key>', schedule_handler.ProviderScheduleHandler),
                                                 
                                             ]),
                                                                                                                                                                                    

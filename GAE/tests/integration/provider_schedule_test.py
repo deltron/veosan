@@ -23,9 +23,9 @@ class ProviderTest(BaseTest):
         schedule_form['day'] = 'tuesday'
         schedule_form['start_time'] = 9
         schedule_form['end_time'] = 17
-        response = schedule_form.submit()
+        response = schedule_form.submit().follow()
         # check on the schedule admin page
-        response.mustcontain('09:00-17:00')
+        self.assertIn('%s:00<br>\n\t\t\t\t\t\t-<br>\n\t\t\t\t\t\t%s:00' % ("09", "17"), str(response))
         # check admin providers
         self.login_as_admin()
         admin_page = self.testapp.get('/admin/providers')
@@ -45,10 +45,10 @@ class ProviderTest(BaseTest):
         schedule_form['start_time'] = 9
         schedule_form['end_time'] = 17
 
-        response = schedule_form.submit()
+        response = schedule_form.submit().follow()
         
         # check on the schedule admin page
-        response.mustcontain('09:00-17:00')
+        self.assertIn('%s:00<br>\n\t\t\t\t\t\t-<br>\n\t\t\t\t\t\t%s:00' % ("09", "17"), str(response))
 
         # now find and delete it
         modal_response = response.click(linkid='tuesday_9_link')
@@ -70,10 +70,10 @@ class ProviderTest(BaseTest):
         schedule_form['start_time'] = 9
         schedule_form['end_time'] = 17
 
-        response = schedule_form.submit()
+        response = schedule_form.submit().follow()
         
         # check on the schedule page
-        response.mustcontain('09:00-17:00')
+        self.assertIn('%s:00<br>\n\t\t\t\t\t\t-<br>\n\t\t\t\t\t\t%s:00' % ("09", "17"), str(response))
 
         # now find and change it
         modal_response = response.click(linkid='tuesday_9_link')
@@ -82,10 +82,10 @@ class ProviderTest(BaseTest):
         schedule_form['start_time'] = 9
         schedule_form['end_time'] = 13
         
-        response = schedule_form.submit()
+        response = schedule_form.submit().follow()
         
         # check on the schedule page
-        response.mustcontain('09:00-13:00')
+        self.assertIn('%s:00<br>\n\t\t\t\t\t\t-<br>\n\t\t\t\t\t\t%s:00' % ("09", "13"), str(response))
 
     
     
@@ -133,10 +133,10 @@ class ProviderTest(BaseTest):
         schedule_form['start_time'] = 9
         schedule_form['end_time'] = 12
 
-        response = schedule_form.submit()
+        response = schedule_form.submit().follow()
         
         # check on the schedule page
-        response.mustcontain('09:00-12:00')
+        self.assertIn('%s:00<br>\n\t\t\t\t\t\t-<br>\n\t\t\t\t\t\t%s:00' % ("09", "12"), str(response))
         
         
         response = self.testapp.get('/provider/schedule/' + self._TEST_PROVIDER_VANITY_URL + '/add/tuesday/11')
@@ -146,10 +146,10 @@ class ProviderTest(BaseTest):
         schedule_form['start_time'] = 11
         schedule_form['end_time'] = 15
 
-        response = schedule_form.submit()
+        response = schedule_form.submit().follow()
         
         # check on the schedule page
-        response.mustcontain('09:00-15:00')
+        self.assertIn('%s:00<br>\n\t\t\t\t\t\t-<br>\n\t\t\t\t\t\t%s:00' % ("09", "15"), str(response))
 
 
     def test_merge_adjacent_times(self):
@@ -165,10 +165,10 @@ class ProviderTest(BaseTest):
         schedule_form['start_time'] = 9
         schedule_form['end_time'] = 12
 
-        response = schedule_form.submit()
+        response = schedule_form.submit().follow()
         
         # check on the schedule page
-        response.mustcontain('09:00-12:00')
+        self.assertIn('%s:00<br>\n\t\t\t\t\t\t-<br>\n\t\t\t\t\t\t%s:00' % ("09", "12"), str(response))
         
         
         # click on a button
@@ -177,9 +177,9 @@ class ProviderTest(BaseTest):
         schedule_form = response.forms['schedule_form']
         schedule_form['day'] = 'tuesday'
         schedule_form['start_time'] = 12
-        response = schedule_form.submit()
+        response = schedule_form.submit().follow()
         # check on the schedule page
-        response.mustcontain('09:00-13:00')
+        self.assertIn('%s:00<br>\n\t\t\t\t\t\t-<br>\n\t\t\t\t\t\t%s:00' % ("09", "13"), str(response))
 
 
 

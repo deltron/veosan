@@ -14,7 +14,6 @@ from datetime import date
 
 class ProviderProfileForm(CustomForm):
     def _set_fields(self, form):
-        setattr(form, 'specialty', MultiCheckboxField(_(u'Specialties'), choices=util.getAllSpecialities()))
         setattr(form, 'bio', TextAreaField(_(u'Biography'), filters=[lambda x: custom_filters.escape_brackets(x)]))
         setattr(form, 'quote', TextAreaField(_(u'Quote'), filters=[lambda x: custom_filters.escape_brackets(x)]))
         setattr(form, 'practice_sites', MultiCheckboxField(_(u'Practice Sites'), choices=util.getAllSites()))
@@ -83,6 +82,18 @@ class ProviderCertificationForm(CustomForm):
                                          validators=[custom_validators.RequiredIfOther('certification', message=_('Please enter a certificate name'))]
                                     ))
         setattr(form, 'year', IntegerField(_(u'Year Obtained'), [validators.NumberRange(min=1940, max=2100, message=_(u'Please enter a valid year.'))]))
+
+
+class ProviderSpecialtyForm(CustomForm):
+    def _set_fields(self, form):        
+        setattr(form, 'specialty', SelectField(_(u'Specialty'), 
+                                                    choices=util.get_all_specialties_for_form(),
+                                                    validators=[custom_validators.DisallowNoChoiceInSelect(message=_('Please choose an option from the list. If none of the options seems to fit, please choose "Other" and write in the field below.'))]
+                                            ))
+        setattr(form, 'other', TextField(_(u'Other'), 
+                                         description=_(u'Please enter the specialty name here if not in the list'),
+                                         validators=[custom_validators.RequiredIfOther('specialty', message=_('Please enter a specialty name'))]
+                                    ))
 
 
 # Photo

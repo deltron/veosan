@@ -2,14 +2,14 @@
 from handler.provider import ProviderBaseHandler
 from forms.provider import ProviderEducationForm, ProviderExperienceForm,\
     ProviderContinuingEducationForm, ProviderOrganizationForm,\
-    ProviderCertificationForm
+    ProviderCertificationForm, ProviderSpecialtyForm
 from handler.auth import provider_required
 from data import db
 from google.appengine.ext import ndb
 import logging
 from util import saved_message
 from data.model_pkg.cv_model import Education, Experience, ContinuingEducation,\
-    ProfessionalOrganization, ProfessionalCertification
+    ProfessionalOrganization, ProfessionalCertification, Specialty
 
 class ProviderCVHandler(ProviderBaseHandler):
     forms = { 'education' : ProviderEducationForm,
@@ -17,6 +17,7 @@ class ProviderCVHandler(ProviderBaseHandler):
               'continuing_education' : ProviderContinuingEducationForm,
               'organization' : ProviderOrganizationForm,
               'certification' : ProviderCertificationForm,
+              'specialties' : ProviderSpecialtyForm,
             }
 
     objs = { 'education' : Education,
@@ -24,6 +25,7 @@ class ProviderCVHandler(ProviderBaseHandler):
              'continuing_education' : ContinuingEducation,
              'organization' : ProfessionalOrganization,
              'certification' : ProfessionalCertification,
+             'specialties' : Specialty,
             }
 
     def generate_blank_forms(self):
@@ -56,7 +58,9 @@ class ProviderCVHandler(ProviderBaseHandler):
                 # log the event
                 self.log_event(user=provider.user, msg="Edit CV: %s %s success" % (operation, section))
 
-            if operation == 'edit':
+                self.redirect('/provider/cv/' + provider.vanity_url)
+
+            elif operation == 'edit':
                 logging.info("(ProviderEducationHandler.get) Edit section %s key=%s" % (section, key))
                 
                 # get the object
@@ -66,13 +70,14 @@ class ProviderCVHandler(ProviderBaseHandler):
                 kwargs[section + "_form"] = self.forms[section]().get_form(obj=obj)
                 kwargs['edit'] = section
                 kwargs['edit_key'] = key
-
+                self.render_cv(provider, **kwargs)
+                
+            else:
+                self.redirect('/provider/cv/' + provider.vanity_url)
 
         else:
             logging.info("(ProviderEducationHandler.get) No section object found for key %s" % key)
-                
-        
-        self.render_cv(provider, **kwargs)
+            self.render_cv(provider, **kwargs)
     
     @provider_required
     def post(self, vanity_url=None, section=None, operation=None, key=None):
@@ -109,10 +114,7 @@ class ProviderCVHandler(ProviderBaseHandler):
                 else:
                     logging.info("(ProviderEducationHandler.post) No section object found for key %s" % key)
 
-            # success, empty forms so you can add another one            
-            kwargs = self.generate_blank_forms()
-
-            self.render_cv(provider, success_message=saved_message, **kwargs)
+            self.redirect('/provider/cv/' + provider.vanity_url)
             
             # log the event
             self.log_event(user=provider.user, msg="Edit CV: %s %s success" % (operation, section))

@@ -58,3 +58,8 @@ class ProfessionalCertification(ndb.Model):
     certification = ndb.StringProperty()
     other = ndb.StringProperty()
     year = ndb.IntegerProperty()
+    
+class Specialty(ndb.Model):   
+    provider = ndb.KeyProperty(kind='Provider')
+    specialty = ndb.StringProperty()
+    other = ndb.StringProperty()

@@ -52,7 +52,7 @@
 		<br>
 
 		{% if 'provider' in roles and provider_from_user == provider %}
-		<div style="width:100%; padding-top:10px; margin: 0px auto; border-top: 1px solid #e5e5e5;">
+		<div style="width:100%; padding-top:10px; margin: 0px auto; border-top: 1px solid #e5e5e5; text-align:center">
 		<a href="/provider/profile/{{ provider.vanity_url }}" class="btn btn-primary" style="width:80%; margin: 0px auto">Edit Your Profile</a>
 		</div>
 		<br>
@@ -94,7 +94,7 @@
 		<br>
 		{% endif %}
 
-		{{ provider.first_name }} {{ _('is connected to') }} {{ provider.get_provider_network_count() }} {{ _('health-care professionals.') }}
+		{{ provider.first_name }} {{ _('is connected to') }} {{ provider.get_provider_network_count() }} {{ _('health care professionals.') }}
 		<br>
 		<a data-toggle="modal" href="#network_modal">{{ _('See all connections') }}</a><a data-toggle="modal" href="#network_modal"><i class="bs-icon icon-share-alt"> </i></a>
 
@@ -118,7 +118,7 @@
 		
 		{# totally empty profile, fill this space with something #}
 		{% if not (provider.bio or provider.quote 
-					or provider.specialty|remove_empty_strings_from_list 
+					or provider.get_specialty()|remove_empty_strings_from_list 
 			        or provider.get_experience()|remove_empty_strings_from_list 
 			        or provider.get_organization()|remove_empty_strings_from_list
 			        or provider.get_education()|remove_empty_strings_from_list
@@ -145,10 +145,16 @@
 		<br>
 		{% endif %}
 
-		{% if provider.specialty|remove_empty_strings_from_list %}
+		{% if provider.get_specialty()|remove_empty_strings_from_list %}
 		<h3>{{ _("Specialties") }}</h3>
-		{% for s in provider.specialty %}
-		<span class="label">{{ specialty_dict[s] }}</span>
+		{% for s in provider.get_specialty() %}
+			<span class="label">
+					{% if s.specialty == 'other' %}
+						{{ s.other }}
+					{% else %}
+						{{ specialty_dict[s.specialty] }}
+					{% endif %}
+			</span>&nbsp;
 		{% endfor %}
 		<br>
 		<br>
@@ -251,7 +257,7 @@
 	<div class="span4">
 		{% if not 'provider' in roles %}
 		<div class="well well-small pull-right" style="width: 80%;">
-			<h3>{{ _('Are you a health-care professional?') }}</h3>
+			<h3>{{ _('Are you a health care professional?') }}</h3>
 			<i class="bs-icon icon-bullhorn"> </i>
 			<a href="/signup/provider">{{ _("Sign up to get your own professional profile. It's free!") }}</a>
 		</div>
@@ -288,7 +294,7 @@
 		{% if provider.connect_enabled and provider.get_provider_network_count() > 0 %}
 		<div class="well well-small pull-right" style="width: 80%;">
 		<h3>Professional Network</h3>
-		{{ _('This network contains') }} {{ provider.get_provider_network_count() }} {{ _('health-care professionals.') }}
+		{{ _('This network contains') }} {{ provider.get_provider_network_count() }} {{ _('health care professionals.') }}
 	
 			<table class="table-condensed">
 				{% for p in provider.get_provider_network() %}
@@ -391,7 +397,7 @@
 		<h3>{{ _("%(name)s's Health Network", name=provider.first_name) }}</h3>
 	</div>
 	<div class="modal-body">
-		{{ _('This network contains') }} {{ provider.get_provider_network_count() }} {{ _('health-care professionals.') }}
+		{{ _('This network contains') }} {{ provider.get_provider_network_count() }} {{ _('health care professionals.') }}
 		<table class="table-condensed">
 			{% for p in provider.get_provider_network() %}
 

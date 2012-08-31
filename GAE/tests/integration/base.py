@@ -315,12 +315,7 @@ class BaseTest(unittest.TestCase):
          
         profile_form = response.forms[0] # address form
         
-        # print profile_form.fields.values()
-        
         # fill out the form        
-        profile_form.set('specialty', True, 0) # Sports
-        profile_form.set('specialty', True, 2) # Cardio
-
         profile_form.set('practice_sites', True, 0) # onsite visits
 
 
@@ -338,9 +333,6 @@ class BaseTest(unittest.TestCase):
         response.mustcontain("The quick brown fox jumped over the lazy dog")
 
         # TODO - switch to Beautiful Soup to parse HTML?
-        response.mustcontain('input checked id="specialty-0" name="specialty" type="checkbox" value="sports"')        
-        response.mustcontain('input checked id="specialty-2" name="specialty" type="checkbox" value="cardiology"')  
-
         response.mustcontain('input checked id="practice_sites-0" name="practice_sites" type="checkbox" value="onsite"')        
         
         # check values in database
@@ -357,11 +349,7 @@ class BaseTest(unittest.TestCase):
                     # TODO: how to check this automatically?
                     #self.assertIn(profile_form[k].values, value)
         
-        
-        self.assertIn('sports', provider.specialty)
-        self.assertIn('cardiology', provider.specialty)
-        self.assertNotIn('geriatric', provider.specialty)
-        
+                
         self.assertIn('onsite', provider.practice_sites)
 
         # check the event log
@@ -388,14 +376,14 @@ class BaseTest(unittest.TestCase):
         schedule_form['day'] = day
         schedule_form['start_time'] = start_time
         schedule_form['end_time'] = end_time
-        response = schedule_form.submit()
+        response = schedule_form.submit().follow()
         
         provider = db.get_provider_from_email("unit_test@provider.com")
         
         # check one schedule was saved in the database
         schedule_count = provider.get_schedules().count()
         self.assertGreater(schedule_count , 0, 'Provider should have at least one schedule')
-        response.mustcontain('%s:00-%s:00' % (start_time, end_time))
+        self.assertIn('%s:00<br>\n\t\t\t\t\t\t-<br>\n\t\t\t\t\t\t%s:00' % (start_time, end_time), str(response))
         
         # check if square for day is green
         row_span_string = str(end_time - start_time)

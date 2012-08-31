@@ -3,7 +3,7 @@ from datetime import datetime, timedelta, date, time
 from google.appengine.api.images import get_serving_url
 import util
 from data.model_pkg.cv_model import Education, Experience, ContinuingEducation,\
-    ProfessionalOrganization, ProfessionalCertification
+    ProfessionalOrganization, ProfessionalCertification, Specialty
 from data.model_pkg.network_model import ProviderNetworkConnection
 from data.model import Schedule, Booking, Note
 import utilities
@@ -24,7 +24,6 @@ class Provider(ndb.Model):
         
     # profile
     category = ndb.StringProperty()
-    specialty = ndb.StringProperty(repeated=True)
     practice_sites = ndb.StringProperty(repeated=True)
     spoken_languages = ndb.StringProperty(repeated=True)
     profile_photo_blob_key = ndb.BlobKeyProperty()
@@ -48,8 +47,9 @@ class Provider(ndb.Model):
     start_year = ndb.StringProperty()
     location = ndb.StringProperty()
     credentials = ndb.StringProperty()
-    
     # unique name for public profile
+
+    
     # possible coercion to lower case?
     vanity_url = ndb.StringProperty()
     vanity_domain = ndb.StringProperty()
@@ -184,6 +184,9 @@ class Provider(ndb.Model):
 
     def get_certification(self):
         return ProfessionalCertification.query(ProfessionalCertification.provider == self.key).order(-ProfessionalCertification.year)
+
+    def get_specialty(self):
+        return Specialty.query(Specialty.provider == self.key)
 
     def get_cv_items_count(self):
         return sum([
