@@ -104,7 +104,7 @@ class ProviderScheduleHandler(ProviderBaseHandler):
             else:
                 logging.error('Operation Not handled %s' % operation)
                 
-            self.render_schedule(provider)
+            self.redirect('/provider/schedule/%s' % provider.vanity_url)
 
         else:
             error_messages = schedule_form.errors
