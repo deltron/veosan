@@ -118,7 +118,7 @@
 		
 		{# totally empty profile, fill this space with something #}
 		{% if not (provider.bio or provider.quote 
-					or provider.specialty|remove_empty_strings_from_list 
+					or provider.get_specialty()|remove_empty_strings_from_list 
 			        or provider.get_experience()|remove_empty_strings_from_list 
 			        or provider.get_organization()|remove_empty_strings_from_list
 			        or provider.get_education()|remove_empty_strings_from_list
@@ -145,10 +145,16 @@
 		<br>
 		{% endif %}
 
-		{% if provider.specialty|remove_empty_strings_from_list %}
+		{% if provider.get_specialty()|remove_empty_strings_from_list %}
 		<h3>{{ _("Specialties") }}</h3>
-		{% for s in provider.specialty %}
-		<span class="label">{{ specialty_dict[s] }}</span>
+		{% for s in provider.get_specialty() %}
+			<span class="label">
+					{% if s.specialty == 'other' %}
+						{{ s.other }}
+					{% else %}
+						{{ specialty_dict[s.specialty] }}
+					{% endif %}
+			</span>&nbsp;
 		{% endfor %}
 		<br>
 		<br>
