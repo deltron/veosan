@@ -37,6 +37,15 @@ class SiteCounter(ndb.Model):
     log_email_last_offset = ndb.StringProperty()
     blog_clicks = ndb.IntegerProperty(default=0)
 
+class PartialProvider(ndb.Model):
+    created_on = ndb.DateTimeProperty(auto_now_add=True)
+    first_name = ndb.StringProperty()
+    last_name = ndb.StringProperty()
+    email = ndb.StringProperty()
+    gae_country = ndb.StringProperty()
+    gae_region = ndb.StringProperty()
+    gae_city = ndb.StringProperty()
+    gae_city_lat_long = ndb.StringProperty()
 
 class User(Webapp2AuthUser):
     '''

@@ -2,7 +2,7 @@
 from handler.user import UserBaseHandler
 from forms.user import ProviderSignupForm1, ProviderSignupForm2, PatientSignupForm
 import util
-from data.model import Patient
+from data.model import Patient, PartialProvider
 from unidecode import unidecode
 from data import db, search_index
 import webapp2
@@ -32,6 +32,25 @@ class ProviderSignupHandler1(UserBaseHandler):
         provider_signup_form = ProviderSignupForm1().get_form(self.request.POST)
 
         if provider_signup_form.validate():
+            # save a partial provider in case they never finish
+            partial_provider = PartialProvider()
+            provider_signup_form.populate_obj(partial_provider)
+
+            # set location info from request
+            if "X-AppEngine-Country" in self.request.headers:
+                partial_provider.gae_country = self.request.headers["X-AppEngine-Country"]
+                
+            if "X-AppEngine-Region" in self.request.headers:
+                partial_provider.gae_region = self.request.headers["X-AppEngine-Region"]
+
+            if "X-AppEngine-City" in self.request.headers:
+                partial_provider.gae_city = self.request.headers["X-AppEngine-City"]
+            
+            if "X-AppEngine-CityLatLong" in self.request.headers:
+                partial_provider.gae_city_lat_long = self.request.headers["X-AppEngine-CityLatLong"]
+
+            partial_provider.put()
+            
             # populate second form from first one
             provider_signup_form2 = ProviderSignupForm2().get_form(self.request.POST)
             
@@ -179,6 +198,10 @@ class ProviderSignupHandler2(UserBaseHandler):
                         
             # update the index
             search_index.IndexProvider(provider)
+            
+            # remove partial provider
+            partial_provider = db.get_partial_provider_from_email(provider.email)
+            partial_provider.key.delete()
         else:
             self.render_template('user/signup_provider_2.html', provider_signup_form2=provider_signup_form2)
             
