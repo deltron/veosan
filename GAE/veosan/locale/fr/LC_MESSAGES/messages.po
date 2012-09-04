@@ -1569,5 +1569,5 @@ msgstr "Développez votre réseau de référement"
 msgid "Share your credentials with potential patients and extend your professional network in complementary specialties."
 msgstr "Partagez vos compétences avec des patients potentiels et développez votre réseau professionel dans des champs de compétences complémentaires."
 
-msgid "Does one of your patients need a specialist and you don’t know where to refer him? Refer him to a specialist in our database and establish a connection that can be mutually beneficial."
+msgid "Does one of your patients need a specialist and you don't know where to refer him? Refer him to a specialist in our database and establish a connection that can be mutually beneficial."
 msgstr "Est-ce qu'un de vos patients nécéssite l'attention d'un autre spécialiste, mais vous ne savez pas où le référer. Étblissez une connection sur notre réseau qui sera mutuellement bénéfique."
