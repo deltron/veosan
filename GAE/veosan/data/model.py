@@ -36,6 +36,9 @@ class SiteCounter(ndb.Model):
     internet_explorer_hits = ndb.IntegerProperty(default=0)
     log_email_last_offset = ndb.StringProperty()
     blog_clicks = ndb.IntegerProperty(default=0)
+    blog_clicks_en = ndb.IntegerProperty(default=0)
+    blog_clicks_fr = ndb.IntegerProperty(default=0)
+
 
 class PartialProvider(ndb.Model):
     created_on = ndb.DateTimeProperty(auto_now_add=True)
