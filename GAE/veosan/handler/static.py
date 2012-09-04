@@ -88,6 +88,13 @@ class BlogHandler(BaseHandler):
     def get(self, what = None):
         site_counter = db.get_site_counter()
         site_counter.blog_clicks += 1
+        
+        if self.get_language() == 'fr':
+            site_counter.blog_clicks_fr += 1
+            self.redirect("http://blogue.veosan.com")
+        else:
+            site_counter.blog_clicks_en += 1
+            self.redirect("http://blog.veosan.com")
+
         site_counter.put_async()
-        self.redirect("http://blog.veosan.com")
 

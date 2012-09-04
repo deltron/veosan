@@ -47,7 +47,7 @@ class ProviderFeaturesHandler(ProviderAdminBaseHandler):
     def get(self, feature_switch=None, vanity_url=None):
         
         # validate features that can be switched
-        if feature_switch in ['booking_enabled', 'address_enabled', 'connect_enabled']:
+        if feature_switch in ['booking_enabled', 'address_enabled', 'connect_enabled', 'stats_enabled']:
             provider = db.get_provider_from_vanity_url(vanity_url)
             
             # toggle state

@@ -5,7 +5,7 @@ import util
 from data.model_pkg.cv_model import Education, Experience, ContinuingEducation,\
     ProfessionalOrganization, ProfessionalCertification, Specialty
 from data.model_pkg.network_model import ProviderNetworkConnection
-from data.model import Schedule, Booking, Note
+from data.model import Schedule, Booking, Note, SiteLog
 import utilities
 from webapp2_extras.i18n import to_utc
 
@@ -65,7 +65,9 @@ class Provider(ndb.Model):
     booking_enabled = ndb.BooleanProperty(default=False)
     address_enabled = ndb.BooleanProperty(default=False)
     display_welcome_page = ndb.BooleanProperty(default=True)
-    connect_enabled = ndb.BooleanProperty(default=False)
+    connect_enabled = ndb.BooleanProperty(default=True)
+    stats_enabled = ndb.BooleanProperty(default=False)
+
 
     # user
     user = ndb.KeyProperty(kind='User')
@@ -279,5 +281,13 @@ class Provider(ndb.Model):
         return ProviderNetworkConnection.query(ProviderNetworkConnection.target_provider == self.key, ProviderNetworkConnection.confirmed == False, ProviderNetworkConnection.rejected == False).fetch()
         
 
+    ###########
+    ## Views
+    def get_profile_views_past_30_days(self):
+        page = '/' + self.vanity_url
+        today_minus_30_days = datetime.today() - timedelta(days=30)
+        return SiteLog.query(SiteLog.page == page, SiteLog.access_time > today_minus_30_days).count()
 
-
+    def get_profile_views_total(self):
+        page = '/' + self.vanity_url
+        return SiteLog.query(SiteLog.page == page).count()

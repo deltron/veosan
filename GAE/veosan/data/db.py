@@ -225,4 +225,3 @@ def get_schedule_for_date_time(provider, book_date, book_time):
                 return schedule
 
 
-
