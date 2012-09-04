@@ -197,7 +197,6 @@ class BaseTest(unittest.TestCase):
         signup_form['first_name'] = first_name
         signup_form['last_name'] = last_name
         signup_form['email'] = email
-        signup_form['postal_code'] = 'h1h1h1'
         response = signup_form.submit()
 
         signup_form2 = response.forms['provider_signup_form2']

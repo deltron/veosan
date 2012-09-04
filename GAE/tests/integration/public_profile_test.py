@@ -67,7 +67,6 @@ class PublicProfileTest(BaseTest):
         signup_form['first_name'] = 'david'
         signup_form['last_name'] = 'mctester'
         signup_form['email'] = 'mctest@veosan.com'
-        signup_form['postal_code'] = 'h4c1n1'
         response = signup_form.submit()
 
         signup_form2 = response.forms['provider_signup_form2']

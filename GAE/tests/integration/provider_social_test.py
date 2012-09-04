@@ -49,8 +49,6 @@ class ProviderSocialTest(BaseTest):
         invite = db.get_invite_from_email('mctest@veosan.com')
         self.assertTrue(invite.link_clicked)
 
-        # add postal code
-        signup_form['postal_code'] = 'H1H2C2'
         response2 = signup_form.submit()
         
         signup_form2 = response2.forms['provider_signup_form2']
@@ -108,7 +106,7 @@ class ProviderSocialTest(BaseTest):
         
         # default no note
         response = invite_provider_form.submit().follow()
-        response.mustcontain("Connection requested")
+        response.mustcontain("Connexion demandée")
 
         # check email and accept
         messages = self.mail_stub.get_sent_messages(to='mctest@veosan.com')
@@ -209,8 +207,6 @@ class ProviderSocialTest(BaseTest):
         invite = db.get_invite_from_email('mctest@veosan.com')
         self.assertTrue(invite.link_clicked)
 
-        # add postal code
-        signup_form['postal_code'] = 'H1H2C2'
         response2 = signup_form.submit()
         
         signup_form2 = response2.forms['provider_signup_form2']
@@ -294,7 +290,7 @@ class ProviderSocialTest(BaseTest):
         # should be back on providers page, logged in and with connection requested message
         
         login_profile_page.mustcontain('mctest@veosan.com')
-        login_profile_page.mustcontain("Connection requested")
+        login_profile_page.mustcontain("Connexion demandée")
         login_profile_page.mustcontain('first last')
 
         # logout and log back in as first guy
@@ -606,7 +602,7 @@ class ProviderSocialTest(BaseTest):
 
         # now should be pending...but what if we click connect again
         response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL + "/connect")
-        response.mustcontain("Connection pending")
+        response.mustcontain("Connexion en attente")
         
         # make sure only 1 email was sent, don't want to be a spambot!
         messages = self.mail_stub.get_sent_messages(to=self._TEST_PROVIDER_EMAIL)
@@ -720,7 +716,7 @@ class ProviderSocialTest(BaseTest):
         # should be back on providers page, logged in and with connection requested message
         
         login_profile_page.mustcontain('mctest@veosan.com')
-        login_profile_page.mustcontain("Already connected")
+        login_profile_page.mustcontain("Vous êtes déjà connecté")
         login_profile_page.mustcontain('first last')
         
 
@@ -742,7 +738,7 @@ class ProviderSocialTest(BaseTest):
 
         # force connect with URL
         response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL + '/connect')
-        response.mustcontain("You can't connect to yourself!")
+        response.mustcontain("Vous ne pouvez pas vous connecter à vous-même!")
         
         # check database
         provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
@@ -809,7 +805,7 @@ class ProviderSocialTest(BaseTest):
         response.mustcontain(no='/' + self._TEST_PROVIDER_VANITY_URL + '/connect')
 
         response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL + '/connect')
-        response.mustcontain("Already connected!")
+        response.mustcontain("Vous êtes déjà connecté!")
         
         # check database
         provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
@@ -877,7 +873,7 @@ class ProviderSocialTest(BaseTest):
         
         # click connect
         response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL + "/connect")
-        response.mustcontain('Connection requested')
+        response.mustcontain('Connexion demandée')
         
         # logout and log back in as first guy
         self.logout_provider()
@@ -1043,7 +1039,7 @@ class ProviderSocialTest(BaseTest):
         
         # click connect
         response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL + "/connect")
-        response.mustcontain('Connection requested')
+        response.mustcontain('Connexion demandée')
         
         # logout and log back in as first guy
         self.logout_provider()
@@ -1205,7 +1201,7 @@ class ProviderSocialTest(BaseTest):
         
         # click connect
         response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL + "/connect")
-        response.mustcontain('Connection requested')
+        response.mustcontain('Connexion demandée')
                 
         # now check email and click accept (while logged in as 2nd guy)
         messages = self.mail_stub.get_sent_messages(to=self._TEST_PROVIDER_EMAIL)

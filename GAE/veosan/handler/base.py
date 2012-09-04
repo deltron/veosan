@@ -190,6 +190,19 @@ class BaseHandler(webapp2.RequestHandler):
         log_entry.ip = self.request.remote_addr
         log_entry.referer = self.request.referer
 
+
+        if "X-AppEngine-Country" in self.request.headers:
+            log_entry.gae_country = self.request.headers["X-AppEngine-Country"]
+
+        if "X-AppEngine-Region" in self.request.headers:
+            log_entry.gae_region = self.request.headers["X-AppEngine-Region"]
+
+        if "X-AppEngine-City" in self.request.headers:
+            log_entry.gae_city = self.request.headers["X-AppEngine-City"]
+
+        if "X-AppEngine-CityLatLong" in self.request.headers:
+            log_entry.gae_city_lat_long = self.request.headers["X-AppEngine-CityLatLong"]
+
         if user:
             log_entry.user_email = user.get_email()
             log_entry.user = user.key

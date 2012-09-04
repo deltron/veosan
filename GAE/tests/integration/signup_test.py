@@ -18,7 +18,6 @@ class SignupTest(BaseTest):
         signup_form['first_name'] = 'first'
         signup_form['last_name'] = 'last'
         signup_form['email'] = self._TEST_PROVIDER_EMAIL
-        signup_form['postal_code'] = 'h1h1h1'
         response = signup_form.submit()
 
         signup_form2 = response.forms['provider_signup_form2']
@@ -38,11 +37,7 @@ class SignupTest(BaseTest):
         signup_form['first_name'] = 'first'
         signup_form['last_name'] = 'last'
         signup_form['email'] = self._TEST_PROVIDER_EMAIL
-        signup_form['postal_code'] = 'h1h 1h1'
         response = signup_form.submit()
-
-        #hidden field contains postal code
-        response.mustcontain('H1H1H1')
 
         signup_form2 = response.forms['provider_signup_form2']
         signup_form2['category'] = 'osteopath'
@@ -62,7 +57,6 @@ class SignupTest(BaseTest):
         signup_form['first_name'] = 'first'
         signup_form['last_name'] = 'last'
         signup_form['email'] = self._TEST_PROVIDER_EMAIL
-        signup_form['postal_code'] = 'h1h1h1'
         response = signup_form.submit()
 
         signup_form2 = response.forms['provider_signup_form2']
@@ -82,7 +76,6 @@ class SignupTest(BaseTest):
         signup_form['first_name'] = 'first'
         signup_form['last_name'] = 'last'
         signup_form['email'] = 'another_email@server.com'
-        signup_form['postal_code'] = 'h1h1h1'
         response = signup_form.submit()
 
         signup_form2 = response.forms['provider_signup_form2']
@@ -105,7 +98,6 @@ class SignupTest(BaseTest):
         signup_form['first_name'] = 'first'
         signup_form['last_name'] = 'last'
         signup_form['email'] = 'yet_another_email@server.com'
-        signup_form['postal_code'] = 'h1h1h1'
         response = signup_form.submit()
 
         signup_form2 = response.forms['provider_signup_form2']
@@ -129,7 +121,6 @@ class SignupTest(BaseTest):
         signup_form['first_name'] = 'first'
         signup_form['last_name'] = 'last another'
         signup_form['email'] = self._TEST_PROVIDER_EMAIL
-        signup_form['postal_code'] = 'h1h1h1'
         response = signup_form.submit()
 
         signup_form2 = response.forms['provider_signup_form2']
@@ -153,7 +144,6 @@ class SignupTest(BaseTest):
         signup_form['first_name'] = 'Renée'
         signup_form['last_name'] = 'St-Vil'
         signup_form['email'] = self._TEST_PROVIDER_EMAIL
-        signup_form['postal_code'] = 'H4Z 2P9'
         response = signup_form.submit()
 
         signup_form2 = response.forms['provider_signup_form2']
@@ -176,7 +166,6 @@ class SignupTest(BaseTest):
         signup_form['first_name'] = 'Renée'
         signup_form['last_name'] = 'St-Vilàîèöêûç'
         signup_form['email'] = self._TEST_PROVIDER_EMAIL
-        signup_form['postal_code'] = 'H4Z 2P9'
         response = signup_form.submit()
 
         signup_form2 = response.forms['provider_signup_form2']

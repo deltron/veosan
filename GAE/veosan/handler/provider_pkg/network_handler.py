@@ -128,13 +128,13 @@ class ProviderConnectHandler(ProviderBaseHandler):
             # check if there is already a pending request
             
             if provider_source in provider_target.get_provider_network_pending():
-                message = "Connection pending..."
+                message = _("Connection pending...")
                 self.render_public_profile(provider=provider_target, success_message=message)
             elif provider_source in provider_target.get_provider_network():
-                message = "Already connected!"
+                message = _("Already connected!")
                 self.render_public_profile(provider=provider_target, success_message=message)
             elif provider_source == provider_target:
-                message = "You can't connect to yourself!"
+                message = _("You can't connect to yourself!")
                 self.render_public_profile(provider=provider_target, success_message=message)
             else:
                 provider_network_connection = None
@@ -155,7 +155,7 @@ class ProviderConnectHandler(ProviderBaseHandler):
                 try:
                     provider_network_connection.put()
 
-                    message = "Connection requested"
+                    message = _("Connection requested")
                     self.render_public_profile(provider=provider_target, success_message=message)
                     
                     # now send out an email
