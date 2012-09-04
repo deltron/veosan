@@ -23,11 +23,9 @@ class PatientBaseHandler(BaseHandler):
     
     @staticmethod
     def render_bookings(handler, patient, **kw):
+        ''' Render a patient's bookings '''
         bookings = db.get_bookings_for_patient(patient)
-        
         bookings = sorted(bookings, key=attrgetter('datetime'), reverse=True)
-
-        
         handler.render_template('patient/booking_list.html', bookings=bookings, **kw)
     
     @staticmethod

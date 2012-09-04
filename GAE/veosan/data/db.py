@@ -48,6 +48,23 @@ def store_patient(r, form):
     logging.info(vars(patient))
     return patient
 
+
+def create_patient_from_provider(provider):
+    new_patient = Patient()
+    new_patient.first_name = provider.first_name
+    new_patient.last_name = provider.last_name
+    new_patient.address = provider.address
+    new_patient.city = provider.city
+    new_patient.email = provider.email
+    new_patient.postal_code = provider.postal_code
+    new_patient.province = provider.province
+    new_patient.telephone = provider.phone
+    new_patient.terms_agreement = True
+    new_patient.user = provider.user
+    new_patient_key = new_patient.put()
+    return new_patient
+
+
 def fetch_patients():
     return Patient.query().order(Patient.last_name)
 

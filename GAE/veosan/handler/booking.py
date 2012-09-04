@@ -12,7 +12,7 @@ from handler.auth import patient_required
 from handler.patient import PatientBaseHandler
 from datetime import datetime, date, timedelta
 from utilities import time
-from data.model import Booking
+from data.model import Booking, Patient
 from webapp2_extras.i18n import to_utc
 from collections import namedtuple
 from webapp2_extras.i18n import gettext as _
@@ -73,9 +73,19 @@ class BookingBaseHandler(BaseHandler):
                 mail.email_booking_to_patient(self, booking, None)
                 self.render_confirmed_patient(self, patient) 
             else:
-                logging.error('Currently logged in user is not a patient')
-                # TODO ... If it's logged in and not a patient, it has to be a provider! Can they be both?    
-                pass
+                provider = db.get_provider_from_user(user)
+                if provider:
+                    # logged in user is a provider
+                    logging.info('Adding a patient profile to the provider:%s' % provider)
+                    patient = db.create_patient_from_provider(provider)
+                    booking.patient = patient.key
+                    booking.put()
+                    # skip activation stuff, send confirm email
+                    mail.email_booking_to_patient(self, booking, None)
+                    self.render_confirmed_patient(self, patient)
+                else:
+                    # logged in user is not a provider nor a patient
+                    logging.error('Current logged in user has no provider or patient profile')
             
         else:
             # store email in booking as requestEmail
