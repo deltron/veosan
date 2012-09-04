@@ -1544,9 +1544,30 @@ msgid "Establish credibility and refer your patients your trusted colleagues. Es
 msgstr "Établissez votre réputation et référez vos patients à vos collègues de confiance. Établissez des contacts qui seront bénéfique pour tous."
 
 
+msgid "Ridiculously Easy to Use"
+msgstr "Simple à utiliser"
 
-msgid "Display your availabilities and let patients do the booking online. Reduce the amount of time spent on the phone. Online scheduling is the answer and it has many other benefits.  Reduce cancellations and missed appointments with automatic reminders."
-msgstr "Placez vos disponibilités en ligne et laissez vos patients schéduler leur rendez-vous."
+msgid "We like to keep things simple. A few click let you add items on your CV. Our live preview let's you see exactly how your profile willl look to your patients and peers."
+msgstr "Nous aimons garder les choses simples. Quelques cliques vous permettent d'ajouter des items sur votre CV. Vous pouvez aussi prévisualiser votre profile."
 
-msgid "Do your patients need other specialists and you don’t know where to refer him? Refer him to a specialist in our database and establish a connection that can be mutually beneficial."
-msgstr "Est-ce que vos patients nécéssite des soins complémentaires. Utilisez notre réseau pour établir une connection qui sera bénéfique pour vos patients et vous."
+msgid "Manage Your Time"
+msgstr "Gérez votre temps"
+
+msgid "Display your availabilities and let patients book their own appointments online.  Reduce cancellations and missed appointments with automatic reminders."
+msgstr "Partagez vos displonibilités et laissez vos patients prendre rendez-vous en ligne. Résuisez les annulation et les rendez-vous manqué avec nos rappels automatisés"
+
+
+msgid "Easy to Find"
+msgstr "Soyez facile à trouver"
+
+msgid "Your Veosan profile creates a professional website that shows up high in search engines. This makes it easier for your existing and future patients to find you online. Have you googled yourself recently? What shows up? That is what your potential patients see."
+msgstr "Votre profile Veosan est un site web professionel qui se place de manière avantageuse dans les résultats de moteurs de recherche. Vos futurs patients vous trouverons facilement en ligne. Avez-vous cherchez votre nom en ligne récement? C'est ce que vos patients potentiels trouverons."							
+							
+msgid "Expand Your Referral Network"
+msgstr "Développez votre réseau de référement"
+
+msgid "Share your credentials with potential patients and extend your professional network in complementary specialties."
+msgstr "Partagez vos compétences avec des patients potentiels et développez votre réseau professionel dans des champs de compétences complémentaires."
+
+msgid "Does one of your patients need a specialist and you don’t know where to refer him? Refer him to a specialist in our database and establish a connection that can be mutually beneficial."
+msgstr "Est-ce qu'un de vos patients nécéssite l'attention d'un autre spécialiste, mais vous ne savez pas où le référer. Étblissez une connection sur notre réseau qui sera mutuellement bénéfique."
