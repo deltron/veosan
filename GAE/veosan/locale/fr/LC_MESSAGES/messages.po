@@ -1057,6 +1057,14 @@ msgstr "SVP suivez le lien ci-dessous pour accepter:"
 msgid "wants to connect with you on Veosan."
 msgstr "veut se connecter avec vous sur Veosan."
 
+msgid "Connection pending..."
+msgstr "Connexion en attente..."
+
+msgid "Already connected!"
+msgstr "Vous êtes déjà connecté!"
+
+msgid "Connection requested"
+msgstr "Connexion demandée"
 
 #################
 # Login page
