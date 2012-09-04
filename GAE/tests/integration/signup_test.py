@@ -180,9 +180,87 @@ class SignupTest(BaseTest):
         provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
         self.assertEqual(provider.vanity_url, 'reneestvilaieoeuc')
 
-
-
+    def test_signup_partial_provider(self):
+        response = self.testapp.post('/signup/provider')
         
+        signup_form = response.forms['provider_signup_form']
+        signup_form['first_name'] = 'first'
+        signup_form['last_name'] = 'last'
+        signup_form['email'] = self._TEST_PROVIDER_EMAIL
+        response = signup_form.submit()
+        
+        partial_provider = db.get_partial_provider_from_email(self._TEST_PROVIDER_EMAIL)
+        self.assertEqual(partial_provider.first_name, 'first')
+        self.assertEqual(partial_provider.last_name, 'last')
+        self.assertEqual(partial_provider.email, self._TEST_PROVIDER_EMAIL)
+
+
+    def test_signup_partial_provider_multiple_times(self):
+        response = self.testapp.post('/signup/provider')
+        
+        signup_form = response.forms['provider_signup_form']
+        signup_form['first_name'] = 'first'
+        signup_form['last_name'] = 'last'
+        signup_form['email'] = self._TEST_PROVIDER_EMAIL
+        response = signup_form.submit()
+        
+        partial_provider = db.get_partial_provider_from_email(self._TEST_PROVIDER_EMAIL)
+        self.assertEqual(partial_provider.first_name, 'first')
+        self.assertEqual(partial_provider.last_name, 'last')
+        self.assertEqual(partial_provider.email, self._TEST_PROVIDER_EMAIL)
+
+        response = self.testapp.post('/signup/provider')
+        
+        signup_form = response.forms['provider_signup_form']
+        signup_form['first_name'] = 'first'
+        signup_form['last_name'] = 'last2'
+        signup_form['email'] = self._TEST_PROVIDER_EMAIL
+        response = signup_form.submit()
+        
+        partial_provider = db.get_partial_provider_from_email(self._TEST_PROVIDER_EMAIL)
+        self.assertEqual(partial_provider.first_name, 'first')
+        self.assertEqual(partial_provider.last_name, 'last')
+        self.assertEqual(partial_provider.email, self._TEST_PROVIDER_EMAIL)
+
+        response = self.testapp.post('/signup/provider')
+        
+        signup_form = response.forms['provider_signup_form']
+        signup_form['first_name'] = 'first'
+        signup_form['last_name'] = 'last'
+        signup_form['email'] = self._TEST_PROVIDER_EMAIL
+        response = signup_form.submit()
+        
+        partial_provider = db.get_partial_provider_from_email(self._TEST_PROVIDER_EMAIL)
+        self.assertEqual(partial_provider.first_name, 'first')
+        self.assertEqual(partial_provider.last_name, 'last')
+        self.assertEqual(partial_provider.email, self._TEST_PROVIDER_EMAIL)
+
+    def test_signup_partial_provider_completed(self):
+        response = self.testapp.post('/signup/provider')
+        
+        signup_form = response.forms['provider_signup_form']
+        signup_form['first_name'] = 'first'
+        signup_form['last_name'] = 'last'
+        signup_form['email'] = self._TEST_PROVIDER_EMAIL
+        response = signup_form.submit()
+        
+        partial_provider = db.get_partial_provider_from_email(self._TEST_PROVIDER_EMAIL)
+        self.assertEqual(partial_provider.first_name, 'first')
+        self.assertEqual(partial_provider.last_name, 'last')
+        self.assertEqual(partial_provider.email, self._TEST_PROVIDER_EMAIL)
+
+        signup_form2 = response.forms['provider_signup_form2']
+        signup_form2['category'] = 'osteopath'
+        signup_form2['password'] = self._TEST_PROVIDER_PASSWORD
+        signup_form2['password_confirm'] = self._TEST_PROVIDER_PASSWORD
+        signup_form2['terms_agreement'] = 'True'
+        
+        profile_response = signup_form2.submit().follow()
+        profile_response.mustcontain("Bienvenue")
+
+        partial_provider = db.get_partial_provider_from_email(self._TEST_PROVIDER_EMAIL)
+        self.assertIsNone(partial_provider)
+
 if __name__ == "__main__":
     logging.basicConfig(stream=sys.stderr)
     unittest.main()

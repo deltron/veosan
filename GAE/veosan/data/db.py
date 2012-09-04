@@ -5,7 +5,8 @@
 from google.appengine.ext import ndb, db as gdb
 import logging
 from datetime import datetime, date, time
-from data.model import Booking, Patient, User, SiteConfig, LogEvent, SiteCounter
+from data.model import Booking, Patient, User, SiteConfig, LogEvent, SiteCounter,\
+    PartialProvider
 from data.model_pkg.network_model import Invite, ProviderNetworkConnection
 from data.model_pkg.provider_model import Provider
 import utilities
@@ -104,7 +105,9 @@ def get_provider_from_email(email):
     logging.debug('Provider for email %s is %s' % (email, provider))
     return provider   
 
-    
+def get_partial_provider_from_email(email):
+    return PartialProvider.query(PartialProvider.email == email).get()
+
 def get_patient_from_email(email):
     return Patient.query(Patient.email == email).get()
 
