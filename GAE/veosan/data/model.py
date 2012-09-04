@@ -26,6 +26,12 @@ class SiteLog(ndb.Model):
     user_email = ndb.StringProperty()
     admin_email = ndb.StringProperty()
 
+    gae_country = ndb.StringProperty()
+    gae_region = ndb.StringProperty()
+    gae_city = ndb.StringProperty()
+    gae_city_lat_long = ndb.StringProperty()
+
+
 class SiteCounter(ndb.Model):
     internet_explorer_hits = ndb.IntegerProperty(default=0)
     log_email_last_offset = ndb.StringProperty()

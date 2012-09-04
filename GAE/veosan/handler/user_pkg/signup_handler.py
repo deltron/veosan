@@ -123,9 +123,22 @@ class ProviderSignupHandler2(UserBaseHandler):
             
             provider.vanity_url = vanity_url           
             
+            
+            # set location info from request
+            if "X-AppEngine-Country" in self.request.headers:
+                provider.gae_country = self.request.headers["X-AppEngine-Country"]
+                
+            if "X-AppEngine-Region" in self.request.headers:
+                provider.gae_region = self.request.headers["X-AppEngine-Region"]
+
+            if "X-AppEngine-City" in self.request.headers:
+                provider.gae_city = self.request.headers["X-AppEngine-City"]
+            
+            if "X-AppEngine-CityLatLong" in self.request.headers:
+                provider.gae_city_lat_long = self.request.headers["X-AppEngine-CityLatLong"]
+
             # save provider
             provider.put()
-
             
             # check if an invitation was associated to this
             invite = db.get_invite_from_email(provider.email)

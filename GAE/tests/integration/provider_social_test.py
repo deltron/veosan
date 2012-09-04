@@ -49,8 +49,6 @@ class ProviderSocialTest(BaseTest):
         invite = db.get_invite_from_email('mctest@veosan.com')
         self.assertTrue(invite.link_clicked)
 
-        # add postal code
-        signup_form['postal_code'] = 'H1H2C2'
         response2 = signup_form.submit()
         
         signup_form2 = response2.forms['provider_signup_form2']
@@ -209,8 +207,6 @@ class ProviderSocialTest(BaseTest):
         invite = db.get_invite_from_email('mctest@veosan.com')
         self.assertTrue(invite.link_clicked)
 
-        # add postal code
-        signup_form['postal_code'] = 'H1H2C2'
         response2 = signup_form.submit()
         
         signup_form2 = response2.forms['provider_signup_form2']

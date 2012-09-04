@@ -41,6 +41,12 @@ class Provider(ndb.Model):
     postal_code = ndb.StringProperty()
     province = ndb.StringProperty()
     
+    # address from AppEngine
+    gae_country = ndb.StringProperty()
+    gae_region = ndb.StringProperty()
+    gae_city = ndb.StringProperty()
+    gae_city_lat_long = ndb.StringProperty()
+
     # deprecated
     associations = ndb.StringProperty(repeated=True)
     certifications = ndb.StringProperty(repeated=True)
