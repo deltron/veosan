@@ -30,6 +30,7 @@ class BaseTest(unittest.TestCase):
     '''    
        
     _TEST_PROVIDER_EMAIL = "unit_test@provider.com"
+    _TEST_PROVIDER_TELEPHONE = '514-999-0987'
     _TEST_PROVIDER_PASSWORD = u'123456'
 
     _TEST_ADMIN_EMAIL = "unit_test@admin.com"
@@ -145,7 +146,6 @@ class BaseTest(unittest.TestCase):
         response = self.testapp.get('/login')
         response.mustcontain(u"Connexion")
 
-        
         login_form = response.forms[0]
         login_form['email'] = self._TEST_PATIENT_EMAIL
         login_form['password'] = self._TEST_PATIENT_PASSWORD
@@ -221,7 +221,7 @@ class BaseTest(unittest.TestCase):
         address_form['title'] = u"mr"
         address_form['first_name'] = u"Fantastic"
         address_form['last_name'] = u"Fox"
-        address_form['phone'] = u"555-123-5678"
+        address_form['phone'] = self._TEST_PROVIDER_TELEPHONE
         address_form['address'] = u"123 Main St."
         address_form['city'] = u"Westmount"
         address_form['postal_code'] = u"H1B2C3"
@@ -538,6 +538,8 @@ class BaseTest(unittest.TestCase):
     def book_from_public_profile(self, date_string, time_string, returning_patient=False, patient_email=_TEST_PATIENT_EMAIL, patient_telephone=_TEST_PATIENT_TELEPHONE):
         public_profile = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
         schedule_page = public_profile.click(linkid='book_button')
+        # Check if a user is logged in
+        user_logged_in = 'Déconnexion' in schedule_page
         schedule_page.mustcontain("Choisissez la date et l'heure de votre rendez-vous")
         # find the form for next Monday at 10
         form_id = "button-" + date_string + '-' + str(time_string)
@@ -556,11 +558,15 @@ class BaseTest(unittest.TestCase):
         else:
             new_patient_page = step1_form.submit()
             email_sent_page = self.fill_new_patient_profile(new_patient_page, patient_email, patient_telephone)
-        # check email sent page
-        email_sent_page.mustcontain("C'est presque complété!")
-        email_sent_page.mustcontain('Un couriel vous a été envoyé')
-        email_sent_page.mustcontain(patient_email)
-        email_sent_page.mustcontain('Contactez-nous')
+            
+        if user_logged_in:
+            email_sent_page.mustcontain("Upcoming Appointments")
+        else:
+            # check email sent page (no user is logged in)
+            email_sent_page.mustcontain("C'est presque complété!")
+            email_sent_page.mustcontain('Un couriel vous a été envoyé')
+            email_sent_page.mustcontain(patient_email)
+            email_sent_page.mustcontain('Contactez-nous')
         
         # check admin console, booking should be in the list
         self.login_as_admin()
@@ -568,7 +574,7 @@ class BaseTest(unittest.TestCase):
         admin_datetime = testutil.next_monday_date_string_alt() + " " + str(time_string) + ":00"
         admin_bookings_page.mustcontain(admin_datetime)
         admin_bookings_page.mustcontain('Fantastic Fox')
-        admin_bookings_page.mustcontain('Pat Patient')
+        #admin_bookings_page.mustcontain('Pat Patient')
         admin_bookings_page.mustcontain(patient_telephone)
         admin_bookings_page.mustcontain(patient_email)
         admin_bookings_page.mustcontain('Patient not confirmed')

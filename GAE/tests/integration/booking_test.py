@@ -295,8 +295,7 @@ class BookingTest(BaseTest):
         
         # book an appointment for next monday at 10am
         next_monday = testutil.next_weekday_date_string(0)
-        self.book_from_public_profile(next_monday, 10, False, 
-                                      self._TEST_PATIENT_EMAIL, self._TEST_PATIENT_TELEPHONE)
+        self.book_from_public_profile(next_monday, 10, False, self._TEST_PATIENT_EMAIL, self._TEST_PATIENT_TELEPHONE)
         
         self.patient_confirms_latest_booking(next_monday, 10)
         
@@ -384,7 +383,27 @@ class BookingTest(BaseTest):
         booking_time = datetime.strptime(str(10), '%H')
         booking_time_string = format_time(booking_time, format="short", locale='fr')
 
-         
+
+    def test_booking_as_a_provider(self):
+        ''' Book an appointment as a provider '''
+        self.create_complete_provider_profile()
+        self.logout_provider()
+        self.login_as_admin()
+        
+        # enable booking
+        response = self.testapp.get('/admin/provider/feature/booking_enabled/' + self._TEST_PROVIDER_VANITY_URL)
+        response.mustcontain("Show booking=True")
+        self.logout_admin()
+        
+        # book an appointment for next monday at 10am with yourself (as returning patient, because already a user)
+        self.login_as_provider()
+        next_monday = testutil.next_weekday_date_string(0)
+        # Book an appointment with yourself
+        self.book_from_public_profile(next_monday, 10, True, self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_TELEPHONE)
+        
+        
+        
+      
 if __name__ == "__main__":
     unittest.main()
     
