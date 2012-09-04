@@ -91,14 +91,30 @@
 			</div>
 			<br>
 			<br>
-			<br>
+			{% if provider.stats_enabled %}
+			<div  style="width: 60%; margin: 0px auto;">
+				<h3>{{ _('Profile Statistics') }}</h3>
+				<table class="table table-bordered table-condensed">
+					<tr>
+						<td width="70%">{{ _('Profile Views in the Past 30 Days') }}</td>
+						<td width="30%" style="text-align:center">{{ provider.get_profile_views_past_30_days() }}</td>
+					</tr>
+					<tr>
+						<td width="70%">{{ _('Total Profile Views') }}</td>
+						<td width="30%" style="text-align:center">{{ provider.get_profile_views_total() }}</td>
+					</tr>
+				</table>
+			</div>
+			{% endif %}
 		</div>
 	</div>
 	<div class="row">
-		<div class="span12 form-actions">
-			<button type="submit" class="btn btn-primary">
-				{{ _('Save') }}
-			</button>
+		<div class="span12">
+			<div class="form-actions">
+				<button type="submit" class="btn btn-primary">
+					{{ _('Save') }}
+				</button>
+			</div>
 		</div>
 	</div>
 </form>

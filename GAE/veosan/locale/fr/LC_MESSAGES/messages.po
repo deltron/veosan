@@ -873,6 +873,16 @@ msgstr "Vous êtes connecté avec %(name)s!"
 msgid "%(name)s's Health Network"
 msgstr "Le réseau santé à %(name)s"
 
+msgid "Profile Statistics"
+msgstr "Statistiques de votre profil"
+
+msgid "Total Profile Views"
+msgstr "Visites totales"
+
+msgid "Profile Views in the Past 30 Days"
+msgstr "Visites dans les 30 derniers jours"
+
+
 #################
 # Booking from Public Profile
 #################

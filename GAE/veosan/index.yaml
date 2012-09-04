@@ -59,3 +59,8 @@ indexes:
   - name: provider
   - name: day
   - name: start_time
+
+- kind: SiteLog
+  properties:
+  - name: page
+  - name: access_time
