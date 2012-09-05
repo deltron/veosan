@@ -1553,7 +1553,7 @@ msgid "Yes. It's Free!"
 msgstr "Oui. C'est gratuit!"
 
 msgid "There's no reason having a professional presence online should cost you a fortune. Our profiles are easy to use, quick to set up, and completely free."
-msgstr "Il n'est pas être nécéssaire de payer des factures mensuelles pour un cimple site web. Notre profile est plus efficace et complètement grauit."
+msgstr "Ce n'est pas être nécéssaire de payer des factures mensuelles pour un simple site web. Notre profile est plus efficace et complètement grauit."
 
 msgid "Referral Network"
 msgstr "Réseau Professionnel"
@@ -1571,13 +1571,13 @@ msgid "Manage Your Time"
 msgstr "Gérez votre temps"
 
 msgid "Display your availabilities and let patients book their own appointments online.  Reduce cancellations and missed appointments with automatic reminders."
-msgstr "Partagez vos displonibilités et laissez vos patients prendre rendez-vous en ligne. Résuisez les annulation et les rendez-vous manqué avec nos rappels automatisés"
+msgstr "Partagez vos displonibilités et laissez vos patients prendre rendez-vous en ligne. Réduisez les annulations et les rendez-vous manqués avec nos rappels automatisés"
 
 msgid "Easy to Find"
 msgstr "Soyez facile à trouver"
 
 msgid "Your Veosan profile is a professional website optimized for search engines. This makes it easy for patients to find you online. You can also add detailed contact information to help them find you in the real world too."
-msgstr "Votre profile Veosan est un site web professionel qui se place de manière avantageuse dans les résultats de moteurs de recherche. Vos futurs patients vous trouverons facilement en ligne. Avez-vous cherchez votre nom en ligne récement? C'est ce que vos patients potentiels trouverons."							
+msgstr "Votre profile Veosan est un site web professionel qui se place de manière avantageuse dans les résultats de moteurs de recherche. Vos futurs patients vous trouverons facilement en ligne."							
 							
 msgid "Expand Your Network"
 msgstr "Développez votre réseau de référement"
