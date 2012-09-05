@@ -260,7 +260,7 @@ class BaseTest(unittest.TestCase):
         self.assertEqual(address_form['title'].value, u"mr")
         self.assertEqual(address_form['first_name'].value, u"Fantastic")
         self.assertEqual(address_form['last_name'].value, u"Fox")
-        self.assertEqual(address_form['phone'].value, u"555-123-5678")
+        self.assertEqual(address_form['phone'].value, self._TEST_PROVIDER_TELEPHONE)
         self.assertEqual(address_form['address'].value, u"123 Main St.")
         self.assertEqual(address_form['city'].value, u"Westmount")
         self.assertEqual(address_form['postal_code'].value, u"H1B2C3")
