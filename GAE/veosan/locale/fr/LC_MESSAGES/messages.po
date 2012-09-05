@@ -1552,7 +1552,7 @@ msgstr "Partagez vos spécialités, votre formation et vos affiliations professi
 msgid "Yes. It's Free!"
 msgstr "Oui. C'est gratuit!"
 
-msgid "There's no reason having a professional presence online should cost you a fortune. Our profiles are easy to use and completely free."
+msgid "There's no reason having a professional presence online should cost you a fortune. Our profiles are easy to use, quick to set up, and completely free."
 msgstr "Il n'est pas être nécéssaire de payer des factures mensuelles pour un cimple site web. Notre profile est plus efficace et complètement grauit."
 
 msgid "Referral Network"
@@ -1564,7 +1564,7 @@ msgstr "Établissez votre réputation et référez vos patients à vos collègue
 msgid "Easy to Use"
 msgstr "Simple à utiliser"
 
-msgid "We like to keep things simple. A few click let you add items on your CV. Our live preview let's you see exactly how your profile willl look to your patients and peers."
+msgid "We like to keep things simple. It only takes a few clicks to have a great looking CV online. Our live preview system lets you see exactly how your profile will appear to patients and colleagues."
 msgstr "Nous aimons garder les choses simples. Quelques cliques vous permettent d'ajouter des items sur votre CV. Vous pouvez aussi prévisualiser votre profile."
 
 msgid "Manage Your Time"
@@ -1579,7 +1579,7 @@ msgstr "Soyez facile à trouver"
 msgid "Your Veosan profile creates a professional website that shows up high in search engines. This makes it easier for your existing and future patients to find you online. Have you googled yourself recently? What shows up? That is what your potential patients see."
 msgstr "Votre profile Veosan est un site web professionel qui se place de manière avantageuse dans les résultats de moteurs de recherche. Vos futurs patients vous trouverons facilement en ligne. Avez-vous cherchez votre nom en ligne récement? C'est ce que vos patients potentiels trouverons."							
 							
-msgid "Expand Your Referral Network"
+msgid "Expand Your Network"
 msgstr "Développez votre réseau de référement"
 
 msgid "Share your credentials with potential patients and extend your professional network in complementary specialties."
@@ -1587,3 +1587,6 @@ msgstr "Partagez vos compétences avec des patients potentiels et développez vo
 
 msgid "Does one of your patients need a specialist and you don't know where to refer him? Refer him to a specialist in our database and establish a connection that can be mutually beneficial."
 msgstr "Est-ce qu'un de vos patients nécéssite l'attention d'un autre spécialiste, mais vous ne savez pas où le référer. Étblissez une connection sur notre réseau qui sera mutuellement bénéfique."
+
+msgid "Get a great looking profile online in less than a minute"
+msgstr "Obtenez un profil professionel en moins d'une minute"

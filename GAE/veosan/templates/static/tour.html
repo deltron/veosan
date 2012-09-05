@@ -3,9 +3,8 @@
 {% set page_title = 'Veosan - ' + _('Learn More') %}
 {% set active_page = "tour" %}
 
-
 {% block extra_css %}
-	<link href="/assets/css/static.css" rel="stylesheet">
+<link href="/assets/css/static.css" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
@@ -14,9 +13,11 @@
 		<section id="tourIntro" class="tour-section">
 			<div class="width-wrapper">
 				<div class="height-wrapper">
-					<h1>{{_('Help')}}<br>
-						{{_('patients')}}<br> 
-						{{_('find you')}}</h1>
+					<h1>{{_('Help')}}
+					<br>
+					{{_('patients')}}
+					<br>
+					{{_('find you')}}</h1>
 					<p class="intro">
 						{{_('Improve your online presence with a profile focused on health care.')}}
 					</p>
@@ -40,54 +41,59 @@
 					<li class="third">
 						<h2>{{_("Yes. It's Free!")}}</h2>
 						<p>
-							{{_("There's no reason having a professional presence online should cost you a fortune. Our profiles are easy to use and completely free.")}}
+							{{_("There's no reason having a professional presence online should cost you a fortune. Our profiles are easy to use, quick to set up, and completely free.")}}
 						</p>
 					</li>
 				</ul>
 			</div>
 		</section>
-		
-		
-		<section id="tourCards" class="tour-section">
-
-			<div class="tour-features-wrapper">
-				<ul class="tour-features width-wrapper clearfix">
-					<li>
-						<div class="pic"><img src="/assets/img/tour-add-education.png" alt="Your profile picture">
-						</div>
-						<h2>{{_("Easy to Use")}}</h2>
-						<p>
-							{{_("We like to keep things simple. A few click let you add items on your CV. Our live preview let's you see exactly how your profile willl look to your patients and peers.")}}
-						</p>
-					</li>
-					<li>
-						<div class="pic"><img src="/assets/img/tour-add-schedule.png" alt="Search Reesults">
-						</div>
-						<h2>{{_("Manage Your Time")}}</h2>
-						<p>
-							{{_("Display your availabilities and let patients book their own appointments online.  Reduce cancellations and missed appointments with automatic reminders.")}}
-						</p>
-					</li>
-					<li>
-						<div class="pic"><img src="/assets/img/tour-add-map.png" alt="Your CV">
-						</div>
-						<h2>{{_("Easy to Find")}}</h2>
-						<p>
-							{{_("Your Veosan profile creates a professional website that shows up high in search engines. This makes it easier for your existing and future patients to find you online. Have you googled yourself recently? What shows up? That is what your potential patients see.")}}
-						</p>
-					</li>
-					<li>
-						<div class="pic"><img src="/assets/img/tour-add-network.png" alt="Your Professional Network">
-						</div>
-						<h2>{{_("Expand Your Referral Network")}}</h2>
-						<p>
-							{{_("Share your credentials with potential patients and extend your professional network in complementary specialties.")}}
-							{{_("Does one of your patients need a specialist and you don't know where to refer him? Refer him to a specialist in our database and establish a connection that can be mutually beneficial.")}} 
-						</p>
-					</li>
-				</ul>
-			</div>
-		</section>
+	</div>
+</div>
+<div class="row">
+	<div class="span12">
+		<div class="tour-features-wrapper">
+			<ul class="tour-features width-wrapper clearfix">
+				<li>
+					<div class="pic"><img src="/assets/img/tour-add-education.png" alt="Your profile picture">
+					</div>
+					<h2>{{_("Easy to Use")}}</h2>
+					<p>
+						{{_("We like to keep things simple. It only takes a few clicks to have a great looking CV online. Our live preview system lets you see exactly how your profile will appear to patients and colleagues.")}}
+					</p>
+				</li>
+				<li>
+					<div class="pic"><img src="/assets/img/tour-add-schedule.png" alt="Search Reesults">
+					</div>
+					<h2>{{_("Manage Your Time")}}</h2>
+					<p>
+						{{_("Display your availabilities and let patients book their own appointments online.  Reduce cancellations and missed appointments with automatic reminders.")}}
+					</p>
+				</li>
+				<li>
+					<div class="pic"><img src="/assets/img/tour-add-map.png" alt="Your CV">
+					</div>
+					<h2>{{_("Easy to Find")}}</h2>
+					<p>
+						{{_("Your Veosan profile creates a professional website that shows up high in search engines. This makes it easier for your existing and future patients to find you online. Have you googled yourself recently? What shows up? That is what your potential patients see.")}}
+					</p>
+				</li>
+				<li>
+					<div class="pic"><img src="/assets/img/tour-add-network.png" alt="Your Professional Network">
+					</div>
+					<h2>{{_("Expand Your Network")}}</h2>
+					<p>
+						{{_("Share your credentials with potential patients and extend your professional network in complementary specialties.")}}
+						{{_("Does one of your patients need a specialist and you don't know where to refer him? Refer him to a specialist in our database and establish a connection that can be mutually beneficial.")}}
+					</p>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div style="text-align: center;">
+		<a href="/signup/provider/{{ lang }}" class="btn btn-large btn-success" style="padding: 12px 24px; font-size:20px" > {{ _("Click Here to Become a Member, it's Free") }} </a>
+		<br>
+		<br>
+		<em>{{ _('Get a great looking profile online in less than a minute') }}</em>
 	</div>
 </div>
 {% endblock content %} 
