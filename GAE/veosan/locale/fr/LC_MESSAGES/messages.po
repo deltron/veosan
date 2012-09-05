@@ -1552,17 +1552,16 @@ msgstr "Partagez vos spécialités, votre formation et vos affiliations professi
 msgid "Yes. It's Free!"
 msgstr "Oui. C'est gratuit!"
 
-msgid "There is no reason anybody should pay a monthly invoice for a simple website. Our profile is more efficient and completely free and will stay that way."
+msgid "There's no reason having a professional presence online should cost you a fortune. Our profiles are easy to use and completely free."
 msgstr "Il n'est pas être nécéssaire de payer des factures mensuelles pour un cimple site web. Notre profile est plus efficace et complètement grauit."
 
-msgid "Professional Network"
+msgid "Referral Network"
 msgstr "Réseau Professionnel"
 
-msgid "Establish credibility and refer your patients your trusted colleagues. Establish a connection that benefits everyone."
+msgid "Establish credibility through your referral network. Refer and receive new patients patients from your trusted colleagues. These connections benefit everyone."
 msgstr "Établissez votre réputation et référez vos patients à vos collègues de confiance. Établissez des contacts qui seront bénéfique pour tous."
 
-
-msgid "Ridiculously Easy to Use"
+msgid "Easy to Use"
 msgstr "Simple à utiliser"
 
 msgid "We like to keep things simple. A few click let you add items on your CV. Our live preview let's you see exactly how your profile willl look to your patients and peers."
@@ -1573,7 +1572,6 @@ msgstr "Gérez votre temps"
 
 msgid "Display your availabilities and let patients book their own appointments online.  Reduce cancellations and missed appointments with automatic reminders."
 msgstr "Partagez vos displonibilités et laissez vos patients prendre rendez-vous en ligne. Résuisez les annulation et les rendez-vous manqué avec nos rappels automatisés"
-
 
 msgid "Easy to Find"
 msgstr "Soyez facile à trouver"
