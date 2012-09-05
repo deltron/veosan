@@ -51,7 +51,7 @@ body.promo-page{background:#ffffff;overflow-x:hidden;}
 #tourIntro #tourExampleBoard{position:absolute;top:0px;left:35%;height:610px;}
 #tourIntro #tourExampleBoardWide{display:none;}
 #tourIntro p.intro{width:30%;text-align:left;}
-#tourIntro .tour-details{background:#f1f6f9	;padding:150px 0px 60px 0px;}
+#tourIntro .tour-details{padding:150px 0px 60px 0px;}
 #tourIntro .tour-details li{margin-top:30px;width:25%;}
 #tourIntro .tour-details li .pic{display:none;}
 #tourIntro .tour-details li.first{float:left;position:relative;}
@@ -79,32 +79,3 @@ body.promo-page{background:#ffffff;overflow-x:hidden;}
 .extra-small-window #tourIntro .tour-details li{width:100%;text-align:center;max-width:400px;float:none;margin:30px auto 0px auto;}.extra-small-window #tourIntro .tour-details li img{max-width:317px;margin:0px auto;}
 #tourCards{padding-bottom:0px;}#tourCards h1{margin-bottom:20px;}
 #tourCards .tour-features-wrapper{background:#eef8f9;}
-
-#tourCardFront p,#tourCardBack p{font-size:13px;}
-#tourCardFront .label,#tourCardBack .label{position:relative;}
-#tourCardFront{position:relative;top:20px;}#tourCardFront .card-pic{float:left;}
-#tourCardFront .label{margin:30px 0px 0px 430px;width:200px;}
-#tourCardFront h2{background-position:0 0;}
-#tourCardBack{clear:both;}#tourCardBack .card-pic{float:right;}
-#tourCardBack .label{margin:130px 515px 0px auto;max-width:200px;min-width:150px;height:300px;}
-#tourCardBack h2{background-position:0 -23px;margin-left:auto;}
-#tourCardBack p{text-align:right;}
-#tourWorkingTogether{padding-bottom:0px;}#tourWorkingTogether h1{color:#569cc4;margin-bottom:30px;}
-#tourWorkingTogether .intro{width:80%;margin:0px auto 40px auto;}
-#tourWorkingTogether img{display:block;width:100%;}
-#tourWorkingTogether h2{color:#569cc4;}
-#tourWorkingTogether .tour-features-wrapper{background:#f1f6f9;}
-.medium-window #tourWorkingTogether #tourExampleBoardTeam,.small-window #tourWorkingTogether #tourExampleBoardTeam,.extra-small-window #tourWorkingTogether #tourExampleBoardTeam{width:95%;margin:0px auto;}
-.extra-small-window #tourWorkingTogether .intro{margin-top:20px;}
-.extra-small-window #tourWorkingTogether #tourExampleBoardTeam{margin:0px -20%;width:140%;}
-#tourMoreInfo h1{margin-bottom:40px;}
-#tourMoreInfo .tour-features{padding:0px 50px;}#tourMoreInfo .tour-features li{width:33%;padding:0px 10px;margin:20px 0px;}
-#tourMoreInfo .tour-features .pic{width:100px;height:100px;border:none;}#tourMoreInfo .tour-features .pic:before{content:none;}
-#tourMoreInfo .tour-features h2,#tourMoreInfo .tour-features p{margin-left:110px;}
-#tourMoreInfo .tour-features h2{margin-top:20px;}
-.medium-window #tourMoreInfo h1,.small-window #tourMoreInfo h1,.extra-small-window #tourMoreInfo h1{margin-bottom:40px !important;}
-.medium-window #tourMoreInfo .tour-features,.small-window #tourMoreInfo .tour-features,.extra-small-window #tourMoreInfo .tour-features{padding:0px 30px;}.medium-window #tourMoreInfo .tour-features li,.small-window #tourMoreInfo .tour-features li,.extra-small-window #tourMoreInfo .tour-features li{width:100%;margin:0px;}
-@media all and (max-width:980px){#tourMoreInfo .tour-features li{width:49%;}}#tourPricing{background:#eef8f9;}#tourPricing h1{margin-bottom:40px;color:#00b4c1;}
-#tourPricing .intro{width:80%;margin:0px auto;}
-.extra-small-window #tourSignup #tourSignUpButton,.small-window #tourSignup #tourSignUpButton{float:none;width:auto;margin-bottom:30px;}
-.extra-small-window #tourSignup #tourPowerUps,.small-window #tourSignup #tourPowerUps{margin-left:20px;}
