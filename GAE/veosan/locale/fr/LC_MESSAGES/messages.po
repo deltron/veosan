@@ -1546,7 +1546,7 @@ msgstr "Améliorez votre présence en ligne avec un profil complètement dédié
 msgid "It's Who You Are!"
 msgstr "C'est qui je suis!"
 
-msgid "Share your specialties, your education and your professional affiliations. Stand out by showcasing your continuing education. Let patients get comfortable with you before they show up."
+msgid "Share your specialties, your education and your professional affiliations. Stand out by showcasing your biography and continuing education. Let patients get comfortable with you before they show up."
 msgstr "Partagez vos spécialités, votre formation et vos affiliations professionnelles. Démarquez-vous avec votre formation continue. Laissez les patients vous rencontrer avant leur premier rendez-vous."
 
 msgid "Yes. It's Free!"
