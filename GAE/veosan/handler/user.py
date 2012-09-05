@@ -72,46 +72,7 @@ class UserBaseHandler(BaseHandler):
         
         self.render_template('user/login.html', login_form=login_form, next_action=next_action, key=key, **kw)
 
-'''
-class ProviderTermsHandler(UserBaseHandler):
-    def get(self, vanity_url=None):
-        # get provider from vanity url
-        provider = db.get_provider_from_vanity_url(vanity_url)
-        
-        # if no provider, try to get one by checking the logged in user
-        if provider == None:
-            user = self.get_current_user()
-            # make sure user is a provider
-            if user and auth.PROVIDER_ROLE in user.roles:
-                provider = db.get_provider_from_user(user)
-            else:
-                logging.error("(ProviderTermsHandler.get) Requested terms but can't get the provider from a key or user")   
-        
-        terms_form = ProviderTermsForm().get_form(obj=provider)
-        self.render_terms(provider, terms_form=terms_form)
-    
-    def post(self, vanity_url=None):
-        provider = db.get_provider_from_vanity_url(vanity_url)
-        terms_form = ProviderTermsForm().get_form(self.request.POST)
-        if terms_form.validate():
-            # Save signature and terms agreement
-            provider.terms_agreement = self.request.get('terms_agreement') == u'True'
-            provider.terms_date = date.today()
-            
-            # set status to enabled
-            provider.status = 'client_enabled'
-            
-            provider.put()
-            
-            user = provider.user.get()
-            
-            # Go to the password selection page
-            self.redirect('/user/password/' + user.signup_token)
-        else:
-            # did not click "I accept"
-            self.render_terms(provider, terms_form=terms_form)
-'''
-        
+
 class InviteHandler(UserBaseHandler):
     def get(self, invite_token=None):
         invite = db.get_invite_from_token(invite_token)
