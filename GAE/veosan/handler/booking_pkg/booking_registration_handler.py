@@ -79,6 +79,19 @@ class BookFromPublicProfileRegistration(BookingBaseHandler):
                     # set all the properties
                     email_details_form.populate_obj(patient)
                     
+                    # set location info from request
+                    if "X-AppEngine-Country" in self.request.headers:
+                        patient.gae_country = self.request.headers["X-AppEngine-Country"]
+                        
+                    if "X-AppEngine-Region" in self.request.headers:
+                        patient.gae_region = self.request.headers["X-AppEngine-Region"]
+        
+                    if "X-AppEngine-City" in self.request.headers:
+                        patient.gae_city = self.request.headers["X-AppEngine-City"]
+                    
+                    if "X-AppEngine-CityLatLong" in self.request.headers:
+                        patient.gae_city_lat_long = self.request.headers["X-AppEngine-CityLatLong"]
+
                     # link to logged in user
                     patient.user = user.key
                     patient.email = user.get_email()
@@ -125,7 +138,20 @@ class BookFromPublicProfileRegistration(BookingBaseHandler):
                     
                     # set all the properties
                     email_details_form.populate_obj(patient)
-                
+
+                    # set location info from request
+                    if "X-AppEngine-Country" in self.request.headers:
+                        patient.gae_country = self.request.headers["X-AppEngine-Country"]
+                        
+                    if "X-AppEngine-Region" in self.request.headers:
+                        patient.gae_region = self.request.headers["X-AppEngine-Region"]
+        
+                    if "X-AppEngine-City" in self.request.headers:
+                        patient.gae_city = self.request.headers["X-AppEngine-City"]
+                    
+                    if "X-AppEngine-CityLatLong" in self.request.headers:
+                        patient.gae_city_lat_long = self.request.headers["X-AppEngine-CityLatLong"]
+
                     user = self.create_empty_user_for_patient(patient)
                     
                     patient.put()

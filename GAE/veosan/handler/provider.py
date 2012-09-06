@@ -1,19 +1,15 @@
 import logging
-from google.appengine.ext import ndb
 from google.appengine.ext import blobstore
-from datetime import datetime, date, timedelta
-from operator import itemgetter, attrgetter
+from datetime import timedelta
+from operator import itemgetter
 
 # veo
 import data.db as db
-from data.model import Schedule
-from forms.provider import ProviderPhotoForm, ProviderScheduleForm
+from forms.provider import ProviderPhotoForm
 from base import BaseHandler
 from handler.auth import provider_required
 import util
 from utilities import time
-from data import search_index
-from google.appengine.api import search
 
 class ProviderBaseHandler(BaseHandler): 
 
@@ -105,38 +101,6 @@ class ProviderPublicProfileHandler(ProviderBaseHandler):
 
 
 
-class ProviderSearchHandler(ProviderBaseHandler):
-    def post(self, vanity_url=None):
-        provider = db.get_provider_from_vanity_url(vanity_url)
-        
-        search_text = self.request.POST['search']
-        
-        logging.info("Search text: %s " % search_text)
-
-        options = search.QueryOptions(
-                                      limit=20, # the number of results to return
-                                      #returned_fields=['first_name', 'last_name', 'city'],
-                                      #snippeted_fields=['bio'],
-                                      )
-
-        query = search.Query(query_string=search_text, options=options)
-        index = search.Index(name=search_index._PROVIDERS_INDEX_NAME)
-
-        try:
-            results = index.search(query)
-            provider_search_results = []
-            for scored_document in results:
-                # retrieve providers for search results
-                provider_urlsafe_key = scored_document.doc_id
-                provider = ndb.Key(urlsafe=provider_urlsafe_key).get()
-                provider_search_results.append(provider)
-                
-        except search.Error:
-            logging.exception('Search failed')
-
-
-        self.render_template("provider/network.html", provider=provider, provider_search_results=provider_search_results)
-
 
 # BOOKING AND SCHEDULE STUFF
 # *************************************
@@ -149,8 +113,4 @@ class ProviderBookingsHandler(ProviderBaseHandler):
         if provider:
             self.render_bookings(self, provider)
 
-
-
-
-        
 
