@@ -33,10 +33,10 @@ class BookFromPublicProfileRegistration(BookingBaseHandler):
             else:
                 # no user logged in, ask for email and stuff
                 form = AppointmentDetailsForNewPatient().get_form()
+                form['terms_agreement'].data = True
 
             form['booking_date'].data = book_date
             form['booking_time'].data = book_time
-            form['terms_agreement'].data = True
             
             self.render_template('provider/public/booking_registration.html', provider=provider, email_details_form=form)
         

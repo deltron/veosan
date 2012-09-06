@@ -15,7 +15,6 @@ class AppointmentDetailsForLoggedInUser(CustomForm):
         setattr(form, 'comments', TextAreaField(_(u'Comments for your appointment')))
         setattr(form, 'booking_date', HiddenField('booking_date'))
         setattr(form, 'booking_time', HiddenField('booking_time'))
-        setattr(form, 'terms_agreement', CustomBooleanField(_(u'I agree with the Terms of Service'), [validators.Required(message=_(u'You must accept the terms to book an appointment'))]))
 
 class AppointmentDetailsForNewPatient(CustomForm):
     def _set_fields(self, form):
