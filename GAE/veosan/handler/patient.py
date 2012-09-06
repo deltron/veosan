@@ -8,18 +8,7 @@ from operator import attrgetter
 
 class PatientBaseHandler(BaseHandler):
     '''Common functions for all patient handlers'''
-    
-    @staticmethod
-    def render_new_patient_form(handler, patient_form, booking, user=None, **kw):
-        ''' 
-            New patients are created from bookings. 
-            The booking is saved in the database, get their email address from there
-        '''
         
-        extra = {'form': patient_form, 'booking': booking, 'provider': booking.provider.get(), 'user': user}
-        kw.update(extra)
-        handler.render_template('patient/profile.html', **kw)
-    
     @staticmethod
     def render_bookings(handler, patient, provider=None, **kw):
         ''' Render a patient's bookings '''
