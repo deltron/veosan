@@ -5,10 +5,25 @@ from data import db
 import logging
 
 class StaticHandler(BaseHandler):
-    def get(self):
-        template = "static/" + self.request.route.name + ".html"
+    def render_static(self, name):
+        template = "static/" + name + ".html"
         self.render_template(template)
-        
+
+    def get_about(self):
+        self.render_static('about')
+
+    def get_careers(self):
+        self.render_static('careers')
+
+    def get_terms(self):
+        self.render_static('terms')
+
+    def get_privacy(self):
+        self.render_static('privacy')
+
+    def get_tour(self):
+        self.render_static('tour')
+
         
 class WarmupHandler(BaseHandler):
     def get(self):

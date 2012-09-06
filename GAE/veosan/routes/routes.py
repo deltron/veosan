@@ -35,11 +35,11 @@ def create_routes():
     routes.extend(user_routes.user_routes)
     
     # public 
-    routes.extend(public_routes.public_routes)
+    routes.extend(public_routes.get_routes())
     # public fr
-    routes.append(PathPrefixRoute('/en', public_routes.public_routes))
+    routes.append(PathPrefixRoute('/en', public_routes.get_routes()))
     #public en
-    #routes.append(PathPrefixRoute('/fr', public_routes.public_routes))
+    routes.append(PathPrefixRoute('/fr', public_routes.get_routes()))
     
     routes.extend([# invitations
                Route('/invite/<invite_token>', user.InviteHandler),
