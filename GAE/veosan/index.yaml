@@ -13,6 +13,12 @@ indexes:
 - kind: Booking
   properties:
   - name: confirmed
+  - name: patient
+  - name: datetime
+
+- kind: Booking
+  properties:
+  - name: confirmed
   - name: provider
   - name: datetime
 
@@ -38,6 +44,18 @@ indexes:
   - name: end_year
     direction: desc
   - name: start_year
+    direction: desc
+
+- kind: LogEvent
+  properties:
+  - name: user
+  - name: created_on
+    direction: desc
+
+- kind: Note
+  properties:
+  - name: provider
+  - name: created_on
     direction: desc
 
 - kind: ProfessionalCertification

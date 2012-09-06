@@ -82,6 +82,13 @@ class Patient(ndb.Model):
     telephone = ndb.StringProperty()
     terms_agreement = ndb.BooleanProperty()
     
+    # address from AppEngine
+    gae_country = ndb.StringProperty()
+    gae_region = ndb.StringProperty()
+    gae_city = ndb.StringProperty()
+    gae_city_lat_long = ndb.StringProperty()
+
+    
     # Address for homecare
     address = ndb.StringProperty()
     city = ndb.StringProperty()

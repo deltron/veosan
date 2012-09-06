@@ -22,18 +22,7 @@ LANGUAGE_LABELS = { 'fr' : u'Français', 'en': u'English'}
 saved_message = _(u'Your changes were saved.')
 
 def is_dev_server(request):
-    return request.host in DEV_SERVERS
-
-def get_all_regions():
-    return [('mtl-downtown', _(u'Montreal - Downtown')),
-            ('mtl-westisland', _(u'Montreal - West-Island')),
-            ('mtl-east', _(u'Montreal - East')),
-            ('mtl-nord', _(u'Montreal - North')),
-            ('laval', _(u'Laval')),
-            ('south-shore', _(u'South Shore')),
-            ('other', _(u'Other')),
-            ]    
-    
+    return request.host in DEV_SERVERS    
 
 def get_all_provinces():
     return [('ab', _('Alberta')),
@@ -135,20 +124,6 @@ def get_all_titles():
             ("ms", _('Ms.')),
             ("dr", _('Dr.')),
             ]
-
-def get_all_schools():
-    return [
-            ("concordia", _(u"Concordia University")),
-            ("mcgill", _(u"McGill University")),
-            ("udem", _(u"Université de Montréal")),
-            ("uqtr", _(u"Université de Québec à Trois-Rivières")),
-            ("usherb", _(u"Université de Sherbrooke")),
-            ("laval", _(u"Université Laval")),
-        ]
-    
-def get_all_schools_for_form():
-    return massage_list(get_all_schools())
-
     
 def get_all_degrees():
     return [
@@ -276,10 +251,8 @@ CODE_DICT_PER_LANG = dict()
 
 def create_untranslated_code_tuple_list():
     code_tuples_list = []
-    code_tuples_list.append(get_all_regions())
     code_tuples_list.append(get_all_categories())
     code_tuples_list.append(get_all_categories_for_profile_editing())
-    code_tuples_list.append(get_all_schools())
     code_tuples_list.append(get_all_degrees())
     code_tuples_list.append(get_all_continuing_education_types())
     code_tuples_list.append(get_all_titles())

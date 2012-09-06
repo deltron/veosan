@@ -44,12 +44,12 @@
 		<div style="position: relative">
 			<img src="/assets/img/home.jpeg" width="400" height="453">
 			<div style="position: absolute; bottom: 0px; background-color: rgba(64,64,64,0.7); padding:15px;">
-				<h2 style="color: white; font-size: 140%;">
-					“
-					{{ _('Veosan gives me a place to show my skills and helps patients find me.') }} 
-					” 
-					{# <br><span class="pull-right">-- Steve C.</a></span> #}
-				</h2>
+				<h2 style="color: white; font-size: 140%;"> “
+				{{ _('Veosan gives me a place to show my skills and helps patients find me.') }}
+				”
+				{#
+				<br>
+				<span class="pull-right">-- Steve C.</a></span> #} </h2>
 			</div>
 		</div>
 	</div>
@@ -68,11 +68,12 @@
 			<h2>{{ _('Professional Networking') }}</h2><h3>{{ _('Show your credentials to patients and extend your professional network.') }}</h3>
 		</div>
 
-		<div style="position: absolute; bottom: 5px; width: 100%">
-			<div style="margin: 0 auto; text-align: center">
-				<a href="/signup/provider/{{ lang }}" class="btn btn-large btn-success" style="padding: 12px 24px; font-size:20px" > 
-					{{ _("Click Here to Become a Member, it's Free") }} </a>
-			</div>
+		<div style="text-align: center">
+			<a href="/signup/provider/{{ lang }}" class="btn btn-large btn-success" style="padding: 12px 24px; font-size:20px" > {{ _("Click Here to Become a Member, it's Free") }} </a>
+
+			<br>
+			<br>
+			<em>{{ _('Get a great looking profile online in less than a minute') }}</em>
 		</div>
 	</div>
 </div>

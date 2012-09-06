@@ -10,13 +10,15 @@ from webapp2_extras.routes import PathPrefixRoute, DomainRoute
 from util import dump
 import util
 from utilities import time
-from handler import booking, provider, patient, provider_admin, admin, static, contact, language, user,\
+from handler import provider, patient, provider_admin, admin, static, contact, language, user,\
     tasks
 from handler.provider_pkg import network_handler, address_handler, cv_handler,\
     profile_handler, welcome_handler, schedule_handler
 from data.model import User
 from google.appengine.ext import ndb
 from handler.user_pkg import signup_handler
+from handler.booking_pkg import display_schedule_handler,\
+    booking_registration_handler
 
 
 jinja_filters = {}
@@ -91,10 +93,7 @@ application = ndb.toplevel(webapp2.WSGIApplication([
                                        Route('/hideside/<what>', static.HideSideHandler),
                                           
                                        # booking stuff
-                                       Route('/next', booking.SearchNextHandler),
-                                       Route('/full', booking.FullyBookedHandler),
                                        Route('/contact', contact.ContactHandler),
-                                       Route('/search', booking.SearchIndexHandler),
 
 
 
@@ -107,6 +106,11 @@ application = ndb.toplevel(webapp2.WSGIApplication([
                                        Route('/tour', handler=static.StaticHandler, name='tour'),
                                        Route('/blog', handler=static.BlogHandler),
 
+                                       # Patient
+                                       PathPrefixRoute('/patient', [
+                                            Route('/bookings', patient.ListPatientBookings),
+                                       ]),
+                                  
                                        #signups
                                        PathPrefixRoute('/signup', [
                                             Route('/patient', signup_handler.PatientSignupHandler),
@@ -194,12 +198,12 @@ application = ndb.toplevel(webapp2.WSGIApplication([
                                        Route('/<vanity_url>/', handler=provider.ProviderPublicProfileHandler),
                                        
                                        # Display schedule
-                                       Route('/<vanity_url>/book', booking.BookFromPublicProfileDisplaySchedule),
-                                       Route('/<vanity_url>/book/date/<start_date>', booking.BookFromPublicProfileDisplaySchedule),
+                                       Route('/<vanity_url>/book', display_schedule_handler.BookFromPublicProfileDisplaySchedule),
+                                       Route('/<vanity_url>/book/date/<start_date>', display_schedule_handler.BookFromPublicProfileDisplaySchedule),
                                        
                                        # Actual booking & registration
-                                       Route('/<vanity_url>/book/<book_date:\d{4}-\d{2}-\d{2}>/<book_time:\d{1,2}>', booking.BookFromPublicProfileRegistration),
-                                       Route('/<vanity_url>/book/register', booking.BookFromPublicProfileRegistration),
+                                       Route('/<vanity_url>/book/<book_date:\d{4}-\d{2}-\d{2}>/<book_time:\d{1,2}>', booking_registration_handler.BookFromPublicProfileRegistration),
+                                       Route('/<vanity_url>/book/register', booking_registration_handler.BookFromPublicProfileRegistration),
 
                                        # Social network
                                        Route('/<vanity_url>/connect', network_handler.ProviderConnectHandler),

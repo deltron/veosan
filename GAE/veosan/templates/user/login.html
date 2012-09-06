@@ -17,12 +17,6 @@
 	<div class="row">
 		<fieldset>
 			<div class="span6">
-				{% if booking %}
-				<!-- booking key -->
-				<input type="hidden" name="booking_key" value="{{booking.key.urlsafe()}}" />
-				{% endif %}
-				<!-- form -->
-
 				{{ macro.make_standard_form(form_name=login_form, inputClass='span3') }}
 			</div>
 

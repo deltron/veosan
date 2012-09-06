@@ -12,8 +12,7 @@ from base import BaseHandler
 import data.db as db
 import auth
 from patient import PatientBaseHandler
-from booking import BookingBaseHandler
-from forms.user import ProviderTermsForm, PasswordForm, LoginForm, ProviderSignupForm1
+from forms.user import PasswordForm, LoginForm, ProviderSignupForm1
 import mail
 from google.appengine.ext import ndb
 
@@ -22,11 +21,6 @@ class UserBaseHandler(BaseHandler):
             - password set and reset
             - activation
     '''
-    
-        
-    def render_terms(self, provider, terms_form, **kw):
-        self.render_template('provider/provider_terms.html', provider=provider, terms_form=terms_form, **kw)
-
     def render_booking_confirmed_and_password_selection(self, user=None, password_form=None, **kw):
         if not password_form:
             password_form = PasswordForm().get_form()
@@ -69,49 +63,19 @@ class UserBaseHandler(BaseHandler):
                 # get the target provider (ie. the guy clicking the email)
                 target_provider = provider_network_connection.target_provider.get()
                 login_form = LoginForm().get_form(obj=target_provider)
+                
+        if next_action == 'booking':
+            if key:
+                # get the patient's email
+                booking = ndb.Key(urlsafe = key).get()
+                patient_from_booking = booking.patient.get()
+                
+                login_form = LoginForm().get_form(obj=patient_from_booking)
+
         
         self.render_template('user/login.html', login_form=login_form, next_action=next_action, key=key, **kw)
 
-'''
-class ProviderTermsHandler(UserBaseHandler):
-    def get(self, vanity_url=None):
-        # get provider from vanity url
-        provider = db.get_provider_from_vanity_url(vanity_url)
-        
-        # if no provider, try to get one by checking the logged in user
-        if provider == None:
-            user = self.get_current_user()
-            # make sure user is a provider
-            if user and auth.PROVIDER_ROLE in user.roles:
-                provider = db.get_provider_from_user(user)
-            else:
-                logging.error("(ProviderTermsHandler.get) Requested terms but can't get the provider from a key or user")   
-        
-        terms_form = ProviderTermsForm().get_form(obj=provider)
-        self.render_terms(provider, terms_form=terms_form)
-    
-    def post(self, vanity_url=None):
-        provider = db.get_provider_from_vanity_url(vanity_url)
-        terms_form = ProviderTermsForm().get_form(self.request.POST)
-        if terms_form.validate():
-            # Save signature and terms agreement
-            provider.terms_agreement = self.request.get('terms_agreement') == u'True'
-            provider.terms_date = date.today()
-            
-            # set status to enabled
-            provider.status = 'client_enabled'
-            
-            provider.put()
-            
-            user = provider.user.get()
-            
-            # Go to the password selection page
-            self.redirect('/user/password/' + user.signup_token)
-        else:
-            # did not click "I accept"
-            self.render_terms(provider, terms_form=terms_form)
-'''
-        
+
 class InviteHandler(UserBaseHandler):
     def get(self, invite_token=None):
         invite = db.get_invite_from_token(invite_token)
@@ -172,8 +136,7 @@ class PasswordHandler(UserBaseHandler):
                 self.delete_signup_token(user)
             
                 if patient:
-                    welcome_message = _("Welcome to Veosan! Profile confirmation successful.")
-                    BookingBaseHandler.render_confirmed_patient(self, patient, success_message=welcome_message)
+                    self.redirect('/patient/bookings')
 
             elif user.resetpassword_token:
                 # not a returning user, must be a password reset
@@ -290,6 +253,7 @@ class LoginHandler(UserBaseHandler):
         if user and next_action and key:
             # if already logged in
             provider_from_user = db.get_provider_from_user(user)
+            patient_from_user = db.get_patient_from_user(user)
             
             # check if logged in provider is the provider from
             # already logged in, don't login again
@@ -300,6 +264,15 @@ class LoginHandler(UserBaseHandler):
                 if provider_from_user.key == target_provider_key:
                     # the target provider is logged in, accept the connection bypassing login
                     target_url = '/provider/network/' + provider_from_user.vanity_url + '/accept/' + key
+                    self.redirect(target_url)
+                else:
+                    self.render_login(next_action=next_action, key=key)
+            
+            elif next_action == 'booking':
+                booking = ndb.Key(urlsafe=key).get()
+                
+                if patient_from_user.key == booking.patient:
+                    target_url = '/patient/bookings'
                     self.redirect(target_url)
                 else:
                     self.render_login(next_action=next_action, key=key)
@@ -332,19 +305,18 @@ class LoginHandler(UserBaseHandler):
                 self.set_language(user.language)
 
                 # login was succesful, User is in the session
-                booking_key = self.request.POST.get('booking_key')
+                if next_action == 'booking':
+                    # moved booking up here since it can come from any role (provider or patient)
+                    booking = ndb.Key(urlsafe=key).get()
                 
-                
-                if booking_key:
-                    # special redirect for login during booking flow
-                    self.redirect('/patient/book?bk=%s' % booking_key)
+                    if booking:
+                        self.redirect('/patient/bookings')
                 
                 else:
                     # check role of user, redirect to appropriate page after login
                     if auth.PROVIDER_ROLE in user.roles:
                         provider = db.get_provider_from_user(user)
                         logging.info('(LoginHandler.post) User %s logged in as provider, redirecting to profile page', user.get_email())
-
 
                         # check the action, if it's from a connection do that first
                         # and then redirect back to profile page with a message
