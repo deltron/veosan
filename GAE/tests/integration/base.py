@@ -187,6 +187,7 @@ class BaseTest(unittest.TestCase):
         # logout
         self.logout_provider()
         
+
     def self_signup_provider(self, email=_TEST_PROVIDER_EMAIL, first_name='first', last_name='last', category='osteopath'):
         # switch to french
         response = self.testapp.get('/lang/fr')
@@ -406,61 +407,6 @@ class BaseTest(unittest.TestCase):
     ###
     ### Patient Methods
     ###
-
-    def book_appointment(self, category, date_string, hour_string):
-        '''
-            Go to index, fill the form and return the response
-        '''
-        result_response = self.testapp.post('/search')
-        booking_form = result_response.forms[0] # booking form  
-        # check that date requested is in date select list
-        booking_date_select = booking_form.fields['booking_date'][0]
-        self.assertIn(date_string, [x[0] for x in booking_date_select.options]) 
-        # fill out the form
-        booking_form['category'] = category
-        booking_form['booking_date'] = date_string
-        booking_form['booking_time'] = hour_string
-
-        result_response = booking_form.submit()
-        
-        return result_response
-    
-    def fill_booking_email_form(self, result_response, email=None):
-        # email form (second form on page)        
-        hidden_form = result_response.forms[0]
-        email_form = result_response.forms[1]
-        # Replacing: new_patient_response = email_form.submit()
-        # Hack to post directly and make tests run.
-        # Warning: We are not testing the form and javascript on this page
-        post_data = {
-                     'bk': email_form['bk'].value,
-                     'provider_key': hidden_form['provider_key'].value,
-                     'booking_datetime': hidden_form['booking_datetime'].value,
-                     'index': hidden_form['index'].value
-                    }
-        if email:
-            post_data['email'] = email
-        action = str(email_form.action)
-        new_patient_response = self.testapp.post(action, params=post_data)        
-        return new_patient_response
-        
-    
-    def fill_new_patient_profile(self, response, patient_email=_TEST_PATIENT_EMAIL, patient_telephone=_TEST_PATIENT_TELEPHONE):
-        response.mustcontain('Nouveau patient')
-        patient_form = response.forms[0]
-        patient_form['first_name'] = 'Pat'
-        patient_form['last_name'] = 'Patient'
-        patient_form['telephone'] = patient_telephone
-        patient_form['terms_agreement'] = '1'
-        patient_form['address'] = '123 High Street'
-        patient_form['city'] = 'Montreal'
-        patient_form['postal_code'] = 'H2H 2Y2'
-        booking_confirm_response = patient_form.submit()
-        # check confirm page
-        booking_confirm_response.mustcontain("C'est presque complété!")
-        booking_confirm_response.mustcontain(patient_email)
-        return booking_confirm_response
-    
     def check_activation_email_patient(self):
         '''             
             1) receive confirmation email
@@ -547,26 +493,28 @@ class BaseTest(unittest.TestCase):
         
         # fill patient info
         step1_form = new_patient_page.forms[0]
-        step1_form['email'] = patient_email
-        step1_form['telephone'] = patient_telephone
+        
+        if not user_logged_in:
+            step1_form['first_name'] = 'Pat'
+            step1_form['last_name'] = 'Patient'
+            step1_form['telephone'] = patient_telephone        
+            step1_form['email'] = patient_email
+        
         step1_form['comments'] = 'I would like to receive care related to boat accident'
-        step1_form['specialty'] = 'sports'
-        step1_form['insurance'] = 'private'
+        step1_form['terms_agreement'] = '1'
 
-        if returning_patient:
-            email_sent_page = step1_form.submit()
-        else:
-            new_patient_page = step1_form.submit()
-            email_sent_page = self.fill_new_patient_profile(new_patient_page, patient_email, patient_telephone)
+        response = step1_form.submit()
             
         if user_logged_in:
-            email_sent_page.mustcontain("Upcoming Appointments")
+            response = response.follow()
+            response.mustcontain("Upcoming Appointments")
+                
         else:
             # check email sent page (no user is logged in)
-            email_sent_page.mustcontain("C'est presque complété!")
-            email_sent_page.mustcontain('Un couriel vous a été envoyé')
-            email_sent_page.mustcontain(patient_email)
-            email_sent_page.mustcontain('Contactez-nous')
+            response.mustcontain("C'est presque complété!")
+            response.mustcontain('Un couriel vous a été envoyé')
+            response.mustcontain(patient_email)
+            response.mustcontain('Contactez-nous')
         
         # check admin console, booking should be in the list
         self.login_as_admin()
@@ -582,8 +530,6 @@ class BaseTest(unittest.TestCase):
         
         admin_bookings_details = admin_bookings_page.click(linkid="show-1")
         admin_bookings_details.mustcontain('I would like to receive care related to boat accident')
-        admin_bookings_details.mustcontain('sports')
-        admin_bookings_details.mustcontain('private')                              
         self.logout_admin()
 
 

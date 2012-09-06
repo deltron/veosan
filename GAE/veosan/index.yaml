@@ -13,6 +13,12 @@ indexes:
 - kind: Booking
   properties:
   - name: confirmed
+  - name: patient
+  - name: datetime
+
+- kind: Booking
+  properties:
+  - name: confirmed
   - name: provider
   - name: datetime
 

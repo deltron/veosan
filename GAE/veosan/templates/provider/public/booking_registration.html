@@ -5,11 +5,9 @@
 
 {% block content %}
 <form class="form-horizontal" action="/{{provider.vanity_url}}/book/register" method="post">
-
 	<div class="row">
 		<div class="span6">
 			{{ macro.make_standard_form(email_details_form) }}
-
 		</div>
 		<div class="span6">
 			<div class="well">

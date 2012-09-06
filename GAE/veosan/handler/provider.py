@@ -12,7 +12,6 @@ from base import BaseHandler
 from handler.auth import provider_required
 import util
 from utilities import time
-from forms.booking import EmailOnlyBookingForm
 from data import search_index
 from google.appengine.api import search
 
@@ -30,8 +29,7 @@ class ProviderBaseHandler(BaseHandler):
         handler.render_template('provider/bookings.html', provider=provider, bookings=bookings, **kw)
 
     def render_public_profile(self, provider, **kw):
-        book_now_form = EmailOnlyBookingForm()
-        self.render_template('provider/public/public_profile.html', book_now_form=book_now_form, provider=provider, **kw)
+        self.render_template('provider/public/public_profile.html', provider=provider, **kw)
 
     def render_cv(self, provider, **kw):
         self.render_template('provider/cv.html', provider=provider, **kw)

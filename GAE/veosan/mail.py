@@ -63,7 +63,8 @@ def email_booking_to_patient(handler, booking, activation_url):
     to_address = patient.email
     # check email valid
     if not mail.is_email_valid(to_address):
-        logging.warn('Email is not valid: {0}. Trying anyway...' %  to_address)
+        logging.warn('Email is not valid: %s -- trying anyway...' % to_address)
+        
     # create message
     message = mail.EmailMessage()
     message.sender = "Veosan" + ' <' + VEOSAN_SUPPORT_ADDRESS + '>'

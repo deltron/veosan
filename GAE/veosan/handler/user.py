@@ -12,10 +12,10 @@ from base import BaseHandler
 import data.db as db
 import auth
 from patient import PatientBaseHandler
-from booking import BookingBaseHandler
-from forms.user import ProviderTermsForm, PasswordForm, LoginForm, ProviderSignupForm1
+from forms.user import PasswordForm, LoginForm, ProviderSignupForm1
 import mail
 from google.appengine.ext import ndb
+from handler.booking_pkg.booking_base_handler import BookingBaseHandler
 
 class UserBaseHandler(BaseHandler):   
     ''' User management handler:

@@ -1,12 +1,15 @@
 {% extends "/layout/base.html" %}
 
 {% block subnav %}
+{% if provider_from_user and ('provider' or 'admin' in roles) %}
 <ul class="nav nav-tabs">
 	{% if provider_from_user.display_welcome_page %}
 	<li id="welcome" {% if "welcome" == active_page %} class="active" {% endif %}>
 		<a href="/provider/welcome/{{ provider_from_user.vanity_url }}">{{ _('Welcome') }}</a>
 	</li>
 	{% endif %}
+	
+	
 	<li id="profile" {% if  "profile" == active_page %} class="active" {% endif %}>
 		<a href="/provider/profile/{{ provider_from_user.vanity_url }}">{{ _('Profile') }}</a>
 	</li>
@@ -22,6 +25,12 @@
 	<li id="network" {% if "network" == active_page %} class="active" {% endif %}>
 		<a href="/provider/network/{{ provider_from_user.vanity_url }}">{{ _('Network') }}</a>
 	</li>
+	
+	{% if 'patient' in roles %}
+	<li id="provider" {% if "patient" == active_page %} class="active" {% endif %}>
+		<a href="/patient/bookings">{{ _('As Patient') }}</a>
+	</li>
+	{% endif %}
 
 	{% if 'admin' in roles %}
 	<li id="upgrade" {% if "upgrade" == active_page %} class="active" {% endif %} style="font-style:italic">
@@ -45,4 +54,5 @@
 		<a href="/{{ provider_from_user.vanity_url }}">{{ _('Public Profile') }}</a>
 	</li>
 </ul>
+{% endif %}
 {% endblock %}
