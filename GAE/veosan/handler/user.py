@@ -21,11 +21,6 @@ class UserBaseHandler(BaseHandler):
             - password set and reset
             - activation
     '''
-    
-        
-    def render_terms(self, provider, terms_form, **kw):
-        self.render_template('provider/provider_terms.html', provider=provider, terms_form=terms_form, **kw)
-
     def render_booking_confirmed_and_password_selection(self, user=None, password_form=None, **kw):
         if not password_form:
             password_form = PasswordForm().get_form()
