@@ -111,11 +111,9 @@ class BookFromPublicProfileRegistration(BookingBaseHandler):
                         # check if user is activated and has a password
                         if existing_user.is_activated_and_has_password():
                             # send to login page with booking.key set
-                            login_form = LoginForm().get_form()
-                            login_form.email.data = email
-                            
-                            # TODO: replace with next_action=patient
-                            self.render_template('user/login.html', login_form=login_form, booking=booking)
+                            key = booking.key.urlsafe()
+                            self.redirect('/login/booking/' + key)
+
                         else:
                             # user exists but was never activated
                             logging.info('Patient exists but was not activated for %s, Skipping new patient form, but sending email to confirm.' % email)

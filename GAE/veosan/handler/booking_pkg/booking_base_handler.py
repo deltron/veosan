@@ -1,4 +1,5 @@
 from handler.base import BaseHandler
+from webapp2_extras.i18n import gettext as _
 
 class BookingBaseHandler(BaseHandler):
     '''Common functions for all booking handlers'''

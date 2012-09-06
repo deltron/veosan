@@ -69,6 +69,15 @@ class UserBaseHandler(BaseHandler):
                 # get the target provider (ie. the guy clicking the email)
                 target_provider = provider_network_connection.target_provider.get()
                 login_form = LoginForm().get_form(obj=target_provider)
+                
+        if next_action == 'booking':
+            if key:
+                # get the patient's email
+                booking = ndb.Key(urlsafe = key).get()
+                patient_from_booking = booking.patient.get()
+                
+                login_form = LoginForm().get_form(obj=patient_from_booking)
+
         
         self.render_template('user/login.html', login_form=login_form, next_action=next_action, key=key, **kw)
 
@@ -251,6 +260,7 @@ class LoginHandler(UserBaseHandler):
         if user and next_action and key:
             # if already logged in
             provider_from_user = db.get_provider_from_user(user)
+            patient_from_user = db.get_patient_from_user(user)
             
             # check if logged in provider is the provider from
             # already logged in, don't login again
@@ -261,6 +271,15 @@ class LoginHandler(UserBaseHandler):
                 if provider_from_user.key == target_provider_key:
                     # the target provider is logged in, accept the connection bypassing login
                     target_url = '/provider/network/' + provider_from_user.vanity_url + '/accept/' + key
+                    self.redirect(target_url)
+                else:
+                    self.render_login(next_action=next_action, key=key)
+            
+            elif next_action == 'booking':
+                booking = ndb.Key(urlsafe=key).get()
+                
+                if patient_from_user.key == booking.patient:
+                    target_url = '/patient/bookings'
                     self.redirect(target_url)
                 else:
                     self.render_login(next_action=next_action, key=key)
@@ -293,19 +312,20 @@ class LoginHandler(UserBaseHandler):
                 self.set_language(user.language)
 
                 # login was succesful, User is in the session
-                booking_key = self.request.POST.get('booking_key')
+                if next_action == 'booking':
+                    booking = ndb.Key(urlsafe=key).get()
                 
-                
-                if booking_key:
-                    # special redirect for login during booking flow
-                    self.redirect('/patient/book?bk=%s' % booking_key)
+                    if booking:
+                        # special redirect for login during booking flow
+                        
+                        # is this supposed to confirm or something?
+                        self.redirect('/patient/bookings')
                 
                 else:
                     # check role of user, redirect to appropriate page after login
                     if auth.PROVIDER_ROLE in user.roles:
                         provider = db.get_provider_from_user(user)
                         logging.info('(LoginHandler.post) User %s logged in as provider, redirecting to profile page', user.get_email())
-
 
                         # check the action, if it's from a connection do that first
                         # and then redirect back to profile page with a message

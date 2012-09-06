@@ -5,6 +5,7 @@ import data.db as db
 import mail
 from handler.base import BaseHandler
 from operator import attrgetter
+from handler import auth
 
 class PatientBaseHandler(BaseHandler):
     '''Common functions for all patient handlers'''
@@ -56,7 +57,7 @@ class ListPatientBookings(PatientBaseHandler):
         if user:
             patient = db.get_patient_from_user(user)
             if patient:
-                if 'provider' in user.roles:
+                if auth.PROVIDER_ROLE in user.roles:
                     provider = db.get_provider_from_user(user)
                     self.render_bookings(self, provider=provider, patient=patient)
                 else:
