@@ -60,13 +60,13 @@ class BookingTest(BaseTest):
         self.assertEqual(0, len(messages))
         self.logout_provider()
         
-        self.patient_confirms_latest_booking(date_string, time_string)
+        self.patient_confirms_latest_booking(date_string, time_string, set_password=False)
         
         # book second time from public profile
         date_string = testutil.next_monday_date_string()
         time_string = '11'
-        self.book_from_public_profile(date_string, time_string, returning_patient=True)
-        self.patient_confirms_latest_booking(date_string, time_string)
+        self.book_from_public_profile(date_string, time_string)
+        self.patient_confirms_latest_booking(date_string, time_string, set_password=False)
         
 
 
@@ -140,7 +140,7 @@ class BookingTest(BaseTest):
         
         # book an appointment for next monday at 10am
         next_monday = testutil.next_weekday_date_string(0)
-        self.book_from_public_profile(next_monday, 10, False, self._TEST_PATIENT_EMAIL, self._TEST_PATIENT_TELEPHONE)
+        self.book_from_public_profile(next_monday, 10, self._TEST_PATIENT_EMAIL, self._TEST_PATIENT_TELEPHONE)
         
         self.patient_confirms_latest_booking(next_monday, 10)
         
@@ -210,7 +210,7 @@ class BookingTest(BaseTest):
         
         # book an appointment for next monday at 10am
         next_monday = testutil.next_weekday_date_string(0)
-        self.book_from_public_profile(next_monday, 10, False, 
+        self.book_from_public_profile(next_monday, 10, 
                                       self._TEST_PATIENT_EMAIL, self._TEST_PATIENT_TELEPHONE)
         
         self.patient_confirms_latest_booking(next_monday, 10)
@@ -228,7 +228,7 @@ class BookingTest(BaseTest):
         response.mustcontain(no="button-"+testutil.next_monday_date_string()+"-10")
 
 
-    def test_booking_as_a_provider(self):
+    def test_booking_as_a_provider_logged_in(self):
         ''' Book an appointment as a provider '''
         self.create_complete_provider_profile()
         self.logout_provider()
@@ -243,7 +243,7 @@ class BookingTest(BaseTest):
         self.login_as_provider()
         next_monday = testutil.next_weekday_date_string(0)
         # Book an appointment with yourself
-        self.book_from_public_profile(next_monday, 10, True, self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_TELEPHONE)
+        self.book_from_public_profile(next_monday, 10, self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_TELEPHONE)
         
         # check schedule on public profile        
         response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
@@ -255,8 +255,63 @@ class BookingTest(BaseTest):
         response.mustcontain(no=testutil.next_monday_date_string()+"/10")
         response.mustcontain(no="button-"+testutil.next_monday_date_string()+"-10")
         
+    def test_booking_second_appointment_as_a_patient_logged_in(self):
+        ''' if someone forces the URL to book something outside available schedule '''        
+        self.create_complete_provider_profile()
+        self.logout_provider()
         
-      
+        self.login_as_admin()
+        
+        # enable booking
+        response = self.testapp.get('/admin/provider/feature/booking_enabled/' + self._TEST_PROVIDER_VANITY_URL)
+        response.mustcontain("Show booking=True")
+
+        self.logout_admin()
+        
+        # check it appears as available on public profile and booking page
+        
+        response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
+        
+        # book an appointment for next monday at 10am
+        next_monday = testutil.next_weekday_date_string(0)
+        self.book_from_public_profile(next_monday, 10, 
+                                      self._TEST_PATIENT_EMAIL, self._TEST_PATIENT_TELEPHONE)
+        
+        self.patient_confirms_latest_booking(next_monday, 10)
+                
+        # check schedule on public profile        
+        response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
+        response.mustcontain(no=testutil.next_monday_date_string()+"/10")
+        response.mustcontain(no="button-"+testutil.next_monday_date_string()+"-10")
+        
+        # check the book
+        response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL + '/book')
+        response.mustcontain(no=testutil.next_monday_date_string()+"/10")
+        response.mustcontain(no="button-"+testutil.next_monday_date_string()+"-10")
+
+
+        # book an appointment for next monday at 11am
+        self.book_from_public_profile(next_monday, 11, 
+                                      self._TEST_PATIENT_EMAIL, self._TEST_PATIENT_TELEPHONE)
+        
+        # logout patient
+        self.logout_patient()
+        
+        # check schedule on public profile        
+        response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
+        response.mustcontain(no=testutil.next_monday_date_string()+"/11")
+        response.mustcontain(no="button-"+testutil.next_monday_date_string()+"-11")
+        
+        # check the book
+        response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL + '/book')
+        response.mustcontain(no=testutil.next_monday_date_string()+"/11")
+        response.mustcontain(no="button-"+testutil.next_monday_date_string()+"-11")
+        
+        # check provider receives emails for each appointment
+        self.check_appointment_email_to_provider(next_monday, 10)
+        self.check_appointment_email_to_provider(next_monday, 11)
+
+
 if __name__ == "__main__":
     unittest.main()
     

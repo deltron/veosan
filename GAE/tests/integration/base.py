@@ -481,11 +481,12 @@ class BaseTest(unittest.TestCase):
         self.logout_admin()
         
         
-    def book_from_public_profile(self, date_string, time_string, returning_patient=False, patient_email=_TEST_PATIENT_EMAIL, patient_telephone=_TEST_PATIENT_TELEPHONE):
+    def book_from_public_profile(self, date_string, time_string, patient_email=_TEST_PATIENT_EMAIL, patient_telephone=_TEST_PATIENT_TELEPHONE):
         public_profile = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
         schedule_page = public_profile.click(linkid='book_button')
         # Check if a user is logged in
         user_logged_in = 'Déconnexion' in schedule_page
+        
         schedule_page.mustcontain("Choisissez la date et l'heure de votre rendez-vous")
         # find the form for next Monday at 10
         form_id = "button-" + date_string + '-' + str(time_string)
@@ -516,7 +517,9 @@ class BaseTest(unittest.TestCase):
             response.mustcontain('Un couriel vous a été envoyé')
             response.mustcontain(patient_email)
             response.mustcontain('Contactez-nous')
+            
         
+    def check_admin_console_for_booking(self, date_string, time_string, patient_email=_TEST_PATIENT_EMAIL, patient_telephone=_TEST_PATIENT_TELEPHONE):
         # check admin console, booking should be in the list
         self.login_as_admin()
         admin_bookings_page = self.testapp.get('/admin/bookings')
@@ -534,7 +537,7 @@ class BaseTest(unittest.TestCase):
         self.logout_admin()
 
 
-    def patient_confirms_latest_booking(self, date_string, time_string):
+    def patient_confirms_latest_booking(self, date_string, time_string, set_password=True):
 
         # check email to patient
         booking_datetime = datetime.strptime(testutil.next_monday_date_string() + " " + str(time_string), '%Y-%m-%d %H')
@@ -554,8 +557,6 @@ class BaseTest(unittest.TestCase):
         m = messages[patient_email_count - 1]
         self.assertEqual(self._TEST_PATIENT_EMAIL, m.to)
         
-        
-        
         # activate account
         messages = self.mail_stub.get_sent_messages(to=self._TEST_PATIENT_EMAIL)
         
@@ -573,9 +574,24 @@ class BaseTest(unittest.TestCase):
         confirmation_page.mustcontain(booking_time_string)
         confirmation_page.mustcontain(booking_datetime_string)
         confirmation_page.mustcontain("Fantastic Fox")
+        
+        if set_password:
+            # set a password
+            password_form = confirmation_page.forms[0]
+            password_form['password'] = self._TEST_PATIENT_PASSWORD
+            password_form['password_confirm'] = self._TEST_PATIENT_PASSWORD
+            booking_confirm_page = password_form.submit().follow()
+            
+            # patient email in navbar
+            booking_confirm_page.mustcontain(self._TEST_PATIENT_EMAIL)
+            booking_confirm_page.mustcontain('Déconnexion')
+
+
+    def check_appointment_email_to_provider(self, date_string, time_string, provider_email=_TEST_PROVIDER_EMAIL):
         # Check email to provider    
-        messages = self.mail_stub.get_sent_messages(to=self._TEST_PROVIDER_EMAIL)
+        messages = self.mail_stub.get_sent_messages(to=provider_email)
         provider_mail_count = len(messages)
+        
         # get last email sent
         provider_mail = messages[provider_mail_count - 1]
         self.assertEquals(provider_mail.subject, 'Veosan - Nouveau rendez-vous avec Pat Patient')
@@ -585,6 +601,10 @@ class BaseTest(unittest.TestCase):
         self.login_as_provider()
         provider_bookings = self.testapp.get('/provider/bookings/' + self._TEST_PROVIDER_VANITY_URL)
         provider_bookings.mustcontain('Pat Patient')
+        
         # check datetime
+        booking_datetime = datetime.strptime(testutil.next_monday_date_string() + " " + str(time_string), '%Y-%m-%d %H')
+        french_datetime_string = format_datetime(booking_datetime, "EEEE 'le' d MMMM yyyy", locale='fr_CA') + " à " + format_datetime(booking_datetime, "H:mm", locale='fr_CA')        
         provider_bookings.mustcontain(french_datetime_string)
         self.logout_provider()
+    
