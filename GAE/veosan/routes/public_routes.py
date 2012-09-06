@@ -5,9 +5,7 @@ from webapp2 import Route
 # booking stuff
 
 public_routes = [
-
                    Route('/contact', contact.ContactHandler),
-            
                    # Static Pages
                    Route('/about', handler=static.StaticHandler, name='about'),
                    Route('/careers', handler=static.StaticHandler, name='careers'),

@@ -23,8 +23,8 @@ def create_routes():
            
            # General pages
            ('/', static.IndexHandler),
-           Route('/en', static.IndexHandler, handler_method='get_en'),
-           Route('/fr', static.IndexHandler, handler_method="get_fr"),
+           #Route('/en', static.IndexHandler, handler_method='get_en'),
+           #Route('/fr', static.IndexHandler, handler_method="get_fr"),
            Route('/hideside/<what>', static.HideSideHandler),
 
            ])
@@ -32,9 +32,14 @@ def create_routes():
     routes.extend(patient_routes.patient_routes)
     routes.extend(provider_routes.provider_routes)
     routes.extend(admin_routes.admin_routes)
-    # public
     routes.extend(user_routes.user_routes)
+    
+    # public 
     routes.extend(public_routes.public_routes)
+    # public fr
+    routes.append(PathPrefixRoute('/en', public_routes.public_routes))
+    #public en
+    #routes.append(PathPrefixRoute('/fr', public_routes.public_routes))
     
     routes.extend([# invitations
                Route('/invite/<invite_token>', user.InviteHandler),
