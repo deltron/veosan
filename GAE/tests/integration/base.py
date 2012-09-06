@@ -499,9 +499,10 @@ class BaseTest(unittest.TestCase):
             step1_form['last_name'] = 'Patient'
             step1_form['telephone'] = patient_telephone        
             step1_form['email'] = patient_email
+            step1_form['terms_agreement'] = '1'
         
         step1_form['comments'] = 'I would like to receive care related to boat accident'
-        step1_form['terms_agreement'] = '1'
+
 
         response = step1_form.submit()
             

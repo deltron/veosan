@@ -18,9 +18,9 @@ class AppointmentDetailsForLoggedInUser(CustomForm):
 
 class AppointmentDetailsForNewPatient(CustomForm):
     def _set_fields(self, form):
+        setattr(form, 'email',TextField(_(u'E-mail Address'), [validators.Email(message=_(u'Invalid email address.'))]))
         setattr(form, 'first_name', TextField(_(u'First Name'), [validators.Length(min=1, message=_(u'First name is a required field'))]))
         setattr(form, 'last_name', TextField(_(u'Last Name'), [validators.Length(min=1, message=_(u'Last name is a required field'))]))
-        setattr(form, 'email',TextField(_(u'E-mail Address'), [validators.Email(message=_(u'Invalid email address.'))]))
         setattr(form, 'telephone', TextField(_(u'Telephone'), [validators.Regexp(regex="^[2-9]\d{2}-\d{3}-\d{4}$", message=_(u'Please make sure phone number is in the following format: 514-555-1212'))]))
         setattr(form, 'comments', TextAreaField(_(u'Comments for your appointment')))
         setattr(form, 'booking_date', HiddenField('booking_date'))
