@@ -3,22 +3,14 @@
 import os, logging
 # GAE
 import webapp2
-from webapp2 import Route
-from webapp2_extras.routes import PathPrefixRoute, DomainRoute
-
 # veo
 from util import dump
 import util
 from utilities import time
-from handler import provider, patient, provider_admin, admin, static, contact, language, user,\
-    tasks
-from handler.provider_pkg import network_handler, address_handler, cv_handler,\
-    profile_handler, welcome_handler, schedule_handler
 from data.model import User
 from google.appengine.ext import ndb
-from handler.user_pkg import signup_handler
-from handler.booking_pkg import display_schedule_handler,\
-    booking_registration_handler
+from routes.routes import create_routes
+
 
 
 jinja_filters = {}
@@ -72,143 +64,6 @@ webapp2_config['webapp2_extras.auth'] = {
                                          }
 
 
-application = ndb.toplevel(webapp2.WSGIApplication([
-                                       # handle custom domains
-                                       # match everything that is not veosan.com
-                                       DomainRoute(r'www.<domain:((?!veosan\.com).)*$>', [                                        
-                                          Route('/', handler=static.DomainDispatcher)
-                                       ]),
-                                       
-                                       # GAE Warmup Requests
-                                       Route('/_ah/warmup', static.WarmupHandler),
-                                       
-                                       # robots.txt and sitemap.xml for search engines
-                                       Route('/robots.txt', static.RobotsHandler),
-                                       Route('/sitemap.xml', static.SitemapHandler),
-                                       
-                                       # General pages
-                                       ('/', static.IndexHandler),
-                                       Route('/en', static.IndexHandler, handler_method='get_en'),
-                                       Route('/fr', static.IndexHandler, handler_method="get_fr"),
-                                       Route('/hideside/<what>', static.HideSideHandler),
-                                          
-                                       # booking stuff
-                                       Route('/contact', contact.ContactHandler),
+routes = create_routes()
 
-
-
-
-                                       # Static Pages
-                                       Route('/about', handler=static.StaticHandler, name='about'),
-                                       Route('/careers', handler=static.StaticHandler, name='careers'),
-                                       Route('/terms', handler=static.StaticHandler, name='terms'),
-                                       Route('/privacy', handler=static.StaticHandler, name='privacy'),
-                                       Route('/tour', handler=static.StaticHandler, name='tour'),
-                                       Route('/blog', handler=static.BlogHandler),
-
-                                       # Patient
-                                       PathPrefixRoute('/patient', [
-                                            Route('/bookings', patient.ListPatientBookings),
-                                       ]),
-                                  
-                                       #signups
-                                       PathPrefixRoute('/signup', [
-                                            Route('/patient', signup_handler.PatientSignupHandler),
-                                            Route('/provider', signup_handler.ProviderSignupHandler1),
-                                            Route('/provider2', signup_handler.ProviderSignupHandler2),
-                                            Route('/patient/<lang_key>', signup_handler.PatientSignupHandler),
-                                            Route('/provider/<lang_key>', signup_handler.ProviderSignupHandler1),
-                                       ]),
-                                                    
-                                             
-                                        
-       
-                                       
-                                       
-                                       Route('/login', user.LoginHandler),
-                                       Route('/login/<next_action>/<key>', user.LoginHandler),
-                                       Route('/logout', user.LogoutHandler),
-                                       
-                                       # invitations
-                                       Route('/invite/<invite_token>', user.InviteHandler),
-
-                                       # user
-                                       PathPrefixRoute('/user', [
-                                            Route('/activation/<signup_token>', handler=user.ActivationHandler),
-                                            Route('/password/<signup_token>', user.PasswordHandler),
-                                            Route('/resetpassword', user.ResetPasswordHandler),
-                                            Route('/resetpassword/<resetpassword_token>', handler=user.ResetPasswordHandler),
-                                       ]),
-                                       
-                                       # sales material
-                                       Route('/sales', static.SalesHandler),
-                                       Route('/sales/<page>', static.SalesHandler),
-                                       
-                                       # admin
-                                       Route('/admin', admin.AdminIndexHandler),
-
-                                       PathPrefixRoute('/tasks', [
-                                           Route('/mail_errors', tasks.MailErrorHandler),
-                                       ]),
-
-                                       PathPrefixRoute('/admin', [
-                                           Route('/bookings', admin.AdminBookingsHandler),
-                                           Route('/booking/<operation>/<bk>', admin.AdminBookingDetailHandler),
-                                           Route('/providers', admin.AdminProvidersHandler),
-                                           Route('/patients', admin.AdminPatientsHandler),
-                                           Route('/invites', admin.AdminInvitesHandler),
-                                           Route('/dashboard', admin.AdminDashboardHandler),
-                                           Route('/data', admin.AdminDataHandler),
-                                           Route('/data/stage', admin.AdminStageDataHandler),
-                                           Route('/data/delete', admin.AdminDeleteDataHandler),
-
-                                           Route('/site_config/<feature>', admin.AdminSiteConfigHandler),
-
-                                           PathPrefixRoute('/provider', [
-                                               # provider actions
-                                               Route('/status', provider_admin.ProviderStatusHandler),
-                                                                                                  
-                                               # provider admin
-                                               Route('/admin/<vanity_url>', provider_admin.ProviderAdministrationHandler),
-                                            
-                                               # custom domain
-                                               Route('/domain/<vanity_url>', provider_admin.ProviderDomainHandler),
-                                            
-                                               # logs
-                                               Route('/logs/<vanity_url>', provider_admin.ProviderEventLogHandler),
-
-                                               Route('/notes/<vanity_url>', provider_admin.ProviderNotesHandler),
-                                               Route('/notes/<vanity_url>/<operation>/<note_key>', provider_admin.ProviderNotesHandler),
-                                               Route('/feature/<feature_switch>/<vanity_url>', provider_admin.ProviderFeaturesHandler),
-                                            ]),
-                                       ]),
-                                                    
-                                    
-                                       # language
-                                       Route(r'/l/<lang>/<:([^/]+)?>', language.LanguageHandler2),
-                                       
-                                       Route('/lang/<lang>', language.LanguageHandler),
-                                       Route('/lang/<lang>/<hide_side>', language.LanguageHandler),
-                                       
-                                       # if nothing above matches, try to find a provider
-                                       # if this doesn't find someone it should throw a 404 (or back to index page?)
-                                       
-                                       # Public profile
-                                       Route('/<vanity_url>', handler=provider.ProviderPublicProfileHandler),
-                                       Route('/<vanity_url>/', handler=provider.ProviderPublicProfileHandler),
-                                       
-                                       # Display schedule
-                                       Route('/<vanity_url>/book', display_schedule_handler.BookFromPublicProfileDisplaySchedule),
-                                       Route('/<vanity_url>/book/date/<start_date>', display_schedule_handler.BookFromPublicProfileDisplaySchedule),
-                                       
-                                       # Actual booking & registration
-                                       Route('/<vanity_url>/book/<book_date:\d{4}-\d{2}-\d{2}>/<book_time:\d{1,2}>', booking_registration_handler.BookFromPublicProfileRegistration),
-                                       Route('/<vanity_url>/book/register', booking_registration_handler.BookFromPublicProfileRegistration),
-
-                                       # Social network
-                                       Route('/<vanity_url>/connect', network_handler.ProviderConnectHandler),
-                                      ], debug=True,
-                                      config=webapp2_config))
-
-
-
+application = ndb.toplevel(webapp2.WSGIApplication(routes, debug=True, config=webapp2_config))
