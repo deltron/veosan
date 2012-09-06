@@ -7,6 +7,8 @@ from datetime import datetime
 from forms.user import LoginForm
 from handler.patient import PatientBaseHandler
 from handler.booking_pkg.booking_base_handler import BookingBaseHandler
+from handler import auth
+import mail
 
 
 class BookFromPublicProfileRegistration(BookingBaseHandler):
@@ -73,7 +75,8 @@ class BookFromPublicProfileRegistration(BookingBaseHandler):
                 if existing_patient:
                     booking.patient = existing_patient.key
                 else:
-                    # user, but no patient, create one and link it
+                    # user but no patient (probably a provider)
+                    # create a patient and link it to existing user
                     patient = Patient()
                     
                     # set all the properties
@@ -100,10 +103,19 @@ class BookFromPublicProfileRegistration(BookingBaseHandler):
                     booking.patient = patient.key
                     
                     # add patient role to user
-                    user.roles.append('patient')
+                    user.roles.append(auth.PATIENT_ROLE)
                     user.put()
                     
+                
+                # confirm the booking since it is a "known" user
+                booking.confirmed = True
+                
+                # save booking
                 booking.put()
+                
+                # mail it to the provider
+                mail.email_booking_to_provider(self, booking)
+                
                 self.redirect('/patient/bookings')
                     
             else:
