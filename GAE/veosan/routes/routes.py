@@ -29,10 +29,10 @@ def create_routes():
 
            ])
     
-    routes.extend(patient_routes.patient_routes)
-    routes.extend(provider_routes.provider_routes)
-    routes.extend(admin_routes.admin_routes)
-    routes.extend(user_routes.user_routes)
+    routes.extend(patient_routes.get_routes())
+    routes.extend(provider_routes.get_routes())
+    routes.extend(admin_routes.get_routes())
+    routes.extend(user_routes.get_routes())
     
     # public 
     routes.extend(public_routes.get_routes())

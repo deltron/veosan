@@ -6,7 +6,9 @@ from handler.provider_pkg import welcome_handler, network_handler,\
     profile_handler, cv_handler, schedule_handler, address_handler
 
 
-provider_routes = [
+def get_routes():
+    return [
+
                    PathPrefixRoute('/provider', [
                        # display a status message to the provider (new, reset, etc)                                            PathPrefixRoute('/profile', [
                        PathPrefixRoute('/message', [

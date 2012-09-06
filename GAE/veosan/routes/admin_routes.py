@@ -2,7 +2,8 @@ from webapp2_extras.routes import PathPrefixRoute
 from webapp2 import Route
 from handler import admin, provider_admin
 
-admin_routes = [PathPrefixRoute('/admin', [
+def get_routes():
+    return [PathPrefixRoute('/admin', [
                    Route('/bookings', admin.AdminBookingsHandler),
                    Route('/booking/<operation>/<bk>', admin.AdminBookingDetailHandler),
                    Route('/providers', admin.AdminProvidersHandler),

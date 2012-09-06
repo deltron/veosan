@@ -5,7 +5,8 @@ from handler import user
 
 
 
-user_routes = [ PathPrefixRoute('/signup', [Route('/patient', signup_handler.PatientSignupHandler),
+def get_routes():
+    return [ PathPrefixRoute('/signup', [Route('/patient', signup_handler.PatientSignupHandler),
                                             Route('/provider', signup_handler.ProviderSignupHandler1),
                                             Route('/provider2', signup_handler.ProviderSignupHandler2),
                                             Route('/patient/<lang_key>', signup_handler.PatientSignupHandler),
