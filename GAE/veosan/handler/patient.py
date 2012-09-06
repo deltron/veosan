@@ -3,7 +3,6 @@
 import logging, urlparse
 import data.db as db
 import mail
-from forms.patient import PatientForm
 from handler.base import BaseHandler
 from operator import attrgetter
 
