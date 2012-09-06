@@ -15,7 +15,6 @@ from patient import PatientBaseHandler
 from forms.user import PasswordForm, LoginForm, ProviderSignupForm1
 import mail
 from google.appengine.ext import ndb
-from handler.booking_pkg.booking_base_handler import BookingBaseHandler
 
 class UserBaseHandler(BaseHandler):   
     ''' User management handler:
@@ -142,8 +141,7 @@ class PasswordHandler(UserBaseHandler):
                 self.delete_signup_token(user)
             
                 if patient:
-                    welcome_message = _("Welcome to Veosan! Profile confirmation successful.")
-                    BookingBaseHandler.render_confirmed_patient(self, patient, success_message=welcome_message)
+                    self.redirect('/patient/bookings')
 
             elif user.resetpassword_token:
                 # not a returning user, must be a password reset
@@ -313,12 +311,10 @@ class LoginHandler(UserBaseHandler):
 
                 # login was succesful, User is in the session
                 if next_action == 'booking':
+                    # moved booking up here since it can come from any role (provider or patient)
                     booking = ndb.Key(urlsafe=key).get()
                 
                     if booking:
-                        # special redirect for login during booking flow
-                        
-                        # is this supposed to confirm or something?
                         self.redirect('/patient/bookings')
                 
                 else:

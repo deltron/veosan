@@ -61,7 +61,7 @@ class ListPatientBookings(PatientBaseHandler):
                     provider = db.get_provider_from_user(user)
                     self.render_bookings(self, provider=provider, patient=patient)
                 else:
-                    self.render_bookings(self, patient)
+                    self.render_bookings(self, patient=patient)
             else:
                 logging.info("(ListPatientBookings) No patient associated to logged in user: %s" % user.get_email())
                 self.redirect("/")
