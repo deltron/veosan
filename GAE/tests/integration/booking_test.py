@@ -217,15 +217,15 @@ class BookingTest(BaseTest):
         
         self.logout_patient()
         
-        # check schedule on public profile
-        booking_datetime = datetime.strptime(testutil.next_monday_date_string() + " " + str(10), '%Y-%m-%d %H')
-        french_datetime_string = format_datetime(booking_datetime, "EEEE 'le' d MMMM yyyy", locale='fr_CA') + " à " + format_datetime(booking_datetime, "H:mm", locale='fr_CA')
+        # check schedule on public profile        
+        response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
+        response.mustcontain(no=testutil.next_monday_date_string()+"/10")
+        response.mustcontain(no="button-"+testutil.next_monday_date_string()+"-10")
         
-        booking_datetime = datetime.strptime(testutil.next_monday_date_string(), '%Y-%m-%d')
-        booking_datetime_string = format_date(booking_datetime, format="d MMM yyyy", locale='fr_CA')
-        
-        booking_time = datetime.strptime(str(10), '%H')
-        booking_time_string = format_time(booking_time, format="short", locale='fr')
+        # check the book
+        response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL + '/book')
+        response.mustcontain(no=testutil.next_monday_date_string()+"/10")
+        response.mustcontain(no="button-"+testutil.next_monday_date_string()+"-10")
 
 
     def test_booking_as_a_provider(self):
@@ -245,6 +245,15 @@ class BookingTest(BaseTest):
         # Book an appointment with yourself
         self.book_from_public_profile(next_monday, 10, True, self._TEST_PROVIDER_EMAIL, self._TEST_PROVIDER_TELEPHONE)
         
+        # check schedule on public profile        
+        response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
+        response.mustcontain(no=testutil.next_monday_date_string()+"/10")
+        response.mustcontain(no="button-"+testutil.next_monday_date_string()+"-10")
+        
+        # check the book
+        response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL + '/book')
+        response.mustcontain(no=testutil.next_monday_date_string()+"/10")
+        response.mustcontain(no="button-"+testutil.next_monday_date_string()+"-10")
         
         
       
