@@ -75,10 +75,6 @@
 			_gaq.push(['_setAccount', 'UA-33465053-1']);
 			_gaq.push(['_trackPageview']);
 			
-			{% if session['prospect_id'] %}
-				_gaq.push('_setCustomVar', 1, 'prospect_id', "{{ session['prospect_id'] }}", 1);
-			{% endif %}
-
 			(function() {
 				var ga = document.createElement('script');
 				ga.type = 'text/javascript';
