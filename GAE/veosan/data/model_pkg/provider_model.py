@@ -5,7 +5,7 @@ import util
 from data.model_pkg.cv_model import Education, Experience, ContinuingEducation,\
     ProfessionalOrganization, ProfessionalCertification, Specialty
 from data.model_pkg.network_model import ProviderNetworkConnection
-from data.model import Schedule, Booking, Note, SiteLog
+from data.model import Schedule, Booking, Note
 import utilities
 from webapp2_extras.i18n import to_utc
 

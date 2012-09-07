@@ -5,12 +5,12 @@
 from google.appengine.ext import ndb
 import logging
 from datetime import datetime
-from data.model import Booking, Patient, User, SiteConfig, LogEvent, SiteCounter,\
-    PartialProvider
+from data.model import Booking, Patient, User, PartialProvider, LogEvent
 from data.model_pkg.network_model import Invite, ProviderNetworkConnection
 from data.model_pkg.provider_model import Provider
 import utilities
 from data.model_pkg.prospect_model import ProviderProspect
+from data.model_pkg.site_model import SiteCounter, SiteConfig, SiteLog
   
 def get_from_urlsafe_key(urlsafe_key):
     logging.info('(db.get_from_urlsafe_key) Getting from urlsafe key: %s' % urlsafe_key)
@@ -182,6 +182,13 @@ def get_provider_from_domain(domain):
 def get_prospect_from_prospect_id(prospect_id):
     if prospect_id:
         return ProviderProspect.query(ProviderProspect.prospect_id == prospect_id).get()
+    else:
+        return None  
+
+def get_site_logs_for_prospect(prospect):
+    ''' returns all the log events for a user '''
+    if prospect:
+        return SiteLog.query(SiteLog.prospect == prospect.key).order(-SiteLog.access_time).fetch()
     else:
         return None  
 

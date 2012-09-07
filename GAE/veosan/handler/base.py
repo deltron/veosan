@@ -1,5 +1,5 @@
 import logging, sha, random
-from google.appengine.api import users, datastore_errors
+from google.appengine.api import users
 import webapp2
 from webapp2_extras import auth, i18n, jinja2, sessions
 
@@ -8,11 +8,11 @@ import data
 import handler.auth
 import util
 from data import db
-from data.model import SiteConfig, LogEvent, User, SiteLog
+from data.model import User, LogEvent
 from google.appengine.ext.ndb.key import Key
-from google.appengine.ext import ndb
 import re
 import mail
+from data.model_pkg.site_model import SiteConfig, SiteLog
 
 class BaseHandler(webapp2.RequestHandler):
     '''

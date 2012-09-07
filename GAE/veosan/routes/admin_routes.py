@@ -1,7 +1,8 @@
 from webapp2_extras.routes import PathPrefixRoute
 from webapp2 import Route
 from handler import admin, provider_admin
-from handler.admin_pkg import data_handler, admin_bookings_handler
+from handler.admin_pkg import data_handler, admin_bookings_handler,\
+    prospects_handler
 
 
 def get_routes():
@@ -18,8 +19,9 @@ def get_routes():
             
                    Route('/site_config/<feature>', admin.AdminSiteConfigHandler),
 
-                   Route('/prospects', admin.AdminProspectsHandler),
-                   Route('/prospects/delete/<prospect_id>', admin.AdminProspectDeleteHandler),
+                   Route('/prospects', prospects_handler.AdminProspectsHandler),
+                   Route('/prospects/delete/<prospect_id>', prospects_handler.AdminProspectDeleteHandler),
+                   Route('/prospects/<prospect_id>', prospects_handler.AdminProspectDetailsHandler),
 
             
                    PathPrefixRoute('/provider', [
