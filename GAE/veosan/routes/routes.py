@@ -22,7 +22,9 @@ def create_routes():
            Route('/sitemap.xml', static.SitemapHandler),
            
            # General pages
-           ('/', static.IndexHandler),
+           Route('/', static.IndexHandler),
+           Route('/en', static.IndexHandler, handler_method='get_en'),
+           Route('/fr', static.IndexHandler, handler_method='get_fr'),
            #Route('/en', static.IndexHandler, handler_method='get_en'),
            #Route('/fr', static.IndexHandler, handler_method="get_fr"),
            Route('/hideside/<what>', static.HideSideHandler),
@@ -34,10 +36,11 @@ def create_routes():
     routes.extend(admin_routes.get_routes())
     routes.extend(user_routes.get_routes())
     
-    # public fr
+    # public en
+    
     routes.append(PathPrefixRoute('/en', public_routes.get_routes()))
     
-    # public en
+    # public fr
     routes.append(PathPrefixRoute('/fr', public_routes.get_routes()))
     
     routes.extend([# invitations

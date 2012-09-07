@@ -209,15 +209,16 @@ class BaseHandler(webapp2.RequestHandler):
         if google_user:
             log_entry.admin_email = google_user.email()
             
-        if self.session['prospect_id']:
+        if self.session.has_key('prospect_id'):
             prospect_id = self.session['prospect_id']
-            prospect = db.get_prospect_from_prospect_id(prospect_id)
-            
             if prospect_id:
-                log_entry.prospect_id = prospect_id
-            
-            if prospect:
-                log_entry.prospect = prospect.key
+                prospect = db.get_prospect_from_prospect_id(prospect_id)
+                
+                if prospect_id:
+                    log_entry.prospect_id = prospect_id
+                
+                if prospect:
+                    log_entry.prospect = prospect.key
            
            
         log_entry.put_async()
