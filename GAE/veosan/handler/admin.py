@@ -145,3 +145,13 @@ class AdminProspectsHandler(AdminBaseHandler):
         else:
             self.render_template('admin/admin_prospects.html', prospects=prospects, prospect_form=add_prospect_form)
 
+
+class AdminProspectDeleteHandler(AdminBaseHandler):
+    @admin_required
+    def get(self, prospect_id = None):
+        prospect = db.get_prospect_from_prospect_id(prospect_id)
+        if prospect:
+            prospect.key.delete()
+        
+        self.redirect('/admin/prospects')
+

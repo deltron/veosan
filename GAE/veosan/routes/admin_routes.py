@@ -9,7 +9,6 @@ def get_routes():
                    Route('/bookings', admin_bookings_handler.AdminBookingsHandler),
                    Route('/booking/<operation>/<bk>', admin_bookings_handler.AdminBookingDetailHandler),
                    Route('/providers', admin.AdminProvidersHandler),
-                   Route('/prospects', admin.AdminProspectsHandler),
                    Route('/patients', admin.AdminPatientsHandler),
                    Route('/invites', admin.AdminInvitesHandler),
                    Route('/dashboard', admin.AdminDashboardHandler),
@@ -18,6 +17,10 @@ def get_routes():
                    Route('/data/delete', data_handler.AdminDeleteDataHandler),
             
                    Route('/site_config/<feature>', admin.AdminSiteConfigHandler),
+
+                   Route('/prospects', admin.AdminProspectsHandler),
+                   Route('/prospects/delete/<prospect_id>', admin.AdminProspectDeleteHandler),
+
             
                    PathPrefixRoute('/provider', [
                        # provider actions

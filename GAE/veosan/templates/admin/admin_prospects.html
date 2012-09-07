@@ -12,16 +12,22 @@
 			<thead>
 				<tr>
 					<th width="20%">Prospect ID</th>
+					<th width="20%">Unique Link</th>
 					<th width="20%">Email</th>
 					<th width="20%">Landing Page</th>
+					<th width="20%">Landing Hits</th>
+					<th width="20%">Delete</th>
 				</tr>
 			</thead>
 			<tbody>
 				{% for p in prospects %}
 				<tr>
 					<td>{{ p.prospect_id }}</td>
+					<td>http://veosan.com/p/{{p.prospect_id}}</td>
 					<td>{{ p.prospect_email }}</td>
 					<td>{{ p.prospect_landing }}</td>
+					<td>{{ p.landing_hits }}</td>
+					<td><a href="/admin/prospects/delete/{{ p.prospect_id }}" class="btn btn-danger">Delete</a></td>
 				</tr>
 				{% endfor %}
 			</tbody>

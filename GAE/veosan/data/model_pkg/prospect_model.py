@@ -14,6 +14,9 @@ class ProviderProspect(ndb.Model):
     prospect_email = ndb.StringProperty()
     prospect_landing = ndb.StringProperty()
 
+    landing_hits = ndb.IntegerProperty(default=0)
+
+
     # eventually link to a provider if they sign up
     #provider = ndb.KeyProperty(kind='Provider')
     
