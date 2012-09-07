@@ -82,3 +82,9 @@ indexes:
   properties:
   - name: page
   - name: access_time
+
+- kind: SiteLog
+  properties:
+  - name: prospect
+  - name: access_time
+    direction: desc

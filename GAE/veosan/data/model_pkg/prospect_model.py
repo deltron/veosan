@@ -1,6 +1,5 @@
 from google.appengine.ext import ndb
-
-
+from data.model_pkg.site_model import SiteLog
 
 class ProviderProspect(ndb.Model):
     # address from AppEngine
@@ -20,3 +19,7 @@ class ProviderProspect(ndb.Model):
     # eventually link to a provider if they sign up
     #provider = ndb.KeyProperty(kind='Provider')
     
+ 
+    def get_site_logs(self):
+        return SiteLog.query(SiteLog.prospect == self.key).order(-SiteLog.access_time).fetch()
+        

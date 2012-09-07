@@ -1,0 +1,40 @@
+{% extends "/layout/admin_nav.html" %}
+
+{% set active_page = "prospects" %}
+
+{% block subhead %} Prospect Details {% endblock %}
+{% block lead %} {{ prospect.prospect_email }} {% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="span12">
+		<h3>GAE Geography</h3>
+		Country: {{ prospect.gae_country }}<br>
+		Region: {{ prospect.gae_region }}<br>
+		City: {{ prospect.gae_city }}<br>
+	</div>
+</div>
+
+<div class="row">
+	<br><br>
+	<div class="span12">
+		<h3>Site Logs</h3>
+		<table class="table table-striped">
+			<thead>
+				<th>Date and Time</th>
+				<th>Page</th>
+				<th>Referer</th>
+			</thead>
+			{% for l in prospect.get_site_logs() %}
+			<tr>
+				<td>{{ l.access_time|format_datetime(format="medium") }}</td>
+				<td>{{ l.page }}</td>
+				<td>{{ l.referer }}</td>
+			</tr>
+			{% endfor %}
+			
+		</table>
+	</div>
+</div>
+
+{% endblock content %}

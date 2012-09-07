@@ -6,7 +6,7 @@ class ContactTest(BaseTest):
         def test_feedback_email(self):
             ''' Send feedback and check it gets received '''
 
-            response = self.testapp.get('/contact')
+            response = self.testapp.get('/fr/contact')
             
             contact_form = response.forms[0] # contact form
             contact_form['from_email'] = 'foo_tester@bar.com' 
@@ -34,7 +34,7 @@ class ContactTest(BaseTest):
         def test_feedback_email_invalid_from_address(self):
             ''' Send feedback with an invalid from address '''
 
-            response = self.testapp.get('/contact')
+            response = self.testapp.get('/fr/contact')
             
             contact_form = response.forms[0] # contact form
             contact_form['from_email'] = 'bobsnob' 
@@ -50,7 +50,7 @@ class ContactTest(BaseTest):
         def test_feedback_email_no_subject(self):
             ''' Send feedback and check it gets received '''
 
-            response = self.testapp.get('/contact')
+            response = self.testapp.get('/fr/contact')
             
             contact_form = response.forms[0] # contact form
             contact_form['from_email'] = 'bobsnob' 

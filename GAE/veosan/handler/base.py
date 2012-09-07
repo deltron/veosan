@@ -1,5 +1,5 @@
 import logging, sha, random
-from google.appengine.api import users, datastore_errors
+from google.appengine.api import users
 import webapp2
 from webapp2_extras import auth, i18n, jinja2, sessions
 
@@ -8,11 +8,11 @@ import data
 import handler.auth
 import util
 from data import db
-from data.model import SiteConfig, LogEvent, User, SiteLog
+from data.model import User, LogEvent
 from google.appengine.ext.ndb.key import Key
-from google.appengine.ext import ndb
 import re
 import mail
+from data.model_pkg.site_model import SiteConfig, SiteLog
 
 class BaseHandler(webapp2.RequestHandler):
     '''
@@ -190,7 +190,6 @@ class BaseHandler(webapp2.RequestHandler):
         log_entry.ip = self.request.remote_addr
         log_entry.referer = self.request.referer
 
-
         if "X-AppEngine-Country" in self.request.headers:
             log_entry.gae_country = self.request.headers["X-AppEngine-Country"]
 
@@ -209,7 +208,18 @@ class BaseHandler(webapp2.RequestHandler):
 
         if google_user:
             log_entry.admin_email = google_user.email()
-        
+            
+        if self.session['prospect_id']:
+            prospect_id = self.session['prospect_id']
+            prospect = db.get_prospect_from_prospect_id(prospect_id)
+            
+            if prospect_id:
+                log_entry.prospect_id = prospect_id
+            
+            if prospect:
+                log_entry.prospect = prospect.key
+           
+           
         log_entry.put_async()
         
           

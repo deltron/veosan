@@ -22,7 +22,7 @@
 			<tbody>
 				{% for p in prospects %}
 				<tr>
-					<td>{{ p.prospect_id }}</td>
+					<td><a href="/admin/prospects/{{ p.prospect_id }}">{{ p.prospect_id }}</a></td>
 					<td>http://veosan.com/p/{{p.prospect_id}}</td>
 					<td><a href="{{ p.prospect_landing }}">{{ p.prospect_landing }}</a></td>
 					<td>{{ p.prospect_email }}</td>

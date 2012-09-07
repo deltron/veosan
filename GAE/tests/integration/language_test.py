@@ -8,7 +8,7 @@ from data.model import User
 class LanguageTest(BaseTest):
     def test_switch_language_on_contact_form(self):
         # default language should be french
-        contact_page = self.testapp.get("/contact")
+        contact_page = self.testapp.get("/fr/contact")
         contact_page.mustcontain("Nous voulons savoir")
         contact_page.mustcontain("Sujet")
         contact_page.mustcontain("Adresse courriel")
@@ -19,7 +19,7 @@ class LanguageTest(BaseTest):
         contact_page_en = language_switch.follow()
         
         # no referer in header so manually go back to contact page
-        contact_page_en = self.testapp.get("/contact")
+        contact_page_en = self.testapp.get("/en/contact")
         
         # will be redirected back to contact page
         contact_page_en.mustcontain("We want to know")
