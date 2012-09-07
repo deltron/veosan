@@ -10,6 +10,7 @@ from data.model import Booking, Patient, User, SiteConfig, LogEvent, SiteCounter
 from data.model_pkg.network_model import Invite, ProviderNetworkConnection
 from data.model_pkg.provider_model import Provider
 import utilities
+from data.model_pkg.prospect_model import ProviderProspect
   
 def get_from_urlsafe_key(urlsafe_key):
     logging.info('(db.get_from_urlsafe_key) Getting from urlsafe key: %s' % urlsafe_key)
@@ -73,6 +74,9 @@ def fetch_invites():
 
 def fetch_providers():
     return Provider.query().order(Provider.last_name)
+
+def fetch_provider_prospects():
+    return ProviderProspect.query().order(ProviderProspect.prospect_id)
 
 def fetch_bookings():
     return Booking.query().order(-Booking.created_on)
@@ -172,6 +176,12 @@ def get_provider_from_domain(domain):
     '''returns the first provider profile liked to domain. Returns None if domain is not provided '''
     if domain:
         return Provider.query(Provider.vanity_domain == domain).get()
+    else:
+        return None  
+
+def get_prospect_from_prospect_id(prospect_id):
+    if prospect_id:
+        return ProviderProspect.query(ProviderProspect.prospect_id == prospect_id).get()
     else:
         return None  
 

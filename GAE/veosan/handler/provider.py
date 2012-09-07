@@ -92,7 +92,7 @@ class ProviderPublicProfileHandler(ProviderBaseHandler):
             else:
                 self.log_event(user=provider.user, msg="Public profile: public view")
                 
-        else:
+        else:            
             logging.info('(ProviderPublicProfileHandler.get) No provider found, sending to index')
 
             # nobody found, send them to the homepage

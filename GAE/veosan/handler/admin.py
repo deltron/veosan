@@ -9,10 +9,10 @@ from base import BaseHandler
 import data.db as db
 import util
 from handler.auth import admin_required
-from google.appengine.ext import ndb
-import datetime
-from data.model import SiteLog, SiteCounter
+from data.model import SiteLog
 from data.model_pkg.provider_model import Provider
+import forms
+from data.model_pkg.prospect_model import ProviderProspect
 
 
 
@@ -76,33 +76,6 @@ class AdminSiteConfigHandler(AdminBaseHandler):
 
 
 
-class AdminBookingsHandler(AdminBaseHandler):
-    '''Administer Bookings'''
-    
-    @admin_required
-    def get(self):
-        bookings = db.fetch_bookings()
-        self.render_template('admin/admin_bookings.html', bookings=bookings)
-
-
-class AdminBookingDetailHandler(AdminBaseHandler):
-    '''Administer a single Booking'''
-    
-    @admin_required
-    def get(self, operation, bk):
-        booking = db.get_from_urlsafe_key(bk)
-        if operation == 'show':
-            self.render_template('admin/admin_booking_detail.html', b=booking)
-        elif operation == 'cancel':
-            booking.status = 'canceled'
-            booking.put()
-            self.render_template('admin/admin_booking_detail.html', b=booking, success_message='Booking canceled.')
-        elif operation == 'reactivate':
-            booking.status = 'active'
-            booking.put()
-            self.render_template('admin/admin_booking_detail.html', b=booking, success_message='Booking reactivated.')
-        
-
 class AdminProvidersHandler(AdminBaseHandler):
     ''' Administer Providers '''
  
@@ -125,8 +98,6 @@ class AdminInvitesHandler(AdminBaseHandler):
     def get(self):
         invites = db.fetch_invites()
         self.render_template('admin/invites.html', invites=invites)
-
-
 
         
 class AdminDashboardHandler(AdminBaseHandler):
@@ -154,4 +125,23 @@ class AdminDashboardHandler(AdminBaseHandler):
         
         self.render_template('admin/dashboard.html', stats_map=stats_map)
 
+
+class AdminProspectsHandler(AdminBaseHandler):
+    @admin_required
+    def get(self):
+        prospects = db.fetch_provider_prospects()
+        prospect_form = forms.provider.ProviderProspectForm().get_form()
+        self.render_template('admin/admin_prospects.html', prospects=prospects, prospect_form=prospect_form)
+
+    def post(self):
+        add_prospect_form = forms.provider.ProviderProspectForm().get_form(self.request.POST)
+        prospects = db.fetch_provider_prospects()
+
+        if add_prospect_form.validate():
+            provider_prospect = ProviderProspect()
+            add_prospect_form.populate_obj(provider_prospect)
+            provider_prospect.put()
+            self.redirect("/admin/prospects")
+        else:
+            self.render_template('admin/admin_prospects.html', prospects=prospects, prospect_form=add_prospect_form)
 

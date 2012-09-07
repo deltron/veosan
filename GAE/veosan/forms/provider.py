@@ -167,3 +167,9 @@ class ProviderNoteForm(CustomForm):
     
 class ProviderStatusForm(Form):
     status = SelectField(_(u'Status'), choices=util.get_all_status_types())
+    
+class ProviderProspectForm(CustomForm):
+    def _set_fields(self, form): 
+        setattr(form, 'prospect_id', TextField(_(u'Prospect ID'), [validators.Length(min=2, message=_(u'Last name required.'))]))
+        setattr(form, 'prospect_email', TextField(_(u'Prospect Email'), [validators.Length(min=2, message=_(u'Last name required.'))]))
+        setattr(form, 'prospect_landing', TextField(_(u'Prospect Email'), [validators.Length(min=2, message=_(u'Last name required.'))]))

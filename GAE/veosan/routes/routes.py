@@ -1,6 +1,6 @@
 from webapp2 import Route
 from webapp2_extras.routes import PathPrefixRoute, DomainRoute
-from handler import static, user, admin, provider, language, tasks
+from handler import static, user, admin, provider, language, tasks, prospect
 import patient_routes, provider_routes, admin_routes, user_routes, public_routes
 from handler.provider_pkg import network_handler
 from handler.booking_pkg import display_schedule_handler, booking_registration_handler
@@ -68,6 +68,11 @@ def create_routes():
                
                # if nothing above matches, try to find a provider
                # if this doesn't find someone it should throw a 404 (or back to index page?)
+               
+               # prospect
+               PathPrefixRoute('/p', [
+                    Route('/<prospect_id>', handler=prospect.ProspectHandler),
+               ]),
                
                # Public profile
                Route('/<vanity_url>', handler=provider.ProviderPublicProfileHandler),
