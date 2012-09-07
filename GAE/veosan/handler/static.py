@@ -116,6 +116,17 @@ class BlogHandler(BaseHandler):
         site_counter = db.get_site_counter()
         site_counter.blog_clicks += 1
         
+        # figure out the language
+        url_obj = urlparse.urlparse(self.request.url)
+        path = url_obj.path
+        if path:
+            path_split = path.split('/')
+            lang = path_split[1]
+        if lang in util.LANGUAGES:
+            logging.info('Setting lang from url %s' % lang)
+            self.set_language(lang)
+
+        
         if self.get_language() == 'fr':
             site_counter.blog_clicks_fr += 1
             self.redirect("http://blogue.veosan.com")

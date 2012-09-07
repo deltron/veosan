@@ -34,11 +34,10 @@ def create_routes():
     routes.extend(admin_routes.get_routes())
     routes.extend(user_routes.get_routes())
     
-    # public 
-    routes.extend(public_routes.get_routes())
     # public fr
     routes.append(PathPrefixRoute('/en', public_routes.get_routes()))
-    #public en
+    
+    # public en
     routes.append(PathPrefixRoute('/fr', public_routes.get_routes()))
     
     routes.extend([# invitations
