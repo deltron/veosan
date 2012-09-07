@@ -190,7 +190,6 @@ class BaseHandler(webapp2.RequestHandler):
         log_entry.ip = self.request.remote_addr
         log_entry.referer = self.request.referer
 
-
         if "X-AppEngine-Country" in self.request.headers:
             log_entry.gae_country = self.request.headers["X-AppEngine-Country"]
 
@@ -209,7 +208,15 @@ class BaseHandler(webapp2.RequestHandler):
 
         if google_user:
             log_entry.admin_email = google_user.email()
-        
+            
+        if self.session['prospect_id']:
+            prospect_id = self.session['prospect_id']
+            prospect = db.get_prospect_from_prospect_id(prospect_id)
+            
+            log_entry.prospect_id = prospect_id
+            log_entry.prospect = prospect.key
+           
+           
         log_entry.put_async()
         
           

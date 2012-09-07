@@ -25,6 +25,8 @@ class SiteLog(ndb.Model):
     user = ndb.KeyProperty(kind='User')
     user_email = ndb.StringProperty()
     admin_email = ndb.StringProperty()
+    prospect = ndb.KeyProperty(kind='ProviderProspect')
+    prospect_id = ndb.StringProperty()
 
     gae_country = ndb.StringProperty()
     gae_region = ndb.StringProperty()
