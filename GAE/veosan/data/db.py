@@ -2,9 +2,9 @@
     database access
 '''
 #from google.appengine.ext import db as gdb
-from google.appengine.ext import ndb, db as gdb
+from google.appengine.ext import ndb
 import logging
-from datetime import datetime, date, time
+from datetime import datetime
 from data.model import Booking, Patient, User, SiteConfig, LogEvent, SiteCounter,\
     PartialProvider
 from data.model_pkg.network_model import Invite, ProviderNetworkConnection

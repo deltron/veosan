@@ -1,0 +1,30 @@
+{% extends "/layout/admin_nav.html" %}
+
+{% set active_page = "prospects" %}
+
+{% block subhead %}Prospects{% endblock %}
+{% block lead %}I'm a hustler baby{% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="span12">
+		<table class="table">
+			<thead>
+				<tr>
+					<th width="20%">Prospect ID</th>
+					<th width="80%">Email</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for p in prospects %}
+				<tr>
+					<td>{{ p.prospect_id }}</td>
+					<td>{{ p.prospect_email }}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</div>
+{% endblock content %} 
+

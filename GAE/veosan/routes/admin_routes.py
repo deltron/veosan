@@ -1,18 +1,18 @@
 from webapp2_extras.routes import PathPrefixRoute
 from webapp2 import Route
-from handler import admin, provider_admin
+from handler import admin, provider_admin, admin_pkg
 
 def get_routes():
     return [PathPrefixRoute('/admin', [
-                   Route('/bookings', admin.AdminBookingsHandler),
-                   Route('/booking/<operation>/<bk>', admin.AdminBookingDetailHandler),
+                   Route('/bookings', admin_pkg.admin_bookings_handler.AdminBookingsHandler),
+                   Route('/booking/<operation>/<bk>', admin_pkg.admin_bookings_handler.AdminBookingDetailHandler),
                    Route('/providers', admin.AdminProvidersHandler),
                    Route('/patients', admin.AdminPatientsHandler),
                    Route('/invites', admin.AdminInvitesHandler),
                    Route('/dashboard', admin.AdminDashboardHandler),
-                   Route('/data', admin.AdminDataHandler),
-                   Route('/data/stage', admin.AdminStageDataHandler),
-                   Route('/data/delete', admin.AdminDeleteDataHandler),
+                   Route('/data', admin_pkg.data_handler.AdminDataHandler),
+                   Route('/data/stage', admin_pkg.data_handler.AdminStageDataHandler),
+                   Route('/data/delete', admin_pkg.data_handler.AdminDeleteDataHandler),
             
                    Route('/site_config/<feature>', admin.AdminSiteConfigHandler),
             

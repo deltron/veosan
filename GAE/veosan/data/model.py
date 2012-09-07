@@ -166,21 +166,13 @@ class Schedule(ndb.Model):
  
 class Note(ndb.Model):
     provider = ndb.KeyProperty(kind='Provider')
+    provider_prospect = ndb.KeyProperty(kind='ProviderProspect')
+
     body = ndb.TextProperty()
     note_type = ndb.StringProperty(choices=util.note_types) 
     created_on = ndb.DateTimeProperty(auto_now_add=True)
     user = ndb.UserProperty()
     event_date = ndb.DateProperty(auto_now_add=True)
-    
-    def get_icon_name(self):
-        if self.note_type == 'call':
-            return 'icon-comment'
-        elif self.note_type == 'meeting':
-            return 'icon-plane'
-        elif self.note_type == 'admin':
-            return 'icon-wrench'
-        else:
-            return 'icon-question-sign'
     
     
 class Booking(ndb.Model):
@@ -225,5 +217,6 @@ class Booking(ndb.Model):
             if (k != '_entity'):
                 s += u'%s: %s <br>' % (k[1:], v)
         return s
+    
     
     
