@@ -216,6 +216,7 @@ class BaseTest(unittest.TestCase):
     def fill_new_provider_address_correctly_action(self):
         # request the address page
         response = self.testapp.get('/provider/address/%s' % self._TEST_PROVIDER_VANITY_URL)
+        #response.showbrowser()
         address_form = response.forms['address_form'] # address form
         
         # fill out the form

@@ -21,3 +21,18 @@ class ProviderSocialTest(BaseTest):
         en_index_page = self.testapp.get('/fr')
         en_index_page.mustcontain('Pour les professionnels de la santé')
         en_index_page.mustcontain('English')
+        
+        
+    def test_tour_page(self):
+        # Francais
+        fr_tour_page = self.testapp.get('/fr/tour')
+        fr_tour_page.mustcontain('Aidez vos', 'patients', 'à vous trouver')
+        # switch to English
+        en_tour_page = fr_tour_page.click(linkid='lang-change-link')
+        en_tour_page.mustcontain('Help', 'patients', 'find you')
+        
+        # english
+        en_tour_page = self.testapp.get('/en/tour')
+        en_tour_page.mustcontain('Help', 'patients', 'find you')
+        # switch to Franch
+        
