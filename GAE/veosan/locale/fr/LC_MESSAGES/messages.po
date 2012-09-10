@@ -1558,7 +1558,7 @@ msgstr "Ce n'est pas être nécéssaire de payer des factures mensuelles pour un
 msgid "Referral Network"
 msgstr "Réseau Professionnel"
 
-msgid "Establish credibility through your referral network. Refer and receive new patients patients from your trusted colleagues. These connections benefit everyone."
+msgid "Establish credibility through your referral network. Refer and receive new patients from your trusted colleagues. These connections benefit everyone."
 msgstr "Établissez votre réputation et référez vos patients à vos collègues de confiance. Établissez des contacts qui seront bénéfique pour tous."
 
 msgid "Easy to Use"
