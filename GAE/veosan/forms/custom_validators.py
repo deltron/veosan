@@ -7,6 +7,7 @@ import re
 import logging
 import main
 from wtforms.validators import Required
+import handler
 
 class UniqueVanityURL(object):
     def __init__(self, message=None):
@@ -40,27 +41,15 @@ class ReservedVanityURL(object):
     
         if vanity_url:
             # force the vanity URL to lowercase
-            vanity_url = vanity_url.lower()
             
-            # check if it conflicts with a route
-            route_list = webapp2.get_app().router.match_routes
-            regex_to_check = []
-            for route in route_list:
-                if isinstance(route, BaseRoute):
-                    regex_to_check.append(route.template)
-                elif isinstance(route, PathPrefixRoute):
-                    regex_to_check.append(route.prefix)
-
-            reserved_url = False
-            for regex in regex_to_check:
-                # remove leading slash
-                regex = regex.replace("/", "", 1)
-                # remove anything after trailing slash
-                regex = regex.split("/")[0]
-                
-                if re.match(regex, vanity_url):
-                    logging.info("Vanity URL %s matches REGEX %s" % (vanity_url, regex))
-                    raise ValidationError(self.message)
+            validated_url = handler.user_pkg.signup_handler.validate_vanity_url(vanity_url)
+            
+            # if the validated URL is different from the given url there was a problem
+            # raise an exception
+                            
+            if validated_url != vanity_url:
+                logging.info("Vanity URL matched a route")
+                raise ValidationError(self.message)
             
             # does not contain a reserved word
             pass

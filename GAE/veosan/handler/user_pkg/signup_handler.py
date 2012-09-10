@@ -88,7 +88,9 @@ class ProviderSignupHandler2(UserBaseHandler):
             # pre-populate vanity_url with first name + last name + number if collision
             first_name = provider.first_name
             last_name = provider.last_name
-            provider.vanity_url = generate_vanity_url(first_name, last_name)           
+            vanity_url = first_name + last_name
+
+            provider.vanity_url = validate_vanity_url(first_name, last_name)           
             
             
             # set location info from request
@@ -180,8 +182,7 @@ class PatientSignupHandler(UserBaseHandler):
             self.render_template('user/signup_patient.html', patient_signup_form=patient_signup_form)
 
 
-def generate_vanity_url(first_name, last_name):
-    vanity_url = first_name + last_name
+def validate_vanity_url(vanity_url):
     vanity_url = vanity_url.lower()
     
     # remove any non-alpha
