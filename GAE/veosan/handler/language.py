@@ -25,5 +25,12 @@ class LanguageHandler(BaseHandler):
         referer = self.request.headers.get('Referer')
         logging.info('(LanguageHandler.get) Changing language to %s: referer is %s' % (lang, referer))
         
-        url = self.request.headers.get('Referer', '/')
-        self.redirect(url)
+        referer_url = self.request.headers.get('Referer', '/')
+        # check if referer has a /fr or /en
+        #referer_lang = self.get_language_from_url(referer_url)
+        #if referer_lang:
+        #    redirect_url = self.translate_url(referer_url, lang)
+        #else:
+        redirect_url = referer_url
+            
+        self.redirect(redirect_url)

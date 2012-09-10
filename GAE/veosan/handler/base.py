@@ -13,6 +13,7 @@ from google.appengine.ext.ndb.key import Key
 import re
 import mail
 from data.model_pkg.site_model import SiteConfig, SiteLog
+import urlparse
 
 class BaseHandler(webapp2.RequestHandler):
     '''
@@ -123,6 +124,9 @@ class BaseHandler(webapp2.RequestHandler):
         kw['association_dict'] = dict(util.getAllAssociations())
 
         kw['language_labels'] = util.LANGUAGE_LABELS
+        kw['is_translatable_url'] = self.is_url_translatable()
+        if kw['is_translatable_url']:
+            kw['url_post_language'] = self.get_url_post_language()
         
         
         # make all session variables available to templates
@@ -272,17 +276,51 @@ class BaseHandler(webapp2.RequestHandler):
             logging.info('(BaseHandler.get_language) no language in session, return default = %s' % util.DEFAULT_LANG)
             return util.DEFAULT_LANG
         
+    def get_language_from_url(self, url=None):
+        if not url:
+            url = self.request.url
+        url_obj = urlparse.urlparse(url)
+        path = url_obj.path
+        if path:
+            path_split = path.split('/')
+            lang = path_split[1]
+        if lang in util.LANGUAGES:
+            logging.info('Setting lang from url %s' % lang)
+            return lang
+        else:
+            return None
+     
+    def is_url_translatable(self):
+        return self.get_language_from_url() != None
+    
+    def get_url_post_language(self):
+        url = self.request.url
+        url_obj = urlparse.urlparse(url)
+        path = url_obj.path
+        return path[3:]
+            
     def set_language(self, lang):
         logging.info('(BaseHandler.set_language) set session[lang] = %s' % lang)
         self.session['lang'] = lang
         self.install_translations(lang)
         
+    def set_language_from_url(self):
+        lang = self.get_language_from_url()
+        self.set_language(lang)
+         
+    def translate_url(self, url, lang):
+        # check that url starts with /en or /fr
+        orig_lang = self.get_language_from_url(url)
+        if orig_lang:
+            new_url = '/' + lang + url[3:]
+            return new_url
+        else:
+            return url
+        
     def install_translations(self, lang):
         logging.info('(BaseHandler.install_translations) installing translations %s' % lang)
-
         # Set the requested locale.
         i18n.get_i18n().set_locale(lang)
-        
         logging.info('(BaseHandler.install_translations) webapp2 i18n locale: %s' % i18n.get_i18n().locale)
     
     def login_user(self, email, password, remember_me=True):

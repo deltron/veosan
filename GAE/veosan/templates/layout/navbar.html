@@ -6,12 +6,12 @@
 			<div class="nav-collapse">
 				<ul class="nav pull-right">
 					<li>
-						<a href="/{{ lang }}/tour">{{ _('Tour') }}</a>
+						<a id='tour-link' href="/{{ lang }}/tour">{{ _('Tour') }}</a>
 					</li>
 					<li class="divider-vertical">
 					</li>
 					<li>
-						<a href="/{{ lang }}/blog">{{ _('Blog') }}</a>
+						<a id='blog-link' href="/{{ lang }}/blog">{{ _('Blog') }}</a>
 					</li>
 					<li class="divider-vertical">
 					</li>
@@ -102,7 +102,11 @@
 					<!-- language -->
 					{% for l in other_languages %}
 					<li>
-						<a href="/lang/{{l}}">{{ language_labels[l] }}</a>
+						{% if is_translatable_url %}
+						<a id='lang-change-link' href="/{{l~url_post_language}}">{{ language_labels[l] }}</a>
+						{% else %}
+						<a id='lang-change-link' href="/lang/{{l}}">{{ language_labels[l] }}</a>
+						{% endif %}
 					</li>
 					{% endfor %}
 

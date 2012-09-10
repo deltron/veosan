@@ -9,14 +9,7 @@ import util
 class StaticHandler(BaseHandler):
     def render_static(self, name):
         # set language
-        url_obj = urlparse.urlparse(self.request.url)
-        path = url_obj.path
-        if path:
-            path_split = path.split('/')
-            lang = path_split[1]
-        if lang in util.LANGUAGES:
-            logging.info('Setting lang from url %s' % lang)
-            self.set_language(lang)
+        self.set_language_from_url()
         # render
         template = "static/" + name + ".html"
         self.render_template(template)
