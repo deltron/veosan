@@ -1,5 +1,4 @@
 import logging, urlparse
-from datetime import date
 
 # GAE
 from webapp2_extras.i18n import gettext as _
@@ -15,6 +14,7 @@ from patient import PatientBaseHandler
 from forms.user import PasswordForm, LoginForm, ProviderSignupForm1
 import mail
 from google.appengine.ext import ndb
+import datetime
 
 class UserBaseHandler(BaseHandler):   
     ''' User management handler:
@@ -300,6 +300,8 @@ class LoginHandler(UserBaseHandler):
             # Username and password check
             try:
                 user = self.login_user(email, password, remember_me)
+                user.last_login = datetime.datetime.now()
+                user.put()
                 
                 # set the language from user profile
                 self.set_language(user.language)

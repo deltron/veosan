@@ -32,6 +32,8 @@ class User(Webapp2AuthUser):
     confirmed = ndb.BooleanProperty()
 
     language = ndb.StringProperty(default='en')
+    
+    last_login = ndb.DateTimeProperty()
 
     def get_email(self):
         return self.auth_ids[0]

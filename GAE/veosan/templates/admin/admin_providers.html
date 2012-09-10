@@ -21,7 +21,7 @@
 					<th width="10%">Connections</th>
 					<th width="10%">Email</th>
 					<th width="10%">Status</th>
-					<th width="10%">Created On</th>
+					<th width="10%">Last Login</th>
 					<th width="10%">Available Hours</th>
 					<th width="15%">Upcoming bookings</th>
 				</tr>
@@ -65,7 +65,7 @@
 						{% if p.onsite %} <span class="label label-info">onsite</span>{% endif %}
 					</td>
 					<td>
-						{{p.created_on|format_datetime_full}}
+						{{p.user.get().last_login|format_datetime(format="medium")}}
 					</td>
 					<td>
 						{{p.get_total_available_hours_per_week()}}
