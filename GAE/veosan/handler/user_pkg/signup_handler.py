@@ -90,7 +90,7 @@ class ProviderSignupHandler2(UserBaseHandler):
             last_name = provider.last_name
             vanity_url = first_name + last_name
 
-            provider.vanity_url = validate_vanity_url(first_name, last_name)           
+            provider.vanity_url = validate_vanity_url(vanity_url)           
             
             
             # set location info from request
