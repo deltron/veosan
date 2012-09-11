@@ -70,8 +70,11 @@
 							{% endif%}
 						</ul>
 					</li>
+					
+					{% if not provider_from_user %}
 					<li class="divider-vertical">
 					</li>
+					{% endif %}
 
 					{% else %}
 					{# No user logged in #}
@@ -97,6 +100,7 @@
 					</li>
 					<li class="divider-vertical">
 					</li>
+
 					{% endif%}
 
 					<!-- language -->

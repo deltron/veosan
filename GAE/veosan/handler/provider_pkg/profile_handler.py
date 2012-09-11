@@ -28,6 +28,12 @@ class ProviderEditProfileHandler(ProviderBaseHandler):
             form.populate_obj(provider)
             provider.put()
             
+            provider_user = provider.user.get()
+            if provider_user.language != provider.profile_language:
+                provider_user.language = provider.profile_language
+                provider_user.put()
+                self.set_language(provider.profile_language)
+            
             self.render_profile(provider, profile_form=form, success_message=saved_message)
 
             # log the event
