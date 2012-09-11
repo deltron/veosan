@@ -29,7 +29,9 @@ class UserBaseHandler(BaseHandler):
             user = self.get_current_user()
             
         if user:
-            # check if provider or patient          
+            # check if provider or patient
+            self.set_language(user.language)
+  
             if auth.PROVIDER_ROLE in user.roles:
                 provider = db.get_provider_from_user(user)
                 if provider:
@@ -213,7 +215,8 @@ class ActivationHandler(UserBaseHandler):
     def get(self, signup_token=None):
         if signup_token:
             user = self.validate_signup_token(signup_token)
-            if user:                        
+            if user:
+                self.set_language(user.language)
                 if auth.PATIENT_ROLE in user.roles:
                     logging.info('(ActivationHandler) activating patient: %s' % user.get_email())
 
@@ -243,13 +246,13 @@ class ActivationHandler(UserBaseHandler):
 
 class LoginHandler(UserBaseHandler):
     
-    def get_en(self):
+    def get_en(self, next_action=None, key=None):
         self.set_language('en')
-        self.get()
+        self.get(next_action, key)
         
-    def get_fr(self):
+    def get_fr(self, next_action=None, key=None):
         self.set_language('fr')
-        self.get()
+        self.get(next_action, key)
     
     '''
         GET shows login page
