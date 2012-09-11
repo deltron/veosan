@@ -22,7 +22,7 @@
 			<h4> {{ _('Veosan is currently opening patient accounts on a limited basis.') }} </h4>
 			<h4> {{ _('Please sign up below to be notified when Veosan is ready for you.') }} </h4>
 			<br>
-			<form method="post" action="{{ lang }}/signup/patient" class="form-horizontal">
+			<form method="post" action="/{{ lang }}/signup/patient" class="form-horizontal">
 				<fieldset>
 					{{ macro.make_standard_form(patient_signup_form, inputClass="input-medium")}}
 
