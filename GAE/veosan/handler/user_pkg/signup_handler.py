@@ -143,10 +143,7 @@ class ProviderSignupHandler2(UserBaseHandler):
             self.redirect('/provider/welcome/' + provider.vanity_url)
                     
             self.log_event(user, "New account created for user")            # create a signup token for new user
-                        
-            # update the index
-            search_index.IndexProvider(provider)
-            
+                                    
             # remove partial provider
             partial_provider = db.get_partial_provider_from_email(provider.email)
             partial_provider.key.delete()

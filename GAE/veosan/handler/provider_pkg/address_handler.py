@@ -33,9 +33,6 @@ class ProviderEditAddressHandler(ProviderBaseHandler):
             # log the event
             self.log_event(user=provider.user, msg="Edit Address: Success")
 
-            # update the index
-            search_index.IndexProvider(provider)
-
         else:
             # show validation error
             provider = db.get_provider_from_vanity_url(vanity_url)

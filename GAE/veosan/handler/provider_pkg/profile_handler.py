@@ -32,9 +32,6 @@ class ProviderEditProfileHandler(ProviderBaseHandler):
 
             # log the event
             self.log_event(user=provider.user, msg="Edit Profile: Success")
-            
-            # update the index
-            search_index.IndexProvider(provider)
 
         else:
             # show error
