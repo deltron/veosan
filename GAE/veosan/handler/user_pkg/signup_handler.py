@@ -1,7 +1,6 @@
 
 from handler.user import UserBaseHandler
 from forms.user import ProviderSignupForm1, ProviderSignupForm2, PatientSignupForm
-import util
 from data.model import Patient, PartialProvider
 from unidecode import unidecode
 from data import db
@@ -13,6 +12,8 @@ import logging
 import re
 from data.model_pkg.network_model import ProviderNetworkConnection
 from data.model_pkg.provider_model import Provider
+from webapp2_extras.i18n import lazy_gettext as _
+
 
 ############################
 # Signup
