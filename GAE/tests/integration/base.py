@@ -190,9 +190,7 @@ class BaseTest(unittest.TestCase):
 
     def self_signup_provider(self, email=_TEST_PROVIDER_EMAIL, first_name='first', last_name='last', category='osteopath'):
         # switch to french
-        response = self.testapp.get('/lang/fr')
-        
-        response = self.testapp.get('/signup/provider')
+        response = self.testapp.get('/fr/signup/provider')
         
         signup_form = response.forms['provider_signup_form']
         signup_form['first_name'] = first_name
@@ -476,10 +474,11 @@ class BaseTest(unittest.TestCase):
         # enable the booking
         self.login_as_admin()
         enable = self.testapp.get('/admin/provider/feature/booking_enabled/' + self._TEST_PROVIDER_VANITY_URL)
+        self.logout_admin()
+
         public_profile = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
         public_profile.mustcontain("Fantastic Fox")
         public_profile.mustcontain("Réservez Maintenant")
-        self.logout_admin()
         
         
     def book_from_public_profile(self, date_string, time_string, patient_email=_TEST_PATIENT_EMAIL, patient_telephone=_TEST_PATIENT_TELEPHONE):

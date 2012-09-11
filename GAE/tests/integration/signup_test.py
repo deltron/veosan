@@ -12,7 +12,7 @@ class SignupTest(BaseTest):
     
     def test_signup(self):
         ''' Basic signup process for a new provider '''
-        response = self.testapp.post('/signup/provider')
+        response = self.testapp.post('/fr/signup/provider')
         
         signup_form = response.forms['provider_signup_form']
         signup_form['first_name'] = 'first'
@@ -31,7 +31,7 @@ class SignupTest(BaseTest):
 
     def test_signup_space_in_postal_code(self):
         ''' Basic signup process for a new provider '''
-        response = self.testapp.post('/signup/provider')
+        response = self.testapp.post('/fr/signup/provider')
         
         signup_form = response.forms['provider_signup_form']
         signup_form['first_name'] = 'first'
@@ -51,7 +51,7 @@ class SignupTest(BaseTest):
 
     def test_signup_vanity_name_collision(self):
         ''' Basic signup process for a new provider '''
-        response = self.testapp.post('/signup/provider')
+        response = self.testapp.post('/fr/signup/provider')
         
         signup_form = response.forms['provider_signup_form']
         signup_form['first_name'] = 'first'
@@ -70,7 +70,7 @@ class SignupTest(BaseTest):
         
         self.logout_provider()
         
-        response = self.testapp.post('/signup/provider')
+        response = self.testapp.post('/fr/signup/provider')
         
         signup_form = response.forms['provider_signup_form']
         signup_form['first_name'] = 'first'
@@ -92,7 +92,7 @@ class SignupTest(BaseTest):
         
         self.logout_provider()
         
-        response = self.testapp.post('/signup/provider')
+        response = self.testapp.post('/fr/signup/provider')
         
         signup_form = response.forms['provider_signup_form']
         signup_form['first_name'] = 'first'
@@ -115,7 +115,7 @@ class SignupTest(BaseTest):
 
     def test_signup_vanity_name_space_last_name(self):
         ''' Basic signup process for a new provider '''
-        response = self.testapp.post('/signup/provider')
+        response = self.testapp.post('/fr/signup/provider')
         
         signup_form = response.forms['provider_signup_form']
         signup_form['first_name'] = 'first'
@@ -138,7 +138,7 @@ class SignupTest(BaseTest):
 
     def test_signup_vanity_name_accent(self):
         ''' Basic signup process for a new provider '''
-        response = self.testapp.post('/signup/provider')
+        response = self.testapp.post('/fr/signup/provider')
         
         signup_form = response.forms['provider_signup_form']
         signup_form['first_name'] = 'Renée'
@@ -160,7 +160,7 @@ class SignupTest(BaseTest):
                 
     def test_signup_vanity_name_every_accent(self):
         ''' Basic signup process for a new provider '''
-        response = self.testapp.post('/signup/provider')
+        response = self.testapp.post('/fr/signup/provider')
         
         signup_form = response.forms['provider_signup_form']
         signup_form['first_name'] = 'Renée'
@@ -181,7 +181,7 @@ class SignupTest(BaseTest):
         self.assertEqual(provider.vanity_url, 'reneestvilaieoeuc')
 
     def test_signup_partial_provider(self):
-        response = self.testapp.post('/signup/provider')
+        response = self.testapp.post('/fr/signup/provider')
         
         signup_form = response.forms['provider_signup_form']
         signup_form['first_name'] = 'first'
@@ -196,7 +196,7 @@ class SignupTest(BaseTest):
 
 
     def test_signup_partial_provider_multiple_times(self):
-        response = self.testapp.post('/signup/provider')
+        response = self.testapp.post('/fr/signup/provider')
         
         signup_form = response.forms['provider_signup_form']
         signup_form['first_name'] = 'first'
@@ -209,7 +209,7 @@ class SignupTest(BaseTest):
         self.assertEqual(partial_provider.last_name, 'last')
         self.assertEqual(partial_provider.email, self._TEST_PROVIDER_EMAIL)
 
-        response = self.testapp.post('/signup/provider')
+        response = self.testapp.post('/fr/signup/provider')
         
         signup_form = response.forms['provider_signup_form']
         signup_form['first_name'] = 'first'
@@ -222,7 +222,7 @@ class SignupTest(BaseTest):
         self.assertEqual(partial_provider.last_name, 'last')
         self.assertEqual(partial_provider.email, self._TEST_PROVIDER_EMAIL)
 
-        response = self.testapp.post('/signup/provider')
+        response = self.testapp.post('/fr/signup/provider')
         
         signup_form = response.forms['provider_signup_form']
         signup_form['first_name'] = 'first'
@@ -236,7 +236,7 @@ class SignupTest(BaseTest):
         self.assertEqual(partial_provider.email, self._TEST_PROVIDER_EMAIL)
 
     def test_signup_partial_provider_completed(self):
-        response = self.testapp.post('/signup/provider')
+        response = self.testapp.post('/fr/signup/provider')
         
         signup_form = response.forms['provider_signup_form']
         signup_form['first_name'] = 'first'
