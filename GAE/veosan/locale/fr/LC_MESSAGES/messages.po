@@ -264,6 +264,9 @@ msgstr "SVP choisir votre mot de passe."
 msgid "Blog"
 msgstr "Blogue"
 
+msgid "Tour"
+msgstr "Visite guidée"
+
 
 #################
 # Form navigation
