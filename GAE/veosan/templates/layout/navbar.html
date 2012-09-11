@@ -100,6 +100,7 @@
 					{% endif%}
 
 					<!-- language -->
+					{% if not provider_from_user %}
 					{% for l in other_languages %}
 					<li>
 						{% if is_translatable_url %}
@@ -109,6 +110,7 @@
 						{% endif %}
 					</li>
 					{% endfor %}
+					{% endif %}
 
 					{% if 'admin' in roles %}
 					{# Possible to have no user logged in but still have an admin logged in #}
