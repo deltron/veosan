@@ -8,57 +8,103 @@
       <priority>0.8</priority>
    </url>
    <url>
-      <loc>http://www.veosan.com/signup/patient</loc>
-      <changefreq>daily</changefreq>
-      <priority>0.8</priority>
-   </url>
-   <url>
-      <loc>http://www.veosan.com/signup/provider</loc>
-      <changefreq>daily</changefreq>
-      <priority>0.8</priority>
-   </url>
-   <url>
-      <loc>http://www.veosan.com/signup/patient/fr</loc>
-      <changefreq>daily</changefreq>
-      <priority>0.8</priority>
-   </url>
-   <url>
-      <loc>http://www.veosan.com/signup/provider/fr</loc>
-      <changefreq>daily</changefreq>
-      <priority>0.8</priority>
-   </url>
-
-   <url>
-      <loc>http://www.veosan.com/lang/fr</loc>
-      <changefreq>daily</changefreq>
-      <priority>0.5</priority>
-   </url>
-   <url>
-      <loc>http://www.veosan.com/lang/en</loc>
-      <changefreq>daily</changefreq>
-      <priority>0.5</priority>
-   </url>
-   <url>
       <loc>http://www.veosan.com/en</loc>
       <changefreq>daily</changefreq>
-      <priority>0.5</priority>
+      <priority>0.8</priority>
    </url>
    <url>
       <loc>http://www.veosan.com/fr</loc>
       <changefreq>daily</changefreq>
-      <priority>0.5</priority>
+      <priority>0.8</priority>
    </url>
 
+   {# Generate address for all static pages #}
    <url>
-      <loc>http://www.veosan.com/contact</loc>
-      <changefreq>weekly</changefreq>
-      <priority>0.5</priority>
+      <loc>http://www.veosan.com/en/contact</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.8</priority>
    </url>
    <url>
-      <loc>http://www.veosan.com/login</loc>
-      <changefreq>weekly</changefreq>
-      <priority>0.5</priority>
+      <loc>http://www.veosan.com/fr/contact</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.8</priority>
    </url>
+   <url>
+      <loc>http://www.veosan.com/en/tour</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.8</priority>
+   </url>
+   <url>
+      <loc>http://www.veosan.com/fr/tour</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.8</priority>
+   </url>
+   <url>
+      <loc>http://www.veosan.com/en/terms</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.8</priority>
+   </url>
+   <url>
+      <loc>http://www.veosan.com/fr/terms</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.8</priority>
+   </url>
+   <url>
+      <loc>http://www.veosan.com/en/privacy</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.8</priority>
+   </url>
+   <url>
+      <loc>http://www.veosan.com/fr/privacy</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.8</priority>
+   </url>
+   <url>
+      <loc>http://www.veosan.com/en/blog</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.8</priority>
+   </url>
+   <url>
+      <loc>http://www.veosan.com/fr/blog</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.8</priority>
+   </url>
+
+
+   <url>
+      <loc>http://www.veosan.com/en/login</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.8</priority>
+   </url>
+   <url>
+      <loc>http://www.veosan.com/fr/login</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.8</priority>
+   </url>
+
+   
+   <url>
+      <loc>http://www.veosan.com/en/signup/patient</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.8</priority>
+   </url>
+   <url>
+      <loc>http://www.veosan.com/fr/signup/patient</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
+   <url>
+      <loc>http://www.veosan.com/en/signup/provider</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.8</priority>
+   </url>
+   <url>
+      <loc>http://www.veosan.com/fr/signup/provider</loc>
+      <changefreq>daily</changefreq>
+      <priority>0.8</priority>
+   </url>
+   
 
    {# Generate address for all providers vanity URL #}
    
