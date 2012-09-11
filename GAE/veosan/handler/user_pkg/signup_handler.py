@@ -19,16 +19,12 @@ from data.model_pkg.provider_model import Provider
 ############################
 
 class ProviderSignupHandler1(UserBaseHandler):
-    def get(self, lang_key=None):
-        if lang_key and lang_key in util.LANGUAGES:
-            self.set_language(lang_key)
-            self.redirect('/signup/provider')            
-
+    def get(self):
         provider_signup_form = ProviderSignupForm1().get_form()
         
         self.render_template('user/signup_provider_1.html', provider_signup_form=provider_signup_form)      
 
-    def post(self, lang_key=None):
+    def post(self):
         provider_signup_form = ProviderSignupForm1().get_form(self.request.POST)
 
         if provider_signup_form.validate():
@@ -63,7 +59,7 @@ class ProviderSignupHandler1(UserBaseHandler):
             self.render_template('user/signup_provider_1.html', provider_signup_form=provider_signup_form)
 
 class ProviderSignupHandler2(UserBaseHandler):
-    def post(self, lang_key=None):
+    def post(self):
         provider_signup_form2 = ProviderSignupForm2().get_form(self.request.POST)
         
         
@@ -129,7 +125,7 @@ class ProviderSignupHandler2(UserBaseHandler):
             # now create an empty user for the provider
             user = self.create_empty_user_for_provider(provider)
             user.language = self.get_language()
-            provider.default_language = user.language
+            provider.profile_language = user.language
             provider.put()
             
             # set the password for the user
@@ -159,16 +155,12 @@ class ProviderSignupHandler2(UserBaseHandler):
             
 
 class PatientSignupHandler(UserBaseHandler):
-    def get(self, lang_key=None):
-        if lang_key and lang_key in util.LANGUAGES:
-            self.set_language(lang_key)
-            self.redirect('/signup/patient')            
-
+    def get(self):
         patient_signup_form = PatientSignupForm().get_form()
         
         self.render_template('/user/signup_patient.html', patient_signup_form=patient_signup_form)      
 
-    def post(self, lang_key=None):
+    def post(self):
         patient_signup_form = PatientSignupForm().get_form(self.request.POST)
         
         if patient_signup_form.validate():
