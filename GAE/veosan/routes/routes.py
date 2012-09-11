@@ -25,8 +25,6 @@ def create_routes():
            Route('/', static.IndexHandler),
            Route('/en', static.IndexHandler, handler_method='get_en'),
            Route('/fr', static.IndexHandler, handler_method='get_fr'),
-           #Route('/en', static.IndexHandler, handler_method='get_en'),
-           #Route('/fr', static.IndexHandler, handler_method="get_fr"),
            Route('/hideside/<what>', static.HideSideHandler),
 
            ])

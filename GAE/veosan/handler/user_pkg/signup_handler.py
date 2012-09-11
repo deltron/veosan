@@ -129,6 +129,8 @@ class ProviderSignupHandler2(UserBaseHandler):
             # now create an empty user for the provider
             user = self.create_empty_user_for_provider(provider)
             user.language = self.get_language()
+            provider.default_language = user.language
+            provider.put()
             
             # set the password for the user
             password = provider_signup_form2.password.data

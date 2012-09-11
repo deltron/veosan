@@ -269,11 +269,30 @@ class BaseHandler(webapp2.RequestHandler):
         return auth_conf
     
     def get_language(self):
-        if self.session.has_key('lang'):
-            logging.info('(BaseHandler.get_language) get language from session = %s' % self.session['lang'])
-            return self.session['lang']
+        #if self.session.has_key('lang'):
+        #    logging.info('(BaseHandler.get_language) get language from session = %s' % self.session['lang'])
+        #    return self.session['lang']
+        #else:
+        #    logging.info('(BaseHandler.get_language) no language in session, return default = %s' % util.DEFAULT_LANG)                    
+        
+        
+        
+        # parse path and look for potential vanity url
+        url = self.request.url
+        url_obj = urlparse.urlparse(url)
+        path = url_obj.path
+        if path:
+            path_no_slash = path.replace('/','')
+        
+        provider_from_vanity_url = db.get_provider_from_vanity_url(path_no_slash)
+
+        if self.get_language_from_url():
+            return self.get_language_from_url()
+        elif self.get_current_user():
+            return self.get_current_user().language
+        elif provider_from_vanity_url:
+            return provider_from_vanity_url.profile_language
         else:
-            logging.info('(BaseHandler.get_language) no language in session, return default = %s' % util.DEFAULT_LANG)
             return util.DEFAULT_LANG
         
     def get_language_from_url(self, url=None):
@@ -303,7 +322,7 @@ class BaseHandler(webapp2.RequestHandler):
         logging.info('(BaseHandler.set_language) set session[lang] = %s' % lang)
         
         # can we remove this without side-effects now?
-        self.session['lang'] = lang
+        # self.session['lang'] = lang
         
         
         self.install_translations(lang)
