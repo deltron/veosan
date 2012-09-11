@@ -4,7 +4,7 @@ from forms.user import ProviderSignupForm1, ProviderSignupForm2, PatientSignupFo
 import util
 from data.model import Patient, PartialProvider
 from unidecode import unidecode
-from data import db, search_index
+from data import db
 import webapp2
 from webapp2 import BaseRoute
 from webapp2_extras.routes import PathPrefixRoute

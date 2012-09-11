@@ -2,7 +2,7 @@ from handler.auth import provider_required
 from handler.provider import ProviderBaseHandler
 from forms.provider import ProviderAddressForm, ProviderVanityURLForm
 import logging
-from data import db, search_index
+from data import db
 from util import saved_message
 
 class ProviderEditAddressHandler(ProviderBaseHandler):

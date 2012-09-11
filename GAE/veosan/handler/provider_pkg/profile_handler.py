@@ -1,7 +1,7 @@
 from handler.auth import provider_required
 from forms.provider import ProviderProfileForm, ProviderPhotoForm
 import logging
-from data import db, search_index
+from data import db
 from handler.provider import ProviderBaseHandler
 from util import saved_message
 from google.appengine.ext.webapp import blobstore_handlers
