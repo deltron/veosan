@@ -79,22 +79,19 @@
 					{% else %}
 					{# No user logged in #}
 
-					{% if site_config.signup_enabled %}
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ _('Sign Up') }} <b class="caret"></b></a>
 						<ul class="dropdown-menu">
 							<li>
-								<a href="/signup/provider">{{ _('For Professionals') }}</a>
+								<a href="/{{ lang }}/signup/provider">{{ _('For Professionals') }}</a>
 							</li>
 							<li>
-								<a href="/signup/patient">{{ _('For Patients') }}</a>
+								<a href="/{{ lang }}/signup/patient">{{ _('For Patients') }}</a>
 							</li>
 						</ul>
 					</li>
 					<li class="divider-vertical">
 					</li>
-					{% endif %}
-
 					<li>
 						<a id='login-link' href="{{login_url}}">{{ _('My Account') }}</a>
 					</li>
