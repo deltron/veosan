@@ -105,7 +105,7 @@
 						{% if is_translatable_url %}
 						<a id='lang-change-link' href="/{{l~url_post_language}}">{{ language_labels[l] }}</a>
 						{% else %}
-						<a id='lang-change-link' href="/lang/{{l}}">{{ language_labels[l] }}</a>
+						<a id='lang-change-link' href="{{l}}">{{ language_labels[l] }}</a>
 						{% endif %}
 					</li>
 					{% endfor %}
