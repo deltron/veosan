@@ -189,6 +189,11 @@ def get_all_spoken_languages():
            # ("vn", _(u"Vietnamese")),
         ]
 
+def get_all_profile_languages():
+    return [
+            ("en", _(u"English")),
+            ("fr", _(u"French")),
+        ]
 
 
 def getAllInsurance():

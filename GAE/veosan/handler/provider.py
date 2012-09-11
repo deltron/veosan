@@ -48,6 +48,10 @@ class ProviderPublicProfileHandler(ProviderBaseHandler):
         if provider:
             logging.info('(ProviderPublicProfileHandler.get) Found provider %s, rendering profile' % provider.email)
             
+            # set the display language to provider's preference
+            language = provider.profile_language
+            self.set_language(language)
+
             # add some dates & times to display part of schedule on page
             start_date = time.tomorrow()
             period = timedelta(days=14)

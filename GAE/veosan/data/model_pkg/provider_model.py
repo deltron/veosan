@@ -47,19 +47,13 @@ class Provider(ndb.Model):
     gae_city = ndb.StringProperty()
     gae_city_lat_long = ndb.StringProperty()
 
-    # deprecated
-    associations = ndb.StringProperty(repeated=True)
-    certifications = ndb.StringProperty(repeated=True)
-    start_year = ndb.StringProperty()
-    location = ndb.StringProperty()
-    credentials = ndb.StringProperty()
-    # unique name for public profile
-
     
     # possible coercion to lower case?
     vanity_url = ndb.StringProperty()
     vanity_domain = ndb.StringProperty()
     profile_views = ndb.IntegerProperty(default=0)
+    profile_language = ndb.StringProperty()
+
     
     # account options
     booking_enabled = ndb.BooleanProperty(default=False)
@@ -72,6 +66,14 @@ class Provider(ndb.Model):
     # user
     user = ndb.KeyProperty(kind='User')
 
+
+    # deprecated ---------------
+    associations = ndb.StringProperty(repeated=True)
+    certifications = ndb.StringProperty(repeated=True)
+    start_year = ndb.StringProperty()
+    location = ndb.StringProperty()
+    credentials = ndb.StringProperty()
+    # end deprecated
     
     def get_profile_photo_image_url(self, size=None, secure_url=True):
         return get_serving_url(self.profile_photo_blob_key, size=size, secure_url=secure_url)

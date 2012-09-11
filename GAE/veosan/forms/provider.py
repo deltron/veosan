@@ -18,6 +18,7 @@ class ProviderProfileForm(CustomForm):
         setattr(form, 'quote', TextAreaField(_(u'Quote'), filters=[lambda x: custom_filters.escape_brackets(x)]))
         setattr(form, 'practice_sites', MultiCheckboxField(_(u'Practice Sites'), choices=util.getAllSites()))
         setattr(form, 'spoken_languages', MultiCheckboxField(_(u'Spoken Languages'), choices=util.get_all_spoken_languages()))
+        setattr(form, 'profile_language', SelectField(_(u'Default Language'), choices=util.get_all_profile_languages()))
 
 
 

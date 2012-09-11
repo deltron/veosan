@@ -792,6 +792,9 @@ msgstr "Anglais"
 msgid "French"
 msgstr "Français"
 
+msgid "Default Language"
+msgstr "Langue par défaut"
+
 msgid "Please enter your first year of practice"
 msgstr "SVP entrer votre première année de pratique"
 

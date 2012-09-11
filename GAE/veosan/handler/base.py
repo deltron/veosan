@@ -301,7 +301,11 @@ class BaseHandler(webapp2.RequestHandler):
             
     def set_language(self, lang):
         logging.info('(BaseHandler.set_language) set session[lang] = %s' % lang)
+        
+        # can we remove this without side-effects now?
         self.session['lang'] = lang
+        
+        
         self.install_translations(lang)
         
     def set_language_from_url(self):
