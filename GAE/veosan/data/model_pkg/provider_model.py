@@ -8,6 +8,7 @@ from data.model_pkg.network_model import ProviderNetworkConnection
 from data.model import Schedule, Booking, Note
 import utilities
 from webapp2_extras.i18n import to_utc
+from data.model_pkg.site_model import SiteLog
 
 
 class Provider(ndb.Model):
