@@ -242,6 +242,15 @@ class ActivationHandler(UserBaseHandler):
 
 
 class LoginHandler(UserBaseHandler):
+    
+    def get_en(self):
+        self.set_language('en')
+        self.get()
+        
+    def get_fr(self):
+        self.set_language('fr')
+        self.get()
+    
     '''
         GET shows login page
         POST checks username, password, logs in user and redirect to start page
