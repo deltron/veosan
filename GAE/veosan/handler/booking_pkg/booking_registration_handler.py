@@ -104,10 +104,7 @@ class BookFromPublicProfileRegistration(BookingBaseHandler):
                     
                     # add patient role to user
                     user.roles.append(auth.PATIENT_ROLE)
-                    
-                    # set user's default language
-                    user.language = self.get_language()
-            
+                                
                     user.put()
                     
                 
@@ -170,6 +167,10 @@ class BookFromPublicProfileRegistration(BookingBaseHandler):
 
                     user = self.create_empty_user_for_patient(patient)
                     
+                    # set user's default language
+                    user.language = self.get_language()
+                    user.put()
+
                     patient.put()
                     
                     booking.patient = patient.key
