@@ -61,7 +61,7 @@ class PublicProfileTest(BaseTest):
 
 
         # and another
-        response = self.testapp.post('/signup/provider')
+        response = self.testapp.post('/fr/signup/provider')
         
         signup_form = response.forms['provider_signup_form']
         signup_form['first_name'] = 'david'
