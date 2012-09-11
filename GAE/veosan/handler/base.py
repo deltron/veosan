@@ -112,8 +112,8 @@ class BaseHandler(webapp2.RequestHandler):
         kw['lang'] = lang
         kw['other_languages'] = filter(lambda l: l not in lang, util.LANGUAGE_LABELS.keys())
 
-        # Login and logout URLs (why is this coded here?)
-        kw['login_url'] = '/login'
+        # Login and logout URLs (why is this coded here? : Beacause historically for google users you had to call a method to get the login and logout urls)
+        kw['login_url'] = '/' + lang + '/login'
         kw['logout_url'] = '/logout'
         kw['admin_logout_url'] = users.create_logout_url('/')
         

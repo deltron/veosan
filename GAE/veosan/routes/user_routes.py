@@ -14,6 +14,8 @@ def get_routes():
                ]),
         
                Route('/login', user.LoginHandler),
+               Route('/en/login', user.LoginHandler, handler_method='get_en'),
+               Route('/fr/login', user.LoginHandler, handler_method='get_fr'),
                Route('/login/<next_action>/<key>', user.LoginHandler),
                Route('/logout', user.LogoutHandler)
        
