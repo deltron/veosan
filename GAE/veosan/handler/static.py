@@ -72,7 +72,8 @@ class DomainDispatcher(BaseHandler):
         provider = db.get_provider_from_domain(domain)
         if provider:
             logging.info("(DomainDispatcher) Received domain %s and matched to provider vanity_url %s " % (domain, provider.vanity_url))
-            self.redirect('http://www.veosan.com/%s' % (str(provider.vanity_url)))
+            redirect_url = 'http://www.veosan.com/%s' % (str(provider.vanity_url))
+            self.redirect(redirect_url, permanent=True)
         else:
             self.redirect('http://www.veosan.com/')
 
