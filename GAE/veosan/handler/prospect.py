@@ -21,7 +21,7 @@ class ProspectHandler(BaseHandler):
             prospect.landing_hits += 1
             prospect.put()
             self.session['prospect_id'] = prospect.prospect_id
-            self.redirect(prospect.prospect_landing)
+            self.redirect(str(prospect.prospect_landing))
         else:
             self.redirect("/")
         
