@@ -1546,7 +1546,8 @@ msgstr "à vous trouver"
 msgid "Improve your online presence with a profile focused on health care."
 msgstr "Améliorez votre présence en ligne avec un profil complètement dédié au monde de la santé"
 
-
+msgid "Scroll down to find out more."
+msgstr "Défiler vers le bas pour en savoir plus."
 
 
 msgid "It's Who You Are!"
