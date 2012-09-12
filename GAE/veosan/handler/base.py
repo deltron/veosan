@@ -12,8 +12,9 @@ from data.model import User, LogEvent
 from google.appengine.ext.ndb.key import Key
 import re
 import mail
-from data.model_pkg.site_model import SiteConfig, SiteLog
 import urlparse
+from data.model_pkg.site_model import SiteConfig, SiteLog
+from utilities import language
 
 class BaseHandler(webapp2.RequestHandler):
     '''
@@ -124,9 +125,9 @@ class BaseHandler(webapp2.RequestHandler):
         kw['association_dict'] = dict(util.getAllAssociations())
 
         kw['language_labels'] = util.LANGUAGE_LABELS
-        kw['is_translatable_url'] = self.is_url_translatable()
-        if kw['is_translatable_url']:
-            kw['url_post_language'] = self.get_url_post_language()
+        kw['is_url_translatable'] = language.is_url_translatable(self.request.url)
+        if kw['is_url_translatable']:
+            kw['url_post_language'] = language.get_url_post_language(self.request.url)
         
         
         # make all session variables available to templates
@@ -286,8 +287,9 @@ class BaseHandler(webapp2.RequestHandler):
         
         provider_from_vanity_url = db.get_provider_from_vanity_url(path_no_slash)
 
-        if self.get_language_from_url():
-            return self.get_language_from_url()
+        url_language = language.get_language_from_url(self.request.url)
+        if url_language:
+            return url_language
         elif self.get_current_user():
             return self.get_current_user().language
         elif provider_from_vanity_url and provider_from_vanity_url.profile_language:
@@ -295,43 +297,21 @@ class BaseHandler(webapp2.RequestHandler):
         else:
             return util.DEFAULT_LANG 
         
-    def get_language_from_url(self, url=None):
-        if not url:
-            url = self.request.url
-        url_obj = urlparse.urlparse(url)
-        path = url_obj.path
-        if path:
-            path_split = path.split('/')
-            lang = path_split[1]
-        if lang in util.LANGUAGES:
-            logging.info('Setting lang from url %s' % lang)
-            return lang
-        else:
-            return None
-     
-    def is_url_translatable(self):
-        return self.get_language_from_url() != None
-    
-    def get_url_post_language(self):
-        url = self.request.url
-        url_obj = urlparse.urlparse(url)
-        path = url_obj.path
-        return path[3:]
+
             
     def set_language(self, lang):
         logging.info('(BaseHandler.set_language) set session[lang] = %s' % lang)
-        
         # can we remove this without side-effects now?
         # self.session['lang'] = lang
         self.install_translations(lang)
         
     def set_language_from_url(self):
-        lang = self.get_language_from_url()
+        lang = language.get_language_from_url(self.request.url)
         self.set_language(lang)
          
     def translate_url(self, url, lang):
         # check that url starts with /en or /fr
-        orig_lang = self.get_language_from_url(url)
+        orig_lang = language.get_language_from_url(url)
         if orig_lang:
             new_url = '/' + lang + url[3:]
             return new_url
