@@ -20,17 +20,14 @@ class LanguageHandler(BaseHandler):
         # hide sidebar
         if hide_side == 'hide_side':
             self.session['hide-lang'] = True
+            self.redirect('/' + lang)
         
-        # redirect to referrer or /
-        referer = self.request.headers.get('Referer')
-        logging.info('(LanguageHandler.get) Changing language to %s: referer is %s' % (lang, referer))
-        
-        referer_url = self.request.headers.get('Referer', '/')
-        # check if referer has a /fr or /en
-        #referer_lang = self.get_language_from_url(referer_url)
-        #if referer_lang:
-        #    redirect_url = self.translate_url(referer_url, lang)
-        #else:
-        redirect_url = referer_url
+        else:
+            # redirect to referrer or /
+            referer = self.request.headers.get('Referer')
+            logging.info('(LanguageHandler.get) Changing language to %s: referer is %s' % (lang, referer))
             
-        self.redirect(redirect_url)
+            referer_url = self.request.headers.get('Referer', '/')
+            redirect_url = referer_url
+                
+            self.redirect(redirect_url)
