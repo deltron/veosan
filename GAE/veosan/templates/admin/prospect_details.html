@@ -3,20 +3,47 @@
 {% set active_page = "prospects" %}
 
 {% block subhead %} Prospect Details {% endblock %}
-{% block lead %} {{ prospect.prospect_email }} {% endblock %}
+{% block lead %} {{ prospect.email }} {% endblock %}
 
 {% block content %}
 <div class="row">
-	<div class="span12">
-		<h3>GAE Geography</h3>
-		Country: {{ prospect.gae_country }}<br>
-		Region: {{ prospect.gae_region }}<br>
-		City: {{ prospect.gae_city }}<br>
+	<div class="span6">
+		<div>
+			<h3>Contact</h3>
+			{{ prospect.first_name }} {{ prospect.last_name }}
+			<br>
+			{{ prospect.email }}
+			<br>
+			{{ prospect.category }}
+			<br>
+			{{ prospect.language }}
+			<br>
+		</div>
+		<br>
+		<div>
+			<h3>GAE Geography</h3>
+			Country: {{ prospect.gae_country }}
+			<br>
+			Region: {{ prospect.gae_region }}
+			<br>
+			City: {{ prospect.gae_city }}
+			<br>
+		</div>
 	</div>
+	<div class="span6">
+		<h3>Prospect URLs</h3>
+		<a href="/tour/{{ prospect.prospect_id }}">http://veosan.com/tour/{{ prospect.prospect_id }}</a>
+		<br>
+		<a href="/signup/{{ prospect.prospect_id }}">http://veosan.com/signup/{{ prospect.prospect_id }}</a>
+		<br>
+		<a href="/blog/{{ prospect.prospect_id }}">http://veosan.com/blog/{{ prospect.prospect_id }}</a>
+	</div>
+
 </div>
 
 <div class="row">
-	<br><br>
+	<br>
+	<br>
 	<div class="span12">
 		<h3>Site Logs</h3>
 		<table class="table table-striped">
@@ -26,13 +53,13 @@
 				<th>Referer</th>
 			</thead>
 			{% if prospect %}
-				{% for l in prospect.get_site_logs() %}
-				<tr>
-					<td>{{ l.access_time|format_datetime(format="medium") }}</td>
-					<td>{{ l.page }}</td>
-					<td>{{ l.referer }}</td>
-				</tr>
-				{% endfor %}
+			{% for l in prospect.get_site_logs() %}
+			<tr>
+				<td>{{ l.access_time|format_datetime(format="medium") }}</td>
+				<td>{{ l.page }}</td>
+				<td>{{ l.referer }}</td>
+			</tr>
+			{% endfor %}
 			{% endif %}
 		</table>
 	</div>
