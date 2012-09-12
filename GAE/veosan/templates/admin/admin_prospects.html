@@ -11,21 +11,23 @@
 		<table class="table">
 			<thead>
 				<tr>
-					<th width="20%">Prospect ID</th>
-					<th width="20%">Unique Link</th>
-					<th width="20%">Redirects to Landing Page</th>
-					<th width="20%">Email</th>
-					<th width="20%">Landing Hits</th>
-					<th width="20%">Delete</th>
+					<th width="10%">Prospect ID</th>
+					<th width="12%">Email</th>
+					<th width="12%">First Name</th>
+					<th width="12%">Last Name</th>
+					<th width="12%">Category</th>
+					<th width="5%">Hits</th>
+					<th width="10%">Delete</th>
 				</tr>
 			</thead>
 			<tbody>
 				{% for p in prospects %}
 				<tr>
 					<td><a href="/admin/prospects/{{ p.prospect_id }}">{{ p.prospect_id }}</a></td>
-					<td>http://veosan.com/p/{{p.prospect_id}}</td>
-					<td><a href="{{ p.prospect_landing }}">{{ p.prospect_landing }}</a></td>
-					<td>{{ p.prospect_email }}</td>
+					<td>{{ p.email }}</td>
+					<td>{{ p.first_name }}</td>
+					<td>{{ p.last_name }}</td>
+					<td>{{ p.category }}</td>
 					<td>{{ p.landing_hits }}</td>
 					<td><a href="/admin/prospects/delete/{{ p.prospect_id }}" class="btn btn-danger">Delete</a></td>
 				</tr>
@@ -33,18 +35,20 @@
 			</tbody>
 		</table>
 	</div>
+	
 	<div class="span12">
 		<div class="well">
 			<h3>Add New Prospect</h3>
 			<form class="form-inline" action="/admin/prospects" method="post" id="prospect_form">
 					{{ macro.display_errors_for_field(prospect_form.prospect_id) }}
-					{{ macro.display_errors_for_field(prospect_form.prospect_email) }}
-					{{ macro.display_errors_for_field(prospect_form.prospect_landing) }}
+					{{ macro.display_errors_for_field(prospect_form.email) }}
 
 				
 					{{ prospect_form.prospect_id(placeholder='Prospect ID', class='input-small') }}
-					{{ prospect_form.prospect_email(placeholder='Email', class='input-large') }}
-					{{ prospect_form.prospect_landing(placeholder='Landing Page', class='input-large') }}
+					{{ prospect_form.email(placeholder='Email', class='input-large') }}
+					{{ prospect_form.first_name(placeholder='First Name', class='input-medium') }}
+					{{ prospect_form.last_name(placeholder='Last Name', class='input-medium') }}
+					{{ prospect_form.category() }}
 
 					<button type="submit" class="btn btn-primary">
 						{{ _('Add') }}

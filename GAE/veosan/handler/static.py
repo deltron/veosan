@@ -7,27 +7,32 @@ import urlparse
 import util
 
 class StaticHandler(BaseHandler):
-    def render_static(self, name):
+    def render_static(self, name, prospect_id = None):
         # set language
         self.set_language_from_url()
+        
+        # set prospect
+        if prospect_id:
+            self.log_prospect(prospect_id)
+        
         # render
         template = "static/" + name + ".html"
         self.render_template(template)
 
-    def get_about(self):
-        self.render_static('about')
+    def get_about(self, prospect_id = None):
+        self.render_static('about', prospect_id)
 
-    def get_careers(self):
-        self.render_static('careers')
+    def get_careers(self, prospect_id = None):
+        self.render_static('careers', prospect_id)
 
-    def get_terms(self):
-        self.render_static('terms')
+    def get_terms(self, prospect_id = None):
+        self.render_static('terms', prospect_id)
 
-    def get_privacy(self):
-        self.render_static('privacy')
+    def get_privacy(self, prospect_id = None):
+        self.render_static('privacy', prospect_id)
 
-    def get_tour(self):
-        self.render_static('tour')
+    def get_tour(self, prospect_id = None):
+        self.render_static('tour', prospect_id)
 
         
 class WarmupHandler(BaseHandler):
@@ -106,9 +111,13 @@ class HideSideHandler(BaseHandler):
 
 
 class BlogHandler(BaseHandler):
-    def get(self, what = None):
+    def get(self, what = None, prospect_id = None):
         site_counter = db.get_site_counter()
         site_counter.blog_clicks += 1
+        
+        # set prospect
+        if prospect_id:
+            self.log_prospect(prospect_id)
         
         # figure out the language
         url_obj = urlparse.urlparse(self.request.url)

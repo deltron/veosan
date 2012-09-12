@@ -60,6 +60,23 @@ class ProviderSignupHandler1(UserBaseHandler):
             self.render_template('user/signup_provider_1.html', provider_signup_form=provider_signup_form)
 
 class ProviderSignupHandler2(UserBaseHandler):
+    def get(self, prospect_id = None):
+        # set prospect
+        if prospect_id:
+            self.log_prospect(prospect_id)
+            prospect = db.get_prospect_from_prospect_id(prospect_id)
+            
+            # populate form with prospect info
+            provider_signup_form2 = ProviderSignupForm2().get_form(obj=prospect)
+            
+            # check the agreement by default
+            provider_signup_form2['terms_agreement'].data = True
+            
+            # on to the next step
+            self.render_template('user/signup_provider_2.html', provider_signup_form2=provider_signup_form2)
+        else:
+            self.redirect('/en/signup/provider')
+    
     def post(self):
         provider_signup_form2 = ProviderSignupForm2().get_form(self.request.POST)
         
@@ -147,7 +164,8 @@ class ProviderSignupHandler2(UserBaseHandler):
                                     
             # remove partial provider
             partial_provider = db.get_partial_provider_from_email(provider.email)
-            partial_provider.key.delete()
+            if partial_provider:
+                partial_provider.key.delete()
         else:
             self.render_template('user/signup_provider_2.html', provider_signup_form2=provider_signup_form2)
             

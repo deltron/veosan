@@ -22,7 +22,6 @@ def get_routes():
                    Route('/prospects', prospects_handler.AdminProspectsHandler),
                    Route('/prospects/delete/<prospect_id>', prospects_handler.AdminProspectDeleteHandler),
                    Route('/prospects/<prospect_id>', prospects_handler.AdminProspectDetailsHandler),
-
             
                    PathPrefixRoute('/provider', [
                        # provider actions

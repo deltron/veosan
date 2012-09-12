@@ -9,7 +9,9 @@ class AdminProspectsHandler(AdminBaseHandler):
     def get(self):
         prospects = db.fetch_provider_prospects()
         prospect_form = forms.provider.ProviderProspectForm().get_form()
-        self.render_template('admin/admin_prospects.html', prospects=prospects, prospect_form=prospect_form)
+        prospect_trio_form = forms.provider.ProviderProspectForm().get_form()
+
+        self.render_template('admin/admin_prospects.html', prospects=prospects, prospect_form=prospect_form, prospect_trio_form=prospect_trio_form)
 
     def post(self):
         add_prospect_form = forms.provider.ProviderProspectForm().get_form(self.request.POST)
@@ -22,6 +24,8 @@ class AdminProspectsHandler(AdminBaseHandler):
             self.redirect("/admin/prospects")
         else:
             self.render_template('admin/admin_prospects.html', prospects=prospects, prospect_form=add_prospect_form)
+    
+
 
 
 class AdminProspectDeleteHandler(AdminBaseHandler):
