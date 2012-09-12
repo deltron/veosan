@@ -65,7 +65,9 @@
 						{% if p.onsite %} <span class="label label-info">onsite</span>{% endif %}
 					</td>
 					<td>
-						{{p.user.get().last_login|format_datetime(format="medium")}}
+						{% if p.user %}
+							{{p.user.get().last_login|format_datetime(format="medium")}}
+						{% endif %}
 					</td>
 					<td>
 						{{p.get_total_available_hours_per_week()}}

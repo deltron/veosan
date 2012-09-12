@@ -290,10 +290,10 @@ class BaseHandler(webapp2.RequestHandler):
             return self.get_language_from_url()
         elif self.get_current_user():
             return self.get_current_user().language
-        elif provider_from_vanity_url:
+        elif provider_from_vanity_url and provider_from_vanity_url.profile_language:
             return provider_from_vanity_url.profile_language
         else:
-            return util.DEFAULT_LANG
+            return util.DEFAULT_LANG 
         
     def get_language_from_url(self, url=None):
         if not url:
