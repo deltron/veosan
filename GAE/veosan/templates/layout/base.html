@@ -5,7 +5,6 @@
 	<head>
 		<meta charset="utf-8">
 		<title>
-			
 			{% if provider and provider.last_name %}
 			{# show provider name in title for SEO #}
 			{{ macro.display_provider_name(provider) }}
@@ -21,6 +20,11 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta name="description" content="">
 		<meta name="author" content="">
+
+		{% if active_page == 'public_profile' %}
+		<link rel="canonical" href="http://www.veosan.com/{{ provider.vanity_url }}" />
+		{% endif %}
+
 		<!-- Le styles -->
 		<style type="text/css">
 			body {
