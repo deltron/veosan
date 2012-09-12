@@ -25,6 +25,7 @@
 				<th>Page</th>
 				<th>Referer</th>
 			</thead>
+			{% if prospect %}
 			{% for l in prospect.get_site_logs() %}
 			<tr>
 				<td>{{ l.access_time|format_datetime(format="medium") }}</td>
@@ -32,7 +33,7 @@
 				<td>{{ l.referer }}</td>
 			</tr>
 			{% endfor %}
-			
+			{% endif %}
 		</table>
 	</div>
 </div>
