@@ -62,9 +62,9 @@ class ProviderTest(BaseTest):
 
         user = db.get_user_from_email(self._TEST_PROVIDER_EMAIL)
 
-        self.assertEqual(m.subject, 'Veosan - password reset instructions' )
+        self.assertEqual(m.subject, 'Veosan - Instructions pour mot de passe' )
         self.assertEqual(m.sender, 'support@veosan.com')
-        self.assertIn('Please click the link below to choose a new password', m.body.payload)
+        self.assertIn('Veuillez suivre le lien ci-dessous pour réinitialiser votre mot de passe', m.body.payload)
 
         self.assertTrue('/user/resetpassword/%s' % user.resetpassword_token in m.body.payload)
 
@@ -84,7 +84,7 @@ class ProviderTest(BaseTest):
         reset_post_response = reset_post_response.follow()
         self.assertEqual(reset_post_response.status_int, 200)
         
-        reset_post_response.mustcontain('Welcome back! Password has been reset.')
+        reset_post_response.mustcontain('Content de vous revoir! Votre mot de passe à été réinitialisé.')
         reset_post_response.mustcontain('Profil')
 
         # try to login with old credentials
@@ -133,9 +133,9 @@ class ProviderTest(BaseTest):
 
         user = db.get_user_from_email(self._TEST_PROVIDER_EMAIL)
 
-        self.assertEqual(m.subject, 'Veosan - password reset instructions')
+        self.assertEqual(m.subject, 'Veosan - Instructions pour mot de passe')
         self.assertEqual(m.sender, 'support@veosan.com')
-        self.assertIn('Please click the link below to choose a new password', m.body.payload)
+        self.assertIn('Veuillez suivre le lien ci-dessous pour réinitialiser votre mot de passe', m.body.payload)
 
         self.assertTrue('/user/resetpassword/%s' % user.resetpassword_token in m.body.payload)
 
@@ -156,13 +156,13 @@ class ProviderTest(BaseTest):
 
         self.assertEqual(reset_post_response.status_int, 200)
         
-        reset_post_response.mustcontain('Welcome back! Password has been reset.')
+        reset_post_response.mustcontain('Content de vous revoir! Votre mot de passe à été réinitialisé.')
         reset_post_response.mustcontain('Profil')
 
         # try to re-use the same password reset token
         reset_response = self.testapp.get(reset_url)
-        reset_response.mustcontain("Links are expired after 24 hours, please try again")
-
+        reset_response.mustcontain("Désolé, votre lien est expiré, veuillez essayer de nouveau.")
+        
     def test_disabled_welcome_page(self):
         self.self_signup_provider()
         

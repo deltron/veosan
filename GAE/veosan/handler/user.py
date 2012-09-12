@@ -178,7 +178,7 @@ class ResetPasswordHandler(UserBaseHandler):
                 self.render_booking_confirmed_and_password_selection(user=user, signup_token=resetpassword_token)
             else:
                 # no user found for password reset key, send them to the login page
-                error_message = "Sorry, we can't find anyone for that password reset link. Links are expired after 24 hours, please try again."
+                error_message = _("Sorry, your link is expired, please try again.")
                 logging.info("(ProviderResetPasswordHandler.get) can't find anyone for that password reset link: %s" % resetpassword_token)
                 self.render_login(error_message=error_message)
         else:

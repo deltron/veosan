@@ -329,7 +329,7 @@ class ScheduleMap(dict):
         return False
     
 
-def create_schedule_map(schedules):
+def create_schedule_dict(schedules):
     sm = ScheduleMap()
     for (key, label) in get_days_of_the_week():
         sm[key] = dict()
@@ -354,7 +354,8 @@ def generate_complete_datetimes_dict(schedules, start_date, period):
         Generate a dict of all dates in the period to list of hours available
     '''
     dtm = dict()
-    sm = create_schedule_map(schedules)
+    # create a dist [day_key][start_time] = schedule
+    sm = create_schedule_dict(schedules)
     end_date = start_date + period
     d = start_date
     while d < end_date:
@@ -365,7 +366,7 @@ def generate_complete_datetimes_dict(schedules, start_date, period):
         day_key = get_days_of_the_week()[weekday_int][0]
         # check schedules for that day
         days_schedules = sm[day_key]
-        for hour_key in days_schedules.keys():
+        for hour_key in sorted(days_schedules.keys()):
             s = days_schedules[hour_key]
             datetimes_list = generate_datetimes_from_schedule(s, d)
             dtm[d].extend(datetimes_list)
