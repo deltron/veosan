@@ -64,7 +64,7 @@ class AuthenticationTest(BaseTest):
         # email in the header
         login_welcome_page.mustcontain(self._TEST_PATIENT_EMAIL)
         # login lands on index page
-        login_welcome_page.mustcontain('Upcoming Appointments')
+        login_welcome_page.mustcontain('Rendez-vous à venir')
 
     def test_patient_login_fail(self):
         # Create patient in datastore

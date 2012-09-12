@@ -155,7 +155,7 @@ class BaseTest(unittest.TestCase):
         # email in the header
         login_welcome_page.mustcontain(self._TEST_PATIENT_EMAIL)
         # login lands on index page
-        login_welcome_page.mustcontain('Upcoming Appointments')
+        login_welcome_page.mustcontain('Rendez-vous à venir')
         
         
     def logout_patient(self):
@@ -509,7 +509,7 @@ class BaseTest(unittest.TestCase):
             
         if user_logged_in:
             response = response.follow()
-            response.mustcontain("Upcoming Appointments")
+            response.mustcontain("Rendez-vous à venir")
                 
         else:
             # check email sent page (no user is logged in)
