@@ -104,6 +104,8 @@ class PasswordHandler(UserBaseHandler):
     def get(self, signup_token=None):
         user = db.get_user_from_signup_token(signup_token)
         
+        self.set_language(user.language)
+        
         self.render_booking_confirmed_and_password_selection(user=user, signup_token=signup_token)
         
     def post(self, signup_token=None):

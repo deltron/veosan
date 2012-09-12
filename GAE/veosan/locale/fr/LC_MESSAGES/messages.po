@@ -569,6 +569,16 @@ msgstr "pour toute question relié à votre rendez-vous"
 msgid "Contact us"
 msgstr "Contactez-nous"
 
+#################
+# Patient Bookings Page
+#################
+
+msgid "Upcoming Appointments"
+msgstr "Rendez-vous à venir"
+
+msgid "See what's in your schedule."
+msgstr "Organiser votre temps."
+
 
 #################
 # Welcome Page
