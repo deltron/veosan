@@ -17,7 +17,7 @@ class ProviderScheduleHandler(ProviderBaseHandler):
         days = time.get_days_of_the_week()
         times = time.get_time_list()
         
-        schedule_mapmap = util.create_schedule_map(schedules)
+        schedule_mapmap = util.create_schedule_dict(schedules)
         if not schedule_form:
             schedule_form = ProviderScheduleForm().get_form()
         self.render_template('provider/schedule.html', provider=provider, schedules=schedule_mapmap, times=times, days=days, schedule_form=schedule_form, **kw)
