@@ -50,7 +50,10 @@ class ProviderPublicProfileHandler(ProviderBaseHandler):
             
             # set the display language to provider's preference
             language = provider.profile_language
-            self.set_language(language)
+            if language:
+                self.set_language(language)
+            else:
+                self.set_language(util.DEFAULT_LANG)
 
             # add some dates & times to display part of schedule on page
             start_date = time.tomorrow()

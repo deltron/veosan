@@ -899,6 +899,19 @@ msgid "Profile Views in the Past 30 Days"
 msgstr "Visites dans les 30 derniers jours"
 
 
+msgid "Here are some times when %(name)s is free."
+msgstr "Voici des plages horaire disponibles pour %(name)s"
+
+msgid "Book an Appointment"
+msgstr "Prennez un rendez-vous"
+
+msgid "Click here to see the full list."
+msgstr "Cliquez ici pour voir la liste complète"
+
+msgid "View Full Schedule"
+msgstr "Horaire complet"
+
+
 #################
 # Booking from Public Profile
 #################

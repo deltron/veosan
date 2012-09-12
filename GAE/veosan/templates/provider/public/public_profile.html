@@ -266,10 +266,10 @@
 
 		{% if provider.booking_enabled and provider.get_total_available_hours_per_week() > 0 %}
 		<div class="well well-small pull-right" style="width: 80%;">
-			<h3>Book an Appointment</h3>
-			Here are some times when {{ provider.first_name }} is free.
+			<h3>{{_("Book an Appointment")}}</h3>
+			{{_("Here are some times when %(name)s is free.", name=provider.first_name) }}
 			<br>
-			<a href="/{{ provider.vanity_url }}/book">Click here to see the full list.</a>
+			<a href="/{{ provider.vanity_url }}/book">{{ _("Click here to see the full list.") }}</a>
 			<br>
 			<br>
 			<ul class="unstyled">
@@ -285,7 +285,7 @@
 				</li>
 				{% endfor %}
 			</ul>
-			<a href="/{{ provider.vanity_url }}/book" style="width:80%; margin 5px auto" class="btn btn-primary"> View Full Schedule </a>
+			<a href="/{{ provider.vanity_url }}/book" style="width:80%; margin 5px auto" class="btn btn-primary"> {{ _("View Full Schedule") }} </a>
 		</div>
 		<br>
 		<br>
