@@ -478,7 +478,11 @@ class BaseHandler(webapp2.RequestHandler):
             if "X-AppEngine-CityLatLong" in self.request.headers:
                 prospect.gae_city_lat_long = self.request.headers["X-AppEngine-CityLatLong"]
     
+    
+            self.set_language(prospect.language)
+            
             prospect.landing_hits += 1
             prospect.put()
             self.session['prospect_id'] = prospect.prospect_id
+            
         

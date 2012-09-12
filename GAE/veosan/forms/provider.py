@@ -172,6 +172,7 @@ class ProviderStatusForm(Form):
 class ProviderProspectForm(CustomForm):
     def _set_fields(self, form): 
         setattr(form, 'prospect_id', TextField(_(u'Prospect ID'), [validators.Length(min=2, message=_(u'Prospect ID required.')), custom_validators.UniqueProspectID(message="Prospect ID is not unique")]))
+        setattr(form, 'language', SelectField(_(u'Language'), choices=util.get_all_profile_languages()))
         setattr(form, 'email', TextField(_(u'Prospect Email'), [validators.Length(min=2, message=_(u'Email required.'))]))
         setattr(form, 'first_name', TextField(_(u'First Name'), [validators.Length(min=2, message=_(u'Email required.'))]))
         setattr(form, 'last_name', TextField(_(u'Last Name'), [validators.Length(min=2, message=_(u'Email required.'))]))

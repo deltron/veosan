@@ -10,6 +10,7 @@ class ProviderProspect(ndb.Model):
     
     # unique ID / url for this prospect
     prospect_id = ndb.StringProperty()
+    language = ndb.StringProperty()
     email = ndb.StringProperty()
     first_name = ndb.StringProperty()
     last_name = ndb.StringProperty()

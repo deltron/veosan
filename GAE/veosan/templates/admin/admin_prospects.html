@@ -12,6 +12,7 @@
 			<thead>
 				<tr>
 					<th width="10%">Prospect ID</th>
+					<th width="12%">Language</th>
 					<th width="12%">Email</th>
 					<th width="12%">First Name</th>
 					<th width="12%">Last Name</th>
@@ -24,6 +25,7 @@
 				{% for p in prospects %}
 				<tr>
 					<td><a href="/admin/prospects/{{ p.prospect_id }}">{{ p.prospect_id }}</a></td>
+					<td>{{ p.language }}</td>
 					<td>{{ p.email }}</td>
 					<td>{{ p.first_name }}</td>
 					<td>{{ p.last_name }}</td>
@@ -45,10 +47,11 @@
 
 				
 					{{ prospect_form.prospect_id(placeholder='Prospect ID', class='input-small') }}
-					{{ prospect_form.email(placeholder='Email', class='input-large') }}
+					{{ prospect_form.language(class='input-small') }}
+					{{ prospect_form.email(placeholder='Email', class='input-medium') }}
 					{{ prospect_form.first_name(placeholder='First Name', class='input-medium') }}
 					{{ prospect_form.last_name(placeholder='Last Name', class='input-medium') }}
-					{{ prospect_form.category() }}
+					{{ prospect_form.category(class='input-medium') }}
 
 					<button type="submit" class="btn btn-primary">
 						{{ _('Add') }}
