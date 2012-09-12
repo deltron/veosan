@@ -73,6 +73,24 @@ class UniqueEmail(object):
                 #available
                 pass
 
+class UniqueProspectID(object):
+    def __init__(self, message=None):
+        self.message = message
+
+    def __call__(self, form, field):
+        prospect_id = field.data
+    
+        if prospect_id:
+            # try to fetch a provider with this email address
+            prospect = db.get_prospect_from_prospect_id(prospect_id)
+            
+            if prospect:
+                # taken
+                raise ValidationError(self.message)
+    
+            else:
+                #available
+                pass
 
 class NoWhitespace(object):
     def __init__(self, message=None):

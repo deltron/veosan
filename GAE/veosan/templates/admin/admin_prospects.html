@@ -36,7 +36,12 @@
 	<div class="span12">
 		<div class="well">
 			<h3>Add New Prospect</h3>
-			<form class="form-inline" action="/admin/prospects" method="post">
+			<form class="form-inline" action="/admin/prospects" method="post" id="prospect_form">
+					{{ macro.display_errors_for_field(prospect_form.prospect_id) }}
+					{{ macro.display_errors_for_field(prospect_form.prospect_email) }}
+					{{ macro.display_errors_for_field(prospect_form.prospect_landing) }}
+
+				
 					{{ prospect_form.prospect_id(placeholder='Prospect ID', class='input-small') }}
 					{{ prospect_form.prospect_email(placeholder='Email', class='input-large') }}
 					{{ prospect_form.prospect_landing(placeholder='Landing Page', class='input-large') }}
