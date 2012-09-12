@@ -1513,6 +1513,22 @@ msgstr "Date et heure"
 msgid "Consult and manage all your appointments here"
 msgstr "Consultez vos rendez-vous ici"
 
+#
+# Password Reset Email
+#
+
+msgid "Password reset instructions"
+msgstr "Instructions pour mot de passe"
+
+msgid "I hear your forgot your password. No worries, it happens to everyone. Please click the link below to choose a new password."
+msgstr "Vous avez oublié votre mot de passe, Aucun problème. Veuillez suivre le lien ci-dessous pour réinitialiser votre mot de passe"
+
+
+msgid "Welcome back! Password has been reset."
+msgstr "Content de vous revoir! Votre mot de passe à été réinitialisé."
+
+msgid "Sorry, your link is expired, please try again."
+msgstr "Désolé, votre lien est expiré, veuillez essayer de nouveau."
 
 
 ####################

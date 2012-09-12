@@ -110,7 +110,7 @@ def email_user_password_reset(jinja2, user, activation_url):
     message = mail.EmailMessage()
     message.sender = VEOSAN_SUPPORT_ADDRESS
     message.to = user.get_email()
-    message.subject = u'Veosan - password reset instructions'
+    message.subject = u'Veosan - ' + _('Password reset instructions')
     message.body = jinja2.render_template('email/provider_passwordreset.txt', activation_url=activation_url)
     try:
         message.send()
