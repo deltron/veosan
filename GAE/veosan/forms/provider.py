@@ -171,6 +171,6 @@ class ProviderStatusForm(Form):
     
 class ProviderProspectForm(CustomForm):
     def _set_fields(self, form): 
-        setattr(form, 'prospect_id', TextField(_(u'Prospect ID'), [validators.Length(min=2, message=_(u'Last name required.'))]))
-        setattr(form, 'prospect_email', TextField(_(u'Prospect Email'), [validators.Length(min=2, message=_(u'Last name required.'))]))
-        setattr(form, 'prospect_landing', TextField(_(u'Prospect Email'), [validators.Length(min=2, message=_(u'Last name required.'))]))
+        setattr(form, 'prospect_id', TextField(_(u'Prospect ID'), [validators.Length(min=2, message=_(u'Prospect ID required.')), custom_validators.UniqueProspectID(message="Prospect ID is not unique")]))
+        setattr(form, 'prospect_email', TextField(_(u'Prospect Email'), [validators.Length(min=2, message=_(u'Email required.'))]))
+        setattr(form, 'prospect_landing', TextField(_(u'Prospect Landing'), [validators.Length(min=2, message=_(u'Landing page required.'))]))
