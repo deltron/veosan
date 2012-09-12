@@ -95,22 +95,21 @@
 					<li>
 						<a id='login-link' href="{{login_url}}">{{ _('My Account') }}</a>
 					</li>
-					<li class="divider-vertical">
-					</li>
+					
 
 					{% endif%}
 
 					<!-- language -->
 					{% if not provider_from_user %}
-					{% for l in other_languages %}
-					<li>
-						{% if is_translatable_url %}
-						<a id='lang-change-link' href="/{{l~url_post_language}}">{{ language_labels[l] }}</a>
-						{% else %}
-						<a id='lang-change-link' href="{{l}}">{{ language_labels[l] }}</a>
-						{% endif %}
-					</li>
-					{% endfor %}
+					
+					{% if is_translatable_url %}
+						<li class="divider-vertical"></li>
+						{% for l in other_languages %}
+						<li>
+							<a id='lang-change-link' href="/{{l~url_post_language}}">{{ language_labels[l] }}</a>
+						</li>
+						{% endfor %}
+					{% endif %}
 					{% endif %}
 
 					{% if 'admin' in roles %}
