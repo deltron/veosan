@@ -4,11 +4,11 @@ from base import BaseTest
 import unittest
 
 class ProspectTest(BaseTest):
-    def create_prospect(self, prospect_id = 103):
+    def create_prospect(self, prospect_id = 103, prospect_language = 'en'):
         self.login_as_admin()
         # create a new prospect
         response = self.testapp.get('/admin/prospects')
-        prospect_form = self.populate_prospect_form(response.forms['prospect_form'], prospect_id)
+        prospect_form = self.populate_prospect_form(response.forms['prospect_form'], prospect_id, prospect_language)
 
         response = prospect_form.submit().follow()
         
@@ -19,9 +19,9 @@ class ProspectTest(BaseTest):
         self.logout_admin()
         
         
-    def populate_prospect_form(self, prospect_form, prospect_id):
+    def populate_prospect_form(self, prospect_form, prospect_id, prospect_language = 'en'):
         prospect_form['prospect_id'] = prospect_id
-        prospect_form['language'] = 'en'
+        prospect_form['language'] = prospect_language
         prospect_form['email'] = self._TEST_PROVIDER_EMAIL
         prospect_form['first_name'] = 'Al'
         prospect_form['last_name'] = 'Swearingen'
@@ -49,8 +49,25 @@ class ProspectTest(BaseTest):
         response.mustcontain("/tour/103")
         
     def test_add_prospect_language(self):
-        pass
+        self.create_prospect(prospect_language='fr')
+        # hit up the prospect tour url
+        response = self.testapp.get('/tour/103')
+        
+        # should be the tour page
+        response.mustcontain("Améliorez votre présence en ligne avec un profil complètement dédié au monde de la santé")
+        response.mustcontain("C'est qui je suis!")
+        response.mustcontain('/fr/signup/provider')
 
+        # click on signup page
+        response = self.testapp.get('/fr/signup/provider')
+
+        # log in as admin and check the logs
+        self.login_as_admin()
+        response = self.testapp.get("/admin/prospects/103")
+        
+        response.mustcontain("/fr/signup/provider")
+        response.mustcontain("/tour/103")
+        
     def test_add_prospect_signup_page(self):
         self.create_prospect()
         
