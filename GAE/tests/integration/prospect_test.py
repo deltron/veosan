@@ -134,6 +134,12 @@ class ProspectTest(BaseTest):
         
         # should be on the welcome page
         welcome_response.mustcontain("Welcome!")
+        self.logout_provider(language='en')
+        
+        # recycle the signup URL
+        response = self.testapp.get('/signup/103').follow()
+        response.mustcontain(no="You are just one click away from having your own online presence.")
+        response.mustcontain("Sign up below to get started today!")
 
 
 if __name__ == "__main__":
