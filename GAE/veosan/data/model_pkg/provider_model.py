@@ -16,8 +16,6 @@ class Provider(ndb.Model):
     A provider
     '''
     created_on = ndb.DateTimeProperty(auto_now_add=True)
-    # sales status
-    status = ndb.StringProperty(default='prospect', choices=util.provider_statuses)
 
     # terms
     terms_agreement = ndb.BooleanProperty()
@@ -74,6 +72,7 @@ class Provider(ndb.Model):
     start_year = ndb.StringProperty()
     location = ndb.StringProperty()
     credentials = ndb.StringProperty()
+    status = ndb.StringProperty(default='prospect', choices=util.provider_statuses)
     # end deprecated
     
     def get_profile_photo_image_url(self, size=None, secure_url=True):
