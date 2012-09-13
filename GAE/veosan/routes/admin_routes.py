@@ -22,6 +22,9 @@ def get_routes():
                    Route('/prospects', prospects_handler.AdminProspectsHandler),
                    Route('/prospects/delete/<prospect_id>', prospects_handler.AdminProspectDeleteHandler),
                    Route('/prospects/<prospect_id>', prospects_handler.AdminProspectDetailsHandler),
+                   Route('/prospects/<prospect_id>/notes/<operation>', prospects_handler.AdminProspectNotesHandler),
+                   Route('/prospects/<prospect_id>/notes/<operation>/<key>', prospects_handler.AdminProspectNotesHandler),
+
                    # campaigns
                    Route('/campaigns', campaign_handler.AdminCampaignsHandler),
                    Route('/campaigns/delete/<campaign_key>', campaign_handler.AdminCampaignDeleteHandler),
@@ -40,8 +43,6 @@ def get_routes():
                        # logs
                        Route('/logs/<vanity_url>', provider_admin.ProviderEventLogHandler),
             
-                       Route('/notes/<vanity_url>', provider_admin.ProviderNotesHandler),
-                       Route('/notes/<vanity_url>/<operation>/<note_key>', provider_admin.ProviderNotesHandler),
                        Route('/feature/<feature_switch>/<vanity_url>', provider_admin.ProviderFeaturesHandler),
                     ]),
                ]),

@@ -72,6 +72,12 @@ indexes:
   - name: start_year
     direction: desc
 
+- kind: ProspectNote
+  properties:
+  - name: prospect
+  - name: created_on
+    direction: desc
+
 - kind: Schedule
   properties:
   - name: provider

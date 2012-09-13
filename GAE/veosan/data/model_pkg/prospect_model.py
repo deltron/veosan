@@ -1,5 +1,17 @@
 from google.appengine.ext import ndb
 from data.model_pkg.site_model import SiteLog
+import util
+
+class ProspectNote(ndb.Model):
+    prospect = ndb.KeyProperty(kind='ProviderProspect')
+
+    body = ndb.TextProperty()
+    note_type = ndb.StringProperty(choices=util.note_types) 
+    created_on = ndb.DateTimeProperty(auto_now_add=True)
+    user = ndb.UserProperty()
+    event_date = ndb.DateProperty(auto_now_add=True)
+    
+
 
 class ProviderProspect(ndb.Model):
     # address from AppEngine
@@ -25,4 +37,6 @@ class ProviderProspect(ndb.Model):
  
     def get_site_logs(self):
         return SiteLog.query(SiteLog.prospect == self.key).order(-SiteLog.access_time).fetch()
-        
+    
+    def get_notes(self):
+        return ProspectNote.query(ProspectNote.prospect == self.key).order(-ProspectNote.created_on).fetch()

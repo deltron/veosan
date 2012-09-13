@@ -133,10 +133,14 @@ class BaseTest(unittest.TestCase):
         return response
         
 
-    def logout_provider(self):
+    def logout_provider(self, language = None):
         logout_redirect = self.testapp.get('/logout')
         logout_response = logout_redirect.follow()
-        logout_response.mustcontain('Mon Compte')
+        
+        if language is 'en':
+            logout_response.mustcontain('My Account')
+        else:
+            logout_response.mustcontain('Mon Compte')
         
     
     def login_as_patient(self):
