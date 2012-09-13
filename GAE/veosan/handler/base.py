@@ -287,7 +287,9 @@ class BaseHandler(webapp2.RequestHandler):
         
         provider_from_vanity_url = db.get_provider_from_vanity_url(path_no_slash)
 
-        url_language = language.get_language_from_url(self.request.url)
+        # parse url and look for potential language
+        url_language = language.get_language_from_url(self.request.url) 
+        
         if url_language:
             return url_language
         elif self.get_current_user():

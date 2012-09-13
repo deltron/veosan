@@ -64,6 +64,25 @@ class ProspectTest(BaseTest):
         response.mustcontain('<option selected value="%s">' % 'doctor')
                         
 
+    def test_add_prospect_blog_page(self):
+        self.create_prospect()
+        
+        # hit up the prospect tour url
+        response = self.testapp.get('/blog/103')
+        
+        # should be redirect to the blog page
+        self.assertEqual(response.headers['Location'], "http://blog.veosan.com")
+                
+        # click on signup page
+        response = self.testapp.get('/en/signup/provider')
+
+        # log in as admin and check the logs
+        self.login_as_admin()
+        response = self.testapp.get("/admin/prospects/103")
+        
+        response.mustcontain("/en/signup/provider")
+        response.mustcontain("/blog/103")
+
     def test_add_prospect_duplicate_id(self):
         self.create_prospect()
         self.login_as_admin()
