@@ -270,14 +270,6 @@ class BaseHandler(webapp2.RequestHandler):
         return auth_conf
     
     def get_language(self):
-        #if self.session.has_key('lang'):
-        #    logging.info('(BaseHandler.get_language) get language from session = %s' % self.session['lang'])
-        #    return self.session['lang']
-        #else:
-        #    logging.info('(BaseHandler.get_language) no language in session, return default = %s' % util.DEFAULT_LANG)                    
-        
-        
-        
         # parse path and look for potential vanity url
         url = self.request.url
         url_obj = urlparse.urlparse(url)
@@ -290,21 +282,34 @@ class BaseHandler(webapp2.RequestHandler):
         # parse url and look for potential language
         url_language = language.get_language_from_url(self.request.url) 
         
+        # look for a prospect
+        prospect = None
+        if self.session.has_key('prospect_id'):
+            prospect_id = self.session['prospect_id']
+            if prospect_id:
+                prospect = db.get_prospect_from_prospect_id(prospect_id) 
+        
+        
+        # set the best language based on information available to us in order of priority
+        # 1. directly in URL
+        # 2. from a logged in user
+        # 3. from a provider's default language (if viewing their profile)
+        # 4. from a prospect's preset language
+        # 5. default system language
         if url_language:
             return url_language
         elif self.get_current_user():
             return self.get_current_user().language
         elif provider_from_vanity_url and provider_from_vanity_url.profile_language:
             return provider_from_vanity_url.profile_language
+        elif prospect:
+            return prospect.language
         else:
             return util.DEFAULT_LANG 
         
-
             
     def set_language(self, lang):
         logging.info('(BaseHandler.set_language) set session[lang] = %s' % lang)
-        # can we remove this without side-effects now?
-        # self.session['lang'] = lang
         self.install_translations(lang)
         
     def set_language_from_url(self):
@@ -486,5 +491,7 @@ class BaseHandler(webapp2.RequestHandler):
             prospect.landing_hits += 1
             prospect.put()
             self.session['prospect_id'] = prospect.prospect_id
+            
+            return prospect
             
         
