@@ -42,4 +42,7 @@ class AdminCampaignDetailsHandler(AdminBaseHandler):
     @admin_required
     def get(self, campaign_key):
         campaign = db.get_from_urlsafe_key(campaign_key)
-        self.render_template('admin/campaign_details.html', campaxxign=campaign)
+        edit_campaign_form = CampaignForm().get_form(obj=campaign)
+        self.render_template('admin/campaign_details.html', campaign=campaign, edit_campaign_form=edit_campaign_form)
+        
+        
