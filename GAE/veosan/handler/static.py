@@ -115,22 +115,28 @@ class BlogHandler(BaseHandler):
         site_counter = db.get_site_counter()
         site_counter.blog_clicks += 1
         
-        # set prospect
+        language = util.DEFAULT_LANG
+        
+        # set prospect and redirect based on that
         if prospect_id:
             self.log_prospect(prospect_id)
+            prospect = db.get_prospect_from_prospect_id(prospect_id)
+            language = prospect.language
+            
+        else:
+            # figure out the language
+            url_obj = urlparse.urlparse(self.request.url)
+            path = url_obj.path
+            if path:
+                path_split = path.split('/')
+                lang = path_split[1]
+            if lang in util.LANGUAGES:
+                logging.info('Setting lang from url %s' % lang)
+                self.set_language(lang)
+                
+            language = self.get_language()
         
-        # figure out the language
-        url_obj = urlparse.urlparse(self.request.url)
-        path = url_obj.path
-        if path:
-            path_split = path.split('/')
-            lang = path_split[1]
-        if lang in util.LANGUAGES:
-            logging.info('Setting lang from url %s' % lang)
-            self.set_language(lang)
-
-        
-        if self.get_language() == 'fr':
+        if language == 'fr':
             site_counter.blog_clicks_fr += 1
             self.redirect("http://blogue.veosan.com")
         else:
