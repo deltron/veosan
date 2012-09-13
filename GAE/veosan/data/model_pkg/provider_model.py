@@ -5,7 +5,7 @@ import util
 from data.model_pkg.cv_model import Education, Experience, ContinuingEducation,\
     ProfessionalOrganization, ProfessionalCertification, Specialty
 from data.model_pkg.network_model import ProviderNetworkConnection
-from data.model import Schedule, Booking, Note
+from data.model import Schedule, Booking
 import utilities
 from webapp2_extras.i18n import to_utc
 from data.model_pkg.site_model import SiteLog
@@ -78,27 +78,9 @@ class Provider(ndb.Model):
     def get_profile_photo_image_url(self, size=None, secure_url=True):
         return get_serving_url(self.profile_photo_blob_key, size=size, secure_url=secure_url)
 
-    def obfuscated_name(self):
-        if self.last_name:
-            first_letter_of_last_name = self.last_name[0]
-        return "%s %s %s." % (self.title, self.first_name, first_letter_of_last_name)
-        
-    def get_html_summary(self):
-        s = u''
-        fields_dict = vars(self).iteritems()
-        for k, v in fields_dict:
-            if (k != '_entity'):
-                s += u'%s: %s <br>' % (k[1:], v)
-        return s
-    
     def recently_created(self):
         datetime_24h_ago = datetime.now() - timedelta(hours=24)
         return self.created_on > datetime_24h_ago
-
-
-    def get_notes(self):
-        ''' Get Notes in reverse chronological order'''
-        return Note.query(Note.provider == self.key).order(-Note.created_on)
     
     def is_address_complete(self):
         if (not self.phone or (self.phone and len(self.phone) < 10)):

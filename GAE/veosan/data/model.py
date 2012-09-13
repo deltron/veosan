@@ -136,16 +136,6 @@ class Schedule(ndb.Model):
     
     
  
-class Note(ndb.Model):
-    provider = ndb.KeyProperty(kind='Provider')
-    provider_prospect = ndb.KeyProperty(kind='ProviderProspect')
-
-    body = ndb.TextProperty()
-    note_type = ndb.StringProperty(choices=util.note_types) 
-    created_on = ndb.DateTimeProperty(auto_now_add=True)
-    user = ndb.UserProperty()
-    event_date = ndb.DateProperty(auto_now_add=True)
-    
     
 class Booking(ndb.Model):
     created_on = ndb.DateTimeProperty(auto_now_add=True)
@@ -182,13 +172,4 @@ class Booking(ndb.Model):
     
     status = ndb.StringProperty()
 
-    def get_html_summary(self):
-        s = u''
-        fields_dict = vars(self).iteritems()
-        for k, v in fields_dict:
-            if (k != '_entity'):
-                s += u'%s: %s <br>' % (k[1:], v)
-        return s
-    
-    
     

@@ -6,7 +6,7 @@ from webapp2_extras.i18n import lazy_gettext as _
 from markdown2 import markdown2
 import logging
 from utilities.time import get_days_of_the_week
-from datetime import date, time, datetime, timedelta
+from datetime import time, datetime, timedelta
 from webapp2_extras.i18n import to_local_timezone
 
 DEV_SERVERS = ('localhost:8080', 'veosan-stage.appspot.com')
@@ -207,13 +207,6 @@ def getAllInsurance():
         ])
     return insurance
 
-    
-def getAllConfirmation():
-    return [("email", _(u"Email")),
-            ("telephone", _(u"Telephone")),
-        ]
-
-
 def get_signup_roles():
     return [("patient", _(u"I'm a patient")),
             ("provider", _(u"I'm health care professional")),
@@ -295,13 +288,13 @@ def markdown(text):
     if text:
         return markdown2.markdown(text)
 
-note_types = ['call', 'email', 'meeting', 'admin']
+note_types = ['call', 'email', 'meeting', 'info']
 
 def get_all_note_types():
     return [('call', _(u'Call')),
             ('email', _(u'Email')),
             ('meeting', _(u'Meeting')),
-            ('admin', _(u'Admin'))]
+            ('info', _(u'Info'))]
     
 # List of provider status
 provider_statuses = ['prospect', 'contacted_phone', 'contacted_meeting', 'client_enabled', 'client_suspended', 'ex_client_disabled']

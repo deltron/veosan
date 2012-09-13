@@ -42,9 +42,6 @@
 	<li id="administration" {% if  "administration" == active_page %} class="active" {% endif %} style="font-style:italic">
 		<a href="/admin/provider/admin/{{ provider_from_user.vanity_url }}">{{ _('Administration') }}</a>
 	</li>
-	<li id="notes" {% if  "notes" == active_page %} class="active" {% endif %} style="font-style:italic">
-		<a href="/admin/provider/notes/{{ provider_from_user.vanity_url }}">{{ _('Notes') }}</a>
-	</li>
 	<li id="notes" {% if  "logs" == active_page %} class="active" {% endif %} style="font-style:italic">
 		<a href="/admin/provider/logs/{{ provider_from_user.vanity_url }}">{{ _('Event Logs') }}</a>
 	</li>

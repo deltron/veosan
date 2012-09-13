@@ -160,11 +160,10 @@ class ProviderScheduleForm(CustomForm):
 
 # Admin only
 
-class ProviderNoteForm(CustomForm):
+class ProspectNoteForm(CustomForm):
     def _set_fields(self, form): 
-        setattr(form, 'body', TextAreaField(_(u'Note')))
         setattr(form, 'note_type', SelectField(_(u'Type'), choices=util.get_all_note_types()))
-        setattr(form, 'event_date', DateField(_(u'Date', coerce=date)))
+        setattr(form, 'body', TextAreaField(_(u'Note')))
     
 class ProviderStatusForm(Form):
     status = SelectField(_(u'Status'), choices=util.get_all_status_types())
