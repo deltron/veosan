@@ -15,6 +15,7 @@ import mail
 import urlparse
 from data.model_pkg.site_model import SiteConfig, SiteLog
 from utilities import language
+import datetime
 
 class BaseHandler(webapp2.RequestHandler):
     '''
@@ -334,6 +335,7 @@ class BaseHandler(webapp2.RequestHandler):
     def login_user(self, email, password, remember_me=True):
         auth_user = self.auth.get_user_by_password(email, password, remember=remember_me)
         user = self.get_current_user()
+        user.last_login = datetime.datetime.now()
         logging.info('(BaseHandler.login_user) Login succesful for %s' % user)
         return user
 

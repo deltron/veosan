@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import unittest
 from base import BaseTest
+from data import db
 
 
 class AuthenticationTest(BaseTest):
@@ -25,6 +26,12 @@ class AuthenticationTest(BaseTest):
         login_welcome_page.mustcontain(self._TEST_PROVIDER_EMAIL)
         # login lands on booking page
         login_welcome_page.mustcontain('Profil')
+        
+        #check if user last login has been updated
+        self.login_as_admin()
+        response = self.testapp.get('/admin/providers')
+        
+        # err, how to check?
         
 
     def test_provider_login_fail(self):

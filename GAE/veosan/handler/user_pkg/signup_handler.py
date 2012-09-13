@@ -13,6 +13,7 @@ import re
 from data.model_pkg.network_model import ProviderNetworkConnection
 from data.model_pkg.provider_model import Provider
 from webapp2_extras.i18n import lazy_gettext as _
+import datetime
 
 
 ############################
@@ -143,6 +144,7 @@ class ProviderSignupHandler2(UserBaseHandler):
             # now create an empty user for the provider
             user = self.create_empty_user_for_provider(provider)
             user.language = self.get_language()
+            user.last_login = datetime.datetime.now()
             provider.profile_language = user.language
             provider.put()
             

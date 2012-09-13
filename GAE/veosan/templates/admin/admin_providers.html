@@ -58,7 +58,7 @@
 						{{p.email}}
 					</td>
 					<td>
-						{% if p.user %}
+						{% if p.user.get().last_login %}
 							{{p.user.get().last_login|format_datetime(format="medium")}}
 						{% endif %}
 					</td>
