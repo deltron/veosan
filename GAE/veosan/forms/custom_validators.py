@@ -91,6 +91,22 @@ class UniqueProspectID(object):
             else:
                 #available
                 pass
+                      
+class UniqueCampaignName(object):
+    def __init__(self, message=None):
+        self.message = message
+
+    def __call__(self, form, field):
+        proposed_campaign_name = field.data
+        if proposed_campaign_name:
+            # try to fetch a provider with this email address
+            campaign = db.get_campaign_form_name(proposed_campaign_name)
+            if campaign:
+                # taken
+                raise ValidationError(self.message)
+            else:
+                #available
+                pass
 
 class NoWhitespace(object):
     def __init__(self, message=None):

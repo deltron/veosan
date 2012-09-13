@@ -1,0 +1,46 @@
+{% extends "/layout/admin_nav.html" %}
+
+{% set active_page = "campaigns" %}
+
+{% block subhead %}Campaigns{% endblock %}
+{% block lead %}"Computers have enabled people to make more mistakes faster than almost any invention in history, with the possible exception of tequila and hand guns{% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="span12">
+		<table class="table">
+			<thead>
+				<tr>
+					<th width="10%">Campaign Name</th>
+					<th width="12%">Email Subjects</th>
+					<th width="10%">Delete</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for c in campaigns %}
+				<tr>
+					<td><a href="/admin/campaigns/{{ c.key.urlsafe() }}">{{ c.name }}</a></td>
+					<td> <span class="label label-inverse">EN</span> {{ c.subject_en }} &nbsp;&nbsp;
+						 <span class="label label-inverse">FR</span> {{ c.subject_fr }} </td>
+					<td><a href="/admin/campaigns/delete/{{ c.key.urlsafe() }}" class="btn btn-danger">Delete</a></td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+	
+	<div class="span12">
+		<div class="well">
+			<h3>Add New Campaign</h3>
+			<form class="form-inline" action="/admin/campaigns" method="post" id="campaign_form">
+					{{ macro.make_standard_form(add_campaign_form) }}
+
+					<button type="submit" class="btn btn-primary">
+						{{ _('Add') }}
+					</button>
+			</form>
+		</div>
+	</div>
+</div>
+{% endblock content %}
+
