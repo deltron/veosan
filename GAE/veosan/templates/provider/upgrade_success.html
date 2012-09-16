@@ -1,0 +1,16 @@
+{% extends "/layout/provider_nav.html" %}
+
+{% set active_page = "upgrade" %}
+
+{% block subhead %}{{ _('Upgrade') }}{% endblock %}
+{% block lead %}{{ _('Access new features by upgrading your account.') }}{% endblock %}
+
+{% block content %}
+Per the user agreement, you must provide verbiage on the page displayed by the Return URL that will help the buyer understand that the payment has been made and that the transaction has been completed.
+You must provide verbiage on the page displayed by the Return URL that explains that payment transaction details will be emailed to the buyer.
+Example: Thank you for your payment. Your transaction has been completed, and a receipt for your purchase has been emailed to you. You may log into your account at www.paypal.com/ca to view details of this transaction.
+
+You have successfully saved your preferences. Please use the following identity token when setting up Payment Data Transfer on your website.
+NXEkMaAPu55XMJaN_prC7R9_trCTQWS4y-M9g-gjcbKc5N_n8p9E-xsYT-y
+
+{% endblock %}
