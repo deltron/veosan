@@ -43,6 +43,8 @@ class AdminCampaignDetailsHandler(AdminBaseHandler):
     def get(self, campaign_key):
         campaign = db.get_from_urlsafe_key(campaign_key)
         edit_campaign_form = CampaignForm().get_form(obj=campaign)
-        self.render_template('admin/campaign_details.html', campaign=campaign, edit_campaign_form=edit_campaign_form)
+        # split this out into Edit handler with paging
+        all_prospects = db.fetch_prospects()
+        self.render_template('admin/campaign_details.html', campaign=campaign, edit_campaign_form=edit_campaign_form, all_prospects=all_prospects)
         
         

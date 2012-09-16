@@ -34,6 +34,9 @@ def fetch_provider_prospects():
 def fetch_campaigns():
     return EmailCampaign.query().order(EmailCampaign.name)
 
+def fetch_prospects():
+    return ProviderProspect.query().order(ProviderProspect.last_name, ProviderProspect.first_name)
+
 def fetch_bookings():
     return Booking.query().order(-Booking.created_on)
 

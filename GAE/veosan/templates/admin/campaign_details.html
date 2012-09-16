@@ -1,6 +1,6 @@
 {% extends "/layout/admin_nav.html" %}
 
-{% set active_page = "prospects" %}
+{% set active_page = "campaigns" %}
 
 {% block subhead %} Campaign: {{campaign.name}} {% endblock %}
 {% block lead %} {{ campaign.description }} {% endblock %}
@@ -30,6 +30,9 @@
 <div class="row">	
 	<div class="span12">		
 		<h3>Prospects</h3>
+		<!-- Add Prospects button -->
+		<a class="btn btn-mini btn-info" href="#edit_prospects_modal" data-toggle="modal">Add Prospects</a>
+		
 		<table class="table">
 			<thead>
 				<tr>
@@ -64,4 +67,66 @@
 
 
 
+<div class="modal hide" id="edit_prospects_modal" style="display: none;">
+	<div class="modal-header">
+		<a class="close" data-dismiss="modal">×</a>
+
+		<h3>Edit Prospects</h3>
+	</div>
+	{% set post_url = '/admin/campaign/' + campaign.key.urlsafe() + '/prospects' %}
+
+	<form method="post" action="{{ post_url }}" class="form-horizontal" id="edit_campaign_prospects_form">
+		<div class="modal-body">
+
+		<table class="table">
+			<thead>
+				<tr>
+					<th width="5%">#</th>
+					<th width="10%">Prospect ID</th>
+					<th width="12%">Language</th>
+					<th width="12%">Email</th>
+					<th width="12%">First Name</th>
+					<th width="12%">Last Name</th>
+					<th width="12%">Category</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for p in all_prospects %}
+				<tr>
+					<td> <input type="checkbox"> </input> </td>
+					<td>{{ p.prospect_id }}</td>
+					<td>{{ p.language }}</td>
+					<td>{{ p.email }}</td>
+					<td>{{ p.first_name }}</td>
+					<td>{{ p.last_name }}</td>
+					<td>{{ p.category }}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		
+		</div>
+		<div class="modal-footer">
+			<button type="submit" class="btn btn-primary">
+				{{ _('Save') }}
+			</button>
+			<a class="btn" href="/admin/campaigns/{{ campaign.key.urlsafe() }}">{{ _('Cancel') }}</a>
+		</div>
+	</form>
+</div>
+
 {% endblock content %}
+
+{# Modal extra Javascript #}
+{% block extra_javascript %}
+	{% if edit == 'campaign_prospects' %}
+	<script>
+		$('#edit_prospects_modal').modal('show')
+	
+		$('edit_prospects_modal').on('hidden', function() {
+			window.location = "/admin/campaigns/{{ campaign.key.urlsafe() }}"
+		})
+	</script>
+	{% endif %}
+{% endblock %}
+
