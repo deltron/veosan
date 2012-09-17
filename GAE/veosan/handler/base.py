@@ -189,6 +189,14 @@ class BaseHandler(webapp2.RequestHandler):
             logging.error("Unable to parse empty user agent")
             self.response.write(self.jinja2.render_template(filename, **kw))
         
+        self.log_entry()
+        
+        
+        
+    def log_entry(self):
+        google_user = users.get_current_user()
+        user = self.get_current_user()
+        
         # log request in database
         log_entry = SiteLog()
         log_entry.language = self.get_language()

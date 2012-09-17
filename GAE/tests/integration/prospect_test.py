@@ -100,7 +100,7 @@ class ProspectTest(BaseTest):
         response = self.testapp.get("/admin/prospects/103")
         
         response.mustcontain("/en/signup/provider")
-        response.mustcontain("/blog/103")
+        response.mustcontain("<td>/blog/103</td>")
 
     def test_add_prospect_duplicate_id(self):
         self.create_prospect()
@@ -141,6 +141,25 @@ class ProspectTest(BaseTest):
         response.mustcontain(no="You are just one click away from having your own online presence.")
         response.mustcontain("Sign up below to get started today!")
 
+
+    def test_invalid_prospect_code(self):
+        self.create_prospect()
+        
+        # hit up the prospect signup url
+        response = self.testapp.get('/signup/zzvzzt').follow()        
+        
+        # should be the 2nd signup page (prepopulated)
+        response.mustcontain("Be Present")
+        response.mustcontain("Before this, you didn't exist! Get a professional profile that sets you apart.")
+
+
+        # hit up the prospect tour url
+        response = self.testapp.get('/tour/zzvzzt')
+        response.mustcontain("Improve your online presence with a profile focused on health care.")
+
+        # hit up the prospect blog url, default sends to english blog
+        response = self.testapp.get('/blog/zzvzzt')
+        self.assertEqual(response.headers['Location'], "http://blog.veosan.com")
 
 if __name__ == "__main__":
     unittest.main()

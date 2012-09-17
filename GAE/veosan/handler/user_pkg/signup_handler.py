@@ -68,20 +68,24 @@ class ProviderSignupHandler2(UserBaseHandler):
             prospect = db.get_prospect_from_prospect_id(prospect_id)
             
             # check if the prospect actually signed up
-            provider = db.get_provider_from_email(prospect.email)
-            if provider:
-                language = prospect.language
-                redirect_url = "/" + language + "/signup/provider"
-                self.redirect(str(redirect_url))
+            if prospect:
+                provider = db.get_provider_from_email(prospect.email)
+                
+                if provider:
+                    language = prospect.language
+                    redirect_url = "/" + language + "/signup/provider"
+                    self.redirect(str(redirect_url))
+                else:
+                    # populate form with prospect info
+                    provider_signup_form2 = ProviderSignupForm2().get_form(obj=prospect)
+                    
+                    # check the agreement by default
+                    provider_signup_form2['terms_agreement'].data = True
+                    
+                    # on to the next step
+                    self.render_template('user/signup_provider_2.html', provider_signup_form2=provider_signup_form2)
             else:
-                # populate form with prospect info
-                provider_signup_form2 = ProviderSignupForm2().get_form(obj=prospect)
-                
-                # check the agreement by default
-                provider_signup_form2['terms_agreement'].data = True
-                
-                # on to the next step
-                self.render_template('user/signup_provider_2.html', provider_signup_form2=provider_signup_form2)
+                self.redirect('/en/signup/provider')
         else:
             self.redirect('/en/signup/provider')
     
