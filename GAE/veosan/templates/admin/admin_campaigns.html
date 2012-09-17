@@ -20,11 +20,11 @@
 			<tbody>
 				{% for c in campaigns %}
 				<tr>
-					<td><a href="/admin/campaigns/{{ c.key.urlsafe() }}">{{ c.name }}</a></td>
+					<td><a href="/admin/campaign/{{ c.key.urlsafe() }}">{{ c.name }}</a></td>
 					<td> <span class="label label-inverse">EN</span> {{ c.subject_en }} &nbsp;&nbsp;
 						 <span class="label label-inverse">FR</span> {{ c.subject_fr }} </td>
 					<td> {{ c.prospects|count }}</td>	 
-					<td><a href="/admin/campaigns/delete/{{ c.key.urlsafe() }}" class="btn btn-danger">Delete</a></td>
+					<td><a href="/admin/campaign/delete/{{ c.key.urlsafe() }}" class="btn btn-danger">Delete</a></td>
 				</tr>
 				{% endfor %}
 			</tbody>
