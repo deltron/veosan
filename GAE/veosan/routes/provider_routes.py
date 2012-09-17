@@ -4,6 +4,7 @@ from webapp2 import Route
 from handler import patient, provider
 from handler.provider_pkg import welcome_handler, network_handler,\
     profile_handler, cv_handler, schedule_handler, address_handler
+from handler.payment_pkg import payment_handler
 
 
 def get_routes():
@@ -61,9 +62,5 @@ def get_routes():
                        
                        # upgrade account
                        Route('/upgrade/<vanity_url>', welcome_handler.ProviderUpgradeHandler),
-                       
-                       Route('/upgrade/success', welcome_handler.ProviderUpgradeSuccessHandler),
-                       Route('/upgrade/cancel', welcome_handler.ProviderUpgradeCancelHandler),
-
                    ])
             ]
