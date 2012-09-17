@@ -42,16 +42,3 @@ class ProviderUpgradeHandler(ProviderBaseHandler):
 
 
 
-class ProviderUpgradeSuccessHandler(ProviderBaseHandler):
-    @provider_required
-    def get(self):
-        
-        self.render_template("provider/upgrade_success.html")
-
-class ProviderUpgradeCancelHandler(ProviderBaseHandler):
-    @provider_required
-    def get(self):
-        
-        self.render_template("provider/upgrade_success.html")
-
-
