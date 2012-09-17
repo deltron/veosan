@@ -119,9 +119,13 @@ class BlogHandler(BaseHandler):
         
         # set prospect and redirect based on that
         if prospect_id:
-            self.log_prospect(prospect_id)
             prospect = db.get_prospect_from_prospect_id(prospect_id)
-            language = prospect.language
+            if prospect:
+                self.log_prospect(prospect_id)
+                language = prospect.language
+            else:
+                # default language to english for blog since there are more posts
+                language = 'en'
             
         else:
             # figure out the language
@@ -144,4 +148,5 @@ class BlogHandler(BaseHandler):
             self.redirect("http://blog.veosan.com")
 
         site_counter.put_async()
+        self.log_entry()
 
