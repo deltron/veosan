@@ -47,7 +47,8 @@
 				</tr>
 			</thead>
 			<tbody>
-				{% for p in prospects %}
+				{% for prospect in campaign.prospects %}
+				{% set p = prospect.get() %}
 				<tr>
 					<td><a href="/admin/prospects/{{ p.prospect_id }}">{{ p.prospect_id }}</a></td>
 					<td>{{ p.language }}</td>
@@ -93,7 +94,8 @@
 			<tbody>
 				{% for p in all_prospects %}
 				<tr>
-					<td> <input type="checkbox"> </input> </td>
+					<td> 
+						<input type="checkbox" name="prospect" value="{{p.key.urlsafe()}}" {% if p in campaign.prospects %} checked {% endif %}> </input> </td>
 					<td>{{ p.prospect_id }}</td>
 					<td>{{ p.language }}</td>
 					<td>{{ p.email }}</td>

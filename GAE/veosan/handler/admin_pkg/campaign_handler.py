@@ -3,6 +3,8 @@ from handler.admin import AdminBaseHandler
 from forms.campaign import CampaignForm
 from data.model_pkg.campaign_model import EmailCampaign
 from data import db
+import logging
+from google.appengine.ext import ndb
 
 class AdminCampaignsHandler(AdminBaseHandler):
     
@@ -39,12 +41,28 @@ class AdminCampaignDeleteHandler(AdminBaseHandler):
 
 
 class AdminCampaignDetailsHandler(AdminBaseHandler):
-    @admin_required
-    def get(self, campaign_key):
-        campaign = db.get_from_urlsafe_key(campaign_key)
+    
+    def render_campaign_details(self, campaign):
         edit_campaign_form = CampaignForm().get_form(obj=campaign)
-        # split this out into Edit handler with paging
         all_prospects = db.fetch_prospects()
         self.render_template('admin/campaign_details.html', campaign=campaign, edit_campaign_form=edit_campaign_form, all_prospects=all_prospects)
         
+    @admin_required
+    def get(self, campaign_key):
+        campaign = db.get_from_urlsafe_key(campaign_key)
         
+        # split this out into Edit handler with paging
+        self.render_campaign_details(campaign)
+        
+    def edit_prospects_post(self, campaign_key):
+        '''
+            Handle POST form edit prospects modal window
+        '''
+        campaign = db.get_from_urlsafe_key(campaign_key)
+        logging.info(self.request.POST.__dict__)
+        prospect_urlsafe_keys = self.request.get_all('prospect')
+        prospect_keys = map(lambda usk: ndb.Key(urlsafe=usk), prospect_urlsafe_keys)
+        logging.info('Setting prospects count %s' % len(prospect_keys))
+        campaign.prospects = prospect_keys
+        campaign.put() 
+        self.render_campaign_details(campaign=campaign)
