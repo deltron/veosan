@@ -24,25 +24,27 @@
 			<tbody>
 				{% for p in prospects %}
 					{% if p.status == '0_new' %}
+				<tr>
+					{% elif  p.status == '1_potential_champion' %}
 				<tr style="background-color: #BDECB6">
-					{% elif p.status == '3_unlikely' %}
-				<tr style="background-color: #FF7878">
 					{% elif  p.status == '2_generic_person' %}
 				<tr style="background-color: #cccccc">
+					{% elif p.status == '3_unlikely' %}
+				<tr style="background-color: #FF7878">
 					{% else %}
 				<tr>
 					{% endif %}
 					<td><a href="/admin/prospects/{{ p.prospect_id }}">{{ p.prospect_id }}</a></td>
 					<td>Note: 
 						{% if p.get_last_note_timestamp() %}
-						{{ p.get_last_note_timestamp()|format_date(format="short") }}
+						{{ p.get_last_note_timestamp()|human_readable_date_decay }}
 						{% else %}
 						Never
 						{% endif %}
 						<br>
 						Site Visit: 
 						{% if p.get_last_site_visit_timestamp() %}
-						{{ p.get_last_site_visit_timestamp()|format_date(format="short") }}
+						{{ p.get_last_site_visit_timestamp()|human_readable_date_decay }}
 						{% else %}
 						Never
 						{% endif %}</td>
