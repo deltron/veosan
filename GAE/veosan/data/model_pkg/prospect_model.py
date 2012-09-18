@@ -35,7 +35,6 @@ class ProviderProspect(ndb.Model):
     # prospect status
     status = ndb.StringProperty(default='new', choices=util.prospect_statuses)
 
-
     # eventually link to a provider if they sign up
     #provider = ndb.KeyProperty(kind='Provider')
     
@@ -74,15 +73,12 @@ class ProviderProspect(ndb.Model):
 
     def get_notes_call_count(self):
         return ProspectNote.query(ProspectNote.prospect == self.key, ProspectNote.note_type == 'call').count()
-
-    def get_blog_url(self):
-        # Replace HOST for dev
-        return 'http://veosan.com/blog/%s' % self.prospect_id
-
-    def get_tour_url(self):
-        # Replace HOST for dev
-        return 'http://veosan.com/tour/%s' % self.prospect_id
     
-    def get_signup_url(self):
-        # Replace HOST for dev
-        return 'http://veosan.com/signup/%s' % self.prospect_id
+    def get_blog_url(self, host):
+        return 'http://%s/blog/%s' %  (host, self.prospect_id)
+
+    def get_tour_url(self, host):
+        return 'http://%s/tour/%s' %  (host, self.prospect_id)
+    
+    def get_signup_url(self, host):
+        return 'http://%s/signup/%s' % (host, self.prospect_id)

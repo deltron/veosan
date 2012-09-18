@@ -133,6 +133,7 @@ class BaseHandler(webapp2.RequestHandler):
         
         # make all session variables available to templates
         kw['session'] = self.session
+        kw['host'] = self.request.host
         
         # ---------------
         # Site config

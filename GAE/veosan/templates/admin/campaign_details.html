@@ -8,33 +8,10 @@
 {% block content %}
 
 <div class="row">
-	<div class="span8">
-		<h3>Email templates</h3>
-		<form class="form-horizontal" action="/admin/campaign/{{campaign.key.urlsafe()}}" method="post" id="campaign_form">
-				<div>
-					<button type="submit" class="btn btn-mini btn-primary">
-						{{ _('Save') }}
-					</button>
-				</div>
-				{{ macro.make_standard_form(edit_campaign_form) }}
-				
-		</form>
-
-	</div>
-	<div class="span4">
-		<h3>Generation and Stats</h3>
-		<div class="well">
-			<a class="btn btn-mini btn-info" href="/admin/campaign/{{campaign.key.urlsafe()}}/emails" data-toggle="modal">Generate Emails</a>
-		</div>
-	</div>
-</div>
-
-
-<div class="row">	
-	<div class="span12">		
-		<h3>Prospects</h3>
+	<div class="span8">		
+		<h2>Prospects  <a class="btn btn-mini btn-info" href="#edit_prospects_modal" data-toggle="modal">Edit Prospects</a> </h2>
 		<!-- Add Prospects button -->
-		<a class="btn btn-mini btn-info" href="#edit_prospects_modal" data-toggle="modal">Edit Prospects</a>
+		
 		
 		<table class="table">
 			<thead>
@@ -63,6 +40,33 @@
 				{% endfor %}
 			</tbody>
 		</table>
+	</div>
+	
+	<div class="span4">
+		<h2>Generation and Stats</h2>
+		<div class="well">
+			{{ campaign.prospects|count }} prospects
+			<br>
+			<br>
+			<a class="btn btn-mini btn-info" href="/admin/campaign/{{campaign.key.urlsafe()}}/emails" data-toggle="modal">Generate Emails</a>
+			<br>
+		</div>
+	</div>
+</div>
+
+
+
+<div class="row">
+	<div class="span8">
+		<h3>Email templates</h3>
+		<form class="form-horizontal" action="/admin/campaign/{{campaign.key.urlsafe()}}" method="post" id="campaign_form">
+				{{ macro.make_standard_form(edit_campaign_form) }}
+				<div>
+					<button type="submit" class="btn  btn-primary">
+						{{ _('Save') }}
+					</button>
+				</div>
+		</form>
 
 	</div>
 </div>		
