@@ -6,6 +6,8 @@ from handler.auth import provider_required
 import logging
 import re
 from urllib import unquote_plus
+from data.model_pkg.payment_model import PaypalResponse
+import json
 
 PP_URL = "https://www.sandbox.paypal.com/cgi-bin/webscr" 
 PP_EMAIL = "pp_san_1347903569_biz@veosan.com" 
@@ -40,9 +42,19 @@ class PayPalIPNHandler(BaseHandler):
                 self.response.out.write("POST Failed") 
                         
             if status == "VERIFIED":
+                paypal_response = PaypalResponse()
+                paypal_response.message_type = "IPN"
+                paypal_response.raw_ipn_message = json.dumps(param)
+                
+                
                 # upgrade the account...woohoo!
                 provider_urlsafe_key = param['custom']
-                user_key = ndb.Key(urlsafe=provider_urlsafe_key)
+                provider_key = ndb.Key(urlsafe=provider_urlsafe_key)
+                provider = provider_key.get()
+                
+                paypal_response.provider = provider.key
+                
+                paypal_response.put()
                 
             else:
                 self.response.out.write('error') 
@@ -67,6 +79,11 @@ class ProviderUpgradeSuccessHandler(BaseHandler):
             
         # Check for SUCCESS at the start of the response
         if re.search("^SUCCESS", status):
+            # log the PayPal message
+            paypal_response = PaypalResponse()
+            paypal_response.message_type = "PDT"
+            paypal_response.raw_pdt_message = status
+            
             response_list = status.split('\n')
             response_dict = {}
             for i, line in enumerate(response_list):
@@ -91,10 +108,12 @@ class ProviderUpgradeSuccessHandler(BaseHandler):
                 provider_urlsafe_key = response_dict['custom']
                 provider_key = ndb.Key(urlsafe=provider_urlsafe_key)
                 provider = provider_key.get()
+                
+                paypal_response.provider = provider.key
+                
             
             # switch on account options
-            
-            self.render_template("provider/upgrade_success.html", provider=provider, status=status )#provider=provider)
-            
+            self.render_template("provider/upgrade_success.html", provider=provider, status=status)
+            paypal_response.put()
         else:
             self.response.out.write("Failed")
