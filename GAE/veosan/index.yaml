@@ -80,6 +80,11 @@ indexes:
 
 - kind: ProviderProspect
   properties:
+  - name: category
+  - name: last_name
+
+- kind: ProviderProspect
+  properties:
   - name: status
   - name: category
   - name: last_name

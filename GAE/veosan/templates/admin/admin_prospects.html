@@ -12,28 +12,43 @@
 			<thead>
 				<tr>
 					<th width="10%">Prospect ID</th>
+					<th width="12%">Latest</th>
 					<th width="12%">Status</th>
-					<th width="12%">Language</th>
-					<th width="12%">Email</th>
-					<th width="12%">First Name</th>
-					<th width="12%">Last Name</th>
+					<th width="12%">Notes</th>
 					<th width="12%">Category</th>
-					<th width="5%">Hits</th>
-					<th width="10%">Delete</th>
+					<th width="5%">Lang</th>
+					<th width="12%">Name</th>
+					<th width="12%">Email</th>
 				</tr>
 			</thead>
 			<tbody>
 				{% for p in prospects %}
 				<tr>
 					<td><a href="/admin/prospects/{{ p.prospect_id }}">{{ p.prospect_id }}</a></td>
+					<td>Note: 
+						{% if p.get_last_note_timestamp() %}
+						{{ p.get_last_note_timestamp()|format_date(format="short") }}
+						{% else %}
+						Never
+						{% endif %}
+						<br>
+						Site Visit: 
+						{% if p.get_last_site_visit_timestamp() %}
+						{{ p.get_last_site_visit_timestamp()|format_date(format="short") }}
+						{% else %}
+						Never
+						{% endif %}</td>
 					<td>{{ p.status }}</td>
-					<td>{{ p.language }}</td>
-					<td>{{ p.email }}</td>
-					<td>{{ p.first_name }}</td>
-					<td>{{ p.last_name }}</td>
+					<td>
+						Emails: {{ p.get_notes_email_count() }}<br>
+						Calls: {{ p.get_notes_call_count() }}<br>
+						Meetings: {{ p.get_notes_meeting_count() }}<br>
+						Info: {{ p.get_notes_call_count() }}
+					</td>
 					<td>{{ p.category }}</td>
-					<td>{{ p.landing_hits }}</td>
-					<td><a href="/admin/prospects/delete/{{ p.prospect_id }}" class="btn btn-danger">Delete</a></td>
+					<td>{{ p.language }}</td>
+					<td>{{ p.first_name }} {{ p.last_name }}</td>
+					<td>{{ p.email }}</td>
 				</tr>
 				{% endfor %}
 			</tbody>
