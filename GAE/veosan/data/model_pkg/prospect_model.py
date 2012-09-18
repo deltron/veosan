@@ -33,7 +33,7 @@ class ProviderProspect(ndb.Model):
     landing_hits = ndb.IntegerProperty(default=0)
 
     # prospect status
-    status = ndb.StringProperty(default='new', choices=util.prospect_statuses)
+    status = ndb.StringProperty(choices=util.prospect_statuses)
 
     # eventually link to a provider if they sign up
     #provider = ndb.KeyProperty(kind='Provider')
