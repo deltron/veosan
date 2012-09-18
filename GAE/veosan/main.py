@@ -10,6 +10,7 @@ from utilities import time
 from data.model import User
 from google.appengine.ext import ndb
 from routes.routes import create_routes
+from handler.admin_pkg import campaign_handler
 
 
 
@@ -26,6 +27,7 @@ jinja_filters['code_to_string'] = util.code_to_string
 jinja_filters['dump'] = dump
 jinja_filters['remove_empty_strings_from_list'] = util.remove_empty_strings_from_list
 jinja_filters['markdown'] = util.markdown
+jinja_filters['generate_prospect_email_dict'] = campaign_handler.generate_prospect_email_dict
 
 jinja_environment_args = {
         'autoescape': True,

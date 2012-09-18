@@ -34,7 +34,7 @@
 	<div class="span12">		
 		<h3>Prospects</h3>
 		<!-- Add Prospects button -->
-		<a class="btn btn-mini btn-info" href="#edit_prospects_modal" data-toggle="modal">Add Prospects</a>
+		<a class="btn btn-mini btn-info" href="#edit_prospects_modal" data-toggle="modal">Edit Prospects</a>
 		
 		<table class="table">
 			<thead>
@@ -46,7 +46,6 @@
 					<th width="12%">Last Name</th>
 					<th width="12%">Category</th>
 					<th width="5%">Hits</th>
-					<th width="10%">Delete</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -60,7 +59,6 @@
 					<td>{{ p.last_name }}</td>
 					<td>{{ p.category }}</td>
 					<td>{{ p.landing_hits }}</td>
-					<td><a href="/admin/prospects/delete/{{ p.prospect_id }}" class="btn btn-danger">Delete</a></td>
 				</tr>
 				{% endfor %}
 			</tbody>

@@ -35,8 +35,8 @@
 		<div class="well">
 			<h3>Add New Campaign</h3>
 			<form class="form-inline" action="/admin/campaigns" method="post" id="campaign_form">
-					{{ macro.make_standard_form(add_campaign_form) }}
-
+					{{ macro.display_errors_for_field(add_campaign_form.name) }}
+					{{ add_campaign_form.name(placeholder='New Campaign Name') }}
 					<button type="submit" class="btn btn-primary">
 						{{ _('Add') }}
 					</button>
