@@ -40,3 +40,15 @@ class ProviderProspect(ndb.Model):
     
     def get_notes(self):
         return ProspectNote.query(ProspectNote.prospect == self.key).order(-ProspectNote.created_on).fetch()
+    
+    def get_blog_url(self):
+        # Replace HOST for dev
+        return 'http://veosan.com/blog/%s' % self.prospect_id
+
+    def get_tour_url(self):
+        # Replace HOST for dev
+        return 'http://veosan.com/tour/%s' % self.prospect_id
+    
+    def get_signup_url(self):
+        # Replace HOST for dev
+        return 'http://veosan.com/signup/%s' % self.prospect_id
