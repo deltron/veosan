@@ -91,5 +91,7 @@ def generate_prospect_email_dict(prospect):
     email_dict['last_name'] = prospect.last_name
     email_dict['language'] = prospect.language
     email_dict['email'] = prospect.email
-    email_dict['blog_url'] = prospect.get_blog_url()
+    #email_dict['blog_url'] = prospect.get_blog_url()
+    #email_dict['signup_url'] = prospect.get_blog_url()
+    #email_dict['tour_url'] = prospect.get_blog_url()                              
     return email_dict

@@ -38,11 +38,11 @@
 	</div>
 	<div class="span4">
 		<h3>Prospect URLs<h3>
-		{{ prospect.get_signup_url() }}
+		{{ prospect.get_signup_url(host) }}
 		<br>
-		{{ prospect.get_tour_url() }}
+		{{ prospect.get_tour_url(host) }}
 		<br>
-		{{ prospect.get_blog_url() }}
+		{{ prospect.get_blog_url(host) }}
 	</div>
 </div>
 
