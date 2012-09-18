@@ -18,12 +18,14 @@ def get_routes():
                    Route('/data/delete', data_handler.AdminDeleteDataHandler),
             
                    Route('/site_config/<feature>', admin.AdminSiteConfigHandler),
+                   
                    # prospects
                    Route('/prospects', prospects_handler.AdminProspectsHandler),
                    Route('/prospects/delete/<prospect_id>', prospects_handler.AdminProspectDeleteHandler),
                    Route('/prospects/<prospect_id>', prospects_handler.AdminProspectDetailsHandler),
                    Route('/prospects/<prospect_id>/notes/<operation>', prospects_handler.AdminProspectNotesHandler),
                    Route('/prospects/<prospect_id>/notes/<operation>/<key>', prospects_handler.AdminProspectNotesHandler),
+                   Route('/prospects/<prospect_id>/status', prospects_handler.AdminProspectStatusHandler),
 
                    # campaigns
                    Route('/campaigns', campaign_handler.AdminCampaignsHandler),

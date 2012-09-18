@@ -12,6 +12,7 @@
 			<thead>
 				<tr>
 					<th width="10%">Prospect ID</th>
+					<th width="12%">Status</th>
 					<th width="12%">Language</th>
 					<th width="12%">Email</th>
 					<th width="12%">First Name</th>
@@ -25,6 +26,7 @@
 				{% for p in prospects %}
 				<tr>
 					<td><a href="/admin/prospects/{{ p.prospect_id }}">{{ p.prospect_id }}</a></td>
+					<td>{{ p.status }}</td>
 					<td>{{ p.language }}</td>
 					<td>{{ p.email }}</td>
 					<td>{{ p.first_name }}</td>
