@@ -28,12 +28,12 @@
 		<br>
 	</div>
 	<div class="span4">
-		<h3>Prospect URLs</h3>
-		http://veosan.com/tour/{{ prospect.prospect_id }}
+		<h3>Prospect URLs<h3>
+		{{ prospect.get_signup_url() }}
 		<br>
-		http://veosan.com/signup/{{ prospect.prospect_id }}
+		{{ prospect.get_tour_url() }}
 		<br>
-		http://veosan.com/blog/{{ prospect.prospect_id }}
+		{{ prospect.get_blog_url() }}
 	</div>
 </div>
 

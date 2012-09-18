@@ -71,3 +71,13 @@ class AdminCampaignDetailsHandler(AdminBaseHandler):
         campaign = db.get_from_urlsafe_key(campaign_key)
         self.render_template('admin/campaign_email.html', campaign=campaign)
         
+
+def generate_prospect_email_dict(prospect):
+    email_dict = {}
+    email_dict['name'] = prospect.first_name
+    email_dict['first_name'] = prospect.first_name
+    email_dict['last_name'] = prospect.last_name
+    email_dict['language'] = prospect.language
+    email_dict['email'] = prospect.email
+    email_dict['blog_url'] = prospect.get_blog_url()
+    return email_dict
