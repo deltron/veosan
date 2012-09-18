@@ -8,8 +8,26 @@
 {% block content %}
 
 <div class="row">
-	<div class="span8">		
-		<h2>Prospects  <a class="btn btn-mini btn-info" href="#edit_prospects_modal" data-toggle="modal">Edit Prospects</a> </h2>
+	<div class="span12">
+		<div class="well">
+			{{ campaign.prospects|count }} prospects
+			<br>
+			X emails sent, X converted (x%)
+			<br>
+			Start date: yyyy-mm-dd
+			<br>
+			<br>
+			<a class="btn btn-mini btn-info" href="/admin/campaign/{{campaign.key.urlsafe()}}/emails" data-toggle="modal">Generate All Emails</a>
+			<br>
+		</div>
+	</div>
+</div>
+
+<br>
+
+<div class="row">	
+	<div class="span12">
+		<h2>Campaign Prospects  <a class="btn btn-mini btn-primary" href="#edit_prospects_modal" data-toggle="modal">Edit Prospects</a></h2>
 		<!-- Add Prospects button -->
 		
 		
@@ -23,6 +41,7 @@
 					<th width="12%">Last Name</th>
 					<th width="12%">Category</th>
 					<th width="5%">Hits</th>
+					<th width="5%">Ops</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -36,36 +55,28 @@
 					<td>{{ p.last_name }}</td>
 					<td>{{ p.category }}</td>
 					<td>{{ p.landing_hits }}</td>
+					<td><a class="btn btn-mini btn-info" href="/admin/campaign/{{campaign.key.urlsafe()}}/email/{{p.key.urlsafe()}}" data-toggle="modal">Email</a></td>
 				</tr>
 				{% endfor %}
 			</tbody>
 		</table>
 	</div>
-	
-	<div class="span4">
-		<h2>Generation and Stats</h2>
-		<div class="well">
-			{{ campaign.prospects|count }} prospects
-			<br>
-			<br>
-			<a class="btn btn-mini btn-info" href="/admin/campaign/{{campaign.key.urlsafe()}}/emails" data-toggle="modal">Generate Emails</a>
-			<br>
-		</div>
-	</div>
 </div>
 
-
+<br>
 
 <div class="row">
 	<div class="span8">
-		<h3>Email templates</h3>
+		
 		<form class="form-horizontal" action="/admin/campaign/{{campaign.key.urlsafe()}}" method="post" id="campaign_form">
-				{{ macro.make_standard_form(edit_campaign_form) }}
-				<div>
-					<button type="submit" class="btn  btn-primary">
-						{{ _('Save') }}
-					</button>
-				</div>
+			<h2>Email templates
+			<button type="submit" class="btn btn-mini btn-primary">
+				{{ _('Save') }}
+			</button>
+			</h2>
+			<br>
+			{{ macro.make_standard_form(edit_campaign_form) }}
+
 		</form>
 
 	</div>
@@ -107,6 +118,7 @@
 					<td>{{ p.first_name }}</td>
 					<td>{{ p.last_name }}</td>
 					<td>{{ p.category }}</td>
+					
 				</tr>
 				{% endfor %}
 			</tbody>
