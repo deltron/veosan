@@ -1,22 +1,22 @@
 from handler.auth import admin_required
 from handler.admin import AdminBaseHandler
-import forms
 from data.model_pkg.prospect_model import ProviderProspect, ProspectNote
 from data import db
 from google.appengine.api import users
 from google.appengine.ext import ndb
+from forms.prospect_forms import ProviderProspectForm, ProspectNoteForm,\
+    ProspectStatusForm
 
 class AdminProspectsHandler(AdminBaseHandler):
     @admin_required
     def get(self):
         prospects = db.fetch_provider_prospects()
-        prospect_form = forms.provider.ProviderProspectForm().get_form()
-        prospect_trio_form = forms.provider.ProviderProspectForm().get_form()
+        prospect_form = ProviderProspectForm().get_form()
 
-        self.render_template('admin/admin_prospects.html', prospects=prospects, prospect_form=prospect_form, prospect_trio_form=prospect_trio_form)
+        self.render_template('admin/admin_prospects.html', prospects=prospects, prospect_form=prospect_form)
 
     def post(self):
-        add_prospect_form = forms.provider.ProviderProspectForm().get_form(self.request.POST)
+        add_prospect_form = ProviderProspectForm().get_form(self.request.POST)
         prospects = db.fetch_provider_prospects()
 
         if add_prospect_form.validate():
@@ -32,7 +32,7 @@ class AdminProspectsHandler(AdminBaseHandler):
 
 class AdminProspectDeleteHandler(AdminBaseHandler):
     @admin_required
-    def get(self, prospect_id = None):
+    def get(self, prospect_id=None):
         prospect = db.get_prospect_from_prospect_id(prospect_id)
         if prospect:
             prospect.key.delete()
@@ -42,17 +42,29 @@ class AdminProspectDeleteHandler(AdminBaseHandler):
 
 class AdminProspectDetailsHandler(AdminBaseHandler):
     @admin_required
-    def get(self, prospect_id = None):
+    def get(self, prospect_id=None):
         prospect = db.get_prospect_from_prospect_id(prospect_id)
 
-        prospect_note_form = forms.provider.ProspectNoteForm().get_form()
+        prospect_note_form = ProspectNoteForm().get_form()
+        prospect_status_form = ProspectStatusForm().get_form()
         
-        self.render_template('admin/prospect_details.html', prospect=prospect, prospect_note_form=prospect_note_form)
+        self.render_template('admin/prospect_details.html', prospect=prospect, prospect_note_form=prospect_note_form, prospect_status_form=prospect_status_form)
+
+class AdminProspectStatusHandler(AdminBaseHandler):
+    def post(self, prospect_id=None):
+        prospect = db.get_prospect_from_prospect_id(prospect_id)
+        prospect_status_form = ProspectStatusForm().get_form(self.request.POST)
+        if prospect_status_form.validate():
+            new_status = prospect_status_form['status'].data
+            prospect.status = new_status 
+            prospect.put()
+            
+            self.redirect('/admin/prospects/' + prospect.prospect_id)
 
 
 class AdminProspectNotesHandler(AdminBaseHandler):
     @admin_required
-    def get(self, prospect_id = None, operation = None, key = None):
+    def get(self, prospect_id=None, operation=None, key=None):
         prospect = db.get_prospect_from_prospect_id(prospect_id)
         note_key = ndb.Key(urlsafe=key)
 
@@ -64,17 +76,17 @@ class AdminProspectNotesHandler(AdminBaseHandler):
             if operation == 'edit':
                 if note_key:
                     note = note_key.get()
-                    prospect_note_form = forms.provider.ProspectNoteForm().get_form(obj=note)
+                    prospect_note_form = ProspectNoteForm().get_form(obj=note)
                     
-                    self.render_template('admin/prospect_details.html', prospect=prospect, 
+                    self.render_template('admin/prospect_details.html', prospect=prospect,
                                          prospect_note_form=prospect_note_form,
                                          edit='note',
                                          edit_key=key)
 
-    def post(self, prospect_id = None, operation = None, key = None):
+    def post(self, prospect_id=None, operation=None, key=None):
         prospect = db.get_prospect_from_prospect_id(prospect_id)
         
-        prospect_note_form = forms.provider.ProspectNoteForm().get_form(self.request.POST)
+        prospect_note_form = ProspectNoteForm().get_form(self.request.POST)
         if prospect_note_form.validate():
             prospect_note = None
             if operation == 'add':

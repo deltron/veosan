@@ -78,11 +78,6 @@ indexes:
   - name: created_on
     direction: desc
 
-- kind: ProviderProspect
-  properties:
-  - name: last_name
-  - name: first_name
-
 - kind: Schedule
   properties:
   - name: provider
