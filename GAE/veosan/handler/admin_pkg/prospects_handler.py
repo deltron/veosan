@@ -46,7 +46,7 @@ class AdminProspectDetailsHandler(AdminBaseHandler):
         prospect = db.get_prospect_from_prospect_id(prospect_id)
 
         prospect_note_form = ProspectNoteForm().get_form()
-        prospect_status_form = ProspectStatusForm().get_form()
+        prospect_status_form = ProspectStatusForm().get_form(obj=prospect)
         
         self.render_template('admin/prospect_details.html', prospect=prospect, prospect_note_form=prospect_note_form, prospect_status_form=prospect_status_form)
 
