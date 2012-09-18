@@ -29,7 +29,7 @@ def fetch_providers():
     return Provider.query().order(Provider.last_name)
 
 def fetch_provider_prospects():
-    return ProviderProspect.query().order(ProviderProspect.category, ProviderProspect.last_name)
+    return ProviderProspect.query().order(ProviderProspect.status, ProviderProspect.category, ProviderProspect.last_name)
 
 def fetch_campaigns():
     return EmailCampaign.query().order(EmailCampaign.name)

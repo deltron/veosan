@@ -298,7 +298,7 @@ def get_all_note_types():
     
 # List of provider status
 provider_statuses = ['prospect', 'contacted_phone', 'contacted_meeting', 'client_enabled', 'client_suspended', 'ex_client_disabled']
-prospect_statuses = ['new', 'cold_called', 'intro_email_sent']
+prospect_statuses = ['0_new', '1_potential_champion', '2_generic_person']
 
 def get_all_prospect_status_types():
     status_choices = map(lambda s: (s, _(s.capitalize())), prospect_statuses)

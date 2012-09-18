@@ -40,10 +40,21 @@
 						{% endif %}</td>
 					<td>{{ p.status }}</td>
 					<td>
+						{% if p.get_notes_email_count() > 0 %}
 						Emails: {{ p.get_notes_email_count() }}<br>
+						{% endif %}
+
+						{% if p.get_notes_call_count() > 0 %}
 						Calls: {{ p.get_notes_call_count() }}<br>
+						{% endif %}
+						
+						{% if p.get_notes_meeting_count() > 0 %}
 						Meetings: {{ p.get_notes_meeting_count() }}<br>
-						Info: {{ p.get_notes_call_count() }}
+						{% endif %}
+						
+						{% if p.get_notes_info_count() > 0 %}
+						Info: {{ p.get_notes_info_count() }}
+						{% endif %}
 					</td>
 					<td>{{ p.category }}</td>
 					<td>{{ p.language }}</td>
