@@ -27,9 +27,10 @@ def get_routes():
 
                    # campaigns
                    Route('/campaigns', campaign_handler.AdminCampaignsHandler),
-                   Route('/campaigns/delete/<campaign_key>', campaign_handler.AdminCampaignDeleteHandler),
-                   Route('/campaigns/<campaign_key>', campaign_handler.AdminCampaignDetailsHandler),
+                   Route('/campaign/delete/<campaign_key>', campaign_handler.AdminCampaignDeleteHandler),
+                   Route('/campaign/<campaign_key>', campaign_handler.AdminCampaignDetailsHandler),
                    Route('/campaign/<campaign_key>/prospects', campaign_handler.AdminCampaignDetailsHandler, handler_method='edit_prospects_post'),
+                   Route('/campaign/<campaign_key>/emails', campaign_handler.AdminCampaignDetailsHandler, handler_method='generate_emails_get'),
                    
                    PathPrefixRoute('/provider', [
                        # provider actions

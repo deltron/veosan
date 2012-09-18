@@ -10,18 +10,21 @@
 <div class="row">
 	<div class="span8">
 		<h3>Email templates</h3>
-		<form class="form-horizontal" action="/admin/campaigns/{{campaign.key.urlsafe()}}" method="post" id="campaign_form">
+		<form class="form-horizontal" action="/admin/campaign/{{campaign.key.urlsafe()}}" method="post" id="campaign_form">
+				<div>
+					<button type="submit" class="btn btn-mini btn-primary">
+						{{ _('Save') }}
+					</button>
+				</div>
 				{{ macro.make_standard_form(edit_campaign_form) }}
-				<button type="submit" class="btn btn-primary">
-					{{ _('Save') }}
-				</button>
+				
 		</form>
 
 	</div>
 	<div class="span4">
-		<h3>Stats</h3>
+		<h3>Generation and Stats</h3>
 		<div class="well">
-			
+			<a class="btn btn-mini btn-info" href="/admin/campaign/{{campaign.key.urlsafe()}}/emails" data-toggle="modal">Generate Emails</a>
 		</div>
 	</div>
 </div>
@@ -112,7 +115,7 @@
 			<button type="submit" class="btn btn-primary">
 				{{ _('Save') }}
 			</button>
-			<a class="btn" href="/admin/campaigns/{{ campaign.key.urlsafe() }}">{{ _('Cancel') }}</a>
+			<a class="btn" href="/admin/campaign/{{ campaign.key.urlsafe() }}">{{ _('Cancel') }}</a>
 		</div>
 	</form>
 </div>
@@ -126,7 +129,7 @@
 		$('#edit_prospects_modal').modal('show')
 	
 		$('edit_prospects_modal').on('hidden', function() {
-			window.location = "/admin/campaigns/{{ campaign.key.urlsafe() }}"
+			window.location = "/admin/campaign/{{ campaign.key.urlsafe() }}"
 		})
 	</script>
 	{% endif %}

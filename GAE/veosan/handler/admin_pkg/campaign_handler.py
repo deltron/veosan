@@ -49,8 +49,8 @@ class AdminCampaignDetailsHandler(AdminBaseHandler):
         
     @admin_required
     def get(self, campaign_key):
+        ''' Display Campaign details '''
         campaign = db.get_from_urlsafe_key(campaign_key)
-        
         # split this out into Edit handler with paging
         self.render_campaign_details(campaign)
         
@@ -59,10 +59,15 @@ class AdminCampaignDetailsHandler(AdminBaseHandler):
             Handle POST form edit prospects modal window
         '''
         campaign = db.get_from_urlsafe_key(campaign_key)
-        logging.info(self.request.POST.__dict__)
         prospect_urlsafe_keys = self.request.get_all('prospect')
         prospect_keys = map(lambda usk: ndb.Key(urlsafe=usk), prospect_urlsafe_keys)
         logging.info('Setting prospects count %s' % len(prospect_keys))
         campaign.prospects = prospect_keys
         campaign.put() 
         self.render_campaign_details(campaign=campaign)
+        
+    def generate_emails_get(self, campaign_key):
+        ''' generate emails from prospect list'''
+        campaign = db.get_from_urlsafe_key(campaign_key)
+        self.render_template('admin/campaign_email.html', campaign=campaign)
+        
