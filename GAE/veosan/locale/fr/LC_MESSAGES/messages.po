@@ -1599,7 +1599,7 @@ msgid "Yes. It's Free!"
 msgstr "Oui. C'est gratuit!"
 
 msgid "There's no reason having a professional presence online should cost you a fortune. Our profiles are easy to use, quick to set up, and completely free."
-msgstr "Ce n'est pas être nécéssaire de payer des factures mensuelles pour un simple site web. Notre profile est plus efficace et complètement grauit."
+msgstr "Ce n'est pas nécéssaire de payer une fortune pour un site web. Notre profile est plus efficace et complètement grauit."
 
 msgid "Referral Network"
 msgstr "Réseau Professionnel"
