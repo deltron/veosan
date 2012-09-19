@@ -64,7 +64,7 @@ class Provider(ndb.Model):
 
     # user
     user = ndb.KeyProperty(kind='User')
-
+    stripe_customer_id = ndb.StringProperty()
 
     # deprecated ---------------
     associations = ndb.StringProperty(repeated=True)
