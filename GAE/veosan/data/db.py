@@ -36,7 +36,7 @@ def fetch_provider_prospects():
     # order them in some logical way
     order = ['new', 'requires_followup', 'potential_champion', 'generic_person', 'unlikely']
     for o in order:
-        tagged = filter(lambda p: o in p.tags and not p in ordered_prospects, all_prospects)
+        tagged = filter(lambda p: o in p.tags, all_prospects)
         ordered_prospects.extend(tagged)
         for e in tagged:
             all_prospects.remove(e)

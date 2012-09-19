@@ -288,7 +288,7 @@ def markdown(text):
     if text:
         return markdown2.markdown(text)
 
-note_types = ['call', 'email', 'meeting', 'info']
+note_types = ['call', 'email', 'meeting', 'info', 'admin']
 
 def get_all_note_types():
     return [('call', _(u'Call')),
