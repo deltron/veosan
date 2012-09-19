@@ -16,10 +16,10 @@
 			<h2>{{ p.email }}</h2>
 			{% if p.language == 'fr' %}
 				<strong>{{ campaign.subject_fr }}</strong>
-				<p>{{ campaign.body_fr|escape|format(**p|generate_prospect_email_dict)  }}</p>
+				<p>{{ campaign.body_fr|escape|format(**p|generate_prospect_email_dict(host) )  }}</p>
 			{% else %}
 				<strong>{{ campaign.subject_en }}</strong>
-				<p>{{ campaign.body_en|escape|format(**p|generate_prospect_email_dict)  }}</p>
+				<p>{{ campaign.body_en|escape|format(**p|generate_prospect_email_dict(host) )  }}</p>
 			{% endif %}
 			<hr>
 		{% endfor %}

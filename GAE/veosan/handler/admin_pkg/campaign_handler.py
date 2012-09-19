@@ -42,11 +42,11 @@ class AdminCampaignDeleteHandler(AdminBaseHandler):
 
 class AdminCampaignDetailsHandler(AdminBaseHandler):
     
-    def render_campaign_details(self, campaign, edit_campaign_form=None):
+    def render_campaign_details(self, campaign, edit_campaign_form=None, **kw):
         if not edit_campaign_form:
             edit_campaign_form = EditCampaignForm().get_form(obj=campaign)
         all_prospects = db.fetch_prospects()
-        self.render_template('admin/campaign_details.html', campaign=campaign, edit_campaign_form=edit_campaign_form, all_prospects=all_prospects)
+        self.render_template('admin/campaign_details.html', campaign=campaign, edit_campaign_form=edit_campaign_form, all_prospects=all_prospects, **kw)
         
     @admin_required
     def get(self, campaign_key):
@@ -83,15 +83,26 @@ class AdminCampaignDetailsHandler(AdminBaseHandler):
         campaign = db.get_from_urlsafe_key(campaign_key)
         self.render_template('admin/campaign_email.html', campaign=campaign)
         
+    def display_single_email_get(self, campaign_key, prospect_id):
+        campaign = db.get_from_urlsafe_key(campaign_key)
+        prospect = db.get_prospect_from_prospect_id(prospect_id)
+        logging.info('Displaying Email for prospect %s' % prospect)
+        if prospect:
+            self.render_campaign_details(campaign, prospect=prospect, show_modal='email')
+        else:
+            self.render_campaign_details(campaign, error_message='Prospect not found')
+        
+        
 
-def generate_prospect_email_dict(prospect):
+def generate_prospect_email_dict(prospect, host):
     email_dict = {}
     email_dict['name'] = prospect.first_name
     email_dict['first_name'] = prospect.first_name
     email_dict['last_name'] = prospect.last_name
     email_dict['language'] = prospect.language
     email_dict['email'] = prospect.email
-    #email_dict['blog_url'] = prospect.get_blog_url()
-    #email_dict['signup_url'] = prospect.get_blog_url()
-    #email_dict['tour_url'] = prospect.get_blog_url()                              
+    #email_dict['category'] = prospect.category  # format to English or French string
+    email_dict['blog_url'] = prospect.get_blog_url(host)
+    email_dict['signup_url'] = prospect.get_signup_url(host)
+    email_dict['tour_url'] = prospect.get_tour_url(host)                              
     return email_dict
