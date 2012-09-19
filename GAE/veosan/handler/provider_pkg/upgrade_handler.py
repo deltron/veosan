@@ -27,7 +27,7 @@ class ProviderUpgradeHandler(ProviderBaseHandler):
         customer = stripe.Customer.create(
             card=token,
             plan="veosan_presence_monthly",
-            email="payinguser@example.com"
+            email=provider.email
         )
 
         # save the customer ID in your database so you can use it later
