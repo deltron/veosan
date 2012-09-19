@@ -1,6 +1,6 @@
 from google.appengine.ext import ndb
 
-class EmailCampaign(ndb.Model):
+class Campaign(ndb.Model):
     # creation date
     created_on = ndb.DateTimeProperty(auto_now_add=True)
     # unique name this prospect
@@ -13,5 +13,9 @@ class EmailCampaign(ndb.Model):
     subject_en = ndb.StringProperty()
     body_en = ndb.TextProperty()
     # list of prospects
-    prospects = ndb.KeyProperty(repeated=True)
+    prospects = ndb.KeyProperty(kind='ProviderProspect', repeated=True)
+
+    
+    
+    
     

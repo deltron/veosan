@@ -10,7 +10,7 @@ from data.model_pkg.network_model import Invite, ProviderNetworkConnection
 from data.model_pkg.provider_model import Provider
 import utilities
 from data.model_pkg.prospect_model import ProviderProspect
-from data.model_pkg.campaign_model import EmailCampaign
+from data.model_pkg.campaign_model import Campaign
 from data.model_pkg.site_model import SiteCounter, SiteConfig, SiteLog
   
 def get_from_urlsafe_key(urlsafe_key):
@@ -47,7 +47,7 @@ def fetch_provider_prospects():
     return ordered_prospects
 
 def fetch_campaigns():
-    return EmailCampaign.query().order(EmailCampaign.name)
+    return Campaign.query().order(Campaign.name)
 
 def fetch_prospects():
     return ProviderProspect.query().order(ProviderProspect.last_name, ProviderProspect.first_name)
@@ -181,7 +181,7 @@ def get_schedule_for_date_time(provider, book_date, book_time):
 
 def get_campaign_form_name(campaign_name):
     if campaign_name:
-        return EmailCampaign.query(EmailCampaign.name == campaign_name).get()
+        return Campaign.query(Campaign.name == campaign_name).get()
     else:
         return None
     

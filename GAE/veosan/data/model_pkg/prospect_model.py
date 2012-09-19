@@ -11,6 +11,7 @@ class ProspectNote(ndb.Model):
     created_on = ndb.DateTimeProperty(auto_now_add=True)
     user = ndb.UserProperty()
     event_date = ndb.DateProperty(auto_now_add=True)
+    campaign = ndb.KeyProperty(kind='Campaign')
     
 
 

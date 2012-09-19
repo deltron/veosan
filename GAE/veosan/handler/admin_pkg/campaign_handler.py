@@ -1,7 +1,7 @@
 from handler.auth import admin_required
 from handler.admin import AdminBaseHandler
 from forms.campaign import AddCampaignForm, EditCampaignForm
-from data.model_pkg.campaign_model import EmailCampaign
+from data.model_pkg.campaign_model import Campaign
 from data import db
 import logging
 from google.appengine.ext import ndb
@@ -21,7 +21,7 @@ class AdminCampaignsHandler(AdminBaseHandler):
     def post(self):
         add_campaign_form = AddCampaignForm().get_form(self.request.POST)
         if add_campaign_form.validate():
-            campaign = EmailCampaign()
+            campaign = Campaign()
             add_campaign_form.populate_obj(campaign)
             campaign.put()
             self.redirect("/admin/campaigns")
@@ -34,10 +34,10 @@ class AdminCampaignDeleteHandler(AdminBaseHandler):
     @admin_required
     def get(self, campaign_key):
         campaign = db.get_from_urlsafe_key(campaign_key)
-        if campaign and isinstance(campaign, EmailCampaign):
+        if campaign and isinstance(campaign, Campaign):
             campaign.key.delete()
         # back to campaign admin page
-        self.redirect('/admin/campaigns')
+        self.redirect('/admin/campaigns', success_message='Campaign created!')
 
 
 class AdminCampaignDetailsHandler(AdminBaseHandler):
@@ -62,7 +62,7 @@ class AdminCampaignDetailsHandler(AdminBaseHandler):
         if edit_campaign_form.validate():
             edit_campaign_form.populate_obj(campaign)
             campaign.put()
-            self.render_campaign_details(campaign)
+            self.render_campaign_details(campaign, success_message='Campaign saved!')
         else:
             self.render_campaign_details(campaign, edit_campaign_form=edit_campaign_form)       
         
@@ -92,7 +92,16 @@ class AdminCampaignDetailsHandler(AdminBaseHandler):
         else:
             self.render_campaign_details(campaign, error_message='Prospect not found')
         
-        
+    def mark_as_sent_get(self, campaign_key, prospect_id):
+        campaign = db.get_from_urlsafe_key(campaign_key)
+        prospect = db.get_prospect_from_prospect_id(prospect_id)
+        logging.info('Marking email as sent for prospect %s' % prospect)
+        if prospect:
+                
+            self.render_campaign_details(campaign, prospect=prospect, show_modal='email')
+        else:
+            self.render_campaign_details(campaign, error_message='Prospect not found')
+                    
 
 def generate_prospect_email_dict(prospect, host):
     email_dict = {}
