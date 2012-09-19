@@ -1,7 +1,7 @@
 from webapp2 import Route
 from webapp2_extras.routes import PathPrefixRoute, DomainRoute
 from handler import static, user, admin, provider, language, tasks, prospect
-import patient_routes, provider_routes, admin_routes, user_routes, public_routes, prospect_routes, payment_routes
+import patient_routes, provider_routes, admin_routes, user_routes, public_routes, prospect_routes
 from handler.provider_pkg import network_handler
 from handler.booking_pkg import display_schedule_handler, booking_registration_handler
 
@@ -43,9 +43,6 @@ def create_routes():
     # prospect routes
     routes.extend(prospect_routes.get_routes())
     
-    # PayPal payment routes
-    routes.extend(payment_routes.get_routes())
-
     routes.extend([# invitations
                Route('/invite/<invite_token>', user.InviteHandler),
 

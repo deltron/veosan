@@ -5,7 +5,6 @@ from handler import patient, provider
 from handler.provider_pkg import welcome_handler, network_handler,\
     profile_handler, cv_handler, schedule_handler, address_handler,\
     upgrade_handler
-from handler.payment_pkg import payment_handler
 
 
 def get_routes():
