@@ -5,7 +5,7 @@ from data import db
 from google.appengine.api import users
 from google.appengine.ext import ndb
 from forms.prospect_forms import ProviderProspectForm, ProspectNoteForm, \
-     ProspectTagsForm
+     ProspectTagsForm, ProspectEmploymentTagsForm
 
 class AdminProspectsHandler(AdminBaseHandler):
     @admin_required
@@ -49,8 +49,11 @@ class AdminProspectDetailsHandler(AdminBaseHandler):
 
         prospect_note_form = ProspectNoteForm().get_form()
         prospect_tags_form = ProspectTagsForm().get_form(obj=prospect)
-        
-        self.render_template('admin/prospect_details.html', prospect=prospect, prospect_note_form=prospect_note_form, prospect_tags_form=prospect_tags_form)
+        prospect_employment_tags_form = ProspectEmploymentTagsForm().get_form(obj=prospect)
+
+        self.render_template('admin/prospect_details.html', prospect=prospect, 
+                             prospect_note_form=prospect_note_form, prospect_tags_form=prospect_tags_form,
+                             prospect_employment_tags_form=prospect_employment_tags_form)
 
 class AdminProspectTagsHandler(AdminBaseHandler):
     def post(self, prospect_id=None):
@@ -87,6 +90,42 @@ class AdminProspectTagsHandler(AdminBaseHandler):
             
             self.redirect('/admin/prospects/' + prospect.prospect_id)
 
+class AdminProspectEmploymentTagsHandler(AdminBaseHandler):
+    def post(self, prospect_id=None):
+        prospect = db.get_prospect_from_prospect_id(prospect_id)
+        prospect_employment_tags_form = ProspectEmploymentTagsForm().get_form(self.request.POST)
+        if prospect_employment_tags_form.validate():
+            if prospect_employment_tags_form['employment_tags'].data is None:
+                prospect.employment_tags = []
+            else:
+                prospect_employment_tags_form.populate_obj(prospect)
+                
+            prospect.put()
+            
+            prospect_note = ProspectNote()
+            prospect_note.prospect = prospect.key
+            google_user = users.get_current_user()    
+            prospect_note.user = google_user
+            prospect_note.note_type = 'admin'
+            
+            prospect_tags_string = ""
+            for tag in prospect.employment_tags:
+                prospect_tags_string += tag + ', '
+            
+            # chop the last comma
+            prospect_tags_string = prospect_tags_string[:-2]
+            
+            if not prospect_tags_string:
+                prospect_note.body = "Deleted employment tags"
+            else:
+                prospect_note.body = 'Updated employment tags to: ' + prospect_tags_string
+                
+            prospect_note.put()
+
+            
+            self.redirect('/admin/prospects/' + prospect.prospect_id)
+
+
 
 class AdminProspectNotesHandler(AdminBaseHandler):
     @admin_required
@@ -104,16 +143,19 @@ class AdminProspectNotesHandler(AdminBaseHandler):
                     note = note_key.get()
                     prospect_note_form = ProspectNoteForm().get_form(obj=note)
                     prospect_tags_form = ProspectTagsForm().get_form(obj=prospect)
+                    prospect_employment_tags_form = ProspectEmploymentTagsForm().get_form(obj=prospect)
                     
                     self.render_template('admin/prospect_details.html', prospect=prospect,
                                          prospect_note_form=prospect_note_form,
                                          prospect_tags_form=prospect_tags_form,
+                                         prospect_employment_tags_form=prospect_employment_tags_form,
                                          edit='note',
                                          edit_key=key)
 
     def post(self, prospect_id=None, operation=None, key=None):
         prospect = db.get_prospect_from_prospect_id(prospect_id)
         prospect_tags_form = ProspectTagsForm().get_form(obj=prospect)
+        prospect_employment_tags_form = ProspectEmploymentTagsForm().get_form(obj=prospect)
         prospect_note_form = ProspectNoteForm().get_form(self.request.POST)
         
         if prospect_note_form.validate():
@@ -138,6 +180,7 @@ class AdminProspectNotesHandler(AdminBaseHandler):
             self.render_template('admin/prospect_details.html',
                                  prospect=prospect,
                                  prospect_note_form=prospect_note_form,
-                                 prospect_tags_form=prospect_tags_form)
+                                 prospect_tags_form=prospect_tags_form,
+                                 prospect_employment_tags_form=prospect_employment_tags_form)
 
         

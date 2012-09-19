@@ -14,6 +14,7 @@
 					<th width="10%">Prospect ID</th>
 					<th width="12%">Latest</th>
 					<th width="12%">Tags</th>
+					<th width="12%">Works At</th>
 					<th width="12%">Notes</th>
 					<th width="12%">Category</th>
 					<th width="5%">Lang</th>
@@ -58,6 +59,11 @@
 					{% if prospect_provider %}
 					provider (<a href="/provider/profile/{{prospect_provider.vanity_url}}">{{ prospect_provider.vanity_url }}</a>)
 					{% endif %}
+					</td>
+					<td>
+							{% for tag in p.employment_tags %}
+							{{ tag }} <br>
+							{% endfor %}
 					</td>
 					<td> 
 					{% set notes_email_count = p.get_notes_email_count() %}	

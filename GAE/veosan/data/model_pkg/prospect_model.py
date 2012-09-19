@@ -10,7 +10,7 @@ class ProspectNote(ndb.Model):
     note_type = ndb.StringProperty(choices=util.note_types) 
     created_on = ndb.DateTimeProperty(auto_now_add=True)
     user = ndb.UserProperty()
-    event_date = ndb.DateProperty(auto_now_add=True)
+    event_date = ndb.DateTimeProperty(auto_now_add=True)
     campaign = ndb.KeyProperty(kind='Campaign')
     
 
@@ -36,7 +36,8 @@ class ProviderProspect(ndb.Model):
 
     # prospect status
     tags = ndb.StringProperty(repeated=True)
- 
+    employment_tags = ndb.StringProperty(repeated=True)
+
     def get_provider(self):
         return Provider.query(Provider.email == self.email).get()
  
