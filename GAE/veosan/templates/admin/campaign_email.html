@@ -13,15 +13,22 @@
 		<br>
 		{% for prospect in campaign.prospects %}
 			{% set p = prospect.get() %}
-			<h2>{{ p.email }}</h2>
-			{% if p.language == 'fr' %}
-				<strong>{{ campaign.subject_fr }}</strong>
-				<p>{{ campaign.body_fr|escape|format(**p|generate_prospect_email_dict(host) )  }}</p>
-			{% else %}
-				<strong>{{ campaign.subject_en }}</strong>
-				<p>{{ campaign.body_en|escape|format(**p|generate_prospect_email_dict(host) )  }}</p>
-			{% endif %}
-			<hr>
+			
+			
+				{% if prospect.language == 'fr' %}
+					{% set subject = campaign.subject_fr %}
+					{% set body = campaign.body_fr %}
+				{% else %}
+					{% set subject = campaign.subject_en %}
+					{% set body = campaign.body_en %}
+				{% endif %}
+				
+				<h2>{{ subject|markdown|safe|format(**prospect|generate_prospect_email_dict(host) ) }}</h2>
+				<br>
+				<p>{{ body|markdown|safe|format(**prospect|generate_prospect_email_dict(host) )  }}</p>
+				<hr>
+				
+				
 		{% endfor %}
 	</div>
 </div>

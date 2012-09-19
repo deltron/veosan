@@ -2,7 +2,7 @@
 
 {% set active_page = "campaigns" %}
 
-{% block subhead %} Campaign: {{campaign.name}} {% endblock %}
+{% block subhead %} {{ campaign.name }} {% endblock %}
 {% block lead %} {{ campaign.description }} {% endblock %}
 
 {% block content %}
@@ -14,7 +14,7 @@
 			<br>
 			X emails sent, X converted (x%)
 			<br>
-			Start date: yyyy-mm-dd
+			Created on: {{campaign.created_on|format_datetime(format="medium", rebase=True)}}
 			<br>
 			<br>
 			<a class="btn btn-mini btn-info" href="/admin/campaign/{{campaign.key.urlsafe()}}/emails" data-toggle="modal">Generate All Emails</a>
@@ -69,7 +69,7 @@
 	<div class="span8">
 		
 		<form class="form-horizontal" action="/admin/campaign/{{campaign.key.urlsafe()}}" method="post" id="campaign_form">
-			<h2>Email templates
+			<h2>Email Templates
 			<button type="submit" class="btn btn-mini btn-primary">
 				{{ _('Save') }}
 			</button>
@@ -169,6 +169,10 @@
 			
 			<div class="modal-footer">
 		
+				<a class="btn btn-info" href="/admin/campaign/{{campaign.key.urlsafe()}}/sent/{{prospect.prospect_id}}">
+					<i class="icon-ok icon-white"></i> Mark as sent
+				</a>
+				
 				<a class="btn" href="/admin/campaign/{{ campaign.key.urlsafe() }}">{{ _('Cancel') }}</a>
 			</div>
 		

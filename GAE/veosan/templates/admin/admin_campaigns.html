@@ -20,7 +20,7 @@
 			<tbody>
 				{% for c in campaigns %}
 				<tr>
-					<td><a href="/admin/campaign/{{ c.key.urlsafe() }}">{{ c.name }}</a></td>
+					<td><a id="campaign-detail-link-{{loop.index}}" href="/admin/campaign/{{ c.key.urlsafe() }}">{{ c.name }}</a></td>
 					<td> <span class="label label-inverse">EN</span> {{ c.subject_en }} &nbsp;&nbsp;
 						 <span class="label label-inverse">FR</span> {{ c.subject_fr }} </td>
 					<td> {{ c.prospects|count }}</td>	 
