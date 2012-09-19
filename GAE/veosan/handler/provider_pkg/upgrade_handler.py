@@ -4,6 +4,7 @@ from handler.provider import ProviderBaseHandler
 from data import db
 from webapp2_extras.i18n import lazy_gettext as _
 import stripe
+from data.model_pkg.provider_model import ProviderAccount
 
 
 class ProviderUpgradeHandler(ProviderBaseHandler):
@@ -31,9 +32,13 @@ class ProviderUpgradeHandler(ProviderBaseHandler):
         )
 
         # save the customer ID in your database so you can use it later
-        provider.stripe_customer_id = customer.id
+        provider_account = ProviderAccount()
+        provider_account.provider = provider.key
+        provider_account.stripe_customer_id = customer.id
+        provider_account.stripe_plan_id = 'veosan_presence_monthly'
+        provider_account.put()
         
-        self.render_template("provider/upgrade.html", provider=provider)
+        self.render_template("provider/upgrade_success.html", provider=provider)
 
 
 
