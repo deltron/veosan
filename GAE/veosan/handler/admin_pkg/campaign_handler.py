@@ -2,9 +2,11 @@ from handler.auth import admin_required
 from handler.admin import AdminBaseHandler
 from forms.campaign import AddCampaignForm, EditCampaignForm
 from data.model_pkg.campaign_model import Campaign
+from data.model_pkg.prospect_model import ProspectNote
 from data import db
 import logging
 from google.appengine.ext import ndb
+from google.appengine.api import users
 
 class AdminCampaignsHandler(AdminBaseHandler):
     
@@ -92,13 +94,29 @@ class AdminCampaignDetailsHandler(AdminBaseHandler):
         else:
             self.render_campaign_details(campaign, error_message='Prospect not found')
         
+    def render_email(self, campaign, prospect):
+        kw = {'campaign': campaign, 'prospect': prospect}
+        return self.jinja2.render_template('email/campaign_email.html', **kw)
+    
+    
+    def create_prospect_email_note(self, prospect, email_text):
+        prospect_note = ProspectNote()
+        prospect_note.prospect = prospect.key
+        google_user = users.get_current_user()    
+        prospect_note.user = google_user
+        prospect_note.note_type = 'email'
+        prospect_note.body = email_text
+        prospect_note.put()
+        
+        
     def mark_as_sent_get(self, campaign_key, prospect_id):
         campaign = db.get_from_urlsafe_key(campaign_key)
         prospect = db.get_prospect_from_prospect_id(prospect_id)
         logging.info('Marking email as sent for prospect %s' % prospect)
         if prospect:
-                
-            self.render_campaign_details(campaign, prospect=prospect, show_modal='email')
+            email_text = self.render_email(campaign, prospect)
+            self.create_prospect_email_note(prospect, email_text)
+            self.render_campaign_details(campaign, prospect=prospect, show_modal='email', modal_success_message='Email marked as sent and note created.')
         else:
             self.render_campaign_details(campaign, error_message='Prospect not found')
                     

@@ -1,0 +1,12 @@
+
+{% if prospect.language == 'fr' %}
+	{% set subject = campaign.subject_fr %}
+	{% set body = campaign.body_fr %}
+{% else %}
+	{% set subject = campaign.subject_en %}
+	{% set body = campaign.body_en %}
+{% endif %}
+
+<h2>{{ subject|markdown|safe|format(**prospect|generate_prospect_email_dict(host) ) }}</h2>
+<br>
+<p>{{ body|markdown|safe|format(**prospect|generate_prospect_email_dict(host) )  }}</p>

@@ -145,39 +145,32 @@
 		{% if prospect %}
 		<div class="modal hide" id="email_modal" style="display: none;">
 			<div class="modal-header">
+				{% if modal_success_message %}
+				<!-- Success Message -->
+				<div class="alert alert-success">
+					{{modal_success_message|safe}}
+				</div>
+				{% endif %}
+				
 				<a class="close" data-dismiss="modal">×</a>
 		
 				<h1>{{ prospect.email }}</h1>
 			</div>
 		
 			<div class="modal-body">
-				{% if prospect.language == 'fr' %}
-					{% set subject = campaign.subject_fr %}
-					{% set body = campaign.body_fr %}
-				{% else %}
-					{% set subject = campaign.subject_en %}
-					{% set body = campaign.body_en %}
-				{% endif %}
-				
-				<h2>{{ subject|markdown|safe|format(**prospect|generate_prospect_email_dict(host) ) }}</h2>
-				<br>
-				<p>{{ body|markdown|safe|format(**prospect|generate_prospect_email_dict(host) )  }}</p>
-				
-				<hr>
+				{% include 'email/campaign_email.html' %}
 			</div>
 			
-			
 			<div class="modal-footer">
-		
 				<a class="btn btn-info" href="/admin/campaign/{{campaign.key.urlsafe()}}/sent/{{prospect.prospect_id}}">
-					<i class="icon-ok icon-white"></i> Mark as sent
-				</a>
-				
+					<i class="icon-ok icon-white"></i> Mark as sent</a>
 				<a class="btn" href="/admin/campaign/{{ campaign.key.urlsafe() }}">{{ _('Cancel') }}</a>
 			</div>
 		
 		</div>
 		{% endif %}
+		
+		
 
 {% endblock content %}
 
