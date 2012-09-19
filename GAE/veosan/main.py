@@ -28,6 +28,7 @@ jinja_filters['dump'] = dump
 jinja_filters['remove_empty_strings_from_list'] = util.remove_empty_strings_from_list
 jinja_filters['markdown'] = util.markdown
 jinja_filters['generate_prospect_email_dict'] = campaign_handler.generate_prospect_email_dict
+jinja_filters['human_readable_date_decay'] = time.human_readable_date_decay
 
 jinja_environment_args = {
         'autoescape': True,

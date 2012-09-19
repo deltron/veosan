@@ -12,52 +12,103 @@
 			<thead>
 				<tr>
 					<th width="10%">Prospect ID</th>
-					<th width="12%">Status</th>
-					<th width="12%">Language</th>
-					<th width="12%">Email</th>
-					<th width="12%">First Name</th>
-					<th width="12%">Last Name</th>
+					<th width="12%">Latest</th>
+					<th width="12%">Tags</th>
+					<th width="12%">Notes</th>
 					<th width="12%">Category</th>
-					<th width="5%">Hits</th>
-					<th width="10%">Delete</th>
+					<th width="5%">Lang</th>
+					<th width="12%">Name</th>
+					<th width="12%">Email</th>
 				</tr>
 			</thead>
 			<tbody>
 				{% for p in prospects %}
 				<tr>
 					<td><a href="/admin/prospects/{{ p.prospect_id }}">{{ p.prospect_id }}</a></td>
-					<td>{{ p.status }}</td>
-					<td>{{ p.language }}</td>
-					<td>{{ p.email }}</td>
-					<td>{{ p.first_name }}</td>
-					<td>{{ p.last_name }}</td>
+					<td>Note:
+					{% set last_note_timestamp = p.get_last_note_timestamp() %}
+					{% if last_note_timestamp %}
+					{{ last_note_timestamp|human_readable_date_decay }}
+					{% else %}
+					Never
+					{% endif %}
+					<br>
+					Site Visit:
+					{% set last_site_visit_timestamp = p.get_last_site_visit_timestamp() %}
+					{% if last_site_visit_timestamp %}
+					{{ last_site_visit_timestamp|human_readable_date_decay }}
+					{% else %}
+					Never
+					{% endif %}</td>
+					{% if 'requires_followup' in p.tags %}
+					<td style="background-color: yellow">
+					{% elif 'potential_champion' in p.tags %}
+					<td style="background-color: #BDECB6">
+					{% elif 'generic_person' in p.tags %}
+					<td style="background-color: #cccccc">
+					{% elif 'unlikely' in p.tags %}
+					<td style="background-color: #FF7878">
+					{% else %}
+					<td>
+					{% endif %}
+					{% for tag in p.tags %}
+					{{ tag }} <br>
+					{% endfor %}
+					{% set prospect_provider = p.get_provider() %}
+					{% if prospect_provider %}
+					provider (<a href="/provider/profile/{{prospect_provider.vanity_url}}">{{ prospect_provider.vanity_url }}</a>)
+					{% endif %}
+					</td>
+					<td> 
+					{% set notes_email_count = p.get_notes_email_count() %}	
+					{% if notes_email_count > 0 %}
+					Emails: {{ notes_email_count }}
+					<br>
+					{% endif %}
+					
+					{% set notes_call_count = p.get_notes_call_count() %}	
+					{% if notes_call_count > 0 %}
+					Calls: {{ notes_call_count }}
+					<br>
+					{% endif %}
+
+					{% set notes_meeting_count = p.get_notes_meeting_count() %}	
+					{% if notes_meeting_count > 0 %}
+					Meetings: {{ notes_meeting_count }}
+					<br>
+					{% endif %}
+					
+					{% set notes_info_count = p.get_notes_info_count() %}	
+					{% if notes_info_count > 0 %}
+					Info: {{ notes_info_count }}
+					{% endif %} </td>
 					<td>{{ p.category }}</td>
-					<td>{{ p.landing_hits }}</td>
-					<td><a href="/admin/prospects/delete/{{ p.prospect_id }}" class="btn btn-danger">Delete</a></td>
+					<td>{{ p.language }}</td>
+					<td>{{ p.first_name }} {{ p.last_name }}</td>
+					<td>{{ p.email }}</td>
 				</tr>
 				{% endfor %}
 			</tbody>
 		</table>
 	</div>
-	
+
 	<div class="span12">
 		<div class="well">
 			<h3>Add New Prospect</h3>
 			<form class="form-inline" action="/admin/prospects" method="post" id="prospect_form">
-					{{ macro.display_errors_for_field(prospect_form.prospect_id) }}
-					{{ macro.display_errors_for_field(prospect_form.email) }}
+				{{ macro.display_errors_for_field(prospect_form.prospect_id) }}
+				{{ macro.display_errors_for_field(prospect_form.email) }}
 
-				
-					{{ prospect_form.prospect_id(placeholder='Prospect ID', class='input-small') }}
-					{{ prospect_form.language(class='input-small') }}
-					{{ prospect_form.email(placeholder='Email', class='input-medium') }}
-					{{ prospect_form.first_name(placeholder='First Name', class='input-medium') }}
-					{{ prospect_form.last_name(placeholder='Last Name', class='input-medium') }}
-					{{ prospect_form.category(class='input-medium') }}
+				{{ prospect_form.prospect_id(placeholder='Prospect ID', class='input-small') }}
+				{{ prospect_form.language(class='input-small') }}
+				{{ prospect_form.email(placeholder='Email', class='input-medium') }}
+				{{ prospect_form.first_name(placeholder='First Name', class='input-medium') }}
+				{{ prospect_form.last_name(placeholder='Last Name', class='input-medium') }}
+				{{ prospect_form.category(class='input-medium') }}
 
-					<button type="submit" class="btn btn-primary">
-						{{ _('Add') }}
-					</button>
+				<button type="submit" class="btn btn-primary">
+					{{ _('Add') }}
+				</button>
 			</form>
 		</div>
 	</div>

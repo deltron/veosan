@@ -4,11 +4,12 @@ from custom_form import CustomForm
 import util
 from webapp2_extras.i18n import lazy_gettext as _
 from forms import custom_validators
+from forms.custom_form import MultiCheckboxField
 
 
-class ProspectStatusForm(CustomForm):
+class ProspectTagsForm(CustomForm):
     def _set_fields(self, form): 
-        setattr(form, 'status', SelectField(_(u'Status'), choices=util.get_all_prospect_status_types()))
+        setattr(form, 'tags', MultiCheckboxField(_(u'Tags'), choices=util.get_all_prospect_tags()))
     
 class ProviderProspectForm(CustomForm):
     def _set_fields(self, form): 

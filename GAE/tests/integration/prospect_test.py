@@ -14,7 +14,7 @@ class ProspectTest(BaseTest):
         
         response.mustcontain("/admin/prospects/" + str(prospect_id))
         response.mustcontain(self._TEST_PROVIDER_EMAIL)
-        response.mustcontain("/admin/prospects/delete/" + str(prospect_id))
+     #   response.mustcontain("/admin/prospects/delete/" + str(prospect_id))
         
         self.logout_admin()
         

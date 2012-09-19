@@ -288,20 +288,22 @@ def markdown(text):
     if text:
         return markdown2.markdown(text)
 
-note_types = ['call', 'email', 'meeting', 'info']
+note_types = ['call', 'email', 'meeting', 'info', 'admin']
 
 def get_all_note_types():
     return [('call', _(u'Call')),
             ('email', _(u'Email')),
             ('meeting', _(u'Meeting')),
-            ('info', _(u'Info'))]
+            ('info', _(u'Info')),
+            ('admin', _(u'Admin')),
+            ]
     
 # List of provider status
 provider_statuses = ['prospect', 'contacted_phone', 'contacted_meeting', 'client_enabled', 'client_suspended', 'ex_client_disabled']
-prospect_statuses = ['new', 'cold_called', 'intro_email_sent']
+prospect_tags = ['new', 'potential_champion', 'generic_person', 'unlikely', 'requires_followup']
 
-def get_all_prospect_status_types():
-    status_choices = map(lambda s: (s, _(s.capitalize())), prospect_statuses)
+def get_all_prospect_tags():
+    status_choices = map(lambda s: (s, _(s.capitalize())), prospect_tags)
     return status_choices
 
 def get_all_status_types():

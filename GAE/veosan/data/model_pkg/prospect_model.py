@@ -1,6 +1,7 @@
 from google.appengine.ext import ndb
 from data.model_pkg.site_model import SiteLog
 import util
+from data.model_pkg.provider_model import Provider
 
 class ProspectNote(ndb.Model):
     prospect = ndb.KeyProperty(kind='ProviderProspect')
@@ -14,6 +15,8 @@ class ProspectNote(ndb.Model):
 
 
 class ProviderProspect(ndb.Model):
+    created_on = ndb.DateTimeProperty(auto_now_add=True)
+
     # address from AppEngine
     gae_country = ndb.StringProperty()
     gae_region = ndb.StringProperty()
@@ -31,17 +34,45 @@ class ProviderProspect(ndb.Model):
     landing_hits = ndb.IntegerProperty(default=0)
 
     # prospect status
-    status = ndb.StringProperty(default='new', choices=util.prospect_statuses)
-
-    # eventually link to a provider if they sign up
-    #provider = ndb.KeyProperty(kind='Provider')
-    
+    tags = ndb.StringProperty(repeated=True)
+ 
+    def get_provider(self):
+        return Provider.query(Provider.email == self.email).get()
  
     def get_site_logs(self):
         return SiteLog.query(SiteLog.prospect == self.key).order(-SiteLog.access_time).fetch()
     
+    def get_last_site_visit_timestamp(self):
+        latest_site_visit = SiteLog.query(SiteLog.prospect == self.key).order(-SiteLog.access_time).get()
+        if latest_site_visit:
+            return latest_site_visit.access_time
+        else:
+            return None
+
     def get_notes(self):
         return ProspectNote.query(ProspectNote.prospect == self.key).order(-ProspectNote.created_on).fetch()
+
+    def get_last_note_timestamp(self):
+        latest_prospect_note = ProspectNote.query(ProspectNote.prospect == self.key).order(-ProspectNote.created_on).get()
+        if latest_prospect_note:
+            return latest_prospect_note.created_on
+        else:
+            return None
+
+    def get_notes_count(self):
+        return ProspectNote.query(ProspectNote.prospect == self.key).count()
+
+    def get_notes_info_count(self):
+        return ProspectNote.query(ProspectNote.prospect == self.key, ProspectNote.note_type == 'info').count()
+
+    def get_notes_meeting_count(self):
+        return ProspectNote.query(ProspectNote.prospect == self.key, ProspectNote.note_type == 'meeting').count()
+
+    def get_notes_email_count(self):
+        return ProspectNote.query(ProspectNote.prospect == self.key, ProspectNote.note_type == 'email').count()
+
+    def get_notes_call_count(self):
+        return ProspectNote.query(ProspectNote.prospect == self.key, ProspectNote.note_type == 'call').count()
     
     def get_blog_url(self, host):
         return 'http://%s/blog/%s' %  (host, self.prospect_id)

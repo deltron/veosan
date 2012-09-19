@@ -29,7 +29,22 @@ def fetch_providers():
     return Provider.query().order(Provider.last_name)
 
 def fetch_provider_prospects():
-    return ProviderProspect.query().order(ProviderProspect.status, ProviderProspect.category, ProviderProspect.last_name)
+    all_prospects = ProviderProspect.query().order(ProviderProspect.category, ProviderProspect.last_name).fetch()
+
+    ordered_prospects = []
+        
+    # order them in some logical way
+    order = ['new', 'requires_followup', 'potential_champion', 'generic_person', 'unlikely']
+    for o in order:
+        tagged = filter(lambda p: o in p.tags, all_prospects)
+        ordered_prospects.extend(tagged)
+        for e in tagged:
+            all_prospects.remove(e)
+    
+    # add anyone leftover at the end  
+    ordered_prospects.extend(all_prospects)
+    
+    return ordered_prospects
 
 def fetch_campaigns():
     return EmailCampaign.query().order(EmailCampaign.name)
