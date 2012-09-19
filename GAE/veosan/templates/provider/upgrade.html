@@ -74,54 +74,87 @@
 			<tr>
 				<td width="20%"></td>
 				<td width="27%"></td>
-				<td width="27%" style="text-align: center;"> {# Paypal Button #}
-				{# Sandbox #}
-				<form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
-					
-<input type="hidden" name="cmd" value="_s-xclick">
-<input type="hidden" name="hosted_button_id" value="M9GUBTLBAN7SW">
-<input type="hidden" name="custom" value="{{ provider.key.urlsafe() }}">
-<input type="hidden" name="email" value="{{ provider.email }}">
-<input type="hidden" name="first_name" value="{{ provider.first_name }}">
-<input type="hidden" name="last_name" value="{{ provider.last_name }}">
-
-<table>
-<tr><td><input type="hidden" name="on0" value=""></td></tr><tr><td><select name="os0">
-	<option value="Option 1">Monthly : $9.99 CAD</option>
-	<option value="Option 2">Yearly (bonus 2 months free): $99.99 CAD</option>
-</select> </td></tr>
-</table>
-<input type="hidden" name="currency_code" value="CAD">
-<input type="image" src="https://www.sandbox.paypal.com/en_US/i/btn/btn_subscribeCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-<img alt="" border="0" src="https://www.sandbox.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
-</form>
- {# Production <!--
-
-				<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
-				<input type="hidden" name="cmd" value="_s-xclick">
-				<input type="hidden" name="hosted_button_id" value="B8HZ67EVDW646">
-				<table>
-				<tr>
-				<td>
-				<input type="hidden" name="on0" value="Payment Options">
-				Payment Options</td>
-				</tr>
-				<tr>
-				<td>
-				<select name="os0">
-				<option value="Veosan Presence">Veosan Presence : $9.99 CAD - monthly</option>
-				<option value="2 months free!">2 months free! : $99.99 CAD - yearly</option>
-				</select></td>
-				</tr>
-				</table>
-				<input type="hidden" name="currency_code" value="CAD">
-				<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_subscribeCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-				<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
-				</form>
-				--> #} </td>
+				<td width="27%" style="text-align: center;"><a data-toggle="modal" href="#upgrade_modal" class="btn btn-success btn-large">Upgrade</a></td>
 			</tr>
 		</table>
 
 	</div>
 </div>
+
+<div class="modal hide" id="upgrade_modal" style="display: none;">
+	<div class="modal-header">
+		<a class="close" data-dismiss="modal">×</a>
+
+		<h3>Upgrade</h3>
+	</div>
+	<form action="" method="post" id="payment-form">
+		<div class="modal-body">
+			<span class="payment-errors"></span>
+			<div class="form-row">
+				<label>Card Number</label>
+				<input type="text" size="20" autocomplete="off" class="card-number"/>
+			</div>
+			<div class="form-row">
+				<label>CVC</label>
+				<input type="text" size="4" autocomplete="off" class="card-cvc"/>
+			</div>
+			<div class="form-row">
+				<label>Expiration (MM/YYYY)</label>
+				<input type="text" size="2" class="card-expiry-month"/>
+				<span> / </span>
+				<input type="text" size="4" class="card-expiry-year"/>
+			</div>
+
+		</div>
+
+		<div class="modal-footer">
+			<button type="submit" class="btn btn-success">
+				Submit Payment
+			</button>
+		</div>
+	</form>
+</div>
+
+{% endblock %}
+
+{% block extra_javascript %}
+
+<script type="text/javascript" src="https://js.stripe.com/v1/"></script>
+<script type="text/javascript">
+Stripe.setPublishableKey('pk_0CGm7P3z0UJVLSfX3Pj5z7NKuzUjj');
+
+$(document).ready(function() {
+  $("#payment-form").submit(function(event) {
+    // disable the submit button to prevent repeated clicks
+    $('.submit-button').attr("disabled", "disabled");
+
+    Stripe.createToken({
+        number: $('.card-number').val(),
+        cvc: $('.card-cvc').val(),
+        exp_month: $('.card-expiry-month').val(),
+        exp_year: $('.card-expiry-year').val()
+    }, stripeResponseHandler);
+        
+    // prevent the form from submitting with the default action
+    return false;
+  });
+});
+
+function stripeResponseHandler(status, response) {
+    if (response.error) {
+        // show the errors on the form
+        $(".payment-errors").text(response.error.message);
+        $(".submit-button").removeAttr("disabled");
+    } else {
+        var form$ = $("#payment-form");
+        // token contains id, last4, and card type
+        var token = response['id'];
+        // insert the token into the form so it gets submitted to the server
+        form$.append("<input type='hidden' name='stripeToken' value='" + token + "'/>");
+        // and submit
+        form$.get(0).submit();
+    }
+}
+</script>
+
 {% endblock %}
