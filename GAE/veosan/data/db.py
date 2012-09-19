@@ -38,8 +38,8 @@ def fetch_provider_prospects():
     for o in order:
         tagged = filter(lambda p: o in p.tags, all_prospects)
         ordered_prospects.extend(tagged)
-        remain = filter(lambda p: p not in tagged, all_prospects)
-        all_prospects = remain
+        for e in tagged:
+            all_prospects.remove(e)
     
     # add anyone leftover at the end  
     ordered_prospects.extend(all_prospects)
