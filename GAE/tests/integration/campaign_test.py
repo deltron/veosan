@@ -28,6 +28,7 @@ class CampaignTest(BaseTest):
         details_page.mustcontain("Campaign Prospects")
         details_page.mustcontain("Email Templates")
         self.logout_admin()
+        
     
 if __name__ == "__main__":
     unittest.main()

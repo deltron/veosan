@@ -99,9 +99,10 @@ class AdminCampaignDetailsHandler(AdminBaseHandler):
         return self.jinja2.render_template('email/campaign_email.html', **kw)
     
     
-    def create_prospect_email_note(self, prospect, email_text):
+    def create_prospect_email_note(self, prospect, campaign, email_text):
         prospect_note = ProspectNote()
         prospect_note.prospect = prospect.key
+        prospect_note.campaign = campaign.key
         google_user = users.get_current_user()    
         prospect_note.user = google_user
         prospect_note.note_type = 'email'
@@ -115,7 +116,7 @@ class AdminCampaignDetailsHandler(AdminBaseHandler):
         logging.info('Marking email as sent for prospect %s' % prospect)
         if prospect:
             email_text = self.render_email(campaign, prospect)
-            self.create_prospect_email_note(prospect, email_text)
+            self.create_prospect_email_note(prospect, campaign, email_text)
             self.render_campaign_details(campaign, prospect=prospect, show_modal='email', modal_success_message='Email marked as sent and note created.')
         else:
             self.render_campaign_details(campaign, error_message='Prospect not found')
