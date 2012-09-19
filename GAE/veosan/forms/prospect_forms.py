@@ -5,6 +5,8 @@ import util
 from webapp2_extras.i18n import lazy_gettext as _
 from forms import custom_validators
 from forms.custom_form import MultiCheckboxField
+from wtforms.ext.dateutil.fields import DateField
+import datetime
 
 
 class ProspectTagsForm(CustomForm):
@@ -25,4 +27,5 @@ class ProviderProspectForm(CustomForm):
 class ProspectNoteForm(CustomForm):
     def _set_fields(self, form): 
         setattr(form, 'note_type', SelectField(_(u'Type'), choices=util.get_all_note_types()))
+        setattr(form, 'event_date', DateField(_(u'Event Date'), default=datetime.datetime.now()))
         setattr(form, 'body', TextAreaField(_(u'Note')))

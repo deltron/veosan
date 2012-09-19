@@ -71,7 +71,7 @@
 			{% for note in prospect.get_notes() %}
 			<tr>
 				<td><a href="/admin/prospects/{{ prospect.prospect_id }}/notes/edit/{{ note.key.urlsafe() }}"><i class="bs-icon icon-edit"> </i></a></td>
-				<td>{{ note.created_on|format_datetime(format="medium") }}</td>
+				<td>{{ note.event_date|format_date(format="medium") }}</td>
 				<td>{{ note.user }}</td>
 				<td>{{ note.note_type }}</td>
 				<td>{{ note.body|markdown|safe }}</td>
