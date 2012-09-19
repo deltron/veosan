@@ -35,7 +35,8 @@ class ProviderProspect(ndb.Model):
 
     # prospect status
     tags = ndb.StringProperty(repeated=True)
- 
+    employment_tags = ndb.StringProperty(repeated=True)
+
     def get_provider(self):
         return Provider.query(Provider.email == self.email).get()
  

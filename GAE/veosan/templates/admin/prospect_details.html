@@ -16,18 +16,6 @@
 		{{ prospect.category }}
 		<br>
 		{{ prospect.language }}
-		<br>
-		<br>
-		<br>
-		<h3>Tags</h3>
-		<form method="post" action="/admin/prospects/{{ prospect.prospect_id }}/tags"  id="prospect_tags_form">
-			<div class="form-inline">
-			{{ prospect_tags_form.tags(class='input-medium') }}
-			</div>
-			<button type="submit" class="btn btn-primary">
-				{{ _('Update') }}
-			</button>
-		</form>
 	</div>
 	<div class="span4">
 		<h3>GAE Geography</h3>
@@ -36,10 +24,6 @@
 		Region: {{ prospect.gae_region }}
 		<br>
 		City: {{ prospect.gae_city }}
-		<br>
-		<br>
-		<br>
-		<h3>Derived Info</h3>
 	</div>
 	<div class="span4">
 		<h3>Prospect URLs</h3>
@@ -48,13 +32,38 @@
 		{{ prospect.get_tour_url(host) }}
 		<br>
 		{{ prospect.get_blog_url(host) }}
-		<br>
-		<br>
-		<br>
-		<h3>Campaign Info</h3>
 	</div>
 </div>
-
+<br>
+<br>
+<br>
+<div class="row">
+	<div class="span4">
+		<h3>Tags</h3>
+		<form method="post" action="/admin/prospects/{{ prospect.prospect_id }}/tags"  id="prospect_tags_form">
+			<div class="form-inline">
+			{{ prospect_tags_form.tags(class='input-medium') }}
+			</div>
+			<button type="submit" class="btn btn-primary">
+				{{ _('Update') }}
+			</button>
+		</form>		
+	</div>
+	<div class="span4">
+		<h3>Employment</h3>
+		<form method="post" action="/admin/prospects/{{ prospect.prospect_id }}/employment"  id="prospect_employment_tags_form">
+			<div class="form-inline">
+			{{ prospect_employment_tags_form.employment_tags(class='input-medium') }}
+			</div>
+			<button type="submit" class="btn btn-primary">
+				{{ _('Update') }}
+			</button>
+		</form>		
+	</div>
+	<div class="span4">
+		<h3>Campaigns</h3>
+	</div>
+</div>
 <div class="row">
 	<br>
 	<br>

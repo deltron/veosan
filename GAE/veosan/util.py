@@ -301,6 +301,12 @@ def get_all_note_types():
 # List of provider status
 provider_statuses = ['prospect', 'contacted_phone', 'contacted_meeting', 'client_enabled', 'client_suspended', 'ex_client_disabled']
 prospect_tags = ['new', 'potential_champion', 'generic_person', 'unlikely', 'requires_followup']
+employment_tags = ['professor', 'hospital', 'clinic_small', 'clinic_big', 'independent']
+
+
+def get_all_employment_tags():
+    employment_tag_choices = map(lambda s: (s, _(s.capitalize())), employment_tags)
+    return employment_tag_choices
 
 def get_all_prospect_tags():
     status_choices = map(lambda s: (s, _(s.capitalize())), prospect_tags)

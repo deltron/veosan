@@ -13,6 +13,11 @@ from pytz import tzinfo
 class ProspectTagsForm(CustomForm):
     def _set_fields(self, form): 
         setattr(form, 'tags', MultiCheckboxField(_(u'Tags'), choices=util.get_all_prospect_tags()))
+
+class ProspectEmploymentTagsForm(CustomForm):
+    def _set_fields(self, form): 
+        setattr(form, 'employment_tags', MultiCheckboxField(_(u'Employment'), choices=util.get_all_employment_tags()))
+
     
 class ProviderProspectForm(CustomForm):
     def _set_fields(self, form): 
