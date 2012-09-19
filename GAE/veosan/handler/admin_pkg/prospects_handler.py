@@ -68,7 +68,7 @@ class AdminProspectTagsHandler(AdminBaseHandler):
             prospect_note.prospect = prospect.key
             google_user = users.get_current_user()    
             prospect_note.user = google_user
-            prospect_note.note_type = 'info'
+            prospect_note.note_type = 'admin'
             
             prospect_tags_string = ""
             for tag in prospect.tags:
