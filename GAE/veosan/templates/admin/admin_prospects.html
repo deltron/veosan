@@ -26,15 +26,17 @@
 				<tr>
 					<td><a href="/admin/prospects/{{ p.prospect_id }}">{{ p.prospect_id }}</a></td>
 					<td>Note:
-					{% if p.get_last_note_timestamp() %}
-					{{ p.get_last_note_timestamp()|human_readable_date_decay }}
+					{% set last_note_timestamp = p.get_last_note_timestamp() %}
+					{% if last_note_timestamp %}
+					{{ last_note_timestamp|human_readable_date_decay }}
 					{% else %}
 					Never
 					{% endif %}
 					<br>
 					Site Visit:
-					{% if p.get_last_site_visit_timestamp() %}
-					{{ p.get_last_site_visit_timestamp()|human_readable_date_decay }}
+					{% set last_site_visit_timestamp = p.get_last_site_visit_timestamp() %}
+					{% if last_site_visit_timestamp %}
+					{{ last_site_visit_timestamp|human_readable_date_decay }}
 					{% else %}
 					Never
 					{% endif %}</td>
@@ -52,24 +54,33 @@
 					{% for tag in p.tags %}
 					{{ tag }} <br>
 					{% endfor %}
+					{% set prospect_provider = p.get_provider() %}
+					{% if prospect_provider %}
+					provider (<a href="/provider/profile/{{prospect_provider.vanity_url}}">{{ prospect_provider.vanity_url }}</a>)
+					{% endif %}
 					</td>
-					<td> {% if p.get_notes_email_count() > 0 %}
-					Emails: {{ p.get_notes_email_count() }}
+					<td> 
+					{% set notes_email_count = p.get_notes_email_count() %}	
+					{% if notes_email_count > 0 %}
+					Emails: {{ notes_email_count }}
+					<br>
+					{% endif %}
+					
+					{% set notes_call_count = p.get_notes_call_count() %}	
+					{% if notes_call_count > 0 %}
+					Calls: {{ notes_call_count }}
 					<br>
 					{% endif %}
 
-					{% if p.get_notes_call_count() > 0 %}
-					Calls: {{ p.get_notes_call_count() }}
+					{% set notes_meeting_count = p.get_notes_meeting_count() %}	
+					{% if notes_meeting_count > 0 %}
+					Meetings: {{ notes_meeting_count }}
 					<br>
 					{% endif %}
-
-					{% if p.get_notes_meeting_count() > 0 %}
-					Meetings: {{ p.get_notes_meeting_count() }}
-					<br>
-					{% endif %}
-
-					{% if p.get_notes_info_count() > 0 %}
-					Info: {{ p.get_notes_info_count() }}
+					
+					{% set notes_info_count = p.get_notes_info_count() %}	
+					{% if notes_info_count > 0 %}
+					Info: {{ notes_info_count }}
 					{% endif %} </td>
 					<td>{{ p.category }}</td>
 					<td>{{ p.language }}</td>

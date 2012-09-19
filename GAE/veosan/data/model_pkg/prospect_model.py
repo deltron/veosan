@@ -1,6 +1,7 @@
 from google.appengine.ext import ndb
 from data.model_pkg.site_model import SiteLog
 import util
+from data.model_pkg.provider_model import Provider
 
 class ProspectNote(ndb.Model):
     prospect = ndb.KeyProperty(kind='ProviderProspect')
@@ -34,10 +35,9 @@ class ProviderProspect(ndb.Model):
 
     # prospect status
     tags = ndb.StringProperty(repeated=True)
-
-    # eventually link to a provider if they sign up
-    #provider = ndb.KeyProperty(kind='Provider')
-    
+ 
+    def get_provider(self):
+        return Provider.query(Provider.email == self.email).get()
  
     def get_site_logs(self):
         return SiteLog.query(SiteLog.prospect == self.key).order(-SiteLog.access_time).fetch()
