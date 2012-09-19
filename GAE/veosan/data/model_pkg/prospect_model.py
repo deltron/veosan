@@ -50,12 +50,12 @@ class ProviderProspect(ndb.Model):
             return None
 
     def get_notes(self):
-        return ProspectNote.query(ProspectNote.prospect == self.key).order(-ProspectNote.created_on).fetch()
+        return ProspectNote.query(ProspectNote.prospect == self.key).order(-ProspectNote.event_date, -ProspectNote.created_on).fetch()
 
     def get_last_note_timestamp(self):
         latest_prospect_note = ProspectNote.query(ProspectNote.prospect == self.key).order(-ProspectNote.event_date).get()
         if latest_prospect_note:
-            return latest_prospect_note.created_on
+            return latest_prospect_note.event_date
         else:
             return None
 
