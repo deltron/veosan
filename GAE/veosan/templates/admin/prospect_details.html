@@ -19,9 +19,11 @@
 		<br>
 		<br>
 		<br>
-		<h3>Status</h3>
-		<form method="post" action="/admin/prospects/{{ prospect.prospect_id }}/status" class="form-inline" id="prospect_status_form">
-			{{ prospect_status_form.status(class='input-medium') }}
+		<h3>Tags</h3>
+		<form method="post" action="/admin/prospects/{{ prospect.prospect_id }}/tags"  id="prospect_tags_form">
+			<div class="form-inline">
+			{{ prospect_tags_form.tags(class='input-medium') }}
+			</div>
 			<button type="submit" class="btn btn-primary">
 				{{ _('Update') }}
 			</button>

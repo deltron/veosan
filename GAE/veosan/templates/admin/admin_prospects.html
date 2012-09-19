@@ -13,7 +13,7 @@
 				<tr>
 					<th width="10%">Prospect ID</th>
 					<th width="12%">Latest</th>
-					<th width="12%">Status</th>
+					<th width="12%">Tags</th>
 					<th width="12%">Notes</th>
 					<th width="12%">Category</th>
 					<th width="5%">Lang</th>
@@ -38,19 +38,20 @@
 					{% else %}
 					Never
 					{% endif %}</td>
-					{% if p.status == '0_new' %}
-					<td>
-					{% elif  p.status == '1_potential_champion' %}
+					{% if 'requires_followup' in p.tags %}
+					<td style="background-color: yellow">
+					{% elif 'potential_champion' in p.tags %}
 					<td style="background-color: #BDECB6">
-					{% elif  p.status == '2_generic_person' %}
+					{% elif 'generic_person' in p.tags %}
 					<td style="background-color: #cccccc">
-					{% elif p.status == '3_unlikely' %}
+					{% elif 'unlikely' in p.tags %}
 					<td style="background-color: #FF7878">
 					{% else %}
 					<td>
 					{% endif %}
-
-					{{ p.status }}
+					{% for tag in p.tags %}
+					{{ tag }} <br>
+					{% endfor %}
 					</td>
 					<td> {% if p.get_notes_email_count() > 0 %}
 					Emails: {{ p.get_notes_email_count() }}
