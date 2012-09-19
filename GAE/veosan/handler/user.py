@@ -56,6 +56,7 @@ class UserBaseHandler(BaseHandler):
         
     def render_login(self, next_action=None, key=None, **kw):
         login_form = LoginForm().get_form()
+        login_form['remember_me'].data = True
         
         if next_action == 'accept':
             if key:
