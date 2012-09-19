@@ -10,6 +10,12 @@ import utilities
 from webapp2_extras.i18n import to_utc
 from data.model_pkg.site_model import SiteLog
 
+class ProviderAccount(ndb.Model):
+    created_on = ndb.DateTimeProperty(auto_now_add=True)
+    provider = ndb.KeyProperty(kind='Provider')
+    stripe_customer_id = ndb.StringProperty()
+    stripe_plan_id = ndb.StringProperty()
+    
 
 class Provider(ndb.Model):
     '''
@@ -64,7 +70,6 @@ class Provider(ndb.Model):
 
     # user
     user = ndb.KeyProperty(kind='User')
-
 
     # deprecated ---------------
     associations = ndb.StringProperty(repeated=True)

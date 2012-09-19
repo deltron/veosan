@@ -32,13 +32,5 @@ class WelcomeHandler(ProviderBaseHandler):
 
         self.render_template("provider/welcome.html", provider=provider)
 
-    
-class ProviderUpgradeHandler(ProviderBaseHandler):
-    @provider_required
-    def get(self, vanity_url=None):
-        provider = db.get_provider_from_vanity_url(vanity_url)
-
-        self.render_template("provider/upgrade.html", provider=provider)
-
 
 

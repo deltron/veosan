@@ -78,6 +78,20 @@ indexes:
   - name: created_on
     direction: desc
 
+- kind: ProspectNote
+  properties:
+  - name: prospect
+  - name: event_date
+    direction: desc
+
+- kind: ProspectNote
+  properties:
+  - name: prospect
+  - name: event_date
+    direction: desc
+  - name: created_on
+    direction: desc
+
 - kind: ProviderProspect
   properties:
   - name: category

@@ -3,8 +3,8 @@ from webapp2_extras.routes import PathPrefixRoute
 from webapp2 import Route
 from handler import patient, provider
 from handler.provider_pkg import welcome_handler, network_handler,\
-    profile_handler, cv_handler, schedule_handler, address_handler
-from handler.payment_pkg import payment_handler
+    profile_handler, cv_handler, schedule_handler, address_handler,\
+    upgrade_handler
 
 
 def get_routes():
@@ -61,6 +61,6 @@ def get_routes():
                        #Route('/terms/<vanity_url>', user.ProviderTermsHandler),
                        
                        # upgrade account
-                       Route('/upgrade/<vanity_url>', welcome_handler.ProviderUpgradeHandler),
+                       Route('/upgrade/<vanity_url>', upgrade_handler.ProviderUpgradeHandler),
                    ])
             ]

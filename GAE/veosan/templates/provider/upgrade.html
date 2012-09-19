@@ -74,54 +74,169 @@
 			<tr>
 				<td width="20%"></td>
 				<td width="27%"></td>
-				<td width="27%" style="text-align: center;"> {# Paypal Button #}
-				{# Sandbox #}
-				<form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
-					
-<input type="hidden" name="cmd" value="_s-xclick">
-<input type="hidden" name="hosted_button_id" value="M9GUBTLBAN7SW">
-<input type="hidden" name="custom" value="{{ provider.key.urlsafe() }}">
-<input type="hidden" name="email" value="{{ provider.email }}">
-<input type="hidden" name="first_name" value="{{ provider.first_name }}">
-<input type="hidden" name="last_name" value="{{ provider.last_name }}">
-
-<table>
-<tr><td><input type="hidden" name="on0" value=""></td></tr><tr><td><select name="os0">
-	<option value="Option 1">Monthly : $9.99 CAD</option>
-	<option value="Option 2">Yearly (bonus 2 months free): $99.99 CAD</option>
-</select> </td></tr>
-</table>
-<input type="hidden" name="currency_code" value="CAD">
-<input type="image" src="https://www.sandbox.paypal.com/en_US/i/btn/btn_subscribeCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-<img alt="" border="0" src="https://www.sandbox.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
-</form>
- {# Production <!--
-
-				<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
-				<input type="hidden" name="cmd" value="_s-xclick">
-				<input type="hidden" name="hosted_button_id" value="B8HZ67EVDW646">
-				<table>
-				<tr>
-				<td>
-				<input type="hidden" name="on0" value="Payment Options">
-				Payment Options</td>
-				</tr>
-				<tr>
-				<td>
-				<select name="os0">
-				<option value="Veosan Presence">Veosan Presence : $9.99 CAD - monthly</option>
-				<option value="2 months free!">2 months free! : $99.99 CAD - yearly</option>
-				</select></td>
-				</tr>
-				</table>
-				<input type="hidden" name="currency_code" value="CAD">
-				<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_subscribeCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-				<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
-				</form>
-				--> #} </td>
+				<td width="27%" style="text-align: center;"><a data-toggle="modal" href="#upgrade_modal" class="btn btn-success btn-large">Upgrade</a></td>
 			</tr>
 		</table>
 
 	</div>
 </div>
+
+<div class="modal hide" id="upgrade_modal" style="display: none;">
+	<div class="modal-header">
+		<a class="close" data-dismiss="modal">×</a>
+
+		<h3>Choose your plan</h3>
+	</div>
+	<form action="/provider/upgrade/{{ provider.vanity_url }}" method="post" id="payment-form">
+		<div class="modal-body">
+			<div class="row-fluid">
+				<div class="span6">
+					<label class="control-label"><input type="radio" name="plan" value="veosan_presence_yearly" checked> Yearly - $99.99</label>
+					<em>Get two months free when you sign up for a year!</em><br><br>
+					<label class="control-label"><input type="radio" name="plan" value="veosan_presence_monthly"> Monthly - $9.99</label><br>
+				</div>
+				<div class="span6">
+					<span class="payment-errors"></span>
+					<div class="form-row">
+						<label>Card Number</label>
+						<input type="text" maxlength="20" autocomplete="off" class="card-number stripe-sensitive required">
+					</div>
+					<div class="form-row">
+						<label>CVC</label>
+						<input type="text" maxlength="4" autocomplete="off" class="card-cvc stripe-sensitive required input-small">
+					</div>
+
+					<div class="form-row">
+						<label>Expiration (MM / YYYY)</label>
+						<div class="expiry-wrapper">
+							<select class="card-expiry-month stripe-sensitive required input-small"></select>
+							<span> / </span>
+							<select class="card-expiry-year stripe-sensitive required input-small"></select>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal-footer">
+			<button type="submit" class="btn btn-success" name="submit-button">
+				Upgrade
+			</button>
+		</div>
+	</form>
+</div>
+
+{% endblock %}
+
+{% block extra_javascript %}
+<script type="text/javascript" src="/assets/js/jquery.validate.min.js"></script>
+<script type="text/javascript" src="https://js.stripe.com/v1/"></script>
+<script type="text/javascript">
+	Stripe.setPublishableKey('pk_0CGm7P3z0UJVLSfX3Pj5z7NKuzUjj');
+
+	$(document).ready(function() {
+		function addInputNames() {
+			// Not ideal, but jQuery's validate plugin requires fields to have names
+			// so we add them at the last possible minute, in case any javascript
+			// exceptions have caused other parts of the script to fail.
+			$(".card-number").attr("name", "card-number")
+			$(".card-cvc").attr("name", "card-cvc")
+			$(".card-expiry-year").attr("name", "card-expiry-year")
+		}
+
+		function removeInputNames() {
+			$(".card-number").removeAttr("name")
+			$(".card-cvc").removeAttr("name")
+			$(".card-expiry-year").removeAttr("name")
+		}
+
+		function addYearsToExpiry() {
+			var select = $(".card-expiry-year");
+			var year = new Date().getFullYear();
+
+			for (var i = 0; i < 12; i++) {
+				select.append($("<option value='" + (i + year) + "' " + (i === 0 ? "selected" : "") + ">" + (i + year) + "</option>"))
+			}
+		}
+
+		function addMonthsToExpiry() {
+			var select = $(".card-expiry-month");
+			var month = new Date().getMonth() + 1;
+
+			for (var i = 1; i <= 12; i++) {
+				select.append($("<option value='" + i + "' " + (month === i ? "selected" : "") + ">" + i + "</option>"))
+			}
+		}
+
+		function submit(form) {			
+			// remove the input field names for security
+			// we do this *before* anything else which might throw an exception
+			removeInputNames();
+			// THIS IS IMPORTANT!
+
+			// given a valid form, submit the payment details to stripe
+			$(form['submit-button']).attr("disabled", "disabled")
+
+			Stripe.createToken({
+				number : $('.card-number').val(),
+				cvc : $('.card-cvc').val(),
+				exp_month : $('.card-expiry-month').val(),
+				exp_year : $('.card-expiry-year').val()
+			}, function(status, response) {
+				if (response.error) {
+					// re-enable the submit button
+					$(form['submit-button']).removeAttr("disabled")
+
+					// show the error
+					$(".payment-errors").html(response.error.message);
+
+					// we add these names back in so we can revalidate properly
+					addInputNames();
+				} else {
+					// token contains id, last4, and card type
+					var token = response['id'];
+
+					// insert the stripe token
+					var input = $("<input name='stripeToken' value='" + token + "' style='display:none;' />");
+					form.appendChild(input[0])
+
+					// and submit
+					form.submit();
+				}
+			});
+
+			return false;
+		}
+
+		addYearsToExpiry();
+		addMonthsToExpiry();
+
+		// add custom rules for credit card validating
+		jQuery.validator.addMethod("cardNumber", Stripe.validateCardNumber, "Please enter a valid card number");
+		jQuery.validator.addMethod("cardCVC", Stripe.validateCVC, "Please enter a valid security code");
+		jQuery.validator.addMethod("cardExpiry", function() {
+			return Stripe.validateExpiry($(".card-expiry-month").val(), $(".card-expiry-year").val())
+		}, "Please enter a valid expiration");
+
+		// We use the jQuery validate plugin to validate required params on submit
+		$("#payment-form").validate({
+			submitHandler : submit,
+			rules : {
+				"card-cvc" : {
+					cardCVC : true,
+					required : true
+				},
+				"card-number" : {
+					cardNumber : true,
+					required : true
+				},
+				"card-expiry-year" : "cardExpiry" // we don't validate month separately
+			}
+		});
+
+		// adding the input field names is the last step, in case an earlier step errors
+		addInputNames();
+	}); 
+</script>
+
 {% endblock %}
