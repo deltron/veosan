@@ -24,10 +24,11 @@ class ProviderUpgradeHandler(ProviderBaseHandler):
         
         # get the credit card details submitted by the form
         token = self.request.POST['stripeToken']
-        
+        plan = self.request.POST['plan']
+
         customer = stripe.Customer.create(
             card=token,
-            plan="veosan_presence_monthly",
+            plan=plan,
             email=provider.email
         )
 
@@ -35,7 +36,7 @@ class ProviderUpgradeHandler(ProviderBaseHandler):
         provider_account = ProviderAccount()
         provider_account.provider = provider.key
         provider_account.stripe_customer_id = customer.id
-        provider_account.stripe_plan_id = 'veosan_presence_monthly'
+        provider_account.stripe_plan_id = plan
         provider_account.put()
         
         self.render_template("provider/upgrade_success.html", provider=provider)

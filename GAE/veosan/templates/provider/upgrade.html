@@ -85,17 +85,15 @@
 	<div class="modal-header">
 		<a class="close" data-dismiss="modal">×</a>
 
-		<h3>Upgrade Your Account</h3>
+		<h3>Choose your plan</h3>
 	</div>
 	<form action="/provider/upgrade/{{ provider.vanity_url }}" method="post" id="payment-form">
 		<div class="modal-body">
 			<div class="row-fluid">
 				<div class="span6">
-					<ul>
-						<li>Monthly ($9.99)</li>
-						<li>Yearly ($99.99) Two months free!</li>
-					</ul>
-					
+					<label class="control-label"><input type="radio" name="plan" value="veosan_presence_yearly" checked> Yearly - $99.99</label>
+					<em>Get two months free when you sign up for a year!</em><br><br>
+					<label class="control-label"><input type="radio" name="plan" value="veosan_presence_monthly"> Monthly - $9.99</label><br>
 				</div>
 				<div class="span6">
 					<span class="payment-errors"></span>
@@ -170,9 +168,7 @@
 			}
 		}
 
-		function submit(form) {
-			alert('yo')
-			
+		function submit(form) {			
 			// remove the input field names for security
 			// we do this *before* anything else which might throw an exception
 			removeInputNames();
