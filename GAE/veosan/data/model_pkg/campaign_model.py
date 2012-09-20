@@ -1,4 +1,5 @@
 from google.appengine.ext import ndb
+from data.model_pkg.prospect_model import ProspectNote
 
 class Campaign(ndb.Model):
     # creation date
@@ -17,5 +18,10 @@ class Campaign(ndb.Model):
 
     
     
+    ########################
+    # Notes
+    ########################
+    def get_email_notes_count(self):
+        return ProspectNote.query(ProspectNote.campaign == self.key, ProspectNote.note_type == 'email').count()
     
     

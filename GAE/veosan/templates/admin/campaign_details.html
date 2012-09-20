@@ -10,15 +10,30 @@
 <div class="row">
 	<div class="span12">
 		<div class="well">
-			{{ campaign.prospects|count }} prospects
-			<br>
-			X emails sent, X converted (x%)
-			<br>
-			Created on: {{campaign.created_on|format_datetime(format="medium", rebase=True)}}
-			<br>
-			<br>
-			<a class="btn btn-mini btn-info" href="/admin/campaign/{{campaign.key.urlsafe()}}/emails" data-toggle="modal">Generate All Emails</a>
-			<br>
+			<div class="span4">
+				{{ campaign.prospects|count }} prospects
+				<br>
+				{{ campaign.get_email_notes_count() }} emails sent
+				<br>
+				X converted (x%)
+				<br>
+			</div>
+			
+			<div class="span4">
+				Created on: {{campaign.created_on|format_datetime(format="medium", rebase=True)}}
+				<br>
+				<br>
+				
+			</div>
+			
+			<div class="span3">
+				<a class="btn btn-mini btn-info" href="/admin/campaign/{{campaign.key.urlsafe()}}/emails" data-toggle="modal">Generate All Emails</a>
+				<br>
+			</div>
+			<!-- space at bottom -->
+			<div class="row">
+				&nbsp;
+			</div>
 		</div>
 	</div>
 </div>
@@ -56,7 +71,7 @@
 					<td>{{ p.last_name }}</td>
 					<td>{{ p.category }}</td>
 					<td>{{ p.landing_hits }}</td>
-					<td>{{ p.get_notes_for_campaign_count(campaign) }}</td>
+					<td>{{ p.get_email_notes_for_campaign_count(campaign) }}</td>
 					<td><a class="btn btn-mini btn-info" href="/admin/campaign/{{campaign.key.urlsafe()}}/email/{{p.prospect_id}}" data-toggle="modal">Email</a></td>
 				</tr>
 				{% endfor %}
@@ -164,8 +179,14 @@
 			</div>
 			
 			<div class="modal-footer">
+				{% if prospect.is_campaign_email_sent(campaign) %}
+					<strong>Campaign email sent on {{ prospect.get_last_campaign_email_note_timestamp(campaign)|format_datetime('medium') }}</strong> <br><br>
+					{% set mark_as_sent_text = 'Mark as sent again' %}
+				{% else %}
+					{% set mark_as_sent_text = 'Mark as sent' %}
+				{% endif %}
 				<a class="btn btn-info" href="/admin/campaign/{{campaign.key.urlsafe()}}/sent/{{prospect.prospect_id}}">
-					<i class="icon-ok icon-white"></i> Mark as sent</a>
+					<i class="icon-ok icon-white"></i> {{mark_as_sent_text}}</a>
 				<a class="btn" href="/admin/campaign/{{ campaign.key.urlsafe() }}">{{ _('Cancel') }}</a>
 			</div>
 		
