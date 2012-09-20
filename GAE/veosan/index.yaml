@@ -74,6 +74,16 @@ indexes:
 
 - kind: ProspectNote
   properties:
+  - name: campaign
+  - name: note_type
+  - name: prospect
+  - name: event_date
+    direction: desc
+  - name: created_on
+    direction: desc
+
+- kind: ProspectNote
+  properties:
   - name: prospect
   - name: created_on
     direction: desc
@@ -96,6 +106,11 @@ indexes:
   properties:
   - name: category
   - name: last_name
+
+- kind: ProviderProspect
+  properties:
+  - name: last_name
+  - name: first_name
 
 - kind: ProviderProspect
   properties:
