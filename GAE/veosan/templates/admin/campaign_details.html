@@ -42,7 +42,7 @@
 
 <div class="row">	
 	<div class="span12">
-		<h2>Campaign Prospects  <a class="btn btn-mini btn-primary" href="#edit_prospects_modal" data-toggle="modal">Edit Prospects</a></h2>
+		<h2>Campaign Prospects  <a id="edit-prospects-link" class="btn btn-mini btn-primary" href="#edit_prospects_modal" data-toggle="modal">Edit Prospects</a></h2>
 		<!-- Add Prospects button -->
 		
 		
@@ -131,7 +131,7 @@
 						{% for p in all_prospects %}
 						<tr>
 							<td> 
-								<input type="checkbox" name="prospect" value="{{p.key.urlsafe()}}" {% if p in campaign.prospects %} checked {% endif %}> </input> </td>
+								<input type="checkbox" name="prospect" value="{{p.key.urlsafe()}}" {% if p.key in campaign.prospects %} checked {% endif %}> </input> </td>
 							<td>{{ p.prospect_id }}</td>
 							<td>{{ p.language }}</td>
 							<td>{{ p.email }}</td>

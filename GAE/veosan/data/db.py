@@ -60,7 +60,12 @@ def get_bookings_for_patient(patient):
 def get_provider_from_email(email):
     provider = Provider.query(Provider.email == email).get()
     logging.debug('Provider for email %s is %s' % (email, provider))
-    return provider   
+    return provider
+
+def get_provider_prospect_from_email(email):
+    prospect = ProviderProspect.query(ProviderProspect.email == email).get()
+    logging.debug('ProviderProspect for email %s is %s' % (email, prospect))
+    return prospect
 
 def get_partial_provider_from_email(email):
     return PartialProvider.query(PartialProvider.email == email).get()
@@ -183,10 +188,11 @@ def get_campaign_form_name(campaign_name):
         return Campaign.query(Campaign.name == campaign_name).get()
     else:
         return None
-    
-def get_prospect_campaigns(prospect):
-    return Campaign.query(Campaign.prospects == prospect.key).order(-Campaign.created_on).fetch()
 
-def get_campaign_email_notes_count(campaign):
-    return ProspectNote.query(ProspectNote.campaign == campaign.key, ProspectNote.note_type == 'email').count()
-    
+
+#def get_prospect_campaigns(prospect):
+#    return Campaign.query(Campaign.prospects == prospect.key).order(-Campaign.created_on).fetch()
+#
+#def get_campaign_email_notes_count(campaign):
+#    return ProspectNote.query(ProspectNote.campaign == campaign.key, ProspectNote.note_type == 'email').count()
+#    
