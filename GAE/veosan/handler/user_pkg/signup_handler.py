@@ -179,6 +179,10 @@ class ProviderSignupHandler2(UserBaseHandler):
             partial_provider = db.get_partial_provider_from_email(provider.email)
             if partial_provider:
                 partial_provider.key.delete()
+                
+            # Send welcome email to provider
+            # TODO
+            
         else:
             self.render_template('user/signup_provider_2.html', provider_signup_form2=provider_signup_form2)
             
