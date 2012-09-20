@@ -62,8 +62,9 @@
 	</div>
 	<div class="span4">
 		<h3>Campaigns</h3>
-		{{ prospect.get_campaigns() }}
-		
+		{% for c in prospect.get_campaigns() %}
+			<a id="campaign-detail-link-{{loop.index}}" href="/admin/campaign/{{ c.key.urlsafe() }}">{{ c.name }}</a><br>
+		{% endfor %}
 	</div>
 </div>
 <div class="row">
