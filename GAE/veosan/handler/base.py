@@ -174,7 +174,7 @@ class BaseHandler(webapp2.RequestHandler):
     
                 if version_str:
                     version = float(version_str.group())
-                    if version < 9:
+                    if version < 8:
                         self.response.write(self.jinja2.render_template('internet_explorer.html', **kw))
                         site_counter = db.get_site_counter()
                         site_counter.internet_explorer_hits += 1
@@ -189,6 +189,7 @@ class BaseHandler(webapp2.RequestHandler):
         else:
             logging.error("Unable to parse empty user agent")
             self.response.write(self.jinja2.render_template(filename, **kw))
+        
         
         self.log_entry()
         
