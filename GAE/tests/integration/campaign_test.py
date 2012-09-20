@@ -2,6 +2,7 @@
 
 from base import BaseTest
 import unittest
+from data import db
 
 class CampaignTest(BaseTest):
     
@@ -29,7 +30,25 @@ class CampaignTest(BaseTest):
         details_page.mustcontain("Email Templates")
         self.logout_admin()
         
-    
+        
+    def test_add_prospect_to_campaign(self):
+        self.create_campaign()
+        self.create_prospect('p123', 'fr')
+        prospect = db.get_provider_prospect_from_email(self._TEST_PROVIDER_EMAIL)
+        
+        self.login_as_admin()
+        campaign_admin_page = self.testapp.get('/admin/campaigns')
+        details_page = campaign_admin_page.click(linkid='campaign-detail-link-1')
+        details_page.showbrowser()
+        prospect_modal_page = details_page.click(linkid='edit-prospects-link')
+        prospect_form = prospect_modal_page.forms['edit_campaign_prospects_form']
+        prospect_form['prospect'] = prospect.key.urlsafe()
+        detail_page = prospect_form.submit()
+        detail_page.mustcontain('p123')
+        
+        
+        
+        
 if __name__ == "__main__":
     unittest.main()
     

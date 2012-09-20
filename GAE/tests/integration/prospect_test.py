@@ -4,29 +4,6 @@ from base import BaseTest
 import unittest
 
 class ProspectTest(BaseTest):
-    def create_prospect(self, prospect_id = 103, prospect_language = 'en'):
-        self.login_as_admin()
-        # create a new prospect
-        response = self.testapp.get('/admin/prospects')
-        prospect_form = self.populate_prospect_form(response.forms['prospect_form'], prospect_id, prospect_language)
-
-        response = prospect_form.submit().follow()
-        
-        response.mustcontain("/admin/prospects/" + str(prospect_id))
-        response.mustcontain(self._TEST_PROVIDER_EMAIL)
-     #   response.mustcontain("/admin/prospects/delete/" + str(prospect_id))
-        
-        self.logout_admin()
-        
-        
-    def populate_prospect_form(self, prospect_form, prospect_id, prospect_language = 'en'):
-        prospect_form['prospect_id'] = prospect_id
-        prospect_form['language'] = prospect_language
-        prospect_form['email'] = self._TEST_PROVIDER_EMAIL
-        prospect_form['first_name'] = 'Al'
-        prospect_form['last_name'] = 'Swearingen'
-        prospect_form['category'] = 'doctor'
-        return prospect_form
 
     def test_add_prospect(self):
         self.create_prospect()
