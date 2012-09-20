@@ -79,6 +79,8 @@ class AdminProspectTagsHandler(AdminBaseHandler):
             
             # chop the last comma
             prospect_tags_string = prospect_tags_string[:-2]
+            # escape underscores for markdown
+            prospect_tags_string = prospect_tags_string.replace('_', '\_')
             
             if not prospect_tags_string:
                 prospect_note.body = "Deleted tags"
@@ -114,7 +116,9 @@ class AdminProspectEmploymentTagsHandler(AdminBaseHandler):
             
             # chop the last comma
             prospect_tags_string = prospect_tags_string[:-2]
-            
+            # escape underscores for markdown
+            prospect_tags_string = prospect_tags_string.replace('_', '\_')
+
             if not prospect_tags_string:
                 prospect_note.body = "Deleted employment tags"
             else:
