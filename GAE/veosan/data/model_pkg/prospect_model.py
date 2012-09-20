@@ -53,7 +53,7 @@ class ProviderProspect(ndb.Model):
 
     def get_notes(self):
         return ProspectNote.query(ProspectNote.prospect == self.key).order(-ProspectNote.event_date, -ProspectNote.created_on).fetch()
-
+    
     def get_last_note_timestamp(self):
         latest_prospect_note = ProspectNote.query(ProspectNote.prospect == self.key).order(-ProspectNote.event_date).get()
         if latest_prospect_note:
@@ -75,6 +75,14 @@ class ProviderProspect(ndb.Model):
 
     def get_notes_call_count(self):
         return ProspectNote.query(ProspectNote.prospect == self.key, ProspectNote.note_type == 'call').count()
+    
+    def get_email_notes_for_campaign(self, campaign):
+        notes_query = ProspectNote.query(ProspectNote.prospect == self.key, ProspectNote.campaign == campaign.key, ProspectNote.note_type == 'email')
+        notes_query = notes_query.order(-ProspectNote.event_date, -ProspectNote.created_on)
+        return notes_query.fetch()
+    
+    def get_notes_for_campaign_count(self, campaign):
+        return ProspectNote.query(ProspectNote.prospect == self.key, ProspectNote.campaign == campaign.key, ProspectNote.note_type == 'email').count()
     
     def get_blog_url(self, host):
         return 'http://%s/blog/%s' %  (host, self.prospect_id)

@@ -12,19 +12,18 @@
 			<thead>
 				<tr>
 					<th width="10%">Campaign Name</th>
-					<th width="12%">Email Subjects</th>
+					<th width="10%">Description</th>
 					<th width="10%">Prospects</th>
-					<th width="10%">Delete</th>
+					<th width="10%">Operations</th>
 				</tr>
 			</thead>
 			<tbody>
 				{% for c in campaigns %}
 				<tr>
 					<td><a id="campaign-detail-link-{{loop.index}}" href="/admin/campaign/{{ c.key.urlsafe() }}">{{ c.name }}</a></td>
-					<td> <span class="label label-inverse">EN</span> {{ c.subject_en }} &nbsp;&nbsp;
-						 <span class="label label-inverse">FR</span> {{ c.subject_fr }} </td>
+					<td> {{ c.description }} </td>
 					<td> {{ c.prospects|count }}</td>	 
-					<td><a href="/admin/campaign/delete/{{ c.key.urlsafe() }}" class="btn btn-danger">Delete</a></td>
+					<td> <!-- <a href="/admin/campaign/delete/{{ c.key.urlsafe() }}" class="btn btn-danger">Delete</a> --> </td>
 				</tr>
 				{% endfor %}
 			</tbody>
