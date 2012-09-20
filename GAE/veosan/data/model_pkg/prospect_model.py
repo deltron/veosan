@@ -78,7 +78,7 @@ class ProviderProspect(ndb.Model):
         return ProspectNote.query(ProspectNote.prospect == self.key, ProspectNote.note_type == 'call').count()
     
     def get_campaigns(self):
-        return None #Campaign.query(Campaign.prospects == self.key).order(-Campaign.created_on).fetch()
+        return Campaign.query(Campaign.prospects == self.key).order(-Campaign.created_on).fetch()
     
     def get_email_notes_for_campaign(self, campaign):
         notes_query = ProspectNote.query(ProspectNote.prospect == self.key, ProspectNote.campaign == campaign.key, ProspectNote.note_type == 'email')
@@ -108,3 +108,30 @@ class ProviderProspect(ndb.Model):
     
     def get_signup_url(self, host):
         return 'http://%s/signup/%s' % (host, self.prospect_id)
+    
+    
+    
+#############################
+# Campaign
+#############################    
+
+class Campaign(ndb.Model):
+    # creation date
+    created_on = ndb.DateTimeProperty(auto_now_add=True)
+    # unique name this prospect
+    name = ndb.StringProperty()
+    description = ndb.StringProperty()
+    # Email Template - Francais
+    subject_fr = ndb.StringProperty()
+    body_fr = ndb.TextProperty()
+    # Email Temaplte - English
+    subject_en = ndb.StringProperty()
+    body_en = ndb.TextProperty()
+    # list of prospects
+    prospects = ndb.KeyProperty(kind='ProviderProspect', repeated=True)
+
+    ########################
+    # Notes
+    ########################
+    def get_email_notes_count(self):
+        return ProspectNote.query(ProspectNote.campaign == self.key, ProspectNote.note_type == 'email').count() 

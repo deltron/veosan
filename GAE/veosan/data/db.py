@@ -9,8 +9,7 @@ from data.model import Booking, Patient, User, PartialProvider, LogEvent
 from data.model_pkg.network_model import Invite, ProviderNetworkConnection
 from data.model_pkg.provider_model import Provider
 import utilities
-from data.model_pkg.prospect_model import ProviderProspect, ProspectNote
-from data.model_pkg.campaign_model import Campaign
+from data.model_pkg.prospect_model import Campaign, ProviderProspect, ProspectNote
 from data.model_pkg.site_model import SiteCounter, SiteConfig, SiteLog
   
 def get_from_urlsafe_key(urlsafe_key):

@@ -1,8 +1,7 @@
 from handler.auth import admin_required
 from handler.admin import AdminBaseHandler
 from forms.campaign import AddCampaignForm, EditCampaignForm
-from data.model_pkg.campaign_model import Campaign
-from data.model_pkg.prospect_model import ProspectNote
+from data.model_pkg.prospect_model import Campaign, ProspectNote
 from data import db
 import logging
 from google.appengine.ext import ndb
