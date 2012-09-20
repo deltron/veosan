@@ -11,7 +11,7 @@
 		<table class="table">
 			<thead>
 				<tr>
-					<th width="10%">Prospect ID</th>
+					<th width="12%">ID</th>
 					<th width="12%">Latest</th>
 					<th width="12%">Tags</th>
 					<th width="12%">Works At</th>
@@ -19,13 +19,20 @@
 					<th width="12%">Category</th>
 					<th width="5%">Lang</th>
 					<th width="12%">Name</th>
-					<th width="12%">Email</th>
 				</tr>
 			</thead>
 			<tbody>
 				{% for p in prospects %}
 				<tr>
-					<td><a href="/admin/prospects/{{ p.prospect_id }}">{{ p.prospect_id }}</a></td>
+					<td>
+						<a href="/admin/prospects/{{ p.prospect_id }}">{{ p.prospect_id }}</a>
+					{% set prospect_provider = p.get_provider() %}
+					{% if prospect_provider %}
+					<br>
+					provider (<a href="/provider/profile/{{prospect_provider.vanity_url}}">{{ prospect_provider.vanity_url }}</a>)
+					{% endif %}
+
+					</td>
 					<td>Note:
 					{% set last_note_timestamp = p.get_last_note_timestamp() %}
 					{% if last_note_timestamp %}
@@ -55,10 +62,6 @@
 					{% for tag in p.tags %}
 					{{ tag }} <br>
 					{% endfor %}
-					{% set prospect_provider = p.get_provider() %}
-					{% if prospect_provider %}
-					provider (<a href="/provider/profile/{{prospect_provider.vanity_url}}">{{ prospect_provider.vanity_url }}</a>)
-					{% endif %}
 					</td>
 					<td>
 							{% for tag in p.employment_tags %}
@@ -91,7 +94,6 @@
 					<td>{{ p.category }}</td>
 					<td>{{ p.language }}</td>
 					<td>{{ p.first_name }} {{ p.last_name }}</td>
-					<td>{{ p.email }}</td>
 				</tr>
 				{% endfor %}
 			</tbody>
