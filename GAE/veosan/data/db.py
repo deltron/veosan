@@ -9,7 +9,7 @@ from data.model import Booking, Patient, User, PartialProvider, LogEvent
 from data.model_pkg.network_model import Invite, ProviderNetworkConnection
 from data.model_pkg.provider_model import Provider
 import utilities
-from data.model_pkg.prospect_model import ProviderProspect
+from data.model_pkg.prospect_model import ProviderProspect, ProspectNote
 from data.model_pkg.campaign_model import Campaign
 from data.model_pkg.site_model import SiteCounter, SiteConfig, SiteLog
   
@@ -184,4 +184,10 @@ def get_campaign_form_name(campaign_name):
         return Campaign.query(Campaign.name == campaign_name).get()
     else:
         return None
+    
+def get_prospect_campaigns(prospect):
+    return Campaign.query(Campaign.prospects == prospect.key).order(-Campaign.created_on).fetch()
+
+def get_campaign_email_notes_count(campaign):
+    return ProspectNote.query(ProspectNote.campaign == campaign.key, ProspectNote.note_type == 'email').count()
     

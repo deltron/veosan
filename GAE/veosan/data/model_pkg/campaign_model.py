@@ -22,6 +22,5 @@ class Campaign(ndb.Model):
     # Notes
     ########################
     def get_email_notes_count(self):
-        return ProspectNote.query(ProspectNote.campaign == self.key, ProspectNote.note_type == 'email').count()
-    
+        return ProspectNote.query(ProspectNote.campaign == self.key, ProspectNote.note_type == 'email').count() 
     

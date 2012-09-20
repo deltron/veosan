@@ -3,6 +3,7 @@ from data.model_pkg.site_model import SiteLog
 import util
 from data.model_pkg.provider_model import Provider
 
+
 class ProspectNote(ndb.Model):
     prospect = ndb.KeyProperty(kind='ProviderProspect')
 
@@ -75,6 +76,9 @@ class ProviderProspect(ndb.Model):
 
     def get_notes_call_count(self):
         return ProspectNote.query(ProspectNote.prospect == self.key, ProspectNote.note_type == 'call').count()
+    
+    def get_campaigns(self):
+        return None #Campaign.query(Campaign.prospects == self.key).order(-Campaign.created_on).fetch()
     
     def get_email_notes_for_campaign(self, campaign):
         notes_query = ProspectNote.query(ProspectNote.prospect == self.key, ProspectNote.campaign == campaign.key, ProspectNote.note_type == 'email')
