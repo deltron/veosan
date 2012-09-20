@@ -1185,8 +1185,8 @@ msgstr "Malheureusement, il n'y a pas de professionnels disponibles qui réponde
 msgid "Unsupported Browser"
 msgstr "Navigateur non-supporté"
 
-msgid "It looks like you're using Internet Explorer!"
-msgstr "Il semble que vous utilisez Internet Explorer!"
+msgid "It looks like you're using an old version of Internet Explorer!"
+msgstr "Il semble que vous utilisez une vielle version de Internet Explorer!"
 
 msgid "We recommend using"
 msgstr "Nous vous recommandons d'utiliser"
@@ -1194,8 +1194,8 @@ msgstr "Nous vous recommandons d'utiliser"
 msgid "or"
 msgstr "ou"
 
-msgid "Hi there! unfortunately due to compatibility issues we don't support Internet Explorer. We made this decision so we can focus all our energy on giving the best possible experience to users with modern browsers such as Chrome, Safari, and Firefox as well as our mobile users on iPhones, iPads and Android-enabled devices."
-msgstr "Bonjour! Malheureusement, en raison de problèmes de compatibilité notre site ne supporte pas Internet Explorer. Nous avons pris cette décision afin que nous puissions concentrer toute notre énergie pour fournir la meilleure expérience possible aux utilisateurs de navigateurs modernes tels que Chrome, Safari et Firefox ainsi que nos utilisateurs mobiles sur les iPhones, iPads et appareils Android."
+msgid "Hi there! unfortunately due to compatibility issues we don't support earlier versions of Internet Explorer. We made this decision so we can focus all our energy on giving the best possible experience to users with modern browsers such as Chrome, Safari, and Firefox as well as our mobile users on iPhones, iPads and Android-enabled devices."
+msgstr "Bonjour! Malheureusement, en raison de problèmes de compatibilité notre site ne supporte pas les vielles versions d'Internet Explorer. Nous avons pris cette décision afin que nous puissions concentrer toute notre énergie pour fournir la meilleure expérience possible aux utilisateurs de navigateurs modernes tels que Chrome, Safari et Firefox ainsi que nos utilisateurs mobiles sur les iPhones, iPads et appareils Android."
 
 
 ####################################################################

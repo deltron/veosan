@@ -300,7 +300,7 @@ def get_all_note_types():
     
 # List of provider status
 provider_statuses = ['prospect', 'contacted_phone', 'contacted_meeting', 'client_enabled', 'client_suspended', 'ex_client_disabled']
-prospect_tags = ['new', 'potential_champion', 'generic_person', 'unlikely', 'requires_followup']
+prospect_tags = ['new', 'potential_champion', 'generic_person', 'unlikely', 'requires_followup', 'hot', 'warm', 'cold']
 employment_tags = ['professor', 'hospital', 'clinic_small', 'clinic_big', 'independent']
 
 
