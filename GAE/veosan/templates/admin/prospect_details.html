@@ -63,7 +63,13 @@
 	<div class="span4">
 		<h3>Campaigns</h3>
 		{% for c in prospect.get_campaigns() %}
-			<a id="campaign-detail-link-{{loop.index}}" href="/admin/campaign/{{ c.key.urlsafe() }}">{{ c.name }}</a><br>
+			<a id="campaign-detail-link-{{loop.index}}" href="/admin/campaign/{{ c.key.urlsafe() }}">{{ c.name }}</a>
+			{% set last_campaign_email = prospect.get_last_campaign_email(c) %}
+			{% if last_campaign_email %}
+				- Emailed {{ last_campaign_email.event_date|human_readable_date_decay|lower }} by {{last_campaign_email.user }}
+			{% endif %}
+			<br>
+			
 		{% endfor %}
 	</div>
 </div>
