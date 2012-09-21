@@ -1,18 +1,22 @@
-Hi $(first_name)s,
+{{ _('Hi') }} {{ provider.first_name }},
 
-My name is David, and I want to personally welcome you to the Veosan family.
+{{ _('My name is David and I want to personally welcome you to the Veosan family.') }}
 
-I don't want to take up too much of your time, just wanted to introduce myself and let you know that i will be your main contact with the Veosan team. Should you need any help, have any comments or want to suggest changes/additions to the site, please feel free to shoot me an email or drop me a line.
+{{ _("I'm sure you're busy so I'll try to keep it short. I just wanted to introduce myself and let you know that should you need any help, have any comments or want to make a suggestion for the site please feel free to write me an email or give me a call.") }}
 
-I also want to present some tips to get the most out of our site:
-* Upload a photo
-* Fill in your CV
-* Invite some friends
-* Complete your schedule
-* Check out our blog
+{{ _("This site was built entirely based on feedback from people just like you and we want to stay focused on solving your needs.") }}
 
-We think Veosan is the ultimate tool for marketing your practice, expanding your referral network and finding new patients. 
+{{ _("I also wanted to give you a few tips on how to get the most out of our site :") }}
 
-Veosan is a community the more members we have the stronger our community becomes. If you can think of anyone else who you think would benefit from joining Veosan please invite them by using the network tab of your profile.
+* {{ _("Be friendly and upload a photo, your patients will appreciate it!") }}
+* {{ _("Fill in some details on your CV so you will be found by search engines like Google") }}
+* {{ _("Invite your colleagues to connect with you in order to establish your network") }}
+* {{ _("Mark some hours available in your schedule if you'd like patients to book you online") }}
+* {{ _("Sign up to receive updates from our blog with more tips on how to use the web to manage your practice") }}
 
-Thank you and enjoy the service!
+
+{{ _("Thanks and please enjoy the service!") }}
+
+{{ _("Sincerely") }},
+
+David

@@ -157,6 +157,28 @@
 			</form>
 		</div>
 	</div>
+	<div class="span6">
+		<h3>Enable/disable Welcome Email</h3>
+
+		<div class="well">
+			<p>
+				Current status is welcome_email_enabled={{ site_config.welcome_email_enabled }}
+			</p>
+			<form method="post" action="/admin/site_config/welcome_email_enabled" class="form-inline">
+				<fieldset>
+					{% if site_config.welcome_email_enabled %}
+					<button type="submit" class="btn btn-danger">
+						Disable Email Welcome
+					</button>
+					{% elif not site_config.welcome_email_enabled or site_config.welcome_email_enabled == None %}
+					<button type="submit" class="btn btn-success">
+						Enable Email Welcome
+					</button>
+					{% endif %}
+				</fieldset>
+			</form>
+		</div>
+	</div>
 </div>
 
 {% endblock content %}
