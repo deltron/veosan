@@ -98,6 +98,13 @@
 			{% if active_page == 'public_profile' %}
 			<div itemscope itemtype="http://schema.org/Person">
 			{% endif %}
+				{% if internet_explorer_old %}
+				<!-- Error Message -->
+				<div class="alert alert-block alert-info">
+					{{ _("Hi there! It looks like you're using an old version of Internet Explorer, because of this some parts of this site might not be displayed properly.") }}
+					<a href="/{{ lang }}/browserupgrade"> {{ _('Read more about this here') }}</a>.
+				</div>
+				{% endif %}
 			
 				{% block subnav %}{% endblock %}
 				

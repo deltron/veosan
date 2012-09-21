@@ -163,6 +163,7 @@ class BaseHandler(webapp2.RequestHandler):
         # render
                 
         # check if we have internet exploder
+        kw['internet_explorer_old'] = False
         user_agent = self.request.headers.get('User-Agent')
         if user_agent:
             is_msie = re.search("MSIE ([0-9]{1,}[\.0-9]{0,})", user_agent);
@@ -174,22 +175,20 @@ class BaseHandler(webapp2.RequestHandler):
     
                 if version_str:
                     version = float(version_str.group())
-                    if version < 8:
-                        self.response.write(self.jinja2.render_template('internet_explorer.html', **kw))
+                    if version < 9:
+                        kw['internet_explorer_old'] = True
+                        
+                        #self.response.write(self.jinja2.render_template('internet_explorer.html', **kw))
                         site_counter = db.get_site_counter()
                         site_counter.internet_explorer_hits += 1
                         site_counter.put_async()
-                    else:
-                        self.response.write(self.jinja2.render_template(filename, **kw))
                 else:
                     logging.error("Unable to parse version string for Internet Explorer: %s" % is_msie.group())
-    
-            else:
-                self.response.write(self.jinja2.render_template(filename, **kw))
+                    
         else:
             logging.error("Unable to parse empty user agent")
-            self.response.write(self.jinja2.render_template(filename, **kw))
         
+        self.response.write(self.jinja2.render_template(filename, **kw))
         
         self.log_entry()
         
