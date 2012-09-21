@@ -5,6 +5,12 @@
 {% block subhead %} {{ campaign.name }} {% endblock %}
 {% block lead %} {{ campaign.description }} {% endblock %}
 
+{% block extra_css %}
+	<script>
+
+	</script>
+{% endblock %}
+
 {% block content %}
 
 <div class="row">
@@ -161,6 +167,9 @@
 		
 		{% if prospect %}
 		<div class="modal modal-large hide" id="email_modal" style="display: none;">
+			
+			
+			
 			<div class="modal-header">
 				{% if modal_success_message %}
 				<!-- Success Message -->
@@ -179,6 +188,7 @@
 			</div>
 			
 			<div class="modal-footer">
+				
 				{% if prospect.is_campaign_email_sent(campaign) %}
 					{% set last_email = prospect.get_last_campaign_email(campaign) %}
 					<strong>last campaign email sent {{ last_email.event_date|human_readable_date_decay|lower }} by {{last_email.user }}</strong> <br><br>
@@ -186,8 +196,14 @@
 				{% else %}
 					{% set mark_as_sent_text = 'Mark as sent' %}
 				{% endif %}
-				<a class="btn btn-info" href="/admin/campaign/{{campaign.key.urlsafe()}}/sent/{{prospect.prospect_id}}">
-					<i class="icon-ok icon-white"></i> {{mark_as_sent_text}}</a>
+				
+				<form id="mark-as-read-form" class="form-inline" action="/admin/campaign/{{campaign.key.urlsafe()}}/sent/{{prospect.prospect_id}}" method="post">
+					<input type="hidden" name="email_body" id="email_body">
+					<button type="submit" class="btn btn-info">
+						<i class="icon-ok icon-white"></i> {{mark_as_sent_text}}
+					</button>
+				</form>
+				
 				<a class="btn" href="/admin/campaign/{{ campaign.key.urlsafe() }}">{{ _('Cancel') }}</a>
 			</div>
 		
@@ -199,6 +215,16 @@
 
 {# Modal extra Javascript #}
 {% block extra_javascript %}
+
+	<script>
+		function grabDivContent() {
+			alert("yo");
+			alert(document.getElementById("email-body-edit-div").innerHTML);
+		    document.getElementById('email_body').value = document.getElementById("email-body-edit-div").innerHTML;
+		}
+		document.getElementById("mark-as-read-form").onsubmit = grabDivContent;
+	</script>
+
 	{% if show_modal == 'campaign_prospects' %}
 	<script>
 		$('#edit_prospects_modal').modal('show')

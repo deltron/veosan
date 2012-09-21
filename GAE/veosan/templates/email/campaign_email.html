@@ -1,15 +1,11 @@
-
-<div contenteditable="true" style="background: #d8dce0; padding: 10px; ">
-
-	{% if prospect.language == 'fr' %}
-		{% set subject = campaign.subject_fr %}
-		{% set body = campaign.body_fr %}
-	{% else %}
-		{% set subject = campaign.subject_en %}
-		{% set body = campaign.body_en %}
-	{% endif %}
-	
-	<h2>{{ subject|markdown|safe|format(**prospect|generate_prospect_email_dict(host) ) }}</h2>
-	<p>{{ body|markdown|safe|format(**prospect|generate_prospect_email_dict(host) )  }}</p>
-
+<div id="email-body-edit-div" contenteditable="true" style="background: #d8dce0; padding: 10px; ">
+{% if prospect.language == 'fr' %}
+	{% set subject = campaign.subject_fr %}
+	{% set body = campaign.body_fr %}
+{% else %}
+	{% set subject = campaign.subject_en %}
+	{% set body = campaign.body_en %}
+{% endif %}
+<h2>{{ subject|markdown|safe|format(**prospect|generate_prospect_email_dict(host) ) }}</h2>
+<p>{{ body|markdown|safe|format(**prospect|generate_prospect_email_dict(host) )  }}</p>
 </div>

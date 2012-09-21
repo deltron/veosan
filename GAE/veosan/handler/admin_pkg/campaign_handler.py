@@ -109,14 +109,16 @@ class AdminCampaignDetailsHandler(AdminBaseHandler):
         prospect_note.put()
         
         
-    def mark_as_sent_get(self, campaign_key, prospect_id):
+    def mark_as_sent_post(self, campaign_key, prospect_id):
         campaign = db.get_from_urlsafe_key(campaign_key)
         prospect = db.get_prospect_from_prospect_id(prospect_id)
         logging.info('Marking email as sent for prospect %s' % prospect)
         if prospect:
-            email_text = self.render_email(campaign, prospect)
+            logging.info('POST %s' % self.request.POST)
+            email_text = self.request.get("email_body")
             self.create_prospect_email_note(prospect, campaign, email_text)
-            self.render_campaign_details(campaign, prospect=prospect, show_modal='email', modal_success_message='Email marked as sent and note created.')
+            #prospect_url = '/admin/prospect'
+            self.render_campaign_details(campaign, prospect=prospect, show_modal='email', modal_success_message='Email marked as sent and note created for <a href="/admin/prospects/%s">%s %s</a>' % (prospect.prospect_id, prospect.first_name, prospect.last_name))
         else:
             self.render_campaign_details(campaign, error_message='Prospect not found')
                     

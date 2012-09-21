@@ -35,7 +35,7 @@ def get_routes():
                    Route('/campaign/<campaign_key>/prospects', campaign_handler.AdminCampaignDetailsHandler, handler_method='edit_prospects_post'),
                    Route('/campaign/<campaign_key>/emails', campaign_handler.AdminCampaignDetailsHandler, handler_method='generate_emails_get'),
                    Route('/campaign/<campaign_key>/email/<prospect_id>', campaign_handler.AdminCampaignDetailsHandler, handler_method='display_single_email_get'),
-                   Route('/campaign/<campaign_key>/sent/<prospect_id>', campaign_handler.AdminCampaignDetailsHandler, handler_method='mark_as_sent_get'),
+                   Route('/campaign/<campaign_key>/sent/<prospect_id>', campaign_handler.AdminCampaignDetailsHandler, handler_method='mark_as_sent_post'),
                    
                    PathPrefixRoute('/provider', [
                        # provider actions
