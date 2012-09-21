@@ -160,7 +160,7 @@
 		{# ################################# #}
 		
 		{% if prospect %}
-		<div class="modal hide" id="email_modal" style="display: none;">
+		<div class="modal modal-large hide" id="email_modal" style="display: none;">
 			<div class="modal-header">
 				{% if modal_success_message %}
 				<!-- Success Message -->
@@ -174,13 +174,14 @@
 				<h1>{{ prospect.email }}</h1>
 			</div>
 		
-			<div class="modal-body">
+			<div class="modal-body" style="padding: 0px">
 				{% include 'email/campaign_email.html' %}
 			</div>
 			
 			<div class="modal-footer">
 				{% if prospect.is_campaign_email_sent(campaign) %}
-					<strong>Campaign email sent on {{ prospect.get_last_campaign_email_note_timestamp(campaign)|format_datetime('medium') }}</strong> <br><br>
+					{% set last_email = prospect.get_last_campaign_email(campaign) %}
+					<strong>last campaign email sent {{ last_email.event_date|human_readable_date_decay|lower }} by {{last_email.user }}</strong> <br><br>
 					{% set mark_as_sent_text = 'Mark as sent again' %}
 				{% else %}
 					{% set mark_as_sent_text = 'Mark as sent' %}
@@ -194,7 +195,6 @@
 		{% endif %}
 		
 		
-
 {% endblock content %}
 
 {# Modal extra Javascript #}

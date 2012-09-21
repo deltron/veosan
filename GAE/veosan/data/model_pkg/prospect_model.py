@@ -91,14 +91,11 @@ class ProviderProspect(ndb.Model):
     def is_campaign_email_sent(self, campaign):
         return self.get_email_notes_for_campaign_count(campaign)
     
-    def get_last_campaign_email_note_timestamp(self, campaign):
+    def get_last_campaign_email(self, campaign):
         notes_query = ProspectNote.query(ProspectNote.prospect == self.key, ProspectNote.campaign == campaign.key, ProspectNote.note_type == 'email')
         notes_query = notes_query.order(-ProspectNote.event_date, -ProspectNote.created_on)
         campaign_email = notes_query.get()
-        if campaign_email:
-            return campaign_email.event_date
-        else:
-            return None
+        return campaign_email
     
     def get_blog_url(self, host):
         return 'http://%s/blog/%s' %  (host, self.prospect_id)
