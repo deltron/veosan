@@ -13,6 +13,7 @@
 				<tr>
 					<th width="10%">Campaign Name</th>
 					<th width="10%">Description</th>
+					<th width="10%">Created</th>
 					<th width="10%">Prospects</th>
 					<th width="10%">Operations</th>
 				</tr>
@@ -22,6 +23,7 @@
 				<tr>
 					<td><a id="campaign-detail-link-{{loop.index}}" href="/admin/campaign/{{ c.key.urlsafe() }}">{{ c.name }}</a></td>
 					<td> {{ c.description }} </td>
+					<td> {{ c.created_on|format_datetime('medium') }}</td>
 					<td> {{ c.prospects|count }}</td>	 
 					<td> <!-- <a href="/admin/campaign/delete/{{ c.key.urlsafe() }}" class="btn btn-danger">Delete</a> --> </td>
 				</tr>

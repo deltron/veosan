@@ -46,7 +46,7 @@ def fetch_provider_prospects():
     return ordered_prospects
 
 def fetch_campaigns():
-    return Campaign.query().order(Campaign.name)
+    return Campaign.query().order(-Campaign.created_on)
 
 def fetch_prospects():
     return ProviderProspect.query().order(ProviderProspect.last_name, ProviderProspect.first_name)

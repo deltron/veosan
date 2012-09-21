@@ -5,11 +5,6 @@
 {% block subhead %} {{ campaign.name }} {% endblock %}
 {% block lead %} {{ campaign.description }} {% endblock %}
 
-{% block extra_css %}
-	<script>
-
-	</script>
-{% endblock %}
 
 {% block content %}
 
@@ -218,8 +213,6 @@
 
 	<script>
 		function grabDivContent() {
-			alert("yo");
-			alert(document.getElementById("email-body-edit-div").innerHTML);
 		    document.getElementById('email_body').value = document.getElementById("email-body-edit-div").innerHTML;
 		}
 		document.getElementById("mark-as-read-form").onsubmit = grabDivContent;
