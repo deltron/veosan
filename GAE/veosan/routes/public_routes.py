@@ -15,4 +15,6 @@ def get_routes():
                    Route('/privacy', handler=static.StaticHandler, handler_method='get_privacy'),
                    Route('/tour', handler=static.StaticHandler, handler_method='get_tour'),
                    Route('/blog', handler=static.BlogHandler),
+                   Route('/browserupgrade', handler=static.StaticHandler, handler_method='get_browser_upgrade'),
+
        ]

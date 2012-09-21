@@ -34,6 +34,9 @@ class StaticHandler(BaseHandler):
     def get_tour(self, prospect_id = None):
         self.render_static('tour', prospect_id)
 
+    def get_browser_upgrade(self, prospect_id = None):
+        self.render_static('internet_explorer', prospect_id)
+
         
 class WarmupHandler(BaseHandler):
     def get(self):

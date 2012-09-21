@@ -1194,9 +1194,14 @@ msgstr "Nous vous recommandons d'utiliser"
 msgid "or"
 msgstr "ou"
 
-msgid "Hi there! unfortunately due to compatibility issues we don't support earlier versions of Internet Explorer. We made this decision so we can focus all our energy on giving the best possible experience to users with modern browsers such as Chrome, Safari, and Firefox as well as our mobile users on iPhones, iPads and Android-enabled devices."
-msgstr "Bonjour! Malheureusement, en raison de problèmes de compatibilité notre site ne supporte pas les vielles versions d'Internet Explorer. Nous avons pris cette décision afin que nous puissions concentrer toute notre énergie pour fournir la meilleure expérience possible aux utilisateurs de navigateurs modernes tels que Chrome, Safari et Firefox ainsi que nos utilisateurs mobiles sur les iPhones, iPads et appareils Android."
+msgid "Hi there! unfortunately due to security and compatibility issues we don't support earlier versions of Internet Explorer. We made this decision so we can focus all our energy on giving the best possible experience to users with modern browsers such as Chrome, Safari, Firefox, and more recent versions of Internet Explorer as well as our mobile users on iPhones, iPads and Android-enabled devices."
+msgstr "Bonjour! Malheureusement, en raison de problèmes de sécurité et de compatibilité notre site ne supporte pas les vielles versions d'Internet Explorer. Nous avons pris cette décision afin que nous puissions concentrer toute notre énergie pour fournir la meilleure expérience possible aux utilisateurs de navigateurs modernes tels que Chrome, Safari, Firefox et les versions récentes d'Internet Explorer ainsi que nos utilisateurs mobiles sur les iPhones, iPads et appareils Android."
 
+msgid "Hi there! It looks like you're using an old version of Internet Explorer, because of this some parts of this site might not be displayed properly."
+msgstr "Bonjour! Il semble que vous utilisez une vieille version d'Internet Explorer, donc c'est possible que certaines pages sur le site ne s'affichent pas correctement."
+
+msgid "Read more about this here"
+msgstr "Cliquez ici pour en savoir plus"
 
 ####################################################################
 # Lists of things
