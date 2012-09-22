@@ -6,6 +6,7 @@ class SiteConfig(ndb.Model):
     facebook_like_enabled = ndb.BooleanProperty(default=False)
     signup_enabled = ndb.BooleanProperty(default=False)
     error_email_enabled = ndb.BooleanProperty(default=False)
+    welcome_email_enabled = ndb.BooleanProperty(default=False)
 
 
 class SiteLog(ndb.Model):

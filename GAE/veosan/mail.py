@@ -153,8 +153,21 @@ def email_connect_request(jinja2, from_provider, target_provider, accept_url):
         logging.error('Email to provider not sent. %s' % e)
         
 
-def emailProviderWelcomeMessage(jinja2, provider):
-    pass
+def email_provider_welcome(jinja2, provider):
+    ''' Send welcome email '''
+    
+    message = mail.EmailMessage()
+    message.sender = "David Leblanc <" + VEOSAN_SUPPORT_ADDRESS + ">"
+    message.to = provider.email
+    message.bcc = VEOSAN_SUPPORT_ADDRESS
+    message.subject = provider.first_name + _(', welcome to Veosan!')
+    
+    message.body = jinja2.render_template('email/provider_welcome.txt', provider=provider)
+    
+    try:
+        message.send()
+    except Exception as e:
+        logging.error('Email to provider not sent. %s' % e)
 
 def email_contact_form(jinja2, from_email, subject, message_body):
     logging.info('Feedback from %s | subject: %s\n\nMESSAGE\n=========\n%s' % (from_email, subject, message_body))

@@ -1641,3 +1641,48 @@ msgstr "Est-ce qu'un de vos patients nécéssite l'attention d'un autre spécial
 
 msgid "Get a great looking profile online in less than a minute"
 msgstr "Obtenez un profil professionel en moins d'une minute"
+
+
+
+################
+## Welcome Email
+################
+
+msgid ", welcome to Veosan!"
+msgstr ", bienvenu à Veosan!"
+
+msgid "My name is David and I want to personally welcome you to the Veosan family."
+msgstr "Je m'appelle David et je vous souhaite la bienvenue dans la famille Veosan."
+
+msgid "I'm sure you're busy so I'll try to keep it short. I just wanted to introduce myself and let you know that should you need any help, have any comments or want to make a suggestion for the site please feel free to write me an email or give me a call."
+msgstr "Je suis certain que vous êtes occupé alors je ne prendrai pas trop de votre temps. Je voulais tout simplement me présenter et vous dire que, si jamais vous avez besoin d'aide, que vous avez des commentaires ou que vous voudriez faire une suggestion pour le site, de ne pas hésiter à me contacter par courriel ou par téléphone."
+
+msgid "This site was built entirely based on feedback from people just like you and we want to stay focused on solving your needs."
+msgstr "Le site a été bâti grâce aux commentaires des gens comme vous et notre objectif est de continuer à répondre à vos besoins."
+
+msgid "I also wanted to give you a few tips on how to get the most out of our site :"
+msgstr "Je voulais également vous offrir quelques conseils afin de mieux profiter de notre site :"
+
+msgid "Be friendly and upload a photo, your patients will appreciate it!"
+msgstr "Soyez amicable et téléchargez une photo pour votre profil. Vos patients vont apprécier!"
+
+msgid "Fill in some details on your CV so you will be found by search engines like Google"
+msgstr "Ajouter de l'information dans votre CV afin qu'on vous trouve plus facilement sur les moteurs de recherche"
+
+msgid "Invite your colleagues to connect with you in order to establish your network"
+msgstr "Inviter vos collègues à se connecter avec vous afin de développer votre réseau"
+
+msgid "Mark some hours available in your schedule if you'd like patients to book you online"
+msgstr "Ajouter des heures de disponibilités à votre horaire afin que vos patients puissent prendre rendez-vous"
+
+msgid "Sign up to receive updates from our blog with more tips on how to use the web to manage your practice"
+msgstr "Inscrivez-vous à notre blogue afin de recevoir des nouveaux conseils sur les façons de promouvoir votre pratique"
+
+msgid "Thanks and please enjoy the service!"
+msgstr "Merci!"
+
+msgid "Sincerely"
+msgstr "Cordialement"
+
+
+

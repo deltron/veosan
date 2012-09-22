@@ -14,6 +14,7 @@ from data.model_pkg.network_model import ProviderNetworkConnection
 from data.model_pkg.provider_model import Provider
 from webapp2_extras.i18n import lazy_gettext as _
 import datetime
+import mail
 
 
 ############################
@@ -181,7 +182,10 @@ class ProviderSignupHandler2(UserBaseHandler):
                 partial_provider.key.delete()
                 
             # Send welcome email to provider
-            # TODO
+            welcome_email_enabled = db.get_site_config().welcome_email_enabled
+            if welcome_email_enabled:
+                mail.email_provider_welcome(self.jinja2, provider)
+            
             
         else:
             self.render_template('user/signup_provider_2.html', provider_signup_form2=provider_signup_form2)
