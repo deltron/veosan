@@ -61,16 +61,25 @@
 		</form>		
 	</div>
 	<div class="span4">
-		<h3>Campaigns</h3>
-		{% for c in prospect.get_campaigns() %}
-			<a id="campaign-detail-link-{{loop.index}}" href="/admin/campaign/{{ c.key.urlsafe() }}">{{ c.name }}</a>
-			{% set last_campaign_email = prospect.get_last_campaign_email(c) %}
-			{% if last_campaign_email %}
-				- Emailed {{ last_campaign_email.event_date|human_readable_date_decay|lower }} by {{last_campaign_email.user }}
-			{% endif %}
+		<h3 style="display: inline-block">Campaigns   </h3>
+		<form style="display: inline-block; float: right" class="form-search" method="post" action="/admin/prospects/{{ prospect.prospect_id }}/campaign" >
+			{{ add_to_campaign_form.campaign(class='input-small') }}
+			<button type="submit" class="btn btn-primary">
+				{{ _('Add') }}
+			</button>
+		</form>
+		<div>
+			{% for c in prospect.get_campaigns() %}	
+				<a id="campaign-detail-link-{{loop.index}}" href="/admin/campaign/{{ c.key.urlsafe() }}">{{ c.name }}</a>
+				{% set last_campaign_email = prospect.get_last_campaign_email(c) %}
+				{% if last_campaign_email %}
+					- Emailed {{ last_campaign_email.event_date|human_readable_date_decay|lower }} by {{last_campaign_email.user }}
+				{% endif %}
+				<br>
+			{% endfor %}
 			<br>
-			
-		{% endfor %}
+			<br>
+		</div>
 	</div>
 </div>
 <div class="row">
