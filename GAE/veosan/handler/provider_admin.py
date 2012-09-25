@@ -7,6 +7,7 @@ from base import BaseHandler
 import data.db as db
 from forms.provider import ProviderStatusForm
 from handler.auth import admin_required
+from data.model_pkg.network_model import ProviderNetworkConnection
 
 class ProviderAdminBaseHandler(BaseHandler):
     
@@ -78,6 +79,26 @@ class ProviderDomainHandler(ProviderAdminBaseHandler):
         logging.info("(ProviderDomainHandler) Provider %s setting vanity domain to %s" % (provider.email, provider.vanity_domain))
 
         self.redirect('/admin/provider/admin/' + provider.vanity_url)
+
+class ProviderForceFriendsHandler(ProviderAdminBaseHandler):
+    def post(self, vanity_url=None):
+        provider = db.get_provider_from_vanity_url(vanity_url)
+        target_provider_email = self.request.get('email')
+        if target_provider_email:
+            target_provider = db.get_provider_from_email(target_provider_email)
+            
+            provider_network_connection = ProviderNetworkConnection()
+            provider_network_connection.source_provider = provider.key
+            provider_network_connection.target_provider = target_provider.key
+            provider_network_connection.confirmed = True
+            provider_network_connection.rejected = False
+            provider_network_connection.forced_by_admin = True
+            provider_network_connection.put()
+
+            logging.info("(ProviderForceFriendsHandler) Provider %s forcing connection to %s" % (provider.email, provider.vanity_domain))
+
+        self.redirect('/admin/provider/admin/' + provider.vanity_url)
+
 
 
 class ProviderEventLogHandler(ProviderAdminBaseHandler):
