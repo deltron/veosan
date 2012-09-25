@@ -2,6 +2,7 @@ from wtforms import Form, TextField, SelectField, TextAreaField
 from wtforms import validators
 from custom_form import CustomForm
 import util
+from data import db
 from webapp2_extras.i18n import lazy_gettext as _
 from forms import custom_validators
 from forms.custom_form import MultiCheckboxField
@@ -35,3 +36,14 @@ class ProspectNoteForm(CustomForm):
         setattr(form, 'note_type', SelectField(_(u'Type'), choices=util.get_all_note_types()))
         setattr(form, 'event_date', DateTimeField(_(u'Event Date'), default=datetime.datetime.now()))
         setattr(form, 'body', TextAreaField(_(u'Note')))
+        
+        
+def get_campaign_choices():
+    campaigns = db.fetch_campaigns()
+    campaign_choices = map(lambda c: (c.key.urlsafe(), c.name), campaigns)
+    return campaign_choices
+
+class ProspectAddToCampaignForm(CustomForm):
+    def _set_fields(self, form):
+        setattr(form, 'campaign', SelectField(_(u'Add to Campaign'), choices=get_campaign_choices()))
+        

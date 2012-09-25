@@ -2,10 +2,11 @@ from handler.auth import admin_required
 from handler.admin import AdminBaseHandler
 from data.model_pkg.prospect_model import ProviderProspect, ProspectNote
 from data import db
+import logging
 from google.appengine.api import users
 from google.appengine.ext import ndb
 from forms.prospect_forms import ProviderProspectForm, ProspectNoteForm, \
-     ProspectTagsForm, ProspectEmploymentTagsForm
+     ProspectTagsForm, ProspectEmploymentTagsForm, ProspectAddToCampaignForm
 
 class AdminProspectsHandler(AdminBaseHandler):
     @admin_required
@@ -50,10 +51,11 @@ class AdminProspectDetailsHandler(AdminBaseHandler):
         prospect_note_form = ProspectNoteForm().get_form()
         prospect_tags_form = ProspectTagsForm().get_form(obj=prospect)
         prospect_employment_tags_form = ProspectEmploymentTagsForm().get_form(obj=prospect)
+        add_to_campaign_form = ProspectAddToCampaignForm().get_form()
 
         self.render_template('admin/prospect_details.html', prospect=prospect, 
                              prospect_note_form=prospect_note_form, prospect_tags_form=prospect_tags_form,
-                             prospect_employment_tags_form=prospect_employment_tags_form)
+                             prospect_employment_tags_form=prospect_employment_tags_form, add_to_campaign_form=add_to_campaign_form)
 
 class AdminProspectTagsHandler(AdminBaseHandler):
     def post(self, prospect_id=None):
@@ -129,6 +131,24 @@ class AdminProspectEmploymentTagsHandler(AdminBaseHandler):
             
             self.redirect('/admin/prospects/' + prospect.prospect_id)
 
+
+class AdminProspectAddToCampaignHandler(AdminBaseHandler):
+    
+    def post(self, prospect_id=None):
+        prospect = db.get_prospect_from_prospect_id(prospect_id)
+        add_to_campaign_form = ProspectAddToCampaignForm().get_form(self.request.POST)
+        if add_to_campaign_form.validate():
+            campaign_urlsafe_key = add_to_campaign_form.campaign.data
+            campaign = db.get_from_urlsafe_key(campaign_urlsafe_key)
+            if prospect.key not in campaign.prospects:
+                campaign.prospects.append(prospect.key)
+                # TODO: create admin note
+                campaign.put()
+            else:
+                error_message = 'Prospect is already a member of the campaign %s' % campaign.name
+                logging.error(error_message)
+            
+        self.redirect('/admin/prospects/' + prospect.prospect_id) 
 
 
 class AdminProspectNotesHandler(AdminBaseHandler):

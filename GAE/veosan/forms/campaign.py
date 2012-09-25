@@ -3,7 +3,8 @@
 from custom_form import CustomForm
 from forms import custom_validators
 from webapp2_extras.i18n import lazy_gettext as _
-from wtforms import TextField,  TextAreaField, validators
+from wtforms import TextField,  TextAreaField, validators, SelectField
+from data import db
 
 
 class AddCampaignForm(CustomForm):
@@ -19,3 +20,8 @@ class EditCampaignForm(CustomForm):
         setattr(form, 'subject_en', TextField(_(u'English Subject')))
         setattr(form, 'body_en', TextAreaField(_(u'English Body')))
         
+        
+        
+        
+
+    

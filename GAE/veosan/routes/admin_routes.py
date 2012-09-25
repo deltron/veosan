@@ -27,6 +27,7 @@ def get_routes():
                    Route('/prospects/<prospect_id>/notes/<operation>/<key>', prospects_handler.AdminProspectNotesHandler),
                    Route('/prospects/<prospect_id>/tags', prospects_handler.AdminProspectTagsHandler),
                    Route('/prospects/<prospect_id>/employment', prospects_handler.AdminProspectEmploymentTagsHandler),
+                   Route('/prospects/<prospect_id>/campaign', prospects_handler.AdminProspectAddToCampaignHandler),
 
                    # campaigns
                    Route('/campaigns', campaign_handler.AdminCampaignsHandler),
