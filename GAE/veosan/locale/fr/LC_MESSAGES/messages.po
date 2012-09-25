@@ -1649,7 +1649,7 @@ msgstr "Obtenez un profil professionel en moins d'une minute"
 ################
 
 msgid ", welcome to Veosan!"
-msgstr ", bienvenu à Veosan!"
+msgstr ", bienvenue à Veosan!"
 
 msgid "My name is David and I want to personally welcome you to the Veosan family."
 msgstr "Je m'appelle David et je vous souhaite la bienvenue dans la famille Veosan."
