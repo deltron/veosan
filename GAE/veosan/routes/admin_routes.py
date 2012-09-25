@@ -49,7 +49,7 @@ def get_routes():
                        Route('/domain/<vanity_url>', provider_admin.ProviderDomainHandler),
 
                        # custom domain
-                       Route('/forcefriends/<vanity_url>', provider_admin.ProviderDomainHandler),
+                       Route('/forcefriends/<vanity_url>', provider_admin.ProviderForceFriendsHandler),
                                         
                        # logs
                        Route('/logs/<vanity_url>', provider_admin.ProviderEventLogHandler),
