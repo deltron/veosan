@@ -1664,7 +1664,7 @@ msgid "I also wanted to give you a few tips on how to get the most out of our si
 msgstr "Je voulais également vous offrir quelques conseils afin de mieux profiter de notre site :"
 
 msgid "Be friendly and upload a photo, your patients will appreciate it!"
-msgstr "Soyez amicable et téléchargez une photo pour votre profil. Vos patients vont apprécier!"
+msgstr "Soyez amicable et téléchargez une photo pour votre profil. Vos patients vont vous remarquer!"
 
 msgid "Fill in some details on your CV so you will be found by search engines like Google"
 msgstr "Ajouter de l'information dans votre CV afin qu'on vous trouve plus facilement sur les moteurs de recherche"
@@ -1673,10 +1673,10 @@ msgid "Invite your colleagues to connect with you in order to establish your net
 msgstr "Inviter vos collègues à se connecter avec vous afin de développer votre réseau"
 
 msgid "Mark some hours available in your schedule if you'd like patients to book you online"
-msgstr "Ajouter des heures de disponibilités à votre horaire afin que vos patients puissent prendre rendez-vous"
+msgstr "Ajouter des heures de disponibilité à votre horaire afin que vos patients puissent prendre un rendez-vous"
 
 msgid "Sign up to receive updates from our blog with more tips on how to use the web to manage your practice"
-msgstr "Inscrivez-vous à notre blogue afin de recevoir des nouveaux conseils sur les façons de promouvoir votre pratique"
+msgstr "Inscrivez-vous à notre blogue afin de recevoir des conseils sur les façons de promouvoir votre pratique"
 
 msgid "Thanks and please enjoy the service!"
 msgstr "Merci!"
