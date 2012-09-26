@@ -56,6 +56,8 @@ class AdminProspectDetailsHandler(AdminBaseHandler):
         self.render_template('admin/prospect_details.html', prospect=prospect, 
                              prospect_note_form=prospect_note_form, prospect_tags_form=prospect_tags_form,
                              prospect_employment_tags_form=prospect_employment_tags_form, add_to_campaign_form=add_to_campaign_form)
+        
+        
 
 class AdminProspectTagsHandler(AdminBaseHandler):
     def post(self, prospect_id=None):
@@ -168,11 +170,13 @@ class AdminProspectNotesHandler(AdminBaseHandler):
                     prospect_note_form = ProspectNoteForm().get_form(obj=note)
                     prospect_tags_form = ProspectTagsForm().get_form(obj=prospect)
                     prospect_employment_tags_form = ProspectEmploymentTagsForm().get_form(obj=prospect)
+                    add_to_campaign_form = ProspectAddToCampaignForm().get_form()
                     
                     self.render_template('admin/prospect_details.html', prospect=prospect,
                                          prospect_note_form=prospect_note_form,
                                          prospect_tags_form=prospect_tags_form,
                                          prospect_employment_tags_form=prospect_employment_tags_form,
+                                         add_to_campaign_form = add_to_campaign_form,
                                          edit='note',
                                          edit_key=key)
 
@@ -181,6 +185,7 @@ class AdminProspectNotesHandler(AdminBaseHandler):
         prospect_tags_form = ProspectTagsForm().get_form(obj=prospect)
         prospect_employment_tags_form = ProspectEmploymentTagsForm().get_form(obj=prospect)
         prospect_note_form = ProspectNoteForm().get_form(self.request.POST)
+        add_to_campaign_form = ProspectAddToCampaignForm().get_form()
         
         if prospect_note_form.validate():
             prospect_note = None
@@ -205,6 +210,7 @@ class AdminProspectNotesHandler(AdminBaseHandler):
                                  prospect=prospect,
                                  prospect_note_form=prospect_note_form,
                                  prospect_tags_form=prospect_tags_form,
-                                 prospect_employment_tags_form=prospect_employment_tags_form)
+                                 prospect_employment_tags_form=prospect_employment_tags_form,
+                                 add_to_campaign_form = add_to_campaign_form)
 
         
