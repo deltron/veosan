@@ -39,6 +39,9 @@ class ProviderUpgradeHandler(ProviderBaseHandler):
         provider_account.stripe_plan_id = plan
         provider_account.put()
         
+        provider.booking_enabled = True
+        provider.put()
+        
         self.render_template("provider/upgrade_success.html", provider=provider)
 
 
