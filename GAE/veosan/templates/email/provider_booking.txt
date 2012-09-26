@@ -1,4 +1,4 @@
-{{_('Hi')}} {{ provider.first_name }} {{ provider.last_name }},
+{{_('Hi')}} {{ provider.first_name }},
 
 {{ _('You have a new appointment!')}} {{ _('Here are the details') }}:
 
