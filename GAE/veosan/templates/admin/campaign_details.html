@@ -92,6 +92,10 @@
 			<button type="submit" class="btn btn-mini btn-primary">
 				{{ _('Save') }}
 			</button>
+			
+			<!-- delete button -->
+			<a data-toggle="modal" href="#delete_modal" class="btn btn-mini btn-danger">{{ _('Delete Campaign') }}</a>
+		
 			</h2>
 			<br>
 			{% set f = edit_campaign_form %}
@@ -113,8 +117,22 @@
 				</tbody>
 			</table>
 		</form>
-		<!-- delete button -->
-		<a data-toggle="modal" href="#delete_modal" class="btn btn-danger">{{ _('Delete Campaign') }}</a>
+		
+		<h3>Variables</h3>
+		<div class="well">
+			<div class="row">		
+				<div class="span5">
+				    First name: <strong>%(first_name)s</strong> <br>
+				    Last name: <strong>%(last_name)s</strong> <br>
+	    			Email: <strong>%(email)s</strong>
+	    		</div>
+	    		<div class="span5">
+	    			Last name: <strong>%(blog_url)s</strong> <br>
+	    			Last name: <strong>%(signup_url)s</strong> <br>
+	    			Last name: <strong>%(tour_url)s</strong>
+	  			</div>
+			</div>
+		</div>
 		
 	</div>
 </div>		
