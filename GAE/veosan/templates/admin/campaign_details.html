@@ -85,17 +85,33 @@
 <br>
 
 <div class="row">
-	<div class="span8">
+	<div class="span12">
 		
-		<form class="form-horizontal" action="/admin/campaign/{{campaign.key.urlsafe()}}" method="post" id="campaign_form">
+		<form class="form-inline" action="/admin/campaign/{{campaign.key.urlsafe()}}" method="post" id="campaign_form">
 			<h2>Email Templates
 			<button type="submit" class="btn btn-mini btn-primary">
 				{{ _('Save') }}
 			</button>
 			</h2>
 			<br>
-			{{ macro.make_standard_form(edit_campaign_form) }}
+			{% set f = edit_campaign_form %}
+			<table class="table table-condensed" >
 
+				<tbody>
+					<tr> 
+						<td style="border-top:none;"> {{f.name.label}} {{ f.name(class="input-xxlarge") }}</td> 
+						<td style="border-top:none;">{{f.description.label}} {{f.description(class="input-xxlarge") }}</td>
+					</tr>
+					<tr> 
+						<td style="border-top:none;"> {{f.subject_fr.label}} {{ f.subject_fr(class="input-xxlarge") }}</td>
+						<td style="border-top:none;"> {{f.subject_en.label}} {{f.subject_en(class="input-xxlarge") }}</td>
+					</tr>
+					<tr>
+						<td style="border-top:none;"> {{f.body_fr.label}} {{ f.body_fr(class="input-xxlarge", style="height:300px") }}</td>
+						<td style="border-top:none;"> {{f.body_en.label}} {{ f.body_en(class="input-xxlarge", style="height:300px") }}</td>
+					</tr>
+				</tbody>
+			</table>
 		</form>
 		<!-- delete button -->
 		<a data-toggle="modal" href="#delete_modal" class="btn btn-danger">{{ _('Delete Campaign') }}</a>
