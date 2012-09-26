@@ -153,3 +153,9 @@ h2 {
     width: 780px;
     margin-left: -390px; /* - width/2 */
 }
+
+/* class="scrollable" in a div wrapping a table */
+.scrollable {
+	max-height: 400px;
+	overflow: auto;
+}
