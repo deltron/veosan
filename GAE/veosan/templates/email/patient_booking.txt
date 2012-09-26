@@ -1,4 +1,4 @@
-{{_('Hi')}} {{ patient.first_name }} {{ patient.last_name }},
+{{_('Hi')}} {{ patient.first_name }},
 
 {{_('You have an appointment scheduled with')}} {{ provider.first_name }} {{ provider.last_name }} ({{ category_dict[provider.category]|lower }}) {% if lang == 'en' %}{{_('on')}} {% endif %}{{ booking.datetime|format_datetime_full }}. 
 
