@@ -183,6 +183,8 @@
 			</div>
 			
 			<div class="modal-footer">
+				<span style="float: left;">Ctrl-C to copy email</span><br>
+				
 				
 				{% if prospect.is_campaign_email_sent(campaign) %}
 					{% set last_email = prospect.get_last_campaign_email(campaign) %}
@@ -235,6 +237,27 @@
 		$('email_modal').on('hidden', function() {
 			window.location = "/admin/campaign/{{ campaign.key.urlsafe() }}"
 		})
+		
+		function selectText(element) {
+		    var doc = document
+		        , text = doc.getElementById(element)
+		        , range, selection
+		    ;    
+		    if (doc.body.createTextRange) { //ms
+		        range = doc.body.createTextRange();
+		        range.moveToElementText(text);
+		        range.select();
+		    } else if (window.getSelection) { //all others
+		        selection = window.getSelection();        
+		        range = doc.createRange();
+		        range.selectNodeContents(text);
+		        selection.removeAllRanges();
+		        selection.addRange(range);
+		    }
+		}
+
+		selectText('email-body-edit-div')
+		
 	</script>
 	{% endif %}
 {% endblock %}

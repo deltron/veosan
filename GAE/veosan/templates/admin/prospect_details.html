@@ -71,7 +71,6 @@
 			</form>
 		</div>
 		<br>
-		<br>
 		<div style="display: block; margin-top: 0px;">
 			{% for c in prospect.get_campaigns() %}	
 				<a id="campaign-detail-link-{{loop.index}}" href="/admin/campaign/{{ c.key.urlsafe() }}">{{ c.name }}</a>
