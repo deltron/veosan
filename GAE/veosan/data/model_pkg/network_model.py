@@ -24,6 +24,8 @@ class ProviderNetworkConnection(ndb.Model):
     relationship = ndb.StringProperty()
     confirmed = ndb.BooleanProperty(default=False)
     rejected = ndb.BooleanProperty(default=False)
+    forced_by_admin = ndb.BooleanProperty(default=False)
+
     rejection_count = ndb.IntegerProperty(default=0)
 
     

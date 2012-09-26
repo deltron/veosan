@@ -1255,7 +1255,37 @@ class ProviderSocialTest(BaseTest):
         network_page.mustcontain('Votre réseau contient 1 professionels de la santé.')
         network_page.mustcontain("first last")
         network_page.mustcontain("Ostéopathe")
-                
+              
+    def test_force_connection_by_admin(self):
+        # create a provider
+        self.self_signup_provider()
+        self.logout_provider()
+        
+        # and another
+        self.self_signup_provider(email='mctest@veosan.com', first_name='david', last_name='mctester', category='dentist')
+        self.logout_provider()
+        
+        # now force friend connect
+        self.login_as_admin()
+        
+        provider_admin_page = self.testapp.get('/admin/provider/admin/' + 'davidmctester')
+        force_connect_form = provider_admin_page.forms['force_friends']
+        force_connect_form['email'] = self._TEST_PROVIDER_EMAIL
+        force_connect_form.submit()
+        
+        self.logout_admin()
+        
+        network_page = self.testapp.get('/' + 'davidmctester')
+        
+        network_page.mustcontain('david est relié à 1 professionels de la santé.')
+        network_page.mustcontain("first last")
+        network_page.mustcontain("Ostéopathe")
+        
+        network_page = self.testapp.get('/' + 'firstlast')
+        
+        network_page.mustcontain('first est relié à 1 professionels de la santé.')
+        network_page.mustcontain("david mctester")
+        network_page.mustcontain("Dentist")
 
 if __name__ == "__main__":
     unittest.main()

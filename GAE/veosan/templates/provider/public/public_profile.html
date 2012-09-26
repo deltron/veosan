@@ -306,7 +306,7 @@
 				<td width="50"><a href="/{{ p.vanity_url }}"> {% if p.profile_photo_blob_key %} <img src="{{ p.get_profile_photo_image_url(50) }}" width="50"
 				alt="{{ macro.display_provider_name(p) }} - {{ category_dict[p.category] }}"> {% else %} <img src="/assets/img/default-profile.png" width="50" height="50"
 				alt="{{ macro.display_provider_name(p) }} - {{ category_dict[p.category] }}"> {% endif %} </a></td>
-				<td width="150"><a href="/{{ p.vanity_url }}"><h4> {{ p.first_name }}
+				<td width="150"><a href="/{{ p.vanity_url }}" itemprop="knows"><h4> {{ p.first_name }}
 				{{ p.last_name }} </h4></a> {{ category_dict[p.category] }} </td>
 	
 				</tr>
@@ -412,7 +412,7 @@
 			<td width="50"><a href="/{{ p.vanity_url }}"> {% if p.profile_photo_blob_key %} <img src="{{ p.get_profile_photo_image_url(50) }}" width="50"
 			alt="{{ macro.display_provider_name(p) }} - {{ category_dict[p.category] }}"> {% else %} <img src="/assets/img/default-profile.png" width="50" height="50"
 			alt="{{ macro.display_provider_name(p) }} - {{ category_dict[p.category] }}"> {% endif %} </a></td>
-			<td width="150"><a href="/{{ p.vanity_url }}"><h4> {{ p.first_name }}
+			<td width="150"><a href="/{{ p.vanity_url }}" itemprop="knows"><h4> {{ p.first_name }}
 			{{ p.last_name }} </h4></a> {{ category_dict[p.category] }} </td>
 
 			{{ close_tr|safe }}
