@@ -16,7 +16,7 @@
 				<br>
 				{{ campaign.get_email_notes_count() }} emails sent
 				<br>
-				X converted (x%)
+				<!-- X converted (x%) -->
 				<br>
 			</div>
 			
@@ -43,41 +43,42 @@
 
 <div class="row">	
 	<div class="span12">
-		<h2>Campaign Prospects  <a id="edit-prospects-link" class="btn btn-mini btn-primary" href="#edit_prospects_modal" data-toggle="modal">Edit Prospects</a></h2>
+		<h2>{{ campaign.prospects|count }} Campaign Prospects  <a id="edit-prospects-link" class="btn btn-mini btn-primary" href="#edit_prospects_modal" data-toggle="modal">Edit Prospects</a></h2>
 		<!-- Add Prospects button -->
 		
-		
-		<table class="table">
-			<thead>
-				<tr>
-					<th width="10%">Prospect ID</th>
-					<th width="12%">Language</th>
-					<th width="12%">Email</th>
-					<th width="12%">First Name</th>
-					<th width="12%">Last Name</th>
-					<th width="12%">Category</th>
-					<th width="5%">Hits</th>
-					<th width="5%">Emails Sent</th>
-					<th width="5%">Ops</th>
-				</tr>
-			</thead>
-			<tbody>
-				{% for prospect in campaign.prospects %}
-				{% set p = prospect.get() %}
-				<tr>
-					<td><a href="/admin/prospects/{{ p.prospect_id }}">{{ p.prospect_id }}</a></td>
-					<td>{{ p.language }}</td>
-					<td>{{ p.email }}</td>
-					<td>{{ p.first_name }}</td>
-					<td>{{ p.last_name }}</td>
-					<td>{{ p.category }}</td>
-					<td>{{ p.landing_hits }}</td>
-					<td>{{ p.get_email_notes_for_campaign_count(campaign) }}</td>
-					<td><a class="btn btn-mini btn-info" href="/admin/campaign/{{campaign.key.urlsafe()}}/email/{{p.prospect_id}}" data-toggle="modal">Email</a></td>
-				</tr>
-				{% endfor %}
-			</tbody>
-		</table>
+		<div class="scrollable">
+			<table class="table">
+				<thead>
+					<tr>
+						<th width="10%">Prospect ID</th>
+						<th width="12%">Language</th>
+						<th width="12%">Email</th>
+						<th width="12%">First Name</th>
+						<th width="12%">Last Name</th>
+						<th width="12%">Category</th>
+						<th width="5%">Hits</th>
+						<th width="5%">Emails Sent</th>
+						<th width="5%">Ops</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for prospect in campaign.prospects %}
+					{% set p = prospect.get() %}
+					<tr>
+						<td><a href="/admin/prospects/{{ p.prospect_id }}">{{ p.prospect_id }}</a></td>
+						<td>{{ p.language }}</td>
+						<td>{{ p.email }}</td>
+						<td>{{ p.first_name }}</td>
+						<td>{{ p.last_name }}</td>
+						<td>{{ p.category }}</td>
+						<td>{{ p.landing_hits }}</td>
+						<td>{{ p.get_email_notes_for_campaign_count(campaign) }}</td>
+						<td><a class="btn btn-mini btn-info" href="/admin/campaign/{{campaign.key.urlsafe()}}/email/{{p.prospect_id}}" data-toggle="modal">Email</a></td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
 	</div>
 </div>
 
@@ -96,7 +97,9 @@
 			{{ macro.make_standard_form(edit_campaign_form) }}
 
 		</form>
-
+		<!-- delete button -->
+		<a data-toggle="modal" href="#delete_modal" class="btn btn-danger">{{ _('Delete Campaign') }}</a>
+		
 	</div>
 </div>		
 
@@ -208,6 +211,30 @@
 		{% endif %}
 		
 		
+
+
+		{# ################################# #}
+		{# Modal for Delete confirmation     #}
+		{# ################################# #}
+		
+		<div class="modal hide" id="delete_modal" style="display: none;">
+			<div class="modal-header">
+				<a class="close" data-dismiss="modal">×</a>
+		
+				<h3>Delete Campaign: {{ campaign.name }}</h3>
+			</div>
+				<div class="modal-body">
+					Are you sure?
+				</div>
+		
+				<div class="modal-footer">
+					<a class="btn btn-danger" href="/admin/campaign/delete/{{ campaign.key.urlsafe() }}">{{ _('Delete Campaign') }}</a>
+		
+					<a class="btn" href="/admin/campaign/{{ campaign.key.urlsafe() }}">{{ _('Cancel') }}</a>
+				</div>
+			</form>
+		</div>
+
 {% endblock content %}
 
 {# Modal extra Javascript #}
