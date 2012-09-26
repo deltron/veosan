@@ -56,7 +56,6 @@ class UserBaseHandler(BaseHandler):
         
     def render_login(self, next_action=None, key=None, **kw):
         login_form = LoginForm().get_form()
-        login_form['remember_me'].data = True
         
         if next_action == 'accept':
             if key:
@@ -75,7 +74,7 @@ class UserBaseHandler(BaseHandler):
                 
                 login_form = LoginForm().get_form(obj=patient_from_booking)
 
-        
+        login_form['remember_me'].data = True
         self.render_template('user/login.html', login_form=login_form, next_action=next_action, key=key, **kw)
 
 

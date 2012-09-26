@@ -5,6 +5,7 @@ from data import db
 from webapp2_extras.i18n import lazy_gettext as _
 import stripe
 from data.model_pkg.provider_model import ProviderAccount
+from stripe import CardError
 
 
 class ProviderUpgradeHandler(ProviderBaseHandler):
@@ -26,23 +27,26 @@ class ProviderUpgradeHandler(ProviderBaseHandler):
         token = self.request.POST['stripeToken']
         plan = self.request.POST['plan']
 
-        customer = stripe.Customer.create(
-            card=token,
-            plan=plan,
-            email=provider.email
-        )
-
-        # save the customer ID in your database so you can use it later
-        provider_account = ProviderAccount()
-        provider_account.provider = provider.key
-        provider_account.stripe_customer_id = customer.id
-        provider_account.stripe_plan_id = plan
-        provider_account.put()
-        
-        provider.booking_enabled = True
-        provider.put()
-        
-        self.render_template("provider/upgrade_success.html", provider=provider)
+        try :
+            customer = stripe.Customer.create(
+                card=token,
+                plan=plan,
+                email=provider.email
+            )
+    
+            # save the customer ID in your database so you can use it later
+            provider_account = ProviderAccount()
+            provider_account.provider = provider.key
+            provider_account.stripe_customer_id = customer.id
+            provider_account.stripe_plan_id = plan
+            provider_account.put()
+            
+            provider.booking_enabled = True
+            provider.put()
+            
+            self.render_template("provider/upgrade_success.html", provider=provider)
+        except CardError:
+            self.render_template("provider/upgrade_failed.html", provider=provider)
 
 
 

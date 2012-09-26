@@ -9,6 +9,21 @@ from handler.patient import PatientBaseHandler
 from handler.booking_pkg.booking_base_handler import BookingBaseHandler
 from handler import auth
 import mail
+import json
+
+class PatientLookup(BookingBaseHandler):
+    def post(self):
+        email = self.request.get('email')
+        if email:
+            patient = db.get_patient_from_email(email)
+            if patient:
+                data = { 'first_name' : patient.first_name, 
+                         'last_name' : patient.last_name,
+                         'telephone' : patient.telephone }
+                
+                return_string = json.dumps(data)
+                self.response.write(return_string)
+
 
 
 class BookFromPublicProfileRegistration(BookingBaseHandler):

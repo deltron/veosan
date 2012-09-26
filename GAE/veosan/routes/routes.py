@@ -65,6 +65,8 @@ def create_routes():
                    Route('/mail_errors', tasks.MailErrorHandler),
                ]),
                
+               Route('/book/patientlookup', booking_registration_handler.PatientLookup),               
+               
                Route('/lang/<lang>', language.LanguageHandler),
                Route('/lang/<lang>/<hide_side>', language.LanguageHandler),
                
