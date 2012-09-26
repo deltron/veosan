@@ -36,9 +36,12 @@ class AdminCampaignDeleteHandler(AdminBaseHandler):
     def get(self, campaign_key):
         campaign = db.get_from_urlsafe_key(campaign_key)
         if campaign and isinstance(campaign, Campaign):
+            logging.info('Deleting campaign %s' % campaign)
             campaign.key.delete()
+        else:
+            logging.warn('Delete skipped, campaign not found for %s' % campaign_key)
         # back to campaign admin page
-        self.redirect('/admin/campaigns', success_message='Campaign created!')
+        self.redirect('/admin/campaigns')
 
 
 class AdminCampaignDetailsHandler(AdminBaseHandler):
