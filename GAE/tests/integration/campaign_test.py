@@ -17,7 +17,6 @@ class CampaignTest(BaseTest):
         self.logout_admin()
         
 
-
     def test_add_campaign(self):
         self.create_campaign()
         
@@ -45,7 +44,25 @@ class CampaignTest(BaseTest):
         detail_page = prospect_form.submit()
         detail_page.mustcontain('p123')
         
-        
+    def test_remove_prospect_to_campaign(self):
+        self.create_campaign()
+        self.create_prospect('p123', 'fr')
+        prospect = db.get_provider_prospect_from_email(self._TEST_PROVIDER_EMAIL)
+        # add
+        self.login_as_admin()
+        campaign_admin_page = self.testapp.get('/admin/campaigns')
+        details_page = campaign_admin_page.click(linkid='campaign-detail-link-1')
+        prospect_modal_page = details_page.click(linkid='edit-prospects-link')
+        prospect_form = prospect_modal_page.forms['edit_campaign_prospects_form']
+        prospect_form['prospect'] = prospect.key.urlsafe()
+        detail_page = prospect_form.submit()
+        detail_page.mustcontain('p123')
+        # remove
+        prospect_modal_page = details_page.click(linkid='edit-prospects-link')
+        prospect_form = prospect_modal_page.forms['edit_campaign_prospects_form']
+        prospect_form['prospect'] = None
+        detail_page = prospect_form.submit()
+        detail_page.mustcontain('0 Campaign Prospects')
         
         
 if __name__ == "__main__":
