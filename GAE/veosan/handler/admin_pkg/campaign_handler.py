@@ -128,7 +128,7 @@ class AdminCampaignDetailsHandler(AdminBaseHandler):
 
 def generate_prospect_email_dict(prospect, host):
     email_dict = {}
-    email_dict['name'] = prospect.first_name
+    #email_dict['name'] = prospect.first_name
     email_dict['first_name'] = prospect.first_name
     email_dict['last_name'] = prospect.last_name
     email_dict['language'] = prospect.language
