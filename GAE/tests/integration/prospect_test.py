@@ -33,7 +33,7 @@ class ProspectTest(BaseTest):
         response = self.testapp.get('/tour/103')
         
         # should be the tour page
-        response.mustcontain("Améliorez votre présence en ligne avec un profil complètement dédié au monde de la santé")
+        response.mustcontain("Améliorez votre présence en ligne avec un profil entièrement dédié aux soins de la santé.")
         response.mustcontain("C'est qui je suis!")
         response.mustcontain('/fr/signup/provider')
 

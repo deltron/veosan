@@ -70,6 +70,14 @@ class AdminCampaignDetailsHandler(AdminBaseHandler):
         else:
             self.render_campaign_details(campaign, edit_campaign_form=edit_campaign_form)       
         
+    def edit_prospects_get(self, campaign_key):
+        '''
+            Handle GET to display modal to edit prospects
+        '''
+        campaign = db.get_from_urlsafe_key(campaign_key)
+        self.render_campaign_details(campaign=campaign, show_modal='campaign_prospects')
+        
+        
     def edit_prospects_post(self, campaign_key):
         '''
             Handle POST form edit prospects modal window

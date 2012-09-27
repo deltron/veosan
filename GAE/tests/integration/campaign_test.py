@@ -39,7 +39,6 @@ class CampaignTest(BaseTest):
         self.login_as_admin()
         campaign_admin_page = self.testapp.get('/admin/campaigns')
         details_page = campaign_admin_page.click(linkid='campaign-detail-link-1')
-        details_page.showbrowser()
         prospect_modal_page = details_page.click(linkid='edit-prospects-link')
         prospect_form = prospect_modal_page.forms['edit_campaign_prospects_form']
         prospect_form['prospect'] = prospect.key.urlsafe()
