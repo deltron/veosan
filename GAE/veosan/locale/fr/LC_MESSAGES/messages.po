@@ -914,6 +914,8 @@ msgstr "Horaire complet"
 msgid "Map"
 msgstr "Carte"
 
+msgid "Invite some colleagues"
+msgstr "Invitez des collègues"
 
 
 #################

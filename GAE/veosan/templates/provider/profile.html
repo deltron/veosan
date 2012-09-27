@@ -7,6 +7,11 @@
 
 {% block content %}
 <!-- Form -->
+<style>
+	a.steps  {color:#555;}
+	a:hover.steps {color:#369BD7;}
+</style>
+
 <form method="post" action="/provider/profile/{{ provider.vanity_url }}" class="form-horizontal" id="profile_form">
 	<div class="row">
 		<div class="span6">
@@ -60,31 +65,41 @@
 
 					{% if provider.get_cv_items_count() <= 3 %}
 					<li>
-						{{ _('Fill in your CV') }}
+						<a href="/provider/cv/{{ provider.vanity_url }}" class="steps">{{ _('Fill in your CV') }}</a>
 					</li>
 					{% else %}
 					<li>
-						<del>{{ _('Fill in your CV') }}</del><i class="bs-icon icon-ok"> </i>
+						<a href="/provider/cv/{{ provider.vanity_url }}" class="steps"><del>{{ _('Fill in your CV') }}</del></a><i class="bs-icon icon-ok"> </i>
 					</li>
 					{% endif %}
 
 					{% if not provider.is_address_complete() %}
 					<li>
-						{{ _('Complete your address') }}
+						<a href="/provider/address/{{ provider.vanity_url }}" class="steps">{{ _('Complete your address') }}</a>
 					</li>
 					{% else %}
 					<li>
-						<del>{{ _('Complete your address') }}</del><i class="bs-icon icon-ok"> </i>
+						<a href="/provider/address/{{ provider.vanity_url }}" class="steps"><del>{{ _('Complete your address') }}</del></a><i class="bs-icon icon-ok"> </i>
 					</li>
 					{% endif %}
 
 					{% if not provider.get_total_available_hours_per_week() > 0 %}
 					<li>
-						{{ _('Fill in your schedule') }}
+						<a href="/provider/schedule/{{ provider.vanity_url }}" class="steps">{{ _('Fill in your schedule') }}</a>
 					</li>
 					{% else %}
 					<li>
-						<del>{{ _('Fill in your schedule') }}</del><i class="bs-icon icon-ok"> </i>
+						<a href="/provider/schedule/{{ provider.vanity_url }}" class="steps"><del>{{ _('Fill in your schedule') }}</del></a><i class="bs-icon icon-ok"> </i>
+					</li>
+					{% endif %}
+
+					{% if not provider.get_provider_network_count() > 20 %}
+					<li>
+						<a href="/provider/network/{{ provider.vanity_url }}" class="steps">{{ _('Invite some colleagues') }}</a>
+					</li>
+					{% else %}
+					<li>
+						<a href="/provider/network/{{ provider.vanity_url }}" class="steps"><del>{{ _('Invite some colleagues') }}</del></a><i class="bs-icon icon-ok"> </i>
 					</li>
 					{% endif %}
 				</ol>
