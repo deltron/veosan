@@ -911,6 +911,10 @@ msgstr "Cliquez ici pour voir la liste complète"
 msgid "View Full Schedule"
 msgstr "Horaire complet"
 
+msgid "Map"
+msgstr "Carte"
+
+
 
 #################
 # Booking from Public Profile

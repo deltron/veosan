@@ -67,7 +67,7 @@
 
 		{% if provider.address_enabled %}
 		<div style="width:100%; padding-top:10px; margin: 0px auto; border-top: 1px solid #e5e5e5;">
-		<h3>Address</h3>
+		<h3>{{ _('Address') }}</h3>
 		<span itemprop="workLocation"> <span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress"> {% if provider.address %} <span itemprop="streetAddress">{{ provider.address }}</span>
 				<br>
 				{% endif %}
@@ -75,7 +75,7 @@
 				{% endif %}
 				{% if provider.province and provider.province != 'nothing' %} <span itemprop="addressRegion">{{ provider.province|code_to_string }}</span> {% endif %} </span> </span>
 		<br>
-		<a data-toggle="modal" href="#contact_modal" onclick="loadScript()"><i class="bs-icon icon-globe"></i></a><a data-toggle="modal" href="#contact_modal" onclick="loadScript()">Map</a>
+		<a data-toggle="modal" href="#contact_modal" onclick="loadScript()"><i class="bs-icon icon-globe"></i></a><a data-toggle="modal" href="#contact_modal" onclick="loadScript()">{{ _('Map') }}</a>
 		</div>
 		<br>
 		{% endif %}
@@ -349,7 +349,7 @@
 					<div class="span8">
 						<div class="row-fluid">
 							<div class="span6">
-								<h5>Address</h5>
+								<h5>{{ _('Address') }}</h5>
 								{% if provider.address %}
 								{{ provider.address }}
 								<br>
@@ -364,16 +364,16 @@
 							</div>
 							<div class="span6">
 								{% if provider.phone %}
-								<h5>Telephone</h5>
+								<h5>{{ _('Telephone') }}</h5>
 								{{ provider.phone }}
 								{% endif %}
 
-								<h5>Email</h5>
+								<h5>{{ _('Email') }}</h5>
 								{{ provider.email }}
 							</div>
 						</div>
 						<br>
-						<h5>Map</h5>
+						<h5>{{ _('Map') }}</h5>
 						<div id="map_canvas" style="width:100%; height:200px"></div>
 					</div>
 
