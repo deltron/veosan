@@ -73,7 +73,7 @@
 						<td>{{ p.category }}</td>
 						<td>{{ p.landing_hits }}</td>
 						<td>{{ p.get_email_notes_for_campaign_count(campaign) }}</td>
-						<td><a class="btn btn-mini btn-info" href="/admin/campaign/{{campaign.key.urlsafe()}}/email/{{p.prospect_id}}" data-toggle="modal">Email</a></td>
+						<td><a id="email-link-{{loop.index}}" class="btn btn-mini btn-info" href="/admin/campaign/{{campaign.key.urlsafe()}}/email/{{p.prospect_id}}" data-toggle="modal">Email</a></td>
 					</tr>
 					{% endfor %}
 				</tbody>

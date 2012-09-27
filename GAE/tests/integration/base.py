@@ -630,9 +630,30 @@ class BaseTest(unittest.TestCase):
         prospect_form = self.populate_prospect_form(response.forms['prospect_form'], prospect_id, prospect_language)
 
         response = prospect_form.submit().follow()
-        
         response.mustcontain("/admin/prospects/" + str(prospect_id))
         response.mustcontain('Al Swearingen')
         #   response.mustcontain("/admin/prospects/delete/" + str(prospect_id))
-        
         self.logout_admin()
+        
+    def add_prospect_to_campaign(self, prospect):
+        self.login_as_admin()
+        campaign_admin_page = self.testapp.get('/admin/campaigns')
+        details_page = campaign_admin_page.click(linkid='campaign-detail-link-1')
+        prospect_modal_page = details_page.click(linkid='edit-prospects-link')
+        prospect_form = prospect_modal_page.forms['edit_campaign_prospects_form']
+        prospect_form['prospect'] = prospect.key.urlsafe()
+        detail_page = prospect_form.submit()
+        detail_page.mustcontain('p123')
+        self.logout_admin()
+        
+    def setup_campaign_email_templates(self):
+        self.login_as_admin()
+        campaign_admin_page = self.testapp.get('/admin/campaigns')
+        details_page = campaign_admin_page.click(linkid='campaign-detail-link-1')
+        campaign_form = details_page.forms['campaign_form']
+        campaign_form['subject_en'] = 'Hi %(first_name)s!'
+        campaign_form['subject_fr'] = 'Bonjour %(first_name)s!'
+        details_page = campaign_form.submit()
+        details_page.mustcontain('Hi %(first_name)s!')
+        self.logout_admin()
+        
