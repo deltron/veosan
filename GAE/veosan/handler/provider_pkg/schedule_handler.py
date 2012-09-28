@@ -6,7 +6,7 @@ from handler.auth import provider_required
 from data import db
 from google.appengine.ext import ndb
 import logging
-from data.model import Schedule
+from data.model_pkg.booking_schedule_model import Schedule
 
 
 class ProviderScheduleHandler(ProviderBaseHandler): 

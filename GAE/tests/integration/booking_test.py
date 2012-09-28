@@ -13,8 +13,29 @@ class BookingTest(BaseTest):
 
          
     def test_booking_existing_patient(self):
-        #self.fail("TODO: re-implement with book from profile")
-        pass
+        self.create_provider_and_enable_booking()
+        # book once from public profile
+        date_string = testutil.next_monday_date_string()
+        time_string = '10'
+        self.book_from_public_profile(date_string, time_string)
+        self.patient_confirms_latest_booking(date_string, time_string)
+        self.logout_patient()
+
+        # book again from public profile        
+        date_string = testutil.next_monday_date_string()
+        time_string = '11'
+        self.book_from_public_profile(date_string, time_string)
+        
+        # did we receive another email?
+        messages = self.mail_stub.get_sent_messages(to=self._TEST_PATIENT_EMAIL)
+        patient_email_count = len(messages)
+        self.assertEqual(patient_email_count, 2)
+
+        provider_messages = self.mail_stub.get_sent_messages(to=self._TEST_PROVIDER_EMAIL)
+        patient_email_count = len(messages)
+        self.assertEqual(patient_email_count, 2)
+        
+
     
     def test_booking_with_loggedin_patient(self):
         #self.fail("TODO: re-implement with book from profile")

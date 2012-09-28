@@ -12,7 +12,6 @@
 			<thead>
 				<tr>
 					<th width="2%">Id</th>
-					<th width="5%">Status</th>
 					<th width="10%">Event Timestamp</th>
 					<th width="10%">Category</th>
 					<th width="10%">Booking Date</th>
@@ -31,9 +30,6 @@
 				<tr>
 					<td>
 						<a id="show-{{loop.index}}" href="/admin/booking/show/{{ b.key.urlsafe() }}">{{ b.key.id() }}</a>
-					</td>
-					<td>
-						{{ b.status }}
 					</td>
 					<td>
 						{{ b.created_on|format_datetime(format="short") }}

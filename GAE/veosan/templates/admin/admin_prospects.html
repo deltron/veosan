@@ -33,14 +33,7 @@
 					{% endif %}
 
 					</td>
-					<td>Note:
-					{% set last_note_timestamp = p.get_last_note_timestamp() %}
-					{% if last_note_timestamp %}
-					{{ last_note_timestamp|human_readable_date_decay }}
-					{% else %}
-					Never
-					{% endif %}
-					<br>
+					<td>
 					Site Visit:
 					{% set last_site_visit_timestamp = p.get_last_site_visit_timestamp() %}
 					{% if last_site_visit_timestamp %}
