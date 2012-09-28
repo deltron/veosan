@@ -60,7 +60,7 @@ class Booking(ndb.Model):
     datetime = ndb.DateTimeProperty()
     comments = ndb.TextProperty()
     
-    #### deprecated
+    #### deprecated...for now!
     specialty = ndb.StringProperty()
     insurance = ndb.StringProperty()
     ####
@@ -73,6 +73,7 @@ class Booking(ndb.Model):
     request_datetime = ndb.DateTimeProperty()
     request_email = ndb.StringProperty()
     search_results = ndb.KeyProperty(repeated=True)
+    status = ndb.StringProperty()
     ####
 
     
@@ -88,6 +89,5 @@ class Booking(ndb.Model):
     # booking confirmed by patient
     confirmed = ndb.BooleanProperty(default=False)
     
-    status = ndb.StringProperty()
 
     

@@ -1,31 +1,76 @@
 {% extends "/layout/admin_nav.html" %}
 
+
 {% set active_page = "bookings" %}
 
-{% block subhead %} Booking #{{ b.key.id() }} ({{ b.status }}){% endblock %}
-{% block lead %} [short description] {% endblock %}
+{% if b.patient %} 
+	{% set patient = b.patient.get() %}
+{% endif %}
+{% if b.provider %} 
+	{% set provider = b.provider.get() %}
+{% endif %}
+
+{% block subhead %} Booking Details {% endblock %}
+{% block lead %}{{patient.first_name}} {{patient.last_name}} booked {{ provider.first_name }} {{ provider.last_name }} on {{b.request_datetime|format_datetime(format="short")}}{% endblock %}
 
 {% block content %}
 <div class="row">
 	<div class="span6">
+		<div class="well">
+		<h3>Patient</h3>
+		{% if patient %} 
+			{% if not patient.user.get().confirmed %}
+				<span class="badge badge-warning">Patient not confirmed</span><br><br>
+			{% endif %}
+
+			{{patient.first_name}} {{patient.last_name}}<br>
+			{{patient.telephone}}<br>
+			{{patient.email}}<br>
 		
-		<h6>Patient</h6>
-		{% if b.patient %} 
-			{% set patient = b.patient.get() %}
-			<a href="#">
-				 <h4>{{patient.first_name}} {{patient.last_name}}</h4>
-				 ({{patient.email}})
-				 <br>
-			</a>
-			
 			<br>
-		
+			{% if patient.address %}
 			{{patient.address}} <br>
 			{{patient.city}} <br>
 			{{patient.postal_code}} <br>
+			{% else %}
+			No patient address!
+			{% endif %}
+		</div>	
+		
+		<div class="well">
+		<h3>Booking</h3>
+			appointment time: {{b.datetime|format_datetime(format="short")}} <br>
+			created on: {{ b.created_on|format_datetime(format="short") }} <br>
+			comments: {{b.comments}} <br>
 			<br>
-			
-				
+		</div>
+		
+		<div class="well">
+		<h3>Provider</h3>
+		{% if provider %}
+		<div class="row-fluid">
+			<div class="span2">
+				{% if provider.profile_photo_blob_key == None %}
+				<img src="/assets/img/default-profile.png" width="75" height="75"
+				alt="{{ macro.display_provider_name(provider) }} - {{ category_dict[provider.category] }}"
+				itemprop="image">
+				{% else %}
+				<img src="{{ provider.get_profile_photo_image_url(75) }}" width="75"
+				alt="{{ macro.display_provider_name(provider) }} - {{ category_dict[provider.category] }}"
+				itemprop="image">
+				{% endif %}
+			</div>
+			<div class="span10">
+			<h4><a href="/provider/bookings/{{ provider.vanity_url }}">{{ provider.first_name }} {{ provider.last_name }}</a></h4>
+			 {{ category_dict[provider.category] }}<br>
+			 {{ provider.email }}<br>
+			 {{ provider.phone }}<br>
+			</div>
+		</div>
+		{% endif %}
+		</div>
+		
+		{# not sure if still used ... #}
 		{% elif b.request_email %}
 			<h1>{{b.request_email}} </h1>
 			<span class="badge badge-warning">Unfilled profile</span> 
@@ -35,39 +80,11 @@
 			<br>
 		{% endif %}
 
-		<br>
-		
-		<h6>Booking</h6>
-			booking: {{b.datetime|format_datetime(format="short")}} <br>
-			specialty: {{b.specialty}} <br>
-			insurance: {{b.insurance}} <br>
-			comments: {{b.comments}} <br>
-			<br>
-			request: {{b.request_datetime|format_datetime(format="short")}} <br>
-			created: {{ b.created_on|format_datetime(format="short") }} <br>
-		<br>
-		
-		<h6>Provider</h6>
-		{% if b.provider %} 
-			{% set provider = b.provider.get() %}
-			<h4> {{ provider.first_name }} {{ provider.last_name }}</h4>
-			{{ b.request_category|code_to_string }}
-		{% endif %}
-		
-		<br>
-		<br>
-		<br>
-		
 	</div>
 	
 	<div class="span6">
-		<div>
-		{% if not patient.user.get().confirmed %}
-			<span class="badge badge-warning">Patient not confirmed</span>
-		{% endif %}
-		</div>
 		<div class="well">
-			<h6>Operations</h6>
+			<h3>Operations</h3>
 			{% if b.status != 'canceled' %}
 				<a href="/admin/booking/cancel/{{ b.key.urlsafe() }}">Cancel Booking</a>
 			{% else %}
