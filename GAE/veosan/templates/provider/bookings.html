@@ -8,15 +8,13 @@
 {% block content %}
 <div class="row">
 	{% if bookings|length > 0 %}
-	<div class="span8">
-
-		<table class="table">
+	<div class="span12">
+		<table class="table table-bordered">
 			<thead>
 				<tr>
-					<!-- <th>Key</th> -->
-					<th>{{ _('Date and Time') }}</th>
-					<th>{{ _('Patient') }}</th>
-					<th></th>
+					<th width="25%">{{ _('Date and Time') }}</th>
+					<th width="25%">{{ _('Patient') }}</th>
+					<th width="50%">{{ _('Comments') }}</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -34,6 +32,7 @@
 					<br>
 					{{patient.telephone}}
 					</td>
+					<td>{{b.comments}}</td>
 				</tr>
 				{% else %}
 				<!-- booking with a linked patient -->
