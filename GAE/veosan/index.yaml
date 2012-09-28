@@ -22,6 +22,11 @@ indexes:
   - name: provider
   - name: datetime
 
+- kind: Booking
+  properties:
+  - name: provider
+  - name: datetime
+
 - kind: Campaign
   properties:
   - name: prospects

@@ -5,10 +5,10 @@ import util
 from data.model_pkg.cv_model import Education, Experience, ContinuingEducation,\
     ProfessionalOrganization, ProfessionalCertification, Specialty
 from data.model_pkg.network_model import ProviderNetworkConnection
-from data.model import Schedule, Booking
 import utilities
 from webapp2_extras.i18n import to_utc
 from data.model_pkg.site_model import SiteLog
+from data.model_pkg.booking_schedule_model import Schedule, Booking
 
 class ProviderAccount(ndb.Model):
     created_on = ndb.DateTimeProperty(auto_now_add=True)
@@ -149,7 +149,10 @@ class Provider(ndb.Model):
         future_confirmed_bookings = Booking.query(Booking.provider == self.key, Booking.datetime >= yesterday_at_midnight, Booking.confirmed==True).order(Booking.datetime).fetch()
         return future_confirmed_bookings
     
-    
+    def get_all_future_bookings(self):
+        yesterday_at_midnight = datetime.combine(date.today(), time())
+        all_future_bookings = Booking.query(Booking.provider == self.key, Booking.datetime >= yesterday_at_midnight).order(Booking.datetime).fetch()
+        return all_future_bookings
 
     
     ###################################################################
