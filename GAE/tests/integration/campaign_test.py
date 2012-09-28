@@ -64,7 +64,7 @@ class CampaignTest(BaseTest):
         detail_page.mustcontain('0 Campaign Prospects')
         
         
-    def test_generate_email(self):
+    def test_generate_email_fr(self):
         self.create_campaign()
         self.create_prospect('p123', 'fr')
         prospect = db.get_provider_prospect_from_email(self._TEST_PROVIDER_EMAIL)
@@ -77,9 +77,28 @@ class CampaignTest(BaseTest):
         email_page = details_page.click(linkid='email-link-1')
         email_page.mustcontain(self._TEST_PROVIDER_EMAIL)
         email_page.mustcontain('Bonjour Al!')
+
         
     def test_mark_as_sent(self):
-        pass
+        self.create_campaign()
+        self.create_prospect('p123', 'fr')
+        prospect = db.get_provider_prospect_from_email(self._TEST_PROVIDER_EMAIL)
+        self.add_prospect_to_campaign(prospect)
+        self.setup_campaign_email_templates()
+        # generate email
+        self.login_as_admin()
+        campaign_admin_page = self.testapp.get('/admin/campaigns')
+        details_page = campaign_admin_page.click(linkid='campaign-detail-link-1')
+        email_page = details_page.click(linkid='email-link-1')
+        email_page.mustcontain(self._TEST_PROVIDER_EMAIL)
+        email_page.mustcontain('Bonjour Al!')
+        mark_as_sent_form = email_page.forms['mark-as-sent-form']
+        email_page_sent = mark_as_sent_form.submit()
+        email_page_sent.mustcontain('Email marked as sent and note created for')
+        email_page_sent.mustcontain('last campaign email sent just now by')
+        
+        # TODO check that email note was created
+        
         
 if __name__ == "__main__":
     unittest.main()
