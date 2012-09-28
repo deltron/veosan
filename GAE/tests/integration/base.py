@@ -499,6 +499,8 @@ class BaseTest(unittest.TestCase):
         # fill patient info
         step1_form = new_patient_page.forms[0]
         
+        existing_patient = db.get_patient_from_email(patient_email)
+        
         if not user_logged_in:
             step1_form['first_name'] = 'Pat'
             step1_form['last_name'] = 'Patient'
@@ -508,13 +510,22 @@ class BaseTest(unittest.TestCase):
         
         step1_form['comments'] = 'I would like to receive care related to boat accident'
 
-
         response = step1_form.submit()
             
         if user_logged_in:
             response = response.follow()
             response.mustcontain("Rendez-vous à venir")
                 
+        elif existing_patient:
+            response = response.follow()
+            response.mustcontain("Connexion à Veosan")
+            login_form = response.forms['login_form']
+            login_form['password'] = self._TEST_PATIENT_PASSWORD
+            response = login_form.submit().follow()
+            
+            response.mustcontain("Rendez-vous à venir")
+            response.mustcontain('Fantastic Fox')
+        
         else:
             # check email sent page (no user is logged in)
             response.mustcontain("C'est presque complété!")
