@@ -324,8 +324,10 @@ class LoginHandler(UserBaseHandler):
                 if next_action == 'booking':
                     # moved booking up here since it can come from any role (provider or patient)
                     booking = ndb.Key(urlsafe=key).get()
-                
                     if booking:
+                        # mail it to the patient
+                        mail.email_booking_to_patient(self, booking)
+
                         self.redirect('/patient/bookings')
                 
                 else:

@@ -500,6 +500,7 @@ class BaseTest(unittest.TestCase):
         step1_form = new_patient_page.forms[0]
         
         existing_patient = db.get_patient_from_email(patient_email)
+        existing_user = db.get_user_from_email(patient_email)
         
         if not user_logged_in:
             step1_form['first_name'] = 'Pat'
@@ -517,15 +518,21 @@ class BaseTest(unittest.TestCase):
             response.mustcontain("Rendez-vous à venir")
                 
         elif existing_patient:
-            response = response.follow()
-            response.mustcontain("Connexion à Veosan")
-            login_form = response.forms['login_form']
-            login_form['password'] = self._TEST_PATIENT_PASSWORD
-            response = login_form.submit().follow()
-            
-            response.mustcontain("Rendez-vous à venir")
-            response.mustcontain('Fantastic Fox')
-        
+            if existing_user and existing_user.is_activated_and_has_password():
+                response = response.follow()
+                response.mustcontain("Connexion à Veosan")
+                login_form = response.forms['login_form']
+                login_form['password'] = self._TEST_PATIENT_PASSWORD
+                response = login_form.submit().follow()
+                
+                response.mustcontain("Rendez-vous à venir")
+                response.mustcontain('Fantastic Fox')
+            else:
+                # check email sent page (no user is logged in)
+                response.mustcontain("C'est presque complété!")
+                response.mustcontain('Un couriel vous a été envoyé')
+                response.mustcontain(patient_email)
+                response.mustcontain('Contactez-nous')
         else:
             # check email sent page (no user is logged in)
             response.mustcontain("C'est presque complété!")
@@ -553,7 +560,6 @@ class BaseTest(unittest.TestCase):
 
 
     def patient_confirms_latest_booking(self, date_string, time_string, set_password=True):
-
         # check email to patient
         booking_datetime = datetime.strptime(testutil.next_monday_date_string() + " " + str(time_string), '%Y-%m-%d %H')
         french_datetime_string = format_datetime(booking_datetime, "EEEE 'le' d MMMM yyyy", locale='fr_CA') + " à " + format_datetime(booking_datetime, "H:mm", locale='fr_CA')

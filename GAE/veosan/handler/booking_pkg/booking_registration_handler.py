@@ -128,11 +128,14 @@ class BookFromPublicProfileRegistration(BookingBaseHandler):
                 
                 # save booking
                 booking.put()
+                              
+                self.redirect('/patient/bookings')
+                
+                # mail it to the patient
+                mail.email_booking_to_patient(self, booking)
                 
                 # mail it to the provider
                 mail.email_booking_to_provider(self, booking)
-                
-                self.redirect('/patient/bookings')
                     
             else:
                 # no user is logged in, check if the email address exists, this means they just didn't log in
