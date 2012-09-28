@@ -919,6 +919,8 @@ msgstr "Carte"
 msgid "Invite some colleagues"
 msgstr "Invitez des collègues"
 
+msgid "Edit Your Profile"
+msgstr "Modifier votre profil"
 
 #################
 # Booking from Public Profile
