@@ -110,7 +110,7 @@ class BaseHandler(webapp2.RequestHandler):
             
         # set the language
         lang = self.get_language()
-        logging.info('(BaseHandler.render_template) Language is %s' % lang)
+        logging.debug('(BaseHandler.render_template) Language is %s' % lang)
         kw['lang'] = lang
         kw['other_languages'] = filter(lambda l: l not in lang, util.LANGUAGE_LABELS.keys())
 
@@ -167,7 +167,7 @@ class BaseHandler(webapp2.RequestHandler):
         user_agent = self.request.headers.get('User-Agent')
         if user_agent:
             is_msie = re.search("MSIE ([0-9]{1,}[\.0-9]{0,})", user_agent);
-            logging.info("Browser User-Agent: %s" % user_agent)
+            logging.debug("Browser User-Agent: %s" % user_agent)
     
             if is_msie:
                 msie_str = is_msie.group()
@@ -336,10 +336,10 @@ class BaseHandler(webapp2.RequestHandler):
             return url
         
     def install_translations(self, lang):
-        logging.info('(BaseHandler.install_translations) installing translations %s' % lang)
+        logging.debug('(BaseHandler.install_translations) installing translations %s' % lang)
         # Set the requested locale.
         i18n.get_i18n().set_locale(lang)
-        logging.info('(BaseHandler.install_translations) webapp2 i18n locale: %s' % i18n.get_i18n().locale)
+        logging.debug('(BaseHandler.install_translations) webapp2 i18n locale: %s' % i18n.get_i18n().locale)
     
     def login_user(self, email, password, remember_me=True):
         auth_user = self.auth.get_user_by_password(email, password, remember=remember_me)
