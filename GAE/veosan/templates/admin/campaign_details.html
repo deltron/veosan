@@ -231,9 +231,9 @@
 					{% set mark_as_sent_text = 'Mark as sent' %}
 				{% endif %}
 				
-				<form id="mark-as-read-form" class="form-inline" action="/admin/campaign/{{campaign.key.urlsafe()}}/sent/{{prospect.prospect_id}}" method="post">
+				<form id="mark-as-sent-form" class="form-inline" action="/admin/campaign/{{campaign.key.urlsafe()}}/sent/{{prospect.prospect_id}}" method="post">
 					<input type="hidden" name="email_body" id="email_body">
-					<button type="submit" class="btn btn-info">
+					<button id="mark-as-sent-link" type="submit" class="btn btn-info">
 						<i class="icon-ok icon-white"></i> {{mark_as_sent_text}}
 					</button>
 				</form>
