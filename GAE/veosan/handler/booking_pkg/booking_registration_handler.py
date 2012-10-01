@@ -1,6 +1,7 @@
 from data import db
 import logging
-from forms.booking import AppointmentDetailsForLoggedInUser, AppointmentDetailsForNewPatient
+from forms.booking import AppointmentDetailsForLoggedInUser, AppointmentDetailsForNewPatient,\
+    RegistrationDetailsForNewPatient
 from data.model import Booking, Patient
 from webapp2_extras.i18n import to_utc
 from datetime import datetime
@@ -10,6 +11,7 @@ from handler.booking_pkg.booking_base_handler import BookingBaseHandler
 from handler import auth
 import mail
 import json
+from webapp2_extras import security
 
 class PatientLookup(BookingBaseHandler):
     def post(self):
@@ -50,7 +52,6 @@ class BookFromPublicProfileRegistration(BookingBaseHandler):
             else:
                 # no user logged in, ask for email and stuff
                 form = AppointmentDetailsForNewPatient().get_form()
-                form['terms_agreement'].data = True
 
             form['booking_date'].data = book_date
             form['booking_time'].data = book_time
@@ -162,8 +163,9 @@ class BookFromPublicProfileRegistration(BookingBaseHandler):
                             # user exists but was never activated
                             logging.info('Patient exists but was not activated for %s, Skipping new patient form, but sending email to confirm.' % email)
                             PatientBaseHandler.link_patient_and_send_confirmation_email(self, booking, existing_patient)
-                
+                            
                 else:
+                    # ask for new patient details
                     # no user/patient, create one
                     patient = Patient()
                     
@@ -193,14 +195,48 @@ class BookFromPublicProfileRegistration(BookingBaseHandler):
                     
                     booking.patient = patient.key
                     booking.put()
-    
-                    if user:
-                        logging.info('New or non-activated user, sending confirmation email')
-                        PatientBaseHandler.link_patient_and_send_confirmation_email(self, booking, patient)
+                    
+                    patient_form = RegistrationDetailsForNewPatient().get_form()
+                    patient_form['terms_agreement'].data = True
+                    patient_form['booking_key'].data = booking.key.urlsafe()
+                    
+                    self.render_template('provider/public/booking_new_patient.html', provider=provider, patient_form=patient_form)
+#                    if user:
+#                        logging.info('New or non-activated user, sending confirmation email')
                         
             logging.info('Created booking from public profile: %s' % booking)
             
         else:
             self.render_template('provider/public/booking_registration.html', provider=provider, email_details_form=email_details_form)
+ 
+ 
+ 
+class BookFromPublicProfileNewPatient(BookingBaseHandler):
+    def post(self, vanity_url=None):
+        provider = db.get_provider_from_vanity_url(vanity_url)
+
+        patient_form = RegistrationDetailsForNewPatient().get_form(self.request.POST)
         
+        if patient_form.validate():
+            booking_key_urlsafe = patient_form['booking_key'].data
+            booking = db.get_from_urlsafe_key(booking_key_urlsafe)
+            patient = booking.patient.get()
+            
+            patient_form.populate_obj(patient)
+            patient.put()
+            
+            user = db.get_user_from_email(patient.email)
+            password = patient_form['password'].data
+            password_hash = security.generate_password_hash(password, length=12)    
+            user.password = password_hash
+            user.put()
+            
+            # login with new password
+            self.login_user(user.get_email(), password)
+            
+            PatientBaseHandler.link_patient_and_send_confirmation_email(self, booking, patient)
+            
+        else:
+            self.render_template('provider/public/booking_new_patient.html', provider=provider, patient_form=patient_form)
+
                 
