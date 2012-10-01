@@ -11,16 +11,15 @@ from forms.prospect_forms import ProviderProspectForm, ProspectNoteForm, \
 class AdminProspectsHandler(AdminBaseHandler):
     @admin_required
     def get(self):
-        prospects = db.fetch_provider_prospects()
-
+        cursor_key = self.request.get('cursor', None)
+        prospects, next_curs, prev_curs = db.fetch_page_of_provider_prospects(cursor_key=cursor_key)
         prospect_form = ProviderProspectForm().get_form()
-
-        self.render_template('admin/admin_prospects.html', prospects=prospects, prospect_form=prospect_form)
+        self.render_template('admin/admin_prospects.html', prospects=prospects, next_curs=next_curs, prev_curs=prev_curs, prospect_form=prospect_form)
 
 
     def post(self):
         add_prospect_form = ProviderProspectForm().get_form(self.request.POST)
-        prospects = db.fetch_provider_prospects()
+        prospects = db.fetch_page_of_provider_prospects()
 
         if add_prospect_form.validate():
             provider_prospect = ProviderProspect()

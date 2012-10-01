@@ -11,6 +11,7 @@ from data.model_pkg.provider_model import Provider
 import utilities
 from data.model_pkg.prospect_model import Campaign, ProviderProspect, ProspectNote
 from data.model_pkg.site_model import SiteCounter, SiteConfig, SiteLog
+from google.appengine.ext.ndb.query import Cursor
   
 def get_from_urlsafe_key(urlsafe_key):
     logging.info('(db.get_from_urlsafe_key) Getting from urlsafe key: %s' % urlsafe_key)
@@ -27,23 +28,31 @@ def fetch_invites():
 def fetch_providers():
     return Provider.query().order(Provider.last_name)
 
-def fetch_provider_prospects():
-    all_prospects = ProviderProspect.query().order(ProviderProspect.category, ProviderProspect.last_name).fetch()
+def fetch_page_of_provider_prospects(cursor_key=None, page_size=10):
+    ''' returns three values: prospects, next_curs, more '''
+    cursor = Cursor(urlsafe=cursor_key)
+    
+    query = ProviderProspect.query()
+    # forward and back
+    forward_query = query.order(ProviderProspect.category, ProviderProspect.last_name)
+    backward_query = query.order(-ProviderProspect.category, -ProviderProspect.last_name)
+    # fetch
+    prospects, next_curs, more = forward_query.fetch_page(page_size, start_cursor=cursor)
+    prev_prospects, prev_curs, prev_more = backward_query.fetch_page(page_size, start_cursor=cursor)
+    return prospects, next_curs, prev_curs
 
-    ordered_prospects = []
-        
-    # order them in some logical way
-    order = ['new', 'requires_followup', 'potential_champion', 'generic_person', 'unlikely']
-    for o in order:
-        tagged = filter(lambda p: o in p.tags, all_prospects)
-        ordered_prospects.extend(tagged)
-        for e in tagged:
-            all_prospects.remove(e)
-    
-    # add anyone leftover at the end  
-    ordered_prospects.extend(all_prospects)
-    
-    return ordered_prospects
+#    ordered_prospects = []
+#    # order them in some logical way
+#    order = ['new', 'requires_followup', 'potential_champion', 'generic_person', 'unlikely']
+#    for o in order:
+#        tagged = filter(lambda p: o in p.tags, all_prospects)
+#        ordered_prospects.extend(tagged)
+#        for e in tagged:
+#            all_prospects.remove(e)
+#    
+#    # add anyone leftover at the end  
+#    ordered_prospects.extend(all_prospects)
+#    return ordered_prospects
 
 def fetch_campaigns():
     return Campaign.query().order(-Campaign.created_on)

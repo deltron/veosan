@@ -92,7 +92,21 @@
 			</tbody>
 		</table>
 	</div>
+	
+	<div class="row">	
+  		<div class="span4 offset4">
+  			{% if prev_curs %}
+  				<a id="previous-page-link" class="btn btn-info" href="/admin/prospects?cursor={{prev_curs.urlsafe()}}"> previous page </a>
+  			{% endif %}
+  			{% if next_curs %}
+				<a id="next-page-link" style="float: right;" class="btn btn-info" href="/admin/prospects?cursor={{next_curs.urlsafe()}}"> next page </a>
+			{% endif %}	
+		</div>
+		<br>
+		<br>
+	</div>
 
+	
 	<div class="span12">
 		<div class="well">
 			<h3>Add New Prospect</h3>

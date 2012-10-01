@@ -120,6 +120,13 @@ indexes:
 
 - kind: ProviderProspect
   properties:
+  - name: category
+    direction: desc
+  - name: last_name
+    direction: desc
+
+- kind: ProviderProspect
+  properties:
   - name: last_name
   - name: first_name
 
