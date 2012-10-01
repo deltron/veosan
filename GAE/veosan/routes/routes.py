@@ -89,6 +89,7 @@ def create_routes():
                # Actual booking & registration
                Route('/<vanity_url>/book/<book_date:\d{4}-\d{2}-\d{2}>/<book_time:\d{1,2}>', booking_registration_handler.BookFromPublicProfileRegistration),
                Route('/<vanity_url>/book/register', booking_registration_handler.BookFromPublicProfileRegistration),
+               Route('/<vanity_url>/book/patient', booking_registration_handler.BookFromPublicProfileNewPatient),
 
                # Social network
                Route('/<vanity_url>/connect', network_handler.ProviderConnectHandler)]

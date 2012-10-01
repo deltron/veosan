@@ -1,21 +1,21 @@
 {% extends "/layout/base.html" %}
 
-{% block subhead %} {{ _('New Appointment') }} {% endblock %}
-{% block lead %}{{ _('Please complete the following booking details') }}{% endblock %}
+{% block subhead %} {{ _('New Patient') }} {% endblock %}
+{% block lead %}{{ _('Please complete the following details') }}{% endblock %}
 
 {% block content %}
-<form class="form-horizontal" action="/{{provider.vanity_url}}/book/register" method="post" id="booking_form">
+<form class="form-horizontal" action="/{{provider.vanity_url}}/book/patient" method="post" id="patient_form">
 	<div class="row">
 		<div class="span6">
-			{{ macro.make_standard_form(email_details_form) }}
+			{{ macro.make_standard_form(patient_form) }}
 		</div>
 		<div class="span6">
 			<div class="well">
 				<h2>{{ _('Your Appointment') }}</h2>
 				<br>
 				{{ macro.booking_summary(provider=provider,
-				booking_date=email_details_form.booking_date.data,
-				booking_time=email_details_form.booking_time.data) }}
+				booking_date=patient_form.booking_date.data,
+				booking_time=patient_form.booking_time.data) }}
 			</div>
 		</div>
 	</div>

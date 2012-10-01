@@ -56,7 +56,7 @@ def render_booking_email_body(jinja2, template_filename, booking, activation_url
     
 
 
-def email_booking_to_patient(handler, booking, activation_url):
+def email_booking_to_patient(handler, booking, activation_url=None):
     ''' send booking info to patient, provider and us '''
     patient = booking.patient.get()
     provider = booking.provider.get()
@@ -71,9 +71,12 @@ def email_booking_to_patient(handler, booking, activation_url):
     message.to = to_address
     category_label = dict(util.get_all_categories())[provider.category]
     message.subject = '%s - %s' % (_(u'Veosan Appointment'), _(category_label).capitalize())
+    
     kw = {'booking': booking, 'activation_url': activation_url}
-    logging.info('activation url for email: %s' % activation_url)
+    logging.debug('activation url for email: %s' % activation_url)
     message.body = render_booking_email_body(handler.jinja2, 'email/patient_booking.txt', **kw)
+        
+    
     try:
         logging.info('Sending booking email to provider %s' % patient.email)
         message.send()
