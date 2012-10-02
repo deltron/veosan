@@ -49,13 +49,17 @@ class ProviderProspect(ndb.Model):
     notes_calculation_timestamp = ndb.DateTimeProperty()
     last_note_timestamp = ndb.DateTimeProperty()
     notes_count = ndb.IntegerProperty()
-    note_info_count = ndb.IntegerProperty()
+    notes_info_count = ndb.IntegerProperty()
     notes_meeting_count = ndb.IntegerProperty()
     notes_email_count = ndb.IntegerProperty()
     notes_call_count = ndb.IntegerProperty()
 
     def get_provider(self):
         return Provider.query(Provider.email == self.email).get()
+    
+    ###
+    ### Prospect Sitelog Stats
+    ### 
  
     def get_site_logs(self):
         return SiteLog.query(SiteLog.prospect == self.key).order(-SiteLog.access_time).fetch(100)
@@ -76,45 +80,63 @@ class ProviderProspect(ndb.Model):
         if latest_site_visit:
             self.last_site_visit_timestamp = latest_site_visit.access_time
         # update calculation time
-        self.last_sitelog_calculation = datetime.now()
+        self.sitelog_calculation_timestamp = datetime.now()
         self.put()
 
 
+    ###
+    ### Prospect Notes stats
+    ### 
+    
     def get_notes(self):
         return ProspectNote.query(ProspectNote.prospect == self.key).order(-ProspectNote.event_date, -ProspectNote.created_on).fetch()
 
 
+    def check_notes_stats(self):
+        if requires_update(self.notes_calculation_timestamp):
+            logging.info('Calculating NOTES stats. Last update was %s UTC' % self.notes_calculation_timestamp)
+            self.calculate_notes_stats()
+        else:
+            logging.info('Skipping NOTES calculation. Last update was %s UTC' % self.notes_calculation_timestamp)
+            
     def calculate_notes_stats(self):
-        logging.info('Calculating sitelog stats. Last update was %s UTC' % self.sitelog_calculation_timestamp)
         latest_prospect_note = ProspectNote.query(ProspectNote.prospect == self.key).order(-ProspectNote.event_date).get()
         if latest_prospect_note:
             self.last_note_timestamp = latest_prospect_note.event_date
-            
+        # note counts
+        self.note_count = ProspectNote.query(ProspectNote.prospect == self.key).count()
+        self.note_info_count = ProspectNote.query(ProspectNote.prospect == self.key, ProspectNote.note_type == 'info').count()
+        self.notes_meeting_count = ProspectNote.query(ProspectNote.prospect == self.key, ProspectNote.note_type == 'meeting').count()
+        self.notes_email_count = ProspectNote.query(ProspectNote.prospect == self.key, ProspectNote.note_type == 'email').count()
+        self.notes_call_count = ProspectNote.query(ProspectNote.prospect == self.key, ProspectNote.note_type == 'call').count()
+        # update calculation timestamp                    
         self.notes_calculation_timestamp = datetime.now()
         self.put()
 
   
     def get_last_note_timestamp(self):
-        if requires_update(self.notes_calculation_timestamp):
-            self.calculate_notes_stats()
-        else:
-            logging.info('Skipping NOTES calculation. Last update was %s UTC' % self.last_notes_calculation)
+        self.check_notes_stats()
         return self.last_note_timestamp
 
     def get_notes_count(self):
-        return ProspectNote.query(ProspectNote.prospect == self.key).count()
+        self.check_notes_stats()
+        return self.notes_count
 
     def get_notes_info_count(self):
-        return ProspectNote.query(ProspectNote.prospect == self.key, ProspectNote.note_type == 'info').count()
-
+        self.check_notes_stats()
+        return self.notes_info_count
+    
     def get_notes_meeting_count(self):
-        return ProspectNote.query(ProspectNote.prospect == self.key, ProspectNote.note_type == 'meeting').count()
+        self.check_notes_stats()
+        return self.notes_meeting_count
 
     def get_notes_email_count(self):
-        return ProspectNote.query(ProspectNote.prospect == self.key, ProspectNote.note_type == 'email').count()
+        self.check_notes_stats()
+        return self.notes_email_count
 
     def get_notes_call_count(self):
-        return ProspectNote.query(ProspectNote.prospect == self.key, ProspectNote.note_type == 'call').count()
+        self.check_notes_stats()
+        return self.notes_call_count
     
     def get_campaigns(self):
         return Campaign.query(Campaign.prospects == self.key).order(-Campaign.created_on).fetch()
