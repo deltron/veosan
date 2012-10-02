@@ -19,7 +19,8 @@ class AdminProspectsHandler(AdminBaseHandler):
 
     def post(self):
         add_prospect_form = ProviderProspectForm().get_form(self.request.POST)
-        prospects = db.fetch_page_of_provider_prospects()
+        cursor_key = self.request.get('cursor', None)
+        prospects, next_curs, prev_curs = db.fetch_page_of_provider_prospects(cursor_key=cursor_key)
 
         if add_prospect_form.validate():
             provider_prospect = ProviderProspect()
@@ -27,7 +28,7 @@ class AdminProspectsHandler(AdminBaseHandler):
             provider_prospect.put()
             self.redirect("/admin/prospects")
         else:
-            self.render_template('admin/admin_prospects.html', prospects=prospects, prospect_form=add_prospect_form)
+            self.render_template('admin/admin_prospects.html', prospects=prospects, next_curs=next_curs, prev_curs=prev_curs, prospect_form=add_prospect_form)
     
 
 
