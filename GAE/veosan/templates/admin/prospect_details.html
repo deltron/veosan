@@ -100,7 +100,7 @@
 				<th width="80%">Note</th>
 			</thead>
 			{% for note in prospect.get_notes() %}
-			<tr>
+			<tr>	
 				<td><a href="/admin/prospects/{{ prospect.prospect_id }}/notes/edit/{{ note.key.urlsafe() }}"><i class="bs-icon icon-edit"> </i></a></td>
 				<td>{{ note.event_date|format_datetime(format="medium") }}</td>
 				<td>{{ note.user }}</td>

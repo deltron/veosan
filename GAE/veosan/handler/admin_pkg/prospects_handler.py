@@ -200,6 +200,8 @@ class AdminProspectNotesHandler(AdminBaseHandler):
             google_user = users.get_current_user()    
             prospect_note.user = google_user
             prospect_note.put()
+            # re calculate notes stats
+            prospect.calculate_notes_stats()
 
             self.redirect('/admin/prospects/' + prospect.prospect_id)
 

@@ -2,7 +2,8 @@ from google.appengine.ext import ndb
 from data.model_pkg.site_model import SiteLog
 import util
 from data.model_pkg.provider_model import Provider
-
+from datetime import timedelta, datetime
+import logging
 
 class ProspectNote(ndb.Model):
     prospect = ndb.KeyProperty(kind='ProviderProspect')
@@ -29,6 +30,7 @@ class ProviderProspect(ndb.Model):
     prospect_id = ndb.StringProperty()
     language = ndb.StringProperty()
     email = ndb.StringProperty()
+    phone = ndb.StringProperty()
     first_name = ndb.StringProperty()
     last_name = ndb.StringProperty()
     category = ndb.StringProperty()
@@ -38,29 +40,66 @@ class ProviderProspect(ndb.Model):
     # prospect status
     tags = ndb.StringProperty(repeated=True)
     employment_tags = ndb.StringProperty(repeated=True)
+    
+    # sitelog stats
+    sitelog_calculation_timestamp = ndb.DateTimeProperty()
+    last_site_visit_timestamp = ndb.DateTimeProperty()
+    
+    # notes stats
+    notes_calculation_timestamp = ndb.DateTimeProperty()
+    last_note_timestamp = ndb.DateTimeProperty()
+    notes_count = ndb.IntegerProperty()
+    note_info_count = ndb.IntegerProperty()
+    notes_meeting_count = ndb.IntegerProperty()
+    notes_email_count = ndb.IntegerProperty()
+    notes_call_count = ndb.IntegerProperty()
 
     def get_provider(self):
         return Provider.query(Provider.email == self.email).get()
  
     def get_site_logs(self):
-        return SiteLog.query(SiteLog.prospect == self.key).order(-SiteLog.access_time).fetch()
+        return SiteLog.query(SiteLog.prospect == self.key).order(-SiteLog.access_time).fetch(100)
     
     def get_last_site_visit_timestamp(self):
+        if requires_update(self.sitelog_calculation_timestamp):
+            self.calculate_sitelog_stats()
+        else:
+            logging.info('Skipping calculation. Last update was %s UTC' % self.sitelog_calculation_timestamp)
+        return self.last_site_visit_timestamp
+    
+    def calculate_sitelog_stats(self):
+        '''
+            Calculates all stats related to sitelogs and stores them in ndb properties
+        '''
+        logging.info('Calculating sitelog stats. Last update was %s UTC' % self.sitelog_calculation_timestamp)
         latest_site_visit = SiteLog.query(SiteLog.prospect == self.key).order(-SiteLog.access_time).get()
         if latest_site_visit:
-            return latest_site_visit.access_time
-        else:
-            return None
+            self.last_site_visit_timestamp = latest_site_visit.access_time
+        # update calculation time
+        self.last_sitelog_calculation = datetime.now()
+        self.put()
+
 
     def get_notes(self):
         return ProspectNote.query(ProspectNote.prospect == self.key).order(-ProspectNote.event_date, -ProspectNote.created_on).fetch()
-    
-    def get_last_note_timestamp(self):
+
+
+    def calculate_notes_stats(self):
+        logging.info('Calculating sitelog stats. Last update was %s UTC' % self.sitelog_calculation_timestamp)
         latest_prospect_note = ProspectNote.query(ProspectNote.prospect == self.key).order(-ProspectNote.event_date).get()
         if latest_prospect_note:
-            return latest_prospect_note.event_date
+            self.last_note_timestamp = latest_prospect_note.event_date
+            
+        self.notes_calculation_timestamp = datetime.now()
+        self.put()
+
+  
+    def get_last_note_timestamp(self):
+        if requires_update(self.notes_calculation_timestamp):
+            self.calculate_notes_stats()
         else:
-            return None
+            logging.info('Skipping NOTES calculation. Last update was %s UTC' % self.last_notes_calculation)
+        return self.last_note_timestamp
 
     def get_notes_count(self):
         return ProspectNote.query(ProspectNote.prospect == self.key).count()
@@ -132,3 +171,21 @@ class Campaign(ndb.Model):
     ########################
     def get_email_notes_count(self):
         return ProspectNote.query(ProspectNote.campaign == self.key, ProspectNote.note_type == 'email').count() 
+    
+    
+  
+###
+### Statistics Calculation Caching
+###
+  
+calculation_update_period = timedelta(hours=1)
+    
+def requires_update(last_calc):
+    '''
+        returns true is calculations need updating
+    '''
+    if last_calc is None:
+        return True
+    else:
+        calc_delta = datetime.utcnow() - last_calc
+        return calc_delta > calculation_update_period
