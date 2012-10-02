@@ -503,11 +503,7 @@ class BaseTest(unittest.TestCase):
         existing_user = db.get_user_from_email(patient_email)
         
         if not user_logged_in:
-            step1_form['first_name'] = 'Pat'
-            step1_form['last_name'] = 'Patient'
-            step1_form['telephone'] = patient_telephone        
             step1_form['email'] = patient_email
-            step1_form['terms_agreement'] = '1'
         
         step1_form['comments'] = 'I would like to receive care related to boat accident'
 

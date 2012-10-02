@@ -16,7 +16,7 @@ class AppointmentDetailsForLoggedInUser(CustomForm):
         setattr(form, 'booking_date', HiddenField('booking_date'))
         setattr(form, 'booking_time', HiddenField('booking_time'))
 
-class AppointmentDetailsForNewPatient(CustomForm):
+class AppointmentDetails(CustomForm):
     def _set_fields(self, form):
         setattr(form, 'email',TextField(_(u'E-mail Address'), [validators.Email(message=_(u'Invalid email address.'))]))
         setattr(form, 'comments', TextAreaField(_(u'Comments for your appointment')))

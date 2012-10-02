@@ -1,11 +1,10 @@
 from data import db
 import logging
-from forms.booking import AppointmentDetailsForLoggedInUser, AppointmentDetailsForNewPatient,\
-    RegistrationDetailsForNewPatient
+from forms.booking import AppointmentDetailsForLoggedInUser,\
+    RegistrationDetailsForNewPatient, AppointmentDetails
 from data.model import Booking, Patient
 from webapp2_extras.i18n import to_utc
 from datetime import datetime
-from forms.user import LoginForm
 from handler.patient import PatientBaseHandler
 from handler.booking_pkg.booking_base_handler import BookingBaseHandler
 from handler import auth
@@ -51,7 +50,7 @@ class BookFromPublicProfileRegistration(BookingBaseHandler):
                     logging.error('Current logged in user has no provider or patient profile')    
             else:
                 # no user logged in, ask for email and stuff
-                form = AppointmentDetailsForNewPatient().get_form()
+                form = AppointmentDetails().get_form()
 
             form['booking_date'].data = book_date
             form['booking_time'].data = book_time
@@ -63,16 +62,17 @@ class BookFromPublicProfileRegistration(BookingBaseHandler):
         '''
             Booking process from public profile
         '''
-        email_details_form = None
+        appointment_details_form = None
     
         user = self.get_current_user()
         if user:
-            email_details_form = AppointmentDetailsForLoggedInUser().get_form(self.request.POST)
+            appointment_details_form = AppointmentDetailsForLoggedInUser().get_form(self.request.POST)
         else:
-            email_details_form = AppointmentDetailsForNewPatient().get_form(self.request.POST)
+            appointment_details_form = AppointmentDetails().get_form(self.request.POST)
         
         provider = db.get_provider_from_vanity_url(vanity_url)
-        if email_details_form.validate():
+        if appointment_details_form.validate():
+            # create the booking object
             booking = Booking()
             booking.provider = provider.key
             booking.booking_source = 'profile'
@@ -95,22 +95,11 @@ class BookFromPublicProfileRegistration(BookingBaseHandler):
                     # create a patient and link it to existing user
                     patient = Patient()
                     
-                    # set all the properties
-                    email_details_form.populate_obj(patient)
+                    # set the properties (just email)
+                    appointment_details_form.populate_obj(patient)
+    
+                    self.set_gae_geography_from_headers(patient)
                     
-                    # set location info from request
-                    if "X-AppEngine-Country" in self.request.headers:
-                        patient.gae_country = self.request.headers["X-AppEngine-Country"]
-                        
-                    if "X-AppEngine-Region" in self.request.headers:
-                        patient.gae_region = self.request.headers["X-AppEngine-Region"]
-        
-                    if "X-AppEngine-City" in self.request.headers:
-                        patient.gae_city = self.request.headers["X-AppEngine-City"]
-                    
-                    if "X-AppEngine-CityLatLong" in self.request.headers:
-                        patient.gae_city_lat_long = self.request.headers["X-AppEngine-CityLatLong"]
-
                     # link to logged in user
                     patient.user = user.key
                     patient.email = user.get_email()
@@ -123,7 +112,6 @@ class BookFromPublicProfileRegistration(BookingBaseHandler):
                                 
                     user.put()
                     
-                
                 # confirm the booking since it is a "known" user
                 booking.confirmed = True
                 
@@ -140,7 +128,7 @@ class BookFromPublicProfileRegistration(BookingBaseHandler):
                     
             else:
                 # no user is logged in, check if the email address exists, this means they just didn't log in
-                email = email_details_form['email'].data
+                email = appointment_details_form['email'].data
 
                 existing_user = db.get_user_from_email(email)
                 if existing_user:
@@ -148,52 +136,18 @@ class BookFromPublicProfileRegistration(BookingBaseHandler):
                     existing_patient = db.get_patient_from_user(existing_user)
                     if existing_patient:
                         logging.info('Email is existing patient %s' % email)
+                        
                         # email is in datastore, but not logged in
                         # link booking to patient and then check if same patient logs in (check is in @patient_required)
                         booking.patient = existing_patient.key
                         booking.put()
                         
-                        # check if user is activated and has a password
-                        if existing_user.is_activated_and_has_password():
-                            # send to login page with booking.key set
-                            key = booking.key.urlsafe()
-                            self.redirect('/login/booking/' + key)
-
-                        else:
-                            # user exists but was never activated
-                            logging.info('Patient exists but was not activated for %s, Skipping new patient form, but sending email to confirm.' % email)
-                            PatientBaseHandler.link_patient_and_send_confirmation_email(self, booking, existing_patient)
-                            
-                else:
-                    # ask for new patient details
-                    # no user/patient, create one
-                    patient = Patient()
-                    
-                    # set all the properties
-                    email_details_form.populate_obj(patient)
-
-                    # set location info from request
-                    if "X-AppEngine-Country" in self.request.headers:
-                        patient.gae_country = self.request.headers["X-AppEngine-Country"]
+                        # get the user to login
+                        key = booking.key
+                        self.redirect('/login/booking/' + key)
                         
-                    if "X-AppEngine-Region" in self.request.headers:
-                        patient.gae_region = self.request.headers["X-AppEngine-Region"]
-        
-                    if "X-AppEngine-City" in self.request.headers:
-                        patient.gae_city = self.request.headers["X-AppEngine-City"]
-                    
-                    if "X-AppEngine-CityLatLong" in self.request.headers:
-                        patient.gae_city_lat_long = self.request.headers["X-AppEngine-CityLatLong"]
-
-                    user = self.create_empty_user_for_patient(patient)
-                    
-                    # set user's default language
-                    user.language = self.get_language()
-                    user.put()
-
-                    patient.put()
-                    
-                    booking.patient = patient.key
+                else:
+                    # no patient, get them to fill a profile in the form
                     booking.put()
                     
                     patient_form = RegistrationDetailsForNewPatient().get_form()
@@ -201,13 +155,11 @@ class BookFromPublicProfileRegistration(BookingBaseHandler):
                     patient_form['booking_key'].data = booking.key.urlsafe()
                     
                     self.render_template('provider/public/booking_new_patient.html', provider=provider, patient_form=patient_form)
-#                    if user:
-#                        logging.info('New or non-activated user, sending confirmation email')
                         
             logging.info('Created booking from public profile: %s' % booking)
             
         else:
-            self.render_template('provider/public/booking_registration.html', provider=provider, email_details_form=email_details_form)
+            self.render_template('provider/public/booking_registration.html', provider=provider, appointment_details_form=appointment_details_form)
  
  
  
@@ -220,12 +172,19 @@ class BookFromPublicProfileNewPatient(BookingBaseHandler):
         if patient_form.validate():
             booking_key_urlsafe = patient_form['booking_key'].data
             booking = db.get_from_urlsafe_key(booking_key_urlsafe)
-            patient = booking.patient.get()
-            
+
+            # create a new patient
+            patient = Patient()
+                    
             patient_form.populate_obj(patient)
+            self.set_gae_geography_from_headers(patient)
             patient.put()
-            
-            user = db.get_user_from_email(patient.email)
+
+            # create a new user
+            user = self.create_empty_user_for_patient(patient)
+            user.language = self.get_language()
+
+            # set the password            
             password = patient_form['password'].data
             password_hash = security.generate_password_hash(password, length=12)    
             user.password = password_hash
@@ -234,6 +193,7 @@ class BookFromPublicProfileNewPatient(BookingBaseHandler):
             # login with new password
             self.login_user(user.get_email(), password)
             
+            # send a confirmation/activation email
             PatientBaseHandler.link_patient_and_send_confirmation_email(self, booking, patient)
             
         else:

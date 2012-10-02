@@ -505,4 +505,19 @@ class BaseHandler(webapp2.RequestHandler):
             
             return prospect
             
+            
+    def set_gae_geography_from_headers(self, obj):
+        # set location info from request
+        if "X-AppEngine-Country" in self.request.headers:
+            obj.gae_country = self.request.headers["X-AppEngine-Country"]
+            
+        if "X-AppEngine-Region" in self.request.headers:
+            obj.gae_region = self.request.headers["X-AppEngine-Region"]
+
+        if "X-AppEngine-City" in self.request.headers:
+            obj.gae_city = self.request.headers["X-AppEngine-City"]
+        
+        if "X-AppEngine-CityLatLong" in self.request.headers:
+            obj.gae_city_lat_long = self.request.headers["X-AppEngine-CityLatLong"]
+
         
