@@ -441,11 +441,6 @@ class BaseHandler(webapp2.RequestHandler):
     def create_token(self, user, subject):
         token = User.token_model.create(user.key.id(), subject).token
         
-        if subject == 'signup':    
-            user.signup_token = token
-            user.confirmed = False
-            user.put()
-
         if subject == 'reset':
             user.resetpassword_token = token 
             user.put()
@@ -466,12 +461,6 @@ class BaseHandler(webapp2.RequestHandler):
         token = User.token_model.query(User.token_model.token == token).get()
         user = User.get_by_id(int(token.user))
         token.key.delete()
-        
-        if subject == 'signup':
-            user.signup_token = None
-            user.confirmed = True        
-            user.put()
-            return user
         
         if subject == 'reset':
             user.resetpassword_token = None        

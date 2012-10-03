@@ -75,11 +75,13 @@ def email_booking_to_patient(handler, booking, activation_url=None):
     kw = {'booking': booking, 'activation_url': activation_url}
     logging.debug('activation url for email: %s' % activation_url)
     message.body = render_booking_email_body(handler.jinja2, 'email/patient_booking.txt', **kw)
-        
     
     try:
         logging.info('Sending booking email to provider %s' % patient.email)
         message.send()
+        
+        booking.email_sent_to_patient = True
+        booking.put()
     except Exception as e:
         logging.error('Email to patient not sent. %s' % e)
 

@@ -21,26 +21,7 @@ class PatientBaseHandler(BaseHandler):
     def render_confirmation_email_sent(handler, booking):
         kw = {'patient': booking.patient.get(), 'booking': booking, 'provider': booking.provider.get()}
         handler.render_template('patient/confirmation_email_sent.html', **kw)
-        
-    @staticmethod
-    def link_patient_and_send_confirmation_email(handler, booking, patient):
-        # store booking
-        user = patient.user.get()
-        booking.patient = patient.key
-        booking.confirmed = user.confirmed = False
-        booking.put()
-        # create a signup token for new user
-        
-        token = handler.create_token(user, 'signup')
-        
-        # activation url
-        url_obj = urlparse.urlparse(handler.request.url)
-        activation_url = urlparse.urlunparse((url_obj.scheme, url_obj.netloc, '/user/activation/' + token, '', '', ''))
-        logging.info('(NewPatientHandler.post) generated activation url for user %s : %s ' %  (patient.email, activation_url))
-        mail.email_booking_to_patient(handler, booking, activation_url)
-        PatientBaseHandler.render_confirmation_email_sent(handler, booking)
-        
-        
+                
     @staticmethod
     def confirm_all_unconfirmed_bookings(patient):
         ubs = patient.get_future_unconfirmed_bookings()

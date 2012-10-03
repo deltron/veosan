@@ -177,49 +177,6 @@ class ResetPasswordHandler(UserBaseHandler):
                 self.render_login()
 
 
-class ActivationHandler(UserBaseHandler):
-    def get(self, signup_token=None):
-        if signup_token:
-            user = self.validate_token(signup_token)
-            if user:
-                self.set_language(user.language)
-                if auth.PATIENT_ROLE in user.roles:
-                    logging.info('(ActivationHandler) activating patient: %s' % user.get_email())
-
-                    patient = db.get_patient_from_user(user)
-                    
-                    if patient:
-                        # the patient's email is confirmed, any unconfirmed bookings are confirmed
-                        confirmed_bookings = PatientBaseHandler.confirm_all_unconfirmed_bookings(patient)
-                        
-                        # email providers
-                        for booking in confirmed_bookings:
-                            mail.email_booking_to_provider(self, booking)
-                        
-                        # is this user already logged in? 
-                        current_user = self.get_current_user()
-                        if current_user and current_user.get_email() == user.get_email():
-                            self.redirect('/patient/bookings')
-                        else:                            
-                            self.redirect('/login/booking/' + booking.key.urlsafe())
-                            
-                    else:
-                        # no patient found for user & token combination, send them to the login page
-                        logging.info('(ActivationHandler) no patient found for user & token combination')
-                        self.render_login(next_action='booking', key=booking.key.urlsafe())
-
-            else:
-                # no user found for token combination, probably expired link (or just garbage).
-                logging.info('(ActivationHandler) no user found for signup token %s' % signup_token)
-                
-                error_message = _("Activation link has expired. Please <a href='/contact'>contact us</a> to receive a new activation.")
-                self.render_login(error_message=error_message)
-
-        else:
-            logging.info('(ActivationHandler) No signup token in request')
-            self.redirect("/login")
-
-
 class LoginHandler(UserBaseHandler):
     
     def get_en(self, next_action=None, key=None):
@@ -260,8 +217,18 @@ class LoginHandler(UserBaseHandler):
                 booking = ndb.Key(urlsafe=key).get()
                 
                 if patient_from_user.key == booking.patient:
-                    target_url = '/patient/bookings'
-                    self.redirect(target_url)
+                    # email patient
+                    if not booking.confirmed:
+                        if not booking.email_sent_to_patient:
+                            mail.email_booking_to_patient(self, booking)
+
+                    # the patient's email is confirmed, any unconfirmed bookings are confirmed
+                    confirmed_bookings = PatientBaseHandler.confirm_all_unconfirmed_bookings(patient_from_user)
+                    
+                    # email providers
+                    for booking in confirmed_bookings:
+                        mail.email_booking_to_provider(self, booking)
+                    self.redirect('/patient/bookings')
                 else:
                     self.render_login(next_action=next_action, key=key)
                 
@@ -300,8 +267,19 @@ class LoginHandler(UserBaseHandler):
                     # moved booking up here since it can come from any role (provider or patient)
                     booking = ndb.Key(urlsafe=key).get()
                     if booking:
-                        # mail it to the patient
-                        mail.email_booking_to_patient(self, booking)
+                        patient = booking.patient.get()
+                        
+                        # email patient
+                        if not booking.confirmed:
+                            if not booking.email_sent_to_patient:
+                                mail.email_booking_to_patient(self, booking)
+                        
+                        # the patient's email is confirmed, any unconfirmed bookings are confirmed
+                        confirmed_bookings = PatientBaseHandler.confirm_all_unconfirmed_bookings(patient)
+                        
+                        # email providers
+                        for booking in confirmed_bookings:
+                            mail.email_booking_to_provider(self, booking)
 
                         self.redirect('/patient/bookings')
                 

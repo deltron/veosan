@@ -592,15 +592,20 @@ class BaseTest(unittest.TestCase):
         self.assertIn('Merci', m.body.payload)
         self.assertIn(french_datetime_string, m.body.payload)
         
+        patient = db.get_patient_from_user(user)
+        bookings = db.get_bookings_for_patient(patient)        
+        booking = bookings[0]
         
         if new_user:
-            self.assertTrue('/user/activation/%s' % user.signup_token in m.body.payload)
+            self.assertTrue('/login/booking/%s' % booking.key.urlsafe() in m.body.payload)
+            
+            response = self.testapp.get('/')
+            user_logged_in = 'Déconnexion' in response
+
     
             # click the link
-            response = self.testapp.get('/user/activation/%s' % user.signup_token)
-            response = response.follow()
+            response = self.testapp.get('/login/booking/%s' % booking.key.urlsafe())
 
-            user_logged_in = 'Déconnexion' in response
 
             # is user logged in?
             if not user_logged_in:
@@ -608,6 +613,8 @@ class BaseTest(unittest.TestCase):
                 login_form = response.forms['login_form']
                 login_form['password'] = self._TEST_PATIENT_PASSWORD
                 response = login_form.submit().follow()
+            else:
+                response = response.follow()
             
             response.mustcontain("Rendez-vous à venir")
             response.mustcontain('Fantastic Fox')

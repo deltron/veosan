@@ -11,6 +11,7 @@ from handler import auth
 import mail
 import json
 from webapp2_extras import security
+import urlparse
 
 class PatientLookup(BookingBaseHandler):
     def post(self):
@@ -117,7 +118,8 @@ class BookFromPublicProfileRegistration(BookingBaseHandler):
                 
                 # save booking
                 booking.put()
-                              
+                
+                # already logged in so go directly to bookings list
                 self.redirect('/patient/bookings')
                 
                 # mail it to the patient
@@ -195,10 +197,20 @@ class BookFromPublicProfileNewPatient(BookingBaseHandler):
             
             # login with new password
             self.login_user(user.get_email(), password)
-            
+
+            # store booking
+            user = patient.user.get()
+            booking.patient = patient.key
+            booking.confirmed = user.confirmed = False
+            booking.put()
+
             # send a confirmation/activation email
-            PatientBaseHandler.link_patient_and_send_confirmation_email(self, booking, patient)
+            url_obj = urlparse.urlparse(self.request.url)
+            activation_url = urlparse.urlunparse((url_obj.scheme, url_obj.netloc, '/login/booking/' + booking.key.urlsafe(), '', '', ''))
+            logging.info('(NewPatientHandler.post) generated activation url for user %s : %s ' %  (patient.email, activation_url))
+            mail.email_booking_to_patient(self, booking, activation_url)
             
+            PatientBaseHandler.render_confirmation_email_sent(self, booking)
         else:
             self.render_template('provider/public/booking_new_patient.html', provider=provider, patient_form=patient_form)
 

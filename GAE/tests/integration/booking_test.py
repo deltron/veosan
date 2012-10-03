@@ -20,6 +20,9 @@ class BookingTest(BaseTest):
         self.book_from_public_profile(date_string, time_string)
         self.patient_confirms_latest_booking(date_string, time_string, logged_in=True)
         self.logout_patient()
+        messages = self.mail_stub.get_sent_messages(to=self._TEST_PATIENT_EMAIL)
+        patient_email_count = len(messages)
+        self.assertEqual(patient_email_count, 1)
 
         # book again from public profile        
         date_string = testutil.next_monday_date_string()
@@ -32,8 +35,8 @@ class BookingTest(BaseTest):
         self.assertEqual(patient_email_count, 2)
 
         provider_messages = self.mail_stub.get_sent_messages(to=self._TEST_PROVIDER_EMAIL)
-        patient_email_count = len(messages)
-        self.assertEqual(patient_email_count, 2)
+        provider_email_count = len(provider_messages)
+        self.assertEqual(provider_email_count, 2)
         
 
     
