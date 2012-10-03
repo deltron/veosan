@@ -89,7 +89,7 @@ class ProviderNetworkHandler(ProviderBaseHandler):
                     invite.provider = provider.key
                     
                     # create a token for this invite that will be used to pre-populate the signup form
-                    invite.token = self.create_token(invite.email)
+                    invite.token = self.create_token_oldstyle(invite.email)
                     
                     # save
                     invite.put()
