@@ -18,7 +18,7 @@ class BookingTest(BaseTest):
         date_string = testutil.next_monday_date_string()
         time_string = '10'
         self.book_from_public_profile(date_string, time_string)
-        self.patient_confirms_latest_booking(date_string, time_string)
+        self.patient_confirms_latest_booking(date_string, time_string, logged_in=True)
         self.logout_patient()
 
         # book again from public profile        
@@ -81,13 +81,13 @@ class BookingTest(BaseTest):
         self.assertEqual(0, len(messages))
         self.logout_provider()
         
-        self.patient_confirms_latest_booking(date_string, time_string, set_password=False)
+        self.patient_confirms_latest_booking(date_string, time_string, new_user=False)
         
         # book second time from public profile
         date_string = testutil.next_monday_date_string()
         time_string = '11'
         self.book_from_public_profile(date_string, time_string)
-        self.patient_confirms_latest_booking(date_string, time_string, set_password=False)
+        self.patient_confirms_latest_booking(date_string, time_string, new_user=False)
         
 
 
@@ -163,7 +163,7 @@ class BookingTest(BaseTest):
         next_monday = testutil.next_weekday_date_string(0)
         self.book_from_public_profile(next_monday, 10, self._TEST_PATIENT_EMAIL, self._TEST_PATIENT_TELEPHONE)
         
-        self.patient_confirms_latest_booking(next_monday, 10)
+        self.patient_confirms_latest_booking(next_monday, 10, logged_in=True)
         
         self.logout_patient()
         
@@ -234,7 +234,7 @@ class BookingTest(BaseTest):
         self.book_from_public_profile(next_monday, 10, 
                                       self._TEST_PATIENT_EMAIL, self._TEST_PATIENT_TELEPHONE)
         
-        self.patient_confirms_latest_booking(next_monday, 10)
+        self.patient_confirms_latest_booking(next_monday, 10, logged_in=True)
         
         self.logout_patient()
         

@@ -100,8 +100,8 @@ class PasswordHandler(UserBaseHandler):
                 logging.info('(PasswordHandler.post) New user just set their password: %s' % user.get_email())
                 
                 # delete the signup token
-                self.delete_signup_token(user)
-            
+                self.delete_token(user.signup_token, 'signup')
+                
                 if patient:
                     self.redirect('/patient/bookings')
 
@@ -109,7 +109,7 @@ class PasswordHandler(UserBaseHandler):
                 # not a returning user, must be a password reset
                
                 # clear the password reset key to prevent further shenanigans
-                self.delete_resetpassword_token(user)
+                self.delete_token(user.resetpassword_token, 'reset')
                 
                 logging.info('(PasswordHandler.post) Set new password for email %s' % user.get_email())
 
@@ -135,7 +135,7 @@ class ResetPasswordHandler(UserBaseHandler):
         ''' Someone coming back with a password reset token '''
         #parse URL to get password reset key
         if resetpassword_token:
-            user = self.validate_resetpassword_token(resetpassword_token)
+            user = self.validate_token(resetpassword_token)
             if user:            
                 # got a good user for that password reset token, show the password form
                 password_form = PasswordForm().get_form()                
@@ -158,7 +158,7 @@ class ResetPasswordHandler(UserBaseHandler):
             user = db.get_user_from_email(email)
         
             if user:
-                self.create_resetpassword_token(user)
+                self.create_token(user, 'reset')
                 
                 # resetpassword url
                 url_obj = urlparse.urlparse(self.request.url)
@@ -180,7 +180,7 @@ class ResetPasswordHandler(UserBaseHandler):
 class ActivationHandler(UserBaseHandler):
     def get(self, signup_token=None):
         if signup_token:
-            user = self.validate_signup_token(signup_token)
+            user = self.validate_token(signup_token)
             if user:
                 self.set_language(user.language)
                 if auth.PATIENT_ROLE in user.roles:
@@ -196,13 +196,17 @@ class ActivationHandler(UserBaseHandler):
                         for booking in confirmed_bookings:
                             mail.email_booking_to_provider(self, booking)
                         
-                        # login the user
-                        self.redirect('/patient/bookings')
-                        
+                        # is this user already logged in? 
+                        current_user = self.get_current_user()
+                        if current_user and current_user.get_email() == user.get_email():
+                            self.redirect('/patient/bookings')
+                        else:                            
+                            self.redirect('/login/booking/' + booking.key.urlsafe())
+                            
                     else:
                         # no patient found for user & token combination, send them to the login page
                         logging.info('(ActivationHandler) no patient found for user & token combination')
-                        self.redirect("/login")
+                        self.render_login(next_action='booking', key=booking.key.urlsafe())
 
             else:
                 # no user found for token combination, probably expired link (or just garbage).
@@ -276,9 +280,10 @@ class LoginHandler(UserBaseHandler):
         
         login_form = LoginForm().get_form(self.request.POST)
         if login_form.validate():
-            email = self.request.POST.get('email')
-            password = self.request.POST.get('password')
-            remember_me = True if self.request.POST.get('remember_me') == 'on' else False
+            email = login_form['email'].data
+            password = login_form['password'].data
+            remember_me = login_form['remember_me'].data
+            
             logging.info('(LoginHandler.post) Trying to login email: %s' % email)
 
             # Username and password check

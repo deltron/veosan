@@ -42,6 +42,20 @@ class User(Webapp2AuthUser):
     def is_activated_and_has_password(self):
         return (self.password != None) & (self.signup_token == None)
 
+'''
+    @classmethod
+    def create_token(cls, user_id, subject):
+        entity = cls.token_model.create(user_id, subject)
+        return entity.token
+
+    @classmethod
+    def validate_token(cls, user_id, token, subject):
+        return cls.validate_token(user_id, subject, token)
+
+    @classmethod
+    def delete_token(cls, user_id, token, subject):
+        cls.token_model.get_key(user_id, subject, token).delete()
+'''
 
 class Patient(ndb.Model):
     '''

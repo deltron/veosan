@@ -30,7 +30,9 @@ class PatientBaseHandler(BaseHandler):
         booking.confirmed = user.confirmed = False
         booking.put()
         # create a signup token for new user
-        token = handler.create_signup_token(user)
+        
+        token = handler.create_token(user, 'signup')
+        
         # activation url
         url_obj = urlparse.urlparse(handler.request.url)
         activation_url = urlparse.urlunparse((url_obj.scheme, url_obj.netloc, '/user/activation/' + token, '', '', ''))

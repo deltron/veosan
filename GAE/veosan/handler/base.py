@@ -430,55 +430,54 @@ class BaseHandler(webapp2.RequestHandler):
 
 
 ### Token stuff
-### with a dictionary for tokens { 'subject', token } this could be made generic
-
-    def create_token(self, key):
+### 
+    def create_token_oldstyle(self, key):
         # create a token for the user
         salt = sha.new(str(random.random())).hexdigest()[:5]
         token = sha.new(salt + key).hexdigest()
         return token
 
-    def create_signup_token(self, user):
-        user.signup_token = self.create_token(user.get_email())
-        user.confirmed = False
-        
-        user.put()
-        
-        return user.signup_token
     
-    def validate_signup_token(self, token):
-        user = db.get_user_from_signup_token(token)
+    def create_token(self, user, subject):
+        token = User.token_model.create(user.key.id(), subject).token
         
-        return user
+        if subject == 'signup':    
+            user.signup_token = token
+            user.confirmed = False
+            user.put()
 
-    def delete_signup_token(self, user):
-        user.signup_token = None
-        
-        # assume the user is confirmed 
-        # (possibly faulty assumption - move this closer to where it's called)
-        user.confirmed = True
-        
-        user.put()
-        
-        return user
-    
-    
-    def create_resetpassword_token(self, user):
-        user.resetpassword_token = self.create_token(user.get_email())        
-        user.put()
-        return user.resetpassword_token
-    
-    def validate_resetpassword_token(self, token):
-        user = db.get_user_from_resetpassword_token(token)
-        
-        return user
+        if subject == 'reset':
+            user.resetpassword_token = token 
+            user.put()
+            return user
 
-    def delete_resetpassword_token(self, user):
-        user.resetpassword_token = None        
-        user.put()
+        return token
+    
+    def validate_token(self, token):
+        token = User.token_model.query(User.token_model.token == token).get()
+        
+        user = None
+        if token:
+            user = User.get_by_id(int(token.user))
         
         return user
-    
+        
+    def delete_token(self, token, subject=None):
+        token = User.token_model.query(User.token_model.token == token).get()
+        user = User.get_by_id(int(token.user))
+        token.key.delete()
+        
+        if subject == 'signup':
+            user.signup_token = None
+            user.confirmed = True        
+            user.put()
+            return user
+        
+        if subject == 'reset':
+            user.resetpassword_token = None        
+            user.put()
+
+        return None    
     
     def log_prospect(self, prospect_id = None):
         prospect = db.get_prospect_from_prospect_id(prospect_id)
