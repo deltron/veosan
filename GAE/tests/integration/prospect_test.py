@@ -174,12 +174,27 @@ class ProspectTest(BaseTest):
         self.add_note_to_test_prospect('meeting', 'Massive test meeting everybody is on board')
         # check stats
         admin_page = self.testapp.get("/admin/prospects")
-        admin_page.showbrowser()
         admin_page.mustcontain('Emails: 1')
         admin_page.mustcontain('Calls: 1')
         admin_page.mustcontain('Meetings: 3')
 
 
+    def test_sitelog_stats(self):
+        self.create_prospect()
+        # hit up the prospect pages
+        response = self.testapp.get('/signup/103')
+        response = self.testapp.get('/tour/103')
+        response = self.testapp.get('/blog/103')
+        # check stats
+        self.login_as_admin()
+        admin_page = self.testapp.get("/admin/prospects")
+        admin_page.mustcontain('Site Visit: just now')
+        # details
+        details_page = self.testapp.get("/admin/prospects/103")
+        details_page.mustcontain('/signup/103')
+        details_page.mustcontain('/tour/103')
+        details_page.mustcontain('/blog/103')
+        
 if __name__ == "__main__":
     unittest.main()
     
