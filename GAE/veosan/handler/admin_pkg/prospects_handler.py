@@ -190,26 +190,11 @@ class AdminProspectNotesHandler(BaseProspectDetailsHandler):
                     note = note_key.get()
                     prospect_note_form = ProspectNoteForm().get_form(obj=note)
                     self.render_details(prospect, prospect_note_form=prospect_note_form, edit='note', edit_key=key)
-                    
-#                    prospect_note_form = ProspectNoteForm().get_form(obj=note)
-#                    prospect_tags_form = ProspectTagsForm().get_form(obj=prospect)
-#                    prospect_employment_tags_form = ProspectEmploymentTagsForm().get_form(obj=prospect)
-#                    add_to_campaign_form = ProspectAddToCampaignForm().get_form()
-#                    
-#                    self.render_template('admin/prospect_details.html', prospect=prospect,
-#                                         prospect_note_form=prospect_note_form,
-#                                         prospect_tags_form=prospect_tags_form,
-#                                         prospect_employment_tags_form=prospect_employment_tags_form,
-#                                         add_to_campaign_form = add_to_campaign_form,
-#                                         edit='note',
-#                                         edit_key=key)
+
 
     def post(self, prospect_id=None, operation=None, key=None):
         prospect = db.get_prospect_from_prospect_id(prospect_id)
-        prospect_tags_form = ProspectTagsForm().get_form(obj=prospect)
-        prospect_employment_tags_form = ProspectEmploymentTagsForm().get_form(obj=prospect)
         prospect_note_form = ProspectNoteForm().get_form(self.request.POST)
-        add_to_campaign_form = ProspectAddToCampaignForm().get_form()
         
         if prospect_note_form.validate():
             prospect_note = None
@@ -227,18 +212,10 @@ class AdminProspectNotesHandler(BaseProspectDetailsHandler):
             prospect_note.put()
             # re calculate notes stats
             prospect.calculate_notes_stats()
-
+            
             self.redirect('/admin/prospects/' + prospect.prospect_id)
-
         
         else:
+            # validation failed
             self.render_details(prospect, prospect_note_form=prospect_note_form)
-            
-#            self.render_template('admin/prospect_details.html',
-#                                 prospect=prospect,
-#                                 prospect_note_form=prospect_note_form,
-#                                 prospect_tags_form=prospect_tags_form,
-#                                 prospect_employment_tags_form=prospect_employment_tags_form,
-#                                 add_to_campaign_form = add_to_campaign_form)
 
-        

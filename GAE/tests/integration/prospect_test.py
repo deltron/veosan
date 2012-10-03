@@ -153,6 +153,21 @@ class ProspectTest(BaseTest):
         details_page.mustcontain('514-999-8765')
         
 
+    def test_add_prospect_note(self):
+        self.create_prospect()
+        # log in as admin and check the logs
+        self.login_as_admin()
+        details_page = self.testapp.get("/admin/prospects/103")
+        details_page.mustcontain('Al Swearingen')
+        note_form = details_page.forms['note_form']
+        note_form['note_type'] = 'email'
+        note_form['body'] = 'This is a test note about adding a notes'
+        details_page = note_form.submit().follow()
+        details_page.mustcontain('admin@veosan.com')
+        details_page.mustcontain('email')
+        details_page.mustcontain('This is a test note about adding a notes')
+
+
 if __name__ == "__main__":
     unittest.main()
     
