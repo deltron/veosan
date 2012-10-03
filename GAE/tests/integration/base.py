@@ -514,7 +514,7 @@ class BaseTest(unittest.TestCase):
             response.mustcontain("Rendez-vous à venir")
                 
         elif existing_patient:
-            if existing_user and existing_user.is_activated_and_has_password():
+            if existing_user:
                 response = response.follow()
                 response.mustcontain("Connexion à Veosan")
                 login_form = response.forms['login_form']
@@ -523,19 +523,26 @@ class BaseTest(unittest.TestCase):
                 
                 response.mustcontain("Rendez-vous à venir")
                 response.mustcontain('Fantastic Fox')
-            else:
-                # check email sent page (no user is logged in)
-                response.mustcontain("C'est presque complété!")
-                response.mustcontain('Un couriel vous a été envoyé')
-                response.mustcontain(patient_email)
-                response.mustcontain('Contactez-nous')
         else:
-            # check email sent page (no user is logged in)
+            # new user form (no user is logged in)
+            response.mustcontain("Nouveau patient")
+            response.mustcontain('Mot de passe')
+            response.mustcontain('Nom')
+            
+            # fill the form
+            login_form = response.forms['patient_form']
+            login_form['first_name'] = 'Pat'
+            login_form['last_name'] = 'Patient'
+            login_form['telephone'] = patient_telephone
+            login_form['password'] = self._TEST_PATIENT_PASSWORD
+            login_form['password_confirm'] = self._TEST_PATIENT_PASSWORD
+            response = login_form.submit()
+            
             response.mustcontain("C'est presque complété!")
             response.mustcontain('Un couriel vous a été envoyé')
             response.mustcontain(patient_email)
             response.mustcontain('Contactez-nous')
-            
+
         
     def check_admin_console_for_booking(self, date_string, time_string, patient_email=_TEST_PATIENT_EMAIL, patient_telephone=_TEST_PATIENT_TELEPHONE):
         # check admin console, booking should be in the list
@@ -555,7 +562,7 @@ class BaseTest(unittest.TestCase):
         self.logout_admin()
 
 
-    def patient_confirms_latest_booking(self, date_string, time_string, set_password=True):
+    def patient_confirms_latest_booking(self, date_string, time_string, new_user=True):
         # check email to patient
         booking_datetime = datetime.strptime(testutil.next_monday_date_string() + " " + str(time_string), '%Y-%m-%d %H')
         french_datetime_string = format_datetime(booking_datetime, "EEEE 'le' d MMMM yyyy", locale='fr_CA') + " à " + format_datetime(booking_datetime, "H:mm", locale='fr_CA')
@@ -579,29 +586,32 @@ class BaseTest(unittest.TestCase):
         
         self.assertEquals(m.subject, 'Rendez-vous Veosan - Ostéopathe')
         user = db.get_user_from_email(self._TEST_PATIENT_EMAIL)
+        
         # check email content
-        self.assertTrue('/user/activation/%s' % user.signup_token in m.body.payload)
         self.assertIn('Bonjour', m.body.payload)
         self.assertIn('Merci', m.body.payload)
         self.assertIn(french_datetime_string, m.body.payload)
-
-        # click the link
-        confirmation_page = self.testapp.get('/user/activation/%s' % user.signup_token)
-        confirmation_page.mustcontain('Votre rendez-vous est confirmé')
-        confirmation_page.mustcontain(booking_time_string)
-        confirmation_page.mustcontain(booking_datetime_string)
-        confirmation_page.mustcontain("Fantastic Fox")
         
-        if set_password:
+        if new_user:
+            self.assertTrue('/user/activation/%s' % user.signup_token in m.body.payload)
+    
+            # click the link
+            confirmation_page = self.testapp.get('/user/activation/%s' % user.signup_token)
+            bookings_page = confirmation_page.follow()
+            #confirmation_page.mustcontain('Votre rendez-vous est confirmé')
+            bookings_page.mustcontain(booking_time_string)
+            bookings_page.mustcontain(booking_datetime_string)
+            bookings_page.mustcontain("Fantastic Fox")
+            
             # set a password
-            password_form = confirmation_page.forms[0]
-            password_form['password'] = self._TEST_PATIENT_PASSWORD
-            password_form['password_confirm'] = self._TEST_PATIENT_PASSWORD
-            booking_confirm_page = password_form.submit().follow()
+            #password_form = confirmation_page.forms[0]
+            #password_form['password'] = self._TEST_PATIENT_PASSWORD
+            #password_form['password_confirm'] = self._TEST_PATIENT_PASSWORD
+            #booking_confirm_page = password_form.submit().follow()
             
             # patient email in navbar
-            booking_confirm_page.mustcontain(self._TEST_PATIENT_EMAIL)
-            booking_confirm_page.mustcontain('Déconnexion')
+            bookings_page.mustcontain(self._TEST_PATIENT_EMAIL)
+            bookings_page.mustcontain('Déconnexion')
 
 
     def check_appointment_email_to_provider(self, date_string, time_string, provider_email=_TEST_PROVIDER_EMAIL):

@@ -16,44 +16,7 @@ import mail
 from google.appengine.ext import ndb
 import datetime
 
-class UserBaseHandler(BaseHandler):   
-    ''' User management handler:
-            - password set and reset
-            - activation
-    '''
-    def render_booking_confirmed_and_password_selection(self, user=None, password_form=None, **kw):
-        if not password_form:
-            password_form = PasswordForm().get_form()
-            
-        if not user:
-            user = self.get_current_user()
-            
-        if user:
-            # check if provider or patient
-            self.set_language(user.language)
-  
-            if auth.PROVIDER_ROLE in user.roles:
-                provider = db.get_provider_from_user(user)
-                if provider:
-                    self.render_template('user/password.html', provider=provider, form=password_form, **kw)
-                else:
-                    logging.error('(UserBaseHandler.render_password_selection) no provider found for user %s ' + user.get_email())
-
-            elif auth.PATIENT_ROLE in user.roles:
-                patient = db.get_patient_from_user(user)
-                if patient:
-                    confirmed_bookings = PatientBaseHandler.confirm_all_unconfirmed_bookings(patient)
-                    # render page
-                    self.render_template('patient/email_confirmation_link_clicked.html', patient=patient, confirmed_bookings=confirmed_bookings, form=password_form, **kw)
-                    # email providers
-                    for booking in confirmed_bookings:
-                        mail.email_booking_to_provider(self, booking)
-                else:
-                    logging.error('(UserBaseHandler.render_password_selection) no patient found for user %s ' + user.get_email())
-
-            else:
-                logging.error('(UserBaseHandler.render_password_selection) no user given, cannot render password selection')
-        
+class UserBaseHandler(BaseHandler):           
     def render_login(self, next_action=None, key=None, **kw):
         login_form = LoginForm().get_form()
         
@@ -175,7 +138,8 @@ class ResetPasswordHandler(UserBaseHandler):
             user = self.validate_resetpassword_token(resetpassword_token)
             if user:            
                 # got a good user for that password reset token, show the password form
-                self.render_booking_confirmed_and_password_selection(user=user, signup_token=resetpassword_token)
+                password_form = PasswordForm().get_form()                
+                self.render_template('user/password.html', form=password_form, signup_token=resetpassword_token)
             else:
                 # no user found for password reset key, send them to the login page
                 error_message = _("Sorry, your link is expired, please try again.")
@@ -226,9 +190,15 @@ class ActivationHandler(UserBaseHandler):
                     
                     if patient:
                         # the patient's email is confirmed, any unconfirmed bookings are confirmed
+                        confirmed_bookings = PatientBaseHandler.confirm_all_unconfirmed_bookings(patient)
                         
-                        # make the patient choose a password
-                        self.render_booking_confirmed_and_password_selection(user=user, signup_token=signup_token)
+                        # email providers
+                        for booking in confirmed_bookings:
+                            mail.email_booking_to_provider(self, booking)
+                        
+                        # login the user
+                        self.redirect('/patient/bookings')
+                        
                     else:
                         # no patient found for user & token combination, send them to the login page
                         logging.info('(ActivationHandler) no patient found for user & token combination')

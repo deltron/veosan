@@ -143,7 +143,7 @@ class BookFromPublicProfileRegistration(BookingBaseHandler):
                         booking.put()
                         
                         # get the user to login
-                        key = booking.key
+                        key = booking.key.urlsafe()
                         self.redirect('/login/booking/' + key)
                         
                 else:
@@ -152,8 +152,11 @@ class BookFromPublicProfileRegistration(BookingBaseHandler):
                     
                     patient_form = RegistrationDetailsForNewPatient().get_form()
                     patient_form['terms_agreement'].data = True
+                    patient_form['booking_date'].data = booking_date
+                    patient_form['booking_time'].data = booking_time
                     patient_form['booking_key'].data = booking.key.urlsafe()
-                    
+                    patient_form['email'].data = email
+
                     self.render_template('provider/public/booking_new_patient.html', provider=provider, patient_form=patient_form)
                         
             logging.info('Created booking from public profile: %s' % booking)

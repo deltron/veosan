@@ -36,4 +36,5 @@ class RegistrationDetailsForNewPatient(CustomForm):
         setattr(form, 'booking_key', HiddenField('patient_key'))
         setattr(form, 'booking_date', HiddenField('booking_date'))
         setattr(form, 'booking_time', HiddenField('booking_time'))
+        setattr(form, 'email', HiddenField('patient_email'))
         setattr(form, 'terms_agreement', CustomBooleanField(_(u'I agree with the Terms of Service'), [validators.Required(message=_(u'You must accept the terms to book an appointment'))]))
