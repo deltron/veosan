@@ -73,7 +73,8 @@ class ProviderTest(BaseTest):
         reset_response = self.testapp.get(reset_url)
         
         reset_response.mustcontain("Choisissez votre mot de passe")
-        reset_response.mustcontain(self._TEST_PROVIDER_EMAIL)
+        reset_response.mustcontain(user.resetpassword_token)
+        #reset_response.mustcontain(self._TEST_PROVIDER_EMAIL)
 
         # set password and all that
         password_form = reset_response.forms[0]
@@ -144,7 +145,7 @@ class ProviderTest(BaseTest):
         reset_response = self.testapp.get(reset_url)
         
         reset_response.mustcontain("Choisissez votre mot de passe")
-        reset_response.mustcontain(self._TEST_PROVIDER_EMAIL)
+        reset_response.mustcontain(user.resetpassword_token)
 
         # set password and all that
         password_form = reset_response.forms[0]
