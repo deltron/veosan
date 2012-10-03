@@ -63,21 +63,11 @@ class InviteHandler(UserBaseHandler):
             self.redirect("/login")    
 
 
-class PasswordHandler(UserBaseHandler):
-    def get(self, signup_token=None):
-        user = db.get_user_from_signup_token(signup_token)
-        
-        self.set_language(user.language)
-        
-        self.render_booking_confirmed_and_password_selection(user=user, signup_token=signup_token)
-        
+class PasswordHandler(UserBaseHandler):        
     def post(self, token=None):
         password_form = PasswordForm().get_form(self.request.POST)
         
         user = self.validate_token(token)
-        
-        provider = db.get_provider_from_user(user)
-        patient = db.get_patient_from_user(user)
         
         if user and password_form.validate():        
             # get password from request
@@ -90,28 +80,22 @@ class PasswordHandler(UserBaseHandler):
             
             # login with new password
             self.login_user(user.get_email(), password)
-
-            if user.resetpassword_token:
-                # not a returning user, must be a password reset
                
-                # clear the password reset key to prevent further shenanigans
-                self.delete_token(user.resetpassword_token, 'reset')
-                
-                logging.info('(PasswordHandler.post) Set new password for email %s' % user.get_email())
-
-                self.login_user(user.get_email(), password)
-
-                if auth.PROVIDER_ROLE in user.roles:
-                    self.redirect('/provider/message/reset/' + provider.vanity_url)
-                    self.log_event(user, "Password reset for user")
-
-                
-                if auth.PATIENT_ROLE in user.roles:
-                    PatientBaseHandler.render_bookings(self, patient, success_message=_("Welcome back! Password has been reset.")) 
+            # clear the password reset key to prevent further shenanigans
+            self.delete_token(token, 'reset')
+            
+            if auth.PROVIDER_ROLE in user.roles:
+                provider = db.get_provider_from_user(user)
+                self.redirect('/provider/message/reset/' + provider.vanity_url)
+                self.log_event(user, "Password reset for user")
+            
+            elif auth.PATIENT_ROLE in user.roles:
+                patient = db.get_patient_from_user(user)
+                self.redirect('/patient/bookings')
 
         # password form was not validate, re-render and try again!
         else:
-            self.render_booking_confirmed_and_password_selection(user, password_form=password_form, token=token)
+            self.render_template('user/password.html', form=password_form, token=token)
 
         
 
