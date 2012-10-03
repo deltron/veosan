@@ -95,17 +95,7 @@ class PasswordHandler(UserBaseHandler):
             # login with new password
             self.login_user(user.get_email(), password)
 
-            if user.signup_token:
-                # new user
-                logging.info('(PasswordHandler.post) New user just set their password: %s' % user.get_email())
-                
-                # delete the signup token
-                self.delete_token(user.signup_token, 'signup')
-                
-                if patient:
-                    self.redirect('/patient/bookings')
-
-            elif user.resetpassword_token:
+            if user.resetpassword_token:
                 # not a returning user, must be a password reset
                
                 # clear the password reset key to prevent further shenanigans
