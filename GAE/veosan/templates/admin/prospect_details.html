@@ -157,16 +157,15 @@
 
 		<h3>Delete {{ prospect.first_name }} {{ prospect.last_name }}</h3>
 	</div>
-		<div class="modal-body">
-			Are you sure?
-		</div>
+	<div class="modal-body">
+		Are you sure?
+	</div>
 
-		<div class="modal-footer">
-			<a class="btn btn-danger" href="/admin/prospects/delete/{{ prospect.prospect_id }}">{{ _('Delete') }}</a>
+	<div class="modal-footer">
+		<a class="btn btn-danger" href="/admin/prospects/delete/{{ prospect.prospect_id }}">{{ _('Delete') }}</a>
 
-			<a class="btn" href="/admin/prospects/{{ prospect.prospect_id }}">{{ _('Cancel') }}</a>
-		</div>
-	</form>
+		<a class="btn" href="/admin/prospects/{{ prospect.prospect_id }}">{{ _('Cancel') }}</a>
+	</div>
 </div>
 
 {# ########### #}
