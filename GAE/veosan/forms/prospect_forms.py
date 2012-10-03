@@ -25,12 +25,23 @@ class ProviderProspectForm(CustomForm):
         setattr(form, 'prospect_id', TextField(_(u'Prospect ID'), [validators.Length(min=2, message=_(u'Prospect ID required.')), custom_validators.UniqueProspectID(message="Prospect ID is not unique")]))
         setattr(form, 'language', SelectField(_(u'Language'), choices=util.get_all_profile_languages()))
         setattr(form, 'email', TextField(_(u'Prospect Email'), [validators.Length(min=2, message=_(u'Email required.'))]))
+        setattr(form, 'first_name', TextField(_(u'First Name'), [validators.Length(min=2, message=_(u'Email required.'))]))
+        setattr(form, 'last_name', TextField(_(u'Last Name'), [validators.Length(min=2, message=_(u'Email required.'))]))
+        setattr(form, 'category', SelectField(_(u'Category'), choices=util.get_all_categories_for_profile_editing(),
+                                              validators=[custom_validators.DisallowNoChoiceInSelect(message=_('Please choose an option from the list. If none of the options seems to fit, please choose "Other"'))]
+                                              ))
+
+class ProviderProspectEditForm(CustomForm):
+    def _set_fields(self, form): 
+        setattr(form, 'language', SelectField(_(u'Language'), choices=util.get_all_profile_languages()))
+        setattr(form, 'email', TextField(_(u'Prospect Email'), [validators.Length(min=2, message=_(u'Email required.'))]))
         setattr(form, 'phone', TextField(_(u'Phone')))
         setattr(form, 'first_name', TextField(_(u'First Name'), [validators.Length(min=2, message=_(u'Email required.'))]))
         setattr(form, 'last_name', TextField(_(u'Last Name'), [validators.Length(min=2, message=_(u'Email required.'))]))
         setattr(form, 'category', SelectField(_(u'Category'), choices=util.get_all_categories_for_profile_editing(),
                                               validators=[custom_validators.DisallowNoChoiceInSelect(message=_('Please choose an option from the list. If none of the options seems to fit, please choose "Other"'))]
                                               ))
+
 
 class ProspectNoteForm(CustomForm):
     def _set_fields(self, form): 
