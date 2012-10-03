@@ -48,10 +48,9 @@ def create_routes():
 
                # user
                PathPrefixRoute('/user', [
-#                    Route('/activation/<signup_token>', handler=user.ActivationHandler),
-                    Route('/password/<signup_token>', user.PasswordHandler),
+                    Route('/password/<token>', user.PasswordHandler),
                     Route('/resetpassword', user.ResetPasswordHandler),
-                    Route('/resetpassword/<resetpassword_token>', handler=user.ResetPasswordHandler),
+                    Route('/resetpassword/<token>', handler=user.ResetPasswordHandler),
                ]),
                
                # sales material

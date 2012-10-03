@@ -71,14 +71,10 @@ class PasswordHandler(UserBaseHandler):
         
         self.render_booking_confirmed_and_password_selection(user=user, signup_token=signup_token)
         
-    def post(self, signup_token=None):
+    def post(self, token=None):
         password_form = PasswordForm().get_form(self.request.POST)
         
-        user = db.get_user_from_signup_token(signup_token)
-        
-        # check for password reset token
-        if user == None:
-            user = db.get_user_from_resetpassword_token(signup_token)
+        user = self.validate_token(token)
         
         provider = db.get_provider_from_user(user)
         patient = db.get_patient_from_user(user)
@@ -115,25 +111,25 @@ class PasswordHandler(UserBaseHandler):
 
         # password form was not validate, re-render and try again!
         else:
-            self.render_booking_confirmed_and_password_selection(user, password_form=password_form, signup_token=signup_token)
+            self.render_booking_confirmed_and_password_selection(user, password_form=password_form, token=token)
 
         
 
 
 class ResetPasswordHandler(UserBaseHandler):
-    def get(self, resetpassword_token=None):
+    def get(self, token=None):
         ''' Someone coming back with a password reset token '''
         #parse URL to get password reset key
-        if resetpassword_token:
-            user = self.validate_token(resetpassword_token)
+        if token:
+            user = self.validate_token(token)
             if user:            
                 # got a good user for that password reset token, show the password form
                 password_form = PasswordForm().get_form()                
-                self.render_template('user/password.html', form=password_form, signup_token=resetpassword_token)
+                self.render_template('user/password.html', form=password_form, token=token)
             else:
                 # no user found for password reset key, send them to the login page
                 error_message = _("Sorry, your link is expired, please try again.")
-                logging.info("(ProviderResetPasswordHandler.get) can't find anyone for that password reset link: %s" % resetpassword_token)
+                logging.info("(ProviderResetPasswordHandler.get) can't find anyone for that password reset link: %s" % token)
                 self.render_login(error_message=error_message)
         else:
             logging.info('(ProviderResetPasswordHandler.get) No password reset key in request')

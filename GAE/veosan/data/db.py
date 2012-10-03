@@ -88,18 +88,11 @@ def get_all_vanity_urls():
 def get_user_from_email(email):
     return User.query(User.auth_ids == email).get()
 
-def get_user_from_signup_token(token):
-    return User.query(User.signup_token == token).get()
-
-def get_user_from_resetpassword_token(token):
-    return User.query(User.resetpassword_token == token).get()
-
 def get_invite_from_token(token):
     return Invite.query(Invite.token == token).get()
 
 def get_invite_from_email(email):
     return Invite.query(Invite.email == email).get()
-
 
 def get_provider_from_user(user):
     '''returns the first provider profile liked to user. Returns None if user is not a provider'''
