@@ -138,6 +138,21 @@ class ProspectTest(BaseTest):
         response = self.testapp.get('/blog/zzvzzt')
         self.assertEqual(response.headers['Location'], "http://blog.veosan.com")
 
+
+    def test_edit_prospect(self):
+        self.create_prospect()
+        # log in as admin and check the logs
+        self.login_as_admin()
+        details_page = self.testapp.get("/admin/prospects/103")
+        details_page.mustcontain('Al Swearingen')
+        edit_form = details_page.forms['edit_prospect_form']
+        edit_form['first_name'] = 'Alan'
+        edit_form['phone'] = '514-999-8765'
+        details_page = edit_form.submit()
+        details_page.mustcontain('Alan Swearingen')
+        details_page.mustcontain('514-999-8765')
+        
+
 if __name__ == "__main__":
     unittest.main()
     

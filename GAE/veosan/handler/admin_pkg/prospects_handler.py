@@ -5,7 +5,7 @@ from data import db
 import logging
 from google.appengine.api import users
 from google.appengine.ext import ndb
-from forms.prospect_forms import ProviderProspectForm, ProspectNoteForm, \
+from forms.prospect_forms import ProviderProspectForm, ProviderProspectEditForm, ProspectNoteForm, \
      ProspectTagsForm, ProspectEmploymentTagsForm, ProspectAddToCampaignForm
 
 class AdminProspectsHandler(AdminBaseHandler):
@@ -31,8 +31,6 @@ class AdminProspectsHandler(AdminBaseHandler):
             self.render_template('admin/admin_prospects.html', prospects=prospects, next_curs=next_curs, prev_curs=prev_curs, prospect_form=add_prospect_form)
     
 
-
-
 class AdminProspectDeleteHandler(AdminBaseHandler):
     @admin_required
     def get(self, prospect_id=None):
@@ -43,20 +41,43 @@ class AdminProspectDeleteHandler(AdminBaseHandler):
         self.redirect('/admin/prospects')
 
 
-class AdminProspectDetailsHandler(AdminBaseHandler):
-    @admin_required
-    def get(self, prospect_id=None):
-        prospect = db.get_prospect_from_prospect_id(prospect_id)
-
-        prospect_note_form = ProspectNoteForm().get_form()
+class BaseProspectDetailsHandler(AdminBaseHandler):
+    ''' Base class to share the details page rendering'''
+    
+    def render_details(self, prospect, prospect_note_form=None, edit_prospect_form=None, **kw):
+        ''' shared details rendering'''
+        if not prospect_note_form:
+            prospect_note_form = ProspectNoteForm().get_form()
+        if not edit_prospect_form:
+            edit_prospect_form = ProviderProspectEditForm().get_form(obj=prospect)
         prospect_tags_form = ProspectTagsForm().get_form(obj=prospect)
         prospect_employment_tags_form = ProspectEmploymentTagsForm().get_form(obj=prospect)
         add_to_campaign_form = ProspectAddToCampaignForm().get_form()
-
-        self.render_template('admin/prospect_details.html', prospect=prospect, 
-                             prospect_note_form=prospect_note_form, prospect_tags_form=prospect_tags_form,
-                             prospect_employment_tags_form=prospect_employment_tags_form, add_to_campaign_form=add_to_campaign_form)
         
+        self.render_template('admin/prospect_details.html', prospect=prospect, edit_prospect_form=edit_prospect_form,
+                             prospect_note_form=prospect_note_form, prospect_tags_form=prospect_tags_form,
+                             prospect_employment_tags_form=prospect_employment_tags_form, add_to_campaign_form=add_to_campaign_form, **kw)        
+
+
+class AdminProspectDetailsHandler(BaseProspectDetailsHandler):
+    @admin_required
+    def get(self, prospect_id=None):
+        prospect = db.get_prospect_from_prospect_id(prospect_id)
+        self.render_details(prospect)
+        
+    def post(self, prospect_id=None):
+        ''' Edit the prospect '''
+        # create form from POST
+        edit_prospect_form = ProviderProspectEditForm().get_form(self.request.POST)
+        prospect = db.get_prospect_from_prospect_id(prospect_id)
+        # validate
+        if edit_prospect_form.validate():
+            ## save
+            edit_prospect_form.populate_obj(prospect)
+            prospect.put()
+            self.render_details(prospect)
+        else:
+            self.render_details(prospect, edit_prospect_form=edit_prospect_form, edit='prospect')
         
 
 class AdminProspectTagsHandler(AdminBaseHandler):
@@ -153,7 +174,7 @@ class AdminProspectAddToCampaignHandler(AdminBaseHandler):
         self.redirect('/admin/prospects/' + prospect.prospect_id) 
 
 
-class AdminProspectNotesHandler(AdminBaseHandler):
+class AdminProspectNotesHandler(BaseProspectDetailsHandler):
     @admin_required
     def get(self, prospect_id=None, operation=None, key=None):
         prospect = db.get_prospect_from_prospect_id(prospect_id)
@@ -168,17 +189,20 @@ class AdminProspectNotesHandler(AdminBaseHandler):
                 if note_key:
                     note = note_key.get()
                     prospect_note_form = ProspectNoteForm().get_form(obj=note)
-                    prospect_tags_form = ProspectTagsForm().get_form(obj=prospect)
-                    prospect_employment_tags_form = ProspectEmploymentTagsForm().get_form(obj=prospect)
-                    add_to_campaign_form = ProspectAddToCampaignForm().get_form()
+                    self.render_details(prospect, prospect_note_form=prospect_note_form, edit='note', edit_key=key)
                     
-                    self.render_template('admin/prospect_details.html', prospect=prospect,
-                                         prospect_note_form=prospect_note_form,
-                                         prospect_tags_form=prospect_tags_form,
-                                         prospect_employment_tags_form=prospect_employment_tags_form,
-                                         add_to_campaign_form = add_to_campaign_form,
-                                         edit='note',
-                                         edit_key=key)
+#                    prospect_note_form = ProspectNoteForm().get_form(obj=note)
+#                    prospect_tags_form = ProspectTagsForm().get_form(obj=prospect)
+#                    prospect_employment_tags_form = ProspectEmploymentTagsForm().get_form(obj=prospect)
+#                    add_to_campaign_form = ProspectAddToCampaignForm().get_form()
+#                    
+#                    self.render_template('admin/prospect_details.html', prospect=prospect,
+#                                         prospect_note_form=prospect_note_form,
+#                                         prospect_tags_form=prospect_tags_form,
+#                                         prospect_employment_tags_form=prospect_employment_tags_form,
+#                                         add_to_campaign_form = add_to_campaign_form,
+#                                         edit='note',
+#                                         edit_key=key)
 
     def post(self, prospect_id=None, operation=None, key=None):
         prospect = db.get_prospect_from_prospect_id(prospect_id)
@@ -208,11 +232,13 @@ class AdminProspectNotesHandler(AdminBaseHandler):
 
         
         else:
-            self.render_template('admin/prospect_details.html',
-                                 prospect=prospect,
-                                 prospect_note_form=prospect_note_form,
-                                 prospect_tags_form=prospect_tags_form,
-                                 prospect_employment_tags_form=prospect_employment_tags_form,
-                                 add_to_campaign_form = add_to_campaign_form)
+            self.render_details(prospect, prospect_note_form=prospect_note_form)
+            
+#            self.render_template('admin/prospect_details.html',
+#                                 prospect=prospect,
+#                                 prospect_note_form=prospect_note_form,
+#                                 prospect_tags_form=prospect_tags_form,
+#                                 prospect_employment_tags_form=prospect_employment_tags_form,
+#                                 add_to_campaign_form = add_to_campaign_form)
 
         
