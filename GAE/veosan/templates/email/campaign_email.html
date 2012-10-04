@@ -6,6 +6,6 @@
 	{% set subject = campaign.subject_en %}
 	{% set body = campaign.body_en %}
 {% endif %}
-<h2>{{ subject|markdown|safe|format(**prospect|generate_prospect_email_dict(host) ) }}</h2>
-<p>{{ body|markdown|safe|format(**prospect|generate_prospect_email_dict(host) )  }}</p>
+<h2>{{ subject|format(**prospect|generate_prospect_email_dict(host))|markdown|safe }}</h2>
+<p>{{ body|format(**prospect|generate_prospect_email_dict(host))|markdown|safe }}</p>
 </div>
