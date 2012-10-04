@@ -18,50 +18,6 @@
 <div class="row">
 
 	<div class="span6">
-
-		<h3>Status and Terms</h3>
-		<div class="well">
-			<p>
-				Current status is {{ provider.status }}
-				<br>
-			</p>
-
-			{% if provider.terms_agreement %}
-			Agreed to terms on {{ provider.terms_date }}
-			<br>
-			{% else %}
-			Terms not signed
-			<br>
-			{% endif %}
-			<br>
-			{% if provider.user %}
-			{% set u = provider.user.get() %}
-			User email: {{u.auth_ids|join}}
-			<br>
-			{% if u.password %} Password is set {% else %} Password is not set {% endif %}
-			<br>
-			{% else %}
-			Provider is not activated. There is no user linked to this profile
-			<br>
-			{% endif %}
-			<br>
-
-			<form method="post" action="/admin/provider/status" class="form-inline">
-				<fieldset>
-					<input type="hidden" name="provider_key" value="{{ provider.key.urlsafe() }}" />
-
-					{{ form.status() }}
-
-					<button type="submit" class="btn btn-success">
-						Change Status
-					</button>
-
-				</fieldset>
-			</form>
-		</div>
-
-		<br>
-		<br>
 		<h3>Link custom domain</h3>
 		<form method="post" action="/admin/provider/domain/{{ provider.vanity_url }}" class="form-inline">
 			<fieldset>
