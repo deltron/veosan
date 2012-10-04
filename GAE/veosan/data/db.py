@@ -28,7 +28,7 @@ def fetch_invites():
 def fetch_providers():
     return Provider.query().order(Provider.last_name)
 
-def fetch_page_of_provider_prospects(cursor_key=None, page_size=10, search_keyword=None):
+def fetch_page_of_provider_prospects(cursor_key=None, page_size=50, search_keyword=None):
     ''' 
         Returns three values: prospects, next_curs, prev_curs
         
