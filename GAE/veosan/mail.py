@@ -105,6 +105,9 @@ def email_booking_to_provider(handler, booking):
     try:
         logging.info('Sending booking email to patient %s' % patient.email)
         message.send()
+
+        booking.email_sent_to_provider = True
+        booking.put()
     except Exception as e:
         logging.error('Email to patient not sent. %s' % e)
         

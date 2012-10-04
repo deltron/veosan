@@ -3,7 +3,8 @@ from webapp2_extras.routes import PathPrefixRoute, DomainRoute
 from handler import static, user, admin, provider, language, tasks, prospect
 import patient_routes, provider_routes, admin_routes, user_routes, public_routes, prospect_routes
 from handler.provider_pkg import network_handler
-from handler.booking_pkg import display_schedule_handler, booking_registration_handler
+from handler.booking_pkg import display_schedule_handler,\
+    booking_details_handler
 
 def create_routes():
     routes = []
@@ -63,9 +64,7 @@ def create_routes():
                PathPrefixRoute('/tasks', [
                    Route('/mail_errors', tasks.MailErrorHandler),
                ]),
-               
-               Route('/book/patientlookup', booking_registration_handler.PatientLookup),               
-               
+                              
                Route('/lang/<lang>', language.LanguageHandler),
                Route('/lang/<lang>/<hide_side>', language.LanguageHandler),
                
@@ -86,9 +85,9 @@ def create_routes():
                Route('/<vanity_url>/book/date/<start_date>', display_schedule_handler.BookFromPublicProfileDisplaySchedule),
                
                # Actual booking & registration
-               Route('/<vanity_url>/book/<book_date:\d{4}-\d{2}-\d{2}>/<book_time:\d{1,2}>', booking_registration_handler.BookFromPublicProfileRegistration),
-               Route('/<vanity_url>/book/register', booking_registration_handler.BookFromPublicProfileRegistration),
-               Route('/<vanity_url>/book/patient', booking_registration_handler.BookFromPublicProfileNewPatient),
+               Route('/<vanity_url>/book/<book_date:\d{4}-\d{2}-\d{2}>/<book_time:\d{1,2}>', booking_details_handler.BookFromPublicProfileDetails),
+               Route('/<vanity_url>/book/details', booking_details_handler.BookFromPublicProfileDetails),
+               Route('/<vanity_url>/book/patient', booking_details_handler.BookFromPublicProfileNewPatient),
 
                # Social network
                Route('/<vanity_url>/connect', network_handler.ProviderConnectHandler)]

@@ -89,4 +89,5 @@ class Booking(ndb.Model):
     # booking confirmed by patient
     confirmed = ndb.BooleanProperty(default=False)
     email_sent_to_patient = ndb.BooleanProperty(default=False)
+    email_sent_to_provider = ndb.BooleanProperty(default=False)
     
