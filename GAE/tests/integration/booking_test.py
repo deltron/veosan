@@ -272,7 +272,6 @@ class BookingTest(BaseTest):
             self.assertEqual(self._TEST_PROVIDER_EMAIL, m.to)
             self.assertNotIn('None',  m.body.payload)
         
-        
     def test_booking_second_appointment_as_a_patient_logged_in(self):
         ''' if someone forces the URL to book something outside available schedule '''        
         self.create_complete_provider_profile()
