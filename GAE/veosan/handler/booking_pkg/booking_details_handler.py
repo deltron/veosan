@@ -56,10 +56,10 @@ class BookFromPublicProfileDetails(BookingBaseHandler):
             booking.provider = provider.key
             booking.booking_source = 'profile'
             
-            booking_date = self.request.get('booking_date')
-            booking_time = self.request.get('booking_time')
+            booking_date = appointment_details_form['booking_date'].data
+            booking_time = appointment_details_form['booking_time'].data
             booking.datetime = to_utc(datetime.strptime(booking_date + " " + booking_time, '%Y-%m-%d %H'))
-            booking.comments = self.request.get('comments')
+            booking.comments = appointment_details_form['comments'].data
 
             schedule = db.get_schedule_for_date_time(provider, booking_date, booking_time)
             booking.schedule = schedule.key            
@@ -70,29 +70,12 @@ class BookFromPublicProfileDetails(BookingBaseHandler):
                 if existing_patient:
                     booking.patient = existing_patient.key
                 else:
-                    # user but no patient
-                    # create a patient and link it to existing user
-                    patient = Patient()
-                    
-                    # set the properties (just email)
-                    appointment_details_form.populate_obj(patient)
-    
-                    self.set_gae_geography_from_headers(patient)
-                    
-                    # link to logged in user
-                    patient.user = user.key
-                    patient.email = user.get_email()
-                    patient.put()
-                    
-                    booking.patient = patient.key
-                    
-                    # add patient role to user
-                    user.roles.append(auth.PATIENT_ROLE)
-                                
-                    user.put()
+                    self.link_user_to_new_patient(appointment_details_form, user, booking)
                     
                 # confirm the booking since it is a "known" user
                 booking.confirmed = True
+                booking.email_sent_to_patient = False
+                booking.email_sent_to_provider = False
                 
                 # save booking
                 booking.put()
@@ -112,22 +95,28 @@ class BookFromPublicProfileDetails(BookingBaseHandler):
 
                 existing_user = db.get_user_from_email(email)
                 if existing_user:
-                    logging.info('Email is existing user %s' % email)
                     existing_patient = db.get_patient_from_user(existing_user)
-                    if existing_patient:
-                        logging.info('Email is existing patient %s' % email)
-                        
+                    if existing_patient:                        
                         # email is in datastore, but not logged in
-                        # link booking to patient and then check if same patient logs in (check is in @patient_required)
+                        # link booking to existing patient 
                         booking.patient = existing_patient.key
                         booking.put()
-                        
-                        # get the user to login
-                        key = booking.key.urlsafe()
-                        self.redirect('/login/booking/' + key)
-                        
+                    else:
+                        self.link_user_to_new_patient(appointment_details_form, user, booking)       
+                    
+                    # confirm the booking since it is a "known" user
+                    booking.confirmed = True
+                    booking.email_sent_to_patient = False
+                    booking.email_sent_to_provider = False
+                    
+                    # save booking
+                    booking.put()
+
+                    # get the user to login
+                    key = booking.key.urlsafe()
+                    self.redirect('/login/booking/' + key)
                 else:
-                    # no patient, get them to fill a profile in the form
+                    # no patient, no user. get them to fill a profile in the form
                     booking.put()
                     
                     patient_form = RegistrationDetailsForNewPatient().get_form()
@@ -143,6 +132,28 @@ class BookFromPublicProfileDetails(BookingBaseHandler):
             
         else:
             self.render_template('provider/public/booking_registration.html', provider=provider, appointment_details_form=appointment_details_form)
+
+    def link_user_to_new_patient(self, appointment_details_form, user, booking):
+        # user but no patient
+        # create a patient and link it to existing user
+        patient = Patient() 
+        
+        # set the properties (just email)
+        appointment_details_form.populate_obj(patient)
+        self.set_gae_geography_from_headers(patient)
+        
+        # link to logged in user
+        patient.user = user.key
+        patient.email = user.get_email()
+        patient.put()
+        
+        booking.patient = patient.key
+        booking.put()
+        
+        # add patient role to user
+        user.roles.append(auth.PATIENT_ROLE)
+        user.put()
+
  
  
  

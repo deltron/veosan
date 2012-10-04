@@ -10,7 +10,6 @@ from google.appengine.api import users
 from base import BaseHandler
 import data.db as db
 import auth
-from patient import PatientBaseHandler
 from forms.user import PasswordForm, LoginForm, ProviderSignupForm1
 import mail
 from google.appengine.ext import ndb
@@ -188,16 +187,16 @@ class LoginHandler(UserBaseHandler):
                 
                 if patient_from_user.key == booking.patient:
                     # email patient
-                    if not booking.confirmed:
-                        if not booking.email_sent_to_patient:
-                            mail.email_booking_to_patient(self, booking)
-
-                    # the patient's email is confirmed, any unconfirmed bookings are confirmed
-                    confirmed_bookings = PatientBaseHandler.confirm_all_unconfirmed_bookings(patient_from_user)
+                    if not booking.email_sent_to_patient:
+                        mail.email_booking_to_patient(self, booking)
                     
-                    # email providers
-                    for booking in confirmed_bookings:
+                    # email provider
+                    if not booking.email_sent_to_provider:
                         mail.email_booking_to_provider(self, booking)
+
+                    booking.confirmed = True
+                    booking.put()
+
                     self.redirect('/patient/bookings')
                 else:
                     self.render_login(next_action=next_action, key=key)
@@ -240,16 +239,15 @@ class LoginHandler(UserBaseHandler):
                         patient = booking.patient.get()
                         
                         # email patient
-                        if not booking.confirmed:
-                            if not booking.email_sent_to_patient:
-                                mail.email_booking_to_patient(self, booking)
-                        
-                        # the patient's email is confirmed, any unconfirmed bookings are confirmed
-                        confirmed_bookings = PatientBaseHandler.confirm_all_unconfirmed_bookings(patient)
-                        
+                        if not booking.email_sent_to_patient:
+                            mail.email_booking_to_patient(self, booking)
+
                         # email providers
-                        for booking in confirmed_bookings:
+                        if not booking.email_sent_to_provider:
                             mail.email_booking_to_provider(self, booking)
+
+                        booking.confirmed = True
+                        booking.put()
 
                         self.redirect('/patient/bookings')
                 
