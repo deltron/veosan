@@ -27,10 +27,6 @@
 				
 			</div>
 			
-			<div class="span3">
-				<a class="btn btn-mini btn-info" href="/admin/campaign/{{campaign.key.urlsafe()}}/emails" data-toggle="modal">Generate All Emails</a>
-				<br>
-			</div>
 			<!-- space at bottom -->
 			<div class="row">
 				&nbsp;
@@ -199,8 +195,6 @@
 		
 		{% if prospect %}
 		<div class="modal modal-large hide" id="email_modal" style="display: none;">
-			
-			
 			
 			<div class="modal-header">
 				{% if modal_success_message %}
