@@ -15,7 +15,10 @@ class AdminProspectsHandler(AdminBaseHandler):
         prospects, next_curs, prev_curs = db.fetch_page_of_provider_prospects(cursor_key=cursor_key, search_keyword=search_keyword)
         if not add_prospect_form:
             add_prospect_form = ProviderProspectForm().get_form()
+        # search
         search_form = ProviderProspectSearchForm().get_form()
+        search_form.search_keyword.data = search_keyword
+        # render
         self.render_template('admin/admin_prospects.html', prospects=prospects, next_curs=next_curs, prev_curs=prev_curs, prospect_form=add_prospect_form, search_form=search_form)
     
     @admin_required
@@ -37,6 +40,7 @@ class AdminProspectsHandler(AdminBaseHandler):
     def search(self):
         ''' handler method for search POST'''
         search_keyword = self.request.get('search_keyword')
+        logging.info('SEARCH %s' % search_keyword)
         self.render_prospect_list(search_keyword=search_keyword)
     
 

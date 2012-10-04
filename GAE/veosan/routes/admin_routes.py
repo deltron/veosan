@@ -21,6 +21,7 @@ def get_routes():
                    
                    # prospects
                    Route('/prospects', prospects_handler.AdminProspectsHandler),
+                   Route('/prospects/search', prospects_handler.AdminProspectsHandler, handler_method='search'),
                    Route('/prospects/delete/<prospect_id>', prospects_handler.AdminProspectDeleteHandler),
                    Route('/prospects/<prospect_id>', prospects_handler.AdminProspectDetailsHandler),
                    Route('/prospects/<prospect_id>/notes/<operation>', prospects_handler.AdminProspectNotesHandler),
@@ -28,6 +29,7 @@ def get_routes():
                    Route('/prospects/<prospect_id>/tags', prospects_handler.AdminProspectTagsHandler),
                    Route('/prospects/<prospect_id>/employment', prospects_handler.AdminProspectEmploymentTagsHandler),
                    Route('/prospects/<prospect_id>/campaign', prospects_handler.AdminProspectAddToCampaignHandler),
+                   
 
                    # campaigns
                    Route('/campaigns', campaign_handler.AdminCampaignsHandler),

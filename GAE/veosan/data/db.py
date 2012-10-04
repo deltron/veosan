@@ -34,6 +34,7 @@ def fetch_page_of_provider_prospects(cursor_key=None, page_size=10, search_keywo
     if search_keyword:
         limit = search_keyword + u"\ufffd"
         query = ProviderProspect.query(ProviderProspect.last_name >= search_keyword, ProviderProspect.last_name < limit)
+        query = query.order(ProviderProspect.last_name)
     else:
         query = ProviderProspect.query()
     # forward and back

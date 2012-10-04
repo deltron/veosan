@@ -44,7 +44,7 @@ class ProviderProspectEditForm(CustomForm):
 
 class ProviderProspectSearchForm(CustomForm):
     def _set_fields(self, form): 
-        setattr(form, 'search', TextField(_(u'Search')))
+        setattr(form, 'search_keyword', TextField(_(u'Search')))
 
 class ProspectNoteForm(CustomForm):
     def _set_fields(self, form): 

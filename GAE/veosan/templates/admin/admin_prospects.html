@@ -12,7 +12,7 @@
 		<form id="prospect-search-form" method="post" action="/admin/prospects/search" class="form-search">
 
 			<div class="form-search">
-				{{ search_form.search(class='search-query') }}
+				{{ search_form.search_keyword(placeholder='Search Prospect', class='search-query') }}
 				<button type="submit" class="btn">{{ _('Search') }}</button>
 			</div>
 		</form>
