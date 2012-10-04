@@ -6,29 +6,38 @@ import logging
 from google.appengine.api import users
 from google.appengine.ext import ndb
 from forms.prospect_forms import ProviderProspectForm, ProviderProspectEditForm, ProspectNoteForm, \
-     ProspectTagsForm, ProspectEmploymentTagsForm, ProspectAddToCampaignForm
+     ProspectTagsForm, ProspectEmploymentTagsForm, ProspectAddToCampaignForm, ProviderProspectSearchForm
 
 class AdminProspectsHandler(AdminBaseHandler):
+    
+    def render_prospect_list(self, add_prospect_form=None, search_keyword=None):
+        cursor_key = self.request.get('cursor', None)
+        prospects, next_curs, prev_curs = db.fetch_page_of_provider_prospects(cursor_key=cursor_key, search_keyword=search_keyword)
+        if not add_prospect_form:
+            add_prospect_form = ProviderProspectForm().get_form()
+        search_form = ProviderProspectSearchForm().get_form()
+        self.render_template('admin/admin_prospects.html', prospects=prospects, next_curs=next_curs, prev_curs=prev_curs, prospect_form=add_prospect_form, search_form=search_form)
+    
     @admin_required
     def get(self):
-        cursor_key = self.request.get('cursor', None)
-        prospects, next_curs, prev_curs = db.fetch_page_of_provider_prospects(cursor_key=cursor_key)
-        prospect_form = ProviderProspectForm().get_form()
-        self.render_template('admin/admin_prospects.html', prospects=prospects, next_curs=next_curs, prev_curs=prev_curs, prospect_form=prospect_form)
-
+        self.render_prospect_list()
 
     def post(self):
         add_prospect_form = ProviderProspectForm().get_form(self.request.POST)
-        cursor_key = self.request.get('cursor', None)
-        prospects, next_curs, prev_curs = db.fetch_page_of_provider_prospects(cursor_key=cursor_key)
-
         if add_prospect_form.validate():
             provider_prospect = ProviderProspect()
             add_prospect_form.populate_obj(provider_prospect)
             provider_prospect.put()
             self.redirect("/admin/prospects")
         else:
-            self.render_template('admin/admin_prospects.html', prospects=prospects, next_curs=next_curs, prev_curs=prev_curs, prospect_form=add_prospect_form)
+            # validate failed
+            self.render_prospect_list(self, add_prospect_form)
+    
+
+    def search(self):
+        ''' handler method for search POST'''
+        search_keyword = self.request.get('search_keyword')
+        self.render_prospect_list(search_keyword=search_keyword)
     
 
 class AdminProspectDeleteHandler(AdminBaseHandler):

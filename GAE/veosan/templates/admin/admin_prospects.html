@@ -8,6 +8,15 @@
 {% block content %}
 <div class="row">
 	<div class="span12">
+		
+		<form id="prospect-search-form" method="post" action="/admin/prospects/search" class="form-search">
+
+			<div class="form-search">
+				{{ search_form.search(class='search-query') }}
+				<button type="submit" class="btn">{{ _('Search') }}</button>
+			</div>
+		</form>
+			
 		<table class="table">
 			<thead>
 				<tr>

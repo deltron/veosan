@@ -42,6 +42,9 @@ class ProviderProspectEditForm(CustomForm):
                                               validators=[custom_validators.DisallowNoChoiceInSelect(message=_('Please choose an option from the list. If none of the options seems to fit, please choose "Other"'))]
                                               ))
 
+class ProviderProspectSearchForm(CustomForm):
+    def _set_fields(self, form): 
+        setattr(form, 'search', TextField(_(u'Search')))
 
 class ProspectNoteForm(CustomForm):
     def _set_fields(self, form): 

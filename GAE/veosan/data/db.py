@@ -28,11 +28,14 @@ def fetch_invites():
 def fetch_providers():
     return Provider.query().order(Provider.last_name)
 
-def fetch_page_of_provider_prospects(cursor_key=None, page_size=10):
+def fetch_page_of_provider_prospects(cursor_key=None, page_size=10, search_keyword=None):
     ''' returns three values: prospects, next_curs, more '''
     cursor = Cursor(urlsafe=cursor_key)
-    
-    query = ProviderProspect.query()
+    if search_keyword:
+        limit = search_keyword + u"\ufffd"
+        query = ProviderProspect.query(ProviderProspect.last_name >= search_keyword, ProviderProspect.last_name < limit)
+    else:
+        query = ProviderProspect.query()
     # forward and back
     forward_query = query.order(ProviderProspect.category, ProviderProspect.last_name)
     backward_query = query.order(-ProviderProspect.category, -ProviderProspect.last_name)
