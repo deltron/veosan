@@ -127,6 +127,11 @@ indexes:
 
 - kind: ProviderProspect
   properties:
+  - name: first_name
+  - name: last_name
+
+- kind: ProviderProspect
+  properties:
   - name: last_name
   - name: category
 

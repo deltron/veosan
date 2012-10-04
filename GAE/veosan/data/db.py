@@ -29,11 +29,18 @@ def fetch_providers():
     return Provider.query().order(Provider.last_name)
 
 def fetch_page_of_provider_prospects(cursor_key=None, page_size=10, search_keyword=None):
-    ''' returns three values: prospects, next_curs, more '''
+    ''' 
+        Returns three values: prospects, next_curs, prev_curs
+        
+        Search uses a workaround to imitate LIKE:
+        http://stackoverflow.com/questions/47786/google-app-engine-is-it-possible-to-do-a-gql-like-query
+    
+    '''
     cursor = Cursor(urlsafe=cursor_key)
     if search_keyword:
         limit = search_keyword + u"\ufffd"
         query = ProviderProspect.query(ProviderProspect.last_name >= search_keyword, ProviderProspect.last_name < limit)
+        
         query = query.order(ProviderProspect.last_name)
     else:
         query = ProviderProspect.query()
