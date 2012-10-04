@@ -63,9 +63,7 @@ def create_routes():
                PathPrefixRoute('/tasks', [
                    Route('/mail_errors', tasks.MailErrorHandler),
                ]),
-               
-               Route('/book/patientlookup', booking_registration_handler.PatientLookup),               
-               
+                              
                Route('/lang/<lang>', language.LanguageHandler),
                Route('/lang/<lang>/<hide_side>', language.LanguageHandler),
                
@@ -86,8 +84,8 @@ def create_routes():
                Route('/<vanity_url>/book/date/<start_date>', display_schedule_handler.BookFromPublicProfileDisplaySchedule),
                
                # Actual booking & registration
-               Route('/<vanity_url>/book/<book_date:\d{4}-\d{2}-\d{2}>/<book_time:\d{1,2}>', booking_registration_handler.BookFromPublicProfileRegistration),
-               Route('/<vanity_url>/book/register', booking_registration_handler.BookFromPublicProfileRegistration),
+               Route('/<vanity_url>/book/<book_date:\d{4}-\d{2}-\d{2}>/<book_time:\d{1,2}>', booking_registration_handler.BookFromPublicProfileDetails),
+               Route('/<vanity_url>/book/details', booking_registration_handler.BookFromPublicProfileDetails),
                Route('/<vanity_url>/book/patient', booking_registration_handler.BookFromPublicProfileNewPatient),
 
                # Social network

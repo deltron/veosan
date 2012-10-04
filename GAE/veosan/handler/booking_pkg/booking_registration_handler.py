@@ -13,22 +13,8 @@ import json
 from webapp2_extras import security
 import urlparse
 
-class PatientLookup(BookingBaseHandler):
-    def post(self):
-        email = self.request.get('email')
-        if email:
-            patient = db.get_patient_from_email(email)
-            if patient:
-                data = { 'first_name' : patient.first_name, 
-                         'last_name' : patient.last_name,
-                         'telephone' : patient.telephone }
-                
-                return_string = json.dumps(data)
-                self.response.write(return_string)
 
-
-
-class BookFromPublicProfileRegistration(BookingBaseHandler):
+class BookFromPublicProfileDetails(BookingBaseHandler):
     def get(self, vanity_url=None, book_date=None, book_time=None):
         provider = db.get_provider_from_vanity_url(vanity_url)
 
@@ -36,27 +22,19 @@ class BookFromPublicProfileRegistration(BookingBaseHandler):
             logging.warn("Trying to book a time not available in the schedule...")
             self.redirect("/" + vanity_url + "/book")
         else:
-            form = None
+            booking_form = None
             
             user = self.get_current_user()
             if user:
-                # user is logged in, don't ask for name and email
-                patient_from_user = db.get_patient_from_user(user)
-                provider_from_user = db.get_provider_from_user(user)
-
-                if patient_from_user or provider_from_user:
-                    form = AppointmentDetailsForLoggedInUser().get_form()
-                else:
-                    # logged in user is not a provider nor a patient
-                    logging.error('Current logged in user has no provider or patient profile')    
+                booking_form = AppointmentDetailsForLoggedInUser().get_form()
             else:
                 # no user logged in, ask for email and stuff
-                form = AppointmentDetails().get_form()
+                booking_form = AppointmentDetails().get_form()
 
-            form['booking_date'].data = book_date
-            form['booking_time'].data = book_time
+            booking_form['booking_date'].data = book_date
+            booking_form['booking_time'].data = book_time
             
-            self.render_template('provider/public/booking_registration.html', provider=provider, email_details_form=form)
+            self.render_template('provider/public/booking_details.html', provider=provider, booking_form=booking_form)
         
     
     def post(self, vanity_url=None):
@@ -92,7 +70,7 @@ class BookFromPublicProfileRegistration(BookingBaseHandler):
                 if existing_patient:
                     booking.patient = existing_patient.key
                 else:
-                    # user but no patient (probably a provider)
+                    # user but no patient
                     # create a patient and link it to existing user
                     patient = Patient()
                     
