@@ -159,17 +159,6 @@ def get_site_counter():
     
     return site_counter
         
-
-def store(key, form, data):
-    # data is a MultiDict object from the request
-    logging.info("Storing on key:%s with data:%s" % (key, str(data)))
-    datastore_object = get_from_urlsafe_key(key)
-    # set all the properties
-    form.populate_obj(datastore_object)
-    # store
-    datastore_object.put()
-    
-
 def get_provider_network_connection(source_key, target_key):
     return ProviderNetworkConnection.query(ProviderNetworkConnection.source_provider == source_key, ProviderNetworkConnection.target_provider == target_key).get()
     
