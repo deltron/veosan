@@ -1696,3 +1696,10 @@ msgstr "Cordialement"
 
 
 
+##############
+## Upgrade
+##############
+
+msgid "Upgrade"
+msgstr "Plus"
+

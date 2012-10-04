@@ -22,10 +22,21 @@
 	<li id="schedule" {% if "schedule" == active_page %} class="active" {% endif %}>
 		<a href="/provider/schedule/{{ provider_from_user.vanity_url }}">{{ _('Schedule') }}</a>
 	</li>
+	{% if provider_from_user.booking_enabled %}
+	<li id="bookings" {% if "bookings" == active_page %} class="active" {% endif %}>
+		<a href="/provider/bookings/{{ provider_from_user.vanity_url }}">{{ _('Bookings') }}</a>
+	</li>
+	{% endif %}
 	<li id="network" {% if "network" == active_page %} class="active" {% endif %}>
 		<a href="/provider/network/{{ provider_from_user.vanity_url }}">{{ _('Network') }}</a>
 	</li>
-	
+
+	{% if provider_from_user.upgrade_enabled %}
+	<li id="upgrade" {% if "upgrade" == active_page %} class="active" {% endif %}>
+		<a href="/provider/upgrade/{{ provider_from_user.vanity_url }}">{{ _('Upgrade') }}</a>
+	</li>
+	{% endif %}
+
 	{% if 'patient' in roles %}
 	<li id="provider" {% if "patient" == active_page %} class="active" {% endif %}>
 		<a href="/patient/bookings">{{ _('As Patient') }}</a>
@@ -33,12 +44,6 @@
 	{% endif %}
 
 	{% if 'admin' in roles %}
-	<li id="upgrade" {% if "upgrade" == active_page %} class="active" {% endif %} style="font-style:italic">
-		<a href="/provider/upgrade/{{ provider_from_user.vanity_url }}">{{ _('Upgrade') }}</a>
-	</li>
-	<li id="bookings" {% if "bookings" == active_page %} class="active" {% endif %} style="font-style:italic">
-		<a href="/provider/bookings/{{ provider_from_user.vanity_url }}">{{ _('Bookings') }}</a>
-	</li>
 	<li id="administration" {% if  "administration" == active_page %} class="active" {% endif %} style="font-style:italic">
 		<a href="/admin/provider/admin/{{ provider_from_user.vanity_url }}">{{ _('Administration') }}</a>
 	</li>
