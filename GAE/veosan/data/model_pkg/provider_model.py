@@ -66,6 +66,7 @@ class Provider(ndb.Model):
     display_welcome_page = ndb.BooleanProperty(default=True)
     connect_enabled = ndb.BooleanProperty(default=True)
     stats_enabled = ndb.BooleanProperty(default=False)
+    upgrade_enabled = ndb.BooleanProperty(default=False)
 
 
     # user

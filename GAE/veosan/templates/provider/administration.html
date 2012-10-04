@@ -160,6 +160,20 @@
 							{% endif %}
 						</td>
 					</tr>
+					<tr>
+						<td width="60%">Show upgrade={{ provider.upgrade_enabled }}</td>
+						<td width="40%">
+							{% if provider.upgrade_enabled %}
+							<a href="/admin/provider/feature/upgrade_enabled/{{ provider.vanity_url }}" class="btn btn-danger">
+								Disable Upgrade
+							</a>
+							{% else %}
+							<a href="/admin/provider/feature/upgrade_enabled/{{ provider.vanity_url }}" class="btn btn-success">
+								Enable Upgrade
+							</a>
+							{% endif %}
+						</td>
+					</tr>
 				</tbody>
 			</table>
 		</div>
