@@ -1,17 +1,10 @@
 # -*- coding: utf-8 -*-
 
 from base import BaseTest
-from datetime import datetime, timedelta
 import unittest
-from babel.dates import format_datetime, format_date, format_time
 import testutil
 
 class BookingTest(BaseTest):
-    def test_booking_new_patient_reload_sent_page(self):
-        #self.fail("TODO: re-implement with book from profile")
-        pass
-
-         
     def test_booking_existing_patient(self):
         self.create_provider_and_enable_booking()
         # book once from public profile
@@ -38,16 +31,6 @@ class BookingTest(BaseTest):
         provider_email_count = len(provider_messages)
         self.assertEqual(provider_email_count, 2)
         
-
-    
-    def test_booking_with_loggedin_patient(self):
-        #self.fail("TODO: re-implement with book from profile")
-        pass
-        
-    def test_booking_new_patient_terms_not_agreed(self):
-        #self.fail("TODO: re-implement with book from profile")
-        pass
-
     def test_book_from_public_profile_new_patient(self):
         self.create_provider_and_enable_booking()
         # Book from public profile
@@ -278,6 +261,17 @@ class BookingTest(BaseTest):
         response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL + '/book')
         response.mustcontain(no=testutil.next_monday_date_string()+"/10")
         response.mustcontain(no="button-"+testutil.next_monday_date_string()+"-10")
+        
+        # check emails
+        messages = self.mail_stub.get_sent_messages(to=self._TEST_PROVIDER_EMAIL)
+        provider_email_count = len(messages)
+        
+        # 2 - one for the patient side and one for the provider side
+        self.assertEqual(provider_email_count, 2)
+        for m in messages:
+            self.assertEqual(self._TEST_PROVIDER_EMAIL, m.to)
+            self.assertNotIn('None',  m.body.payload)
+        
         
     def test_booking_second_appointment_as_a_patient_logged_in(self):
         ''' if someone forces the URL to book something outside available schedule '''        

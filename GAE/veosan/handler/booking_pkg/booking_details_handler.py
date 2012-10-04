@@ -145,6 +145,13 @@ class BookFromPublicProfileDetails(BookingBaseHandler):
         # link to logged in user
         patient.user = user.key
         patient.email = user.get_email()
+        
+        # if it's a provider, copy over details like name, etc.
+        provider = db.get_provider_from_user(user)
+        if provider:
+            patient.first_name = provider.first_name
+            patient.last_name = provider.last_name        
+        
         patient.put()
         
         booking.patient = patient.key

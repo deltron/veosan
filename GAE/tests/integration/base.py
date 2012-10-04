@@ -591,6 +591,7 @@ class BaseTest(unittest.TestCase):
         self.assertIn('Bonjour', m.body.payload)
         self.assertIn('Merci', m.body.payload)
         self.assertIn(french_datetime_string, m.body.payload)
+        self.assertNotIn('None',  m.body.payload)
         
         patient = db.get_patient_from_user(user)
         bookings = db.get_bookings_for_patient(patient)        
