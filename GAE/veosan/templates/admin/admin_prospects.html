@@ -11,8 +11,8 @@
 		
 		<form id="prospect-search-form" method="post" action="/admin/prospects/search" class="form-search">
 
-			<div class="form-search">
-				{{ search_form.search_keyword(placeholder='Search Prospect', class='search-query') }}
+			<div class="well form-search">
+				{{ search_form.search_keyword(placeholder='Search Prospect by Last Name', class='input-xlarge') }}
 				<button type="submit" class="btn">{{ _('Search') }}</button>
 				<a class="btn" href="/admin/prospects">{{ _('Clear') }}</a>
 			</div>
