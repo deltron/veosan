@@ -61,6 +61,8 @@ def get_routes():
                        #Route('/terms/<vanity_url>', user.ProviderTermsHandler),
                        
                        # upgrade account
+                       Route('/upgrade/success/<vanity_url>', upgrade_handler.ProviderUpgradeSuccessHandler),
                        Route('/upgrade/<vanity_url>', upgrade_handler.ProviderUpgradeHandler),
+
                    ])
             ]

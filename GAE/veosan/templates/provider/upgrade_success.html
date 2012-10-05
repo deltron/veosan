@@ -2,13 +2,22 @@
 
 {% set active_page = "upgrade" %}
 
-{% block subhead %}{{ _('Upgrade Successful') }}{% endblock %}
-{% block lead %}{% endblock %}
+{% block subhead %}{{ _('Thank You!') }}{% endblock %}
+{% block lead %}{{ _('Upgrade Successful') }}{% endblock %}
 
 {% block content %}
 
-<img src="/assets/img/green-check.png"> Thank you!
+<div class="row">
+	<div class="span2">
+		<img src="/assets/img/green-check.png">
+	</div>
 
-Thank you for your payment. Your transaction has been completed, and a receipt for your purchase has been emailed to you.
-
+	<div class"span10">
+		<h2>Thank you for your payment!</h2>
+		<br>
+		<h3>Your transaction has been completed and a receipt for your purchase will be emailed to you. </h3>
+		<br>
+		<h3>Go ahead an <a href="/provider/schedule/{{ provider.vanity_url }}">put some hours in your schedule</a>. They will now be visible to patients on your <a href="/{{ provider.vanity_url }}">public profile</a>.</h3>
+	</div>
+</div>
 {% endblock %}
