@@ -7,5 +7,7 @@ def get_routes():
     return [
                 PathPrefixRoute('/patient', [
                                             Route('/bookings', patient.ListPatientBookings),
+                                            Route('/address', patient.AddressHandler),
+
                                        ]),
             ]
