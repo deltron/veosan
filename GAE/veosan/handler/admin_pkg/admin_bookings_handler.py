@@ -1,6 +1,7 @@
 from handler.admin import AdminBaseHandler
 from data import db
 from handler.auth import admin_required
+from google.appengine.ext import ndb
 
 
 class AdminBookingsHandler(AdminBaseHandler):
@@ -16,16 +17,18 @@ class AdminBookingDetailHandler(AdminBaseHandler):
     '''Administer a single Booking'''
     
     @admin_required
-    def get(self, operation, bk):
-        booking = db.get_from_urlsafe_key(bk)
+    def get(self, operation, booking_key):
+        key = ndb.Key(urlsafe=booking_key)
+        booking = key.get()
+        
         if operation == 'show':
-            self.render_template('admin/admin_booking_detail.html', b=booking)
+            self.render_template('admin/admin_booking_detail.html', booking=booking)
         elif operation == 'cancel':
-            booking.status = 'canceled'
+            booking.cancelled = True
             booking.put()
-            self.render_template('admin/admin_booking_detail.html', b=booking, success_message='Booking canceled.')
+            self.render_template('admin/admin_booking_detail.html', booking=booking, success_message='Booking canceled.')
         elif operation == 'reactivate':
-            booking.status = 'active'
+            booking.cancelled = False
             booking.put()
-            self.render_template('admin/admin_booking_detail.html', b=booking, success_message='Booking reactivated.')
+            self.render_template('admin/admin_booking_detail.html', booking=booking, success_message='Booking reactivated.')
         

@@ -3,15 +3,15 @@
 
 {% set active_page = "bookings" %}
 
-{% if b.patient %} 
-	{% set patient = b.patient.get() %}
+{% if booking.patient %} 
+	{% set patient = booking.patient.get() %}
 {% endif %}
-{% if b.provider %} 
-	{% set provider = b.provider.get() %}
+{% if booking.provider %} 
+	{% set provider = booking.provider.get() %}
 {% endif %}
 
 {% block subhead %} Booking Details {% endblock %}
-{% block lead %}{{patient.first_name}} {{patient.last_name}} booked {{ provider.first_name }} {{ provider.last_name }} on {{b.request_datetime|format_datetime(format="short")}}{% endblock %}
+{% block lead %}{{patient.first_name}} {{patient.last_name}} booked {{ provider.first_name }} {{ provider.last_name }} on {{booking.request_datetime|format_datetime(format="short")}}{% endblock %}
 
 {% block content %}
 <div class="row">
@@ -39,9 +39,9 @@
 		
 		<div class="well">
 		<h3>Booking</h3>
-			appointment time: {{b.datetime|format_datetime(format="short")}} <br>
-			created on: {{ b.created_on|format_datetime(format="short") }} <br>
-			comments: {{b.comments}} <br>
+			appointment time: {{booking.datetime|format_datetime(format="short")}} <br>
+			created on: {{ booking.created_on|format_datetime(format="short") }} <br>
+			comments: {{booking.comments}} <br>
 			<br>
 		</div>
 		
@@ -71,8 +71,8 @@
 		</div>
 		
 		{# not sure if still used ... #}
-		{% elif b.request_email %}
-			<h1>{{b.request_email}} </h1>
+		{% elif booking.request_email %}
+			<h1>{{booking.request_email}} </h1>
 			<span class="badge badge-warning">Unfilled profile</span> 
 			<br>
 		{% else %}
@@ -85,10 +85,10 @@
 	<div class="span6">
 		<div class="well">
 			<h3>Operations</h3>
-			{% if b.status != 'canceled' %}
-				<a href="/admin/booking/cancel/{{ b.key.urlsafe() }}">Cancel Booking</a>
+			{% if booking.cancelled %}
+				<a href="/admin/booking/reactivate/{{ booking.key.urlsafe() }}">Reactivate Booking</a>
 			{% else %}
-				<a href="/admin/booking/reactivate/{{ b.key.urlsafe() }}">Reactivate Booking</a>
+				<a href="/admin/booking/cancel/{{ booking.key.urlsafe() }}">Cancel Booking</a>
 			{% endif %}
 		</div>
 	</div>

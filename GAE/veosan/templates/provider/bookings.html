@@ -23,10 +23,20 @@
 				{% set patient = b.patient.get() %}
 				<tr>
 					<!-- Date (Booking) -->
-					<td> {{b.datetime|format_datetime_full}} </td>
+					<td>
+						{% if b.cancelled %}<del>{% endif %}
+
+						{{b.datetime|format_datetime_full}}
+						
+						{% if b.cancelled %}</del>{% endif %}
+						<br>
+						{% if b.cancelled %}
+							<span class="badge badge-warning">Cancelled</span>
+						{% endif %}
+					</td>
 					<!-- Patient -->
 					<td>
-					{{patient.first_name}} {{patient.last_name}} </a>
+					{{patient.first_name}} {{patient.last_name}}
 					<br>
 					{{patient.email}}
 					<br>

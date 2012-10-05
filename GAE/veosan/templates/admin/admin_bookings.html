@@ -46,6 +46,10 @@
 							<p>non datetime
 							<span style="font-size: smaller">(request: {{b.request_datetime|format_datetime(format="short")}})</span></p>
 						{% endif %}
+						
+						{% if b.cancelled %}
+							<span class="badge badge-warning">Cancelled</span>
+						{% endif %}
 					</td>
 
 					<td> 
