@@ -50,6 +50,10 @@ def fetch_page_of_provider_prospects(cursor_key=None, page_size=50, search_keywo
     # fetch
     prospects, next_curs, more = forward_query.fetch_page(page_size, start_cursor=cursor)
     prev_prospects, prev_curs, prev_more = backward_query.fetch_page(page_size, start_cursor=cursor)
+    if not more:
+        next_curs = None
+    if not prev_more:
+        prev_curs = None
     return prospects, next_curs, prev_curs
 
 #    ordered_prospects = []
