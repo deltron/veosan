@@ -162,14 +162,22 @@ class LoginHandler(UserBaseHandler):
     '''
 
     def email_and_confirm_booking(self, booking):
-    # email patient
+        # email patient
         if not booking.email_sent_to_patient:
             mail.email_booking_to_patient(self, booking)
-    # email provider
+        
+        # email provider
         if not booking.email_sent_to_provider:
             mail.email_booking_to_provider(self, booking)
+            
         booking.confirmed = True
         booking.put()
+        
+        patient_user = booking.patient.get().user.get()
+        patient_user.confirmed = True
+        patient_user.put()
+        
+        
 
     def get(self, next_action=None, key=None):
         ''' Show login page '''
