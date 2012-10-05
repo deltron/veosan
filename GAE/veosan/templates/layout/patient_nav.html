@@ -3,15 +3,10 @@
 {% block subnav %}
 <ul class="nav nav-tabs">
 	<li id="bookings" {% if "bookings" == active_page %} class="active" {% endif %}>
-		<a href="/patient/bookings">{{ _('Bookings') }}</a>
+		<a href="/patient/bookings/{{ patient.key.urlsafe() }}">{{ _('Bookings') }}</a>
 	</li>
 	<li id="address" {% if  "address" == active_page %} class="active" {% endif %}>
-		<a href="/patient/address">{{ _('Address') }}</a>
+		<a href="/patient/address/{{ patient.key.urlsafe() }}">{{ _('Address') }}</a>
 	</li>
-	{# 
-	<li id="network" {% if "network" == active_page %} class="active" {% endif %}>
-		<a href="/patient/address">{{ _('Network') }}</a>
-	</li>
-	#}
 </ul>
 {% endblock %}

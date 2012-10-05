@@ -90,7 +90,7 @@ class PasswordHandler(UserBaseHandler):
             
             elif auth.PATIENT_ROLE in user.roles:
                 patient = db.get_patient_from_user(user)
-                self.redirect('/patient/bookings')
+                self.redirect('/patient/bookings/' + patient.key.urlsafe())
 
         # password form was not validate, re-render and try again!
         else:
@@ -207,7 +207,7 @@ class LoginHandler(UserBaseHandler):
                 if patient_from_user.key == booking.patient:
                     self.email_and_confirm_booking(booking)
 
-                    self.redirect('/patient/bookings')
+                    self.redirect('/patient/bookings/' + patient_from_user.key.urlsafe())
                 else:
                     self.render_login(next_action=next_action, key=key)
                 
@@ -249,7 +249,7 @@ class LoginHandler(UserBaseHandler):
 
                     if patient_from_user.key == booking.patient:
                         self.email_and_confirm_booking(booking)
-                        self.redirect('/patient/bookings')
+                        self.redirect('/patient/bookings/' + patient_from_user.key.urlsafe())
                 
                 else:
                     # check role of user, redirect to appropriate page after login
@@ -281,7 +281,7 @@ class LoginHandler(UserBaseHandler):
                         patient = db.get_patient_from_user(user)
                         
                         logging.info('(LoginHandler.post) User %s logged in as patient, redirecting to / page', user.get_email())
-                        self.redirect('/patient/bookings')
+                        self.redirect('/patient/bookings/' + patient.key.urlsafe())
                         
                     else:
                         logging.error('(LoginHandler.post) User %s logged in without roles', user.get_email())
