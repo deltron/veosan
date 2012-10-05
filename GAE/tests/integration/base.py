@@ -620,8 +620,8 @@ class BaseTest(unittest.TestCase):
             response.mustcontain("Rendez-vous à venir")
             response.mustcontain('Fantastic Fox')
 
-            response.mustcontain(booking_time_string)
-            response.mustcontain(booking_datetime_string)
+            #response.mustcontain(booking_time_string)
+            response.mustcontain(french_datetime_string)
             
             # patient email in navbar
             response.mustcontain(self._TEST_PATIENT_EMAIL)
