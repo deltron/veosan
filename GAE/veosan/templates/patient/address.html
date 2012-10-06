@@ -9,7 +9,7 @@
 <!-- Form -->
 <div class="row">
 	<div class="span6">
-		<form method="post" action="/provider/address/{{ patient.key.urlsafe() }}" class="form-horizontal" id="address_form">
+		<form method="post" action="/patient/address/{{ patient.key.urlsafe() }}" class="form-horizontal" id="address_form">
 			<fieldset>
 				{{ macro.make_standard_form(address_form) }}
 			</fieldset>
