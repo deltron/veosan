@@ -4,6 +4,12 @@ from wtforms import Form, SelectMultipleField, BooleanField
 from wtforms import widgets
 from cgi import escape
 from webapp2_extras.i18n import lazy_gettext as _
+from wtforms.ext.dateutil.fields import DateField, DateTimeField
+from webapp2_extras.i18n import to_local_timezone, format_datetime, to_utc
+import logging 
+from dateutil import parser
+from wtforms.validators import ValidationError
+
 
 ''' 
 need to write our own list widget so the <label> doesn't appear after
@@ -101,3 +107,40 @@ class TranslatedBaseForm(Form):
 
     def _get_translations(self):
         return self.MyTranslations()
+    
+
+    
+class UTCDateTimeField(DateTimeField):
+    
+    def _value(self):
+        if self.raw_data:
+            return u' '.join(self.raw_data)
+        else:
+            if self.data:
+                logging.info( "DATA %s" % self.data)
+                # format data rebases to local timezone
+                return format_datetime(self.data)
+            else:
+                return u''
+        
+    def process_formdata(self, valuelist):
+        if valuelist:
+            date_str = u' '.join(valuelist)
+            if not date_str:
+                self.data = None
+                raise ValidationError(self.gettext(u'Please input a date/time value'))
+
+            parse_kwargs = self.parse_kwargs.copy()
+            if 'default' not in parse_kwargs:
+                try:
+                    parse_kwargs['default'] = self.default()
+                except TypeError:
+                    parse_kwargs['default'] = self.default
+            try:
+                local_datetime = parser.parse(date_str, **parse_kwargs)
+                self.data = to_utc(local_datetime)
+            except ValueError:
+                self.data = None
+                raise ValidationError(self.gettext(u'Invalid date/time input'))
+            
+            
