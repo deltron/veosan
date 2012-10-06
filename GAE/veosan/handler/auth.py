@@ -60,31 +60,28 @@ def patient_required(handler_method):
         Decorator: Checks session for authenticated patient (or google admin)
     '''
     
-    def check_patient_key(self):
+    def check_patient_key(self, patient_key = None):
         user = self.get_current_user()
         if user:
             patient = data.db.get_patient_from_user(user)
             if patient:
-                booking_key = self.request.get('bk')
-                if booking_key:
-                    booking = data.db.get_from_urlsafe_key(booking_key)
-                    # match logged in patient to booking.patient
-                    return patient.key.urlsafe() == booking.patient.urlsafe()
+                if patient_key:
+                    return patient.key.urlsafe() == patient_key
                 else:
-                    logging.error('patient_required failed. Booking.patient %s and logged in patient %s do not match' % (booking.patient, patient.key))  
+                    logging.error('patient_required failed. patient from user and patient from key do not match')  
             else:
                 logging.info('patient_required failed. User does not have a patient profile')
         else:
             logging.info('provider_required failed: User is None')
         return False
 
-    def check_patient_login(self, *args, **kwargs):
+    def check_patient_login(self, patient_key = None, *args, **kwargs):
         # admin
         if users.is_current_user_admin():
-            handler_method(self, *args, **kwargs)
+            handler_method(self, patient_key, *args, **kwargs)
         # patient logged in with key matching booking.patient or ...
         elif check_patient_key(self):
-            handler_method(self, *args, **kwargs)
+            handler_method(self, patient_key, *args, **kwargs)
         else:
             self.redirect('/login', abort=True)
             

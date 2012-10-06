@@ -1,4 +1,4 @@
-{% extends "/layout/provider_nav.html" %}
+{% extends "/layout/patient_nav.html" %}
 
 {% set active_page = "patient" %}
 
@@ -7,12 +7,53 @@
 
 {% block content %}
 <div class="row">
-	<div class="span6">
-		{% for booking in bookings %}
-			<div style="{% if loop.index > 1 %} border-top: 1px solid #e5e5e5; padding-top:15px; {% endif %} padding-bottom:15px">
-			{{ macro.booking_summary(provider=booking.provider.get(), booking=booking) }}
-			</div>
-		{% endfor %}
+	{% if bookings|length > 0 %}
+	<div class="span12">
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th width="25%">{{ _('Date and Time') }}</th>
+					<th width="25%">{{ _('Provider') }}</th>
+					<th width="50%">{{ _('Comments') }}</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for b in bookings %}
+				{% if b.provider %}
+				{% set provider = b.provider.get() %}
+				<tr>
+					<!-- Date (Booking) -->
+					<td> {% if b.cancelled %}<del>{% endif %}
+
+						{{b.datetime|format_datetime_full}}
+
+						{% if b.cancelled %}</del>{% endif %}
+					<br>
+					{% if b.cancelled %} <span class="badge badge-warning">Cancelled</span>  <br> {% endif %}
+					{% if not b.confimed %} <span class="badge badge-warning">!</span> Please check your email to confirm this appointment {% endif %}</td>
+
+					<!-- Provider -->
+					<td>
+					<div class="row-fluid">
+						<div class="span3">
+							<a href="/{{ provider.vanity_url }}"> {% if provider.profile_photo_blob_key %} <img src="{{ provider.get_profile_photo_image_url(50) }}" width="50"
+							alt="{{ macro.display_provider_name(provider) }} - {{ category_dict[provider.category] }}"> {% else %} <img src="/assets/img/default-profile.png" width="50" height="50"
+							alt="{{ macro.display_provider_name(provider) }} - {{ category_dict[provider.category] }}"> {% endif %} </a>
+						</div>
+						<div class="span9">
+							<a href="/{{ provider.vanity_url }}">
+							<h4> {{ provider.first_name }}
+							{{ provider.last_name }} </h4></a> {{ category_dict[provider.category] }}
+						</div>
+					</div></td>
+					<td>{{ b.comments }}</td>
+				</tr>
+				{% endif %}
+				{% endfor %}
+			</tbody>
+		</table>
 	</div>
+	{% endif %}
 </div>
+
 {% endblock content %}

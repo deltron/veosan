@@ -66,7 +66,7 @@ class Patient(ndb.Model):
     first_name = ndb.StringProperty()
     last_name = ndb.StringProperty()
     email = ndb.StringProperty()
-    telephone = ndb.StringProperty()
+    phone = ndb.StringProperty()
     terms_agreement = ndb.BooleanProperty()
     
     # address from AppEngine
@@ -74,7 +74,6 @@ class Patient(ndb.Model):
     gae_region = ndb.StringProperty()
     gae_city = ndb.StringProperty()
     gae_city_lat_long = ndb.StringProperty()
-
     
     # Address for homecare
     address = ndb.StringProperty()

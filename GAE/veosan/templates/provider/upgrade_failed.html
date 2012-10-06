@@ -2,11 +2,24 @@
 
 {% set active_page = "upgrade" %}
 
-{% block subhead %}{{ _('Upgrade Failed') }}{% endblock %}
-{% block lead %}{% endblock %}
+{% block subhead %}{{ _('Oops!') }}{% endblock %}
+{% block lead %}{{ _('There was a problem processing that card') }}{% endblock %}
 
 {% block content %}
 
-Sorry, there was a problem processing your payment and the upgrade was not able to complete.
+
+<div class="row">
+	<div class="span2">
+	</div>
+
+	<div class"span10">
+		<h2></h2>
+		<br>
+		<h3>Your transaction was not able to complete.</h3>
+		<br>
+		<h3>Please <a href="/provider/upgrade/{{ provider.vanity_url }}">try again</a> with a different card.</h3>
+	</div>
+</div>
+
 
 {% endblock %}

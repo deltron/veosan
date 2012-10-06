@@ -6,6 +6,7 @@ import mail
 from handler.base import BaseHandler
 from operator import attrgetter
 from handler import auth
+from google.appengine.ext import ndb
 
 class PatientBaseHandler(BaseHandler):
     '''Common functions for all patient handlers'''
@@ -35,22 +36,15 @@ class PatientBaseHandler(BaseHandler):
         
 
 class ListPatientBookings(PatientBaseHandler):
-    def get(self):
-        user = self.get_current_user()
-        if user:
-            patient = db.get_patient_from_user(user)
-            if patient:
-                if auth.PROVIDER_ROLE in user.roles:
-                    provider = db.get_provider_from_user(user)
-                    self.render_bookings(self, provider=provider, patient=patient)
-                else:
-                    self.render_bookings(self, patient=patient)
+    def get(self, patient_key=None):
+        patient = ndb.Key(urlsafe=patient_key).get()
+        user = db.get_user_from_email(patient.email)
+        if patient:
+            if auth.PROVIDER_ROLE in user.roles:
+                provider = db.get_provider_from_user(user)
+                self.render_bookings(self, provider=provider, patient=patient)
             else:
-                logging.info("(ListPatientBookings) No patient associated to logged in user: %s" % user.get_email())
-                self.redirect("/")
-            
+                self.render_bookings(self, patient=patient)
         else:
-            logging.info("(ListPatientBookings) Trying to list bookings but no user logged in")
+            logging.info("(ListPatientBookings) No patient associated to logged in user: %s" % user.get_email())
             self.redirect("/")
-
-

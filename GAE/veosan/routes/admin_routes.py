@@ -8,7 +8,7 @@ from handler.admin_pkg import data_handler, admin_bookings_handler,\
 def get_routes():
     return [PathPrefixRoute('/admin', [
                    Route('/bookings', admin_bookings_handler.AdminBookingsHandler),
-                   Route('/booking/<operation>/<bk>', admin_bookings_handler.AdminBookingDetailHandler),
+                   Route('/booking/<operation>/<booking_key>', admin_bookings_handler.AdminBookingDetailHandler),
                    Route('/providers', admin.AdminProvidersHandler),
                    Route('/patients', admin.AdminPatientsHandler),
                    Route('/invites', admin.AdminInvitesHandler),
