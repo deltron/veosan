@@ -80,7 +80,7 @@ def patient_required(handler_method):
         if users.is_current_user_admin():
             handler_method(self, patient_key, *args, **kwargs)
         # patient logged in with key matching booking.patient or ...
-        elif check_patient_key(self):
+        elif check_patient_key(self, patient_key):
             handler_method(self, patient_key, *args, **kwargs)
         else:
             self.redirect('/login', abort=True)
