@@ -5,9 +5,10 @@ import util
 from data import db
 from webapp2_extras.i18n import lazy_gettext as _
 from forms import custom_validators
-from forms.custom_form import MultiCheckboxField
+from forms.custom_form import MultiCheckboxField, UTCDateTimeField
 from wtforms.ext.dateutil.fields import DateField, DateTimeField
-import datetime
+from webapp2_extras.i18n import to_utc
+from datetime import datetime
 from pytz import tzinfo
 
 
@@ -46,10 +47,12 @@ class ProviderProspectSearchForm(CustomForm):
     def _set_fields(self, form): 
         setattr(form, 'search_keyword', TextField(_(u'Search')))
 
+
 class ProspectNoteForm(CustomForm):
     def _set_fields(self, form): 
         setattr(form, 'note_type', SelectField(_(u'Type'), choices=util.get_all_note_types()))
-        setattr(form, 'event_date', DateTimeField(_(u'Event Date'), default=datetime.datetime.now()))
+        # utcnow and now are the same on GAE (using utcnow for clarity)
+        setattr(form, 'event_date', UTCDateTimeField(_(u'Event Date'), default=datetime.utcnow(), filters=[]))
         setattr(form, 'body', TextAreaField(_(u'Note')))
         
         
