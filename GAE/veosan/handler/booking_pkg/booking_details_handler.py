@@ -81,7 +81,7 @@ class BookFromPublicProfileDetails(BookingBaseHandler):
                 booking.put()
                 
                 # already logged in so go directly to bookings list
-                self.redirect('/patient/bookings')
+                self.redirect('/patient/bookings/' + booking.patient.urlsafe())
                 
                 # mail it to the patient
                 mail.email_booking_to_patient(self, booking)

@@ -533,7 +533,7 @@ class BaseTest(unittest.TestCase):
             login_form = response.forms['patient_form']
             login_form['first_name'] = 'Pat'
             login_form['last_name'] = 'Patient'
-            login_form['telephone'] = patient_telephone
+            login_form['phone'] = patient_telephone
             login_form['password'] = self._TEST_PATIENT_PASSWORD
             login_form['password_confirm'] = self._TEST_PATIENT_PASSWORD
             response = login_form.submit()

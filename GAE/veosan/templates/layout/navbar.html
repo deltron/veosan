@@ -48,7 +48,10 @@
 
 							{% if patient %}
 							<li>
-								<a href="/patient/bookings">{{ _('Bookings') }}</a>
+								<a href="/patient/bookings/{{ patient.key.urlsafe()}}">{{ _('Bookings') }}</a>
+							</li>
+							<li>
+								<a href="/patient/address/{{ patient.key.urlsafe()}}">{{ _('Address') }}</a>
 							</li>
 							{% endif%}
 
@@ -71,7 +74,7 @@
 						</ul>
 					</li>
 					
-					{% if not provider_from_user %}
+					{% if not (provider_from_user or patient) %}
 					<li class="divider-vertical">
 					</li>
 					{% endif %}
