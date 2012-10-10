@@ -94,10 +94,10 @@ class ProviderProspect(ndb.Model):
 
     def check_notes_stats(self):
         if requires_update(self.notes_calculation_timestamp):
-            logging.info('Calculating NOTES stats. Last update was %s UTC' % self.notes_calculation_timestamp)
+            logging.debug('Calculating notes stats. Last update was %s UTC' % self.notes_calculation_timestamp)
             self.calculate_notes_stats()
         else:
-            logging.info('Skipping NOTES calculation. Last update was %s UTC' % self.notes_calculation_timestamp)
+            logging.debug('Skipping notes calculation. Last update was %s UTC' % self.notes_calculation_timestamp)
             
     def calculate_notes_stats(self):
         latest_prospect_note = ProspectNote.query(ProspectNote.prospect == self.key).order(-ProspectNote.event_date).get()

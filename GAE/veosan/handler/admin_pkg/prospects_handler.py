@@ -34,7 +34,7 @@ class AdminProspectsHandler(AdminBaseHandler):
             self.redirect("/admin/prospects")
         else:
             # validate failed
-            self.render_prospect_list(self, add_prospect_form)
+            self.render_prospect_list(add_prospect_form=add_prospect_form)
     
 
     def search(self):
