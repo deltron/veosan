@@ -87,7 +87,6 @@ class ProspectTest(BaseTest):
         prospect_form = self.populate_prospect_form(response.forms['prospect_form'], 103)
 
         response = prospect_form.submit()
-        response.showbrowser()
         response.mustcontain("Prospect ID is not unique")
 
 
