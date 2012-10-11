@@ -44,6 +44,12 @@
 							<li {% if "network" == active_page %} class="active" {% endif %}>
 								<a href="/provider/network/{{ provider_from_user.vanity_url }}">{{ _('Network') }}</a>
 							</li>
+							{% if provider_from_user.upgrade_enabled %}
+							<li id="upgrade" {% if "upgrade" == active_page %} class="active" {% endif %}>
+								<a href="/provider/upgrade/{{ provider_from_user.vanity_url }}">{{ _('Activate') }}</a>
+							</li>
+							{% endif %}
+
 							{% endif%}
 
 							{% if patient %}
