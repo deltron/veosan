@@ -102,7 +102,7 @@
 						<input type="text" maxlength="20" autocomplete="off" class="card-number stripe-sensitive required">
 					</div>
 					<div class="form-row">
-						<label>CVC</label>
+						<label><a href="#" id="cvc-tip" rel="popover" data-title="Card Verification Code" data-content="<img src='/assets/img/cvc.png'>">CVC</a></label>
 						<input type="text" maxlength="4" autocomplete="off" class="card-cvc stripe-sensitive required input-small">
 					</div>
 
@@ -135,6 +135,8 @@
 	Stripe.setPublishableKey('pk_0CGm7P3z0UJVLSfX3Pj5z7NKuzUjj');
 
 	$(document).ready(function() {
+		$('#cvc-tip').popover();
+
 		function addInputNames() {
 			// Not ideal, but jQuery's validate plugin requires fields to have names
 			// so we add them at the last possible minute, in case any javascript
