@@ -1700,6 +1700,6 @@ msgstr "Cordialement"
 ## Upgrade
 ##############
 
-msgid "Upgrade"
-msgstr "Plus"
+msgid "Activate"
+msgstr "Activer"
 
