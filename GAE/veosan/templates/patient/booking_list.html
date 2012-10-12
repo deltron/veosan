@@ -30,7 +30,7 @@
 						{% if b.cancelled %}</del>{% endif %}
 					<br>
 					{% if b.cancelled %} <span class="badge badge-warning">Cancelled</span>  <br> {% endif %}
-					{% if not b.confimed %} <span class="badge badge-warning">!</span> Please check your email to confirm this appointment {% endif %}</td>
+					{% if b.confimed == False %} <span class="badge badge-warning">!</span> Please check your email to confirm this appointment {% endif %}</td>
 
 					<!-- Provider -->
 					<td>

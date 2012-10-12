@@ -6,8 +6,9 @@ from webapp2_extras.routes import PathPrefixRoute
 import re
 import logging
 import main
-from wtforms.validators import Required
+from wtforms.validators import Required, Regexp
 import handler
+from handler.user_pkg import signup_handler
 
 class UniqueVanityURL(object):
     def __init__(self, message=None):
@@ -42,7 +43,7 @@ class ReservedVanityURL(object):
         if vanity_url:
             # force the vanity URL to lowercase
             
-            validated_url = handler.user_pkg.signup_handler.validate_vanity_url(vanity_url)
+            validated_url = signup_handler.validate_vanity_url(vanity_url)
             
             # if the validated URL is different from the given url there was a problem
             # raise an exception
@@ -155,3 +156,20 @@ class StartTimeAfterEndTime(object):
             raise Exception('no field named "%s" in form' % self.start_time_field)
         if int(field.data) <= int(start_time_field.data):
             raise ValidationError(self.message)
+
+
+
+class RequiredIfCanada(Regexp):
+    # a validator which makes a field required if
+    # another field is set to "other" (ie select field)
+
+    def __init__(self, field_name, regex, message, *args, **kwargs):
+        self.country_selection_field = field_name
+        super(RequiredIfCanada, self).__init__(regex=regex, message=message, *args, **kwargs)
+
+    def __call__(self, form, field):
+        country_selection_field = form._fields.get(self.country_selection_field)
+        if country_selection_field is None:
+            raise Exception('no field named "%s" in form' % self.other_field_name)
+        if country_selection_field.data == "CA":
+            super(RequiredIfCanada, self).__call__(form, field)

@@ -112,12 +112,19 @@ class ProviderAddressForm(CustomForm):
         setattr(form, 'title', SelectField(_(u'Title'), choices=util.get_all_titles()))
         setattr(form, 'first_name', TextField(_(u'First Name')))
         setattr(form, 'last_name', TextField(_(u'Last Name')))
-        setattr(form, 'phone', TextField(_(u'Telephone'), [validators.Optional(), validators.Regexp(regex="^[2-9]\d{2}-\d{3}-\d{4}$", message=_(u'Please make sure phone number is in the following format: 514-555-1212'))]))
+        setattr(form, 'country', SelectField(_(u'Country'), choices=util.get_all_countries_for_form()))
+        setattr(form, 'phone', TextField(_(u'Telephone'), [validators.Optional(), 
+                                                           custom_validators.RequiredIfCanada(field_name='country', 
+                                                                                              regex="^[2-9]\d{2}-\d{3}-\d{4}$", 
+                                                                                              message=_(u'Please make sure phone number is in the following format: 514-555-1212'))]))
         setattr(form, 'address', TextField(_(u'Addresse')))
         setattr(form, 'city', TextField(_(u'City')))
         setattr(form, 'province', SelectField(_(u'Province'), choices=util.get_all_provinces_sorted()))
         setattr(form, 'postal_code', TextField(_(u'Postal Code'), 
-                                               validators=[validators.Optional(), validators.Regexp(regex="^[a-zA-Z][0-9][a-zA-Z][0-9][a-zA-Z][0-9]$", message=_(u'Please make sure your postal code is in the following format: A1B2C3'))],
+                                               validators=[validators.Optional(), 
+                                                           custom_validators.RequiredIfCanada(field_name='country', 
+                                                                                              regex="^[a-zA-Z][0-9][a-zA-Z][0-9][a-zA-Z][0-9]$", 
+                                                                                              message=_(u'Please make sure your postal code is in the following format: A1B2C3'))],
                                                filters=[custom_filters.remove_spaces, custom_filters.to_uppercase]))
 
 class ProviderVanityURLForm(CustomForm):
