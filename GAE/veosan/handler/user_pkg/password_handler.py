@@ -7,6 +7,7 @@ import logging
 import urlparse
 import mail
 from handler.user_pkg.user_base_handler import UserBaseHandler
+from webapp2_extras.i18n import lazy_gettext as _
 
 
 

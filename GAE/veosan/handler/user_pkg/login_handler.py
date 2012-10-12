@@ -9,6 +9,7 @@ from forms.user import LoginForm
 from webapp2_extras.auth import InvalidAuthIdError, InvalidPasswordError
 from handler import auth
 from handler.user_pkg.user_base_handler import UserBaseHandler
+from webapp2_extras.i18n import lazy_gettext as _
 
 
 
