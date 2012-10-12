@@ -8,10 +8,12 @@ from handler.user_pkg.login_handler import LoginHandler, LogoutHandler
 def get_routes():
     return [ PathPrefixRoute('/en/signup', [Route('/patient', signup_handler.PatientSignupHandler),
                                             Route('/provider', signup_handler.ProviderSignupHandler1),
+                                            Route('/provider/<button>', signup_handler.ProviderSignupHandler1),
                                             Route('/provider2', signup_handler.ProviderSignupHandler2),
                ]),
              PathPrefixRoute('/fr/signup', [Route('/patient', signup_handler.PatientSignupHandler),
                                             Route('/provider', signup_handler.ProviderSignupHandler1),
+                                            Route('/provider/<button>', signup_handler.ProviderSignupHandler1),
                                             Route('/provider2', signup_handler.ProviderSignupHandler2),
                ]),
                

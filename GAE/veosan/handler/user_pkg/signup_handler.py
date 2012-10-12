@@ -24,7 +24,16 @@ from handler.user_pkg.user_base_handler import UserBaseHandler
 ############################
 
 class ProviderSignupHandler1(UserBaseHandler):
-    def get(self):
+    def get(self, button = None):
+        if button:
+            site_counter = db.get_site_counter()
+            if button == 'full':
+                site_counter.signup_full_button += 1
+            if button == 'preview':
+                site_counter.signup_preview_button += 1
+            
+            site_counter.put()
+
         provider_signup_form = forms.user.ProviderSignupForm1().get_form()
         
         self.render_template('user/signup_provider_1.html', provider_signup_form=provider_signup_form)      

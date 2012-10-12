@@ -48,13 +48,19 @@ class ProviderTest(BaseTest):
         self.logout_provider()
         
         login_response = self.testapp.get("/login")
+        
+        is_french = 'Connexion' in login_response
+        is_english = 'Login' in login_response
 
         resetpassword_form = login_response.forms['resetpassword_form'] # reset passwod is 3rd form on page
         resetpassword_form['email'] = self._TEST_PROVIDER_EMAIL
         response = resetpassword_form.submit()
         
-        # terms agreement                       
-        response.mustcontain("Un courriel a été envoyé à votre adresse courriel afin de réinitialiser votre mot de passe.")
+        # terms agreement
+        if is_english:
+            response.mustcontain("Password reset instructions have been sent to your address on file.")
+        elif is_french: 
+            response.mustcontain("Un courriel a été envoyé à votre adresse courriel afin de réinitialiser votre mot de passe.")
         
         messages = self.mail_stub.get_sent_messages(to=self._TEST_PROVIDER_EMAIL)
         self.assertEqual(1, len(messages))
@@ -62,9 +68,9 @@ class ProviderTest(BaseTest):
 
         user = db.get_user_from_email(self._TEST_PROVIDER_EMAIL)
 
-        self.assertEqual(m.subject, 'Veosan - Instructions pour mot de passe' )
+        self.assertEqual(m.subject, 'Veosan - Password reset instructions' )
         self.assertEqual(m.sender, 'support@veosan.com')
-        self.assertIn('Veuillez suivre le lien ci-dessous pour réinitialiser votre mot de passe', m.body.payload)
+        self.assertIn('Please click the link below to choose a new password', m.body.payload)
 
         self.assertTrue('/user/resetpassword/%s' % user.resetpassword_token in m.body.payload)
 
@@ -72,7 +78,7 @@ class ProviderTest(BaseTest):
         reset_url = '/user/resetpassword/%s' % user.resetpassword_token
         reset_response = self.testapp.get(reset_url)
         
-        reset_response.mustcontain("Choisissez votre mot de passe")
+        reset_response.mustcontain("Select your password")
         reset_response.mustcontain(user.resetpassword_token)
         #reset_response.mustcontain(self._TEST_PROVIDER_EMAIL)
 
@@ -91,7 +97,6 @@ class ProviderTest(BaseTest):
         # try to login with old credentials
         logout_response = self.testapp.get("/logout")
         logout_response = logout_response.follow()
-        logout_response.mustcontain('Trouvez des soins')
         
         login_response = self.testapp.get("/login")
 
@@ -102,7 +107,7 @@ class ProviderTest(BaseTest):
 
 
         # login should fail
-        response.mustcontain("rifier votre email et mot de passe.")
+        response.mustcontain("Login failed. Try again.")
 
         # login again with new credentials
         resetpassword_form = response.forms['login_form']
@@ -126,7 +131,7 @@ class ProviderTest(BaseTest):
         response = resetpassword_form.submit()
         
         # terms agreement                       
-        response.mustcontain("Un courriel a été envoyé à votre adresse courriel afin de réinitialiser votre mot de passe.")
+        response.mustcontain("Password reset instructions have been sent to your address on file.")
         
         messages = self.mail_stub.get_sent_messages(to=self._TEST_PROVIDER_EMAIL)
         self.assertEqual(1, len(messages))
@@ -134,9 +139,9 @@ class ProviderTest(BaseTest):
 
         user = db.get_user_from_email(self._TEST_PROVIDER_EMAIL)
 
-        self.assertEqual(m.subject, 'Veosan - Instructions pour mot de passe')
+        self.assertEqual(m.subject, 'Veosan - Password reset instructions')
         self.assertEqual(m.sender, 'support@veosan.com')
-        self.assertIn('Veuillez suivre le lien ci-dessous pour réinitialiser votre mot de passe', m.body.payload)
+        self.assertIn('Please click the link below to choose a new password', m.body.payload)
 
         self.assertTrue('/user/resetpassword/%s' % user.resetpassword_token in m.body.payload)
 
@@ -144,7 +149,7 @@ class ProviderTest(BaseTest):
         reset_url = '/user/resetpassword/%s' % user.resetpassword_token
         reset_response = self.testapp.get(reset_url)
         
-        reset_response.mustcontain("Choisissez votre mot de passe")
+        reset_response.mustcontain("Select your password")
         reset_response.mustcontain(user.resetpassword_token)
 
         # set password and all that

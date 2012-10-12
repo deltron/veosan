@@ -69,7 +69,7 @@ class SecurityTest(BaseTest):
         headers = { "Referer" : really_long_referer }
         response = self.testapp.get('/', headers=headers)
         
-        response.mustcontain("Pour les professionnels de la santé")
+        response.mustcontain("For Health Care Professionals")
         
         
         

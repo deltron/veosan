@@ -1,8 +1,6 @@
 from handler.auth import provider_required
-from forms.provider import ProviderProfileForm
 from handler.provider import ProviderBaseHandler
 from data import db
-from webapp2_extras.i18n import lazy_gettext as _
 import stripe
 from data.model_pkg.provider_model import ProviderAccount
 from stripe import CardError

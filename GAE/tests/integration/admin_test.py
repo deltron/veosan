@@ -54,7 +54,7 @@ class AdminTest(BaseTest):
         self.login_as_admin()
         response = self.testapp.get('/admin')
         bookings_page = response.follow()
-        bookings_page.mustcontain('Rendez-vous')
+        bookings_page.mustcontain('Bookings')
         
         
     def test_no_bookings_page_as_anonymnous(self):

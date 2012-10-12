@@ -114,7 +114,14 @@ class BaseTest(unittest.TestCase):
         ''' login as a provider, assumes already initialized and accepted terms '''
         login_page = self.testapp.get('/login')
         
-        login_page.mustcontain(u"Connexion")
+        is_french = 'Connexion' in login_page
+        is_english = 'Login' in login_page
+        
+        if is_english:
+            login_page.mustcontain(u"Login")
+        elif is_french:
+            login_page.mustcontain(u"Connexion")
+            
         login_form = login_page.forms[0]
         login_form['email'] = email
         login_form['password'] = password
@@ -122,6 +129,7 @@ class BaseTest(unittest.TestCase):
         response = login_redirect.follow()
         
         # default page for provider after login is welcome
+        # (in french because profile is set to french)
         response.mustcontain("Profil")
         response.mustcontain(email)
         response.mustcontain("Bienvenue!")
@@ -139,16 +147,17 @@ class BaseTest(unittest.TestCase):
         
         if language is 'en':
             logout_response.mustcontain('My Account')
-        else:
+        elif language is 'fr':
             logout_response.mustcontain('Mon Compte')
-        
+        else:
+            logout_response.mustcontain('My Account')
     
     def login_as_patient(self):
         # switch to french
         repsonse = self.testapp.get('/lang/fr')
         
         response = self.testapp.get('/login')
-        response.mustcontain(u"Connexion")
+        response.mustcontain(u"Login")
 
         login_form = response.forms[0]
         login_form['email'] = self._TEST_PATIENT_EMAIL
@@ -165,7 +174,7 @@ class BaseTest(unittest.TestCase):
     def logout_patient(self):
         logout_redirect = self.testapp.get('/logout')
         logout_response = logout_redirect.follow()
-        logout_response.mustcontain('Mon Compte')
+        logout_response.mustcontain('My Account')
         
         
     ######################################################################
@@ -489,9 +498,21 @@ class BaseTest(unittest.TestCase):
         public_profile = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
         schedule_page = public_profile.click(linkid='book_button')
         # Check if a user is logged in
-        user_logged_in = 'Déconnexion' in schedule_page
         
-        schedule_page.mustcontain("Choisissez la date et l'heure de votre rendez-vous")
+        is_french = 'Déconnexion' in schedule_page
+        is_english = 'Logout' in schedule_page
+        
+        user_logged_in = False
+        if is_english:
+            user_logged_in = 'Logout' in schedule_page
+        elif is_french:
+            user_logged_in = 'Déconnexion' in schedule_page
+
+        if is_english:
+            schedule_page.mustcontain("Choose your appointment date and time")
+        elif is_french:
+            schedule_page.mustcontain("Choisissez la date et l'heure de votre rendez-vous")
+            
         # find the form for next Monday at 10
         form_id = "button-" + date_string + '-' + str(time_string)
         new_patient_page = schedule_page.click(linkid=form_id)
@@ -511,23 +532,33 @@ class BaseTest(unittest.TestCase):
             
         if user_logged_in:
             response = response.follow()
-            response.mustcontain("Rendez-vous à venir")
+            if is_english:
+                response.mustcontain("Upcoming Appointments")
+            elif is_french:
+                response.mustcontain("Rendez-vous à venir")
                 
         elif existing_patient:
             if existing_user:
                 response = response.follow()
-                response.mustcontain("Connexion à Veosan")
+                if is_english:
+                    response.mustcontain("Login to Veosan")
+                elif is_french:
+                    response.mustcontain("Connexion à Veosan")
+
                 login_form = response.forms['login_form']
                 login_form['password'] = self._TEST_PATIENT_PASSWORD
                 response = login_form.submit().follow()
                 
-                response.mustcontain("Rendez-vous à venir")
+                if is_english:
+                    response.mustcontain("Upcoming Appointments")
+                elif is_french:
+                    response.mustcontain("Rendez-vous à venir")
                 response.mustcontain('Fantastic Fox')
         else:
             # new user form (no user is logged in)
-            response.mustcontain("Nouveau patient")
-            response.mustcontain('Mot de passe')
-            response.mustcontain('Nom')
+            response.mustcontain("New Patient")
+            response.mustcontain('Password')
+            response.mustcontain('First Name')
             
             # fill the form
             login_form = response.forms['patient_form']
@@ -538,10 +569,10 @@ class BaseTest(unittest.TestCase):
             login_form['password_confirm'] = self._TEST_PATIENT_PASSWORD
             response = login_form.submit()
             
-            response.mustcontain("C'est presque complété!")
-            response.mustcontain('Un couriel vous a été envoyé')
+            response.mustcontain("Almost done!")
+            response.mustcontain('An email was sent to')
             response.mustcontain(patient_email)
-            response.mustcontain('Contactez-nous')
+            response.mustcontain('for any questions relating to your appointment')
 
         
     def check_admin_console_for_booking(self, date_string, time_string, patient_email=_TEST_PATIENT_EMAIL, patient_telephone=_TEST_PATIENT_TELEPHONE):
@@ -566,6 +597,9 @@ class BaseTest(unittest.TestCase):
         # check email to patient
         booking_datetime = datetime.strptime(testutil.next_monday_date_string() + " " + str(time_string), '%Y-%m-%d %H')
         french_datetime_string = format_datetime(booking_datetime, "EEEE 'le' d MMMM yyyy", locale='fr_CA') + " à " + format_datetime(booking_datetime, "H:mm", locale='fr_CA')
+
+        english_datetime_string = format_datetime(booking_datetime, "EEEE d MMMM yyyy", locale='en') + " at " + format_datetime(booking_datetime, "H:mm", locale='en')
+
         
         booking_datetime = datetime.strptime(testutil.next_monday_date_string(), '%Y-%m-%d')
         booking_datetime_string = format_date(booking_datetime, format="d MMM yyyy", locale='fr_CA')
@@ -584,13 +618,13 @@ class BaseTest(unittest.TestCase):
         # activate account
         messages = self.mail_stub.get_sent_messages(to=self._TEST_PATIENT_EMAIL)
         
-        self.assertEquals(m.subject, 'Rendez-vous Veosan - Ostéopathe')
+        self.assertEquals(m.subject, 'Veosan Appointment - Osteopath')
         user = db.get_user_from_email(self._TEST_PATIENT_EMAIL)
         
         # check email content
-        self.assertIn('Bonjour', m.body.payload)
-        self.assertIn('Merci', m.body.payload)
-        self.assertIn(french_datetime_string, m.body.payload)
+        self.assertIn('Hi', m.body.payload)
+        self.assertIn('Thank you', m.body.payload)
+        self.assertIn(english_datetime_string, m.body.payload)
         self.assertNotIn('None',  m.body.payload)
         
         patient = db.get_patient_from_user(user)
@@ -601,7 +635,14 @@ class BaseTest(unittest.TestCase):
             self.assertTrue('/login/booking/%s' % booking.key.urlsafe() in m.body.payload)
             
             response = self.testapp.get('/')
-            user_logged_in = 'Déconnexion' in response
+            is_french = 'Déconnexion' in response
+            is_english = 'Logout' in response
+            
+            user_logged_in = False
+            if is_english:
+                user_logged_in = 'Logout' in response
+            elif is_french:
+                user_logged_in = 'Déconnexion' in response
 
     
             # click the link
@@ -610,22 +651,26 @@ class BaseTest(unittest.TestCase):
 
             # is user logged in?
             if not user_logged_in:
-                response.mustcontain("Connexion à Veosan")
+                if is_english:
+                    response.mustcontain("Login to Veosan")
+                elif is_french:
+                    response.mustcontain("Connexion à Veosan")
+                    
                 login_form = response.forms['login_form']
                 login_form['password'] = self._TEST_PATIENT_PASSWORD
                 response = login_form.submit().follow()
             else:
                 response = response.follow()
             
-            response.mustcontain("Rendez-vous à venir")
+            response.mustcontain("Upcoming Appointments")
             response.mustcontain('Fantastic Fox')
 
             #response.mustcontain(booking_time_string)
-            response.mustcontain(french_datetime_string)
+            response.mustcontain(english_datetime_string)
             
             # patient email in navbar
             response.mustcontain(self._TEST_PATIENT_EMAIL)
-            response.mustcontain('Déconnexion')
+            response.mustcontain('Logout')
 
 
     def check_appointment_email_to_provider(self, date_string, time_string, provider_email=_TEST_PROVIDER_EMAIL):
@@ -635,8 +680,8 @@ class BaseTest(unittest.TestCase):
         
         # get last email sent
         provider_mail = messages[provider_mail_count - 1]
-        self.assertEquals(provider_mail.subject, 'Veosan - Nouveau rendez-vous avec Pat Patient')
-        self.assertIn('Vous avez un nouveau rendez-vous', provider_mail.body.payload)
+        self.assertEquals(provider_mail.subject, 'Veosan - New Appointment with Pat Patient')
+        self.assertIn('You have a new appointment!', provider_mail.body.payload)
 
         # check status change in all lists (provider, patient and admin dashboards)
         self.login_as_provider()
