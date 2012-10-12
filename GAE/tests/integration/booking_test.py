@@ -99,10 +99,10 @@ class BookingTest(BaseTest):
         response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL + '/book/' + next_monday + '/' + '10')
        
         # should not fail, should be registration page
-        response.mustcontain(no="Choisissez la date et l'heure de votre rendez-vous")
+        #response.mustcontain(no="Choisissez la date et l'heure de votre rendez-vous")
         response.mustcontain(no="button"+next_monday)
-        response.mustcontain("Nouveau rendez-vous")
-        response.mustcontain("Votre rendez-vous")
+        response.mustcontain("New Appointment")
+        response.mustcontain("Your Appointment")
         response.mustcontain(next_monday)
 
 
@@ -129,7 +129,7 @@ class BookingTest(BaseTest):
        
         # should fail and redirect to booking page with list of available times
         response = response.follow()
-        response.mustcontain("Choisissez la date et l'heure de votre rendez-vous")
+        response.mustcontain("Choose your appointment date and time")
         response.mustcontain("button-"+next_monday+"-9")
 
     def test_booking_inside_available_schedule_but_booked_by_someone_else(self):
@@ -158,7 +158,7 @@ class BookingTest(BaseTest):
        
         # should fail and redirect to booking page with list of available times
         response = response.follow()
-        response.mustcontain("Choisissez la date et l'heure de votre rendez-vous")
+        response.mustcontain("Choose your appointment date and time")
         response.mustcontain("button-"+next_monday)        
         
 

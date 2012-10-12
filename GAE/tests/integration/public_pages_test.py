@@ -9,11 +9,11 @@ class PublicPagesTest(BaseTest):
     def test_default_language(self):
         # from /
         fr_index_page = self.testapp.get('/')
-        fr_index_page.mustcontain(u'Pour les professionnels de la santé')
-        fr_index_page.mustcontain('Blogue')
-        # switch to english
+        fr_index_page.mustcontain(u'For Health Care Professionals')
+        fr_index_page.mustcontain('Blog')
+        # switch to french
         en_index_page = fr_index_page.click(linkid='lang-change-link')
-        en_index_page.mustcontain('For Health Care Professionals')
+        en_index_page.mustcontain('Pour les professionnels de la santé')
         
     def test_english_index(self):
         en_index_page = self.testapp.get('/en')

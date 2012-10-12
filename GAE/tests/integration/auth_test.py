@@ -14,7 +14,7 @@ class AuthenticationTest(BaseTest):
         # Now login again
         response = self.testapp.get('/login')
         # verify we get the login page
-        response.mustcontain(u"Connexion")
+        response.mustcontain(u"Login")
         # fill out details
         login_form = response.forms[0]
         login_form['email'] = self._TEST_PROVIDER_EMAIL
@@ -41,16 +41,16 @@ class AuthenticationTest(BaseTest):
         # Now login again
         response = self.testapp.get('/login')
         # verify we get the login page
-        response.mustcontain("Connexion")
+        response.mustcontain("Login")
         # fill out details
         login_form = response.forms[0]
         login_form['email'] = self._TEST_PROVIDER_EMAIL
         login_form['password'] = 'This is the wrong password'
         login_failed_response = login_form.submit()
         # return to login page
-        login_failed_response.mustcontain("Connexion")
+        login_failed_response.mustcontain("Login")
         # message about failed login
-        login_failed_response.mustcontain("rifier votre email et mot de passe.")
+        login_failed_response.mustcontain("Login failed. Try again.")
         
 
     def test_patient_login_success(self):
@@ -61,7 +61,7 @@ class AuthenticationTest(BaseTest):
         self.create_test_patient()
         # login as patient
         response = self.testapp.get('/login')
-        response.mustcontain("Connexion")
+        response.mustcontain("Login")
         login_form = response.forms[0]
         login_form['email'] = self._TEST_PATIENT_EMAIL
         login_form['password'] = self._TEST_PATIENT_PASSWORD
@@ -117,7 +117,7 @@ class AuthenticationTest(BaseTest):
         response.mustcontain('Dashboard')
         
         # check for evidence provider is logged out
-        response.mustcontain('Mon Compte')
+        response.mustcontain('My Account')
         
         response = self.testapp.get('/admin/providers')
 

@@ -277,7 +277,7 @@ class ProviderSocialTest(BaseTest):
         login_page = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL + "/connect").follow()
 
         # should be redirected to the login page
-        login_page.mustcontain(u"Connexion")
+        login_page.mustcontain(u"Login")
         # fill out details
         login_form = login_page.forms[0]
         login_form['email'] = 'mctest@veosan.com'
@@ -553,7 +553,15 @@ class ProviderSocialTest(BaseTest):
 
         # accept the connection by clicking link in email
         login_page = self.testapp.get('/login/accept/%s' % lnk)
-        login_page.mustcontain(u"Connexion")
+        
+        is_french = 'Connexion' in login_page
+        is_english = 'Login' in login_page
+
+        if is_english:
+            login_page.mustcontain(u"Login")
+        elif is_french:
+            login_page.mustcontain(u"Connexion")
+
         
         # email should be pre-populated
         login_page.mustcontain(self._TEST_PROVIDER_EMAIL)
@@ -566,13 +574,23 @@ class ProviderSocialTest(BaseTest):
         # response after login is a redirect, so follow
         network_page = login_redirect_response.follow()
         
-        network_page.mustcontain("Vous êtes maintenant connecté à david mctester")
-        network_page.mustcontain('Votre réseau contient 1 professionels de la santé.')
-        network_page.mustcontain("david mctester")
-        network_page.mustcontain("Dentiste")
-        network_page.mustcontain(no="Connect")
-        network_page.mustcontain(no="Reject")
-        network_page.mustcontain(no="Here are your pending invitations. Please confirm you know this person.")
+        if is_english:
+            network_page.mustcontain("Vous êtes maintenant connecté à david mctester")
+            network_page.mustcontain('Votre réseau contient 1 professionels de la santé.')
+            network_page.mustcontain("david mctester")
+            network_page.mustcontain("Dentiste")
+            network_page.mustcontain(no="Connect")
+            network_page.mustcontain(no="Reject")
+            network_page.mustcontain(no="Here are your pending invitations. Please confirm you know this person.")
+        
+        elif is_french:
+            network_page.mustcontain("Vous êtes maintenant connecté à david mctester")
+            network_page.mustcontain('Votre réseau contient 1 professionels de la santé.')
+            network_page.mustcontain("david mctester")
+            network_page.mustcontain("Dentiste")
+            network_page.mustcontain(no="Connect")
+            network_page.mustcontain(no="Reject")
+            network_page.mustcontain(no="Here are your pending invitations. Please confirm you know this person.")
 
         # now check it shows up on the other side
         self.logout_provider()
@@ -580,9 +598,14 @@ class ProviderSocialTest(BaseTest):
         
         network_page = self.testapp.get('/provider/network/' + 'davidmctester')
         
-        network_page.mustcontain('Votre réseau contient 1 professionels de la santé.')
-        network_page.mustcontain("first last")
-        network_page.mustcontain("Ostéopathe")
+        if is_english:
+            network_page.mustcontain('Votre réseau contient 1 professionels de la santé.')
+            network_page.mustcontain("first last")
+            network_page.mustcontain("Ostéopathe")
+        elif is_french:
+            network_page.mustcontain('Votre réseau contient 1 professionels de la santé.')
+            network_page.mustcontain("first last")
+            network_page.mustcontain("Ostéopathe")
         
 
     def test_connect_while_pending(self):
@@ -703,7 +726,7 @@ class ProviderSocialTest(BaseTest):
         login_page = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL + "/connect").follow()
 
         # should be redirected to the login page
-        login_page.mustcontain(u"Connexion")
+        login_page.mustcontain(u"Login")
         # fill out details
         login_form = login_page.forms[0]
         login_form['email'] = 'mctest@veosan.com'
