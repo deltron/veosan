@@ -88,7 +88,7 @@
 <script type="text/javascript" src="/assets/js/jquery.validate.min.js"></script>
 <script type="text/javascript" src="https://js.stripe.com/v1/"></script>
 <script type="text/javascript">
-	Stripe.setPublishableKey('pk_0CGm7P3z0UJVLSfX3Pj5z7NKuzUjj');
+	Stripe.setPublishableKey('{{ stripe_key }}');
 
 	$(document).ready(function() {
 		$('#cvc-tip').popover();
