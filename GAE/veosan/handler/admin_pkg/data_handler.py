@@ -19,6 +19,7 @@ class AdminStageDataHandler(AdminBaseHandler):
             logging.info('*** Generating test data for providers')
             from data import test_data
             test_data.create_test_providers()
+            test_data.create_test_prospects()
             self.render_data(success_message="Generated provider data successfully")
 
         else:
