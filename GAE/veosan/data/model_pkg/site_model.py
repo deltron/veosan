@@ -33,3 +33,5 @@ class SiteCounter(ndb.Model):
     blog_clicks = ndb.IntegerProperty(default=0)
     blog_clicks_en = ndb.IntegerProperty(default=0)
     blog_clicks_fr = ndb.IntegerProperty(default=0)
+    signup_full_button = ndb.IntegerProperty(default=0)
+    signup_preview_button = ndb.IntegerProperty(default=0)

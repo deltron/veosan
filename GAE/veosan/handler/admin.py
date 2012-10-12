@@ -119,6 +119,9 @@ class AdminDashboardHandler(AdminBaseHandler):
         # number of times exiting site to blog
         stats_map['blog_clicks'] = db.get_site_counter().blog_clicks
         
+        stats_map['signup_full_button'] = db.get_site_counter().signup_full_button
+        stats_map['signup_preview_button'] = db.get_site_counter().signup_preview_button
+        
         self.render_template('admin/dashboard.html', stats_map=stats_map)
 
 
