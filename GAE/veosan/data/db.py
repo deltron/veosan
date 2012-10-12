@@ -47,13 +47,21 @@ def fetch_page_of_provider_prospects(cursor_key=None, page_size=50, search_keywo
     # forward and back
     forward_query = query.order(ProviderProspect.category, ProviderProspect.last_name)
     backward_query = query.order(-ProviderProspect.category, -ProviderProspect.last_name)
-    # fetch
+    # fetch next
     prospects, next_curs, more = forward_query.fetch_page(page_size, start_cursor=cursor)
-    prev_prospects, prev_curs, prev_more = backward_query.fetch_page(page_size, start_cursor=cursor)
+    logging.info('next_curs: %s  more: %s' % (next_curs, more))
+    # fetch prev (just to get cursor position)
+    if cursor_key:
+        prev_prospects, prev_curs, prev_more = backward_query.fetch_page(page_size, start_cursor=cursor)
+    else:
+        prev_curs = None
+        prev_more = None
+    logging.info('prev_curs: %s  prev_more: %s' % (prev_curs, prev_more))
+    
     if not more:
         next_curs = None
-    if not prev_more:
-        prev_curs = None
+    #if not prev_more:
+    #    prev_curs = None
     return prospects, next_curs, prev_curs
 
 #    ordered_prospects = []
