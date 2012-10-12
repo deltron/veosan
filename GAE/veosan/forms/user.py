@@ -8,8 +8,8 @@ import custom_filters
 
 # veo
 from custom_form import CustomForm
-from forms import custom_validators
-from wtforms.fields.core import SelectField, BooleanField
+import custom_validators
+from wtforms.fields.core import SelectField
 import util
 from wtforms.fields.simple import HiddenField
 

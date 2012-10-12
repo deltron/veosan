@@ -1,20 +1,22 @@
 
-from handler.user import UserBaseHandler
-from forms.user import ProviderSignupForm1, ProviderSignupForm2, PatientSignupForm
-from data.model import Patient, PartialProvider
-from unidecode import unidecode
-from data import db
 import webapp2
+import datetime
+import mail
+import logging
+import re
 from webapp2 import BaseRoute
 from webapp2_extras.routes import PathPrefixRoute
 from webapp2_extras import security
-import logging
-import re
+from webapp2_extras.i18n import lazy_gettext as _
+from unidecode import unidecode
+
+from data.model import Patient, PartialProvider
+from data import db
 from data.model_pkg.network_model import ProviderNetworkConnection
 from data.model_pkg.provider_model import Provider
-from webapp2_extras.i18n import lazy_gettext as _
-import datetime
-import mail
+import forms
+import handler
+from handler.user_pkg.user_base_handler import UserBaseHandler
 
 
 ############################
@@ -23,12 +25,12 @@ import mail
 
 class ProviderSignupHandler1(UserBaseHandler):
     def get(self):
-        provider_signup_form = ProviderSignupForm1().get_form()
+        provider_signup_form = forms.user.ProviderSignupForm1().get_form()
         
         self.render_template('user/signup_provider_1.html', provider_signup_form=provider_signup_form)      
 
     def post(self):
-        provider_signup_form = ProviderSignupForm1().get_form(self.request.POST)
+        provider_signup_form = forms.user.ProviderSignupForm1().get_form(self.request.POST)
 
         if provider_signup_form.validate():
             # save a partial provider in case they never finish
@@ -51,7 +53,7 @@ class ProviderSignupHandler1(UserBaseHandler):
             partial_provider.put()
             
             # populate second form from first one
-            provider_signup_form2 = ProviderSignupForm2().get_form(self.request.POST)
+            provider_signup_form2 = forms.user.ProviderSignupForm2().get_form(self.request.POST)
             
             # check the agreement by default
             provider_signup_form2['terms_agreement'].data = True
@@ -78,7 +80,7 @@ class ProviderSignupHandler2(UserBaseHandler):
                     self.redirect(str(redirect_url))
                 else:
                     # populate form with prospect info
-                    provider_signup_form2 = ProviderSignupForm2().get_form(obj=prospect)
+                    provider_signup_form2 = forms.user.ProviderSignupForm2().get_form(obj=prospect)
                     
                     # check the agreement by default
                     provider_signup_form2['terms_agreement'].data = True
@@ -91,7 +93,7 @@ class ProviderSignupHandler2(UserBaseHandler):
             self.redirect('/en/signup/provider')
     
     def post(self):
-        provider_signup_form2 = ProviderSignupForm2().get_form(self.request.POST)
+        provider_signup_form2 = forms.user.ProviderSignupForm2().get_form(self.request.POST)
         
         
         # check for double submit
@@ -193,12 +195,12 @@ class ProviderSignupHandler2(UserBaseHandler):
 
 class PatientSignupHandler(UserBaseHandler):
     def get(self):
-        patient_signup_form = PatientSignupForm().get_form()
+        patient_signup_form = forms.user.PatientSignupForm().get_form()
         
         self.render_template('/user/signup_patient.html', patient_signup_form=patient_signup_form)      
 
     def post(self):
-        patient_signup_form = PatientSignupForm().get_form(self.request.POST)
+        patient_signup_form = forms.user.PatientSignupForm().get_form(self.request.POST)
         
         if patient_signup_form.validate():
             

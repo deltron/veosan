@@ -1,7 +1,7 @@
 from webapp2_extras.routes import PathPrefixRoute
 from webapp2 import Route
 from handler.user_pkg import signup_handler
-from handler import user
+from handler.user_pkg.login_handler import LoginHandler, LogoutHandler
 
 
 
@@ -15,10 +15,10 @@ def get_routes():
                                             Route('/provider2', signup_handler.ProviderSignupHandler2),
                ]),
                
-               Route('/login', user.LoginHandler),
-               Route('/en/login', user.LoginHandler, handler_method='get_en'),
-               Route('/fr/login', user.LoginHandler, handler_method='get_fr'),
-               Route('/login/<next_action>/<key>', user.LoginHandler),
-               Route('/logout', user.LogoutHandler)
+               Route('/login', LoginHandler),
+               Route('/en/login', LoginHandler, handler_method='get_en'),
+               Route('/fr/login', LoginHandler, handler_method='get_fr'),
+               Route('/login/<next_action>/<key>', LoginHandler),
+               Route('/logout', LogoutHandler)
        
             ]

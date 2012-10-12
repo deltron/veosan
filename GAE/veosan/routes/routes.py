@@ -1,10 +1,13 @@
 from webapp2 import Route
 from webapp2_extras.routes import PathPrefixRoute, DomainRoute
-from handler import static, user, admin, provider, language, tasks, prospect
+from handler import static, admin, provider, language, tasks, prospect
 import patient_routes, provider_routes, admin_routes, user_routes, public_routes, prospect_routes
 from handler.provider_pkg import network_handler
 from handler.booking_pkg import display_schedule_handler,\
     booking_details_handler
+from handler.user_pkg.user_base_handler import InviteHandler
+from handler.user_pkg.password_handler import PasswordHandler,\
+    ResetPasswordHandler
 
 def create_routes():
     routes = []
@@ -45,13 +48,13 @@ def create_routes():
     routes.extend(prospect_routes.get_routes())
     
     routes.extend([# invitations
-               Route('/invite/<invite_token>', user.InviteHandler),
+               Route('/invite/<invite_token>', InviteHandler),
 
                # user
                PathPrefixRoute('/user', [
-                    Route('/password/<token>', user.PasswordHandler),
-                    Route('/resetpassword', user.ResetPasswordHandler),
-                    Route('/resetpassword/<token>', handler=user.ResetPasswordHandler),
+                    Route('/password/<token>', PasswordHandler),
+                    Route('/resetpassword', ResetPasswordHandler),
+                    Route('/resetpassword/<token>', handler=ResetPasswordHandler),
                ]),
                
                # sales material
