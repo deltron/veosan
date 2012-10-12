@@ -68,19 +68,19 @@ class ProviderProspect(ndb.Model):
         if requires_update(self.sitelog_calculation_timestamp):
             self.calculate_sitelog_stats()
         else:
-            logging.info('Skipping calculation. Last update was %s UTC' % self.sitelog_calculation_timestamp)
+            logging.debug('Skipping sitelog calculation. Last update was %s UTC' % self.sitelog_calculation_timestamp)
         return self.last_site_visit_timestamp
     
     def calculate_sitelog_stats(self):
         '''
             Calculates all stats related to sitelogs and stores them in ndb properties
         '''
-        logging.info('Calculating sitelog stats. Last update was %s UTC' % self.sitelog_calculation_timestamp)
+        logging.info('Calculating sitelog stats for %s. Last update was %s UTC' % (self.prospect_id, self.sitelog_calculation_timestamp))
         latest_site_visit = SiteLog.query(SiteLog.prospect == self.key).order(-SiteLog.access_time).get()
         if latest_site_visit:
             self.last_site_visit_timestamp = latest_site_visit.access_time
         # update calculation time
-        self.sitelog_calculation_timestamp = datetime.now()
+        self.sitelog_calculation_timestamp = datetime.utcnow()
         self.put()
 
 
@@ -110,7 +110,7 @@ class ProviderProspect(ndb.Model):
         self.notes_email_count = ProspectNote.query(ProspectNote.prospect == self.key, ProspectNote.note_type == 'email').count()
         self.notes_call_count = ProspectNote.query(ProspectNote.prospect == self.key, ProspectNote.note_type == 'call').count()
         # update calculation timestamp                    
-        self.notes_calculation_timestamp = datetime.now()
+        self.notes_calculation_timestamp = datetime.utcnow()
         self.put()
 
   
@@ -210,4 +210,6 @@ def requires_update(last_calc):
         return True
     else:
         calc_delta = datetime.utcnow() - last_calc
+        #logging.info('nowutc %s last_calc %s calc_delta %s' % (datetime.utcnow(), last_calc, calc_delta))
         return calc_delta > calculation_update_period
+    

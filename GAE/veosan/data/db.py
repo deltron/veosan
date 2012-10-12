@@ -52,7 +52,8 @@ def fetch_page_of_provider_prospects(cursor_key=None, page_size=50, search_keywo
     logging.info('next_curs: %s  more: %s' % (next_curs, more))
     # fetch prev (just to get cursor position)
     if cursor_key:
-        prev_prospects, prev_curs, prev_more = backward_query.fetch_page(page_size, start_cursor=cursor)
+        rev_cursor = cursor.reversed()
+        prev_prospects, prev_curs, prev_more = backward_query.fetch_page(page_size, start_cursor=rev_cursor)
     else:
         prev_curs = None
         prev_more = None

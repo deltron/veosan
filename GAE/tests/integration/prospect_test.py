@@ -2,6 +2,7 @@
 
 from base import BaseTest
 import unittest
+import logging
 
 class ProspectTest(BaseTest):
 
@@ -187,12 +188,36 @@ class ProspectTest(BaseTest):
         # check stats
         self.login_as_admin()
         admin_page = self.testapp.get("/admin/prospects")
-        admin_page.mustcontain('Site Visit: just now')
+        admin_page.mustcontain('Site Visit: Never')
         # details
         details_page = self.testapp.get("/admin/prospects/103")
         details_page.mustcontain('/signup/103')
         details_page.mustcontain('/tour/103')
         details_page.mustcontain('/blog/103')
+        
+        
+    def test_paging(self):
+        prospect_count = 56
+        for x in range(1, prospect_count):
+            logging.info('Creating Prospect %s of %s' % (x, prospect_count))
+            self.create_prospect_no_check(prospect_id='p%s'%x, last_name='L%02dst name'%x)
+        self.login_as_admin()
+        admin_page = self.testapp.get("/admin/prospects")
+        admin_page.showbrowser()
+        for x in range(1, 51):
+            admin_page.mustcontain('Al L%02dst name' % x)
+        admin_page.mustcontain('next page')
+        # next
+        next_page = admin_page.click(linkid='next-page-link')
+        for x in range(51, 56):
+            next_page.mustcontain('Al L%02dst name' % x)
+        next_page.mustcontain('previous page')
+        # previous
+#        previous_page = next_page.click(linkid='previous-page-link')
+#        previous_page.mustcontain('next page')
+#        previous_page.showbrowser()
+#        for x in range(1, 51):
+#            previous_page.mustcontain('Al L%02dst name' % x)
         
 if __name__ == "__main__":
     unittest.main()
