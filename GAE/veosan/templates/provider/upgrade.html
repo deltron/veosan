@@ -9,38 +9,74 @@
 <form action="/provider/upgrade/{{ provider.vanity_url }}" method="post" id="payment-form">
 	<div class="row">
 		<div class="span6">
-			<label class="control-label">
-				<input type="radio" name="plan" value="veosan_presence_yearly" checked>
-				Yearly - $99.99</label>
-			<em>Get two months free when you sign up for a year!</em>
-			<br>
-			<br>
-			<label class="control-label">
-				<input type="radio" name="plan" value="veosan_presence_monthly">
-				Monthly - $9.99</label>
-			<br>
-			<span class="payment-errors"></span>
-			<div class="form-row">
-				<label>Card Number</label>
-				<input type="text" maxlength="20" autocomplete="off" class="card-number stripe-sensitive required">
-			</div>
-			<div class="form-row">
-				<label><a href="#" id="cvc-tip" rel="popover" data-title="Card Verification Code" data-content="<img src='/assets/img/cvc.png'>">CVC</a></label>
-				<input type="text" maxlength="4" autocomplete="off" class="card-cvc stripe-sensitive required input-small">
-			</div>
-
-			<div class="form-row">
-				<label>Expiration (MM / YYYY)</label>
-				<div class="expiry-wrapper">
-					<select class="card-expiry-month stripe-sensitive required input-small"></select>
-					<span> / </span>
-					<select class="card-expiry-year stripe-sensitive required input-small"></select>
+			<div class="control-group">
+				<div class="controls">
+					<label class="radio">
+						<input type="radio" name="plan" value="veosan_presence_yearly" checked>
+						Yearly - $99.99 
+						<p class="help-block" style="font-style:italic; font-size:smaller; color:#767676">
+						Get two months free when you sign up for a year!
+						</p>
+					</label>
+				</div>
+				<div class="controls">
+					<label class="radio">
+						<input type="radio" name="plan" value="veosan_presence_monthly">
+						Monthly - $9.99
+					</label>
 				</div>
 			</div>
 			<br>
-			<button type="submit" class="btn btn-large btn-success" name="submit-button">
-				Activate
-			</button>
+			<div class="control-group">
+
+				<span class="payment-errors"></span>
+				
+				<div class="row-fluid">
+					<div class="span6">
+						<label>Card Number</label>
+						<input type="text" maxlength="20" autocomplete="off" class="card-number stripe-sensitive required">
+					</div>
+					<div class="span6">
+						<label>Card Verification Code (<a href="#" id="cvc-tip" rel="popover" data-title="Card Verification Code" data-content="<img src='/assets/img/cvc.png'>">CVC</a>)</label>
+						<input type="text" maxlength="4" autocomplete="off" class="card-cvc stripe-sensitive required input-small">
+					</div>
+				</div>
+	
+				<div class="form-row">
+					<label>Expiration (MM / YYYY)</label>
+					<div class="expiry-wrapper">
+						<select class="card-expiry-month stripe-sensitive required input-small"></select>
+						<span> / </span>
+						<select class="card-expiry-year stripe-sensitive required input-small"></select>
+					</div>
+				</div>
+			</div>
+			<div class="form-actions">
+				<button type="submit" class="btn btn-large btn-success" name="submit-button">
+					Activate
+				</button>
+			</div>
+		</div>
+		<div class="span6">
+			<h2>Get Online</h2>
+			<h3>
+				Complete profile and contact information
+			</h3>
+			<h3>
+				Optimized for search engine and social networks
+			</h3>
+			<h3>
+				See statistics about who is searching for your expertise
+			</h3>
+			<br>
+
+			<h2>Get Patients</h2>
+			<h3>
+				Use your online profile to promote your practice
+			</h3>
+			<h3>
+				Build your referral network by connecting with other professionals
+			</h3>
 		</div>
 	</div>
 
