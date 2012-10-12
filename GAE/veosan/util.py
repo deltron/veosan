@@ -14,7 +14,7 @@ PRODUCTION_SERVERS = ('www.veosan.com')
 
 BOOKING_ENABLED = False
 
-DEFAULT_LANG = 'fr'
+DEFAULT_LANG = 'en'
 LANGUAGES = { 'en', 'fr' }
 LANGUAGE_LABELS = { 'fr' : u'Français', 'en': u'English'}
 
