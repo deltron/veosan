@@ -203,7 +203,6 @@ class ProspectTest(BaseTest):
             self.create_prospect_no_check(prospect_id='p%s'%x, last_name='L%02dst name'%x)
         self.login_as_admin()
         admin_page = self.testapp.get("/admin/prospects")
-        admin_page.showbrowser()
         for x in range(1, 51):
             admin_page.mustcontain('Al L%02dst name' % x)
         admin_page.mustcontain('next page')
