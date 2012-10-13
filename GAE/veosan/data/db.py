@@ -45,22 +45,25 @@ def fetch_page_of_provider_prospects(cursor_key=None, page_size=50, search_keywo
     else:
         query = ProviderProspect.query()
     # forward and back
-    forward_query = query.order(ProviderProspect.category, ProviderProspect.last_name)
-    backward_query = query.order(-ProviderProspect.category, -ProviderProspect.last_name)
+    forward_query = query.order(ProviderProspect.category, ProviderProspect.last_name, ProviderProspect.key)
+    backward_query = query.order(-ProviderProspect.category, -ProviderProspect.last_name, -ProviderProspect.key)
     # fetch next
     prospects, next_curs, more = forward_query.fetch_page(page_size, start_cursor=cursor)
     logging.info('next_curs: %s  more: %s' % (next_curs, more))
     # fetch prev (just to get cursor position)
     if cursor_key:
-        rev_cursor = cursor.reversed()
-        prev_prospects, prev_curs, prev_more = backward_query.fetch_page(page_size, start_cursor=rev_cursor)
+        reversed_cursor = cursor.reversed()
+        prev_prospects, prev_curs, prev_more = backward_query.fetch_page(page_size, start_cursor=reversed_cursor)
+        # reverse the cursor (GAE docs is wrong on this)
+        if prev_curs:
+            prev_curs = prev_curs.reversed()
     else:
         prev_curs = None
         prev_more = None
-    logging.info('prev_curs: %s  prev_more: %s' % (prev_curs, prev_more))
     
     if not more:
         next_curs = None
+
     #if not prev_more:
     #    prev_curs = None
     return prospects, next_curs, prev_curs

@@ -127,6 +127,15 @@ indexes:
 
 - kind: ProviderProspect
   properties:
+  - name: category
+    direction: desc
+  - name: last_name
+    direction: desc
+  - name: __key__
+    direction: desc
+
+- kind: ProviderProspect
+  properties:
   - name: first_name
   - name: last_name
 
