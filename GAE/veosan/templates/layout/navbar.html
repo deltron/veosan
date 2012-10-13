@@ -5,6 +5,14 @@
 			<a class="brand" href="/{{ lang }}">{{ _('veosan') }}</a>
 			<div class="nav-collapse">
 				<ul class="nav pull-right">
+					{% if provider_from_user and provider_from_user.upgrade_enabled %}
+					<li id="upgrade">
+						<a href="/provider/upgrade/{{ provider_from_user.vanity_url }}">{{ _('Upgrade') }}</a>
+					</li>
+					<li class="divider-vertical">
+					</li>
+					{% endif %}
+
 					<li>
 						<a id='tour-link' href="/{{ lang }}/tour">{{ _('Tour') }}</a>
 					</li>
