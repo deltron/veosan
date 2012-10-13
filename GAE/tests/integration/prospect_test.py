@@ -213,11 +213,10 @@ class ProspectTest(BaseTest):
             next_page.mustcontain('Al L%02dst name' % x)
         next_page.mustcontain('previous page')
         # previous
-#        previous_page = next_page.click(linkid='previous-page-link')
-#        previous_page.mustcontain('next page')
-#        previous_page.showbrowser()
-#        for x in range(1, 51):
-#            previous_page.mustcontain('Al L%02dst name' % x)
+        previous_page = next_page.click(linkid='previous-page-link')
+        previous_page.mustcontain('next page')
+        for x in range(1, 51):
+            previous_page.mustcontain('Al L%02dst name' % x)
         
 if __name__ == "__main__":
     unittest.main()
