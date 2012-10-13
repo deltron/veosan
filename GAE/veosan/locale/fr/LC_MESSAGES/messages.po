@@ -15,15 +15,10 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-
-
 msgid "en"
 msgstr "fr"
 
-#################
 # Title & brand
-#################
-
 msgid "Veosan! Find a Health Care Professional"
 msgstr "Veosan! Trouvez des soins aujourd'hui"
 
@@ -39,11 +34,7 @@ msgstr "veosan"
 msgid "at Veosan"
 msgstr "chez Veosan"
 
-
-#################
 # Signup
-#################
-
 msgid "Sign Up"
 msgstr "S'inscrire"
 
@@ -87,7 +78,7 @@ msgid "Other"
 msgstr "Autre"
 
 msgid "We are currently opening accounts on a limited basis, please sign up below."
-msgstr "Nous ouvrons présentement des comptes par invitation, veuillez vous inscrire ci-dessous." 
+msgstr "Nous ouvrons présentement des comptes par invitation, veuillez vous inscrire ci-dessous."
 
 msgid "Veosan is currently opening patient accounts on a limited basis."
 msgstr "Veosan ouvre présentement des comptes pour les patients par invitation."
@@ -203,10 +194,7 @@ msgstr "Changer"
 msgid "If you change your personal address the old one will not be valid anymore."
 msgstr "L'ancienne adresse ne sera plus valide si vous changez votre lien personnalisé."
 
-#################
 # Navbar
-#################
-
 msgid "My Account"
 msgstr "Mon Compte"
 
@@ -267,11 +255,7 @@ msgstr "Blogue"
 msgid "Tour"
 msgstr "Visite guidée"
 
-
-#################
 # Form navigation
-#################
-
 msgid "Confirm"
 msgstr "Confirmer"
 
@@ -305,10 +289,7 @@ msgstr "Soumettre"
 msgid "Delete"
 msgstr "Effacer"
 
-#################
 # About page
-#################
-
 msgid "Connected with care"
 msgstr "Branché sur les soins"
 
@@ -324,18 +305,11 @@ msgstr "Nous croyons que trouver des soins de santé devrait être un processus 
 msgid "Veosan is designed to make it easy to connect with high-quality professionals."
 msgstr "Veosan a été conçu pour brancher les patients avec des professionels de de haut calibre."
 
-
-#################
 # Careers
-#################
-
 msgid "Join the team!"
 msgstr "Joignez-vous à l'équipe!"
 
-#################
 # Contact page
-#################
-
 msgid "Subject"
 msgstr "Sujet"
 
@@ -360,10 +334,7 @@ msgstr "Désolé, il y avait une erreur d'envoyer vos commentaires. S'il vous pl
 msgid "If you want to talk to a real person right now, please don't hesitate to give us a call at (514) 998-1286. Thanks!"
 msgstr "Si vous voulez parler à quelqu'un tout de suite, n'hésitez pas à nous contacter au (514) 998-1286. Merci!"
 
-#################
 # Index page
-#################
-
 msgid "Find Care"
 msgstr "Trouvez des soins"
 
@@ -389,7 +360,6 @@ msgid "Book Now"
 msgstr "Réservez Maintenant"
 
 # Marketing stuff
-
 msgid "Health care for everyone, everywhere."
 msgstr "De meilleurs soins pour tous, partout dans notre réseau."
 
@@ -420,7 +390,6 @@ msgstr "Nous prenons votre santé a coeur"
 msgid "We know how difficult it can be to navigate the health care system and want to make it better. We use Veosan to find care for our family and friends."
 msgstr "Nous savons à quel point il peut être difficile de naviguer le réseau de la santé et c'est ce que nous voulons simplifier. Nous utilisons nous-même Veosan afin de trouvez des soins pour nos proches ainsi que nos amis."
 
-
 msgid "We are actively engaged in the healthcare community. A portion of our proceeds goes to fund local initiatives aimed at making care more accessible for everyone."
 msgstr "Veosan est un acteur engagé de la communauté des soins de la santé. Une portion de nos profits sert à financer des organismes locaux qui rendent les soins accessibles à tous."
 
@@ -441,9 +410,6 @@ msgstr "Cliquez ici pour devenir membre, c'est gratuit"
 
 msgid "Veosan gives me a place to show my skills and helps patients find me."
 msgstr "Veosan me donne un endroit pour démontrer mes compétences et aide les patients à me trouver."
-
-msgid "Are you a patient?"
-msgstr "Pour les patients:"
 
 msgid "Click Here!"
 msgstr "cliquez ici"
@@ -466,10 +432,55 @@ msgstr "Passez moins de temps au téléphone et plus de temps à prendre soin de
 msgid "Show your credentials to patients and extend your professional network."
 msgstr "Démontrez vos compétences aux patients potentiels et agrandissez votre réseau professionnel."
 
-#################
-# Results page
-#################
+#: /Users/phil/git/veosan/GAE/veosan/templates/index.html:77
+msgid "Free preview"
+msgstr "Essai gratuit"
 
+#: /Users/phil/git/veosan/GAE/veosan/templates/index.html:75
+msgid "Sign up now"
+msgstr "Inscrivez-vous"
+
+#: /Users/phil/git/veosan/GAE/veosan/templates/index.html:62
+msgid "Affordable"
+msgstr "Abordable"
+
+#: /Users/phil/git/veosan/GAE/veosan/templates/index.html:36
+msgid "Are you a patient?"
+msgstr "Êtes-vous un patient?"
+
+#: /Users/phil/git/veosan/GAE/veosan/templates/index.html:65
+msgid "Convenient"
+msgstr "Pratique"
+
+#: /Users/phil/git/veosan/GAE/veosan/templates/index.html:68
+msgid "Every day we promote our members online, to doctors and participants in group insurance plans. Put our marketing muscle to work for you."
+msgstr "Nous faisons la promotion de nos membres en ligne envers les docteurs et les participant à des assurances groupes. Mettez nos forces à contribution."
+
+#: /Users/phil/git/veosan/GAE/veosan/templates/index.html:65
+msgid "Get the convenience of online booking so new and recurring patients can book online in seconds."
+msgstr "Prendre rendez-vous en ligne est plus pratique pour vous… et pour vos patients."
+
+#: /Users/phil/git/veosan/GAE/veosan/templates/index.html:62
+msgid "Make the switch to online booking today for just $9.99 per month."
+msgstr "Ajoutez la prise de rendez-vous en ligne à vos services pour seulement $9.99 par mois."
+
+#: /Users/phil/git/veosan/GAE/veosan/templates/index.html:72
+msgid "No commitments, set up a free profile and activate online scheduling at any time."
+msgstr "Aucun contrat. Aucun frais d'installation. Créez votre profile et activez votre calendrier quand vous êtes prêt."
+
+#: /Users/phil/git/veosan/GAE/veosan/templates/index.html:58
+msgid "Online Booking For Health Care Professionals"
+msgstr "Prise de rendez-vous en ligne pour professionnels de la santé"
+
+#: /Users/phil/git/veosan/GAE/veosan/templates/index.html:48
+msgid "Taking appointments online saves me time and money."
+msgstr "Prendre mes rendez-vous en ligne me sauve du temps et de l'argent."
+
+#: /Users/phil/git/veosan/GAE/veosan/templates/index.html:80
+msgid "I'm a patient looking for a specialist"
+msgstr "Je suis un patient à la recherche d'un spécialiste"
+
+# Results page
 msgid "We found a health care professional for you!"
 msgstr "Nous avons trouvé un professionnel de la santé pour vous!"
 
@@ -479,10 +490,7 @@ msgstr "Prendre rendez-vous"
 msgid "in"
 msgstr "à"
 
-#################
 # Patient Registration Page
-#################
-
 msgid "New Patient"
 msgstr "Nouveau patient"
 
@@ -543,11 +551,7 @@ msgstr "Le numéro de téléphone doit être dans le format suivant: 514-555-121
 msgid "Comments for your appointment"
 msgstr "Commentaires en vue de votre rendez-vous"
 
-
-#################
 # Confirmation Email Sent
-#################
-
 msgid "Thank you"
 msgstr "Merci"
 
@@ -569,10 +573,7 @@ msgstr "pour toute question relié à votre rendez-vous"
 msgid "Contact us"
 msgstr "Contactez-nous"
 
-#################
 # Patient Bookings Page
-#################
-
 msgid "Upcoming Appointments"
 msgstr "Rendez-vous à venir"
 
@@ -582,10 +583,7 @@ msgstr "Organiser votre temps."
 msgid "Comments"
 msgstr "Commentaires"
 
-#################
 # Welcome Page
-#################
-
 msgid "Welcome!"
 msgstr "Bienvenue!"
 
@@ -631,10 +629,7 @@ msgstr "Aidez les patients à vous trouver plus facilement"
 msgid "You can change pages by clicking on the tabs."
 msgstr "Vous pouvez changez la page en cliquant sur les onglets."
 
-#################
 # CV Page
-#################
-
 msgid "Tell your story."
 msgstr "Votre histoire."
 
@@ -758,10 +753,7 @@ msgstr "Titre du certificat"
 msgid "Edit"
 msgstr "Modifier"
 
-#################
 # Profile Page
-#################
-
 msgid "Fill out your profile for better patient matches."
 msgstr "Remplissez votre profil afin de cibler des meilleurs patients."
 
@@ -900,7 +892,6 @@ msgstr "Visites totales"
 msgid "Profile Views in the Past 30 Days"
 msgstr "Visites dans les 30 derniers jours"
 
-
 msgid "Here are some times when %(name)s is free."
 msgstr "Voici des plages horaire disponibles pour %(name)s"
 
@@ -922,10 +913,7 @@ msgstr "Invitez des collègues"
 msgid "Edit Your Profile"
 msgstr "Modifier votre profil"
 
-#################
 # Booking from Public Profile
-#################
-
 msgid "New Appointment"
 msgstr "Nouveau rendez-vous"
 
@@ -935,10 +923,7 @@ msgstr "Veuillez compléter les détails suivant pour votre rendez-vous"
 msgid "Your Appointment"
 msgstr "Votre rendez-vous"
 
-#################
 # Address Page
-#################
-
 msgid "Get patients in your neighborhood by completing your contact information."
 msgstr "Trouvez des patients dans vôtre quartier en fournissant vos coordonées."
 
@@ -972,10 +957,7 @@ msgstr "Code postal"
 msgid "Please make sure your postal code is in the following format: A1B2C3"
 msgstr "SVP assurez-vous que votre code postal est dans le format suivant: A1B2C3"
 
-#################
 # Schedule Page
-#################
-
 msgid "Organize your time."
 msgstr "Organisez votre temps."
 
@@ -1006,10 +988,7 @@ msgstr "Début"
 msgid "End Time"
 msgstr "Fin"
 
-#################
 # Bookings List Page
-#################
-
 msgid "Date and Time"
 msgstr "Date et heure"
 
@@ -1022,12 +1001,7 @@ msgstr "Vos réservations à venir."
 msgid "No upcoming bookings. Is there any time marked as available in your schedule?"
 msgstr "Vous n’avez aucun rendez-vous prévu. Avez-vous inscrit vos disponibilités dans votre horaire?"
 
-
-
-#################
 # Social page
-#################
-
 msgid "Network"
 msgstr "Réseautage"
 
@@ -1115,10 +1089,7 @@ msgstr "Vous êtes déjà connecté!"
 msgid "Connection requested"
 msgstr "Connexion demandée"
 
-#################
 # Login page
-#################
-
 msgid "Enjoy the benefits of being a member today!"
 msgstr "Profitez des avantages d'être membre dès aujourd'hui!"
 
@@ -1137,21 +1108,14 @@ msgstr "Nous ouvrons présentement des comptes par invitation, veuillez vous ins
 msgid "Password reset instructions have been sent to your address on file."
 msgstr "Un courriel a été envoyé à votre adresse courriel afin de réinitialiser votre mot de passe."
 
-#################
 # Terms page
-#################
-
 msgid "Terms for Service Providers"
 msgstr "Conditions pour les fournisseurs de services"
 
 msgid "I agree with the Terms of Service"
 msgstr "J'accepte les conditions d'utilisation"
 
-
-#################
 # Password page
-#################
-
 msgid "Select your password"
 msgstr "Choisissez votre mot de passe"
 
@@ -1173,25 +1137,15 @@ msgstr "Votre rendez-vous est confirmé"
 msgid "Select a password to manage your appointments"
 msgstr "Choisissez un mot de passe pour gérer vos rendez-vous"
 
-
-#################
 # Booking results
-#################
-
 msgid "Appointment Details"
 msgstr "Détails de votre rendez-vous"
 
-#################
 # Booking results (no result)
-#################
-
 msgid "Hi! Unfortunately there are no professionals available that fit your needs and schedule right now."
 msgstr "Malheureusement, il n'y a pas de professionnels disponibles qui répondent à vos besoins et votre horaire pour le moment."
 
-#################
 # Unsupported Browser
-#################
-
 msgid "Unsupported Browser"
 msgstr "Navigateur non-supporté"
 
@@ -1213,14 +1167,8 @@ msgstr "Bonjour! Il semble que vous utilisez une vieille version d'Internet Expl
 msgid "Read more about this here"
 msgstr "Cliquez ici pour en savoir plus"
 
-####################################################################
 # Lists of things
-####################################################################
-
-#################
 # Categories
-#################
-
 msgid "Physiotherapy"
 msgstr "Physiothérapie"
 
@@ -1275,10 +1223,7 @@ msgstr "Nutritionniste"
 msgid "Optometrist"
 msgstr "Optométriste"
 
-#################
 # Regions
-#################
-
 msgid "Montreal - Downtown"
 msgstr "Montréal - Centre-Ville"
 
@@ -1297,10 +1242,7 @@ msgstr "Laval"
 msgid "South Shore"
 msgstr "Rive-sud"
 
-#################
 # Provinces
-#################
-
 msgid "Alberta"
 msgstr "Alberta"
 
@@ -1340,11 +1282,7 @@ msgstr "Territoire du Yukon"
 msgid "Northwest Territories"
 msgstr "Territoires du Nord-Ouest"
 
-
-#################
 # Days
-#################
-
 msgid "Monday"
 msgstr "Lundi"
 
@@ -1366,12 +1304,7 @@ msgstr "Samedi"
 msgid "Sunday"
 msgstr "Dimanche"
 
-
-
-#################
 # Schedule Periods
-#################
-
 msgid "Morning"
 msgstr "Matin"
 
@@ -1381,11 +1314,7 @@ msgstr "Après-midi"
 msgid "Evening"
 msgstr "Soir"
 
-
-#################
 # Degrees
-#################
-
 msgid "Degree"
 msgstr "Diplôme"
 
@@ -1398,10 +1327,7 @@ msgstr "Maîtrise"
 msgid "Technical (DEC)"
 msgstr "Technique (DEC)"
 
-#################
 # Associations List
-#################
-
 msgid "Ordre professionnel de la physiotherapie du Quebec (OPPQ)"
 msgstr "L'Ordre professionnel de la physiothérapie du Québec (OPPQ)"
 
@@ -1444,10 +1370,7 @@ msgstr "L’Association canadienne des optométristes (ACO)"
 msgid "L'Association des optométristes du Québec (AOQ)"
 msgstr "L'Association des optométristes du Québec (AOQ)"
 
-#################
 # Specialities
-#################
-
 msgid "Cardiology"
 msgstr "Cardiologie"
 
@@ -1475,11 +1398,7 @@ msgstr "Réhabilitation Vestibulaire"
 msgid "Women's Health"
 msgstr "Santé féminine"
 
-
-#################
 # Universities
-#################
-
 msgid "Not Applicable"
 msgstr "Non Applicable"
 
@@ -1501,10 +1420,7 @@ msgstr "Université Concordia"
 msgid "Université de Québec à Trois-Rivières"
 msgstr "Université de Québec à Trois-Rivières"
 
-####################
 # Welcome email
-####################
-
 msgid "Hi"
 msgstr "Bonjour"
 
@@ -1515,12 +1431,10 @@ msgid "Veosan Account Activation"
 msgstr "Activation de votre compte Veosan"
 
 # Activation Email
-
 msgid "Veosan Appointment"
 msgstr "Rendez-vous Veosan"
 
 # Provider Email
-
 msgid "New Appointment with"
 msgstr "Nouveau rendez-vous avec"
 
@@ -1551,16 +1465,12 @@ msgstr "Date et heure"
 msgid "Consult and manage all your appointments here"
 msgstr "Consultez vos rendez-vous ici"
 
-#
 # Password Reset Email
-#
-
 msgid "Password reset instructions"
 msgstr "Instructions pour mot de passe"
 
 msgid "I hear your forgot your password. No worries, it happens to everyone. Please click the link below to choose a new password."
 msgstr "Vous avez oublié votre mot de passe, Aucun problème. Veuillez suivre le lien ci-dessous pour réinitialiser votre mot de passe"
-
 
 msgid "Welcome back! Password has been reset."
 msgstr "Content de vous revoir! Votre mot de passe à été réinitialisé."
@@ -1568,26 +1478,14 @@ msgstr "Content de vous revoir! Votre mot de passe à été réinitialisé."
 msgid "Sorry, your link is expired, please try again."
 msgstr "Désolé, votre lien est expiré, veuillez essayer de nouveau."
 
-
-####################
 # WTForms
-####################
 msgid "Not a valid integer value"
 msgstr "Ceci n'est pas un chiffre valide."
 
 msgid "This field is required."
 msgstr "Ce champs est requis."
 
-
-
-
-
-
-####################
 # Learn More
-####################
-
-
 msgid "Help"
 msgstr "Aidez vos"
 
@@ -1602,7 +1500,6 @@ msgstr "Améliorez votre présence en ligne avec un profil entièrement dédié 
 
 msgid "Scroll down to find out more."
 msgstr "Défilez vers le bas pour en savoir plus."
-
 
 msgid "It's Who You Are!"
 msgstr "C'est qui je suis!"
@@ -1638,8 +1535,8 @@ msgid "Easy to Find"
 msgstr "Soyez facile à trouver"
 
 msgid "Your Veosan profile is a professional website optimized for search engines. This makes it easy for patients to find you online. You can also add detailed contact information to help them find you in the real world too."
-msgstr "Optimisez votre classement dans les moteurs de recherche avec Veosan, votre site web professionnel. Vos futurs patients vous trouverons en un clic."							
-							
+msgstr "Optimisez votre classement dans les moteurs de recherche avec Veosan, votre site web professionnel. Vos futurs patients vous trouverons en un clic."
+
 msgid "Expand Your Network"
 msgstr "Développez votre réseau"
 
@@ -1651,12 +1548,6 @@ msgstr "Est-ce qu'un de vos patients nécéssite l'attention d'un autre spécial
 
 msgid "Get a great looking profile online in less than a minute"
 msgstr "Obtenez un profil professionel en moins d'une minute"
-
-
-
-################
-## Welcome Email
-################
 
 msgid ", welcome to Veosan!"
 msgstr ", bienvenue à Veosan!"
@@ -1693,12 +1584,6 @@ msgstr "Merci!"
 
 msgid "Sincerely"
 msgstr "Cordialement"
-
-
-
-##############
-## Upgrade
-##############
 
 msgid "Activate"
 msgstr "Activer"
