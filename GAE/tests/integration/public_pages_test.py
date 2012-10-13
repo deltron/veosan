@@ -13,18 +13,18 @@ class PublicPagesTest(BaseTest):
         fr_index_page.mustcontain('Blog')
         # switch to french
         en_index_page = fr_index_page.click(linkid='lang-change-link')
-        en_index_page.mustcontain('Pour les professionnels de la santé')
+        en_index_page.mustcontain('Prise de rendez-vous en ligne pour professionnels de la santé')
         
     def test_english_index(self):
         en_index_page = self.testapp.get('/en')
         en_index_page.mustcontain('For Health Care Professionals')
         en_index_page.mustcontain('Français')
         fr_index_page = en_index_page.click(linkid='lang-change-link')
-        fr_index_page.mustcontain('Pour les professionnels de la santé')
+        fr_index_page.mustcontain('Prise de rendez-vous en ligne pour professionnels de la santé')
         
     def test_french_index(self):
         fr_index_page = self.testapp.get('/fr')
-        fr_index_page.mustcontain('Pour les professionnels de la santé')
+        fr_index_page.mustcontain('Prise de rendez-vous en ligne pour professionnels de la santé')
         fr_index_page.mustcontain('English')
         en_index_page = fr_index_page.click(linkid='lang-change-link')
         en_index_page.mustcontain('For Health Care Professionals')
