@@ -13,16 +13,16 @@
 				<div class="controls">
 					<label class="radio">
 						<input type="radio" name="plan" value="veosan_presence_yearly" checked>
-						Yearly - $99.99 
+						{{ _('Yearly') }} - $99.99 
 						<p class="help-block" style="font-style:italic; font-size:smaller; color:#767676">
-						Get two months free when you sign up for a year!
+						{{ _('Get two months free when you sign up for a year!') }}
 						</p>
 					</label>
 				</div>
 				<div class="controls">
 					<label class="radio">
 						<input type="radio" name="plan" value="veosan_presence_monthly">
-						Monthly - $9.99
+						{{ _('Monthly') }} - $9.99
 					</label>
 				</div>
 			</div>
@@ -33,17 +33,17 @@
 				
 				<div class="row-fluid">
 					<div class="span6">
-						<label>Card Number</label>
+						<label>{{ _('Card Number') }}</label>
 						<input type="text" maxlength="20" autocomplete="off" class="card-number stripe-sensitive required">
 					</div>
 					<div class="span6">
-						<label>Card Verification Code (<a href="#" id="cvc-tip" rel="popover" data-title="Card Verification Code" data-content="<img src='/assets/img/cvc.png'>">CVC</a>)</label>
+						<label>{{ _('Card Verification Code') }} (<a href="#" id="cvc-tip" rel="popover" data-title="Card Verification Code" data-content="<img src='/assets/img/cvc.png'>">CVC</a>)</label>
 						<input type="text" maxlength="4" autocomplete="off" class="card-cvc stripe-sensitive required input-small">
 					</div>
 				</div>
 	
 				<div class="form-row">
-					<label>Expiration (MM / YYYY)</label>
+					<label>{{ _('Expiration') }} (MM / YYYY)</label>
 					<div class="expiry-wrapper">
 						<select class="card-expiry-month stripe-sensitive required input-small"></select>
 						<span> / </span>
@@ -53,24 +53,23 @@
 			</div>
 			<div class="form-actions">
 				<button type="submit" class="btn btn-large btn-success" name="submit-button">
-					Activate
+					{{ _('Activate') }}
 				</button>
 			</div>
 		</div>
 		<div class="span6">
-			<h2>Spend less time on the phone scheduling patients and more time treating them!</h2>
+			<h2>{{ _('Spend less time on the phone scheduling patients and more time treating them!') }}</h2>
 			<br>
-			<h3>“80% of my patients book online and love it!”</h3>
-			<span class="pull-right">-- Steve T.</span>
-			<br>
-			<br>
-			<h3>“Booking online is infinitely better than leaving a voicemail”</h3>
-			<span class="pull-right">-- Marjolaine C.</span>
+			<h3>“{{ _('80%% of my patients book online and love it!') }}”</h3>
+			<h3 class="pull-right">-- Steve T.</h3>
 			<br>
 			<br>
-			<h3>“My patients love being able to get an appointment confirmation online instead of an answering machine”</h3>
-			<span class="pull-right">-- Patrick I.</span>
+			<h3>“{{ _('Booking online is infinitely better than leaving a voicemail') }}”</h3>
+			<h3 class="pull-right">-- Marjolaine C.</h3>
 			<br>
+			<br>
+			<h3>“{{ _('My patients prefer getting appointment confirmations online instead of an answering machine') }}”</h3>
+			<h3 class="pull-right">-- Patrick I.</h3>
 		</div>
 	</div>
 
