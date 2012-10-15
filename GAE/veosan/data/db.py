@@ -7,7 +7,7 @@ import logging
 from datetime import datetime
 from data.model import Booking, Patient, User, PartialProvider, LogEvent
 from data.model_pkg.network_model import Invite, ProviderNetworkConnection
-from data.model_pkg.provider_model import Provider
+from data.model_pkg.provider_model import Provider, ProviderAccount
 import utilities
 from data.model_pkg.prospect_model import Campaign, ProviderProspect, ProspectNote
 from data.model_pkg.site_model import SiteCounter, SiteConfig, SiteLog
@@ -214,3 +214,16 @@ def get_campaign_form_name(campaign_name):
 #def get_campaign_email_notes_count(campaign):
 #    return ProspectNote.query(ProspectNote.campaign == campaign.key, ProspectNote.note_type == 'email').count()
 #    
+
+def get_signup_from_origin(origin):
+    if origin:
+        return Provider.query(Provider.signup_origin == origin).count()
+
+def get_paid_from_origin(origin):
+    if origin:
+        provider_keys = Provider.query(Provider.signup_origin == origin).fetch(keys_only=True)
+        if provider_keys:
+            provider_account_count = ProviderAccount.query(ProviderAccount.provider.IN(provider_keys)).count()
+            return provider_account_count
+        else:
+            return 0

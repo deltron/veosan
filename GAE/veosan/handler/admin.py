@@ -119,9 +119,15 @@ class AdminDashboardHandler(AdminBaseHandler):
         # number of times exiting site to blog
         stats_map['blog_clicks'] = db.get_site_counter().blog_clicks
         
-        stats_map['signup_full_button'] = db.get_site_counter().signup_full_button
-        stats_map['signup_preview_button'] = db.get_site_counter().signup_preview_button
+        stats_map['click_full_button'] = db.get_site_counter().click_full_button
+        stats_map['click_preview_button'] = db.get_site_counter().click_preview_button
         
+        stats_map['signup_full_button'] = db.get_signup_from_origin('full')
+        stats_map['signup_preview_button'] = db.get_signup_from_origin('preview')
+
+        stats_map['paid_full_button'] = db.get_paid_from_origin('full')
+        stats_map['paid_preview_button'] = db.get_paid_from_origin('preview')
+
         self.render_template('admin/dashboard.html', stats_map=stats_map)
 
 

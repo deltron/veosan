@@ -23,6 +23,9 @@ class Provider(ndb.Model):
     '''
     created_on = ndb.DateTimeProperty(auto_now_add=True)
 
+    # signup origin
+    signup_origin = ndb.StringProperty()
+
     # terms
     terms_agreement = ndb.BooleanProperty()
     terms_date = ndb.DateProperty()
