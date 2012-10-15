@@ -7,18 +7,14 @@
 
 {% block content %}
 
+<div class"span10">
 
-<div class="row">
-	<div class="span2">
-	</div>
-
-	<div class"span10">
-		<h2></h2>
 		<br>
-		<h3>Your transaction was not able to complete.</h3>
+		<h3>{{ _("Your transaction was not able to complete.") }}</h3>
 		<br>
-		<h3>Please <a href="/provider/upgrade/{{ provider.vanity_url }}">try again</a> with a different card.</h3>
-	</div>
+		<h3>{{ _("Please") }} <a href="/provider/upgrade/{{ provider.vanity_url }}">{{ _("try again") }}</a> {{ _("with a different card.") }}</h3>
+		<br>
+		<br>	
 </div>
 
 

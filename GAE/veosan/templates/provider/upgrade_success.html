@@ -13,11 +13,11 @@
 	</div>
 
 	<div class"span10">
-		<h2>Thank you for your payment!</h2>
+		<h2>{{ _("Thank you for your payment!") }}</h2>
 		<br>
-		<h3>Your transaction has been completed and a receipt for your purchase will be emailed to you. </h3>
+		<h3>{{ _("Your transaction has been completed and a receipt for your purchase will be emailed to you.") }} </h3>
 		<br>
-		<h3>Go ahead an <a href="/provider/schedule/{{ provider.vanity_url }}">put some hours in your schedule</a>. They will now be visible to patients on your <a href="/{{ provider.vanity_url }}">public profile</a>.</h3>
+		<h3>{{ _("Go ahead and") }} <a href="/provider/schedule/{{ provider.vanity_url }}">{{ _("put some hours in your schedule") }}</a>. {{ _("They will now be visible to patients on your") }} <a href="/{{ provider.vanity_url }}">{{ _("public profile") }}</a>.</h3>
 	</div>
 </div>
 {% endblock %}
