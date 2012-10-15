@@ -24,6 +24,11 @@ class WelcomeHandler(ProviderBaseHandler):
     def get(self, vanity_url=None, disable=None):
         provider = db.get_provider_from_vanity_url(vanity_url)
 
+        signup_origin = self.session['signup_button']
+        if signup_origin:
+            provider.signup_origin = signup_origin
+            provider.put_async()
+
         if disable == 'disable':
             provider.display_welcome_page = False
             provider.put()

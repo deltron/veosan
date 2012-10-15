@@ -8,10 +8,32 @@
 {% block content %}
 <div class="row">
 	<div class="span12">
-<table class="table table-bordered">
+	<h3>Conversions</h3>
+	<table class="table table-bordered" style="width:50%" >
+		<thead>
+			<th>Step</th>
+			<th>Clicked</th>
+			<th>Signup</th>
+			<th>Paid</th>
+		</thead>
+		<tr>
+			<td><span class="btn btn-small btn-primary"> {{ _("Free preview") }} </span></td>
+			<td>{{ stats_map['click_preview_button'] }} </td>
+			<td>{{ stats_map['signup_preview_button'] }} </td>
+			<td>{{ stats_map['paid_preview_button'] }} </td>
+		</tr>
+		<tr>
+			<td><span class="btn btn-small btn-success"> {{ _("Sign up now") }} </span></td>
+			<td>{{ stats_map['click_full_button'] }}</td>
+			<td>{{ stats_map['signup_full_button'] }} </td>
+			<td>{{ stats_map['paid_full_button'] }} </td>
+		</tr>
+	</table>
+
 	<h3>Campaign: Increase signups from home page</h3>
 	<p>Goal: Get to 40% of providers who get to the signup to create a profile</p>
 	<p>Start Date: August 23, 2012</p>
+	<table class="table table-bordered" style="width:50%" >
 	<thead>
 		<th>Metric</th>
 		<th>Count</th>
@@ -62,16 +84,6 @@
 	<tr>
 		<td>Blog Clicks</td>
 		<td>{{ stats_map['blog_clicks'] }}</td>
-		<td> </td>
-	</tr>
-	<tr>
-		<td>Signup Full Button</td>
-		<td>{{ stats_map['signup_full_button'] }}</td>
-		<td> </td>
-	</tr>
-	<tr>
-		<td>Signup Preview Button</td>
-		<td>{{ stats_map['signup_preview_button'] }}</td>
 		<td> </td>
 	</tr>
 
