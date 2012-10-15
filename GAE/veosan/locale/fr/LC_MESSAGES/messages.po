@@ -1588,3 +1588,36 @@ msgstr "Cordialement"
 msgid "Activate"
 msgstr "Activer"
 
+msgid "Spend less time on the phone scheduling patients and more time treating them!"
+msgstr "Passez moins de temps au téléphone et plus de temps à traiter vos patients!"
+
+msgid "80%% of my patients book online and love it!"
+msgstr "80%% de mes patients prennent rendez-vous en ligne et ils adorent ça!"
+
+msgid "Booking online is infinitely better than leaving a voicemail"
+msgstr "Prendre rendez-vous en ligne est beaucoup que de laisser un message à une machine"
+
+msgid "Choose your plan"
+msgstr "Choisissez votre abonnement"
+
+msgid "Activate your account to start taking appointments online"
+msgstr "Activez votre compte et commencez à prendre des rendez-vous en ligne"
+
+msgid "Yearly"
+msgstr "Annuel"
+
+msgid "Get two months free when you sign up for a year!"
+msgstr "Obtenez deux mois gratuits en vous abonnant pour un an!"
+
+msgid "Monthly"
+msgstr "Mensuel"
+
+msgid "Card Number"
+msgstr "Numéro de carte de crédit"
+
+msgid "Card Verification Code"
+msgstr "Code de vérification"
+
+msgid "Expiration"
+msgstr "Date d'expiration"
+
