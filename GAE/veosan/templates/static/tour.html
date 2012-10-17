@@ -1,6 +1,10 @@
 {% extends "/layout/base.html" %}
 
+{% if domain_setup %}
+{% set page_title = domain_setup.brand_name_case + ' ' + _('Tour') %}
+{% else %}
 {% set page_title = 'Veosan - ' + _('Tour') %}
+{% endif %}
 {% set active_page = "tour" %}
 
 {% block extra_css %}

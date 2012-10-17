@@ -40,4 +40,5 @@ class SiteCounter(ndb.Model):
 class DomainSetup(ndb.Model):
     domain_name = ndb.StringProperty()
     brand_name = ndb.StringProperty()
+    brand_name_case = ndb.StringProperty()
     css_file = ndb.StringProperty()

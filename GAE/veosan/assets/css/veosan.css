@@ -22,3 +22,12 @@
 	background-color: #369bd7;
 	border-right: 1px solid #61b0df;
 }
+
+h1 {
+	color: #317eac;
+}
+
+.nav-tabs .dropdown-toggle:hover .caret, .nav-pills .dropdown-toggle:hover .caret {
+	border-top-color: #2071a1;
+	border-bottom-color: #2071a1;
+}

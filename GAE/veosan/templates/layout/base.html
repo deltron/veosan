@@ -9,7 +9,12 @@
 			{# show provider name in title for SEO #}
 			{{ macro.display_provider_name(provider) }}
 			- {{ category_dict[provider.category] }}
+			
+			{% if domain_setup %}
+			{{ _('at') }} {{ domain_setup.brand_name_case }}
+			{% else %}
 			{{ _('at Veosan') }}
+			{% endif %}
 			
 			{% elif page_title %}
 				{{ page_title }}

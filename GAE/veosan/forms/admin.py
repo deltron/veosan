@@ -16,5 +16,7 @@ from wtforms.fields.simple import HiddenField
 
 class DomainSetupForm(CustomForm):
     def _set_fields(self, form):        
-        setattr(form, 'brand_name', TextField('Brand Name'))
+        setattr(form, 'brand_name', TextField('Brand Name (lowercase)'))
+        setattr(form, 'brand_name_case', TextField('Brand Name (proper case)'))
         setattr(form, 'css_file', TextField('CSS File'))
+

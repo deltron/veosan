@@ -1,6 +1,12 @@
 {% extends "/layout/base.html" %}
 
+{% if domain_setup %}
+{% set page_title = domain_setup.brand_name_case + ' - ' + _('For Professionals') %}
+{% else %}
 {% set page_title = 'Veosan - ' + _('For Professionals') %}
+{% endif %}
+
+
 {% block subhead %} {{ _('The new network for health care professionals.')}} {% endblock %}
 
 {% block content %}

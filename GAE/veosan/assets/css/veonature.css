@@ -15,10 +15,18 @@
 }
 
 .navbar .divider-vertical {
-	height: 40px;
-	width: 1px;
-	margin: 0 9px;
-	overflow: hidden;
 	background-color: #238E23;
 	border-right: 1px solid #73964E;
 }
+
+h1 {
+	color: #73964E;
+}
+
+.navbar .nav-collapse.in .nav li > a {
+	color: #ffffff;
+}
+.navbar .nav-collapse.in .nav li > a:hover {
+	background-color: #73964E;
+}
+

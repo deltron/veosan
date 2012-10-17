@@ -1,6 +1,11 @@
 {% extends "/layout/base.html" %}
 
+{% if domain_setup %}
+{% set page_title = domain_setup.brand_name_case + ' - ' + _('New Patient') %}
+{% else %}
 {% set page_title = 'Veosan - ' + _('New Patient') %}
+{% endif %}
+
 {% block subhead %} {{ _('The better way to care')}} {% endblock %}
 
 {% block content %}
