@@ -1445,7 +1445,7 @@ msgid "with"
 msgstr "avec"
 
 msgid "on"
-msgstr ""
+msgstr "sur"
 
 msgid "Please confirm your appointment by clicking on the following link"
 msgstr "Veuillez confirmer votre rendez-vous en cliquant sur le lien suivant"
@@ -1620,4 +1620,43 @@ msgstr "Code de vérification"
 
 msgid "Expiration"
 msgstr "Date d'expiration"
+
+msgid "Thank you for your payment!"
+msgstr "Merci pour votre paiement!"
+
+msgid "Your transaction has been completed and a receipt for your purchase will be emailed to you."
+msgstr "Votre transaction est complété. Un reçu vous a été transmis par courriel."
+
+msgid "Go ahead and"
+msgstr "Vous pouvez"
+
+msgid "put some hours in your schedule"
+msgstr "ouvrir des plages horraire"
+
+msgid "They will now be visible to patients on your"
+msgstr "Elle seront visibles pour vos patients sur votre"
+
+msgid "Upgrade Successful"
+msgstr "Activation complété"
+
+msgid "public profile"
+msgstr "profile"
+
+msgid "Your transaction was not able to complete."
+msgstr "Votre transaction n'a pas été complété."
+
+msgid "Please"
+msgstr "Veuillez s'il vous plait"
+
+msgid "try again"
+msgstr "essayer de nouveau"
+
+msgid "with a different card."
+msgstr "avec une autre carte"
+
+msgid "Oops!"
+msgstr "Désolé"
+
+msgid "There was a problem processing that card"
+msgstr "Problème de traitement de carte"
 
