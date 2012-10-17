@@ -11,6 +11,7 @@ from webapp2_extras.i18n import to_local_timezone
 
 DEV_SERVERS = ('localhost:8080', 'veosan-stage.appspot.com')
 PRODUCTION_SERVERS = ('www.veosan.com')
+DOMAINS = ('veosan.com', 'veonature.com')
 
 BOOKING_ENABLED = False
 

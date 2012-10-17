@@ -8,13 +8,24 @@ from handler.booking_pkg import display_schedule_handler,\
 from handler.user_pkg.user_base_handler import InviteHandler
 from handler.user_pkg.password_handler import PasswordHandler,\
     ResetPasswordHandler
+import util
+
+
+def build_domain_regex():
+    start = 'www.<domain:((?!'
+    middle = "|".join(util.DOMAINS)   
+    middle.replace(".", "\.")
+    end = ').)*$>'
+    
+    regex = r''.join(start + middle + end)
+    return regex
 
 def create_routes():
     routes = []
     routes.extend([
            # handle custom domains
            # match everything that is not veosan.com
-           DomainRoute(r'www.<domain:((?!veosan\.com).)*$>', [                                        
+           DomainRoute(build_domain_regex(), [                                        
               Route('/', handler=static.DomainDispatcher)
            ]),
            

@@ -23,6 +23,9 @@
 	<li id="bookings" {% if  "invites" == active_page %} class="active" {% endif %}>
 		<a href="/admin/invites">{{ _('Invites') }}</a>
 	</li>
+	<li id="data" {% if  "domain" == active_page %} class="active" {% endif %}>
+		<a href="/admin/domain">{{ _('Domain') }}</a>
+	</li>
 	<li id="data" {% if  "data" == active_page %} class="active" {% endif %}>
 		<a href="/admin/data">{{ _('Data') }}</a>
 	</li>

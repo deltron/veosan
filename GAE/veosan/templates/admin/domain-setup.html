@@ -1,0 +1,32 @@
+{% extends "/layout/admin_nav.html" %}
+
+{% set active_page = "domain" %}
+
+{% block subhead %} Domain {{ domain }}{% endblock %}
+{% block lead %} Set up domain specific configurations {% endblock %}
+
+{% block content %}
+
+{% if domain_list %}
+Choose your domain :
+
+{% for domain in domain_list %}
+<a class="btn btn-primary" href="/admin/domain/{{ domain }}">{{ domain }}</a>
+{% endfor %}
+
+{% else %}
+
+<ul>
+<li>Brand name</li>
+<li>Colors</li>
+<li>Categories</li>
+<li>Specialties</li>
+<li>Associations</li>
+<li>Certifications</li>
+
+</ul>
+
+{% endif %}
+
+
+{% endblock content %}

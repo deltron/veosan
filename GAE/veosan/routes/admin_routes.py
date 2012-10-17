@@ -13,6 +13,8 @@ def get_routes():
                    Route('/patients', admin.AdminPatientsHandler),
                    Route('/invites', admin.AdminInvitesHandler),
                    Route('/dashboard', admin.AdminDashboardHandler),
+                   Route('/domain', admin.DomainSetupHandler),
+                   Route('/domain/<domain>', admin.DomainSetupHandler),
                    Route('/data', data_handler.AdminDataHandler),
                    Route('/data/stage', data_handler.AdminStageDataHandler),
                    Route('/data/delete', data_handler.AdminDeleteDataHandler),

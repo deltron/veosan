@@ -130,5 +130,14 @@ class AdminDashboardHandler(AdminBaseHandler):
 
         self.render_template('admin/dashboard.html', stats_map=stats_map)
 
-
+class DomainSetupHandler(AdminBaseHandler):
+    @admin_required
+    def get(self, domain = None):
+        if not domain:
+            self.render_template('admin/domain-setup.html', domain_list = util.DOMAINS)
+        else:
+            
+            
+            self.render_template('admin/domain-setup.html', domain = domain)
+        
 
