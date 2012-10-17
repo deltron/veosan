@@ -160,6 +160,11 @@ class BaseHandler(webapp2.RequestHandler):
             kw['google_analytics_enabled'] = site_config.google_analytics_enabled
             kw['facebook_like_enabled'] = site_config.facebook_like_enabled
         
+        # domain setup
+        domain_without_ports = self.request.host.split(":")[0]
+        domain_without_www = domain_without_ports.replace("www.", "")
+        kw['domain_setup'] = db.get_domain_setup(domain_without_www)
+        
         # render
                 
         # check if we have internet exploder

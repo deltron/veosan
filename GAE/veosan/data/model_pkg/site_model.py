@@ -35,3 +35,9 @@ class SiteCounter(ndb.Model):
     blog_clicks_fr = ndb.IntegerProperty(default=0)
     click_full_button = ndb.IntegerProperty(default=0)
     click_preview_button = ndb.IntegerProperty(default=0)
+
+
+class DomainSetup(ndb.Model):
+    domain_name = ndb.StringProperty()
+    brand_name = ndb.StringProperty()
+    css_file = ndb.StringProperty()

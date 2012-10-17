@@ -1,0 +1,24 @@
+.navbar {
+	font-family: 'Karla', sans-serif;
+}
+
+.navbar .navbar-inner {
+	background-color: #73964E;
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#73964E), color-stop(90%, #73964E), to(#238E23));
+	background-image: -webkit-linear-gradient(#73964E, #73964E 90%, #238E23);
+	background-image: -moz-linear-gradient(top, #73964E, #73964E 90%, #238E23);
+	background-image: -ms-linear-gradient(#73964E, #73964E 90%, #238E23);
+	background-image: -o-linear-gradient(#73964E, #73964E 90%, #238E23);
+	background-image: linear-gradient(#73964E, #73964E 90%, #238E23);
+	background-repeat: no-repeat;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#73964E', endColorstr='#238E23', GradientType=0);
+}
+
+.navbar .divider-vertical {
+	height: 40px;
+	width: 1px;
+	margin: 0 9px;
+	overflow: hidden;
+	background-color: #238E23;
+	border-right: 1px solid #73964E;
+}

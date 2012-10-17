@@ -5,7 +5,7 @@
  -------------------------------------------------- */
 
 h2 {
-	line-height:1.4;
+	line-height: 1.4;
 }
 
 .marketing .row {
@@ -72,7 +72,6 @@ h2 {
 	color: #999999;
 }
 
-
 .blue {
 	background-color: #88CAF1;
 }
@@ -102,56 +101,52 @@ h2 {
 	font-size: 22px;
 	color: #333;
 	font-family: 'Source+Sans+Pro', sans-serif;
-	font-style:italic;
+	font-style: italic;
 }
 
-.quote2:first-letter{
+.quote2:first-letter {
 	text-transform: uppercase;
 }
 .quote2 {
-    color: #424242;
-    font-family: "Adobe Caslon Pro", "Hoefler Text", Georgia, Garamond, Times, serif;
-	letter-spacing:0.1em;
-	text-align:center;
+	color: #424242;
+	font-family: "Adobe Caslon Pro", "Hoefler Text", Georgia, Garamond, Times, serif;
+	letter-spacing: 0.1em;
+	text-align: center;
 	margin: 40px auto;
 	text-transform: lowercase;
 	line-height: 145%;
 	font-size: 14pt;
 	font-variant: small-caps;
-	padding:15px;
+	padding: 15px;
 }
-
-
 
 .marketing .btn {
-  padding: 14px 24px;
-  font-size: 24px;
-  font-weight: 200;
-  color: #fff; /* redeclare to override the `.jumbotron a` */
-  border: 0;
-  -webkit-border-radius: 6px;
-     -moz-border-radius: 6px;
-          border-radius: 6px;
-  -webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 1px 5px rgba(0,0,0,.25), 0 2px 10px rgba(0,68,204,.01);
-     -moz-box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 1px 5px rgba(0,0,0,.25), 0 2px 10px rgba(0,68,204,.01);
-          box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 1px 5px rgba(0,0,0,.25), 0 2px 10px rgba(0,68,204,.01);
-  -webkit-transition: none;
-     -moz-transition: none;
-          transition: none;
-
+	padding: 14px 24px;
+	font-size: 24px;
+	font-weight: 200;
+	color: #fff; /* redeclare to override the `.jumbotron a` */
+	border: 0;
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	border-radius: 6px;
+	-webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 1px 5px rgba(0,0,0,.25), 0 2px 10px rgba(0,68,204,.01);
+	-moz-box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 1px 5px rgba(0,0,0,.25), 0 2px 10px rgba(0,68,204,.01);
+	box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 1px 5px rgba(0,0,0,.25), 0 2px 10px rgba(0,68,204,.01);
+	-webkit-transition: none;
+	-moz-transition: none;
+	transition: none;
 }
 .marketing .btn:active {
-  -webkit-box-shadow: inset 0 2px 4px rgba(0,0,0,.1), 0 1px 0 rgba(255,255,255,.1);
-     -moz-box-shadow: inset 0 2px 4px rgba(0,0,0,.1), 0 1px 0 rgba(255,255,255,.1);
-          box-shadow: inset 0 2px 4px rgba(0,0,0,.1), 0 1px 0 rgba(255,255,255,.1);
+	-webkit-box-shadow: inset 0 2px 4px rgba(0,0,0,.1), 0 1px 0 rgba(255,255,255,.1);
+	-moz-box-shadow: inset 0 2px 4px rgba(0,0,0,.1), 0 1px 0 rgba(255,255,255,.1);
+	box-shadow: inset 0 2px 4px rgba(0,0,0,.1), 0 1px 0 rgba(255,255,255,.1);
 }
-
 
 /* modal large */
 
-.modal-large{
-    width: 780px;
-    margin-left: -390px; /* - width/2 */
+.modal-large {
+	width: 780px;
+	margin-left: -390px; /* - width/2 */
 }
 
 /* class="scrollable" in a div wrapping a table */

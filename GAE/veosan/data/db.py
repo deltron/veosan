@@ -10,7 +10,8 @@ from data.model_pkg.network_model import Invite, ProviderNetworkConnection
 from data.model_pkg.provider_model import Provider, ProviderAccount
 import utilities
 from data.model_pkg.prospect_model import Campaign, ProviderProspect, ProspectNote
-from data.model_pkg.site_model import SiteCounter, SiteConfig, SiteLog
+from data.model_pkg.site_model import SiteCounter, SiteConfig, SiteLog,\
+    DomainSetup
 from google.appengine.ext.ndb.query import Cursor
   
 def get_from_urlsafe_key(urlsafe_key):
@@ -227,3 +228,10 @@ def get_paid_from_origin(origin):
             return provider_account_count
         else:
             return 0
+
+
+def get_domain_setup(domain):
+    if domain:
+        return DomainSetup.query(DomainSetup.domain_name == domain).get()
+
+

@@ -16,6 +16,18 @@ Choose your domain :
 
 {% else %}
 
+		<form method="post" action="/admin/domain/{{ domain }}/setup" class="form-horizontal" id="domain_form">
+			<fieldset>
+{{ macro.make_standard_form(form) }}
+			</fieldset>
+			<div class="form-actions">
+				<button type="submit" class="btn btn-primary">
+					{{ _('Save') }}
+				</button>
+			</div>
+		</form>
+
+
 <ul>
 <li>Brand name</li>
 <li>Colors</li>
