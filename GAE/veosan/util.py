@@ -46,6 +46,8 @@ def get_all_provinces():
 def get_all_provinces_sorted():
     return massage_list(get_all_provinces())
 
+
+# TODO refactor these into a common method
 def get_all_categories_all_domains():
     domain_setups = data.db.get_all_domain_setup()
     if domain_setups:
@@ -63,6 +65,15 @@ def get_all_specialties_all_domains():
             all_specialties.extend(get_all_specialties(domain.domain_name))
         
         return all_specialties
+
+def get_all_associations_all_domains():
+    domain_setups = data.db.get_all_domain_setup()
+    if domain_setups:
+        all_associations = []
+        for domain in domain_setups:
+            all_associations.extend(get_all_associations(domain.domain_name))
+        
+        return all_associations
 
 
 def get_all_categories(domain = None):
@@ -153,25 +164,23 @@ def get_all_continuing_education_types():
             ("committee", _(u"Committee")),
         ]
 
-def getAllAssociations():
-    return [("oppq", _(u"Ordre professionnel de la physiotherapie du Quebec (OPPQ)")),
-            ("acq", _(u"Association des chiropraticiens du Québec (ACQ)")),
-            ("cca", _(u"Canadian Chiropractic Association (CCA)")),
-            ("cma", _(u"Canadian Medical Association (CMA)")),
-            ("fmrq", _(u"Fédération des médecins résidents du Québec (FMRQ)")),
-            ("cpa", _(u"Canadian Physiotherapy Association (CPA)")),
-            ("campt", _(u"Canadian Academy of Manipulative Physiotherapy (CAMPT)")),
-            ("oiiq", _(u"Ordre des infirmières et infirmiers du Québec (OIIQ)")),
-            ("odq_denture", _(u"L’Ordre des denturologistes du Québec (ODQ)")),
-            ("odq", _(u"Ordre des dentistes du Québec (ODQ)")),
-            ("dc", _(u"Dietitians of Canada (DC)")),
-            ("opdq", _(u"Ordre professionnel des diététistes du Québec (OPDQ)")),
-            ("cao", _(u"Canadian Association of Optometrists (CAO)")),
-            ("aoq", _(u"L'Association des optométristes du Québec (AOQ)")),
-        ]
+def get_all_associations(domain = None):
+    domain_setup = data.db.get_domain_setup(domain)
+    if domain_setup:
+        associations_json = domain_setup.associations_json
+        associations_from_json = json.loads(associations_json)
+        
+        associations = []
+        for (key, english_string) in associations_from_json:
+            lazy_eval_tuple = (key, _(english_string))
+            associations.append(lazy_eval_tuple)
+        
+        return associations
+    else:
+        return []
 
-def get_all_organizations_for_form():
-    return massage_list(getAllAssociations())
+def get_all_organizations_for_form(domain = None):
+    return massage_list(get_all_associations(domain))
 
 def getAllCertifications():
     return [("mckenzie", _(u"McKenzie Method")),
@@ -501,6 +510,7 @@ def create_untranslated_code_tuple_list():
     code_tuples_list = []
     code_tuples_list.append(get_all_categories_all_domains())
     code_tuples_list.append(get_all_specialties_all_domains())
+    code_tuples_list.append(get_all_associations_all_domains())
     code_tuples_list.append(get_all_categories_for_profile_editing())
     code_tuples_list.append(get_all_degrees())
     code_tuples_list.append(get_all_continuing_education_types())

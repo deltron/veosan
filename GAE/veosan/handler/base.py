@@ -126,10 +126,7 @@ class BaseHandler(webapp2.RequestHandler):
         kw['admin_logout_url'] = users.create_logout_url('/')
         
         # useful constants for templates
-        #kw['category_dict'] = dict(util.get_all_categories(domain))
-        #kw['specialty_dict'] = dict(util.get_all_specialties())
         kw['certification_dict'] = dict(util.getAllCertifications())
-        kw['association_dict'] = dict(util.getAllAssociations())
 
         kw['language_labels'] = util.LANGUAGE_LABELS
         kw['is_url_translatable'] = language.is_url_translatable(self.request.url)

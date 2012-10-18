@@ -127,7 +127,7 @@ set up CV Sections
 					{% if e.organization == 'other' %}
 						{{ e.other }}
 					{% else %}
-						{{ association_dict[e.organization] }}
+						{{ e.organization|code_to_string }}
 					{% endif %}
 					
 					<a href="/provider/cv/organization/{{ provider.vanity_url }}/edit/{{ e.key.urlsafe() }}" rel="tooltip" title="{{ _('Edit') }}" data-placement="right"><i class="bs-icon icon-edit"> </i></a>

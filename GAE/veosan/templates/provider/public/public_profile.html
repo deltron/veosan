@@ -190,7 +190,7 @@
 				<h4><span itemprop="memberOf"> {% if e.organization == 'other' %}
 					{{ e.other }}
 					{% else %}
-					{{ association_dict[e.organization] }}
+					{{ e.organization|code_to_string }}
 					{% endif %} </span></h4>
 				<h6>{{ macro.display_cv_years(e.start_year, e.end_year) }}</h6>
 			</li>
