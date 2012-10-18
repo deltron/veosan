@@ -81,7 +81,6 @@ class Provider(ndb.Model):
     start_year = ndb.StringProperty()
     location = ndb.StringProperty()
     credentials = ndb.StringProperty()
-    status = ndb.StringProperty(default='prospect', choices=util.provider_statuses)
     # end deprecated
     
     def get_profile_photo_image_url(self, size=None, secure_url=True):

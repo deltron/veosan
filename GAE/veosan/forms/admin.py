@@ -11,7 +11,7 @@ from custom_form import CustomForm
 import custom_validators
 from wtforms.fields.core import SelectField
 import util
-from wtforms.fields.simple import HiddenField
+from wtforms.fields.simple import HiddenField, TextAreaField
 
 
 class DomainSetupForm(CustomForm):
@@ -19,4 +19,5 @@ class DomainSetupForm(CustomForm):
         setattr(form, 'brand_name', TextField('Brand Name (lowercase)'))
         setattr(form, 'brand_name_case', TextField('Brand Name (proper case)'))
         setattr(form, 'css_file', TextField('CSS File'))
+        setattr(form, 'categories_json', TextAreaField('Categories (JSON string)'))
 

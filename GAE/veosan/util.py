@@ -8,6 +8,8 @@ import logging
 from utilities.time import get_days_of_the_week
 from datetime import time, datetime, timedelta
 from webapp2_extras.i18n import to_local_timezone
+import json
+import data
 
 DEV_SERVERS = ('localhost:8080', 'veosan-stage.appspot.com')
 PRODUCTION_SERVERS = ('www.veosan.com')
@@ -44,28 +46,41 @@ def get_all_provinces():
 def get_all_provinces_sorted():
     return massage_list(get_all_provinces())
 
-def get_all_categories():
-    return [
-            ("chiropractor", _(u"Chiropractor")),
-            ("doctor", _('Doctor')),
-            ("administration", _(u"Health Care Administration")),
-            ("osteopath", _(u"Osteopath")),
-            ("occupational_therapy", _('Occupational Therapist')),
-            ("nurse", _('Nurse')),
-            ("auxiliary_nurse", _(u"Auxiliary Nurse")),
-            ("physiotherapy", _(u"Physiotherapist")),
-            ("psychology", _(u"Psychologist")),
-            ("podiatrist", _('Podiastrist')),
-            ("kinesiology", _('Kinesiology')),
-            ("dentist", _('Dentist')),
-            ("dietitian", _('Dietitian')),
-            ("nutritionist", _('Nutritionist')),
-            ("optometrist", _('Optometrist')),
-            ("denturologist", _('Denturist')),
-        ]
 
-def get_all_categories_for_profile_editing():
-    return massage_list(get_all_categories())
+def get_all_categories(domain = None):
+    domain_setup = data.db.get_domain_setup(domain)
+    if domain_setup:
+        categories_json = domain_setup.categories_json
+        categories_from_json = json.loads(categories_json)
+        
+        categories = []
+        for (key, english_string) in categories_from_json:
+            lazy_eval_tuple = (key, _(english_string))
+            categories.append(lazy_eval_tuple)
+        
+        return categories
+    else:
+        return [
+                ("chiropractor", _(u"Chiropractor")),
+                ("doctor", _('Doctor')),
+                ("administration", _(u"Health Care Administration")),
+                ("osteopath", _(u"Osteopath")),
+                ("occupational_therapy", _('Occupational Therapist')),
+                ("nurse", _('Nurse')),
+                ("auxiliary_nurse", _(u"Auxiliary Nurse")),
+                ("physiotherapy", _(u"Physiotherapist")),
+                ("psychology", _(u"Psychologist")),
+                ("podiatrist", _('Podiastrist')),
+                ("kinesiology", _('Kinesiology')),
+                ("dentist", _('Dentist')),
+                ("dietitian", _('Dietitian')),
+                ("nutritionist", _('Nutritionist')),
+                ("optometrist", _('Optometrist')),
+                ("denturologist", _('Denturist')),
+            ]
+
+def get_all_categories_for_profile_editing(domain = None):
+    return massage_list(get_all_categories(domain))
 
 def massage_list(l):
     ''' Massage a list for display by:

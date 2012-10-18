@@ -56,7 +56,7 @@ class ProviderSignupForm2(CustomForm):
                                                      ],
                                                      filters=[custom_filters.to_lowercase]           
                                          ))
-        setattr(form, 'category', SelectField(_(u'Category'), choices=util.get_all_categories_for_profile_editing(),
+        setattr(form, 'category', SelectField(_(u'Category'), choices=util.get_all_categories_for_profile_editing(self.domain),
                                               validators=[custom_validators.DisallowNoChoiceInSelect(message=_('Please choose an option from the list. If none of the options seems to fit, please choose "Other"'))]
                                               ))
 

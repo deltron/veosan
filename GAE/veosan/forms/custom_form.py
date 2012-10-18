@@ -85,9 +85,16 @@ class CustomBooleanField(BooleanField):
             return u'True'
 
 class CustomForm(object):
-    def get_form(self, request=None, obj=None):
+    domain = None
+    
+    def get_form(self, request=None, obj=None, request_webob=None):
         class F(TranslatedBaseForm):
             pass
+        
+        if request_webob:
+            domain_without_ports = request_webob.host.split(":")[0]
+            domain_without_www = domain_without_ports.replace("www.", "")
+            self.domain = domain_without_www
         
         self._set_fields(F)
 
