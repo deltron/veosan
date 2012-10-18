@@ -19,5 +19,6 @@ class DomainSetupForm(CustomForm):
         setattr(form, 'brand_name', TextField('Brand Name (lowercase)'))
         setattr(form, 'brand_name_case', TextField('Brand Name (proper case)'))
         setattr(form, 'css_file', TextField('CSS File'))
-        setattr(form, 'categories_json', TextAreaField('Categories (JSON string)'))
+        setattr(form, 'categories_json', TextAreaField('Categories (JSON string)',  
+                                                       validators=[custom_validators.JSONValidator()]))
 

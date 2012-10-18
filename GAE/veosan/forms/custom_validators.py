@@ -9,6 +9,7 @@ import main
 from wtforms.validators import Required, Regexp
 import handler
 from handler.user_pkg import signup_handler
+import json
 
 class UniqueVanityURL(object):
     def __init__(self, message=None):
@@ -173,3 +174,23 @@ class RequiredIfCanada(Regexp):
             raise Exception('no field named "%s" in form' % self.other_field_name)
         if country_selection_field.data == "CA":
             super(RequiredIfCanada, self).__call__(form, field)
+
+
+class JSONValidator(object):
+    def __init__(self, message=None):
+        if message:
+            self.message = message
+        else:
+            self.message = "Invalid JSON String"
+            
+
+    def __call__(self, form, field):
+        json_string = field.data
+        if json_string:
+            parse_from_json = json.loads(json_string)
+            if parse_from_json:
+                pass
+            else:
+                raise ValidationError(self.message)
+
+
