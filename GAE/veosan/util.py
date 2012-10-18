@@ -78,7 +78,7 @@ def get_all_associations_all_domains():
 
 def get_all_categories(domain = None):
     domain_setup = data.db.get_domain_setup(domain)
-    if domain_setup:
+    if domain_setup and domain_setup.categories_json:
         categories_json = domain_setup.categories_json
         categories_from_json = json.loads(categories_json)
         
@@ -123,7 +123,7 @@ def add_other_at_end(l):
 # key, value
 def get_all_specialties(domain = None):
     domain_setup = data.db.get_domain_setup(domain)
-    if domain_setup:
+    if domain_setup and domain_setup.specialties_json:
         specialties_json = domain_setup.specialties_json
         specialties_from_json = json.loads(specialties_json)
         
@@ -166,7 +166,7 @@ def get_all_continuing_education_types():
 
 def get_all_associations(domain = None):
     domain_setup = data.db.get_domain_setup(domain)
-    if domain_setup:
+    if domain_setup and domain_setup.associations_json:
         associations_json = domain_setup.associations_json
         associations_from_json = json.loads(associations_json)
         
