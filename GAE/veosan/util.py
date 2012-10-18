@@ -68,24 +68,7 @@ def get_all_categories(domain = None):
         
         return categories
     else:
-        return [
-                ("chiropractor", _(u"Chiropractor")),
-                ("doctor", _('Doctor')),
-                ("administration", _(u"Health Care Administration")),
-                ("osteopath", _(u"Osteopath")),
-                ("occupational_therapy", _('Occupational Therapist')),
-                ("nurse", _('Nurse')),
-                ("auxiliary_nurse", _(u"Auxiliary Nurse")),
-                ("physiotherapy", _(u"Physiotherapist")),
-                ("psychology", _(u"Psychologist")),
-                ("podiatrist", _('Podiastrist')),
-                ("kinesiology", _('Kinesiology')),
-                ("dentist", _('Dentist')),
-                ("dietitian", _('Dietitian')),
-                ("nutritionist", _('Nutritionist')),
-                ("optometrist", _('Optometrist')),
-                ("denturologist", _('Denturist')),
-            ]
+        return []
 
 def get_all_categories_for_profile_editing(domain = None):
     return massage_list(get_all_categories(domain))
