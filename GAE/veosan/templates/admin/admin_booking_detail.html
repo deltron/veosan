@@ -52,17 +52,17 @@
 			<div class="span2">
 				{% if provider.profile_photo_blob_key == None %}
 				<img src="/assets/img/default-profile.png" width="75" height="75"
-				alt="{{ macro.display_provider_name(provider) }} - {{ category_dict[provider.category] }}"
+				alt="{{ macro.display_provider_name(provider) }} - {{ provider.category|code_to_string }}"
 				itemprop="image">
 				{% else %}
 				<img src="{{ provider.get_profile_photo_image_url(75) }}" width="75"
-				alt="{{ macro.display_provider_name(provider) }} - {{ category_dict[provider.category] }}"
+				alt="{{ macro.display_provider_name(provider) }} - {{ provider.category|code_to_string }}"
 				itemprop="image">
 				{% endif %}
 			</div>
 			<div class="span10">
 			<h4><a href="/provider/bookings/{{ provider.vanity_url }}">{{ provider.first_name }} {{ provider.last_name }}</a></h4>
-			 {{ category_dict[provider.category] }}<br>
+			 {{ provider.category|code_to_string }}<br>
 			 {{ provider.email }}<br>
 			 {{ provider.phone }}<br>
 			</div>

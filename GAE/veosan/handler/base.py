@@ -41,7 +41,7 @@ class BaseHandler(webapp2.RequestHandler):
         kw = {}
         kw['site_config'] = site_config
 
-        if site_config.error_email_enabled:
+        if site_config and site_config.error_email_enabled:
             mail.email_exception_report(self.request, exception)
             self.response.write(self.jinja2.render_template('error500.html', **kw))
         else:
@@ -126,7 +126,7 @@ class BaseHandler(webapp2.RequestHandler):
         kw['admin_logout_url'] = users.create_logout_url('/')
         
         # useful constants for templates
-        kw['category_dict'] = dict(util.get_all_categories(domain))
+        #kw['category_dict'] = dict(util.get_all_categories(domain))
         kw['specialty_dict'] = dict(util.get_all_specialties())
         kw['certification_dict'] = dict(util.getAllCertifications())
         kw['association_dict'] = dict(util.getAllAssociations())

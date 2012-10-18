@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block lead %}
-{{ category_dict[provider.category] }}
+{{ provider.category|code_to_string }}
 {% if provider.city or provider.province %}
 {{ _('in') }}
 {% if provider.city %} {{ provider.city }}{% endif %}{% if provider.city and provider.province and provider.province != 'nothing' %},
@@ -30,11 +30,11 @@
 	<div class="span2">
 		{% if provider.profile_photo_blob_key == None %}
 		<a href="/{{ provider.vanity_url }}"><img src="/assets/img/default-profile.png" width="150" height="150"
-		alt="{{ macro.display_provider_name(provider) }} - {{ category_dict[provider.category] }}"
+		alt="{{ macro.display_provider_name(provider) }} - {{ provider.category|code_to_string }}"
 		itemprop="image"></a>
 		{% else %}
 		<a href="/{{ provider.vanity_url }}"><img src="{{ provider.get_profile_photo_image_url(150) }}" width="150"
-		alt="{{ macro.display_provider_name(provider) }} - {{ category_dict[provider.category] }}"
+		alt="{{ macro.display_provider_name(provider) }} - {{ provider.category|code_to_string }}"
 		itemprop="image"></a>
 		{% endif %}
 	</div>

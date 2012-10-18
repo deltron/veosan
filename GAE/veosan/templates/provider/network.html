@@ -17,10 +17,10 @@
 			
 			<tr>
 				<td width="50"><a href="/{{ p.vanity_url }}"> {% if p.profile_photo_blob_key %} <img src="{{ p.get_profile_photo_image_url(50) }}" width="50"
-				alt="{{ macro.display_provider_name(p) }} - {{ category_dict[p.category] }}"> {% else %} <img src="/assets/img/default-profile.png" width="50" height="50"
-				alt="{{ macro.display_provider_name(p) }} - {{ category_dict[p.category] }}"> {% endif %} </a></td>
+				alt="{{ macro.display_provider_name(p) }} - {{ p.category|code_to_string }}"> {% else %} <img src="/assets/img/default-profile.png" width="50" height="50"
+				alt="{{ macro.display_provider_name(p) }} - {{ p.category|code_to_string }}"> {% endif %} </a></td>
 				<td width="150"><a href="/{{ p.vanity_url }}"><h4> {{ p.first_name }}
-				{{ p.last_name }} </h4></a> {{ category_dict[p.category] }} </td>
+				{{ p.last_name }} </h4></a> {{ p.category|code_to_string }} </td>
 
 				<td><a href="/provider/network/{{ provider.vanity_url }}/accept/{{ connection_entity.key.urlsafe() }}" class="btn btn-success">Connect</a></td>
 				<td><a href="/provider/network/{{ provider.vanity_url }}/reject/{{ connection_entity.key.urlsafe() }}" class="btn">Reject</a></td>
@@ -43,10 +43,10 @@
 
 			{{ tr|safe }}
 			<td width="50"><a href="/{{ p.vanity_url }}"> {% if p.profile_photo_blob_key %} <img src="{{ p.get_profile_photo_image_url(50) }}" width="50"
-			alt="{{ macro.display_provider_name(p) }} - {{ category_dict[p.category] }}"> {% else %} <img src="/assets/img/default-profile.png" width="50" height="50"
-			alt="{{ macro.display_provider_name(p) }} - {{ category_dict[p.category] }}"> {% endif %} </a></td>
+			alt="{{ macro.display_provider_name(p) }} - {{ p.category|code_to_string }}"> {% else %} <img src="/assets/img/default-profile.png" width="50" height="50"
+			alt="{{ macro.display_provider_name(p) }} - {{ p.category|code_to_string }}"> {% endif %} </a></td>
 			<td width="150"><a href="/{{ p.vanity_url }}"><h4> {{ p.first_name }}
-			{{ p.last_name }} </h4></a> {{ category_dict[p.category] }} </td>
+			{{ p.last_name }} </h4></a> {{ p.category|code_to_string }} </td>
 
 			{{ close_tr|safe }}
 

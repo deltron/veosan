@@ -8,7 +8,7 @@
 {% endblock %}
 {% block lead %}
 
-<span itemprop="jobTitle">{{ category_dict[provider.category] }}</span>
+<span itemprop="jobTitle">{{ provider.category|code_to_string }}</span>
 {% if provider.city or provider.province %}
 {{ _('in') }}
 <span itemprop="workLocation"> <span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress"> {% if provider.city %} <span itemprop="addressLocality">{{ provider.city }}</span>{% endif %}{% if provider.city and provider.province and provider.province != 'nothing' %},
@@ -41,11 +41,11 @@
 		<div style="width:90%; margin: 0px auto; text-align: center;">
 		{% if provider.profile_photo_blob_key == None %}
 		<img src="/assets/img/default-profile.png" width="150" height="150"
-		alt="{{ macro.display_provider_name(provider) }} - {{ category_dict[provider.category] }}"
+		alt="{{ macro.display_provider_name(provider) }} - {{ provider.category|code_to_string }}"
 		itemprop="image">
 		{% else %}
 		<img src="{{ provider.get_profile_photo_image_url(150) }}" width="150"
-		alt="{{ macro.display_provider_name(provider) }} - {{ category_dict[provider.category] }}"
+		alt="{{ macro.display_provider_name(provider) }} - {{ provider.category|code_to_string }}"
 		itemprop="image">
 		{% endif %}
 		</div>
@@ -308,10 +308,10 @@
 				<tr>
 			
 				<td width="50"><a href="/{{ p.vanity_url }}"> {% if p.profile_photo_blob_key %} <img src="{{ p.get_profile_photo_image_url(50) }}" width="50"
-				alt="{{ macro.display_provider_name(p) }} - {{ category_dict[p.category] }}"> {% else %} <img src="/assets/img/default-profile.png" width="50" height="50"
-				alt="{{ macro.display_provider_name(p) }} - {{ category_dict[p.category] }}"> {% endif %} </a></td>
+				alt="{{ macro.display_provider_name(p) }} - {{ p.category|code_to_string }}"> {% else %} <img src="/assets/img/default-profile.png" width="50" height="50"
+				alt="{{ macro.display_provider_name(p) }} - {{ p.category|code_to_string }}"> {% endif %} </a></td>
 				<td width="150"><a href="/{{ p.vanity_url }}" itemprop="knows"><h4> {{ p.first_name }}
-				{{ p.last_name }} </h4></a> {{ category_dict[p.category] }} </td>
+				{{ p.last_name }} </h4></a> {{ p.category|code_to_string }} </td>
 	
 				</tr>
 				{% endif %}
@@ -419,10 +419,10 @@
 
 			{{ tr|safe }}
 			<td width="50"><a href="/{{ p.vanity_url }}"> {% if p.profile_photo_blob_key %} <img src="{{ p.get_profile_photo_image_url(50) }}" width="50"
-			alt="{{ macro.display_provider_name(p) }} - {{ category_dict[p.category] }}"> {% else %} <img src="/assets/img/default-profile.png" width="50" height="50"
-			alt="{{ macro.display_provider_name(p) }} - {{ category_dict[p.category] }}"> {% endif %} </a></td>
+			alt="{{ macro.display_provider_name(p) }} - {{ p.category|code_to_string }}"> {% else %} <img src="/assets/img/default-profile.png" width="50" height="50"
+			alt="{{ macro.display_provider_name(p) }} - {{ p.category|code_to_string }}"> {% endif %} </a></td>
 			<td width="150"><a href="/{{ p.vanity_url }}" itemprop="knows"><h4> {{ p.first_name }}
-			{{ p.last_name }} </h4></a> {{ category_dict[p.category] }} </td>
+			{{ p.last_name }} </h4></a> {{ p.category|code_to_string }} </td>
 
 			{{ close_tr|safe }}
 

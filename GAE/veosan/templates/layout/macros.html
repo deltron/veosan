@@ -97,7 +97,7 @@ Macro to generate a provider bio
 				{{provider.last_name|first}}.
 				{% endif %}
 				{% endif %}</h3>
-				<h6>{{ category_dict[provider.category] }}</h6>
+				<h6>{{ provider.category|code_to_string }}</h6>
 
 				{% if provider.quote %}
 				<p style="font-style: italic">
@@ -157,11 +157,11 @@ Macro to display year in CV
 			<div class="span2">
 				{% if provider.profile_photo_blob_key == None %}
 				<img src="/assets/img/default-profile.png" width="75" height="75"
-				alt="{{ display_provider_name(provider) }} - {{ category_dict[provider.category] }}"
+				alt="{{ display_provider_name(provider) }} - {{ provider.category|code_to_string }}"
 				itemprop="image">
 				{% else %}
 				<img src="{{ provider.get_profile_photo_image_url(75) }}" width="75"
-				alt="{{ display_provider_name(provider) }} - {{ category_dict[provider.category] }}"
+				alt="{{ display_provider_name(provider) }} - {{ provider.category|code_to_string }}"
 				itemprop="image">
 				{% endif %}
 			</div>

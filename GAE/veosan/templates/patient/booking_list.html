@@ -37,13 +37,13 @@
 					<div class="row-fluid">
 						<div class="span3">
 							<a href="/{{ provider.vanity_url }}"> {% if provider.profile_photo_blob_key %} <img src="{{ provider.get_profile_photo_image_url(50) }}" width="50"
-							alt="{{ macro.display_provider_name(provider) }} - {{ category_dict[provider.category] }}"> {% else %} <img src="/assets/img/default-profile.png" width="50" height="50"
-							alt="{{ macro.display_provider_name(provider) }} - {{ category_dict[provider.category] }}"> {% endif %} </a>
+							alt="{{ macro.display_provider_name(provider) }} - {{ provider.category|code_to_string }}"> {% else %} <img src="/assets/img/default-profile.png" width="50" height="50"
+							alt="{{ macro.display_provider_name(provider) }} - {{ provider.category|code_to_string }}"> {% endif %} </a>
 						</div>
 						<div class="span9">
 							<a href="/{{ provider.vanity_url }}">
 							<h4> {{ provider.first_name }}
-							{{ provider.last_name }} </h4></a> {{ category_dict[provider.category] }}
+							{{ provider.last_name }} </h4></a> {{ provider.category|code_to_string }}
 						</div>
 					</div></td>
 					<td>{{ b.comments }}</td>

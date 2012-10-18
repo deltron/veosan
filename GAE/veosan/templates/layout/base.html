@@ -8,7 +8,7 @@
 			{% if provider and provider.last_name %}
 			{# show provider name in title for SEO #}
 			{{ macro.display_provider_name(provider) }}
-			- {{ category_dict[provider.category] }}
+			- {{ provider.category|code_to_string }}
 			
 			{% if domain_setup %}
 			{{ _('at') }} {{ domain_setup.brand_name_case }}
