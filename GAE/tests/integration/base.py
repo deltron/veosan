@@ -110,6 +110,24 @@ class BaseTest(unittest.TestCase):
 ["womens_health", "Women''s Health"] \
 ]'
 
+        domain_form['associations_json'] = '[ \
+["oppq", "Ordre professionnel de la physiotherapie du Quebec (OPPQ)"], \
+["acq", "Association des chiropraticiens du Québec (ACQ)"], \
+["cca", "Canadian Chiropractic Association (CCA)"], \
+["cma", "Canadian Medical Association (CMA)"], \
+["fmrq", "Fédération des médecins résidents du Québec (FMRQ)"], \
+["cpa", "Canadian Physiotherapy Association (CPA)"], \
+["campt", "Canadian Academy of Manipulative Physiotherapy (CAMPT)"], \
+["oiiq", "Ordre des infirmières et infirmiers du Québec (OIIQ)"], \
+["odq_denture", "L’Ordre des denturologistes du Québec (ODQ)"], \
+["odq", "Ordre des dentistes du Québec (ODQ)"], \
+["dc", "Dietitians of Canada (DC)"], \
+["opdq", "Ordre professionnel des diététistes du Québec (OPDQ)"], \
+["cao", "Canadian Association of Optometrists (CAO)"], \
+["aoq", "L''Association des optométristes du Québec (AOQ)"] \
+]'
+
+
         domain_form.submit()
         self.logout_admin()
     
