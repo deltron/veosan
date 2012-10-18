@@ -98,7 +98,18 @@ class BaseTest(unittest.TestCase):
         domain_form['brand_name_case'] = 'Veosan'
         domain_form['css_file'] = 'veosan.css'
         domain_form['categories_json'] = '[["chiropractor", "Chiropractor"],["doctor", "Doctor"],["administration", "Health Care Administration"],["osteopath", "Osteopath"],["occupational_therapy", "Occupational Therapist"],["nurse", "Nurse"],["auxiliary_nurse", "Auxiliary Nurse"],["physiotherapy", "Physiotherapist"],["psychology", "Psychologist"],["podiatrist", "Podiatrist"],["kinesiology", "Kinesiology"],["dentist", "Dentist"],["dietitian", "Dietitian"],["nutritionist", "Nutritionist"],["optometrist", "Optometrist"],["denturologist", "Denturist"]]'
-        
+        domain_form['specialties_json'] = '[ \
+["sports", "Sports"], \
+["geriatric", "Geriatric"], \
+["cardiology", "Cardiology"], \
+["pneumology", "Pneumology"], \
+["orthopedic", "Orthopedic"], \
+["neurology", "Neurology"], \
+["pediatric", "Pediatric"], \
+["vestibular_rehabilitation", "Vestibular Rehabilitation"], \
+["womens_health", "Women''s Health"] \
+]'
+
         domain_form.submit()
         self.logout_admin()
     

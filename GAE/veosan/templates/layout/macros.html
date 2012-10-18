@@ -83,7 +83,7 @@ Macro to generate a provider bio
 				<ul class="unstyled">
 					{% for s in provider.specialty %}
 					<li>
-						{{ specialty_dict[s] }}
+						{{ s|code_to_string }}
 					</li>
 					{% endfor %}
 				</ul>

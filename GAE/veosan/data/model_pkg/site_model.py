@@ -43,3 +43,6 @@ class DomainSetup(ndb.Model):
     brand_name_case = ndb.StringProperty()
     css_file = ndb.StringProperty()
     categories_json = ndb.JsonProperty()
+    specialties_json = ndb.JsonProperty()
+    associations_json = ndb.JsonProperty()
+    

@@ -156,7 +156,7 @@
 					{% if s.specialty == 'other' %}
 						{{ s.other }}
 					{% else %}
-						{{ specialty_dict[s.specialty] }}
+						{{ s.specialty|code_to_string }}
 					{% endif %}
 			</span>&nbsp;
 		{% endfor %}

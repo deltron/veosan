@@ -21,4 +21,8 @@ class DomainSetupForm(CustomForm):
         setattr(form, 'css_file', TextField('CSS File'))
         setattr(form, 'categories_json', TextAreaField('Categories (JSON string)',  
                                                        validators=[custom_validators.JSONValidator()]))
+        setattr(form, 'specialties_json', TextAreaField('Specialties (JSON string)',  
+                                                       validators=[custom_validators.JSONValidator()]))
+        setattr(form, 'associations_json', TextAreaField('Associations (JSON string)',  
+                                                       validators=[custom_validators.JSONValidator()]))
 

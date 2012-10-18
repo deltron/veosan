@@ -85,7 +85,7 @@ set up CV Sections
 					{% if e.specialty == 'other' %}
 						{{ e.other }}
 					{% else %}
-						{{ specialty_dict[e.specialty] }}
+						{{ e.specialty|code_to_string }}
 					{% endif %}
 
 					<a href="/provider/cv/specialties/{{ provider.vanity_url }}/edit/{{ e.key.urlsafe() }}" rel="tooltip" title="{{ _('Edit') }}" data-placement="right"><i class="bs-icon icon-edit"> </i></a></h4>

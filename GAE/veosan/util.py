@@ -55,6 +55,16 @@ def get_all_categories_all_domains():
         
         return all_categories
 
+def get_all_specialties_all_domains():
+    domain_setups = data.db.get_all_domain_setup()
+    if domain_setups:
+        all_specialties = []
+        for domain in domain_setups:
+            all_specialties.extend(get_all_specialties(domain.domain_name))
+        
+        return all_specialties
+
+
 def get_all_categories(domain = None):
     domain_setup = data.db.get_domain_setup(domain)
     if domain_setup:
@@ -100,29 +110,24 @@ def add_other_at_end(l):
 
 
 # key, value
-def get_all_specialties():
-    return [("sports", _(u"Sports")),
-            ("geriatric", _(u"Geriatric")),
-            ("cardiology", _(u"Cardiology")),
-            ("pneumology", _(u"Pneumology")),
-            ("orthopedic", _(u"Orthopedic")),
-            ("neurology", _(u"Neurology")),
-            ("pediatric", _(u"Pediatric")),
-            ("vestibular_rehabilitation", _(u"Vestibular Rehabilitation")),
-            ("womens_health", _(u"Women's Health"))
-        ]
+def get_all_specialties(domain = None):
+    domain_setup = data.db.get_domain_setup(domain)
+    if domain_setup:
+        specialties_json = domain_setup.specialties_json
+        specialties_from_json = json.loads(specialties_json)
+        
+        specialties = []
+        for (key, english_string) in specialties_from_json:
+            lazy_eval_tuple = (key, _(english_string))
+            specialties.append(lazy_eval_tuple)
+        
+        return specialties
+    else:
+        return []
 
-def get_all_specialties_for_form():
-    return massage_list(get_all_specialties())
+def get_all_specialties_for_form(domain = None):
+    return massage_list(get_all_specialties(domain))
 
-
-def getAllSpecialitiesForPatient():
-    specialty_list = massage_list(get_all_specialties())
-    specialty_list.extend([ 
-            ("dontknow", _(u"Not sure or don't know")),
-            ("noanswer", _(u"Prefer not to answer"))
-        ])
-    return specialty_list
 
 def get_all_titles():
     return [
@@ -495,6 +500,7 @@ CODE_DICT_PER_LANG = dict()
 def create_untranslated_code_tuple_list():
     code_tuples_list = []
     code_tuples_list.append(get_all_categories_all_domains())
+    code_tuples_list.append(get_all_specialties_all_domains())
     code_tuples_list.append(get_all_categories_for_profile_editing())
     code_tuples_list.append(get_all_degrees())
     code_tuples_list.append(get_all_continuing_education_types())
