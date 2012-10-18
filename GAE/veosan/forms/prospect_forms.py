@@ -28,7 +28,7 @@ class ProviderProspectForm(CustomForm):
         setattr(form, 'email', TextField(_(u'Prospect Email'), [validators.Length(min=2, message=_(u'Email required.'))]))
         setattr(form, 'first_name', TextField(_(u'First Name'), [validators.Length(min=2, message=_(u'Email required.'))]))
         setattr(form, 'last_name', TextField(_(u'Last Name'), [validators.Length(min=2, message=_(u'Email required.'))]))
-        setattr(form, 'category', SelectField(_(u'Category'), choices=util.get_all_categories_for_profile_editing(),
+        setattr(form, 'category', SelectField(_(u'Category'), choices=util.get_all_categories_for_profile_editing(self.domain),
                                               validators=[custom_validators.DisallowNoChoiceInSelect(message=_('Please choose an option from the list. If none of the options seems to fit, please choose "Other"'))]
                                               ))
 
@@ -39,7 +39,7 @@ class ProviderProspectEditForm(CustomForm):
         setattr(form, 'phone', TextField(_(u'Phone')))
         setattr(form, 'first_name', TextField(_(u'First Name'), [validators.Length(min=2, message=_(u'Email required.'))]))
         setattr(form, 'last_name', TextField(_(u'Last Name'), [validators.Length(min=2, message=_(u'Email required.'))]))
-        setattr(form, 'category', SelectField(_(u'Category'), choices=util.get_all_categories_for_profile_editing(),
+        setattr(form, 'category', SelectField(_(u'Category'), choices=util.get_all_categories_for_profile_editing(self.domain),
                                               validators=[custom_validators.DisallowNoChoiceInSelect(message=_('Please choose an option from the list. If none of the options seems to fit, please choose "Other"'))]
                                               ))
 

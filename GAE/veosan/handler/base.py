@@ -52,6 +52,12 @@ class BaseHandler(webapp2.RequestHandler):
         '''
             Common template rendering function
         '''
+                
+        # domain setup
+        domain_without_ports = self.request.host.split(":")[0]
+        domain = domain_without_www = domain_without_ports.replace("www.", "")
+        kw['domain_setup'] = db.get_domain_setup(domain_without_www)
+        
         
         # add template arguments common to all templates
         user = self.get_current_user()
@@ -120,7 +126,7 @@ class BaseHandler(webapp2.RequestHandler):
         kw['admin_logout_url'] = users.create_logout_url('/')
         
         # useful constants for templates
-        kw['category_dict'] = dict(util.get_all_categories())
+        kw['category_dict'] = dict(util.get_all_categories(domain))
         kw['specialty_dict'] = dict(util.get_all_specialties())
         kw['certification_dict'] = dict(util.getAllCertifications())
         kw['association_dict'] = dict(util.getAllAssociations())
@@ -159,12 +165,7 @@ class BaseHandler(webapp2.RequestHandler):
             kw['booking_enabled'] = site_config.booking_enabled
             kw['google_analytics_enabled'] = site_config.google_analytics_enabled
             kw['facebook_like_enabled'] = site_config.facebook_like_enabled
-        
-        # domain setup
-        domain_without_ports = self.request.host.split(":")[0]
-        domain_without_www = domain_without_ports.replace("www.", "")
-        kw['domain_setup'] = db.get_domain_setup(domain_without_www)
-        
+
         # render
                 
         # check if we have internet exploder

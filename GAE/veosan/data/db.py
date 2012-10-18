@@ -234,4 +234,6 @@ def get_domain_setup(domain):
     if domain:
         return DomainSetup.query(DomainSetup.domain_name == domain).get()
 
+def get_all_domain_setup():
+    return DomainSetup.query().fetch()
 

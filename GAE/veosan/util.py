@@ -46,6 +46,14 @@ def get_all_provinces():
 def get_all_provinces_sorted():
     return massage_list(get_all_provinces())
 
+def get_all_categories_all_domains():
+    domain_setups = data.db.get_all_domain_setup()
+    if domain_setups:
+        all_categories = []
+        for domain in domain_setups:
+            all_categories.extend(get_all_categories(domain.domain_name))
+        
+        return all_categories
 
 def get_all_categories(domain = None):
     domain_setup = data.db.get_domain_setup(domain)
@@ -503,7 +511,7 @@ CODE_DICT_PER_LANG = dict()
 
 def create_untranslated_code_tuple_list():
     code_tuples_list = []
-    code_tuples_list.append(get_all_categories())
+    code_tuples_list.append(get_all_categories_all_domains())
     code_tuples_list.append(get_all_categories_for_profile_editing())
     code_tuples_list.append(get_all_degrees())
     code_tuples_list.append(get_all_continuing_education_types())

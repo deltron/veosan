@@ -69,7 +69,7 @@ def email_booking_to_patient(handler, booking, activation_url=None):
     message = mail.EmailMessage()
     message.sender = "Veosan" + ' <' + VEOSAN_SUPPORT_ADDRESS + '>'
     message.to = to_address
-    category_label = dict(util.get_all_categories())[provider.category]
+    category_label = dict(util.get_all_categories_all_domains())[provider.category]
     message.subject = '%s - %s' % (_(u'Veosan Appointment'), _(category_label).capitalize())
     
     kw = {'booking': booking, 'activation_url': activation_url}
