@@ -61,7 +61,9 @@ class BaseTest(unittest.TestCase):
         self.handler = logging.StreamHandler(self.stream)
         self.log = logging.getLogger()
         self.log.setLevel(logging.INFO)
-        # en francais
+        
+        # set up veosan domain
+        self.populate_domain()
 
 
     def tearDown(self):
@@ -86,6 +88,20 @@ class BaseTest(unittest.TestCase):
         self.assertTrue(log_present, "Event log message missing: %s, admin=%s" % (msg, admin))
 
 
+    ## Populate domain info in database
+    def populate_domain(self):
+        self.login_as_admin()
+        domain_setup_page = self.testapp.get('/admin/domain/localhost')
+        
+        domain_form = domain_setup_page.forms['domain_form']
+        domain_form['brand_name'] = 'veosan'
+        domain_form['brand_name_case'] = 'Veosan'
+        domain_form['css_file'] = 'veosan.css'
+        domain_form['categories_json'] = '[["chiropractor", "Chiropractor"],["doctor", "Doctor"],["administration", "Health Care Administration"],["osteopath", "Osteopath"],["occupational_therapy", "Occupational Therapist"],["nurse", "Nurse"],["auxiliary_nurse", "Auxiliary Nurse"],["physiotherapy", "Physiotherapist"],["psychology", "Psychologist"],["podiatrist", "Podiatrist"],["kinesiology", "Kinesiology"],["dentist", "Dentist"],["dietitian", "Dietitian"],["nutritionist", "Nutritionist"],["optometrist", "Optometrist"],["denturologist", "Denturist"]]'
+        
+        domain_form.submit()
+        self.logout_admin()
+    
     
     ##
     ## Testbed Authentication methods
