@@ -46,4 +46,6 @@ class DomainSetup(ndb.Model):
     specialties_json = ndb.JsonProperty()
     specialties_display = ndb.BooleanProperty()
     associations_json = ndb.JsonProperty()
+    certifications_display = ndb.BooleanProperty()
+    certifications_json = ndb.JsonProperty()
     

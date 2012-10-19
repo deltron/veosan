@@ -26,4 +26,7 @@ class DomainSetupForm(CustomForm):
                                                        validators=[custom_validators.JSONValidator()]))
         setattr(form, 'associations_json', TextAreaField('Associations (JSON string)',  
                                                        validators=[custom_validators.JSONValidator()]))
+        setattr(form, 'certifications_display', BooleanField('Display Certifications'))
+        setattr(form, 'certifications_json', TextAreaField('Certifications (JSON string)',  
+                                                       validators=[custom_validators.JSONValidator()]))
 

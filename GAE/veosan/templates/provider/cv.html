@@ -140,6 +140,7 @@ set up CV Sections
 		</ul>
 		<a data-toggle="modal" href="#organization_modal" class="btn btn-primary">{{ _('Add Organization Membership') }}</a>
 
+		{% if domain_setup and domain_setup.certifications_display %}
 		<br>
 		<br>
 		<h3>{{ _('Certifications') }}</h3>
@@ -160,7 +161,7 @@ set up CV Sections
 			{% endfor %}
 		</ul>
 		<a data-toggle="modal" href="#certification_modal" class="btn btn-primary">{{ _('Add Certification') }}</a>
-
+		{% endif %}
 	</div>
 </div>
 
