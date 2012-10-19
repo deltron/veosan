@@ -75,6 +75,7 @@ set up CV Sections
 			{% endfor %}
 		</ul>
 		<a data-toggle="modal" href="#experience_modal" class="btn btn-primary">{{ _('Add Experience') }}</a>
+		{% if domain_setup and domain_setup.specialties_display %}
 		<br>
 		<br>
 		<h3>{{ _('Specialties') }}</h3>
@@ -93,6 +94,7 @@ set up CV Sections
 			{% endfor %}
 		</ul>
 		<a data-toggle="modal" href="#specialties_modal" class="btn btn-primary">{{ _('Add Specialty') }}</a>
+		{% endif %}
 	</div>
 	<div class="span6">
 		<h3>{{ _('Continuing Education') }}</h3>

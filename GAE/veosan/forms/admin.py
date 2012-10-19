@@ -9,7 +9,7 @@ import custom_filters
 # veo
 from custom_form import CustomForm
 import custom_validators
-from wtforms.fields.core import SelectField
+from wtforms.fields.core import SelectField, BooleanField
 import util
 from wtforms.fields.simple import HiddenField, TextAreaField
 
@@ -21,6 +21,7 @@ class DomainSetupForm(CustomForm):
         setattr(form, 'css_file', TextField('CSS File'))
         setattr(form, 'categories_json', TextAreaField('Categories (JSON string)',  
                                                        validators=[custom_validators.JSONValidator()]))
+        setattr(form, 'specialties_display', BooleanField('Display Specialties'))
         setattr(form, 'specialties_json', TextAreaField('Specialties (JSON string)',  
                                                        validators=[custom_validators.JSONValidator()]))
         setattr(form, 'associations_json', TextAreaField('Associations (JSON string)',  

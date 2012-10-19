@@ -75,7 +75,6 @@ def get_all_associations_all_domains():
         
         return all_associations
 
-
 def get_all_categories(domain = None):
     domain_setup = data.db.get_domain_setup(domain)
     if domain_setup and domain_setup.categories_json:
