@@ -457,7 +457,7 @@ msgid "Every day we promote our members online, to doctors and participants in g
 msgstr "Nous faisons la promotion de nos membres en ligne envers les docteurs et les participant à des assurances groupes. Mettez nos forces à contribution."
 
 #: /Users/phil/git/veosan/GAE/veosan/templates/index.html:65
-msgid "Get the convenience of online booking so new and recurring patients can book online in seconds."
+msgid "Get the convenience of online booking so new and recurring patients can make appointments in seconds."
 msgstr "Prendre rendez-vous en ligne est plus pratique pour vous… et pour vos patients."
 
 #: /Users/phil/git/veosan/GAE/veosan/templates/index.html:62
