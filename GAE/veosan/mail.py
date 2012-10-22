@@ -46,8 +46,6 @@ def render_booking_email_body(jinja2, template_filename, booking, activation_url
 
     
     kw = {'booking': booking, 'provider': booking.provider.get(), 'patient': booking.patient.get(), 'activation_url': activation_url}
-    kw['certification_dict'] = dict(util.getAllCertifications())
-
     
     return jinja2.render_template(template_filename, **kw)
     

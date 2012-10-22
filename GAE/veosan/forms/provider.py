@@ -75,7 +75,7 @@ class ProviderOrganizationForm(CustomForm):
 class ProviderCertificationForm(CustomForm):
     def _set_fields(self, form):        
         setattr(form, 'certification', SelectField(_(u'Certification Title'), 
-                                                    choices=util.get_all_certifications_for_form(),
+                                                    choices=util.get_all_certifications_for_form(self.domain),
                                                     validators=[custom_validators.DisallowNoChoiceInSelect(message=_('Please choose an option from the list. If none of the options seems to fit, please choose "Other" and write in the field below.'))]
                                             ))
         setattr(form, 'other', TextField(_(u'Other'), 

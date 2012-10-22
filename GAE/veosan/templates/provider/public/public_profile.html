@@ -224,7 +224,7 @@
 				<h4> {% if e.certification == 'other' %}
 				{{ e.other }}
 				{% else %}
-				{{ certification_dict[e.certification] }}
+				{{ e.certification|code_to_string }}
 				{% endif %} </h4>
 				<h6>{{ e.year }} </h6>
 			</li>

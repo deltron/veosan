@@ -75,6 +75,16 @@ def get_all_associations_all_domains():
         
         return all_associations
 
+def get_all_certifications_all_domains():
+    domain_setups = data.db.get_all_domain_setup()
+    if domain_setups:
+        all_certifications = []
+        for domain in domain_setups:
+            all_certifications.extend(get_all_certifications(domain.domain_name))
+        
+        return all_certifications
+
+
 def get_all_categories(domain = None):
     domain_setup = data.db.get_domain_setup(domain)
     if domain_setup and domain_setup.categories_json:
@@ -181,13 +191,23 @@ def get_all_associations(domain = None):
 def get_all_organizations_for_form(domain = None):
     return massage_list(get_all_associations(domain))
 
-def getAllCertifications():
-    return [("mckenzie", _(u"McKenzie Method")),
-            ("art", _(u"Active Release Therapy (ART)")),
-        ]
+def get_all_certifications(domain = None):
+    domain_setup = data.db.get_domain_setup(domain)
+    if domain_setup and domain_setup.specialties_json:
+        certifications_json = domain_setup.certifications_json
+        certifications_from_json = json.loads(certifications_json)
+        
+        specialties = []
+        for (key, english_string) in certifications_from_json:
+            lazy_eval_tuple = (key, _(english_string))
+            specialties.append(lazy_eval_tuple)
+        
+        return specialties
+    else:
+        return []
 
-def get_all_certifications_for_form():
-    return massage_list(getAllCertifications())
+def get_all_certifications_for_form(domain = None):
+    return massage_list(get_all_certifications(domain))
 
 
 def getAllSites():

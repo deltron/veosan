@@ -151,7 +151,7 @@ set up CV Sections
 					{% if e.certification == 'other' %}
 						{{ e.other }}
 					{% else %}
-						{{ certification_dict[e.certification] }}
+						{{ e.certification|code_to_string }}
 					{% endif %}
 
 					<a href="/provider/cv/certification/{{ provider.vanity_url }}/edit/{{ e.key.urlsafe() }}" rel="tooltip" title="{{ _('Edit') }}" data-placement="right"><i class="bs-icon icon-edit"> </i></a>
