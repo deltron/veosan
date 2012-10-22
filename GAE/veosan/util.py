@@ -193,16 +193,16 @@ def get_all_organizations_for_form(domain = None):
 
 def get_all_certifications(domain = None):
     domain_setup = data.db.get_domain_setup(domain)
-    if domain_setup and domain_setup.specialties_json:
+    if domain_setup and domain_setup.certifications_json:
         certifications_json = domain_setup.certifications_json
         certifications_from_json = json.loads(certifications_json)
         
-        specialties = []
+        certifications = []
         for (key, english_string) in certifications_from_json:
             lazy_eval_tuple = (key, _(english_string))
-            specialties.append(lazy_eval_tuple)
+            certifications.append(lazy_eval_tuple)
         
-        return specialties
+        return certifications
     else:
         return []
 
