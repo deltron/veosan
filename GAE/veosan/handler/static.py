@@ -87,16 +87,27 @@ class DomainDispatcher(BaseHandler):
 
     
 class IndexHandler(BaseHandler):
-    def get(self):
-        self.render_template('index.html')
+    def get_index_file(self):    
+        domain_without_ports = self.request.host.split(":")[0]
+        domain = domain_without_ports.replace("www.", "")
+        domain_setup = db.get_domain_setup(domain)
+        index_file = 'index.html'
+        if domain_setup and domain_setup.index_file:
+            index_file = domain_setup.index_file
+            
+        return index_file
+
+    
+    def get(self):        
+        self.render_template(self.get_index_file())
         
     def get_en(self):
         self.set_language('en')
-        self.render_template('index.html')
+        self.render_template(self.get_index_file())
 
     def get_fr(self):
         self.set_language('fr')
-        self.render_template('index.html')
+        self.render_template(self.get_index_file())
 
 
 

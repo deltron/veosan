@@ -530,6 +530,7 @@ def create_untranslated_code_tuple_list():
     code_tuples_list.append(get_all_categories_all_domains())
     code_tuples_list.append(get_all_specialties_all_domains())
     code_tuples_list.append(get_all_associations_all_domains())
+    code_tuples_list.append(get_all_certifications_all_domains())
     code_tuples_list.append(get_all_categories_for_profile_editing())
     code_tuples_list.append(get_all_degrees())
     code_tuples_list.append(get_all_continuing_education_types())

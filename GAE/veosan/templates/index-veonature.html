@@ -1,0 +1,48 @@
+{% extends "/layout/base.html" %}
+
+{% set active_page = 'index' %}
+
+{% block subhead %}{% endblock %}
+
+{% block lead %}
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+	<div class="span9 offset1" style="text-align: center">
+		<img src="/assets/img/stock-photo-16885846-smiling-woman-receiving-massage-at-the-spa-resort.jpeg">
+		<img src="/assets/img/stock-photo-18030233-masseur-stretching-woman-s-arm.jpeg">
+	</div>
+</div>
+<br>
+<div class="row">
+	<div class="span3 offset1">
+		<h2>{{ _('Affordable') }}</h2><h3>{{ _('Make the switch to online booking today for just $9.99 per month.') }}</h3>
+	</div>
+	<div class="span3">
+		<h2>{{ _('Convenient') }}</h2><h3>{{ _('Get the convenience of online booking so new and recurring patients can make appointments in seconds.') }}</h3>
+	</div>
+	<div class="span3">
+		<h2>{{ _('Marketing') }}</h2><h3>{{ _('Get a professional profile that sets you apart and attracts new clients to your business.') }}</h3>
+	</div>
+</div>
+<br><br>
+<div class="row">
+	<div class="span9 offset1" style="text-align: center">
+			<em>{{ _('No commitments, set up a free profile and activate online scheduling at any time.') }}</em>
+			<br>
+			<br>
+			<a href="/{{ lang }}/signup/provider/full" class="btn btn-large btn-success" style="font-size:20px" > {{ _("Sign up now") }} </a>
+			
+			<a href="/{{ lang }}/signup/provider/preview" class="btn btn-large btn-primary" style="font-size:20px" > {{ _("Free preview") }} </a>
+			<br>
+			<br>
+			<a href="/{{ lang }}/signup/patient" > {{ _("I'm a patient looking for a specialist") }} </a>
+	</div>
+</div>
+
+{% endblock content %}
+
+{% block extra_javascript %}
+{% endblock extra_javascript %}
