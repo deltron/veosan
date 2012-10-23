@@ -2,6 +2,8 @@
 import logging
 # GAE
 from google.appengine.api import users
+from webapp2_extras import security 
+
 # veo
 from base import BaseHandler
 import data.db as db
@@ -99,7 +101,19 @@ class ProviderForceFriendsHandler(ProviderAdminBaseHandler):
 
         self.redirect('/admin/provider/admin/' + provider.vanity_url)
 
-
+class ProviderChangePasswordHandler(ProviderAdminBaseHandler):
+    def post(self, vanity_url=None):
+        provider = db.get_provider_from_vanity_url(vanity_url)
+        new_password = self.request.get('password')
+        if provider and new_password:
+            user = db.get_user_from_email(provider.email)
+            if user:
+                # hash password (same as passing password_raw to user_create)
+                password_hash = security.generate_password_hash(new_password, length=12)    
+                user.password = password_hash
+                user.put()
+                
+        self.redirect('/admin/provider/admin/' + provider.vanity_url)
 
 class ProviderEventLogHandler(ProviderAdminBaseHandler):
     @admin_required

@@ -41,7 +41,19 @@
 				</button>
 			</fieldset>
 		</form>
+		
+		<br>
+		<br>
+		<h3>Set New Password</h3>
+		<form method="post" action="/admin/provider/changepassword/{{ provider.vanity_url }}" class="form-inline" id="change_password">
+			<fieldset>
+				<input type="text" name="password" id="password" placeholder="New Password">
 
+				<button type="submit" class="btn btn-success">
+					Change
+				</button>
+			</fieldset>
+		</form>
 	</div>
 
 	<div class="span6">

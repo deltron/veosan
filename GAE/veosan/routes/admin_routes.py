@@ -57,6 +57,9 @@ def get_routes():
                        # custom domain
                        Route('/forcefriends/<vanity_url>', provider_admin.ProviderForceFriendsHandler),
                                         
+                       # change password
+                       Route('/changepassword/<vanity_url>', provider_admin.ProviderChangePasswordHandler),
+            
                        # logs
                        Route('/logs/<vanity_url>', provider_admin.ProviderEventLogHandler),
             
