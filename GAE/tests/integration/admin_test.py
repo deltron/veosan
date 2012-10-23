@@ -80,6 +80,57 @@ class AdminTest(BaseTest):
         response.mustcontain('Profil')
         response.mustcontain('Adresse')
 
+    def test_admin_change_password_for_provider(self):
+        # setup a provider
+        self.self_signup_provider()
+        # login as admin
+        self.login_as_admin()
+        # get the provider key
+        provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
+        # request the admin page
+        response = self.testapp.get('/admin/provider/admin/%s' % provider.vanity_url)
+        
+        password_form = response.forms['change_password']
+        password_form['password'] = 'brocolli'
+        password_form.submit()
+        
+        self.logout_admin()
+        self.logout_provider()
+        
+        # login with old password
+        login_page = self.testapp.get('/login')
+        
+        is_french = 'Connexion' in login_page
+        is_english = 'Login' in login_page
+        
+        if is_english:
+            login_page.mustcontain(u"Login")
+        elif is_french:
+            login_page.mustcontain(u"Connexion")
+            
+        login_form = login_page.forms[0]
+        login_form['email'] = self._TEST_PROVIDER_EMAIL
+        login_form['password'] = self._TEST_PROVIDER_PASSWORD
+        login_error = login_form.submit()
+        
+        login_error.mustcontain("Login failed. Try again.")
+        
+        login_form = login_error.forms[0]
+        login_form['email'] = self._TEST_PROVIDER_EMAIL
+        login_form['password'] = 'brocolli'
+        login_success = login_form.submit().follow()
+
+        # default page for provider after login is welcome
+        # (in french because profile is set to french)
+        login_success.mustcontain("Profil")
+        login_success.mustcontain(self._TEST_PROVIDER_EMAIL)
+        login_success.mustcontain("Bienvenue!")
+        login_success.mustcontain("Comment naviguer sur le site")        
+
+        # check the event log
+        #self.assert_msg_in_log("Provider Logged In")
+
+        return response
 
 
 if __name__ == "__main__":
