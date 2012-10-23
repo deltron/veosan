@@ -10,13 +10,14 @@ import data.db as db
 from forms.provider import ProviderStatusForm
 from handler.auth import admin_required
 from data.model_pkg.network_model import ProviderNetworkConnection
+import urlparse
 
 class ProviderAdminBaseHandler(BaseHandler):
     
     @staticmethod
     def render_administration(handler, provider, **kw):
-        status_form = ProviderStatusForm(obj=provider)
-        handler.render_template('provider/administration.html', provider=provider, form=status_form, **kw)
+        user_from_provider = db.get_user_from_email(provider.email) 
+        handler.render_template('provider/administration.html', provider=provider, user_from_provider=user_from_provider, **kw)
     
      
 
@@ -114,6 +115,23 @@ class ProviderChangePasswordHandler(ProviderAdminBaseHandler):
                 user.put()
                 
         self.redirect('/admin/provider/admin/' + provider.vanity_url)
+
+class ProviderGenerateClaimHandler(ProviderAdminBaseHandler):
+    def get(self, vanity_url=None):
+        provider = db.get_provider_from_vanity_url(vanity_url)
+        user = db.get_user_from_email(provider.email)
+        token = self.create_token(user, 'set_new_password')
+        
+        # claim url
+        url_obj = urlparse.urlparse(self.request.url)
+        claim_url = urlparse.urlunparse((url_obj.scheme, url_obj.netloc, '/claim/' + token, '', '', ''))
+        
+        user.claim_url = claim_url
+        user.put()
+
+        self.redirect('/admin/provider/admin/' + provider.vanity_url)
+
+
 
 class ProviderEventLogHandler(ProviderAdminBaseHandler):
     @admin_required

@@ -1,0 +1,33 @@
+{% extends "/layout/base.html" %}
+
+{% block subhead %}
+	{{ _('Select your password') }}
+{% endblock %}
+{% block lead %} {{ _('The first step is to choose a new password') }}  {% endblock %}
+
+{% block content %}
+
+
+{# Invitation to choose a password and create a profile #}
+<div class="row">
+	<div class="span12">
+		<form method="post" action="/user/password/{{ token }}" class="form-horizontal">
+			<!-- email display as read-only -->
+			<fieldset>
+<div class="control-group ">
+	<label class="control-label" for="email">{{ _('Email') }}</label>
+	<div class="controls">
+		<input class="input-xlarge" id="email" name="email" type="text" value="{{ email }}" disabled="disabled">
+	</div>
+</div>
+				{{ macro.makeStandardForm() }}
+			</fieldset>
+			<div class="form-actions">
+				<button type="submit" class="btn btn-primary">
+					{{ _('Save') }}
+				</button>
+			</div>
+		</form>
+	</div>
+</div>
+{% endblock %}

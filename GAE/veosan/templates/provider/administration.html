@@ -54,6 +54,15 @@
 				</button>
 			</fieldset>
 		</form>
+		
+		<br>
+		<br>
+		<h3>Generate Claim URL</h3>
+		
+		{% if user_from_provider %}
+			{{ user_from_provider.claim_url }}
+		{% endif %}
+		<a class="btn btn-success" href="/admin/provider/generateclaim/{{ provider.vanity_url }}">Generate</a>
 	</div>
 
 	<div class="span6">

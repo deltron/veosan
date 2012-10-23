@@ -7,7 +7,7 @@ from handler.booking_pkg import display_schedule_handler,\
     booking_details_handler
 from handler.user_pkg.user_base_handler import InviteHandler
 from handler.user_pkg.password_handler import PasswordHandler,\
-    ResetPasswordHandler
+    ResetPasswordHandler, ClaimHandler
 import util
 
 
@@ -60,6 +60,7 @@ def create_routes():
     
     routes.extend([# invitations
                Route('/invite/<invite_token>', InviteHandler),
+               Route('/claim/<token>', ClaimHandler),
 
                # user
                PathPrefixRoute('/user', [

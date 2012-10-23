@@ -59,7 +59,10 @@ def get_routes():
                                         
                        # change password
                        Route('/changepassword/<vanity_url>', provider_admin.ProviderChangePasswordHandler),
-            
+                        
+                       # change password
+                       Route('/generateclaim/<vanity_url>', provider_admin.ProviderGenerateClaimHandler),
+
                        # logs
                        Route('/logs/<vanity_url>', provider_admin.ProviderEventLogHandler),
             

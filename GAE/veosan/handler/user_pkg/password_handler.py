@@ -29,13 +29,23 @@ class PasswordHandler(UserBaseHandler):
             # login with new password
             self.login_user(user.get_email(), password)
                
-            # clear the password reset key to prevent further shenanigans
-            self.delete_token(token, 'reset')
+            # clear the tokens to prevent further shenanigans
+            provider = db.get_provider_from_user(user)
             
+            redirect_url = None
+            if user.resetpassword_token:
+                self.delete_token(token, 'reset')
+                redirect_url = '/provider/message/reset/' + provider.vanity_url
+            
+            elif user.claim_url:
+                self.delete_token(token)
+                redirect_url = '/provider/welcome/' + provider.vanity_url
+            
+            
+            # redirect patient or provider
             if auth.PROVIDER_ROLE in user.roles:
-                provider = db.get_provider_from_user(user)
-                self.redirect('/provider/message/reset/' + provider.vanity_url)
-                self.log_event(user, "Password reset for user")
+                self.redirect(redirect_url)
+                self.log_event(user, "User claimed their profile")
             
             elif auth.PATIENT_ROLE in user.roles:
                 patient = db.get_patient_from_user(user)
@@ -46,8 +56,6 @@ class PasswordHandler(UserBaseHandler):
             self.render_template('user/password.html', form=password_form, token=token)
 
         
-
-
 class ResetPasswordHandler(UserBaseHandler):
     def get(self, token=None):
         ''' Someone coming back with a password reset token '''
@@ -93,3 +101,24 @@ class ResetPasswordHandler(UserBaseHandler):
             else:
                 logging.info("(ProviderResetPasswordHandler.post) Can't reset password, no provider exists for email: %s" % email)
                 self.render_login()
+
+
+class ClaimHandler(UserBaseHandler):
+    def get(self, token=None):
+        ''' Someone coming back with a password set token '''
+        #parse URL to get password reset key
+        if token:
+            user = self.validate_token(token)
+            if user:            
+                # got a good user for that password reset token, show the password form
+                email = user.get_email()
+                password_form = PasswordForm().get_form()         
+                self.render_template('user/claim.html', form=password_form, email=email, token=token)
+            else:
+                # no user found for password reset key, send them to the login page
+                error_message = _("Sorry, your link is expired, please try again.")
+                logging.info("(ProviderResetPasswordHandler.get) can't find anyone for that password reset link: %s" % token)
+                self.render_login(error_message=error_message)
+        else:
+            logging.info('(ProviderResetPasswordHandler.get) No password reset key in request')
+        

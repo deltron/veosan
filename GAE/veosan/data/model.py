@@ -29,7 +29,8 @@ class User(Webapp2AuthUser):
     
     signup_token = ndb.StringProperty()
     resetpassword_token = ndb.StringProperty()
-       
+    claim_url = ndb.StringProperty()
+    
     confirmed = ndb.BooleanProperty()
 
     language = ndb.StringProperty(default='en')
