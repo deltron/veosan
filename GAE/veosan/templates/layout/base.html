@@ -20,7 +20,14 @@
 				{{ page_title }}
 			{% else %}
 			{# default title #}
+			
+			{% if domain_setup %}
+			{{ domain_setup.brand_name_case }} - {{ _('Find a Health Care Professional') }}
+
+			{% else %}
 			{{ _('Veosan! Find a Health Care Professional') }}
+			{% endif %}
+
 			{% endif %} </title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta name="description" content="">
