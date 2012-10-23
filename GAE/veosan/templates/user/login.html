@@ -1,7 +1,17 @@
 {% extends "/layout/base.html" %}
-
+{% if domain_setup %}
+{% set page_title = domain_setup.brand_name_case + ' - ' + _('Login') %}
+			{% else %}
 {% set page_title = 'Veosan - ' + _('Login') %}
-{% block subhead %} {{ _('Login to Veosan')}} {% endblock %}
+			{% endif %}
+			
+{% block subhead %} {{ _('Login to ') }} 
+			{% if domain_setup %}
+			{{ domain_setup.brand_name_case }}
+			{% else %}
+			{{ _('at Veosan') }}
+			{% endif %}
+ {% endblock %}
 {% block lead %} {{ _('Enjoy the benefits of being a member today!') }} {% endblock %}
 
 {% block content %}
