@@ -231,6 +231,9 @@ msgstr "Connexion"
 msgid "Login to Veosan"
 msgstr "Connexion à Veosan"
 
+msgid "Login to "
+msgstr "Connexion à "
+
 msgid "Logout"
 msgstr "Déconnexion"
 
