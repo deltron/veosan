@@ -133,6 +133,46 @@ class AdminTest(BaseTest):
         return response
 
 
+    def test_admin_generate_claim_url_for_provider(self):
+        # setup a provider
+        self.self_signup_provider()
+        # login as admin
+        self.login_as_admin()
+        # get the provider key
+        provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
+        # request the admin page
+        response = self.testapp.get('/admin/provider/admin/%s' % provider.vanity_url)
+                
+        # generate a claim url
+        response = self.testapp.get('/admin/provider/generateclaim/%s' % provider.vanity_url)
+        response = response.follow()
+        
+        user = db.get_user_from_email(self._TEST_PROVIDER_EMAIL)
+        
+        response.mustcontain(user.claim_url)
+
+        self.logout_admin()
+        self.logout_provider()
+        
+        claim_page = self.testapp.get(user.claim_url)
+                    
+        login_form = claim_page.forms[0]
+        login_form['email'] = self._TEST_PROVIDER_EMAIL
+        login_form['password'] = self._TEST_PROVIDER_PASSWORD
+        login_form['password_confirm'] = self._TEST_PROVIDER_PASSWORD
+        
+        login_success = login_form.submit().follow()
+
+        # default page for provider after login is welcome
+        # (in french because profile is set to french)
+        login_success.mustcontain("Profil")
+        login_success.mustcontain(self._TEST_PROVIDER_EMAIL)
+        login_success.mustcontain("Bienvenue!")
+        login_success.mustcontain("Comment naviguer sur le site")        
+
+
+
+
 if __name__ == "__main__":
     unittest.main()
     
