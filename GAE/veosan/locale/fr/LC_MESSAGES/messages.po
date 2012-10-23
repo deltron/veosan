@@ -593,8 +593,11 @@ msgstr "Bienvenue!"
 msgid "Welcome"
 msgstr "Bienvenue"
 
-msgid "Hi there, thanks for signing up to Veosan, the best place to connect with patients. Here's a quick tour to get you started!"
-msgstr "Bonjour, merci de vous être inscris à Veosan, le meilleur endroit pour établir des connexions avec des patients. Voici un petit tour pour débuter."
+msgid "Hi there, thanks for signing up to "
+msgstr "Bonjour, merci de vous être inscris à "
+
+msgid ", the best place to connect with patients. Here's a quick tour to get you started!"
+msgstr ", le meilleur endroit pour établir des connexions avec des patients. Voici un petit tour pour débuter."
 
 msgid "How to Navigate the Site"
 msgstr "Comment naviguer sur le site"

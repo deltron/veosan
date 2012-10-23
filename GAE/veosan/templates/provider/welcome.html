@@ -3,7 +3,15 @@
 {% set active_page = "welcome" %}
 
 {% block subhead %}{{ _('Welcome!') }}{% endblock %}
-{% block lead %}{{ _("Hi there, thanks for signing up to Veosan, the best place to connect with patients. Here's a quick tour to get you started!") }}{% endblock %}
+{% block lead %}{{ _("Hi there, thanks for signing up to ") }}
+
+			{% if domain_setup %}
+			{{ domain_setup.brand_name_case }}
+			{% else %}
+			{{ _('Veosan') }}
+			{% endif %}
+
+{{ _(", the best place to connect with patients. Here's a quick tour to get you started!") }}{% endblock %}
 
 {% block content %}
 
