@@ -47,8 +47,8 @@ msgstr "Pour les patients"
 msgid "For Health Care Specialists"
 msgstr "Pour les spécialistes de la santé"
 
-msgid "Veosan is now open to all health care professionals."
-msgstr "Veosan est maintenant ouvert à tous les professionnels de la santé."
+msgid " is now open to all health care professionals."
+msgstr " est maintenant ouvert à tous les professionnels de la santé."
 
 msgid "Sign up below to get started today!"
 msgstr "Inscrivez-vous ci-dessous pour commencer aujourd'hui!"

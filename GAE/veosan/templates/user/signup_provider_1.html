@@ -25,7 +25,14 @@
 	<div class="span6">
 		<div class="well">
 			<h1>{{ _('For Professionals') }}</h1>
-			<h4>{{ _('Veosan is now open to all health care professionals.') }} </h4>
+			<h4>
+			{% if domain_setup %}
+			{{ domain_setup.brand_name_case }}
+			{% else %}
+			{{ _('Veosan') }}
+			{% endif %}
+
+				{{ _(' is now open to all health care professionals.') }} </h4>
 			<h4>{{ _('Sign up below to get started today!') }} </h4>
 			<br>
 			<form method="post" action="/{{ lang }}/signup/provider" class="form-horizontal" id="provider_signup_form">
