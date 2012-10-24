@@ -94,3 +94,10 @@ class Booking(ndb.Model):
     email_sent_to_patient = ndb.BooleanProperty(default=False)
     email_sent_to_provider = ndb.BooleanProperty(default=False)
     
+    
+class ProviderService(ndb.Model):
+    provider = ndb.KeyProperty(kind='Provider')
+    description = ndb.StringProperty()
+    cost = ndb.FloatProperty()
+    duration = ndb.IntegerProperty()
+    

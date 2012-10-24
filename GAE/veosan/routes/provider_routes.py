@@ -50,7 +50,13 @@ def get_routes():
                            Route('/<vanity_url>/<operation>/<key>', schedule_handler.ProviderScheduleHandler),
                            
                        ]),
-                                                                                                                                                              
+                    
+                       # Appointment Types
+                       PathPrefixRoute('/service', [
+                           Route('/<vanity_url>/<operation>', profile_handler.ProviderServiceHandler),
+                           Route('/<vanity_url>/<operation>/<key>', profile_handler.ProviderServiceHandler),
+                       ]),
+                                                                                                                                                  
                        # Address
                        PathPrefixRoute('/address', [
                            Route('/<vanity_url>', address_handler.ProviderEditAddressHandler),

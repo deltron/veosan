@@ -173,6 +173,16 @@ def get_all_continuing_education_types():
             ("committee", _(u"Committee")),
         ]
 
+def get_all_durations():
+    return [(15, _(u"15 minutes")),
+            (30, _(u"30 minutes")),
+            (45, _(u"45 minutes")),
+            (60, _(u"60 minutes")),
+            (75, _(u"75 minutes")),
+            (90, _(u"90 minutes")),
+        ]
+
+
 def get_all_associations(domain = None):
     domain_setup = data.db.get_domain_setup(domain)
     if domain_setup and domain_setup.associations_json:

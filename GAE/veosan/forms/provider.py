@@ -20,6 +20,12 @@ class ProviderProfileForm(CustomForm):
         setattr(form, 'spoken_languages', MultiCheckboxField(_(u'Spoken Languages'), choices=util.get_all_spoken_languages()))
         setattr(form, 'profile_language', SelectField(_(u'Default Language'), choices=util.get_all_profile_languages()))
 
+class ProviderServiceForm(CustomForm):
+    def _set_fields(self, form):
+        setattr(form, 'description', TextField(_(u'Description')))
+        setattr(form, 'cost', FloatField(_(u'Cost')))
+        setattr(form, 'duration', SelectField(_(u'Duration'), coerce=int, choices=util.get_all_durations()))
+
 
 
 # CV

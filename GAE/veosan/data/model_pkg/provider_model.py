@@ -8,7 +8,8 @@ from data.model_pkg.network_model import ProviderNetworkConnection
 import utilities
 from webapp2_extras.i18n import to_utc
 from data.model_pkg.site_model import SiteLog
-from data.model_pkg.booking_schedule_model import Schedule, Booking
+from data.model_pkg.booking_schedule_model import Schedule, Booking,\
+    ProviderService
 
 class ProviderAccount(ndb.Model):
     created_on = ndb.DateTimeProperty(auto_now_add=True)
@@ -157,6 +158,8 @@ class Provider(ndb.Model):
         all_future_bookings = Booking.query(Booking.provider == self.key, Booking.datetime >= yesterday_at_midnight).order(Booking.datetime).fetch()
         return all_future_bookings
 
+    def get_provider_services(self):
+        return ProviderService.query(ProviderService.provider == self.key)
     
     ###################################################################
     # CV

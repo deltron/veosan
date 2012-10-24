@@ -121,6 +121,19 @@
 				</table>
 			</div>
 			{% endif %}
+			
+			<div style="width: 60%; margin: 0px auto;">
+				<h3>{{ _('Service Setup') }}</h3>
+				<ul class="unstyled">
+					{% for e in provider.get_provider_services() %}
+					<li>
+						<h4>{{ e.description }} <a href="/provider/service/{{ provider.vanity_url }}/edit/{{ e.key.urlsafe() }}" rel="tooltip" title="{{ _('Edit') }}" data-placement="right"><i class="bs-icon icon-edit"> </i></a></h4>
+						{{ e.duration }} {{ _(' minutes') }} - {{ "$%.2f"|format(e.cost) }}
+					</li>
+					{% endfor %}
+				</ul>
+				<a data-toggle="modal" href="#service_modal" class="btn btn-primary">{{ _('Add Service') }}</a>
+			</div>
 		</div>
 	</div>
 	<div class="row">
@@ -151,4 +164,54 @@
 		</div>
 	</div>
 </form>
+
+<div class="modal hide" id="service_modal" style="display: none;">
+	<div class="modal-header">
+		<a class="close" data-dismiss="modal">×</a>
+
+		<h3>{{ _('Appointment Setup') }}</h3>
+	</div>
+	{% if edit == 'service' %}
+	{% set post_url = '/provider/service/' + provider.vanity_url + '/edit/' + edit_key %}
+	{% else %}
+	{% set post_url = '/provider/service/' + provider.vanity_url + '/add' %}
+	{% endif %}
+	<form method="post" action="{{ post_url }}" class="form-horizontal" id="{{ section }}_form">
+		<div class="modal-body">
+			{{ macro.make_standard_form(service_form) }}
+		</div>
+
+		<div class="modal-footer">
+			{% if edit == 'service' %}
+			<a class="btn btn-danger pull-left" href="/provider/service/{{ provider.vanity_url }}/delete/{{ edit_key }}"> {{ _('Delete') }} </a>
+			{% endif %}
+
+			<button type="submit" class="btn btn-primary">
+				{{ _('Save') }}
+			</button>
+			<a class="btn" href="/provider/profile/{{ provider.vanity_url }}">{{ _('Cancel') }}</a>
+		</div>
+	</form>
+</div>
+{% endblock %}
+
+
+{% block extra_javascript %}
+
+{% if edit == 'service' or service_form.errors %}
+<script>
+	$('#service_modal').modal('show')
+
+	$('#service_modal').on('hidden', function() {
+		window.location = "/provider/profile/{{ provider.vanity_url }}"
+	})
+</script>
+{% endif %}
+
+<script type="text/javascript">
+  $(document).ready(function () {
+    $("[rel=tooltip]").tooltip();
+  });
+</script>
+
 {% endblock %}
