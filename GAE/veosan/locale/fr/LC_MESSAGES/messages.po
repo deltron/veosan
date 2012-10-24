@@ -459,6 +459,9 @@ msgstr "Pratique"
 msgid "Every day we promote our members online, to doctors and participants in group insurance plans. Put our marketing muscle to work for you."
 msgstr "Nous faisons la promotion de nos membres en ligne envers les docteurs et les participant à des assurances groupes. Mettez nos forces à contribution."
 
+msgid "Get a professional profile that sets you apart and attracts new clients to your business."
+msgstr "Obtenez un profil professionnel qui vous démarquera et vous aidera à attirer des nouveaux clients."
+
 #: /Users/phil/git/veosan/GAE/veosan/templates/index.html:65
 msgid "Get the convenience of online booking so new and recurring patients can make appointments in seconds."
 msgstr "Prendre rendez-vous en ligne est plus pratique pour vous… et pour vos patients."
