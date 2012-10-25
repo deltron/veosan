@@ -5,6 +5,9 @@ from data import db
 import logging
 import urlparse
 import util
+from data.model_pkg.provider_model import Provider
+import data
+import json
 
 class StaticHandler(BaseHandler):
     def render_static(self, name, prospect_id = None):
@@ -49,7 +52,25 @@ class WarmupHandler(BaseHandler):
 
 class SitemapHandler(BaseHandler):
     def get(self):
-        vanity_url_list = db.get_all_vanity_urls()
+        #vanity_url_list = db.get_all_vanity_urls()
+        
+        domain_without_ports = self.request.host.split(":")[0]
+        domain_without_www = domain_without_ports.replace("www.", "")
+        
+        categories = []
+        
+        domain_setup = data.db.get_domain_setup(domain_without_www)
+        if domain_setup and domain_setup.categories_json:
+            categories_json = domain_setup.categories_json
+            categories_from_json = json.loads(categories_json)
+            
+            for (key, english_string) in categories_from_json:
+                categories.append(key)
+        
+        vanity_url_list = []
+        if categories:
+            vanity_url_list = Provider.query(Provider.category.IN(categories)).fetch(projection=['vanity_url'])            
+        
         self.render_template("sitemap.xml", vanity_url_list=vanity_url_list)
 
 class RobotsHandler(BaseHandler):

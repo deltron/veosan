@@ -174,13 +174,15 @@ def get_all_continuing_education_types():
         ]
 
 def get_all_durations():
-    return [(0, _(u"")),
+    return [(0, ""),
             (15, _(u"15 minutes")),
             (30, _(u"30 minutes")),
             (45, _(u"45 minutes")),
             (60, _(u"60 minutes")),
             (75, _(u"75 minutes")),
             (90, _(u"90 minutes")),
+            (105, _(u"105 minutes")),
+            (120, _(u"120 minutes")),
         ]
 
 

@@ -1,5 +1,5 @@
 from handler.auth import provider_required
-from forms.provider import ProviderProfileForm
+from forms.provider import ProviderProfileForm, ProviderServiceForm
 from handler.provider import ProviderBaseHandler
 from data import db
 from webapp2_extras.i18n import lazy_gettext as _
@@ -16,7 +16,9 @@ class ProviderMessageHandler(ProviderBaseHandler):
                     }
         
         profile_form = ProviderProfileForm().get_form(obj=provider)
-        self.render_profile(provider, profile_form=profile_form, success_message=messages[msg_key])
+        service_form = ProviderServiceForm().get_form()
+
+        self.render_profile(provider, profile_form=profile_form, service_form=service_form, success_message=messages[msg_key])
         
 
 class WelcomeHandler(ProviderBaseHandler):

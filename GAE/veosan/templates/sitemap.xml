@@ -3,104 +3,104 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
    {# home page #}
    <url>
-      <loc>http://www.veosan.com/</loc>
+      <loc>http://www.{{ domain_setup.domain_name }}</loc>
       <changefreq>daily</changefreq>
       <priority>0.8</priority>
    </url>
    <url>
-      <loc>http://www.veosan.com/en</loc>
+      <loc>http://www.{{ domain_setup.domain_name }}/en</loc>
       <changefreq>daily</changefreq>
       <priority>0.8</priority>
    </url>
    <url>
-      <loc>http://www.veosan.com/fr</loc>
+      <loc>http://www.{{ domain_setup.domain_name }}/fr</loc>
       <changefreq>daily</changefreq>
       <priority>0.8</priority>
    </url>
 
    {# Generate address for all static pages #}
    <url>
-      <loc>http://www.veosan.com/en/contact</loc>
+      <loc>http://www.{{ domain_setup.domain_name }}/en/contact</loc>
       <changefreq>daily</changefreq>
       <priority>0.8</priority>
    </url>
    <url>
-      <loc>http://www.veosan.com/fr/contact</loc>
+      <loc>http://www.{{ domain_setup.domain_name }}/fr/contact</loc>
       <changefreq>daily</changefreq>
       <priority>0.8</priority>
    </url>
    <url>
-      <loc>http://www.veosan.com/en/tour</loc>
+      <loc>http://www.{{ domain_setup.domain_name }}/en/tour</loc>
       <changefreq>daily</changefreq>
       <priority>0.8</priority>
    </url>
    <url>
-      <loc>http://www.veosan.com/fr/tour</loc>
+      <loc>http://www.{{ domain_setup.domain_name }}/fr/tour</loc>
       <changefreq>daily</changefreq>
       <priority>0.8</priority>
    </url>
    <url>
-      <loc>http://www.veosan.com/en/terms</loc>
+      <loc>http://www.{{ domain_setup.domain_name }}/en/terms</loc>
       <changefreq>daily</changefreq>
       <priority>0.8</priority>
    </url>
    <url>
-      <loc>http://www.veosan.com/fr/terms</loc>
+      <loc>http://www.{{ domain_setup.domain_name }}/fr/terms</loc>
       <changefreq>daily</changefreq>
       <priority>0.8</priority>
    </url>
    <url>
-      <loc>http://www.veosan.com/en/privacy</loc>
+      <loc>http://www.{{ domain_setup.domain_name }}/en/privacy</loc>
       <changefreq>daily</changefreq>
       <priority>0.8</priority>
    </url>
    <url>
-      <loc>http://www.veosan.com/fr/privacy</loc>
+      <loc>http://www.{{ domain_setup.domain_name }}/fr/privacy</loc>
       <changefreq>daily</changefreq>
       <priority>0.8</priority>
    </url>
    <url>
-      <loc>http://www.veosan.com/en/blog</loc>
+      <loc>http://www.{{ domain_setup.domain_name }}/en/blog</loc>
       <changefreq>daily</changefreq>
       <priority>0.8</priority>
    </url>
    <url>
-      <loc>http://www.veosan.com/fr/blog</loc>
+      <loc>http://www.{{ domain_setup.domain_name }}/fr/blog</loc>
       <changefreq>daily</changefreq>
       <priority>0.8</priority>
    </url>
 
 
    <url>
-      <loc>http://www.veosan.com/en/login</loc>
+      <loc>http://www.{{ domain_setup.domain_name }}/en/login</loc>
       <changefreq>daily</changefreq>
       <priority>0.8</priority>
    </url>
    <url>
-      <loc>http://www.veosan.com/fr/login</loc>
+      <loc>http://www.{{ domain_setup.domain_name }}/fr/login</loc>
       <changefreq>daily</changefreq>
       <priority>0.8</priority>
    </url>
 
    
    <url>
-      <loc>http://www.veosan.com/en/signup/patient</loc>
+      <loc>http://www.{{ domain_setup.domain_name }}/en/signup/patient</loc>
       <changefreq>daily</changefreq>
       <priority>0.8</priority>
    </url>
    <url>
-      <loc>http://www.veosan.com/fr/signup/patient</loc>
+      <loc>http://www.{{ domain_setup.domain_name }}/fr/signup/patient</loc>
       <changefreq>daily</changefreq>
       <priority>0.8</priority>
    </url>
    
    <url>
-      <loc>http://www.veosan.com/en/signup/provider</loc>
+      <loc>http://www.{{ domain_setup.domain_name }}/en/signup/provider</loc>
       <changefreq>daily</changefreq>
       <priority>0.8</priority>
    </url>
    <url>
-      <loc>http://www.veosan.com/fr/signup/provider</loc>
+      <loc>http://www.{{ domain_setup.domain_name }}/fr/signup/provider</loc>
       <changefreq>daily</changefreq>
       <priority>0.8</priority>
    </url>
@@ -110,7 +110,7 @@
    
    {% for provider in vanity_url_list %}
    <url>
-      <loc>http://www.veosan.com/{{ provider.vanity_url }}</loc>
+      <loc>http://www.{{ domain_setup.domain_name }}/{{ provider.vanity_url }}</loc>
       <changefreq>daily</changefreq>
       <priority>0.8</priority>
       
