@@ -137,14 +137,14 @@
 		
 		{% if provider.bio %}
 		<p>
-			<span itemprop="description"> {{ provider.bio }} </span>
+			<span itemprop="description"> {{ provider.bio|markdown|safe }} </span>
 		</p>
 		<br>
 		{% endif %}
 
 		{% if provider.quote %}
 		<p style="font-style: italic; font-family:serif; font-size:x-large; line-height: 110%">
-			“ {{ provider.quote }} ”
+			“{{ provider.quote|markdown|safe }}”
 		</p>
 		<br>
 		{% endif %}
