@@ -46,6 +46,7 @@
 						<a href='/{{ p.vanity_url }}'>{{p.profile_views}}</a>
 					</td>
 					<td>
+						{# 
 						Network: <a href='/provider/network/{{ p.vanity_url }}'>{{p.get_provider_network_count()}}</a>
 						<br>
 						Pending: <a href='/provider/network/{{ p.vanity_url }}'>{{p.get_provider_network_pending_count()}}</a>
@@ -53,6 +54,7 @@
 						Rejecter: <a href='/provider/network/{{ p.vanity_url }}'>{{p.get_provider_network_rejecter_count()}}</a>     
 						<br>
 						Rejectee: <a href='/provider/network/{{ p.vanity_url }}'>{{p.get_provider_network_rejectee_count()}}</a>     
+				        #}
 					</td>
 					<td>
 						{{p.email}}
@@ -63,9 +65,12 @@
 						{% endif %}
 					</td>
 					<td>
+						{# 
 						{{p.get_total_available_hours_per_week()}}
+						#}
 					</td>
 					<td>
+						{# 
 						<ul class="unstyled">
 						{% for b in p.get_all_future_bookings() %}
 							<li style="border-top: solid 1px">
@@ -81,6 +86,7 @@
 							</li>
 						{% endfor %}
 						</ul>
+						#}
 					</td>
 				</tr>
 				{% endfor %}
