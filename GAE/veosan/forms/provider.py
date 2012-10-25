@@ -23,8 +23,8 @@ class ProviderProfileForm(CustomForm):
 class ProviderServiceForm(CustomForm):
     def _set_fields(self, form):
         setattr(form, 'description', TextField(_(u'Description'), validators=[validators.Length(min=2, message=_(u'Description required.'))]))
-        setattr(form, 'cost', FloatField(_(u'Cost')))
-        setattr(form, 'duration', SelectField(_(u'Duration'), coerce=int, choices=util.get_all_durations()))
+        setattr(form, 'cost', FloatField(_(u'Cost'), validators=[validators.Optional()]))
+        setattr(form, 'duration', SelectField(_(u'Duration'), validators=[validators.Optional()], coerce=int, choices=util.get_all_durations()))
 
 
 

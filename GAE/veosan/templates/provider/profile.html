@@ -128,7 +128,15 @@
 					{% for e in provider.get_provider_services() %}
 					<li>
 						<h4>{{ e.description }} <a href="/provider/service/{{ provider.vanity_url }}/edit/{{ e.key.urlsafe() }}" rel="tooltip" title="{{ _('Edit') }}" data-placement="right"><i class="bs-icon icon-edit"> </i></a></h4>
-						{{ e.duration }} {{ _(' minutes') }} - {{ e.cost|string_to_currency }}
+						{% if e.duration and e.duration > 0 %}
+						{{ e.duration }} {{ _(' minutes') }}
+						{% endif %}
+						{% if e.duration and e.duration > 0 and e.cost and e.cost > 0 %}
+						 - 
+						{% endif %}
+						{% if e.cost and e.cost > 0  %}
+						{{ e.cost|string_to_currency }}
+						{% endif %}
 					</li>
 					{% endfor %}
 				</ul>
