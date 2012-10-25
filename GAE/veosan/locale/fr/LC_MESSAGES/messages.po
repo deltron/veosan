@@ -937,6 +937,8 @@ msgstr "Durée"
 msgid "Not a valid float value"
 msgstr "S'il vous plaît entrer un chiffre valide."
 
+msgid "Services Offered"
+msgstr "Services offerts"
 
 # Booking from Public Profile
 msgid "New Appointment"
