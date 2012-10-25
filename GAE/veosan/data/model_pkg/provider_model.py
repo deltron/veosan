@@ -66,7 +66,7 @@ class Provider(ndb.Model):
     
     # account options
     booking_enabled = ndb.BooleanProperty(default=False)
-    address_enabled = ndb.BooleanProperty(default=False)
+    address_enabled = ndb.BooleanProperty(default=True)
     display_welcome_page = ndb.BooleanProperty(default=True)
     connect_enabled = ndb.BooleanProperty(default=True)
     stats_enabled = ndb.BooleanProperty(default=False)
