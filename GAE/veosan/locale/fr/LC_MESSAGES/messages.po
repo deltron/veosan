@@ -922,6 +922,19 @@ msgstr "Invitez des collègues"
 msgid "Edit Your Profile"
 msgstr "Modifier votre profil"
 
+msgid "Service Setup"
+msgstr "Vos services"
+
+msgid "Add Service"
+msgstr "Ajouter un service"
+
+msgid "Cost"
+msgstr "Coût"
+
+msgid "Duration"
+msgstr "Durée"
+
+
 # Booking from Public Profile
 msgid "New Appointment"
 msgstr "Nouveau rendez-vous"
