@@ -4,7 +4,7 @@
 from datetime import time, date, datetime, timedelta
 from collections import namedtuple
 from functools import partial
-from webapp2_extras.i18n import format_date, format_datetime, format_time
+from webapp2_extras.i18n import format_date, format_datetime, format_time, format_currency
 from webapp2_extras.i18n import lazy_gettext as _
 from webapp2_extras.i18n import to_utc
 
@@ -152,3 +152,11 @@ def human_readable_date_decay(time=False):
     if day_diff < 365:
         return str(day_diff/30) + " months ago"
     return str(day_diff/365) + " years ago"
+
+
+
+# format currency
+def string_to_currency(string_currency):
+    return format_currency(string_currency, "$")
+
+

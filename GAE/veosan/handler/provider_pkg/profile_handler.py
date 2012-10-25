@@ -24,6 +24,8 @@ class ProviderEditProfileHandler(ProviderBaseHandler):
     @provider_required    
     def post(self, vanity_url=None):
         form = ProviderProfileForm().get_form(self.request.POST)
+        service_form = ProviderServiceForm().get_form()
+
         if form.validate():
             # Store Provider
             provider = db.get_provider_from_vanity_url(vanity_url)
@@ -37,7 +39,7 @@ class ProviderEditProfileHandler(ProviderBaseHandler):
                 provider_user.put()
                 self.set_language(provider.profile_language)
             
-            self.render_profile(provider, profile_form=form, success_message=saved_message)
+            self.render_profile(provider, profile_form=form, service_form=service_form, success_message=saved_message)
 
             # log the event
             self.log_event(user=provider.user, msg="Edit Profile: Success")
@@ -45,7 +47,7 @@ class ProviderEditProfileHandler(ProviderBaseHandler):
         else:
             # show error
             provider = db.get_provider_from_vanity_url(vanity_url)
-            self.render_profile(provider, profile_form=form)
+            self.render_profile(provider, profile_form=form, service_form=service_form)
             
             # log the event
             self.log_event(user=provider.user, msg="Edit Profile: Validation Error")

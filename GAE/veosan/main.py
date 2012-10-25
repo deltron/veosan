@@ -23,6 +23,7 @@ jinja_filters['format_datetime_full'] = time.format_datetime_full
 jinja_filters['format_datetime_noseconds'] = time.format_datetime_noseconds
 jinja_filters['format_datetime_booking_form'] = time.format_datetime_booking_form
 jinja_filters['format_datetime_withseconds_convert_east_tz'] = time.format_datetime_withseconds_convert_east_tz
+jinja_filters['string_to_currency'] = time.string_to_currency
 jinja_filters['code_to_string'] = util.code_to_string
 jinja_filters['dump'] = dump
 jinja_filters['remove_empty_strings_from_list'] = util.remove_empty_strings_from_list
