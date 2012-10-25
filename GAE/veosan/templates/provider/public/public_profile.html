@@ -267,6 +267,19 @@
 		</div>
 		<br>
 		{% endif %}
+		
+		<div class="well well-small pull-right" style="width: 80%;">
+			<h3>{{ _('Services Offered') }}</h3>
+			<ul class="unstyled">
+				{% for e in provider.get_provider_services() %}
+				<li>
+					<h4>{{ e.description }}</h4>
+					{{ e.duration }} {{ _(' minutes') }} - {{ e.cost|string_to_currency }}
+				</li>
+				{% endfor %}
+			</ul>
+		</div>
+
 
 		{% if provider.booking_enabled and provider.get_total_available_hours_per_week() > 0 %}
 		<div class="well well-small pull-right" style="width: 80%;">
