@@ -60,6 +60,7 @@ class Provider(ndb.Model):
     # possible coercion to lower case?
     vanity_url = ndb.StringProperty()
     vanity_domain = ndb.StringProperty()
+    domain = ndb.StringProperty()
     profile_views = ndb.IntegerProperty(default=0)
     profile_language = ndb.StringProperty()
 

@@ -171,8 +171,9 @@ class ProviderScheduleForm(CustomForm):
                                                 coerce=int,
                                                 validators=[custom_validators.StartTimeAfterEndTime('start_time', message=_('End time must be after start time'))]))
 
-# Admin only
 
-class ProviderStatusForm(Form):
-    status = SelectField(_(u'Status'), choices=util.get_all_status_types())
+# Admin only
+class ProviderDomainForm(CustomForm):
+    def _set_fields(self, form):        
+        setattr(form, 'domain', SelectField(_(u'Domain'), choices=util.get_all_domains()))
 

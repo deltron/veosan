@@ -53,13 +53,9 @@ class WarmupHandler(BaseHandler):
 class SitemapHandler(BaseHandler):
     def get(self):
         #vanity_url_list = db.get_all_vanity_urls()
-        
-        domain_without_ports = self.request.host.split(":")[0]
-        domain_without_www = domain_without_ports.replace("www.", "")
-        
         categories = []
-        
-        domain_setup = data.db.get_domain_setup(domain_without_www)
+
+        domain_setup = self.get_domain_setup()
         if domain_setup and domain_setup.categories_json:
             categories_json = domain_setup.categories_json
             categories_from_json = json.loads(categories_json)

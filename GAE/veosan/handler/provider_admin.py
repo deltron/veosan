@@ -7,24 +7,23 @@ from webapp2_extras import security
 # veo
 from base import BaseHandler
 import data.db as db
-from forms.provider import ProviderStatusForm
 from handler.auth import admin_required
 from data.model_pkg.network_model import ProviderNetworkConnection
 import urlparse
+from forms.provider import ProviderDomainForm
 
 class ProviderAdminBaseHandler(BaseHandler):
-    
     @staticmethod
     def render_administration(handler, provider, **kw):
-        user_from_provider = db.get_user_from_email(provider.email) 
-        handler.render_template('provider/administration.html', provider=provider, user_from_provider=user_from_provider, **kw)
+        user_from_provider = db.get_user_from_email(provider.email)
+        
+        domain_form = ProviderDomainForm().get_form(obj=provider)
+        
+        handler.render_template('provider/administration.html', provider=provider, user_from_provider=user_from_provider, domain_form=domain_form, **kw)
     
      
 
-
-
 class ProviderAdministrationHandler(ProviderAdminBaseHandler):
-    
     @admin_required
     def get(self, vanity_url=None):
         provider = db.get_provider_from_vanity_url(vanity_url)
@@ -35,14 +34,16 @@ class ProviderAdministrationHandler(ProviderAdminBaseHandler):
         
 
   
-class ProviderStatusHandler(ProviderAdminBaseHandler):
-    def post(self):
-        provider = db.get_from_urlsafe_key(self.request.get('provider_key'))
-        new_status = self.request.get('status')
-        provider.status = new_status
-        provider.put()
-        success_message = 'status changed to %s' % new_status
-        self.render_administration(self, provider, success_message=success_message)
+class ProviderDomainSetupHandler(ProviderAdminBaseHandler):
+    def post(self, vanity_url=None):
+        provider = db.get_provider_from_vanity_url(vanity_url)
+        
+        domain_form = ProviderDomainForm().get_form(self.request.POST)
+        if domain_form.validate():
+            domain_form.populate_obj(provider)
+            provider.put()
+            
+        self.render_administration(self, provider)
 
 
 class ProviderFeaturesHandler(ProviderAdminBaseHandler):

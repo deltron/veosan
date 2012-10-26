@@ -610,6 +610,14 @@ def get_all_status_types():
     status_choices = map(lambda s: (s, _(s.capitalize())), provider_statuses)
     return status_choices
 
+def get_all_domains():
+    domains = []
+    for domain in DOMAINS:
+        domains.append((domain, domain))
+    
+    return domains
+
+
 class ScheduleMap(dict):
     '''
         Map of schedules keyed by day and start hour to simplify display

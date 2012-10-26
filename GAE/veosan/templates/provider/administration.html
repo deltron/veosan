@@ -19,7 +19,7 @@
 
 	<div class="span6">
 		<h3>Link custom domain</h3>
-		<form method="post" action="/admin/provider/domain/{{ provider.vanity_url }}" class="form-inline">
+		<form method="post" action="/admin/provider/vanitydomain/{{ provider.vanity_url }}" class="form-inline">
 			<fieldset>
 				<input type="text" name="domain" id="domain" value="{{ provider.vanity_domain }}">
 
@@ -63,6 +63,20 @@
 			{{ user_from_provider.claim_url }}
 		{% endif %}
 		<a class="btn btn-success" href="/admin/provider/generateclaim/{{ provider.vanity_url }}">Generate</a>
+		
+		<br>
+		<br>
+		<h3>Set Canonical Domain</h3>
+		<form method="post" action="/admin/provider/canonicaldomain/{{ provider.vanity_url }}" class="form-inline" id="domain_form">
+			<fieldset>
+				{{ macro.make_standard_form(domain_form) }}
+				
+				<button type="submit" class="btn btn-success">
+					Change
+				</button>
+			</fieldset>
+		</form>
+		
 	</div>
 
 	<div class="span6">

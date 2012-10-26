@@ -44,15 +44,12 @@ def get_routes():
                    Route('/campaign/<campaign_key>/email/<prospect_id>', campaign_handler.AdminCampaignDetailsHandler, handler_method='display_single_email_get'),
                    Route('/campaign/<campaign_key>/sent/<prospect_id>', campaign_handler.AdminCampaignDetailsHandler, handler_method='mark_as_sent_post'),
                    
-                   PathPrefixRoute('/provider', [
-                       # provider actions
-                       Route('/status', provider_admin.ProviderStatusHandler),
-                                                                          
+                   PathPrefixRoute('/provider', [                                            
                        # provider admin
                        Route('/admin/<vanity_url>', provider_admin.ProviderAdministrationHandler),
                     
                        # custom domain
-                       Route('/domain/<vanity_url>', provider_admin.ProviderDomainHandler),
+                       Route('/vanitydomain/<vanity_url>', provider_admin.ProviderDomainHandler),
 
                        # custom domain
                        Route('/forcefriends/<vanity_url>', provider_admin.ProviderForceFriendsHandler),
@@ -60,8 +57,11 @@ def get_routes():
                        # change password
                        Route('/changepassword/<vanity_url>', provider_admin.ProviderChangePasswordHandler),
                         
-                       # change password
+                       # generate claim
                        Route('/generateclaim/<vanity_url>', provider_admin.ProviderGenerateClaimHandler),
+
+                       # set domain
+                       Route('/canonicaldomain/<vanity_url>', provider_admin.ProviderDomainSetupHandler),
 
                        # logs
                        Route('/logs/<vanity_url>', provider_admin.ProviderEventLogHandler),

@@ -508,4 +508,15 @@ class BaseHandler(webapp2.RequestHandler):
         if "X-AppEngine-CityLatLong" in self.request.headers:
             obj.gae_city_lat_long = self.request.headers["X-AppEngine-CityLatLong"]
 
+    def get_domain(self):
+        domain_without_ports = self.request.host.split(":")[0]
+        domain_without_www = domain_without_ports.replace("www.", "")        
+        return domain_without_www
+
+    def get_domain_setup(self):
+        domain_without_www = self.get_domain()
+        domain_setup = data.db.get_domain_setup(domain_without_www)
+        
+        return domain_setup
+
         
