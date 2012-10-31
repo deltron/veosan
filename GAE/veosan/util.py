@@ -54,6 +54,8 @@ def get_all_categories_all_domains():
         all_categories = []
         for domain in domain_setups:
             all_categories.extend(get_all_categories(domain.domain_name))
+            
+        all_categories = add_other_at_end(all_categories)
         
         return all_categories
 
@@ -63,7 +65,9 @@ def get_all_specialties_all_domains():
         all_specialties = []
         for domain in domain_setups:
             all_specialties.extend(get_all_specialties(domain.domain_name))
-        
+
+        all_specialties = add_other_at_end(all_specialties)
+
         return all_specialties
 
 def get_all_associations_all_domains():
@@ -72,7 +76,9 @@ def get_all_associations_all_domains():
         all_associations = []
         for domain in domain_setups:
             all_associations.extend(get_all_associations(domain.domain_name))
-        
+
+        all_associations = add_other_at_end(all_associations)
+
         return all_associations
 
 def get_all_certifications_all_domains():
@@ -81,6 +87,8 @@ def get_all_certifications_all_domains():
         all_certifications = []
         for domain in domain_setups:
             all_certifications.extend(get_all_certifications(domain.domain_name))
+
+        all_certifications = add_other_at_end(all_certifications)
         
         return all_certifications
 
