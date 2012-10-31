@@ -14,6 +14,7 @@
 				<tr>
 					<th width="25%">{{ _('Date and Time') }}</th>
 					<th width="25%">{{ _('Provider') }}</th>
+					<th width="25%">{{ _('Service') }}</th>
 					<th width="50%">{{ _('Comments') }}</th>
 				</tr>
 			</thead>
@@ -46,6 +47,25 @@
 							{{ provider.last_name }} </h4></a> {{ provider.category|code_to_string }}
 						</div>
 					</div></td>
+					
+					<td>
+						{% if b.service %}
+						{% set service = b.service.get() %}
+
+						<h4>{{ service.description }}</h4>
+						{% if service.duration and service.duration > 0 %}
+						{{ service.duration }} {{ _(' minutes') }}
+						{% endif %}
+						{% if service.duration and service.duration > 0 and service.cost and service.cost > 0 %}
+						 - 
+						{% endif %}
+						{% if service.cost and service.cost > 0  %}
+						{{ service.cost|string_to_currency }}
+						{% endif %}
+
+						
+						{% endif %}
+					</td>
 					<td>{{ b.comments }}</td>
 				</tr>
 				{% endif %}

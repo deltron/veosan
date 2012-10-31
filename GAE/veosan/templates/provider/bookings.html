@@ -13,6 +13,7 @@
 			<thead>
 				<tr>
 					<th width="25%">{{ _('Date and Time') }}</th>
+					<th width="25%">{{ _('Service') }}</th>
 					<th width="25%">{{ _('Patient') }}</th>
 					<th width="50%">{{ _('Comments') }}</th>
 				</tr>
@@ -34,10 +35,26 @@
 							<span class="badge badge-warning">Cancelled</span>
 						{% endif %}
 					</td>
+					<td>
+						{% if b.service %}
+						{% set service = b.service.get() %}
+
+						<h4>{{ service.description }}</h4>
+						{% if service.duration and service.duration > 0 %}
+						{{ service.duration }} {{ _(' minutes') }}
+						{% endif %}
+						{% if service.duration and service.duration > 0 and service.cost and service.cost > 0 %}
+						 - 
+						{% endif %}
+						{% if service.cost and service.cost > 0  %}
+						{{ service.cost|string_to_currency }}
+						{% endif %}
+						{% endif %}
+						
+					</td>
 					<!-- Patient -->
 					<td>
-					{{patient.first_name}} {{patient.last_name}}
-					<br>
+					<h4>{{patient.first_name}} {{patient.last_name}}</h4>
 					{{patient.email}}
 					<br>
 					{{patient.phone}}

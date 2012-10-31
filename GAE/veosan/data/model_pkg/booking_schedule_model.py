@@ -83,6 +83,9 @@ class Booking(ndb.Model):
     # link to provider
     provider = ndb.KeyProperty(kind='Provider')
     
+    # link to service
+    service = ndb.KeyProperty(kind='ProviderService')
+    
     # link to schedule object this booking is "inside"
     schedule = ndb.KeyProperty(kind='Schedule')
     

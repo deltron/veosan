@@ -12,6 +12,7 @@ import mail
 import json
 from webapp2_extras import security
 import urlparse
+from google.appengine.ext import ndb
 
 
 class BookFromPublicProfileDetails(BookingBaseHandler):
@@ -64,6 +65,13 @@ class BookFromPublicProfileDetails(BookingBaseHandler):
 
             schedule = db.get_schedule_for_date_time(provider, booking_date, booking_time)
             booking.schedule = schedule.key            
+            
+            service_key_from_form = appointment_details_form['service'].data
+            if service_key_from_form:
+                service_key = ndb.Key(urlsafe=service_key_from_form)
+                provider_service = service_key.get()
+                if provider_service:
+                    booking.service = service_key
 
             if user:
                 # user is logged in, is this a patient?
