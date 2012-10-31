@@ -4,11 +4,14 @@ from wtforms import Form, SelectMultipleField, BooleanField
 from wtforms import widgets
 from cgi import escape
 from webapp2_extras.i18n import lazy_gettext as _
+from webapp2_extras.i18n import format_currency
+
 from wtforms.ext.dateutil.fields import DateField, DateTimeField
 from webapp2_extras.i18n import to_local_timezone, format_datetime, to_utc
 import logging 
 from dateutil import parser
 from wtforms.validators import ValidationError
+import utilities
 
 
 ''' 
@@ -86,8 +89,9 @@ class CustomBooleanField(BooleanField):
 
 class CustomForm(object):
     domain = None
+    provider = None
     
-    def get_form(self, request=None, obj=None, request_webob=None):
+    def get_form(self, request=None, obj=None, request_webob=None, provider=None):
         class F(TranslatedBaseForm):
             pass
         
@@ -96,6 +100,9 @@ class CustomForm(object):
             domain_without_www = domain_without_ports.replace("www.", "")
             self.domain = domain_without_www
         
+        if provider:
+            self.provider = provider
+        
         self._set_fields(F)
 
         return F(request, obj)
@@ -103,6 +110,18 @@ class CustomForm(object):
     # override in child
     def _set_fields(self, F):
         pass
+    
+    def get_provider_services(self):
+        provider_services = self.provider.get_provider_services()
+        choices = []
+        for service in provider_services:
+            description = ("%s - %s minutes - %s") % (service.description, service.duration, utilities.time.string_to_currency(service.cost)) 
+            tuple = (service.key.urlsafe(), description )
+            choices.append(tuple)
+            
+        return choices
+        
+        
 
 class TranslatedBaseForm(Form):
     class MyTranslations(object):

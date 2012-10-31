@@ -12,6 +12,7 @@ from forms import custom_validators
 
 class AppointmentDetailsForLoggedInUser(CustomForm):
     def _set_fields(self, form):
+        setattr(form, 'service', SelectField(_(u'Service'), choices=self.get_provider_services()))
         setattr(form, 'comments', TextAreaField(_(u'Comments for your appointment')))
         setattr(form, 'booking_date', HiddenField('booking_date'))
         setattr(form, 'booking_time', HiddenField('booking_time'))
@@ -19,6 +20,7 @@ class AppointmentDetailsForLoggedInUser(CustomForm):
 class AppointmentDetails(CustomForm):
     def _set_fields(self, form):
         setattr(form, 'email',TextField(_(u'E-mail Address'), [validators.Email(message=_(u'Invalid email address.'))]))
+        setattr(form, 'service', SelectField(_(u'Service'), choices=self.get_provider_services()))
         setattr(form, 'comments', TextAreaField(_(u'Comments for your appointment')))
         setattr(form, 'booking_date', HiddenField('booking_date'))
         setattr(form, 'booking_time', HiddenField('booking_time'))

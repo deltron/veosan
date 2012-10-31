@@ -26,10 +26,10 @@ class BookFromPublicProfileDetails(BookingBaseHandler):
             
             user = self.get_current_user()
             if user:
-                booking_form = AppointmentDetailsForLoggedInUser().get_form()
+                booking_form = AppointmentDetailsForLoggedInUser().get_form(provider=provider)
             else:
                 # no user logged in, ask for email and stuff
-                booking_form = AppointmentDetails().get_form()
+                booking_form = AppointmentDetails().get_form(provider=provider)
 
             booking_form['booking_date'].data = book_date
             booking_form['booking_time'].data = book_time
@@ -42,12 +42,13 @@ class BookFromPublicProfileDetails(BookingBaseHandler):
             Booking process from public profile
         '''
         appointment_details_form = None
+        provider = db.get_provider_from_vanity_url(vanity_url)
     
         user = self.get_current_user()
         if user:
-            appointment_details_form = AppointmentDetailsForLoggedInUser().get_form(self.request.POST)
+            appointment_details_form = AppointmentDetailsForLoggedInUser().get_form(self.request.POST, provider=provider)
         else:
-            appointment_details_form = AppointmentDetails().get_form(self.request.POST)
+            appointment_details_form = AppointmentDetails().get_form(self.request.POST, provider=provider)
         
         provider = db.get_provider_from_vanity_url(vanity_url)
         if appointment_details_form.validate():
