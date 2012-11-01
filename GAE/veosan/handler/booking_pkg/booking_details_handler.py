@@ -66,12 +66,13 @@ class BookFromPublicProfileDetails(BookingBaseHandler):
             schedule = db.get_schedule_for_date_time(provider, booking_date, booking_time)
             booking.schedule = schedule.key            
             
-            service_key_from_form = appointment_details_form['service'].data
-            if service_key_from_form:
-                service_key = ndb.Key(urlsafe=service_key_from_form)
-                provider_service = service_key.get()
-                if provider_service:
-                    booking.service = service_key
+            if appointment_details_form.__contains__('service'):
+                service_key_from_form = appointment_details_form['service'].data
+                if service_key_from_form:
+                    service_key = ndb.Key(urlsafe=service_key_from_form)
+                    provider_service = service_key.get()
+                    if provider_service:
+                        booking.service = service_key
 
             if user:
                 # user is logged in, is this a patient?
@@ -140,7 +141,7 @@ class BookFromPublicProfileDetails(BookingBaseHandler):
             logging.info('Created booking from public profile: %s' % booking)
             
         else:
-            self.render_template('provider/public/booking_registration.html', provider=provider, appointment_details_form=appointment_details_form)
+            self.render_template('provider/public/booking_details.html', provider=provider, booking_form=appointment_details_form)
 
     def link_user_to_new_patient(self, appointment_details_form, user, booking):
         # user but no patient
