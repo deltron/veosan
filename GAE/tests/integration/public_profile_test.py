@@ -17,9 +17,7 @@ class PublicProfileTest(BaseTest):
     
         public_profile = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
         
-        # by default address is hidden and no booking
         public_profile.mustcontain("Fantastic Fox")
-        public_profile.mustcontain(no="Map")
         
         #self.assert_msg_in_log("Public profile: public view")
 
@@ -30,9 +28,8 @@ class PublicProfileTest(BaseTest):
 
         public_profile = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
         
-        # by default address is hidden and no booking
         public_profile.mustcontain("Fantastic Fox")
-        public_profile.mustcontain(no="Map")
+
         
         #self.assert_msg_in_log("Public profile: self-view")
 
@@ -43,9 +40,7 @@ class PublicProfileTest(BaseTest):
 
         public_profile = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
         
-        # by default address is hidden and no booking
         public_profile.mustcontain("Fantastic Fox")
-        public_profile.mustcontain(no="Map")
         
         #self.assert_msg_in_log("Public profile: public view", admin=True)
 
@@ -97,27 +92,25 @@ class PublicProfileTest(BaseTest):
     
         public_profile = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
         
-        # hide last name
         public_profile.mustcontain("Fantastic Fox")
-                
-        public_profile.mustcontain(no="Map")
+        public_profile.mustcontain("Map")
         public_profile.mustcontain(no="Réservez Maintenant")
         
-        # enable the address
+        # disable the address
         self.login_as_admin()
         enable = self.testapp.get('/admin/provider/feature/address_enabled/' + self._TEST_PROVIDER_VANITY_URL)
         
         public_profile = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
         public_profile.mustcontain("Fantastic Fox")
-        public_profile.mustcontain("Map")
+        public_profile.mustcontain(no="Map")
         
         
-        # hit it again to disable the address
+        # hit it again to enable the address
         disable = self.testapp.get('/admin/provider/feature/address_enabled/' + self._TEST_PROVIDER_VANITY_URL)
 
         public_profile = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
         public_profile.mustcontain("Fantastic Fox")
-        public_profile.mustcontain(no="Map")
+        public_profile.mustcontain("Map")
         
         
     def test_disable_enable_show_booking(self):
@@ -129,7 +122,7 @@ class PublicProfileTest(BaseTest):
         
         self.login_as_admin()
         
-        public_profile.mustcontain(no="Map")
+        public_profile.mustcontain(no="Réservez Maintenant")
 
         
         # enable the booking
