@@ -1,1 +1,12 @@
-Sitemap: http://www.veosan.com/sitemap.xml
+# Current domain = {{ domain_setup.domain_name }}
+
+{% if domain_setup.domain_name in valid_domains  %}
+
+Sitemap: http://www.{{ domain_setup.domain_name }}/sitemap.xml
+
+{% else %}
+
+User-agent: *
+Disallow: /
+
+{% endif %}

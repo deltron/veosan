@@ -58,6 +58,7 @@ class BaseHandler(webapp2.RequestHandler):
         domain = domain_without_www = domain_without_ports.replace("www.", "")
         kw['domain_setup'] = db.get_domain_setup(domain_without_www)
         
+        kw['valid_domains'] = util.DOMAINS
         
         # add template arguments common to all templates
         user = self.get_current_user()
