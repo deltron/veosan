@@ -1,7 +1,6 @@
 from google.appengine.ext import ndb
 from datetime import datetime, timedelta, date, time
 from google.appengine.api.images import get_serving_url
-import util
 from data.model_pkg.cv_model import Education, Experience, ContinuingEducation,\
     ProfessionalOrganization, ProfessionalCertification, Specialty
 from data.model_pkg.network_model import ProviderNetworkConnection

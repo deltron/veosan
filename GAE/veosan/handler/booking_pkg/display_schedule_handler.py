@@ -3,11 +3,9 @@
 import logging
 import data.db as db
 import util
-from handler.base import BaseHandler
 from datetime import datetime, date, timedelta
 from utilities import time
 from collections import namedtuple
-from webapp2_extras.i18n import gettext as _
 from handler.booking_pkg.booking_base_handler import BookingBaseHandler
 
         

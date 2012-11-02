@@ -184,7 +184,7 @@
 	{% else %}
 	{% set post_url = '/provider/service/' + provider.vanity_url + '/add' %}
 	{% endif %}
-	<form method="post" action="{{ post_url }}" class="form-horizontal" id="{{ section }}_form">
+	<form method="post" action="{{ post_url }}" class="form-horizontal" id="service_form">
 		<div class="modal-body">
 			{{ macro.make_standard_form(service_form) }}
 		</div>

@@ -241,6 +241,7 @@ class BaseTest(unittest.TestCase):
         self.fill_new_provider_address_correctly_action()
         self.fill_new_provider_profile_correctly_action()
         self.provider_schedule_set_one_timeslot_action()
+        self.provider_add_services_action()
 
         # logout
         self.logout_provider()
@@ -792,3 +793,30 @@ class BaseTest(unittest.TestCase):
         details_page.mustcontain('Hi %(first_name)s!')
         self.logout_admin()
         
+        
+    def provider_add_services_action(self):
+        # get the provider key
+        provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
+        
+        # post 
+        profile_response = self.testapp.get('/provider/profile/%s' % provider.vanity_url)
+        service_form = profile_response.forms['service_form']
+        service_form['description'] = 'Diagnosis'        
+        service_form['cost'] = 85
+        service_form['duration'] = 45
+        
+        response = service_form.submit().follow()
+                
+        response.mustcontain("Diagnosis")
+        response.mustcontain("85,00 $")
+        response.mustcontain("45 minutes")
+
+        
+        
+        
+        
+        
+        
+        
+        
+                
