@@ -254,6 +254,7 @@ class BookingTest(BaseTest):
         
         # check schedule on public profile        
         response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
+        response.showbrowser()
         response.mustcontain(no=testutil.next_monday_date_string()+"/10")
         response.mustcontain(no="button-"+testutil.next_monday_date_string()+"-10")
         
@@ -329,6 +330,55 @@ class BookingTest(BaseTest):
         self.check_appointment_email_to_provider(next_monday, 11)
 
 
+    def test_booking_45min_mid_schedule(self):
+        ''' Test a booking for 45 minutes '''
+        self.create_complete_provider_profile()
+        self.logout_provider()
+        self.login_as_admin()
+        # enable booking
+        response = self.testapp.get('/admin/provider/feature/booking_enabled/' + self._TEST_PROVIDER_VANITY_URL)
+        response.mustcontain("Show booking=True")
+        # Monday 9-12 should be available, let's visit public profile and check
+        response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL + '/book')
+        response.mustcontain("Monday")
+        response.mustcontain("9:00")
+        
+        self.logout_admin()
+        # book once from public profile
+        date_string = testutil.next_monday_date_string()
+        time_string = '10'
+        self.book_from_public_profile(date_string, time_string)
+        # patient confirms
+        self.patient_confirms_latest_booking(date_string, time_string)
+        # Check that Schedule now show 10:45 as available
+        public_profile = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
+        schedule_page = public_profile.click(linkid='book_button')
+        schedule_page.mustcontain("9:00")
+        schedule_page.mustcontain("10:45")
+        schedule_page.mustcontain("11:00")
+        
+def test_booking_45min_mid_schedule(self):
+        ''' Test a booking for 45 minutes '''
+        self.create_complete_provider_profile()
+        self.logout_provider()
+        self.login_as_admin()
+        # enable booking
+        response = self.testapp.get('/admin/provider/feature/booking_enabled/' + self._TEST_PROVIDER_VANITY_URL)
+        response.mustcontain("Show booking=True")
+        self.logout_admin()
+        # book once from public profile
+        date_string = testutil.next_monday_date_string()
+        time_string = '9'
+        self.book_from_public_profile(date_string, time_string)
+        # patient confirms
+        self.patient_confirms_latest_booking(date_string, time_string)
+        # Check that Schedule now show 10:45 as available
+        public_profile = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
+        schedule_page = public_profile.click(linkid='book_button')
+        schedule_page.mustcontain("9:45")
+        schedule_page.mustcontain("10:00")
+        schedule_page.mustcontain("11:00")
+        
 if __name__ == "__main__":
     unittest.main()
     
