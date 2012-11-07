@@ -96,7 +96,7 @@ class BookingTest(BaseTest):
         # try to book monday at 10h (which is available)
         next_monday = testutil.next_weekday_date_string(0)
         
-        response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL + '/book/' + next_monday + '/' + '10')
+        response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL + '/book/' + next_monday + '/' + '10/0')
        
         # should not fail, should be registration page
         #response.mustcontain(no="Choisissez la date et l'heure de votre rendez-vous")
@@ -125,7 +125,7 @@ class BookingTest(BaseTest):
         # try to book monday at 17h (which is not available)
         next_monday = testutil.next_weekday_date_string(0)
         
-        response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL + '/book/' + next_monday + '/' + '17')
+        response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL + '/book/' + next_monday + '/' + '17/0' )
        
         # should fail and redirect to booking page with list of available times
         response = response.follow()
@@ -154,7 +154,7 @@ class BookingTest(BaseTest):
         self.logout_patient()
         
         # do it again with another patient (this should fail)
-        response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL + '/book/' + next_monday + '/' + '17')
+        response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL + '/book/' + next_monday + '/' + '17/0')
        
         # should fail and redirect to booking page with list of available times
         response = response.follow()
@@ -226,13 +226,13 @@ class BookingTest(BaseTest):
         
         # check schedule on public profile        
         response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
-        response.mustcontain(no=testutil.next_monday_date_string()+"/10")
-        response.mustcontain(no="button-"+testutil.next_monday_date_string()+"-10")
+        response.mustcontain(no=testutil.next_monday_date_string()+"/10/0")
+        response.mustcontain(no="button-"+testutil.next_monday_date_string()+"-10-0")
         
         # check the book
         response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL + '/book')
-        response.mustcontain(no=testutil.next_monday_date_string()+"/10")
-        response.mustcontain(no="button-"+testutil.next_monday_date_string()+"-10")
+        response.mustcontain(no=testutil.next_monday_date_string()+"/10/0")
+        response.mustcontain(no="button-"+testutil.next_monday_date_string()+"-10-0")
 
 
     def test_booking_as_a_provider_logged_in(self):
@@ -254,14 +254,13 @@ class BookingTest(BaseTest):
         
         # check schedule on public profile        
         response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
-        response.showbrowser()
-        response.mustcontain(no=testutil.next_monday_date_string()+"/10")
-        response.mustcontain(no="button-"+testutil.next_monday_date_string()+"-10")
+        response.mustcontain(no=testutil.next_monday_date_string()+"/10/0")
+        response.mustcontain(no="button-"+testutil.next_monday_date_string()+"-10-0")
         
         # check the book
         response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL + '/book')
-        response.mustcontain(no=testutil.next_monday_date_string()+"/10")
-        response.mustcontain(no="button-"+testutil.next_monday_date_string()+"-10")
+        response.mustcontain(no=testutil.next_monday_date_string()+"/10/0")
+        response.mustcontain(no="button-"+testutil.next_monday_date_string()+"-10-0")
         
         # check emails
         messages = self.mail_stub.get_sent_messages(to=self._TEST_PROVIDER_EMAIL)
@@ -299,13 +298,13 @@ class BookingTest(BaseTest):
                 
         # check schedule on public profile        
         response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL)
-        response.mustcontain(no=testutil.next_monday_date_string()+"/10")
-        response.mustcontain(no="button-"+testutil.next_monday_date_string()+"-10")
+        response.mustcontain(no=testutil.next_monday_date_string()+"/10/0")
+        response.mustcontain(no="button-"+testutil.next_monday_date_string()+"-10-0")
         
         # check the book
         response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL + '/book')
-        response.mustcontain(no=testutil.next_monday_date_string()+"/10")
-        response.mustcontain(no="button-"+testutil.next_monday_date_string()+"-10")
+        response.mustcontain(no=testutil.next_monday_date_string()+"/10/0")
+        response.mustcontain(no="button-"+testutil.next_monday_date_string()+"-10-0")
 
 
         # book an appointment for next monday at 11am
@@ -322,8 +321,8 @@ class BookingTest(BaseTest):
         
         # check the book
         response = self.testapp.get('/' + self._TEST_PROVIDER_VANITY_URL + '/book')
-        response.mustcontain(no=testutil.next_monday_date_string()+"/11")
-        response.mustcontain(no="button-"+testutil.next_monday_date_string()+"-11")
+        response.mustcontain(no=testutil.next_monday_date_string()+"/11/0")
+        response.mustcontain(no="button-"+testutil.next_monday_date_string()+"-11-0")
         
         # check provider receives emails for each appointment
         self.check_appointment_email_to_provider(next_monday, 10)
