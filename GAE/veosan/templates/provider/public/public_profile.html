@@ -301,7 +301,7 @@
 				{% for (day_key, day_times, t) in date_time_list %}
 				<li>
 					<i class="bs-icon icon-time"> </i>
-					<a href="/{{provider.vanity_url}}/book/{{day_key}}/{{t.hour}}" style="width=100%" id="button-{{day_key~"-"~t.hour}}">
+					<a href="/{{provider.vanity_url}}/book/{{day_key}}/{{t.hour}}/{{t.minute}}" style="width=100%" id="button-{{day_key~"-"~t.hour}}">
 						{{ day_key|format_weekday|capitalize }}
 						{{ day_key|format_date(format="medium") }}
 						{{ _('at') }}

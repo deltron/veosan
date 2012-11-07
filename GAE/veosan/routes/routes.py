@@ -100,7 +100,7 @@ def create_routes():
                Route('/<vanity_url>/book/date/<start_date>', display_schedule_handler.BookFromPublicProfileDisplaySchedule),
                
                # Actual booking & registration
-               Route('/<vanity_url>/book/<book_date:\d{4}-\d{2}-\d{2}>/<book_time:\d{1,2}>', booking_details_handler.BookFromPublicProfileDetails),
+               Route('/<vanity_url>/book/<book_date:\d{4}-\d{2}-\d{2}>/<book_hour:\d{1,2}>/<book_minutes:\d{1,2}>', booking_details_handler.BookFromPublicProfileDetails),
                Route('/<vanity_url>/book/details', booking_details_handler.BookFromPublicProfileDetails),
                Route('/<vanity_url>/book/patient', booking_details_handler.BookFromPublicProfileNewPatient),
 

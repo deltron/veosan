@@ -190,10 +190,12 @@ def get_site_counter():
 def get_provider_network_connection(source_key, target_key):
     return ProviderNetworkConnection.query(ProviderNetworkConnection.source_provider == source_key, ProviderNetworkConnection.target_provider == target_key).get()
     
-def get_schedule_for_date_time(provider, book_date, book_time):
-    book_weekday_index = datetime.strptime(book_date, '%Y-%m-%d').weekday()
+def get_schedule_for_date_time(provider, book_date_string, book_time_string):
+    book_weekday_index = datetime.strptime(book_date_string, '%Y-%m-%d').weekday()
     (book_weekday_key, book_weekday_label) = utilities.time.get_day_of_the_week_from_python_weekday(book_weekday_index)
-    book_time_int = int(book_time)
+    
+    book_time = datetime.strptime(book_time_string, '%H:%M')
+    book_time_int = int(book_time.hour)
     
     schedules = provider.get_schedules()
     for schedule in schedules:
