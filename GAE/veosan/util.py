@@ -682,10 +682,11 @@ def create_bookings_dict(bookings):
     ''' create dict [date] = booking '''
     bd = dict()
     for b in bookings:
+        #logging.info('Adding Booking to DICT %s' % b)
         booking_datetime = to_local_timezone(b.datetime)
         booking_date = booking_datetime.date()
         if bd.has_key(booking_date):
-            bd[booking_date] = bd[booking_date].append(b)
+            bd[booking_date].append(b)
         else:
             bd[booking_date] = [b]
     return bd
