@@ -16,10 +16,12 @@ from google.appengine.ext import ndb
 
 
 class BookFromPublicProfileDetails(BookingBaseHandler):
-    def get(self, vanity_url=None, book_date=None, book_time=None):
+    def get(self, vanity_url=None, book_date=None, book_hour=None, book_minutes=None):
         provider = db.get_provider_from_vanity_url(vanity_url)
 
-        if not provider.is_available(book_date, book_time):
+        booking_datetime_string = "%s %s:%s" % (book_date, book_hour, book_minutes)
+        booking_datetime_utc = to_utc(datetime.strptime(booking_datetime_string, '%Y-%m-%d %H:%M'))
+        if not provider.is_available(booking_datetime_utc):
             logging.warn("Trying to book a time not available in the schedule...")
             self.redirect("/" + vanity_url + "/book")
         else:
@@ -33,7 +35,7 @@ class BookFromPublicProfileDetails(BookingBaseHandler):
                 booking_form = AppointmentDetails().get_form(provider=provider)
 
             booking_form['booking_date'].data = book_date
-            booking_form['booking_time'].data = book_time
+            booking_form['booking_time'].data = book_hour + ":" + book_minutes
             
             self.render_template('provider/public/booking_details.html', provider=provider, booking_form=booking_form)
         
@@ -60,7 +62,7 @@ class BookFromPublicProfileDetails(BookingBaseHandler):
             
             booking_date = appointment_details_form['booking_date'].data
             booking_time = appointment_details_form['booking_time'].data
-            booking.datetime = to_utc(datetime.strptime(booking_date + " " + booking_time, '%Y-%m-%d %H'))
+            booking.datetime = to_utc(datetime.strptime(booking_date + " " + booking_time, '%Y-%m-%d %H:%M'))
             booking.comments = appointment_details_form['comments'].data
 
             schedule = db.get_schedule_for_date_time(provider, booking_date, booking_time)

@@ -662,32 +662,127 @@ def generate_datetimes_from_schedule(schedule, date):
         datetimes.append(dt)
         t = t+1
     return datetimes
-    
 
-def generate_complete_datetimes_dict(schedules, start_date, period):
+
+def generate_datetimes_from_tuples_list(datetime_tuples_list):
+    datetimes = []
+    for tup in datetime_tuples_list:
+        # display first available time
+        datetimes.append(tup[0])
+        # remove minutes and add one hour until end of schedule
+        dt = tup[0].replace(minute=0) + timedelta(hours=1)
+        while dt < tup[1]:
+            datetimes.append(dt)
+            dt = dt + timedelta(hours=1)
+            
+    return datetimes
+
+    
+def create_bookings_dict(bookings):
+    ''' create dict [date] = booking '''
+    bd = dict()
+    for b in bookings:
+        #logging.info('Adding Booking to DICT %s' % b)
+        booking_datetime = to_local_timezone(b.datetime)
+        booking_date = booking_datetime.date()
+        if bd.has_key(booking_date):
+            bd[booking_date].append(b)
+        else:
+            bd[booking_date] = [b]
+    return bd
+
+
+def generate_complete_datetimes_dict(schedules, start_date, period, bookings):
     '''
         Generate a dict of all dates in the period to list of hours available
     '''
     dtm = dict()
-    # create a dist [day_key][start_time] = schedule
+    # create a dict [date_key][start_time] = schedule
     sm = create_schedule_dict(schedules)
+    logging.info('BOOKINGS %s ' % bookings)
+    bd = create_bookings_dict(bookings)
+    # timezone adjustment
+    tz = None
+    if len(bookings) > 0:
+        booking_datetime = to_local_timezone(bookings[0].datetime)
+        tz = booking_datetime.tzinfo
+    
     end_date = start_date + period
     d = start_date
     while d < end_date:
+        logging.info('DATE %s' % d)
         dtm[d] = []
+        
         # day of week
         weekday_int = d.weekday()
         # map the number to the actual day
         day_key = get_days_of_the_week()[weekday_int][0]
         # check schedules for that day
         days_schedules = sm[day_key]
+        # for each schedule on that day
+        # create a list of tuples (start, end)
+        schedule_period_tuples = []
         for hour_key in sorted(days_schedules.keys()):
             s = days_schedules[hour_key]
-            datetimes_list = generate_datetimes_from_schedule(s, d)
-            dtm[d].extend(datetimes_list)
+            start_datetime  = datetime.combine(d, time(hour=s.start_time))
+            end_datetime  = datetime.combine(d, time(hour=s.end_time))
+            # adjust tz to match bookings
+            if tz:
+                start_datetime = start_datetime.replace(tzinfo=tz)
+                end_datetime = end_datetime.replace(tzinfo=tz)
+            start_end_tuple = (start_datetime, end_datetime)
+            schedule_period_tuples.append(start_end_tuple)
+        logging.info('SCHEDULE: %s ' % schedule_period_tuples)
+        # remove bookings
+        #for each booking that day, create tuple (start, end)
+        day_bookings = bd.get(d, [])
+        logging.info('DAY BOOKINGS: %s ' % day_bookings)
+        booking_period_tuples = []
+        for b in day_bookings:
+            booking_datetime = to_local_timezone(b.datetime)
+            booking_date = booking_datetime.date()
+            service = b.service.get()
+            duration = service.duration
+            booking_datetime_end = booking_datetime + timedelta(minutes=duration)
+            b_start_end_tuple = (booking_datetime, booking_datetime_end)
+            booking_period_tuples.append(b_start_end_tuple)
+        logging.info('BOOKINGS TUPLES: %s ' % booking_period_tuples)
+        available_period_tuples = subtract_booking_from_schedule(schedule_period_tuples, booking_period_tuples)    
+        logging.info('AVAILABLE: %s ' % available_period_tuples)
+        datetimes_list = generate_datetimes_from_tuples_list(available_period_tuples)
+        dtm[d].extend(datetimes_list)
         d = d + timedelta(days=1)
     return dtm
     
+
+def subtract_booking_from_schedule(schedule_period_tuples, booking_period_tuples):
+    available_tuples = schedule_period_tuples
+    for bt in booking_period_tuples:
+        logging.info('REMOVING Booking: %s %s' % bt)
+        x = 0
+        while x < len(available_tuples):
+            st = available_tuples[x]
+            if (st[0] < bt[0]) & (st[1] > bt[1]):
+                logging.info('WITHIN SPLIT')
+                available_tuples[x] = (st[0], bt[0])
+                available_tuples.insert(x+1, (bt[1], st[1]))
+            elif st[0] < bt[0]:
+                logging.info('OVERLAP - CHANGE END to booking start')
+                available_tuples[x] = (st[0], bt[0])
+            elif st[1] > bt[1]:
+                logging.info('OVERLAP - CHANGE START to booking end')
+                t = (bt[1], st[1])
+                available_tuples[x] = t
+            x = x+1
+            
+    return available_tuples
+    
+
+def set_timezones(datetimes, tz):
+    logging.info('tzinfo: %s' % tz)
+    tz_datetimes = map(lambda t: t.replace(tzinfo=tz), datetimes)
+    return tz_datetimes
+
     
 def remove_confirmed_bookings_from_schedule(schedule_dict, bookings):
     '''
@@ -697,11 +792,16 @@ def remove_confirmed_bookings_from_schedule(schedule_dict, bookings):
         # convert booking datetime to local timezone
         booking_datetime = to_local_timezone(b.datetime)
         booking_date = booking_datetime.date()
+        service = b.service.get()
+        duration = service.duration
+        booking_datetime_end = booking_datetime + timedelta(mins=duration)
+        
         if schedule_dict.has_key(booking_date):
             day_datetimes = schedule_dict[booking_date]
             tz = booking_datetime.tzinfo
-            logging.info('tzinfo: %s' % tz)
-            day_datetimes = map(lambda t: t.replace(tzinfo=tz), day_datetimes)
+            day_datetimes = set_timezones(day_datetimes, tz)
+            
+            
             if booking_datetime in day_datetimes:
                 day_datetimes.remove(booking_datetime)
                 schedule_dict[booking_date] = day_datetimes

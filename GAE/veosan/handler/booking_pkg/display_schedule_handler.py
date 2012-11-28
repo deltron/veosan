@@ -43,11 +43,11 @@ class BookFromPublicProfileDisplaySchedule(BookingBaseHandler):
         provider = db.get_provider_from_vanity_url(vanity_url)
         start_date, week_nav = self.calculate_start_date_and_week_navigation(start_date, period)
         schedules = provider.get_schedules()
-        #logging.info('SCHEDULES %s' % schedules.fetch())
-        schedule_datetimes_dict = util.generate_complete_datetimes_dict(schedules, start_date, period)
-        #logging.info( 'SCHEDULES DICT %s' % schedule_datetimes_dict)
         confirmed_bookings = provider.get_future_confirmed_bookings()
-        available_datetimes_map = util.remove_confirmed_bookings_from_schedule(schedule_datetimes_dict, confirmed_bookings)
+        #logging.info('SCHEDULES %s' % schedules.fetch())
+        available_datetimes_map = util.generate_complete_datetimes_dict(schedules, start_date, period, confirmed_bookings)
+        #logging.info( 'SCHEDULES DICT %s' % schedule_datetimes_dict)
+        #available_datetimes_map = util.remove_confirmed_bookings_from_schedule(schedule_datetimes_dict, confirmed_bookings)
         self.render_template('provider/public/booking_schedule.html', provider=provider, dtm=available_datetimes_map, week_nav=week_nav) 
         
 

@@ -107,7 +107,16 @@ def string_to_datetime(string_date):
     return to_utc(datetime.strptime(string_date, "%Y-%m-%d"))
 
 def string_to_time(string_time):
-    return to_utc(datetime.strptime(str(string_time), "%H"))
+    if string_time:
+        if isinstance( string_time, int ):
+            parse_format = "%H"
+        elif string_time.find(':') != -1:
+            parse_format = "%H:%M"
+        else:
+            parse_format = "%H"
+    else:
+        return None
+    return to_utc(datetime.strptime(str(string_time), parse_format))
 
 
 def human_readable_date_decay(time=False):

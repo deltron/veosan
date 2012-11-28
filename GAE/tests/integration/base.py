@@ -794,7 +794,7 @@ class BaseTest(unittest.TestCase):
         self.logout_admin()
         
         
-    def provider_add_services_action(self):
+    def provider_add_services_action(self, duration=45):
         # get the provider key
         provider = db.get_provider_from_email(self._TEST_PROVIDER_EMAIL)
         
@@ -803,13 +803,12 @@ class BaseTest(unittest.TestCase):
         service_form = profile_response.forms['service_form']
         service_form['description'] = 'Diagnosis'        
         service_form['cost'] = 85
-        service_form['duration'] = 45
+        service_form['duration'] = duration
         
         response = service_form.submit().follow()
-                
         response.mustcontain("Diagnosis")
         response.mustcontain("85,00 $")
-        response.mustcontain("45 minutes")
+        response.mustcontain("%s minutes" % duration)
 
         
         

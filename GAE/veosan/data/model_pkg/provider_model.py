@@ -5,10 +5,11 @@ from data.model_pkg.cv_model import Education, Experience, ContinuingEducation,\
     ProfessionalOrganization, ProfessionalCertification, Specialty
 from data.model_pkg.network_model import ProviderNetworkConnection
 import utilities
-from webapp2_extras.i18n import to_utc
+from webapp2_extras.i18n import to_utc, to_local_timezone
 from data.model_pkg.site_model import SiteLog
 from data.model_pkg.booking_schedule_model import Schedule, Booking,\
     ProviderService
+import logging
 
 class ProviderAccount(ndb.Model):
     created_on = ndb.DateTimeProperty(auto_now_add=True)
@@ -121,32 +122,41 @@ class Provider(ndb.Model):
         sq = self.get_schedules()
         return reduce(lambda sum, s: sum + (s.end_time - s.start_time), sq, 0)
     
-    def is_available(self, book_date, book_time):
-        return self.is_booking_inside_schedule(book_date, book_time) and self.is_timeslot_free(book_date, book_time)
+    def is_available(self, booking_datetime_utc):
+        logging.info('Checking if %s UTC is available' % booking_datetime_utc)
+        return self.is_booking_inside_schedule(booking_datetime_utc) and self.is_timeslot_free(booking_datetime_utc)
     
-    def is_booking_inside_schedule(self, book_date, book_time):
+    def is_booking_inside_schedule(self, booking_datetime_utc):
         schedules = self.get_schedules()
         for schedule in schedules:
-            if self.is_book_date_and_time_inside_schedule(schedule, book_date, book_time):
+            if self.is_book_date_and_time_inside_schedule(schedule, booking_datetime_utc):
                 return True
+        logging.info('Timeslot not in schedule %s' % booking_datetime_utc)
+        return False
         
-    def is_timeslot_free(self, book_date, book_time):
-        booking_datetime = to_utc(datetime.strptime(book_date + " " + book_time, '%Y-%m-%d %H'))
-        
+    def is_timeslot_free(self, booking_datetime_utc):
+        '''
+            Checks if two bookings start at the same time.
+            TODO: Add duration of booking and check for conficts over the whole time span of the booking.
+            We don't have access to the service at this point...
+        '''
         for booking in self.get_future_confirmed_bookings():
-            if booking.datetime == booking_datetime:
+            if booking.datetime == booking_datetime_utc:
                 return False
-                
+            
         return True
         
-    def is_book_date_and_time_inside_schedule(self, schedule, book_date, book_time):
-        book_weekday_index = datetime.strptime(book_date, '%Y-%m-%d').weekday()
+    def is_book_date_and_time_inside_schedule(self, schedule, booking_datetime_utc):
+        booking_datetime_local = to_local_timezone(booking_datetime_utc)
+        book_weekday_index = booking_datetime_local.weekday()
         (book_weekday_key, book_weekday_label) = utilities.time.get_day_of_the_week_from_python_weekday(book_weekday_index)
-        book_time_int = int(book_time)
-
+        # make an int with the time
+        book_time_int = int(booking_datetime_local.hour)
+        logging.info('Checking if weekday %s and hour %s is available' % (book_weekday_key, book_time_int))
         if book_weekday_key == schedule.day:
             if book_time_int >= schedule.start_time and book_time_int <= schedule.end_time:
                 return True
+            
     
     def get_future_confirmed_bookings(self):
         yesterday_at_midnight = datetime.combine(date.today(), time())
