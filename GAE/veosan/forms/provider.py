@@ -22,7 +22,7 @@ class ProviderProfileForm(CustomForm):
 
 class ProviderServiceForm(CustomForm):
     def _set_fields(self, form):
-        setattr(form, 'description', TextField(_(u'Description'), validators=[validators.Length(min=2, message=_(u'Description required.'))]))
+        setattr(form, 'description', TextField(_(u'Description'), validators=[validators.Length(min=2, message=_(u'Description required.')), validators.Length(max=499, message=_('Sorry, this field is too long. Please limit to 500 characters.'))]))
         setattr(form, 'cost', FloatField(_(u'Cost'), validators=[validators.Optional()]))
         setattr(form, 'duration', SelectField(_(u'Duration'), validators=[validators.Optional()], coerce=int, choices=util.get_all_durations()))
 
